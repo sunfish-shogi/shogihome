@@ -17,3 +17,6 @@ jobs:
         cache: 'npm'
     - run: npm install
     - run: npm run test:unit
+    - run: npm lint
+    - run: npm run report:license
+    - run: git status -s -uno | grep '^ M' && exit 1

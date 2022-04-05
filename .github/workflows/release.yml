@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: 'npm'
+    - run: npm install
+    - run: npm run electron:build -- --publish never
+    - run: node archive.js win
+    - uses: actions/upload-artifact@v3
+      with:
+        name: windows-release
+        path: dist_electron/release-win.zip
