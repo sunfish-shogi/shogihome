@@ -14,7 +14,6 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "release": "npm run electron:build && electron-builder --project ./dist_electron/bundled",
     "report:license": "license-report --only=prod --output html > ./docs/third-party-licenses.html"
   },
   "main": "background.js",

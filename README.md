@@ -70,7 +70,7 @@ npm run serve
 
 ```
 # Electron アプリ
-npm run release
+npm run electron:build
 
 # ブラウザアプリ
 npm run build
