@@ -85,7 +85,7 @@ npm run test:unit
 ### Lint
 
 ```
-npm run lint -- --fix
+npm run lint
 ```
 
 ## ライセンス
