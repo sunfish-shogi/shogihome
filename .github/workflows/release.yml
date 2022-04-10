@@ -22,7 +22,7 @@ jobs:
       with:
         node-version: 16.x
         cache: 'npm'
-    - run: npm install
+    - run: npm ci
     - run: npm run electron:build -- --publish never
     - run: node archive.mjs ${{ matrix.os_short }}
     - uses: actions/upload-artifact@v3
