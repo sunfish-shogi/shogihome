@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: 16.x
         cache: 'npm'
-    - run: npm install
+    - run: npm ci
     - run: npm run test:unit
     - run: npm run lint
     - run: npm run report:license
