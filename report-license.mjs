@@ -7,6 +7,51 @@ import checker from "license-checker";
 const rootDir = "./docs";
 const licenseFileDir = "third-party-licenses";
 
+function writeHeader(stream) {
+  stream.write(`<html>`);
+  stream.write(`<body>`);
+  stream.write(`<table border="1px">`);
+  stream.write(`<tr>`);
+  stream.write(`<th>Library</th>`);
+  stream.write(`<th>License</th>`);
+  stream.write(`<th>Publisher</th>`);
+  stream.write(`<th>Repository</th>`);
+  stream.write(`</tr>`);
+}
+
+function writeRow(index, stream, fullName, props) {
+  const m = fullName.match(/^(.+)@[0-9.]*$/);
+  const name = m ? m[1] : fullName;
+  stream.write(`<tr>`);
+  stream.write(`<td>${name}</td>`);
+  if (props.licenseFile) {
+    const fileName = index + ".txt";
+    fs.copyFileSync(
+      props.licenseFile,
+      path.join(path.join(rootDir, licenseFileDir), fileName)
+    );
+    stream.write(
+      `<td><a href="${licenseFileDir}/${fileName}">${props.licenses}</a></td>`
+    );
+  } else {
+    stream.write(`<td>${props.licenses}</td>`);
+  }
+  stream.write(`<td>${props.publisher || ""}</td>`);
+  stream.write(`<td>`);
+  if (props.repository) {
+    stream.write(`<a href="${props.repository}">${props.repository}</a>`);
+  }
+  stream.write(`</td>`);
+  stream.write(`</tr>`);
+}
+
+function writeFooter(stream) {
+  stream.write(`</table>`);
+  stream.write(`</body>`);
+  stream.write(`</html>`);
+  stream.end();
+}
+
 checker.init(
   {
     start: "./",
@@ -25,43 +70,12 @@ checker.init(
     const stream = fs.createWriteStream(
       path.join(rootDir, "/third-party-licenses.html")
     );
-    stream.write(`<html>`);
-    stream.write(`<body>`);
-    stream.write(`<table border="1px">`);
-    stream.write(`<tr>`);
-    stream.write(`<th>Library</th>`);
-    stream.write(`<th>License</th>`);
-    stream.write(`<th>Publisher</th>`);
-    stream.write(`<th>Repository</th>`);
-    stream.write(`</tr>`);
-    let n = 0;
+    writeHeader(stream);
+    let index = 0;
     Object.entries(packages).forEach(([name, props]) => {
-      stream.write(`<tr>`);
-      stream.write(`<td>${name}</td>`);
-      if (props.licenseFile) {
-        const fileName = n + ".txt";
-        fs.copyFileSync(
-          props.licenseFile,
-          path.join(path.join(rootDir, licenseFileDir), fileName)
-        );
-        n += 1;
-        stream.write(
-          `<td><a href="${licenseFileDir}/${fileName}">${props.licenses}</a></td>`
-        );
-      } else {
-        stream.write(`<td>${props.licenses}</td>`);
-      }
-      stream.write(`<td>${props.publisher || ""}</td>`);
-      stream.write(`<td>`);
-      if (props.repository) {
-        stream.write(`<a href="${props.repository}">${props.repository}</a>`);
-      }
-      stream.write(`</td>`);
-      stream.write(`</tr>`);
+      writeRow(index, stream, name, props);
+      index += 1;
     });
-    stream.write(`</table>`);
-    stream.write(`</body>`);
-    stream.write(`</html>`);
-    stream.end();
+    writeFooter(stream);
   }
 );
