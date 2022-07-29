@@ -24,6 +24,7 @@ export enum BoardImageType {
   WARM = "warm",
   RESIN = "resin",
   DARK = "dark",
+  SOLID = "solid"
 }
 
 export enum BoardLabelType {
@@ -321,6 +322,7 @@ const boardImageMap = {
   [BoardImageType.WARM]: "./board/warm.png",
   [BoardImageType.RESIN]: "./board/resin.png",
   [BoardImageType.DARK]: "./board/dark.png",
+  [BoardImageType.SOLID]: "./board/solid.svg",
 };
 
 const handColorMap = {
@@ -328,6 +330,7 @@ const handColorMap = {
   [BoardImageType.WARM]: "#8b4513",
   [BoardImageType.RESIN]: "#8b4513",
   [BoardImageType.DARK]: "#333333",
+  [BoardImageType.SOLID]: "8b4513",
 };
 
 const handLaytoutRule = {

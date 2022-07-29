@@ -356,6 +356,10 @@ export default defineComponent({
         name: "ダーク",
         value: BoardImageType.DARK,
       },
+      {
+        name: "ソイド",
+        value: BoardImageType.SOLID,
+      },
     ];
 
     return {
