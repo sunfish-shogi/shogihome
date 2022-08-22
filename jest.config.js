@@ -3,4 +3,5 @@ module.exports = {
   transform: {
     "^.+\\.vue$": "@vue/vue3-jest",
   },
+  setupFilesAfterEnv: ["./scripts/jest.setup.js"],
 };

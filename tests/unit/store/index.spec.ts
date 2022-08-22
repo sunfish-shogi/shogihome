@@ -7,12 +7,27 @@ import { RecordCustomData } from "@/store/record";
 import { USIInfoSender } from "@/store/usi";
 import iconv from "iconv-lite";
 import * as audio from "@/audio";
+import { gameSetting10m30s } from "../mock/game";
+import { GameManager } from "@/store/game";
+import { AppState } from "@/store/state";
+import { AnalysisManager } from "@/store/analysis";
+import { analysisSetting } from "../mock/analysis";
+import { USIPlayer } from "@/players/usi";
+import { researchSetting } from "../mock/research";
 
 jest.mock("@/audio");
 jest.mock("@/ipc/api");
+jest.mock("@/store/game");
+jest.mock("@/players/usi");
+jest.mock("@/store/analysis");
 
 const mockAudio = audio as jest.Mocked<typeof audio>;
 const mockAPI = api as jest.Mocked<API>;
+const mockGameManager = GameManager as jest.MockedClass<typeof GameManager>;
+const mockUSIPlayer = USIPlayer as jest.MockedClass<typeof USIPlayer>;
+const mockAnalysisManager = AnalysisManager as jest.MockedClass<
+  typeof AnalysisManager
+>;
 
 const sampleKIF = `
 手合割：平手
@@ -279,6 +294,69 @@ describe("store/index", () => {
       .invoke();
   });
 
+  it("startGame/success", () => {
+    mockAPI.saveGameSetting.mockResolvedValue(Promise.resolve());
+    mockGameManager.prototype.startGame.mockResolvedValue(Promise.resolve());
+    const store = new Store();
+    store.showGameDialog();
+    store.startGame(gameSetting10m30s);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.GAME);
+        expect(mockAPI.saveGameSetting.mock.calls.length).toBe(1);
+        expect(mockAPI.saveGameSetting.mock.calls[0][0]).toBe(
+          gameSetting10m30s
+        );
+        expect(mockGameManager.prototype.startGame.mock.calls.length).toBe(1);
+        expect(mockGameManager.prototype.startGame.mock.calls[0][0]).toBe(
+          gameSetting10m30s
+        );
+      })
+      .invoke();
+  });
+
+  it("startResearch/success", () => {
+    mockAPI.saveResearchSetting.mockResolvedValue(Promise.resolve());
+    mockUSIPlayer.prototype.launch.mockResolvedValue(Promise.resolve());
+    mockUSIPlayer.prototype.startResearch.mockResolvedValue(Promise.resolve());
+    const store = new Store();
+    store.showResearchDialog();
+    store.startResearch(researchSetting);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.RESEARCH);
+        expect(mockAPI.saveResearchSetting.mock.calls.length).toBe(1);
+        expect(mockUSIPlayer.mock.calls.length).toBe(1);
+        expect(mockUSIPlayer.mock.calls[0][0]).toBe(researchSetting.usi);
+        expect(mockUSIPlayer.prototype.launch.mock.calls.length).toBe(1);
+        expect(mockUSIPlayer.prototype.startResearch.mock.calls.length).toBe(1);
+      })
+      .invoke();
+  });
+
+  it("startAnalysis/success", () => {
+    mockAPI.saveAnalysisSetting.mockResolvedValue(Promise.resolve());
+    mockAnalysisManager.prototype.start.mockResolvedValue(Promise.resolve());
+    const store = new Store();
+    store.showAnalysisDialog();
+    store.startAnalysis(analysisSetting);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.ANALYSIS);
+        expect(mockAPI.saveAnalysisSetting.mock.calls.length).toBe(1);
+        expect(mockAPI.saveAnalysisSetting.mock.calls[0][0]).toBe(
+          analysisSetting
+        );
+        expect(mockAnalysisManager.mock.calls.length).toBe(1);
+        expect(mockAnalysisManager.mock.calls[0][1]).toBe(analysisSetting);
+        expect(mockAnalysisManager.prototype.start.mock.calls.length).toBe(1);
+      })
+      .invoke();
+  });
+
   it("doMove", () => {
     mockAudio.playPieceBeat.mockReturnValue();
     const store = new Store();
@@ -415,21 +493,25 @@ describe("store/index", () => {
   });
 
   it("openRecord/csa/success", () => {
-    // FIXME: openRecord の中で "TextDecoder is not defined" になってうまくいかない。
-    //mockAPI.showOpenRecordDialog.mockResolvedValueOnce("/test/sample.csa");
-    //mockAPI.openRecord.mockResolvedValueOnce(new TextEncoder().encode(sampleCSA));
-    //const store = new Store();
-    //store.openRecord();
-    //expect(store.isBussy).toBeTruthy();
-    //return new TimeoutChain()
-    //  .next(() => {
-    //    expect(store.isBussy).toBeFalsy();
-    //    expect(store.recordFilePath).toBe("/test/sample.csa");
-    //    const moves = store.record.moves;
-    //    expect(moves.length).toBe(13);
-    //    expect(store.hasError).toBeFalsy();
-    //  })
-    //  .invoke();
+    mockAPI.showOpenRecordDialog.mockResolvedValueOnce("/test/sample.csa");
+    mockAPI.openRecord.mockResolvedValueOnce(
+      new TextEncoder().encode(sampleCSA)
+    );
+    const store = new Store();
+    store.openRecord();
+    expect(store.isBussy).toBeTruthy();
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBe("/test/sample.csa");
+        const moves = store.record.moves;
+        expect(moves.length).toBe(13);
+        expect(store.hasError).toBeFalsy();
+        expect(mockAPI.showOpenRecordDialog.mock.calls.length).toBe(1);
+        expect(mockAPI.openRecord.mock.calls.length).toBe(1);
+        expect(mockAPI.openRecord.mock.calls[0][0]).toBe("/test/sample.csa");
+      })
+      .invoke();
   });
 
   it("openRecord/invalidState", () => {
@@ -441,6 +523,94 @@ describe("store/index", () => {
         const moves = store.record.moves;
         expect(moves.length).toBe(1);
         expect(store.hasError).toBeFalsy();
+        expect(store.recordFilePath).toBeUndefined();
+      })
+      .invoke();
+  });
+
+  it("saveRecord/success", () => {
+    mockAPI.showSaveRecordDialog.mockResolvedValueOnce(
+      new Promise((resolve) => resolve("/test/sample.csa"))
+    );
+    mockAPI.saveRecord.mockResolvedValueOnce(Promise.resolve());
+    const store = new Store();
+    store.saveRecord();
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBe("/test/sample.csa");
+        expect(store.hasError).toBeFalsy();
+        expect(mockAPI.showSaveRecordDialog.mock.calls.length).toBe(1);
+        expect(mockAPI.saveRecord.mock.calls.length).toBe(1);
+        expect(mockAPI.saveRecord.mock.calls[0][0]).toBe("/test/sample.csa");
+        const data = new TextDecoder().decode(
+          mockAPI.saveRecord.mock.calls[0][1]
+        );
+        expect(data).toMatch(
+          /^' CSA形式棋譜ファイル Generated by Electron Shogi\r\n/
+        );
+      })
+      .invoke();
+  });
+
+  it("saveRecord/invalidState", () => {
+    const store = new Store();
+    store.showGameDialog();
+    store.saveRecord();
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.hasError).toBeFalsy();
+        expect(store.recordFilePath).toBeUndefined();
+      })
+      .invoke();
+  });
+
+  it("saveRecord/noOverwrite", () => {
+    mockAPI.openRecord.mockResolvedValueOnce(
+      iconv.encode(sampleKIF, "Shift_JIS")
+    );
+    mockAPI.showSaveRecordDialog.mockResolvedValueOnce(
+      new Promise((resolve) => resolve("/test/sample2.csa"))
+    );
+    mockAPI.saveRecord.mockResolvedValueOnce(Promise.resolve());
+    const store = new Store();
+    store.openRecord("/test/sample1.csa");
+    return new TimeoutChain()
+      .next(() => {
+        store.saveRecord();
+      })
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBe("/test/sample2.csa");
+        expect(store.hasError).toBeFalsy();
+        expect(mockAPI.showSaveRecordDialog.mock.calls.length).toBe(1);
+        expect(mockAPI.saveRecord.mock.calls.length).toBe(1);
+      })
+      .invoke();
+  });
+
+  it("saveRecord/overwrite", () => {
+    mockAPI.openRecord.mockResolvedValueOnce(
+      iconv.encode(sampleKIF, "Shift_JIS")
+    );
+    mockAPI.showSaveRecordDialog.mockResolvedValueOnce(
+      new Promise((resolve) => resolve("/test/sample2.csa"))
+    );
+    mockAPI.saveRecord.mockResolvedValueOnce(Promise.resolve());
+    const store = new Store();
+    store.openRecord("/test/sample1.csa");
+    return new TimeoutChain()
+      .next(() => {
+        store.saveRecord({
+          overwrite: true,
+        });
+      })
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBe("/test/sample1.csa");
+        expect(store.hasError).toBeFalsy();
+        expect(mockAPI.showSaveRecordDialog.mock.calls.length).toBe(0);
+        expect(mockAPI.saveRecord.mock.calls.length).toBe(1);
       })
       .invoke();
   });

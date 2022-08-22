@@ -24,12 +24,11 @@ Promise.allSettled([
         new Error("アプリ設定の読み込み中にエラーが発生しました :" + e)
       );
     }),
-  (async function (): Promise<void> {
-    const path = await api.getRecordPathFromProcArg();
+  api.getRecordPathFromProcArg().then((path) => {
     if (path) {
       store.openRecord(path);
     }
-  })(),
+  }),
 ]).finally(() => {
   api.log(LogLevel.INFO, "mount app");
   createApp(App).mount("#app");

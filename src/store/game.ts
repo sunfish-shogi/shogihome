@@ -286,22 +286,26 @@ export class GameManager {
       return;
     }
     this.state = GameState.BUSSY;
-    (async () => {
-      if (specialMove) {
-        const color = this.recordManager.record.position.color;
-        await this.sendGameResults(color, specialMove);
-      }
-      await this.closePlayers();
-      this.getActiveClock().pause();
-      this.recordManager.appendMove({
-        move: specialMove || SpecialMove.INTERRUPT,
-        elapsedMs: this.getActiveClock().elapsedMs,
-      });
-      this.recordManager.setGameEndMetadata();
-      this.handlers.onEndGame(specialMove);
-    })()
+    Promise.resolve()
       .then(() => {
+        if (!specialMove) {
+          return;
+        }
+        const color = this.recordManager.record.position.color;
+        return this.sendGameResults(color, specialMove);
+      })
+      .then(() => {
+        return this.closePlayers();
+      })
+      .then(() => {
+        this.getActiveClock().pause();
+        this.recordManager.appendMove({
+          move: specialMove || SpecialMove.INTERRUPT,
+          elapsedMs: this.getActiveClock().elapsedMs,
+        });
+        this.recordManager.setGameEndMetadata();
         this.state = GameState.IDLE;
+        this.handlers.onEndGame(specialMove);
       })
       .catch((e) => {
         this.handlers.onError(e);

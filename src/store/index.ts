@@ -351,12 +351,15 @@ export class Store {
       return;
     }
     this.retainBussyState();
-    (async () => {
-      await api.saveGameSetting(setting);
-      this.initializeDisplaySettingForGame(setting);
-      await this.gameManager.startGame(setting);
-      this._appState = AppState.GAME;
-    })()
+    api
+      .saveGameSetting(setting)
+      .then(() => {
+        this.initializeDisplaySettingForGame(setting);
+        return this.gameManager.startGame(setting);
+      })
+      .then(() => {
+        this._appState = AppState.GAME;
+      })
       .catch((e) => {
         this.pushError("対局の初期化中にエラーが出ました: " + e);
       })
@@ -487,20 +490,23 @@ export class Store {
       return;
     }
     this.retainBussyState();
-    (async () => {
-      await api.saveResearchSetting(researchSetting);
-      if (!researchSetting.usi) {
-        throw new Error("エンジンが設定されていません。");
-      }
-      const researcher = new USIPlayer(researchSetting.usi);
-      await researcher.launch();
-      this.researcher = researcher;
-      this._appState = AppState.RESEARCH;
-    })()
+    if (!researchSetting.usi) {
+      this.pushError(new Error("エンジンが設定されていません。"));
+      return;
+    }
+    const usiSetting = researchSetting.usi;
+    api
+      .saveResearchSetting(researchSetting)
       .then(() => {
+        this.researcher = new USIPlayer(usiSetting);
+        return this.researcher.launch();
+      })
+      .then(() => {
+        this._appState = AppState.RESEARCH;
         this.onUpdatePosition();
       })
       .catch((e) => {
+        this.researcher = undefined;
         this.pushError("検討の初期化中にエラーが出ました: " + e);
       })
       .finally(() => {
@@ -524,18 +530,21 @@ export class Store {
       return;
     }
     this.retainBussyState();
-    (async () => {
-      await api.saveAnalysisSetting(analysisSetting);
-      const analysisManager = new AnalysisManager(
-        this.recordManager,
-        analysisSetting,
-        this
-      );
-      await analysisManager.start();
-      this.analysisManager = analysisManager;
-      this._appState = AppState.ANALYSIS;
-    })()
+    api
+      .saveAnalysisSetting(analysisSetting)
+      .then(() => {
+        this.analysisManager = new AnalysisManager(
+          this.recordManager,
+          analysisSetting,
+          this
+        );
+        return this.analysisManager.start();
+      })
+      .then(() => {
+        this._appState = AppState.ANALYSIS;
+      })
       .catch((e) => {
+        this.analysisManager = undefined;
         this.pushError("検討の初期化中にエラーが出ました: " + e);
       })
       .finally(() => {
@@ -711,22 +720,22 @@ export class Store {
       return;
     }
     this.retainBussyState();
-    (async () => {
-      if (!path) {
-        path = await api.showOpenRecordDialog();
+    Promise.resolve()
+      .then(() => {
+        return path || api.showOpenRecordDialog();
+      })
+      .then((path) => {
         if (!path) {
           return;
         }
-      }
-      const data = await api.openRecord(path);
-      const error = this.recordManager.importRecordFromBuffer(
-        data as Buffer,
-        path
-      );
-      if (error) {
-        throw error;
-      }
-    })()
+        return api.openRecord(path as string).then((data) => {
+          const e = this.recordManager.importRecordFromBuffer(
+            data as Buffer,
+            path as string
+          );
+          return e && Promise.reject(e);
+        });
+      })
       .catch((e) => {
         this.pushError("棋譜の読み込み中にエラーが出ました: " + e);
       })
@@ -740,25 +749,32 @@ export class Store {
       return;
     }
     this.retainBussyState();
-    (async () => {
-      let path = this.recordManager.recordFilePath;
-      if (!options?.overwrite || !path) {
+    Promise.resolve()
+      .then(() => {
+        const path = this.recordManager.recordFilePath;
+        if (options?.overwrite && path) {
+          return path;
+        }
         const defaultPath = defaultRecordFileName(
           this.recordManager.record.metadata
         );
-        path = await api.showSaveRecordDialog(defaultPath);
+        return api.showSaveRecordDialog(defaultPath);
+      })
+      .then((path) => {
         if (!path) {
           return;
         }
-      }
-      const dataOrError = this.recordManager.exportRecordAsBuffer(path, {
-        returnCode: this.appSetting.returnCode,
-      });
-      if (dataOrError instanceof Error) {
-        throw dataOrError;
-      }
-      await api.saveRecord(path, dataOrError);
-    })()
+        const dataOrError = this.recordManager.exportRecordAsBuffer(
+          path as string,
+          {
+            returnCode: this.appSetting.returnCode,
+          }
+        );
+        if (dataOrError instanceof Error) {
+          return Promise.reject(dataOrError);
+        }
+        return api.saveRecord(path as string, dataOrError);
+      })
       .catch((e) => {
         this.pushError("棋譜の保存中にエラーが出ました: " + e);
       })
