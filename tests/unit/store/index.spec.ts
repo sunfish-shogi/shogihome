@@ -316,6 +316,17 @@ describe("store/index", () => {
       .invoke();
   });
 
+  it("startGame/invalidState", () => {
+    const store = new Store();
+    store.startGame(gameSetting10m30s);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.NORMAL);
+      })
+      .invoke();
+  });
+
   it("startResearch/success", () => {
     mockAPI.saveResearchSetting.mockResolvedValue(Promise.resolve());
     mockUSIPlayer.prototype.launch.mockResolvedValue(Promise.resolve());
@@ -332,6 +343,17 @@ describe("store/index", () => {
         expect(mockUSIPlayer.mock.calls[0][0]).toBe(researchSetting.usi);
         expect(mockUSIPlayer.prototype.launch.mock.calls.length).toBe(1);
         expect(mockUSIPlayer.prototype.startResearch.mock.calls.length).toBe(1);
+      })
+      .invoke();
+  });
+
+  it("startResearch/invalidState", () => {
+    const store = new Store();
+    store.startResearch(researchSetting);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.NORMAL);
       })
       .invoke();
   });
@@ -353,6 +375,17 @@ describe("store/index", () => {
         expect(mockAnalysisManager.mock.calls.length).toBe(1);
         expect(mockAnalysisManager.mock.calls[0][1]).toBe(analysisSetting);
         expect(mockAnalysisManager.prototype.start.mock.calls.length).toBe(1);
+      })
+      .invoke();
+  });
+
+  it("startAnalysis/invalidState", () => {
+    const store = new Store();
+    store.startAnalysis(analysisSetting);
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.appState).toBe(AppState.NORMAL);
       })
       .invoke();
   });
@@ -528,6 +561,20 @@ describe("store/index", () => {
       .invoke();
   });
 
+  it("openRecord/cancel", () => {
+    mockAPI.showOpenRecordDialog.mockResolvedValueOnce("");
+    const store = new Store();
+    store.openRecord();
+    expect(store.isBussy).toBeTruthy();
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBeUndefined();
+        expect(store.hasError).toBeFalsy();
+      })
+      .invoke();
+  });
+
   it("saveRecord/success", () => {
     mockAPI.showSaveRecordDialog.mockResolvedValueOnce(
       new Promise((resolve) => resolve("/test/sample.csa"))
@@ -561,6 +608,23 @@ describe("store/index", () => {
       .next(() => {
         expect(store.hasError).toBeFalsy();
         expect(store.recordFilePath).toBeUndefined();
+      })
+      .invoke();
+  });
+
+  it("saveRecord/cancel", () => {
+    mockAPI.showSaveRecordDialog.mockResolvedValueOnce(
+      new Promise((resolve) => resolve(""))
+    );
+    const store = new Store();
+    store.saveRecord();
+    return new TimeoutChain()
+      .next(() => {
+        expect(store.isBussy).toBeFalsy();
+        expect(store.recordFilePath).toBeUndefined();
+        expect(store.hasError).toBeFalsy();
+        expect(mockAPI.showSaveRecordDialog.mock.calls.length).toBe(1);
+        expect(mockAPI.saveRecord.mock.calls.length).toBe(0);
       })
       .invoke();
   });
