@@ -524,13 +524,13 @@ describe("store/index", () => {
 
   it("copyRecordKIF", () => {
     const writeText = jest.fn();
-    jest.spyOn(global, "navigator", "get").mockReturnValueOnce({
-      ...navigator,
-      clipboard: {
-        ...navigator.clipboard,
-        writeText: writeText,
-      },
-    });
+    jest.spyOn(global, "navigator", "get").mockReturnValueOnce(
+      Object.assign(navigator, {
+        clipboard: {
+          writeText,
+        },
+      })
+    );
     const store = new Store();
     store.copyRecordKIF();
   });
