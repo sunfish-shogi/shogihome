@@ -17,6 +17,7 @@ export enum Tab {
   PV = "pv",
   CHART = "chart",
   PERCENTAGE_CHART = "percentageChart",
+  BOOK_GRAPH = "bookGraph",
   INVISIBLE = "invisible",
 }
 

@@ -20,11 +20,14 @@
   "dependencies": {
     "chart.js": "^3.7.1",
     "core-js": "^3.21.1",
+    "d3": "^7.6.1",
     "iconv-lite": "^0.6.3",
     "log4js": "^6.5.1",
+    "pixi.js": "^7.0.2",
     "vue": "^3.2.31"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.0",
     "@types/electron-devtools-installer": "^2.2.1",
     "@types/jest": "^27.5.2",
     "@typescript-eslint/eslint-plugin": "^5.18.0",

@@ -56,6 +56,14 @@
         </span>
         <span
           class="tab"
+          :class="{ selected: activeTab === Tab.BOOK_GRAPH }"
+          @click="changeSelect(Tab.BOOK_GRAPH)"
+        >
+          <ButtonIcon class="icon" :icon="Icon.BOOK_GRAPH"/>
+          定跡グラフ
+        </span>
+        <span
+          class="tab"
           :class="{ selected: activeTab === Tab.INVISIBLE }"
           @click="changeSelect(Tab.INVISIBLE)"
         >
@@ -97,6 +105,7 @@
           :size="contentSize"
           :type="EvaluationChartType.WIN_RATE"
         />
+        <BookGraph class="tab-content" :class="{ selected: activeTab === Tab.BOOK_GRAPH }" :size="contentSize" />
       </div>
     </div>
   </div>
@@ -113,6 +122,7 @@ import RecordInfo from "@/components/tab/RecordInfo.vue";
 import { useStore } from "@/store";
 import { RectSize } from "@/components/primitive/Types";
 import ButtonIcon from "@/components/primitive/ButtonIcon.vue";
+import BookGraph from "@/components/tab/BookGraph.vue";
 import { Tab } from "@/settings/app";
 import { Icon } from "@/assets/icons";
 import api from "@/ipc/api";
@@ -131,6 +141,7 @@ export default defineComponent({
     EvaluationChart,
     RecordInfo,
     ButtonIcon,
+    BookGraph,
   },
   props: {
     size: {
