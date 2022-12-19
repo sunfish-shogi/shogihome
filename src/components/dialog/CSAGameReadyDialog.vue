@@ -6,7 +6,9 @@
         <div class="message">対局の開始を待っています。</div>
       </div>
       <div class="dialog-main-buttons">
-        <button @click="onLogout()">ログアウト</button>
+        <button autofocus data-hotkey="Escape" @click="onLogout()">
+          ログアウト
+        </button>
       </div>
     </dialog>
   </div>
@@ -14,10 +16,11 @@
 
 <script lang="ts">
 import { showModalDialog } from "@/helpers/dialog";
-import { defineComponent, onMounted, ref, Ref } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, ref, Ref } from "vue";
 import ButtonIcon from "@/components/primitive/ButtonIcon.vue";
 import { Icon } from "@/assets/icons";
 import { useStore } from "@/store";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "CSAGameReadyDialog",
@@ -27,8 +30,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const dialog: Ref = ref(null);
+
     onMounted(() => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const onLogout = () => {

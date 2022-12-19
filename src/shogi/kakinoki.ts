@@ -13,8 +13,8 @@ import {
   RecordMetadataKey,
   Square,
 } from ".";
-import Board, { InitialPositionType } from "./board";
-import Hand, { ImmutableHand } from "./hand";
+import { Board, InitialPositionType } from "./board";
+import { Hand, ImmutableHand } from "./hand";
 import { Piece, PieceType } from "./piece";
 import {
   ImmutableRecord,
@@ -322,7 +322,7 @@ const stringToSpecialMove: { [move: string]: SpecialMove } = {
 };
 
 const moveRegExp =
-  /^ *([0-9]+) +[▲△]?([１２３４５６７８９][一二三四五六七八九]|同\u3000)(王|玉|飛|龍|竜|角|馬|金|銀|成銀|全|桂|成桂|圭|香|成香|杏|歩|と)(成?)(打|\([1-9][1-9]\)) *(.*)$/;
+  /^ *([0-9]+) +[▲△]?([１２３４５６７８９][一二三四五六七八九]|同\u3000*)(王|玉|飛|龍|竜|角|馬|金|銀|成銀|全|桂|成桂|圭|香|成香|杏|歩|と)\u3000*(成?)(打|\([1-9][1-9]\)) *(.*)$/;
 
 const timeRegExp = /\( *([0-9]+):([0-9]+)\/[0-9: ]*\)/;
 
@@ -412,7 +412,7 @@ function readMove(record: Record, data: string): Error | undefined {
   record.goto(num - 1);
   let to: Square;
   let from: Square | PieceType;
-  if (toStr === "同　") {
+  if (toStr.startsWith("同")) {
     if (!(record.current.move instanceof Move)) {
       return new Error("不明な移動先: " + data);
     }

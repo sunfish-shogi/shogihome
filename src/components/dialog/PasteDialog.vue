@@ -13,8 +13,17 @@
         </div>
       </div>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="onOk">取り込む</button>
-        <button class="dialog-button" @click="onCancel">キャンセル</button>
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="onOk"
+        >
+          取り込む
+        </button>
+        <button class="dialog-button" data-hotkey="Escape" @click="onCancel">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -22,9 +31,10 @@
 
 <script lang="ts">
 import { showModalDialog } from "@/helpers/dialog";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 import { isNative } from "@/ipc/api";
 import { useStore } from "@/store";
-import { defineComponent, onMounted, ref, Ref } from "vue";
+import { defineComponent, onBeforeUnmount, onMounted, ref, Ref } from "vue";
 
 export default defineComponent({
   name: "PasteDialog",
@@ -37,12 +47,17 @@ export default defineComponent({
     onMounted(async () => {
       try {
         showModalDialog(dialog.value);
+        installHotKey(dialog.value);
         if (isNative()) {
           textarea.value.value = await navigator.clipboard.readText();
         }
       } finally {
         store.releaseBussyState();
       }
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const onOk = () => {

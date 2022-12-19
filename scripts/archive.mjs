@@ -5,14 +5,14 @@ import fs from "fs";
 
 const platform = process.argv[2];
 const version = process.argv[3];
-const outputPath = `dist_electron/release-${version}-${platform}.zip`;
+const outputPath = `dist/release-${version}-${platform}.zip`;
 
 const packageJson = JSON.parse(fs.readFileSync('./package.json'));
 if (`v${packageJson.version}` !== version) {
   throw new Error("invalid release version");
 }
 
-const output = fs.createWriteStream(outputPath).on("error", function () {
+const output = fs.createWriteStream(outputPath).on("error", function (err) {
   throw err;
 });
 const archive = archiver
@@ -31,10 +31,10 @@ archive.pipe(output);
 
 switch (platform) {
   case "win":
-    archive.glob("*.exe", { cwd: "dist_electron" });
+    archive.glob("*.exe", { cwd: "dist" });
     break;
   case "mac":
-    archive.glob("*.dmg", { cwd: "dist_electron" });
+    archive.glob("*.dmg", { cwd: "dist" });
     break;
   default:
     throw new Error("unknown platform");

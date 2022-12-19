@@ -8,37 +8,37 @@
           <div class="dialog-form-item">
             <div class="dialog-form-item-label-wide">テーマ</div>
             <select ref="thema" :value="appSetting.thema">
-              <option
-                v-for="themaOption of themaOptions"
-                :key="themaOption.value"
-                :value="themaOption.value"
-              >
-                {{ themaOption.name }}
-              </option>
+              <option :value="Thema.STANDARD">標準（緑）</option>
+              <option :value="Thema.CHERRY_BLOSSOM">桜</option>
+              <option :value="Thema.DARK">ダーク</option>
             </select>
           </div>
           <div class="dialog-form-item">
             <div class="dialog-form-item-label-wide">駒画像</div>
             <select ref="pieceImage" :value="appSetting.pieceImage">
-              <option
-                v-for="pieceImageType of pieceImageTypes"
-                :key="pieceImageType.value"
-                :value="pieceImageType.value"
-              >
-                {{ pieceImageType.name }}
+              <option :value="PieceImageType.HITOMOJI">一文字駒</option>
+              <option :value="PieceImageType.HITOMOJI_GOTHIC">
+                一文字駒（ゴシック体）
+              </option>
+              <option :value="PieceImageType.HITOMOJI_DARK">
+                一文字駒（ダーク）
+              </option>
+              <option :value="PieceImageType.HITOMOJI_GOTHIC_DARK">
+                一文字駒（ゴシック体・ダーク）
               </option>
             </select>
           </div>
           <div class="dialog-form-item">
             <div class="dialog-form-item-label-wide">盤画像</div>
             <select ref="boardImage" :value="appSetting.boardImage">
-              <option
-                v-for="boardImageType of boardImageTypes"
-                :key="boardImageType.value"
-                :value="boardImageType.value"
-              >
-                {{ boardImageType.name }}
-              </option>
+              <option :value="BoardImageType.LIGHT">木目（明るい）</option>
+              <option :value="BoardImageType.WARM">木目（暖かい）</option>
+              <option :value="BoardImageType.RESIN">レジン</option>
+              <option :value="BoardImageType.RESIN2">レジン2</option>
+              <option :value="BoardImageType.RESIN3">レジン3</option>
+              <option :value="BoardImageType.DARK">ダーク</option>
+              <option :value="BoardImageType.GREEN">緑</option>
+              <option :value="BoardImageType.CHERRY_BLOSSOM">桜</option>
             </select>
           </div>
           <div class="dialog-form-item">
@@ -240,10 +240,17 @@
         </div>
       </div>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="saveAndClose()">
+        <button
+          class="dialog-button"
+          data-hotkey="Enter"
+          autofocus
+          @click="saveAndClose()"
+        >
           保存して閉じる
         </button>
-        <button class="dialog-button" @click="cancel()">キャンセル</button>
+        <button class="dialog-button" data-hotkey="Escape" @click="cancel()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -257,10 +264,18 @@ import {
 } from "@/components/primitive/BoardLayout";
 import { AppSettingUpdate, Thema } from "@/settings/app";
 import { useStore } from "@/store";
-import { ref, defineComponent, onMounted, Ref, computed } from "vue";
+import {
+  ref,
+  defineComponent,
+  onMounted,
+  Ref,
+  computed,
+  onBeforeUnmount,
+} from "vue";
 import { readInputAsNumber } from "@/helpers/form";
 import { showModalDialog } from "@/helpers/dialog";
 import api, { isNative } from "@/ipc/api";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 const returnCodeToName: { [name: string]: string } = {
   "\r\n": "crlf",
@@ -301,6 +316,11 @@ export default defineComponent({
 
     onMounted(() => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const saveAndClose = async () => {
@@ -365,76 +385,10 @@ export default defineComponent({
       };
     });
 
-    const themaOptions = [
-      {
-        name: "標準（緑）",
-        value: Thema.STANDARD,
-      },
-      {
-        name: "桜",
-        value: Thema.CHERRY_BLOSSOM,
-      },
-      {
-        name: "ダーク",
-        value: Thema.DARK,
-      },
-    ];
-
-    const pieceImageTypes = [
-      {
-        name: "一文字駒",
-        value: PieceImageType.HITOMOJI,
-      },
-      {
-        name: "一文字駒（ゴシック体）",
-        value: PieceImageType.HITOMOJI_GOTHIC,
-      },
-      {
-        name: "一文字駒（ダーク）",
-        value: PieceImageType.HITOMOJI_DARK,
-      },
-      {
-        name: "一文字駒（ゴシック体・ダーク）",
-        value: PieceImageType.HITOMOJI_GOTHIC_DARK,
-      },
-    ];
-
-    const boardImageTypes = [
-      {
-        name: "木目（明るい）",
-        value: BoardImageType.LIGHT,
-      },
-      {
-        name: "木目（暖かい）",
-        value: BoardImageType.WARM,
-      },
-      {
-        name: "レジン",
-        value: BoardImageType.RESIN,
-      },
-      {
-        name: "レジン2",
-        value: BoardImageType.RESIN2,
-      },
-      {
-        name: "レジン3",
-        value: BoardImageType.RESIN3,
-      },
-      {
-        name: "ダーク",
-        value: BoardImageType.DARK,
-      },
-      {
-        name: "緑",
-        value: BoardImageType.GREEN,
-      },
-      {
-        name: "桜",
-        value: BoardImageType.CHERRY_BLOSSOM,
-      },
-    ];
-
     return {
+      Thema,
+      PieceImageType,
+      BoardImageType,
       BoardLabelType,
       dialog,
       thema,
@@ -457,9 +411,6 @@ export default defineComponent({
       enableUSILog,
       enableCSALog,
       appSetting,
-      themaOptions,
-      pieceImageTypes,
-      boardImageTypes,
       isNative: isNative(),
       selectAutoSaveDirectory,
       saveAndClose,

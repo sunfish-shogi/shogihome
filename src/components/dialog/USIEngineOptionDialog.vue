@@ -89,10 +89,17 @@
         エンジンの既定値に戻す
       </button>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="ok()">
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="ok()"
+        >
           {{ okButtonText }}
         </button>
-        <button class="dialog-button" @click="cancel()">キャンセル</button>
+        <button class="dialog-button" data-hotkey="Escape" @click="cancel()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -101,6 +108,7 @@
 <script lang="ts">
 import { getFormItemByID, showModalDialog } from "@/helpers/dialog";
 import { readInputAsNumber } from "@/helpers/form";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 import api from "@/ipc/api";
 import {
   getUSIEngineOptionCurrentValue,
@@ -108,7 +116,15 @@ import {
   USIEngineSetting,
 } from "@/settings/usi";
 import { useStore } from "@/store";
-import { computed, defineComponent, onMounted, PropType, ref, Ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  PropType,
+  ref,
+  Ref,
+} from "vue";
 
 export default defineComponent({
   name: "USIEngineOptionDialog",
@@ -153,6 +169,7 @@ export default defineComponent({
     store.retainBussyState();
     onMounted(async () => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
       try {
         const timeoutSeconds = store.appSetting.engineTimeoutSeconds;
         engine.value = await api.getUSIEngineInfo(latest.path, timeoutSeconds);
@@ -170,6 +187,10 @@ export default defineComponent({
       } finally {
         store.releaseBussyState();
       }
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const selectFile = async (id: string) => {

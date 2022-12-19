@@ -91,8 +91,17 @@
         </div>
       </div>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="onStart()">解析実行</button>
-        <button class="dialog-button" @click="onCancel()">キャンセル</button>
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="onStart()"
+        >
+          解析実行
+        </button>
+        <button class="dialog-button" data-hotkey="Escape" @click="onCancel()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -106,8 +115,16 @@ import { AnalysisSetting, defaultAnalysisSetting } from "@/settings/analysis";
 import { USIEngineSetting, USIEngineSettings } from "@/settings/usi";
 import { useStore } from "@/store";
 import { CommentBehavior } from "@/store/record";
-import { computed, defineComponent, onMounted, ref, Ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  Ref,
+} from "vue";
 import PlayerSelector from "@/components/dialog/PlayerSelector.vue";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "ResearchDialog",
@@ -131,6 +148,7 @@ export default defineComponent({
 
     onMounted(async () => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
       try {
         analysisSetting.value = await api.loadAnalysisSetting();
         engineSettings.value = await api.loadUSIEngineSetting();
@@ -141,6 +159,10 @@ export default defineComponent({
       } finally {
         store.releaseBussyState();
       }
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const updateToggle = () => {

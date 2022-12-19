@@ -7,7 +7,7 @@ import {
   reverseDirection,
 } from "./direction";
 import { Piece, PieceType } from "./piece";
-import Square from "./square";
+import { Square } from "./square";
 
 export enum InitialPositionType {
   STANDARD = "standard",
@@ -67,7 +67,7 @@ export interface ImmutableBoard {
   readonly sfen: string;
 }
 
-export default class Board {
+export class Board {
   private squares: Array<Piece | null>;
 
   constructor() {

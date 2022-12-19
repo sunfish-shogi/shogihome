@@ -58,7 +58,7 @@ checker.init(
     production: true,
     excludePrivatePackages: true,
     relativeLicensePath: true,
-    onlyAllow: "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause",
+    onlyAllow: "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;0BSD",
   },
   function (err, packages) {
     if (err) {

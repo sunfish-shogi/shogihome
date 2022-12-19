@@ -6,9 +6,10 @@ import { Record } from ".";
 import { InitialPositionType } from "./board";
 import { Color } from "./color";
 import { ImmutableHand } from "./hand";
-import Move from "./move";
+import { Move } from "./move";
 import { Piece, PieceType, promotedPieceType } from "./piece";
-import Position, {
+import {
+  Position,
   countNotExistingPieces,
   ImmutablePosition,
 } from "./position";
@@ -19,7 +20,7 @@ import {
   RecordMetadataKey,
   SpecialMove,
 } from "./record";
-import Square from "./square";
+import { Square } from "./square";
 
 enum LineType {
   VERSION,

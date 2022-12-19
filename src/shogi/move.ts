@@ -1,11 +1,11 @@
 import { Color } from "./color";
 import { Piece, PieceType, pieceTypeToSFEN, standardPieceName } from "./piece";
-import Square from "./square";
+import { Square } from "./square";
 
 const fileDisplayTexts = ["１", "２", "３", "４", "５", "６", "７", "８", "９"];
 const rankDisplayTexts = ["一", "二", "三", "四", "五", "六", "七", "八", "九"];
 
-export default class Move {
+export class Move {
   constructor(
     public from: Square | PieceType,
     public to: Square,
@@ -84,7 +84,7 @@ export default class Move {
     return text;
   }
 
-  get sfen(): string {
+  get usi(): string {
     let ret = "";
     if (this.from instanceof Square) {
       ret += this.from.sfen;
@@ -99,29 +99,29 @@ export default class Move {
   }
 }
 
-export function parseSFENMove(sfen: string): {
+export function parseUSIMove(str: string): {
   from: Square | PieceType;
   to: Square;
   promote: boolean;
 } | null {
   let from: PieceType | Square;
-  if (sfen[1] === "*") {
-    const piece = Piece.newBySFEN(sfen[0]);
+  if (str[1] === "*") {
+    const piece = Piece.newBySFEN(str[0]);
     if (!piece) {
       return null;
     }
     from = piece.type;
   } else {
-    const square = Square.parseSFENSquare(sfen);
+    const square = Square.parseSFENSquare(str);
     if (!square) {
       return null;
     }
     from = square;
   }
-  const to = Square.parseSFENSquare(sfen.substring(2));
+  const to = Square.parseSFENSquare(str.substring(2));
   if (!to) {
     return null;
   }
-  const promote = sfen.length >= 5 && sfen[4] === "+";
+  const promote = str.length >= 5 && str[4] === "+";
   return { from, to, promote };
 }

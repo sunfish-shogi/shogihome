@@ -25,12 +25,20 @@ module.exports = {
   overrides: [
     {
       files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)",
+        "**/*.js",
+        "**/*.jsx",
+        "**/*.ts",
+        "**/*.tsx",
+        "**/*.vue",
       ],
       env: {
         jest: true,
       },
     },
   ],
+  settings: {
+    "import/resolver": {
+      typescript: []
+    }
+  }
 };

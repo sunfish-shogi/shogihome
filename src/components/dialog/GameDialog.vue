@@ -140,10 +140,18 @@
           </div>
         </div>
       </div>
-      <!-- TODO: 連続対局 -->
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="onStart()">対局開始</button>
-        <button class="dialog-button" @click="onCancel()">キャンセル</button>
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="onStart()"
+        >
+          対局開始
+        </button>
+        <button class="dialog-button" data-hotkey="Escape" @click="onCancel()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -151,7 +159,15 @@
 
 <script lang="ts">
 import { USIEngineSetting, USIEngineSettings } from "@/settings/usi";
-import { ref, onMounted, defineComponent, Ref, computed, onUpdated } from "vue";
+import {
+  ref,
+  onMounted,
+  defineComponent,
+  Ref,
+  computed,
+  onUpdated,
+  onBeforeUnmount,
+} from "vue";
 import api, { isNative } from "@/ipc/api";
 import { useStore } from "@/store";
 import { CommentBehavior } from "@/store/record";
@@ -168,6 +184,7 @@ import { Icon } from "@/assets/icons";
 import ButtonIcon from "@/components/primitive/ButtonIcon.vue";
 import PlayerSelector from "@/components/dialog/PlayerSelector.vue";
 import { PlayerSetting } from "@/settings/player";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "GameDialog",
@@ -204,12 +221,17 @@ export default defineComponent({
         blackPlayerURI.value = gameSetting.value.black.uri;
         whitePlayerURI.value = gameSetting.value.white.uri;
         showModalDialog(dialog.value);
+        installHotKey(dialog.value);
       } catch (e) {
         store.pushError(e);
         store.closeModalDialog();
       } finally {
         store.releaseBussyState();
       }
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     let defaultValueApplied = false;

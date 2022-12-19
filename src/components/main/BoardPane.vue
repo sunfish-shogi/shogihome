@@ -21,7 +21,7 @@
       @edit="onEdit"
     >
       <template #right-control>
-        <div class="control top">
+        <div ref="rightControl" class="control top">
           <button
             v-if="controlStates.game"
             class="control-item"
@@ -35,7 +35,7 @@
             class="control-item"
             @click="onStop"
           >
-            <ButtonIcon class="icon" :icon="Icon.STOP" />
+            <ButtonIcon class="icon" :icon="Icon.STOP" data-hotkey="Escape" />
             対局中断
           </button>
           <button v-if="controlStates.win" class="control-item" @click="onWin">
@@ -55,12 +55,17 @@
             class="control-item"
             @click="onResearch"
           >
-            <ButtonIcon class="icon" :icon="Icon.RESEARCH" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.RESEARCH"
+              data-hotkey="Control+r"
+            />
             検討
           </button>
           <button
             v-if="controlStates.endResearch"
             class="control-item"
+            data-hotkey="Escape"
             @click="onEndResearch"
           >
             <ButtonIcon class="icon" :icon="Icon.END" />
@@ -71,12 +76,17 @@
             class="control-item"
             @click="onAnalysis"
           >
-            <ButtonIcon class="icon" :icon="Icon.ANALYSIS" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.ANALYSIS"
+              data-hotkey="Control+a"
+            />
             解析
           </button>
           <button
             v-if="controlStates.endAnalysis"
             class="control-item"
+            data-hotkey="Escape"
             @click="onEndAnalysis"
           >
             <ButtonIcon class="icon" :icon="Icon.STOP" />
@@ -116,9 +126,13 @@
         </div>
       </template>
       <template #left-control>
-        <div class="control bottom">
+        <div ref="leftControl" class="control bottom">
           <button class="control-item" @click="onOpenAppSettings">
-            <ButtonIcon class="icon" :icon="Icon.SETTINGS" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.SETTINGS"
+              data-hotkey="Control+,"
+            />
             アプリ設定
           </button>
           <button
@@ -126,11 +140,19 @@
             :disabled="!controlStates.engineSettings"
             @click="onOpenEngineSettings"
           >
-            <ButtonIcon class="icon" :icon="Icon.ENGINE_SETTINGS" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.ENGINE_SETTINGS"
+              data-hotkey="Control+."
+            />
             エンジン設定
           </button>
           <button class="control-item" @click="onFlip">
-            <ButtonIcon class="icon" :icon="Icon.FLIP" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.FLIP"
+              data-hotkey="Control+t"
+            />
             盤面反転
           </button>
           <button class="control-item" @click="onFileAction">
@@ -142,7 +164,11 @@
             :disabled="!controlStates.removeCurrentMove"
             @click="onRemoveCurrentMove"
           >
-            <ButtonIcon class="icon" :icon="Icon.DELETE" />
+            <ButtonIcon
+              class="icon"
+              :icon="Icon.DELETE"
+              data-hotkey="Control+d"
+            />
             指し手削除
           </button>
         </div>
@@ -158,7 +184,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, onUpdated, onBeforeUpdate, ref } from "vue";
 import BoardView from "@/components/primitive/BoardView.vue";
 import { Move, PositionChange, RecordMetadataKey } from "@/shogi";
 import { RectSize } from "@/components/primitive/Types";
@@ -171,6 +197,7 @@ import GameMenu from "@/components/menu/GameMenu.vue";
 import FileMenu from "@/components/menu/FileMenu.vue";
 import InitialPositionMenu from "@/components/menu/InitialPositionMenu.vue";
 import { CSAGameState } from "@/store/csa";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "BoardPane",
@@ -190,9 +217,21 @@ export default defineComponent({
   emits: ["resize"],
   setup(_, context) {
     const store = useStore();
+    const rightControl = ref();
+    const leftControl = ref();
     const isGameMenuVisible = ref(false);
     const isFileMenuVisible = ref(false);
     const isInitialPositionMenuVisible = ref(false);
+
+    onUpdated(() => {
+      installHotKey(rightControl.value);
+      installHotKey(leftControl.value);
+    });
+
+    onBeforeUpdate(() => {
+      uninstallHotKey(rightControl.value);
+      uninstallHotKey(leftControl.value);
+    });
 
     const onResize = (size: RectSize) => {
       context.emit("resize", size);
@@ -353,6 +392,8 @@ export default defineComponent({
     });
 
     return {
+      rightControl,
+      leftControl,
       isGameMenuVisible,
       isFileMenuVisible,
       isInitialPositionMenuVisible,

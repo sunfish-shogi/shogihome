@@ -14,7 +14,9 @@
         </div>
       </div>
       <div class="dialog-main-buttons">
-        <button @click="onClose()">閉じる</button>
+        <button autofocus data-hotkey="Escape" @click="onClose()">
+          閉じる
+        </button>
       </div>
     </dialog>
   </div>
@@ -22,10 +24,18 @@
 
 <script lang="ts">
 import { useStore } from "@/store";
-import { computed, defineComponent, onMounted, ref, Ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  Ref,
+} from "vue";
 import { showModalDialog } from "@/helpers/dialog";
 import ButtonIcon from "@/components/primitive/ButtonIcon.vue";
 import { Icon } from "@/assets/icons";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "ErrorMessage",
@@ -38,6 +48,11 @@ export default defineComponent({
 
     onMounted(() => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const errors = computed(() => {

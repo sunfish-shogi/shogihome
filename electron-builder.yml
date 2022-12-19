@@ -1,3 +1,21 @@
+productName: ElectronShogi
+extraMetadata:
+  main: dist/packed/background.js
+extends: null
+files:
+  - dist/assets
+  - dist/board
+  - dist/icon
+  - dist/piece
+  - dist/sound
+  - dist/index.html
+  - dist/packed
+  - "!node_modules/**/*"
+afterPack: scripts/remove-unused-locales.js
 nsis:
   allowElevation: false
   packElevateHelper: false
+mac:
+  electronLanguages:
+    - en
+    - ja

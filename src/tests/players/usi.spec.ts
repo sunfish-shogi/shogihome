@@ -39,7 +39,7 @@ describe("usi", () => {
       await player.startSearch(record1, timeLimitSetting, 0, 0, searchHandler);
       expect(mockAPI.usiGo).toBeCalledWith(100, usi1, timeLimitSetting, 0, 0);
       onUSIBestMove(100, usi1, "2g2f", "8c8d");
-      expect(searchHandler.onMove.mock.calls[0][0].sfen).toBe("2g2f");
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("2g2f");
       await player.startPonder(record2, timeLimitSetting, 0, 0);
       expect(mockAPI.usiGoPonder).toBeCalled();
       onUSIInfo(100, usi3, {
@@ -48,8 +48,8 @@ describe("usi", () => {
       await player.startSearch(record3, timeLimitSetting, 0, 0, searchHandler);
       expect(mockAPI.usiPonderHit).toBeCalledWith(100);
       onUSIBestMove(100, usi3, "2f2e");
-      expect(searchHandler.onMove.mock.calls[1][0].sfen).toBe("2f2e");
-      expect(searchHandler.onMove.mock.calls[1][1].pv[0].sfen).toBe("8d8e");
+      expect(searchHandler.onMove.mock.calls[1][0].usi).toBe("2f2e");
+      expect(searchHandler.onMove.mock.calls[1][1].pv[0].usi).toBe("8d8e");
     } finally {
       await player.close();
     }

@@ -171,7 +171,7 @@ export default defineComponent({
       preview.value = {
         position: ite.position,
         pv: ite.pv || [],
-        infos: [infos.join(" / "), ite.text || ""],
+        infos: [infos.join(" / ")],
       };
     };
 

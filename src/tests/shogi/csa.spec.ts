@@ -153,8 +153,8 @@ T6
     ).toBe("YAGURA");
     expect(record.moves).toHaveLength(4);
     expect(record.moves[0].move).toBe(SpecialMove.START);
-    expect((record.moves[1].move as Move).sfen).toBe("2g2f");
-    expect((record.moves[2].move as Move).sfen).toBe("3c3d");
+    expect((record.moves[1].move as Move).usi).toBe("2g2f");
+    expect((record.moves[2].move as Move).usi).toBe("3c3d");
     expect(record.moves[3].move).toBe(SpecialMove.INTERRUPT);
   });
 

@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "CommonJS",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "outDir": "dist/src",
     "types": [
-      "webpack-env",
       "jest"
     ],
     "paths": {
@@ -36,5 +36,8 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "references": [{
+    "path": "./tsconfig.node.json"
+  }]
 }

@@ -16,7 +16,7 @@ export interface ImmutableHand {
   formatSFEN(color: Color): string;
 }
 
-export default class Hand {
+export class Hand {
   private pieces: Map<PieceType, number>;
 
   constructor() {

@@ -4,24 +4,15 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "electron-debug",
-        "type": "process",
-        "command": "./node_modules/.bin/vue-cli-service",
-        "windows": {
-          "command": "./node_modules/.bin/vue-cli-service.cmd"
-        },
-        "isBackground": true,
-        "args": ["electron:serve", "--debug"],
-        "problemMatcher": {
-          "owner": "custom",
-          "pattern": {
-            "regexp": ""
-          },
-          "background": {
-            "beginsPattern": "Starting development server\\.\\.\\.",
-            "endsPattern": "Not launching electron as debug argument was passed\\."
-          }
-        }
+        "label": "compile",
+        "type": "npm",
+        "script": "compile",
+      },
+      {
+        "label": "electron-compile",
+        "type": "npm",
+        "script": "electron:compile",
+        "dependsOn": ["compile"],
       }
     ]
   }

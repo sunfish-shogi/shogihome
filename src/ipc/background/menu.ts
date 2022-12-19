@@ -225,7 +225,7 @@ const menuTemplate: Array<MenuItemConstructorOptions | MenuItem> = [
   {
     label: "対局",
     submenu: [
-      menuItem("対局", MenuEvent.START_GAME, [AppState.NORMAL]),
+      menuItem("対局", MenuEvent.START_GAME, [AppState.NORMAL], "CmdOrCtrl+G"),
       menuItem("通信対局（CSA）", MenuEvent.START_CSA_GAME, [AppState.NORMAL]),
       menuItem("中断", MenuEvent.STOP_GAME, [AppState.GAME]),
       menuItem("投了", MenuEvent.RESIGN, [AppState.GAME, AppState.CSA_GAME]),
@@ -237,10 +237,20 @@ const menuTemplate: Array<MenuItemConstructorOptions | MenuItem> = [
   {
     label: "検討",
     submenu: [
-      menuItem("検討開始", MenuEvent.START_RESEARCH, [AppState.NORMAL]),
+      menuItem(
+        "検討開始",
+        MenuEvent.START_RESEARCH,
+        [AppState.NORMAL],
+        "CmdOrCtrl+R"
+      ),
       menuItem("検討終了", MenuEvent.STOP_RESEARCH, [AppState.RESEARCH]),
       { type: "separator" },
-      menuItem("解析開始", MenuEvent.START_ANALYSIS, [AppState.NORMAL]),
+      menuItem(
+        "解析開始",
+        MenuEvent.START_ANALYSIS,
+        [AppState.NORMAL],
+        "CmdOrCtrl+A"
+      ),
       menuItem("解析終了", MenuEvent.STOP_ANALYSIS, [AppState.ANALYSIS]),
     ],
   },
@@ -280,10 +290,13 @@ const menuTemplate: Array<MenuItemConstructorOptions | MenuItem> = [
   {
     label: "設定",
     submenu: [
-      menuItem("アプリ設定", MenuEvent.APP_SETTING_DIALOG, null),
-      menuItem("エンジン設定", MenuEvent.USI_ENGINE_SETTING_DIALOG, [
-        AppState.NORMAL,
-      ]),
+      menuItem("アプリ設定", MenuEvent.APP_SETTING_DIALOG, null, "CmdOrCtrl+,"),
+      menuItem(
+        "エンジン設定",
+        MenuEvent.USI_ENGINE_SETTING_DIALOG,
+        [AppState.NORMAL],
+        "CmdOrCtrl+."
+      ),
     ],
   },
   {

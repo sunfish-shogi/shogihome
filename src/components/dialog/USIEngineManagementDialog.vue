@@ -20,10 +20,17 @@
       </div>
       <button class="dialog-wide-button" @click="add()">追加</button>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="saveAndClose()">
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="saveAndClose()"
+        >
           保存して閉じる
         </button>
-        <button class="dialog-button" @click="cancel()">キャンセル</button>
+        <button class="dialog-button" data-hotkey="Escape" @click="cancel()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -43,9 +50,17 @@ import {
   USIEngineSettings,
 } from "@/settings/usi";
 import { useStore } from "@/store";
-import { ref, onMounted, defineComponent, Ref, computed } from "vue";
+import {
+  ref,
+  onMounted,
+  defineComponent,
+  Ref,
+  computed,
+  onBeforeUnmount,
+} from "vue";
 import USIEngineOptionDialog from "@/components/dialog/USIEngineOptionDialog.vue";
 import { showModalDialog } from "@/helpers/dialog";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "USIEngineManagementDialog",
@@ -62,6 +77,7 @@ export default defineComponent({
 
     onMounted(async () => {
       showModalDialog(dialog.value);
+      installHotKey(dialog.value);
       try {
         setting.value = await api.loadUSIEngineSetting();
       } catch (e) {
@@ -70,6 +86,10 @@ export default defineComponent({
       } finally {
         store.releaseBussyState();
       }
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     const add = async () => {

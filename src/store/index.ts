@@ -257,12 +257,13 @@ export class Store {
 
   closeModalDialog(): void {
     if (
-      this.appState === AppState.PASTE_DIALOG ||
-      this.appState === AppState.GAME_DIALOG ||
-      this.appState === AppState.CSA_GAME_DIALOG ||
-      this.appState === AppState.RESEARCH_DIALOG ||
-      this.appState === AppState.ANALYSIS_DIALOG ||
-      this.appState === AppState.USI_ENGINE_SETTING_DIALOG
+      (this.appState === AppState.PASTE_DIALOG ||
+        this.appState === AppState.GAME_DIALOG ||
+        this.appState === AppState.CSA_GAME_DIALOG ||
+        this.appState === AppState.RESEARCH_DIALOG ||
+        this.appState === AppState.ANALYSIS_DIALOG ||
+        this.appState === AppState.USI_ENGINE_SETTING_DIALOG) &&
+      !this.isBussy
     ) {
       this._appState = AppState.NORMAL;
     }
@@ -354,7 +355,7 @@ export class Store {
   }
 
   startGame(setting: GameSetting): void {
-    if (this.appState !== AppState.GAME_DIALOG) {
+    if (this.appState !== AppState.GAME_DIALOG || this.isBussy) {
       return;
     }
     this.retainBussyState();
@@ -381,7 +382,7 @@ export class Store {
   }
 
   loginCSAGame(setting: CSAGameSetting, opt: { saveHistory: boolean }): void {
-    if (this.appState !== AppState.CSA_GAME_DIALOG) {
+    if (this.appState !== AppState.CSA_GAME_DIALOG || this.isBussy) {
       return;
     }
     this.retainBussyState();
@@ -589,7 +590,7 @@ export class Store {
   }
 
   startResearch(researchSetting: ResearchSetting): void {
-    if (this.appState !== AppState.RESEARCH_DIALOG) {
+    if (this.appState !== AppState.RESEARCH_DIALOG || this.isBussy) {
       return;
     }
     this.retainBussyState();
@@ -638,7 +639,7 @@ export class Store {
   }
 
   startAnalysis(analysisSetting: AnalysisSetting): void {
-    if (this.appState !== AppState.ANALYSIS_DIALOG) {
+    if (this.appState !== AppState.ANALYSIS_DIALOG || this.isBussy) {
       return;
     }
     this.retainBussyState();
@@ -829,7 +830,7 @@ export class Store {
   }
 
   openRecord(path?: string): void {
-    if (this.appState !== AppState.NORMAL) {
+    if (this.appState !== AppState.NORMAL || this.isBussy) {
       return;
     }
     this.retainBussyState();
@@ -858,7 +859,7 @@ export class Store {
   }
 
   saveRecord(options?: { overwrite: boolean }): void {
-    if (this.appState !== AppState.NORMAL) {
+    if (this.appState !== AppState.NORMAL || this.isBussy) {
       return;
     }
     this.retainBussyState();

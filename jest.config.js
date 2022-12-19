@@ -1,7 +1,23 @@
 module.exports = {
-  preset: "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
+  roots: [
+    "<rootDir>/src"
+  ],
+  testMatch: [
+    "**/?(*.)+(spec|test).+(ts|tsx|js)"
+  ],
   transform: {
-    "^.+\\.vue$": "@vue/vue3-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    "^.+\\.(vue)$": "@vue/vue3-jest"
+  },
+  moduleFileExtensions: [ "js", "ts", "vue" ],
+  moduleNameMapper: {
+    "@/(.*)": "<rootDir>/src/$1",
+  },
+  testEnvironment: "jsdom",
+  testEnvironmentOptions: {
+    customExportConditions: ["node", "node-addons"],
   },
   setupFilesAfterEnv: ["./scripts/jest.setup.js"],
+  coverageDirectory: "coverage",
+  coverageProvider: "v8",
 };

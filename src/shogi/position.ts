@@ -1,4 +1,4 @@
-import Board, { ImmutableBoard, InitialPositionType } from "./board";
+import { Board, ImmutableBoard, InitialPositionType } from "./board";
 import {
   Color,
   reverseColor,
@@ -6,9 +6,9 @@ import {
   parseSFENColor,
   isValidSFENColor,
 } from "./color";
-import Move, { parseSFENMove } from "./move";
-import Square from "./square";
-import Hand, { ImmutableHand } from "./hand";
+import { Move, parseUSIMove } from "./move";
+import { Square } from "./square";
+import { Hand, ImmutableHand } from "./hand";
 import { Piece, PieceType } from "./piece";
 import {
   Direction,
@@ -85,7 +85,7 @@ export type DoMoveOption = {
   ignoreValidation?: boolean;
 };
 
-export default class Position {
+export class Position {
   private _board = new Board();
   private _color = Color.BLACK;
   private _blackHand = new Hand();
@@ -182,7 +182,7 @@ export default class Position {
   }
 
   createMoveBySFEN(sfen: string): Move | null {
-    const m = parseSFENMove(sfen);
+    const m = parseUSIMove(sfen);
     if (!m) {
       return null;
     }

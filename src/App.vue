@@ -31,7 +31,6 @@ import InfoMessage from "@/components/dialog/InfoMessage.vue";
 import ErrorMessage from "@/components/dialog/ErrorMessage.vue";
 import { useStore } from "@/store";
 import { AppState } from "@/store/state";
-import { handleKeyDownEvent } from "@/helpers/key";
 import AnalysisDialog from "@/components/dialog/AnalysisDialog.vue";
 import CSAGameReadyDialog from "@/components/dialog/CSAGameReadyDialog.vue";
 import { CSAGameState } from "@/store/csa";
@@ -96,22 +95,6 @@ export default defineComponent({
           store.openRecord(path);
         }
         event.preventDefault();
-      });
-      handleKeyDownEvent({
-        onArrowUp(): void {
-          const moveNumber = store.record.current.number;
-          store.changeMoveNumber(moveNumber - 1);
-        },
-        onArrowDown(): void {
-          const moveNumber = store.record.current.number;
-          store.changeMoveNumber(moveNumber + 1);
-        },
-        onArrowLeft(): void {
-          store.changeMoveNumber(0);
-        },
-        onArrowRight(): void {
-          store.changeMoveNumber(Number.MAX_SAFE_INTEGER);
-        },
       });
     });
 

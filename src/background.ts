@@ -2,8 +2,6 @@
 
 import path from "path";
 import { app, protocol, BrowserWindow } from "electron";
-import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import { getAppState, sendError, setup } from "@/ipc/background";
 import {
   loadWindowSetting,
@@ -17,7 +15,8 @@ import { AppState } from "./store/state";
 getAppLogger().info("start main process");
 getAppLogger().info("process argv: %s", process.argv.join(" "));
 
-const isDevelopment = process.env.NODE_ENV !== "production";
+const isDevelopment = process.env.npm_lifecycle_event === "electron:serve";
+const isPreview = process.env.npm_lifecycle_event === "electron:preview";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -29,13 +28,16 @@ async function createWindow() {
 
   getAppLogger().info("create BrowserWindow");
 
+  const preloadPath =
+    isDevelopment || isPreview ? "../packed/preload.js" : "./preload.js";
+
   // Create the browser window.
   const win = new BrowserWindow({
     width: setting.width,
     height: setting.height,
     fullscreen: setting.fullscreen,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(__dirname, preloadPath),
     },
   });
   if (setting.maximized) {
@@ -56,16 +58,14 @@ async function createWindow() {
 
   setup(win);
 
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
+  if (isDevelopment) {
     getAppLogger().info("load dev server URL");
-    // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+    await win.loadURL("http://localhost:5173"); // Open the DevTools.
     if (!process.env.IS_TEST) win.webContents.openDevTools();
   } else {
     getAppLogger().info("load app URL");
-    createProtocol("app");
     // Load the index.html when not in development
-    win.loadURL("app://./index.html");
+    win.loadFile(path.join(__dirname, "../index.html"));
   }
 }
 
@@ -107,7 +107,8 @@ app.on("ready", async () => {
     getAppLogger().info("install Vue3 Dev Tools");
     // Install Vue Devtools
     try {
-      await installExtension(VUEJS3_DEVTOOLS);
+      const installer = await import("electron-devtools-installer");
+      await installer.default(installer.VUEJS3_DEVTOOLS);
     } catch (e: unknown) {
       getAppLogger().error(
         "Vue Devtools failed to install: %s",

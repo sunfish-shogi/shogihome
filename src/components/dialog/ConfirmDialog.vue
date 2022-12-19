@@ -6,8 +6,17 @@
         <div class="message">{{ message }}</div>
       </div>
       <div class="dialog-main-buttons">
-        <button class="dialog-button" @click="onOk()">OK</button>
-        <button class="dialog-button" @click="onClose()">キャンセル</button>
+        <button
+          data-hotkey="Enter"
+          autofocus
+          class="dialog-button"
+          @click="onOk()"
+        >
+          OK
+        </button>
+        <button class="dialog-button" data-hotkey="Escape" @click="onClose()">
+          キャンセル
+        </button>
       </div>
     </dialog>
   </div>
@@ -15,10 +24,18 @@
 
 <script lang="ts">
 import { showModalDialog } from "@/helpers/dialog";
-import { computed, defineComponent, onMounted, ref, Ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  Ref,
+} from "vue";
 import ButtonIcon from "@/components/primitive/ButtonIcon.vue";
 import { useStore } from "@/store";
 import { Icon } from "@/assets/icons";
+import { installHotKey, uninstallHotKey } from "@/helpers/hotkey";
 
 export default defineComponent({
   name: "InfoMessage",
@@ -40,6 +57,11 @@ export default defineComponent({
 
     onMounted(() => {
       showModalDialog(dialog.value, onClose);
+      installHotKey(dialog.value);
+    });
+
+    onBeforeUnmount(() => {
+      uninstallHotKey(dialog.value);
     });
 
     return {
