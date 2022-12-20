@@ -418,6 +418,14 @@ export class Position {
     return ret;
   }
 
+  get sfenWithoutPly(): string {
+    return this.getSFENWithoutPly();
+  }
+
+  getSFENWithoutPly(): string {
+    return `${this._board.sfen} ${colorToSFEN(this.color)} ${Hand.formatSFEN(this._blackHand, this._whiteHand)}`;
+  }
+
   resetBySFEN(sfen: string): boolean {
     if (!Position.isValidSFEN(sfen)) {
       return false;
