@@ -22,6 +22,7 @@
   --turn-label-border-color: midnightblue;
   --control-button-color: white;
   --control-button-bg-color: #4b704b;
+  --control-button-border-color: #000000;
   --disabled-control-button-bg-color: dimgray;
   --hovered-control-button-bg-color: #527a52;
   --close-button-bg-color: #ba151d;
@@ -67,6 +68,7 @@
   --turn-label-border-color: midnightblue;
   --control-button-color: white;
   --control-button-bg-color: #d06868;
+  --control-button-border-color: #000000;
   --disabled-control-button-bg-color: dimgray;
   --hovered-control-button-bg-color: #e18f8f;
   --close-button-bg-color: #c91720;
@@ -112,6 +114,7 @@
   --turn-label-border-color: lightyellow;
   --control-button-color: white;
   --control-button-bg-color: #4d6868;
+  --control-button-border-color: #3f5454;
   --disabled-control-button-bg-color: #5c5c5c;
   --hovered-control-button-bg-color: #6c8d8d;
   --close-button-bg-color: #aa141b;

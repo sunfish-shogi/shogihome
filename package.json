@@ -16,8 +16,6 @@
     "electron:serve": "npm run electron:compile && concurrently --kill-others vite \"electron .\" \"tsc --sourceMap -w\" \"tsc-alias -w\"",
     "electron:build": "npm run compile && npm run electron:compile && electron-builder",
     "electron:preview": "npm run compile && npm run electron:compile && electron .",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
     "report:license": "node scripts/report-license.mjs"
   },
   "main": "dist/src/background.js",
