@@ -448,7 +448,10 @@ describe("shogi/position", () => {
   it("sfen", () => {
     const sfen =
       "l2R2s1+P/4gg1k1/p1+P2lPp1/4p1p+b1/1p3G3/3pP1nS1/PP3KSP1/R8/L4G2+b b NL4Ps2np 1";
+    const sfenWithoutPly =
+      "l2R2s1+P/4gg1k1/p1+P2lPp1/4p1p+b1/1p3G3/3pP1nS1/PP3KSP1/R8/L4G2+b b NL4Ps2np";
     const position = Position.newBySFEN(sfen);
+    const positionFromWithoutPly = Position.newBySFENWithoutPly(sfenWithoutPly);
     expect(position).toBeInstanceOf(Position);
     expect(position?.color).toBe(Color.BLACK);
     expect(position?.board.at(new Square(4, 7))).toStrictEqual(
@@ -469,5 +472,7 @@ describe("shogi/position", () => {
     expect(position?.whiteHand.count(PieceType.KNIGHT)).toBe(2);
     expect(position?.whiteHand.count(PieceType.SILVER)).toBe(1);
     expect(position?.sfen).toBe(sfen);
+    expect(positionFromWithoutPly?.sfen).toBe(sfen);
+    expect(positionFromWithoutPly?.sfenWithoutPly).toBe(sfenWithoutPly);
   });
 });

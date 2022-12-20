@@ -407,25 +407,42 @@ export class Position {
     return true;
   }
 
+  /**
+   * 局面の SFEN を返す。
+   */
   get sfen(): string {
     return this.getSFEN(1);
   }
 
+  /**
+   * 局面の SFEN を返す。
+   */
   getSFEN(nextPly: number): string {
-    let ret = `${this._board.sfen} ${colorToSFEN(this.color)} `;
-    ret += Hand.formatSFEN(this._blackHand, this._whiteHand);
+    let ret = this.sfenWithoutPly;
     ret += " " + nextPly;
     return ret;
   }
 
+  /**
+   * 局面の手数なしの SFEN を返す。
+   */
   get sfenWithoutPly(): string {
     return this.getSFENWithoutPly();
   }
 
+  /**
+   * 局面の手数なしの SFEN を返す。
+   */
   getSFENWithoutPly(): string {
-    return `${this._board.sfen} ${colorToSFEN(this.color)} ${Hand.formatSFEN(this._blackHand, this._whiteHand)}`;
+    let ret = `${this._board.sfen} ${colorToSFEN(this.color)} `;
+    ret += Hand.formatSFEN(this._blackHand, this._whiteHand);
+    return ret;
   }
 
+  /**
+   * SFEN で局面をリセットする。
+   * 先頭に文字列 `sfen` が入っていても良い。
+   */
   resetBySFEN(sfen: string): boolean {
     if (!Position.isValidSFEN(sfen)) {
       return false;
@@ -443,7 +460,8 @@ export class Position {
   }
 
   /**
-   * SFEN の手数なしの文字列から局面を初期化する。
+   * 手数なしの SFEN で局面をリセットする。
+   * 先頭に文字列 `sfen` が入っていても良い。
    */
   resetBySFENWithoutPly(sfen: string): boolean {
     if (!Position.isValidSFEN(`${sfen} 1`)) {
@@ -488,11 +506,17 @@ export class Position {
     return true;
   }
 
+  /**
+   * SFEN から局面を作る。失敗した場合は `null` を返す。
+   */
   static newBySFEN(sfen: string): Position | null {
     const position = new Position();
     return position.resetBySFEN(sfen) ? position : null;
   }
 
+  /**
+   * 手数なしの SFEN から局面を作る。失敗した場合は `null` を返す。
+   */
   static newBySFENWithoutPly(sfen: string): Position | null {
     const position = new Position();
     return position.resetBySFENWithoutPly(sfen) ? position : null;
