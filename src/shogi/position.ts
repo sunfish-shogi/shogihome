@@ -442,6 +442,25 @@ export class Position {
     return true;
   }
 
+  /**
+   * SFEN の手数なしの文字列から局面を初期化する。
+   */
+  resetBySFENWithoutPly(sfen: string): boolean {
+    if (!Position.isValidSFEN(`${sfen} 1`)) {
+      return false;
+    }
+    const sections = sfen.split(" ");
+    if (sections[0] === "sfen") {
+      sections.shift();
+    }
+    this._board.resetBySFEN(sections[0]);
+    this._color = parseSFENColor(sections[1]);
+    const hands = Hand.parseSFEN(sections[2]) as { black: Hand; white: Hand };
+    this._blackHand = hands.black;
+    this._whiteHand = hands.white;
+    return true;
+  }
+
   setColor(color: Color): void {
     this._color = color;
   }
@@ -472,6 +491,11 @@ export class Position {
   static newBySFEN(sfen: string): Position | null {
     const position = new Position();
     return position.resetBySFEN(sfen) ? position : null;
+  }
+
+  static newBySFENWithoutPly(sfen: string): Position | null {
+    const position = new Position();
+    return position.resetBySFENWithoutPly(sfen) ? position : null;
   }
 
   private isMovable(from: Square, to: Square): boolean {
