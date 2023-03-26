@@ -139,12 +139,6 @@ export default defineComponent({
 </script>
 
 <style>
-@import "./css/font.css";
-@import "./css/color.css";
-@import "./css/basic.css";
-@import "./css/control.css";
-@import "./css/dialog.css";
-
 body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

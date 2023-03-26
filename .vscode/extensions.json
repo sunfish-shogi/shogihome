@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "vue.volar",
-    "ms-vscode.vscode-typescript-next"
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss"
   ]
 }

@@ -1,3 +1,9 @@
+import "./css/tailwind.css";
+import "./css/font.css";
+import "./css/color.css";
+import "./css/basic.css";
+import "./css/control.css";
+import "./css/dialog.css";
 import { createApp } from "vue";
 import App from "@/renderer/App.vue";
 import api, { appInfo } from "@/renderer/ipc/api";
