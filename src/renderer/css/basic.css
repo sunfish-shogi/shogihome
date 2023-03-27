@@ -30,6 +30,7 @@
 }
 
 .icon {
+  display: inline-block;
   height: 100%;
   vertical-align: top;
 }
