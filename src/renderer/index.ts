@@ -1,5 +1,4 @@
 import "./css/tailwind.css";
-import "./css/font.css";
 import "./css/color.css";
 import "./css/basic.css";
 import "./css/control.css";
