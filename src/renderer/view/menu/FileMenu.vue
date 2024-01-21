@@ -3,7 +3,7 @@
     <dialog ref="dialog" class="menu">
       <div class="groups">
         <div class="group">
-          <button class="close" @click="onClose">
+          <button data-hotkey="Escape" class="close" @click="onClose">
             <Icon :icon="IconType.CLOSE" />
             <div class="label">{{ t.back }}</div>
           </button>
@@ -82,13 +82,14 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useStore } from "@/renderer/store";
 import { AppState } from "@/common/control/state.js";
 import api from "@/renderer/ipc/api";
 import { useAppSetting } from "@/renderer/store/setting";
+import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 
 const emit = defineEmits<{
   close: [];
@@ -102,6 +103,10 @@ const onClose = () => {
 };
 onMounted(() => {
   showModalDialog(dialog.value, onClose);
+  installHotKeyForDialog(dialog.value);
+});
+onBeforeUnmount(() => {
+  uninstallHotKeyForDialog(dialog.value);
 });
 const onNewFile = () => {
   store.resetRecord();

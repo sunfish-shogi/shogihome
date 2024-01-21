@@ -3,7 +3,7 @@
     <dialog ref="dialog" class="menu">
       <div class="groups">
         <div class="group">
-          <button class="close" @click="onClose">
+          <button data-hotkey="Escape" class="close" @click="onClose">
             <Icon :icon="IconType.CLOSE" />
             <div class="label">{{ t.back }}</div>
           </button>
@@ -26,10 +26,11 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useStore } from "@/renderer/store";
+import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 
 const emit = defineEmits<{
   close: [];
@@ -42,6 +43,10 @@ const onClose = () => {
 };
 onMounted(() => {
   showModalDialog(dialog.value, onClose);
+  installHotKeyForDialog(dialog.value);
+});
+onBeforeUnmount(() => {
+  uninstallHotKeyForDialog(dialog.value);
 });
 const onLocalGame = () => {
   store.showGameDialog();
