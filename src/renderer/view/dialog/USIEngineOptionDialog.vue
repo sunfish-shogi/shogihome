@@ -260,7 +260,7 @@ let defaultValueLoaded = false;
 let defaultValueApplied = false;
 store.retainBussyState();
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, cancel);
   installHotKeyForDialog(dialog.value);
   try {
     const timeoutSeconds = appSetting.engineTimeoutSeconds;

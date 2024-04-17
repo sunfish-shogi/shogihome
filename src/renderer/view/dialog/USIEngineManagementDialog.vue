@@ -106,7 +106,7 @@ let scrollTo = "";
 store.retainBussyState();
 
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, cancel);
   installHotKeyForDialog(dialog.value);
   try {
     setting.value = await api.loadUSIEngineSetting();

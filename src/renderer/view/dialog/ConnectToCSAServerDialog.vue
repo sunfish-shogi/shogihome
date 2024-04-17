@@ -84,7 +84,7 @@ const id = ref();
 const password = ref();
 
 onMounted(() => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onCancel);
   installHotKeyForDialog(dialog.value);
 });
 

@@ -892,7 +892,7 @@ const pieceStandImageFileURL = ref(appSetting.pieceStandImageFileURL);
 const versionStatus = ref({} as VersionStatus);
 
 onMounted(() => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, cancel);
   installHotKeyForDialog(dialog.value);
   api.getVersionStatus().then((status) => {
     versionStatus.value = status;

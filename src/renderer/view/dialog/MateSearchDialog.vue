@@ -50,7 +50,7 @@ const engineURI = ref("");
 store.retainBussyState();
 
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onCancel);
   installHotKeyForDialog(dialog.value);
   try {
     const mateSearchSetting = await api.loadMateSearchSetting();

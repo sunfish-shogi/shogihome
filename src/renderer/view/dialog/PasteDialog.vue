@@ -41,7 +41,7 @@ const textarea = ref();
 store.retainBussyState();
 onMounted(async () => {
   try {
-    showModalDialog(dialog.value);
+    showModalDialog(dialog.value, onCancel);
     installHotKeyForDialog(dialog.value);
     if (isNative()) {
       textarea.value.value = await navigator.clipboard.readText();

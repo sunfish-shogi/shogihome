@@ -55,7 +55,7 @@ const engineURI = ref("");
 store.retainBussyState();
 
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onCancel);
   installHotKeyForDialog(dialog.value);
   try {
     engineSettings.value = await api.loadUSIEngineSetting();
