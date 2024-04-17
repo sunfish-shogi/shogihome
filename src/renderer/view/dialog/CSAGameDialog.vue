@@ -322,7 +322,7 @@ onMounted(async () => {
     isEncryptionAvailable.value = await api.isEncryptionAvailable();
     history.value = await api.loadCSAGameSettingHistory();
     engineSettings.value = await api.loadUSIEngineSetting();
-    showModalDialog(dialog.value);
+    showModalDialog(dialog.value, onCancel);
     installHotKeyForDialog(dialog.value);
     defaultValueLoaded = true;
   } catch (e) {

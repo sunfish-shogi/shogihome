@@ -65,7 +65,7 @@ const pieceTypes = [
 const counts = countExistingPieces(store.record.position);
 
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, cancel);
   installHotKeyForDialog(dialog.value);
 });
 

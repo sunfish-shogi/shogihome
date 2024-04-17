@@ -23,7 +23,7 @@
               <button class="control-item" data-hotkey="Mod+t" @click="doFlip">
                 <Icon :icon="IconType.FLIP" />
               </button>
-              <button class="control-item" autofocus data-hotkey="Escape" @click="close">
+              <button class="control-item" autofocus data-hotkey="Escape" @click="onClose">
                 <Icon :icon="IconType.CLOSE" />
               </button>
             </div>
@@ -165,7 +165,7 @@ onMounted(async () => {
   updateSize();
   updateRecord();
   window.addEventListener("resize", updateSize);
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
 });
 
@@ -178,7 +178,7 @@ watch([() => props.position, () => props.pv], () => {
   updateRecord();
 });
 
-const close = () => {
+const onClose = () => {
   emit("close");
 };
 

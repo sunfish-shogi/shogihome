@@ -34,7 +34,7 @@
       </div>
       <div class="main-buttons">
         <button @click="clear">{{ t.clearHistory }}</button>
-        <button data-hotkey="Escape" @click="close">{{ t.close }}</button>
+        <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
       </div>
     </dialog>
   </div>
@@ -62,7 +62,7 @@ onMounted(async () => {
   try {
     const history = await api.loadRecordFileHistory();
     entries.value = history.entries.reverse();
-    showModalDialog(dialog.value);
+    showModalDialog(dialog.value, onClose);
     installHotKeyForDialog(dialog.value);
   } catch (e) {
     store.pushError(e);
@@ -99,7 +99,7 @@ const clear = () => {
   });
 };
 
-const close = () => {
+const onClose = () => {
   store.closeModalDialog();
 };
 </script>

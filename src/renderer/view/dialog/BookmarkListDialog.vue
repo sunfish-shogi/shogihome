@@ -37,7 +37,7 @@ const isJumpDisabled = computed(
 );
 
 onMounted(() => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
 });
 

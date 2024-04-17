@@ -153,7 +153,7 @@
           <Icon :icon="IconType.SAVE" />
           <span>JPEG</span>
         </button>
-        <button autofocus data-hotkey="Escape" @click="close">
+        <button autofocus data-hotkey="Escape" @click="onClose">
           <Icon :icon="IconType.CLOSE" />
           <span>{{ t.close }}</span>
         </button>
@@ -224,7 +224,7 @@ const updateSize = () => {
 };
 
 onMounted(() => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
   window.addEventListener("resize", updateSize);
 });
@@ -371,7 +371,7 @@ const saveAsJPEG = () => {
   });
 };
 
-const close = () => {
+const onClose = () => {
   store.closeModalDialog();
 };
 </script>
