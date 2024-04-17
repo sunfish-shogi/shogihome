@@ -283,7 +283,7 @@ onMounted(async () => {
     engineSettings.value = await api.loadUSIEngineSetting();
     blackPlayerURI.value = gameSetting.value.black.uri;
     whitePlayerURI.value = gameSetting.value.white.uri;
-    showModalDialog(dialog.value);
+    showModalDialog(dialog.value, onCancel);
     installHotKeyForDialog(dialog.value);
     defaultValueLoaded = true;
   } catch (e) {

@@ -43,7 +43,7 @@ const store = useStore();
 const dialog = ref();
 
 onMounted(() => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
 });
 

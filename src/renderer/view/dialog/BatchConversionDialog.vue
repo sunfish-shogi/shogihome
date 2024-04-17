@@ -208,7 +208,7 @@
         </div>
       </div>
       <div class="main-buttons">
-        <button data-hotkey="Escape" @click="close">{{ t.close }}</button>
+        <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
       </div>
     </dialog>
   </div>
@@ -260,7 +260,7 @@ store.retainBussyState();
 onMounted(async () => {
   try {
     const batchConversionSetting = await api.loadBatchConversionSetting();
-    showModalDialog(dialog.value);
+    showModalDialog(dialog.value, onClose);
     installHotKeyForDialog(dialog.value);
     source.value.value = batchConversionSetting.source;
     sourceFormats.value = {
@@ -400,7 +400,7 @@ const openLogFile = () => {
   api.openLogFile(LogType.APP);
 };
 
-const close = () => {
+const onClose = () => {
   store.closeModalDialog();
 };
 </script>

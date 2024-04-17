@@ -104,7 +104,7 @@ const maxSeconds = ref();
 store.retainBussyState();
 
 onMounted(async () => {
-  showModalDialog(dialog.value);
+  showModalDialog(dialog.value, onCancel);
   installHotKeyForDialog(dialog.value);
   try {
     researchSetting.value = await api.loadResearchSetting();
