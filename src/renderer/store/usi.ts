@@ -64,6 +64,15 @@ export class USIPlayerMonitor {
     const multiPVSet = new Set();
     const moveSet = new Set();
     for (const iteration of this.iterations) {
+      // やねうら王のワークアラウンド
+      // 定跡にヒットした場合に、定跡のPVよりも後に不要な情報が送られてくるのでそれを無視する。
+      if (
+        (iteration.depth === 1 || iteration.depth === 0) &&
+        iteration.selectiveDepth === 0 &&
+        iteration.score === 0
+      ) {
+        continue;
+      }
       const move = iteration.pv ? iteration.pv[0] : undefined;
       if (!multiPVSet.has(iteration.multiPV) && !moveSet.has(move)) {
         result.push(iteration);
