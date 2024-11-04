@@ -23,8 +23,9 @@ export enum RecordFileFormat {
 }
 
 export function detectRecordFileFormatByPath(path: string): RecordFileFormat | undefined {
+  const lowerCase = path.toLowerCase();
   for (const ext of Object.values(RecordFileFormat)) {
-    if (path.toLowerCase().endsWith(ext)) {
+    if (lowerCase.endsWith(ext)) {
       return ext;
     }
   }

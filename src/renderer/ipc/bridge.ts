@@ -1,5 +1,6 @@
 import { CommandType } from "@/common/advanced/command";
 import { PromptTarget } from "@/common/advanced/prompt";
+import { BookLoadingMode } from "@/common/book";
 import { MenuEvent } from "@/common/control/menu";
 import { AppState, ResearchState } from "@/common/control/state";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
@@ -10,7 +11,7 @@ export interface Bridge {
   // Core
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void;
   onClosable(): void;
-  onClose(callback: () => void): void;
+  onClose(callback: (confirmations: string[]) => void): void;
   onSendError(callback: (e: Error) => void): void;
   onMenuEvent(callback: (event: MenuEvent) => void): void;
 
@@ -31,6 +32,8 @@ export interface Bridge {
   saveMateSearchSettings(settings: string): Promise<void>;
   loadUSIEngines(): Promise<string>;
   saveUSIEngines(egneins: string): Promise<void>;
+  loadBookImportSettings(): Promise<string>;
+  saveBookImportSettings(json: string): Promise<void>;
   onUpdateAppSettings(callback: (json: string) => void): void;
 
   // Record File
@@ -48,6 +51,18 @@ export interface Bridge {
   loadRemoteRecordFile(url: string): Promise<string>;
   convertRecordFiles(json: string): Promise<string>;
   onOpenRecord(callback: (path: string) => void): void;
+
+  // Book
+  showOpenBookDialog(): Promise<string>;
+  showSaveBookDialog(): Promise<string>;
+  openBook(path: string, json: string): Promise<BookLoadingMode>;
+  saveBook(path: string): Promise<void>;
+  clearBook(): Promise<void>;
+  searchBookMoves(sfen: string): Promise<string>;
+  updateBookMove(sfen: string, move: string): Promise<void>;
+  removeBookMove(sfen: string, usi: string): Promise<void>;
+  updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void>;
+  importBookMoves(json: string): Promise<string>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;

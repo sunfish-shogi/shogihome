@@ -7,6 +7,7 @@ import {
   loadAnalysisSettings,
   loadAppSettings,
   loadBatchConversionSettings,
+  loadBookImportSettings,
   loadCSAGameSettingsHistory,
   loadGameSettings,
   loadLayoutProfileList,
@@ -16,6 +17,7 @@ import {
   saveAnalysisSettings,
   saveAppSettings,
   saveBatchConversionSettings,
+  saveBookImportSettings,
   saveCSAGameSettingsHistory,
   saveGameSettings,
   saveLayoutProfileList,
@@ -93,6 +95,18 @@ import { Command, CommandType } from "@/common/advanced/command";
 import { fetch } from "@/background/helpers/http";
 import * as uri from "@/common/uri";
 import { openPath } from "@/background/helpers/electron";
+import {
+  clearBook,
+  importBookMoves,
+  isBookUnsaved,
+  openBook,
+  removeBookMove,
+  saveBook,
+  searchBookMoves,
+  updateBookMove,
+  updateBookMoveOrder,
+} from "@/background/book";
+import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
 
 const isWindows = process.platform === "win32";
 
@@ -164,7 +178,7 @@ ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
 ipcMain.handle(Background.SHOW_OPEN_RECORD_DIALOG, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
-  getAppLogger().debug(`show open-record dialog`);
+  getAppLogger().debug("show open-record dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastRecordFilePath, [
     {
       name: t.recordFile,
@@ -489,6 +503,93 @@ ipcMain.handle(Background.LOAD_RECORD_FILE_BACKUP, async (event, name: string): 
   return await loadBackup(name);
 });
 
+ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  const appSettings = await loadAppSettings();
+  getAppLogger().debug("show open-book dialog");
+  const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
+    { name: "やねうら王定跡ファイル", extensions: ["db"] },
+  ]);
+  if (ret) {
+    updateAppSettings({ lastBookFilePath: ret });
+  }
+  return ret;
+});
+
+ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  const appSettings = await loadAppSettings();
+  getAppLogger().debug("show save-book dialog");
+  const ret = await showSaveDialog(appSettings.lastBookFilePath, [
+    { name: "やねうら王定跡ファイル", extensions: ["db"] },
+  ]);
+  if (ret) {
+    updateAppSettings({ lastBookFilePath: ret });
+  }
+  return ret;
+});
+
+ipcMain.handle(Background.CLEAR_BOOK, (event) => {
+  validateIPCSender(event.senderFrame);
+  clearBook();
+});
+
+ipcMain.handle(
+  Background.OPEN_BOOK,
+  async (event, path: string, json: string): Promise<BookLoadingMode> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`open book: ${path}`);
+    const options = JSON.parse(json) as BookLoadingOptions;
+    return await openBook(path, options);
+  },
+);
+
+ipcMain.handle(Background.SAVE_BOOK, async (event, path: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug(`save book: ${path}`);
+  await saveBook(path);
+});
+
+ipcMain.handle(Background.SEARCH_BOOK_MOVES, async (event, sfen: string): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await searchBookMoves(sfen));
+});
+
+ipcMain.handle(Background.UPDATE_BOOK_MOVE, (event, sfen: string, json: string): void => {
+  validateIPCSender(event.senderFrame);
+  updateBookMove(sfen, JSON.parse(json) as BookMove);
+});
+
+ipcMain.handle(Background.REMOVE_BOOK_MOVE, (event, sfen: string, usi: string): void => {
+  validateIPCSender(event.senderFrame);
+  removeBookMove(sfen, usi);
+});
+
+ipcMain.handle(
+  Background.UPDATE_BOOK_MOVE_ORDER,
+  (event, sfen: string, usi: string, order: number) => {
+    validateIPCSender(event.senderFrame);
+    updateBookMoveOrder(sfen, usi, order);
+  },
+);
+
+ipcMain.handle(Background.LOAD_BOOK_IMPORT_SETTINGS, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("load book import settings");
+  return JSON.stringify(await loadBookImportSettings());
+});
+
+ipcMain.handle(Background.SAVE_BOOK_IMPORT_SETTINGS, async (event, json: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("save book import settings");
+  await saveBookImportSettings(JSON.parse(json));
+});
+
+ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await importBookMoves(JSON.parse(json)));
+});
+
 let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
 
 ipcMain.handle(Background.LOAD_LAYOUT_PROFILE_LIST, async (event): Promise<[string, string]> => {
@@ -794,7 +895,11 @@ ipcMain.on(Background.ON_CLOSABLE, (event) => {
 });
 
 export function onClose(): void {
-  mainWindow.webContents.send(Renderer.CLOSE);
+  const confirmations = [];
+  if (isBookUnsaved()) {
+    confirmations.push("定跡の変更が保存されていません。破棄してアプリを終了しますか？");
+  }
+  mainWindow.webContents.send(Renderer.CLOSE, confirmations);
 }
 
 export function sendError(e: Error): void {

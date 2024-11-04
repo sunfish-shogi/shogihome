@@ -27,6 +27,7 @@ import { GameResult } from "@/common/game/result";
 import { LogLevel, LogType } from "@/common/log";
 import { USIEngine } from "@/common/settings/usi";
 import { Bridge } from "@/renderer/ipc/bridge";
+import { BookLoadingMode } from "@/common/book";
 import { Language, setLanguage } from "@/common/i18n";
 
 type Config = {
@@ -116,6 +117,12 @@ export function preload(config: Config) {
     async saveUSIEngines(): Promise<void> {
       // Do Nothing
     },
+    async loadBookImportSettings(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async saveBookImportSettings(): Promise<void> {
+      // Do Nothing
+    },
     onUpdateAppSettings(): void {
       // Do Nothing
     },
@@ -162,6 +169,38 @@ export function preload(config: Config) {
     },
     onOpenRecord(): void {
       // Do Nothing
+    },
+
+    // Book
+    async showOpenBookDialog(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async showSaveBookDialog(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async clearBook(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async openBook(): Promise<BookLoadingMode> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async saveBook(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async searchBookMoves(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async updateBookMove(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async removeBookMove(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async updateBookMoveOrder(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async importBookMoves(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
     },
 
     // USI

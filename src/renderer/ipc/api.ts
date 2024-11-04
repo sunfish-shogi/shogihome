@@ -21,6 +21,8 @@ import { CommandHistory, CommandType } from "@/common/advanced/command";
 import { Bridge } from "./bridge";
 import { TimeStates } from "@/common/game/time";
 import { LayoutProfileList } from "@/common/settings/layout";
+import { BookImportSummary, BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
+import { BookImportSettings } from "@/common/settings/book";
 
 type AppInfo = {
   appVersion?: string;
@@ -47,6 +49,8 @@ export interface API {
   saveMateSearchSettings(settings: MateSearchSettings): Promise<void>;
   loadUSIEngines(): Promise<USIEngines>;
   saveUSIEngines(usiEngines: USIEngines): Promise<void>;
+  loadBookImportSettings(): Promise<BookImportSettings>;
+  saveBookImportSettings(settings: BookImportSettings): Promise<void>;
 
   // Record File
   fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest>;
@@ -62,6 +66,18 @@ export interface API {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteRecordFile(url: string): Promise<string>;
   convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult>;
+
+  // Book
+  showOpenBookDialog(): Promise<string>;
+  showSaveBookDialog(): Promise<string>;
+  openBook(path: string, options: BookLoadingOptions): Promise<BookLoadingMode>;
+  saveBook(path: string): Promise<void>;
+  clearBook(): Promise<void>;
+  searchBookMoves(sfen: string): Promise<BookMove[]>;
+  updateBookMove(sfen: string, move: BookMove): Promise<void>;
+  removeBookMove(sfen: string, usi: string): Promise<void>;
+  updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void>;
+  importBookMoves(settings: BookImportSettings): Promise<BookImportSummary>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
@@ -191,6 +207,12 @@ const api: API = {
   saveUSIEngines(usiEngines: USIEngines): Promise<void> {
     return bridge.saveUSIEngines(usiEngines.json);
   },
+  async loadBookImportSettings(): Promise<BookImportSettings> {
+    return JSON.parse(await bridge.loadBookImportSettings());
+  },
+  saveBookImportSettings(settings: BookImportSettings): Promise<void> {
+    return bridge.saveBookImportSettings(JSON.stringify(settings));
+  },
 
   // Record File
   async fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest> {
@@ -198,6 +220,20 @@ const api: API = {
   },
   async convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult> {
     return JSON.parse(await bridge.convertRecordFiles(JSON.stringify(settings)));
+  },
+
+  // Book
+  openBook(path: string, options: BookLoadingOptions): Promise<BookLoadingMode> {
+    return bridge.openBook(path, JSON.stringify(options));
+  },
+  async searchBookMoves(sfen: string): Promise<BookMove[]> {
+    return JSON.parse(await bridge.searchBookMoves(sfen));
+  },
+  updateBookMove(sfen: string, move: BookMove): Promise<void> {
+    return bridge.updateBookMove(sfen, JSON.stringify(move));
+  },
+  async importBookMoves(settings: BookImportSettings): Promise<BookImportSummary> {
+    return JSON.parse(await bridge.importBookMoves(JSON.stringify(settings)));
   },
 
   // USI

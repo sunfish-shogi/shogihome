@@ -37,7 +37,10 @@
         </div>
       </div>
     </div>
-    <div v-if="showBranches" class="row branch-list-area">
+    <div v-if="showBook" class="row book-list-area">
+      <slot name="book"></slot>
+    </div>
+    <div v-else-if="showBranches" class="row branch-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
       <div ref="branchList" class="auto branch-list">
@@ -65,6 +68,13 @@
       </div>
     </div>
     <div v-if="showBottomControl" class="row wrap options">
+      <div v-if="bookToggleLabel" class="option">
+        <ToggleButton
+          :label="bookToggleLabel"
+          :value="false"
+          @change="(enabled: boolean) => emit('toggleShowBook', enabled)"
+        />
+      </div>
       <div v-if="elapsedTimeToggleLabel" class="option">
         <ToggleButton
           :label="elapsedTimeToggleLabel"
@@ -107,6 +117,15 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  showBook: {
+    type: Boolean,
+    required: false,
+  },
+  bookToggleLabel: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
   elapsedTimeToggleLabel: {
     type: String,
     required: false,
@@ -148,6 +167,7 @@ const emit = defineEmits<{
   selectBranch: [index: number];
   swapWithPreviousBranch: [];
   swapWithNextBranch: [];
+  toggleShowBook: [enabled: boolean];
   toggleShowElapsedTime: [enabled: boolean];
   toggleShowComment: [enabled: boolean];
 }>();
@@ -270,6 +290,14 @@ onUpdated(() => {
   overflow-x: hidden;
   overflow-y: auto;
   color: var(--text-color);
+}
+.book-list-area {
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+  width: 100%;
+  height: calc(40% - 15px);
+  min-height: 40px;
 }
 .branch-list-area {
   position: relative;

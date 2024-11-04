@@ -594,6 +594,30 @@
           </div>
         </div>
         <hr />
+        <!-- 定跡 -->
+        <div class="section">
+          <!-- FIXME: i18n -->
+          <div class="section-title">定跡</div>
+          <!-- 読み専モード閾値 -->
+          <div class="form-item">
+            <div class="form-item-label-wide">読み専モード閾値</div>
+            <input
+              :value="original.bookOnTheFlyThresholdMB"
+              type="number"
+              max="4096"
+              min="0"
+              @input="
+                (event) => {
+                  update.bookOnTheFlyThresholdMB = readInputAsNumber(
+                    event.target as HTMLInputElement,
+                  );
+                }
+              "
+            />
+            <div class="form-item-small-label">MB ({{ t.between(0, 4096) }})</div>
+          </div>
+        </div>
+        <hr />
         <!-- USI プロトコル -->
         <div class="section">
           <div class="section-title">{{ t.usiProtocol }}</div>

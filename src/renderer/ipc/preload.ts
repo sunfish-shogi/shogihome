@@ -8,6 +8,7 @@ import { LogType, LogLevel } from "@/common/log";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandType } from "@/common/advanced/command";
+import { BookLoadingMode } from "@/common/book";
 
 const api: Bridge = {
   // Core
@@ -17,8 +18,10 @@ const api: Bridge = {
   onClosable(): void {
     ipcRenderer.send(Background.ON_CLOSABLE);
   },
-  onClose(callback: () => void): void {
-    ipcRenderer.on(Renderer.CLOSE, callback);
+  onClose(callback: (confirmations: string[]) => void): void {
+    ipcRenderer.on(Renderer.CLOSE, (_, confirmations: string[]) => {
+      callback(confirmations);
+    });
   },
   onSendError(callback: (e: Error) => void): void {
     ipcRenderer.on(Renderer.SEND_ERROR, (_, e) => {
@@ -79,6 +82,12 @@ const api: Bridge = {
   async saveUSIEngines(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_USI_ENGINES, json);
   },
+  async loadBookImportSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_BOOK_IMPORT_SETTINGS);
+  },
+  async saveBookImportSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_BOOK_IMPORT_SETTINGS, json);
+  },
   onUpdateAppSettings(callback: (json: string) => void): void {
     ipcRenderer.on(Renderer.UPDATE_APP_SETTINGS, (_, json) => callback(json));
   },
@@ -125,6 +134,38 @@ const api: Bridge = {
   },
   onOpenRecord(callback: (path: string) => void): void {
     ipcRenderer.on(Renderer.OPEN_RECORD, (_, path) => callback(path));
+  },
+
+  // Book
+  async showOpenBookDialog(): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
+  },
+  async showSaveBookDialog(): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG);
+  },
+  async clearBook(): Promise<void> {
+    return await ipcRenderer.invoke(Background.CLEAR_BOOK);
+  },
+  async openBook(path: string, json: string): Promise<BookLoadingMode> {
+    return await ipcRenderer.invoke(Background.OPEN_BOOK, path, json);
+  },
+  async saveBook(path: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.SAVE_BOOK, path);
+  },
+  async searchBookMoves(sfen: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, sfen);
+  },
+  async updateBookMove(sfen: string, json: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE, sfen, json);
+  },
+  async removeBookMove(sfen: string, usi: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.REMOVE_BOOK_MOVE, sfen, usi);
+  },
+  async updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void> {
+    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE_ORDER, sfen, usi, order);
+  },
+  async importBookMoves(json: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.IMPORT_BOOK_MOVES, json);
   },
 
   // USI

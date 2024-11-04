@@ -43,15 +43,27 @@ export function setup(): void {
       bridge.updateAppState(appState as AppState, researchState as ResearchState, busy as boolean),
   );
   bridge.updateAppState(store.appState, store.researchState, busyState.isBusy);
-  bridge.onClose(() => {
-    store
-      .onMainWindowClose()
-      .catch((e) => {
-        bridge.log(LogLevel.ERROR, e.message);
-      })
-      .finally(() => {
-        bridge.onClosable();
-      });
+  bridge.onClose(async (confirmations: string[]) => {
+    try {
+      for (const message of confirmations) {
+        await new Promise<void>((resolve, reject) => {
+          useConfirmationStore().show({
+            message,
+            onOk: resolve,
+            onCancel: reject,
+          });
+        });
+      }
+    } catch (e) {
+      return;
+    }
+    try {
+      await store.onMainWindowClose();
+    } catch (e) {
+      bridge.log(LogLevel.ERROR, `${e}`);
+    } finally {
+      bridge.onClosable();
+    }
   });
   bridge.onSendError((e: Error) => {
     useErrorStore().add(e);
