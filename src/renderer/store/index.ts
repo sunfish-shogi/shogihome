@@ -141,6 +141,7 @@ class Store {
   private onChangePositionHandlers: ChangePositionHandler[] = [];
   private onUpdateRecordTreeHandlers: UpdateTreeHandler[] = [];
   private onUpdateCustomDataHandlers: UpdateCustomDataHandler[] = [];
+  private onOpenBookHandlers: (() => void)[] = [];
 
   constructor() {
     const refs = reactive(this);
@@ -213,6 +214,7 @@ class Store {
   addEventListener(event: "changePosition", handler: ChangePositionHandler): void;
   addEventListener(event: "updateRecordTree", handler: UpdateTreeHandler): void;
   addEventListener(event: "updateCustomData", handler: UpdateCustomDataHandler): void;
+  addEventListener(event: "openBook", handler: () => void): void;
   addEventListener(event: string, handler: unknown): void {
     switch (event) {
       case "changePosition":
@@ -224,12 +226,16 @@ class Store {
       case "updateCustomData":
         this.onUpdateCustomDataHandlers.push(handler as UpdateCustomDataHandler);
         break;
+      case "openBook":
+        this.onOpenBookHandlers.push(handler as () => void);
+        break;
     }
   }
 
   removeEventListener(event: "changePosition", handler: ChangePositionHandler): void;
   removeEventListener(event: "updateRecordTree", handler: UpdateTreeHandler): void;
   removeEventListener(event: "updateCustomData", handler: UpdateCustomDataHandler): void;
+  removeEventListener(event: "openBook", handler: () => void): void;
   removeEventListener(event: string, handler: unknown): void {
     switch (event) {
       case "changePosition":
@@ -244,6 +250,9 @@ class Store {
         this.onUpdateCustomDataHandlers = this.onUpdateCustomDataHandlers.filter(
           (h) => h !== handler,
         );
+        break;
+      case "openBook":
+        this.onOpenBookHandlers = this.onOpenBookHandlers.filter((h) => h !== handler);
         break;
     }
   }
@@ -1310,7 +1319,12 @@ class Store {
     useBusyState().retain();
     api
       .showOpenBookDialog()
-      .then((path) => api.openBook(path))
+      .then(async (path) => {
+        if (path) {
+          await api.openBook(path);
+          this.onOpenBookHandlers.forEach((handler) => handler());
+        }
+      })
       .catch((e) => useErrorStore().add(e))
       .finally(() => useBusyState().release());
   }

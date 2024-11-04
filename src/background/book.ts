@@ -6,11 +6,13 @@ import { getAppLogger } from "./log";
 
 export type Book = {
   entries: { [sfen: string]: BookEntry };
+  duplicateCount: number;
 };
 
 export type BookEntry = {
   comments: string; // 局面に対するコメント
   moves: BookMove[]; // この局面に対する定跡手
+  minPly: number; // 初期局面からの手数
 };
 
 export type BookMove = [
@@ -18,7 +20,7 @@ export type BookMove = [
   usi2: string | undefined,
   score: number | undefined,
   depth: number | undefined,
-  counts: number | undefined,
+  count: number | undefined,
   comments: string | undefined,
 ];
 
@@ -26,7 +28,7 @@ const IDX_USI = 0;
 const IDX_USI2 = 1;
 const IDX_SCORE = 2;
 const IDX_DEPTH = 3;
-const IDX_COUNTS = 4;
+const IDX_COUNT = 4;
 const IDX_COMMENTS = 5;
 
 const MOVE_NONE = "none";
@@ -37,7 +39,7 @@ function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
     usi2: move[IDX_USI2],
     score: move[IDX_SCORE],
     depth: move[IDX_DEPTH],
-    counts: move[IDX_COUNTS],
+    count: move[IDX_COUNT],
     comments: move[IDX_COMMENTS] || "",
   };
 }
@@ -70,6 +72,7 @@ async function loadBook(path: string): Promise<void> {
   let current: [sfen: string, entry: BookEntry];
   let lineNo = 0;
   let entryCount = 0;
+  let duplicateCount = 0;
   reader.on("line", (line) => {
     const parsed = parseLine(line);
     switch (parsed.type) {
@@ -80,23 +83,26 @@ async function loadBook(path: string): Promise<void> {
         }
         if (current) {
           if (current[1].moves.length === 0) {
-            current[1].comments += "\n" + line;
+            current[1].comments += "\n" + parsed.comment;
           } else {
             const moves = current[1].moves;
-            moves[moves.length - 1][IDX_COMMENTS] += "\n" + line;
+            moves[moves.length - 1][IDX_COMMENTS] += "\n" + parsed.comment;
           }
         }
         break;
       case "position":
         if (current) {
           if (entries[current[0]]) {
-            getAppLogger().warn("Duplicated entry: sfen=%s", current[0]);
+            duplicateCount++;
+            if (current[1].minPly < entries[current[0]].minPly) {
+              entries[current[0]] = current[1];
+            }
           } else {
             entries[current[0]] = current[1];
             entryCount++;
           }
         }
-        current = [line, { comments: "", moves: [] }];
+        current = [parsed.sfen, { comments: "", moves: [], minPly: parsed.ply }];
         break;
       case "move":
         if (current) {
@@ -111,7 +117,10 @@ async function loadBook(path: string): Promise<void> {
 
   try {
     await events.once(reader, "close");
-    book = { type: "in-memory", entries };
+    book = { type: "in-memory", entries, duplicateCount };
+    if (duplicateCount) {
+      getAppLogger().warn("Duplicated entries: %d", duplicateCount);
+    }
     getAppLogger().info("Loaded book with %d entries", entryCount);
   } catch (error) {
     getAppLogger().error(`${error}`);
@@ -129,6 +138,7 @@ type CommentLine = {
 type PositionLine = {
   type: "position";
   sfen: string;
+  ply: number;
 };
 
 type MoveLine = {
@@ -142,7 +152,10 @@ function parseLine(line: string): Line {
   } else if (line.startsWith("//")) {
     return { type: "comment", comment: line.slice(2) };
   } else if (line.startsWith("sfen ")) {
-    return { type: "position", sfen: line.slice(5) };
+    const plyIndex = line.lastIndexOf(" ");
+    const sfen = line.slice(5, plyIndex) + " 1";
+    const ply = parseInt(line.slice(plyIndex + 1), 10);
+    return { type: "position", sfen, ply };
   } else if (/^[1-9][a-i][1-9][a-i]\+? /.test(line) || /^[KRBGSNLP]\*[1-9][a-i] /.test(line)) {
     const columns = line.split(" ", 5);
     let commentIndex = 0;

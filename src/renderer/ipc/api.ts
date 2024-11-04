@@ -21,6 +21,7 @@ import { CommandHistory, CommandType } from "@/common/advanced/command";
 import { Bridge } from "./bridge";
 import { TimeStates } from "@/common/game/time";
 import { LayoutProfileList } from "@/common/settings/layout";
+import { BookMove } from "@/common/book";
 
 type AppInfo = {
   appVersion?: string;
@@ -66,6 +67,7 @@ export interface API {
   // Book
   showOpenBookDialog(): Promise<string>;
   openBook(path: string): Promise<void>;
+  searchBookMoves(sfen: string): Promise<BookMove[] | null>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
@@ -201,6 +203,11 @@ const api: API = {
   },
   async convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult> {
     return JSON.parse(await bridge.convertRecordFiles(JSON.stringify(settings)));
+  },
+
+  // Book
+  async searchBookMoves(sfen: string): Promise<BookMove[] | null> {
+    return JSON.parse(await bridge.searchBookMoves(sfen));
   },
 
   // USI

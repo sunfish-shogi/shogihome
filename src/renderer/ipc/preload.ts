@@ -134,6 +134,9 @@ const api: Bridge = {
   async openBook(path: string): Promise<void> {
     await ipcRenderer.invoke(Background.OPEN_BOOK, path);
   },
+  async searchBookMoves(sfen: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, sfen);
+  },
 
   // USI
   async showSelectUSIEngineDialog(): Promise<string> {

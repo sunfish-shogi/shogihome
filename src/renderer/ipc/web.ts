@@ -237,6 +237,9 @@ export const webAPI: Bridge = {
   async openBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async searchBookMoves(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
 
   // USI
   async showSelectUSIEngineDialog(): Promise<string> {

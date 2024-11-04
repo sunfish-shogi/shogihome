@@ -28,7 +28,7 @@
       >
         <template #book>
           <div class="full column">
-            <BookView />
+            <BookView :position="store.record.position" :moves="bookMoves" />
             <div class="row">
               <button @click="onOpenBook">定跡を開く</button>
             </div>
@@ -58,6 +58,10 @@ import {
   uninstallHotKeyForMainWindow,
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
+import api from "@/renderer/ipc/api";
+import { useBusyState } from "@/renderer/store/busy";
+import { BookMove } from "@/common/book";
+import { useErrorStore } from "@/renderer/store/error";
 
 defineProps({
   showElapsedTime: {
@@ -89,13 +93,18 @@ const store = useStore();
 const appSettings = useAppSettings();
 const root = ref();
 const showBook = ref(false);
+const bookMoves = ref([] as BookMove[]);
 
 onMounted(() => {
   installHotKeyForMainWindow(root.value);
+  store.addEventListener("changePosition", reloadBookMoves);
+  store.addEventListener("openBook", reloadBookMoves);
 });
 
 onBeforeUnmount(() => {
   uninstallHotKeyForMainWindow(root.value);
+  store.removeEventListener("changePosition", reloadBookMoves);
+  store.removeEventListener("openBook", reloadBookMoves);
 });
 
 const onToggleBook = (enabled: boolean) => {
@@ -116,6 +125,15 @@ const onToggleComment = (enabled: boolean) => {
 
 const onOpenBook = () => {
   store.openBook();
+};
+
+const reloadBookMoves = async () => {
+  try {
+    const sfen = store.record.position.sfen;
+    bookMoves.value = (await api.searchBookMoves(sfen)) || [];
+  } catch (e) {
+    useErrorStore().add(e);
+  }
 };
 
 const isRecordOperational = computed(() => {

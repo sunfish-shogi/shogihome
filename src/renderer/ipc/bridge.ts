@@ -52,6 +52,7 @@ export interface Bridge {
   // Book
   showOpenBookDialog(): Promise<string>;
   openBook(path: string): Promise<void>;
+  searchBookMoves(sfen: string): Promise<string>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
