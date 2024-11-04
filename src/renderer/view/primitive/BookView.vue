@@ -8,6 +8,7 @@
           <tr>
             <td class="text">定跡手</td>
             <td class="number">評価値</td>
+            <td class="number">深さ</td>
             <td class="number">出現回数</td>
           </tr>
         </thead>
@@ -15,6 +16,7 @@
           <tr v-for="(entry, index) of moveList" :key="index">
             <td class="text">{{ formatMove(position, entry.move) }}</td>
             <td class="number">{{ entry.score }}</td>
+            <td class="number">{{ entry.depth }}</td>
             <td class="number">{{ entry.count }}</td>
           </tr>
         </tbody>
@@ -49,7 +51,7 @@ const moveList = computed(() => {
   for (const entry of props.moves) {
     const move = props.position.createMoveByUSI(entry.usi);
     if (move !== null) {
-      list.push({ move, score: entry.score, count: entry.count });
+      list.push({ move, score: entry.score, depth: entry.depth, count: entry.count });
     }
   }
   return list;
