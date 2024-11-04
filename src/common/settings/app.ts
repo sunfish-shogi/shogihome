@@ -220,6 +220,7 @@ export type AppSettings = {
 
   // File Path
   lastRecordFilePath: string;
+  lastBookFilePath: string;
   lastUSIEngineFilePath: string;
   lastImageExportFilePath: string;
   lastOtherFilePath: string;
@@ -307,6 +308,7 @@ export type AppSettingsUpdate = {
   positionImageFontScale?: number;
   positionImageFontWeight?: PositionImageFontWeight;
   lastRecordFilePath?: string;
+  lastBookFilePath?: string;
   lastUSIEngineFilePath?: string;
   lastImageExportFilePath?: string;
   lastOtherFilePath?: string;
@@ -408,6 +410,7 @@ export function defaultAppSettings(opt?: {
     positionImageFontScale: 1,
     positionImageFontWeight: PositionImageFontWeight.W400X,
     lastRecordFilePath: "",
+    lastBookFilePath: "",
     lastUSIEngineFilePath: "",
     lastImageExportFilePath: "",
     lastOtherFilePath: "",

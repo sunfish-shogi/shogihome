@@ -4,8 +4,10 @@
       <RecordView
         :record="store.record"
         :operational="isRecordOperational"
+        :show-book="showBook"
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
+        :book-toggle-label="'定跡'"
         :elapsed-time-toggle-label="t.elapsedTime"
         :comment-toggle-label="t.commentsAndBookmarks"
         :opacity="appSettings.enableTransparent ? appSettings.recordOpacity : 1"
@@ -20,9 +22,19 @@
         @select-branch="(index) => store.changeBranch(index)"
         @swap-with-previous-branch="store.swapWithPreviousBranch()"
         @swap-with-next-branch="store.swapWithNextBranch()"
+        @toggle-show-book="onToggleBook"
         @toggle-show-elapsed-time="onToggleElapsedTime"
         @toggle-show-comment="onToggleComment"
-      />
+      >
+        <template #book>
+          <div class="full column">
+            <BookView />
+            <div class="row">
+              <button @click="onOpenBook">定跡を開く</button>
+            </div>
+          </div>
+        </template>
+      </RecordView>
     </div>
     <div v-if="store.remoteRecordFileURL">
       <button class="wide" @click="store.loadRemoteRecordFile()">{{ t.fetchLatestData }}</button>
@@ -38,6 +50,7 @@ export const minWidth = 200;
 import { t } from "@/common/i18n";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import RecordView from "@/renderer/view/primitive/RecordView.vue";
+import BookView from "@/renderer/view/primitive/BookView.vue";
 import { useStore } from "@/renderer/store";
 import { AppState } from "@/common/control/state.js";
 import {
@@ -75,6 +88,7 @@ defineProps({
 const store = useStore();
 const appSettings = useAppSettings();
 const root = ref();
+const showBook = ref(false);
 
 onMounted(() => {
   installHotKeyForMainWindow(root.value);
@@ -83,6 +97,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   uninstallHotKeyForMainWindow(root.value);
 });
+
+const onToggleBook = (enabled: boolean) => {
+  showBook.value = enabled;
+};
 
 const onToggleElapsedTime = (enabled: boolean) => {
   appSettings.updateAppSettings({
@@ -94,6 +112,10 @@ const onToggleComment = (enabled: boolean) => {
   appSettings.updateAppSettings({
     showCommentInRecordView: enabled,
   });
+};
+
+const onOpenBook = () => {
+  store.openBook();
 };
 
 const isRecordOperational = computed(() => {

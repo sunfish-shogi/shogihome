@@ -239,6 +239,9 @@ class AppSettingsStore {
   get lastRecordFilePath(): string {
     return this.merged.lastRecordFilePath;
   }
+  get lastBookFilePath(): string {
+    return this.merged.lastBookFilePath;
+  }
   get lastUSIEngineFilePath(): string {
     return this.merged.lastUSIEngineFilePath;
   }

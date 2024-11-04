@@ -63,6 +63,10 @@ export interface API {
   loadRemoteRecordFile(url: string): Promise<string>;
   convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult>;
 
+  // Book
+  showOpenBookDialog(): Promise<string>;
+  openBook(path: string): Promise<void>;
+
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine>;

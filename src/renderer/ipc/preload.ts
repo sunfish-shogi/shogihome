@@ -127,6 +127,14 @@ const api: Bridge = {
     ipcRenderer.on(Renderer.OPEN_RECORD, (_, path) => callback(path));
   },
 
+  // Book
+  async showOpenBookDialog(): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
+  },
+  async openBook(path: string): Promise<void> {
+    await ipcRenderer.invoke(Background.OPEN_BOOK, path);
+  },
+
   // USI
   async showSelectUSIEngineDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SELECT_USI_ENGINE_DIALOG);

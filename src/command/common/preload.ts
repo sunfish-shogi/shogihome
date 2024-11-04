@@ -164,6 +164,14 @@ export function preload(config: Config) {
       // Do Nothing
     },
 
+    // Book
+    async showOpenBookDialog(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async openBook(): Promise<void> {
+      throw new Error("This feature is not available on command line tool");
+    },
+
     // USI
     async showSelectUSIEngineDialog(): Promise<string> {
       throw new Error("This feature is not available on command line tool");

@@ -1303,6 +1303,18 @@ class Store {
       .finally(() => useBusyState().release());
   }
 
+  openBook() {
+    if (useBusyState().isBusy) {
+      return;
+    }
+    useBusyState().retain();
+    api
+      .showOpenBookDialog()
+      .then((path) => api.openBook(path))
+      .catch((e) => useErrorStore().add(e))
+      .finally(() => useBusyState().release());
+  }
+
   showJishogiPoints(): void {
     const position = this.recordManager.record.position;
     const blackTotalPoint = countJishogiPoint(position, Color.BLACK);

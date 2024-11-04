@@ -93,6 +93,7 @@ import { Command, CommandType } from "@/common/advanced/command";
 import { fetch } from "@/background/helpers/http";
 import * as uri from "@/common/uri";
 import { openPath } from "@/background/helpers/electron";
+import { openBook, searchBookMoves } from "@/background/book";
 
 const isWindows = process.platform === "win32";
 
@@ -164,7 +165,7 @@ ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
 ipcMain.handle(Background.SHOW_OPEN_RECORD_DIALOG, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
-  getAppLogger().debug(`show open-record dialog`);
+  getAppLogger().debug("show open-record dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastRecordFilePath, [
     {
       name: t.recordFile,
@@ -487,6 +488,30 @@ ipcMain.handle(Background.LOAD_RECORD_FILE_BACKUP, async (event, name: string): 
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("load record file backup: %s", name);
   return await loadBackup(name);
+});
+
+ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  const appSettings = await loadAppSettings();
+  getAppLogger().debug("show open-book dialog");
+  const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
+    { name: "やねうら王定跡ファイル", extensions: ["db"] },
+  ]);
+  if (ret) {
+    updateAppSettings({ lastBookFilePath: ret });
+  }
+  return ret;
+});
+
+ipcMain.handle(Background.OPEN_BOOK, async (event, path: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug(`open book: ${path}`);
+  await openBook(path);
+});
+
+ipcMain.handle(Background.SEARCH_BOOK_MOVES, async (event, sfen: string): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await searchBookMoves(sfen));
 });
 
 let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;

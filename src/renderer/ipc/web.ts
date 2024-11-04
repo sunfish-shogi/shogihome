@@ -230,6 +230,14 @@ export const webAPI: Bridge = {
     // Do Nothing
   },
 
+  // Book
+  async showOpenBookDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async openBook(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+
   // USI
   async showSelectUSIEngineDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);

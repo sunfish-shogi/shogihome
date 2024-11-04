@@ -49,6 +49,10 @@ export interface Bridge {
   convertRecordFiles(json: string): Promise<string>;
   onOpenRecord(callback: (path: string) => void): void;
 
+  // Book
+  showOpenBookDialog(): Promise<string>;
+  openBook(path: string): Promise<void>;
+
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string>;
