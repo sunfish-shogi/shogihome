@@ -5,6 +5,7 @@ import { reactive, UnwrapNestedRefs } from "vue";
 export type Confirmation = {
   message: string;
   onOk: () => void;
+  onCancel?: () => void;
 };
 
 class ConfirmationStore {
@@ -26,6 +27,9 @@ class ConfirmationStore {
           ` currentMessage=${this._confirmation.message}` +
           ` newMessage=${confirmation.message}`,
       );
+      if (this._confirmation.onCancel) {
+        this._confirmation.onCancel();
+      }
     }
     this._confirmation = confirmation;
   }
@@ -40,7 +44,14 @@ class ConfirmationStore {
   }
 
   cancel(): void {
+    if (!this._confirmation) {
+      return;
+    }
+    const confirmation = this._confirmation;
     this._confirmation = undefined;
+    if (confirmation.onCancel) {
+      confirmation.onCancel();
+    }
   }
 }
 

@@ -183,6 +183,9 @@ export type AppSettings = {
   enableUSIFileStartpos: boolean;
   enableUSIFileResign: boolean;
 
+  // Opening Book
+  bookOnTheFlyThresholdMB: number;
+
   // Engine
   translateEngineOptionName: boolean;
   engineTimeoutSeconds: number;
@@ -220,6 +223,7 @@ export type AppSettings = {
 
   // File Path
   lastRecordFilePath: string;
+  lastBookFilePath: string;
   lastUSIEngineFilePath: string;
   lastImageExportFilePath: string;
   lastOtherFilePath: string;
@@ -281,6 +285,7 @@ export type AppSettingsUpdate = {
   useCSAV3?: boolean;
   enableUSIFileStartpos?: boolean;
   enableUSIFileResign?: boolean;
+  bookOnTheFlyThresholdMB?: number;
   translateEngineOptionName?: boolean;
   engineTimeoutSeconds?: number;
   evaluationViewFrom?: EvaluationViewFrom;
@@ -307,6 +312,7 @@ export type AppSettingsUpdate = {
   positionImageFontScale?: number;
   positionImageFontWeight?: PositionImageFontWeight;
   lastRecordFilePath?: string;
+  lastBookFilePath?: string;
   lastUSIEngineFilePath?: string;
   lastImageExportFilePath?: string;
   lastOtherFilePath?: string;
@@ -382,6 +388,7 @@ export function defaultAppSettings(opt?: {
     useCSAV3: false,
     enableUSIFileStartpos: true,
     enableUSIFileResign: false,
+    bookOnTheFlyThresholdMB: 256,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
     evaluationViewFrom: EvaluationViewFrom.EACH,
@@ -408,6 +415,7 @@ export function defaultAppSettings(opt?: {
     positionImageFontScale: 1,
     positionImageFontWeight: PositionImageFontWeight.W400X,
     lastRecordFilePath: "",
+    lastBookFilePath: "",
     lastUSIEngineFilePath: "",
     lastImageExportFilePath: "",
     lastOtherFilePath: "",

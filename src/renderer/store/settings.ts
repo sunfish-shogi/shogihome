@@ -161,6 +161,9 @@ class AppSettingsStore {
   get enableUSIFileResign(): boolean {
     return this.merged.enableUSIFileResign;
   }
+  get bookOnTheFlyThresholdMB(): number {
+    return this.merged.bookOnTheFlyThresholdMB;
+  }
   get translateEngineOptionName(): boolean {
     return this.merged.translateEngineOptionName;
   }
@@ -238,6 +241,9 @@ class AppSettingsStore {
   }
   get lastRecordFilePath(): string {
     return this.merged.lastRecordFilePath;
+  }
+  get lastBookFilePath(): string {
+    return this.merged.lastBookFilePath;
   }
   get lastUSIEngineFilePath(): string {
     return this.merged.lastUSIEngineFilePath;
