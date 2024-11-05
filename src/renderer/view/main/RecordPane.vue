@@ -28,8 +28,8 @@
       >
         <template #book>
           <div class="full column">
-            <BookView :position="store.record.position" :moves="bookMoves" />
-            <div class="row">
+            <BookView class="book-list" :position="store.record.position" :moves="bookMoves" />
+            <div class="row control">
               <button @click="onOpenBook">定跡を開く</button>
             </div>
           </div>
@@ -59,7 +59,6 @@ import {
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import api from "@/renderer/ipc/api";
-import { useBusyState } from "@/renderer/store/busy";
 import { BookMove } from "@/common/book";
 import { useErrorStore } from "@/renderer/store/error";
 
@@ -148,6 +147,13 @@ const isRecordOperational = computed(() => {
 .record {
   width: 100%;
   min-height: 0;
+}
+.book-list {
+  height: calc(100% - 25px);
+}
+.control > button {
+  height: 25px;
+  font-size: 14px;
 }
 button.wide {
   width: 100%;
