@@ -1,5 +1,6 @@
 import { CommandType } from "@/common/advanced/command";
 import { PromptTarget } from "@/common/advanced/prompt";
+import { BookLoadingMode } from "@/common/book";
 import { MenuEvent } from "@/common/control/menu";
 import { AppState, ResearchState } from "@/common/control/state";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
@@ -51,7 +52,7 @@ export interface Bridge {
 
   // Book
   showOpenBookDialog(): Promise<string>;
-  openBook(path: string): Promise<void>;
+  openBook(path: string): Promise<BookLoadingMode>;
   searchBookMoves(sfen: string): Promise<string>;
 
   // USI

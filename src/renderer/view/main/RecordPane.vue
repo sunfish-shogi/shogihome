@@ -129,7 +129,7 @@ const onOpenBook = () => {
 const reloadBookMoves = async () => {
   try {
     const sfen = store.record.position.sfen;
-    bookMoves.value = (await api.searchBookMoves(sfen)) || [];
+    bookMoves.value = await api.searchBookMoves(sfen);
   } catch (e) {
     useErrorStore().add(e);
   }

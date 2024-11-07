@@ -1321,7 +1321,12 @@ class Store {
       .showOpenBookDialog()
       .then(async (path) => {
         if (path) {
-          await api.openBook(path);
+          const mode = await api.openBook(path);
+          if (mode === "on-the-fly") {
+            useMessageStore().enqueue({
+              text: "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。", // TODO: i18n
+            });
+          }
           this.onOpenBookHandlers.forEach((handler) => handler());
         }
       })

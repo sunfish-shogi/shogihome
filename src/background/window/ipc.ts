@@ -94,6 +94,7 @@ import { fetch } from "@/background/helpers/http";
 import * as uri from "@/common/uri";
 import { openPath } from "@/background/helpers/electron";
 import { openBook, searchBookMoves } from "@/background/book";
+import { BookLoadingMode } from "@/common/book";
 
 const isWindows = process.platform === "win32";
 
@@ -503,10 +504,10 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   return ret;
 });
 
-ipcMain.handle(Background.OPEN_BOOK, async (event, path: string): Promise<void> => {
+ipcMain.handle(Background.OPEN_BOOK, async (event, path: string): Promise<BookLoadingMode> => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug(`open book: ${path}`);
-  await openBook(path);
+  return await openBook(path);
 });
 
 ipcMain.handle(Background.SEARCH_BOOK_MOVES, async (event, sfen: string): Promise<string> => {

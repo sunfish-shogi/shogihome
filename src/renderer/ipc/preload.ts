@@ -8,6 +8,7 @@ import { LogType, LogLevel } from "@/common/log";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandType } from "@/common/advanced/command";
+import { BookLoadingMode } from "@/common/book";
 
 const api: Bridge = {
   // Core
@@ -131,8 +132,8 @@ const api: Bridge = {
   async showOpenBookDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
   },
-  async openBook(path: string): Promise<void> {
-    await ipcRenderer.invoke(Background.OPEN_BOOK, path);
+  async openBook(path: string): Promise<BookLoadingMode> {
+    return await ipcRenderer.invoke(Background.OPEN_BOOK, path);
   },
   async searchBookMoves(sfen: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, sfen);

@@ -21,7 +21,7 @@ import { CommandHistory, CommandType } from "@/common/advanced/command";
 import { Bridge } from "./bridge";
 import { TimeStates } from "@/common/game/time";
 import { LayoutProfileList } from "@/common/settings/layout";
-import { BookMove } from "@/common/book";
+import { BookLoadingMode, BookMove } from "@/common/book";
 
 type AppInfo = {
   appVersion?: string;
@@ -66,8 +66,8 @@ export interface API {
 
   // Book
   showOpenBookDialog(): Promise<string>;
-  openBook(path: string): Promise<void>;
-  searchBookMoves(sfen: string): Promise<BookMove[] | null>;
+  openBook(path: string): Promise<BookLoadingMode>;
+  searchBookMoves(sfen: string): Promise<BookMove[]>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
@@ -206,7 +206,7 @@ const api: API = {
   },
 
   // Book
-  async searchBookMoves(sfen: string): Promise<BookMove[] | null> {
+  async searchBookMoves(sfen: string): Promise<BookMove[]> {
     return JSON.parse(await bridge.searchBookMoves(sfen));
   },
 
