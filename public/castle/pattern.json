@@ -1,0 +1,18 @@
+[
+  {
+    "name": "anaguma",
+    "pieces": [
+      { "file": 9, "rank": 9, "piece": "king" },
+      { "file": 8, "rank": 8, "piece": "silver" },
+      { "file": 8, "rank": 9, "piece": "knight" }
+    ]
+  },
+  {
+    "name": "yagura",
+    "pieces": [
+      { "file": 8, "rank": 8, "piece": "king" },
+      { "file": 7, "rank": 7, "piece": "silver" },
+      { "file": 7, "rank": 8, "piece": "gold" }
+    ]
+  }
+]

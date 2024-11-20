@@ -45,14 +45,24 @@
         />
       </template>
     </BoardView>
+    <img v-if="activeCastle" class="overlay" :src="`/castle/${activeCastle}.png`" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { computed, PropType } from "vue";
+import { computed, onMounted, PropType, ref, watch } from "vue";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
-import { Move, PositionChange, getBlackPlayerName, getWhitePlayerName } from "tsshogi";
+import {
+  Color,
+  ImmutableBoard,
+  Move,
+  PieceType,
+  PositionChange,
+  Square,
+  getBlackPlayerName,
+  getWhitePlayerName,
+} from "tsshogi";
 import { RectSize } from "@/common/assets/geometry.js";
 import { useStore } from "@/renderer/store";
 import ControlPane, { ControlGroup } from "@/renderer/view/main/ControlPane.vue";
@@ -135,4 +145,82 @@ const clock = computed(() => {
   }
   return undefined;
 });
+
+// 囲いの定義
+type Castle = "anaguma" | "yagura";
+type CastlePattern = {
+  name: Castle;
+  pieces: { file: number; rank: number; piece: PieceType }[];
+};
+let castlePatterns: CastlePattern[] = [];
+onMounted(async () => {
+  const data = await window.fetch("/castle/pattern.json");
+  castlePatterns = (await data.json()) as CastlePattern[];
+});
+
+// 表示中のエフェクト
+const activeCastle = ref<Castle | undefined>(undefined);
+let castleTimeout: number = -1;
+
+// 判定した囲いを記録する
+const castleSet = new Set<Castle>();
+watch(
+  () => store.appState,
+  () => castleSet.clear(),
+);
+
+function detectCastles(board: ImmutableBoard): Castle[] {
+  const cassles = [] as Castle[];
+  for (const pattern of castlePatterns) {
+    const isMatch =
+      pattern.pieces.every(({ file, rank, piece }) => {
+        const p = board.at(new Square(file, rank));
+        return p?.type === piece && p?.color === Color.BLACK;
+      }) ||
+      pattern.pieces.every(({ file, rank, piece }) => {
+        const p = board.at(new Square(file, rank).opposite);
+        return p?.type === piece && p?.color === Color.WHITE;
+      });
+    if (isMatch) {
+      cassles.push(pattern.name);
+    }
+  }
+  return cassles;
+}
+
+// 局面が変更されたタイミングを検知する
+store.addEventListener("changePosition", async () => {
+  // 対局モードの場合だけ囲いを判定する
+  if (store.appState === AppState.GAME || store.appState === AppState.CSA_GAME) {
+    const castles = detectCastles(store.record.position.board);
+    for (const castle of castles) {
+      if (castle && !castleSet.has(castle)) {
+        // 2回目以降は表示しないように覚えておく
+        castleSet.add(castle);
+        // エフェクトを表示する
+        activeCastle.value = castle;
+        if (castleTimeout) {
+          clearTimeout(castleTimeout);
+        }
+        // 1.5秒後に消す
+        castleTimeout = window.setTimeout(() => {
+          activeCastle.value = undefined;
+        }, 1500);
+        break;
+      }
+    }
+  }
+});
 </script>
+
+<style scoped>
+.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 80%;
+  max-height: 80%;
+  z-index: 1000;
+}
+</style>
