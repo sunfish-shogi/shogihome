@@ -6,8 +6,9 @@
         <HorizontalSelector
           :value="sourceType"
           :items="[
-            { value: 'memory', label: '現在の棋譜から' },
-            { value: 'file', label: 'ファイルから' },
+            { value: SourceType.MEMORY, label: '現在の棋譜から' },
+            { value: SourceType.DIRECTORY, label: 'フォルダから' },
+            { value: SourceType.FILE, label: 'ファイルから' },
           ]"
           @change="
             (value) => {
@@ -17,31 +18,80 @@
         />
       </div>
       <div class="form-group scroll">
-        <div v-show="sourceType === 'memory'">
-          <div v-if="inMemoryList.length === 0">指し手がありません。</div>
-          <table v-else class="move-list">
-            <tbody>
-              <tr v-for="move of inMemoryList" :key="move.ply">
-                <td v-if="move.type === 'move'">{{ move.ply }}</td>
-                <td v-if="move.type === 'move'">{{ move.text }}</td>
-                <td v-if="move.type === 'move'">
-                  <span v-if="move.score !== undefined">{{ t.eval }} {{ move.score }}</span>
-                </td>
-                <td v-if="move.type === 'move'">
-                  <button v-if="!move.exists" class="thin" @click="registerMove(move)">登録</button>
-                  <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
-                    更新
-                  </button>
-                </td>
-                <td v-if="move.type === 'move'"><span v-if="move.last">(現在の手)</span></td>
-                <td v-if="move.type === 'branch'" class="branch" colspan="5">
-                  {{ move.ply }}手目から分岐:
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div v-show="sourceType === 'memory' && !inMemoryList.length">指し手がありません。</div>
+        <table v-show="sourceType === 'memory' && inMemoryList.length" class="move-list">
+          <tbody>
+            <tr v-for="move of inMemoryList" :key="move.ply">
+              <td v-if="move.type === 'move'">{{ move.ply }}</td>
+              <td v-if="move.type === 'move'">{{ move.text }}</td>
+              <td v-if="move.type === 'move'">
+                <span v-if="move.score !== undefined">{{ t.eval }} {{ move.score }}</span>
+              </td>
+              <td v-if="move.type === 'move'">
+                <button v-if="!move.exists" class="thin" @click="registerMove(move)">登録</button>
+                <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
+                  更新
+                </button>
+              </td>
+              <td v-if="move.type === 'move'"><span v-if="move.last">(現在の手)</span></td>
+              <td v-if="move.type === 'branch'" class="branch" colspan="5">
+                {{ move.ply }}手目から分岐:
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-show="sourceType === 'directory'" class="form-item row">
+          <input ref="sourceDir" class="grow" type="text" />
+          <button class="thin" @click="selectDirectory()">
+            {{ t.select }}
+          </button>
+          <button class="thin open-dir" @click="openDirectory()">
+            <Icon :icon="IconType.OPEN_FOLDER" />
+          </button>
         </div>
-        <div v-show="sourceType === 'file'">TODO</div>
+        <div v-show="sourceType === 'file'" class="form-item row">
+          <input ref="sourceFile" class="grow" type="text" />
+          <button class="thin" @click="selectRecordFile()">
+            {{ t.select }}
+          </button>
+        </div>
+        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+          <span>{{ t.fromPrefix }}</span>
+          <input class="small" type="number" min="0" step="1" value="0" />
+          <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
+        </div>
+        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+          <span>{{ t.toPrefix }}</span>
+          <input class="small" type="number" min="0" step="1" value="1000" />
+          <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
+        </div>
+        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+          <HorizontalSelector
+            :value="playerType"
+            :items="[
+              { value: PlayerCriteria.ALL, label: '全ての対局者' },
+              { value: PlayerCriteria.BLACK, label: '先手のみ' },
+              { value: PlayerCriteria.WHITE, label: '後手のみ' },
+              { value: PlayerCriteria.FILTER_BY_NAME, label: '名前でフィルタ' },
+            ]"
+            @change="
+              (value) => {
+                playerType = value as PlayerCriteria;
+              }
+            "
+          />
+        </div>
+        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+          <input
+            v-if="playerType === 'filterByName'"
+            class="grow"
+            type="text"
+            placeholder="ここに対局者名の一部を入力"
+          />
+        </div>
+      </div>
+      <div v-show="sourceType === 'directory' || sourceType === 'file'">
+        <button class="import">取り込む</button>
       </div>
       <div class="main-buttons">
         <button autofocus data-hotkey="Escape" @click="onClose">
@@ -58,15 +108,18 @@ import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/dev
 import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
 import { RecordCustomData } from "@/renderer/store/record";
 import { useErrorStore } from "@/renderer/store/error";
 import { BookMove } from "@/common/book";
+import { IconType } from "@/renderer/assets/icons";
+import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import api from "@/renderer/ipc/api";
+import { PlayerCriteria, SourceType } from "@/common/settings/book";
 
-type SourceType = "memory" | "file";
 type InMemoryMove = {
   type: "move";
   ply: number;
@@ -87,12 +140,15 @@ type Branch = {
 const store = useStore();
 const bookStore = useBookStore();
 const errorStore = useErrorStore();
-const bussy = useBusyState();
+const busyState = useBusyState();
 const dialog = ref();
-const sourceType = ref<SourceType>("memory");
+const sourceDir = ref<HTMLInputElement>();
+const sourceFile = ref<HTMLInputElement>();
+const sourceType = ref<SourceType>(SourceType.MEMORY);
+const playerType = ref<PlayerCriteria>(PlayerCriteria.ALL);
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 
-bussy.retain();
+busyState.retain();
 
 onMounted(async () => {
   try {
@@ -139,7 +195,7 @@ onMounted(async () => {
   } catch (e) {
     errorStore.add(e);
   } finally {
-    bussy.release();
+    busyState.release();
   }
 });
 
@@ -169,6 +225,41 @@ const updateScore = (move: InMemoryMove) => {
   });
   move.scoreUpdatable = false;
 };
+
+const selectDirectory = async () => {
+  busyState.retain();
+  try {
+    const input = sourceDir.value as HTMLInputElement;
+    const path = await api.showSelectDirectoryDialog(input.value);
+    if (path) {
+      input.value = path;
+    }
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
+const openDirectory = () => {
+  const input = sourceDir.value as HTMLInputElement;
+  api.openExplorer(input.value);
+};
+
+const selectRecordFile = async () => {
+  busyState.retain();
+  try {
+    const input = sourceFile.value as HTMLInputElement;
+    const path = await api.showOpenRecordDialog();
+    if (path) {
+      input.value = path;
+    }
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
 </script>
 
 <style scoped>
@@ -186,5 +277,11 @@ table.move-list td {
 }
 table.move-list td.branch {
   font-size: 0.6em;
+}
+input.small {
+  width: 50px;
+}
+button.import {
+  width: 100%;
 }
 </style>
