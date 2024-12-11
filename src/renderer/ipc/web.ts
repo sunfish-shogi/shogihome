@@ -17,6 +17,7 @@ import { SessionStates } from "@/common/advanced/monitor";
 import { emptyLayoutProfileList } from "@/common/settings/layout";
 import * as uri from "@/common/uri";
 import { basename } from "@/renderer/helpers/path";
+import { defaultBookImportSettings } from "@/common/settings/book";
 
 enum STORAGE_KEY {
   APP_SETTINGS = "appSetting",
@@ -26,6 +27,7 @@ enum STORAGE_KEY {
   GAME_SETTINGS = "gameSetting",
   MATE_SEARCH_SETTINGS = "mateSearchSetting",
   CSA_GAME_SETTINGS_HISTORY = "csaGameSettingHistory",
+  BOOK_IMPORT_SETTINGS = "bookImportSetting",
 }
 
 const fileCache = new Map<string, ArrayBuffer>();
@@ -147,6 +149,19 @@ export const webAPI: Bridge = {
   async saveUSIEngines(): Promise<void> {
     // Do Nothing
   },
+  async loadBookImportSettings(): Promise<string> {
+    const json = localStorage.getItem(STORAGE_KEY.BOOK_IMPORT_SETTINGS);
+    if (!json) {
+      return JSON.stringify(defaultBookImportSettings());
+    }
+    return JSON.stringify({
+      ...defaultBookImportSettings(),
+      ...JSON.parse(json),
+    });
+  },
+  async saveBookImportSettings(json: string): Promise<void> {
+    localStorage.setItem(STORAGE_KEY.BOOK_IMPORT_SETTINGS, json);
+  },
   onUpdateAppSettings(): void {
     // Do Nothing
   },
@@ -257,6 +272,9 @@ export const webAPI: Bridge = {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async updateBookMoveOrder(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async importBookMoves(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
 

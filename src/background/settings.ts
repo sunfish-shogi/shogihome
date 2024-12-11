@@ -41,6 +41,7 @@ import {
 import { exists } from "./helpers/file";
 import { emptyLayoutProfileList, LayoutProfileList } from "@/common/settings/layout";
 import { openPath } from "./helpers/electron";
+import { BookImportSettings, defaultBookImportSettings } from "@/common/settings/book";
 
 const userDir = getAppPath("userData");
 const rootDir = getPortableExeDir() || userDir;
@@ -255,4 +256,21 @@ export async function loadLayoutProfileList(): Promise<LayoutProfileList> {
     return emptyLayoutProfileList();
   }
   return JSON.parse(await fs.promises.readFile(layoutProfileListPath, "utf8"));
+}
+
+const bookImportSettingsPath = path.join(rootDir, "book_import.json");
+
+export async function saveBookImportSettings(settings: BookImportSettings): Promise<void> {
+  await fs.promises.writeFile(
+    bookImportSettingsPath,
+    JSON.stringify(settings, undefined, 2),
+    "utf8",
+  );
+}
+
+export async function loadBookImportSettings(): Promise<BookImportSettings> {
+  if (!(await exists(bookImportSettingsPath))) {
+    return defaultBookImportSettings();
+  }
+  return JSON.parse(await fs.promises.readFile(bookImportSettingsPath, "utf8"));
 }

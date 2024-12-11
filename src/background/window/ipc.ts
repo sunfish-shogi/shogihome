@@ -7,6 +7,7 @@ import {
   loadAnalysisSettings,
   loadAppSettings,
   loadBatchConversionSettings,
+  loadBookImportSettings,
   loadCSAGameSettingsHistory,
   loadGameSettings,
   loadLayoutProfileList,
@@ -16,6 +17,7 @@ import {
   saveAnalysisSettings,
   saveAppSettings,
   saveBatchConversionSettings,
+  saveBookImportSettings,
   saveCSAGameSettingsHistory,
   saveGameSettings,
   saveLayoutProfileList,
@@ -95,6 +97,7 @@ import * as uri from "@/common/uri";
 import { openPath } from "@/background/helpers/electron";
 import {
   clearBook,
+  importBookMoves,
   isBookUnsaved,
   openBook,
   removeBookMove,
@@ -569,6 +572,23 @@ ipcMain.handle(
     updateBookMoveOrder(sfen, usi, order);
   },
 );
+
+ipcMain.handle(Background.LOAD_BOOK_IMPORT_SETTINGS, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("load book import settings");
+  return JSON.stringify(await loadBookImportSettings());
+});
+
+ipcMain.handle(Background.SAVE_BOOK_IMPORT_SETTINGS, async (event, json: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("save book import settings");
+  await saveBookImportSettings(JSON.parse(json));
+});
+
+ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  await importBookMoves(JSON.parse(json));
+});
 
 let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
 

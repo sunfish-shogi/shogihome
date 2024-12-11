@@ -32,6 +32,8 @@ export interface Bridge {
   saveMateSearchSettings(settings: string): Promise<void>;
   loadUSIEngines(): Promise<string>;
   saveUSIEngines(egneins: string): Promise<void>;
+  loadBookImportSettings(): Promise<string>;
+  saveBookImportSettings(json: string): Promise<void>;
   onUpdateAppSettings(callback: (json: string) => void): void;
 
   // Record File
@@ -60,6 +62,7 @@ export interface Bridge {
   updateBookMove(sfen: string, move: string): Promise<void>;
   removeBookMove(sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void>;
+  importBookMoves(json: string): Promise<void>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;

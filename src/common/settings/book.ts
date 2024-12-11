@@ -11,7 +11,7 @@ export enum PlayerCriteria {
   FILTER_BY_NAME = "filterByName",
 }
 
-export type BookSettings = {
+export type BookImportSettings = {
   sourceType: SourceType;
   sourceDirectory?: string;
   sourceRecordFile?: string;
@@ -20,7 +20,7 @@ export type BookSettings = {
   playerCriteria: PlayerCriteria;
 };
 
-export function defaultBookSettings(): BookSettings {
+export function defaultBookImportSettings(): BookImportSettings {
   return {
     sourceType: SourceType.MEMORY,
     minPly: 0,
@@ -29,9 +29,11 @@ export function defaultBookSettings(): BookSettings {
   };
 }
 
-export function normalizeBookSettings(settings: Partial<BookSettings>): BookSettings {
+export function normalizeBookImportSettings(
+  settings: Partial<BookImportSettings>,
+): BookImportSettings {
   return {
-    ...defaultBookSettings(),
+    ...defaultBookImportSettings(),
     ...settings,
   };
 }

@@ -82,6 +82,12 @@ const api: Bridge = {
   async saveUSIEngines(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_USI_ENGINES, json);
   },
+  async loadBookImportSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_BOOK_IMPORT_SETTINGS);
+  },
+  async saveBookImportSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_BOOK_IMPORT_SETTINGS, json);
+  },
   onUpdateAppSettings(callback: (json: string) => void): void {
     ipcRenderer.on(Renderer.UPDATE_APP_SETTINGS, (_, json) => callback(json));
   },
@@ -157,6 +163,9 @@ const api: Bridge = {
   },
   async updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void> {
     return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE_ORDER, sfen, usi, order);
+  },
+  async importBookMoves(json: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.IMPORT_BOOK_MOVES, json);
   },
 
   // USI

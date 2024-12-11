@@ -22,6 +22,7 @@ import { Bridge } from "./bridge";
 import { TimeStates } from "@/common/game/time";
 import { LayoutProfileList } from "@/common/settings/layout";
 import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
+import { BookImportSettings } from "@/common/settings/book";
 
 type AppInfo = {
   appVersion?: string;
@@ -48,6 +49,8 @@ export interface API {
   saveMateSearchSettings(settings: MateSearchSettings): Promise<void>;
   loadUSIEngines(): Promise<USIEngines>;
   saveUSIEngines(usiEngines: USIEngines): Promise<void>;
+  loadBookImportSettings(): Promise<BookImportSettings>;
+  saveBookImportSettings(settings: BookImportSettings): Promise<void>;
 
   // Record File
   fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest>;
@@ -74,6 +77,7 @@ export interface API {
   updateBookMove(sfen: string, move: BookMove): Promise<void>;
   removeBookMove(sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void>;
+  importBookMoves(settings: BookImportSettings): Promise<void>;
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
@@ -203,6 +207,12 @@ const api: API = {
   saveUSIEngines(usiEngines: USIEngines): Promise<void> {
     return bridge.saveUSIEngines(usiEngines.json);
   },
+  async loadBookImportSettings(): Promise<BookImportSettings> {
+    return JSON.parse(await bridge.loadBookImportSettings());
+  },
+  saveBookImportSettings(settings: BookImportSettings): Promise<void> {
+    return bridge.saveBookImportSettings(JSON.stringify(settings));
+  },
 
   // Record File
   async fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest> {
@@ -213,14 +223,17 @@ const api: API = {
   },
 
   // Book
-  async openBook(path: string, options: BookLoadingOptions): Promise<BookLoadingMode> {
+  openBook(path: string, options: BookLoadingOptions): Promise<BookLoadingMode> {
     return bridge.openBook(path, JSON.stringify(options));
   },
   async searchBookMoves(sfen: string): Promise<BookMove[]> {
     return JSON.parse(await bridge.searchBookMoves(sfen));
   },
-  async updateBookMove(sfen: string, move: BookMove): Promise<void> {
+  updateBookMove(sfen: string, move: BookMove): Promise<void> {
     return bridge.updateBookMove(sfen, JSON.stringify(move));
+  },
+  importBookMoves(settings: BookImportSettings): Promise<void> {
+    return bridge.importBookMoves(JSON.stringify(settings));
   },
 
   // USI

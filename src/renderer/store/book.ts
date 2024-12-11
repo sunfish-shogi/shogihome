@@ -7,6 +7,7 @@ import { useBusyState } from "./busy";
 import { useMessageStore } from "./message";
 import { useAppSettings } from "./settings";
 import { useConfirmationStore } from "./confirm";
+import { BookImportSettings } from "@/common/settings/book";
 
 class BookStore {
   private _mode: BookLoadingMode = "in-memory";
@@ -152,6 +153,19 @@ class BookStore {
 
   async searchMoves(sfen: string): Promise<BookMove[]> {
     return api.searchBookMoves(sfen);
+  }
+
+  importBookMoves(settings: BookImportSettings) {
+    useBusyState().retain();
+    api
+      .saveBookImportSettings(settings)
+      .then(() => api.importBookMoves(settings))
+      .catch((e) => {
+        useErrorStore().add(e);
+      })
+      .finally(() => {
+        useBusyState().release();
+      });
   }
 }
 

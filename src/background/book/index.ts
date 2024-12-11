@@ -8,6 +8,7 @@ import {
   storeYaneuraOuBook,
   validateBookPositionOrdering,
 } from "./yaneuraou";
+import { BookImportSettings, SourceType } from "@/common/settings/book";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
@@ -172,4 +173,15 @@ export function updateBookMoveOrder(sfen: string, usi: string, order: number): v
   entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
   entry.moves.splice(order, 0, move);
   book.saved = false;
+}
+
+export async function importBookMoves(settings: BookImportSettings): Promise<void> {
+  switch (settings.sourceType) {
+    case SourceType.FILE:
+      break;
+    case SourceType.DIRECTORY:
+      break;
+    default:
+      throw new Error("invalid source type");
+  }
 }

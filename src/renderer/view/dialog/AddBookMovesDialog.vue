@@ -57,17 +57,17 @@
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
           <span>{{ t.fromPrefix }}</span>
-          <input class="small" type="number" min="0" step="1" value="0" />
+          <input ref="minPly" class="small" type="number" min="0" step="1" value="0" />
           <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
           <span>{{ t.toPrefix }}</span>
-          <input class="small" type="number" min="0" step="1" value="1000" />
+          <input ref="maxPly" class="small" type="number" min="0" step="1" value="1000" />
           <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
           <HorizontalSelector
-            :value="playerType"
+            :value="playerCriteria"
             :items="[
               { value: PlayerCriteria.ALL, label: '全ての対局者' },
               { value: PlayerCriteria.BLACK, label: '先手のみ' },
@@ -76,14 +76,14 @@
             ]"
             @change="
               (value) => {
-                playerType = value as PlayerCriteria;
+                playerCriteria = value as PlayerCriteria;
               }
             "
           />
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
           <input
-            v-if="playerType === 'filterByName'"
+            v-if="playerCriteria === 'filterByName'"
             class="grow"
             type="text"
             placeholder="ここに対局者名の一部を入力"
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div v-show="sourceType === 'directory' || sourceType === 'file'">
-        <button class="import">取り込む</button>
+        <button class="import" @click="importMoves">取り込む</button>
       </div>
       <div class="main-buttons">
         <button autofocus data-hotkey="Escape" @click="onClose">
@@ -118,7 +118,8 @@ import { IconType } from "@/renderer/assets/icons";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import api from "@/renderer/ipc/api";
-import { PlayerCriteria, SourceType } from "@/common/settings/book";
+import { BookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book";
+import { readInputAsNumber } from "@/renderer/helpers/form";
 
 type InMemoryMove = {
   type: "move";
@@ -142,58 +143,72 @@ const bookStore = useBookStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
 const dialog = ref();
-const sourceDir = ref<HTMLInputElement>();
-const sourceFile = ref<HTMLInputElement>();
+const sourceDir = ref();
+const sourceFile = ref();
 const sourceType = ref<SourceType>(SourceType.MEMORY);
-const playerType = ref<PlayerCriteria>(PlayerCriteria.ALL);
+const minPly = ref();
+const maxPly = ref();
+const playerCriteria = ref<PlayerCriteria>(PlayerCriteria.ALL);
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
+
+const setupInMemoryList = async () => {
+  const nodes: { node: ImmutableNode; sfen: string }[] = [];
+  store.record.forEach((node, position) => {
+    const move = node.move;
+    if (!(move instanceof Move)) {
+      return;
+    }
+    nodes.push({ node, sfen: position.sfen });
+  });
+  for (const { node, sfen } of nodes) {
+    if (!node.isFirstBranch) {
+      inMemoryList.value.push({ type: "branch", ply: node.ply });
+    }
+    const position = Position.newBySFEN(sfen) as Position;
+    const move = node.move as Move;
+    const bookMoves = await bookStore.searchMoves(sfen);
+    const book = bookMoves.find((book) => book.usi === move.usi);
+    const customData = node.customData ? (node.customData as RecordCustomData) : undefined;
+    const searchInfo = customData?.researchInfo || customData?.playerSearchInfo;
+    const score =
+      searchInfo?.score !== undefined && move.color === Color.WHITE
+        ? -searchInfo.score
+        : searchInfo?.score;
+    const depth = searchInfo?.depth;
+    inMemoryList.value.push({
+      type: "move",
+      ply: node.ply,
+      sfen,
+      book: book || { usi: move.usi, comment: "" },
+      text: formatMove(position, move),
+      score,
+      depth,
+      scoreUpdatable:
+        score !== undefined &&
+        (score !== book?.score || (!!depth && (!book.depth || depth > book.depth))),
+      exists: bookMoves.some((book) => book.usi === move.usi),
+      last: node === store.record.current,
+    });
+  }
+};
 
 busyState.retain();
 
 onMounted(async () => {
   try {
+    await setupInMemoryList();
+    const settings = await api.loadBookImportSettings();
+    sourceType.value = settings.sourceType;
+    sourceDir.value.value = settings.sourceDirectory;
+    sourceFile.value.value = settings.sourceRecordFile;
+    minPly.value.value = settings.minPly.toString();
+    maxPly.value.value = settings.maxPly.toString();
+    playerCriteria.value = settings.playerCriteria;
     showModalDialog(dialog.value, onClose);
     installHotKeyForDialog(dialog.value);
-    const nodes: { node: ImmutableNode; sfen: string }[] = [];
-    store.record.forEach((node, position) => {
-      const move = node.move;
-      if (!(move instanceof Move)) {
-        return;
-      }
-      nodes.push({ node, sfen: position.sfen });
-    });
-    for (const { node, sfen } of nodes) {
-      if (!node.isFirstBranch) {
-        inMemoryList.value.push({ type: "branch", ply: node.ply });
-      }
-      const position = Position.newBySFEN(sfen) as Position;
-      const move = node.move as Move;
-      const bookMoves = await bookStore.searchMoves(sfen);
-      const book = bookMoves.find((book) => book.usi === move.usi);
-      const customData = node.customData ? (node.customData as RecordCustomData) : undefined;
-      const searchInfo = customData?.researchInfo || customData?.playerSearchInfo;
-      const score =
-        searchInfo?.score !== undefined && move.color === Color.WHITE
-          ? -searchInfo.score
-          : searchInfo?.score;
-      const depth = searchInfo?.depth;
-      inMemoryList.value.push({
-        type: "move",
-        ply: node.ply,
-        sfen,
-        book: book || { usi: move.usi, comment: "" },
-        text: formatMove(position, move),
-        score,
-        depth,
-        scoreUpdatable:
-          score !== undefined &&
-          (score !== book?.score || (!!depth && (!book.depth || depth > book.depth))),
-        exists: bookMoves.some((book) => book.usi === move.usi),
-        last: node === store.record.current,
-      });
-    }
   } catch (e) {
     errorStore.add(e);
+    store.destroyModalDialog();
   } finally {
     busyState.release();
   }
@@ -259,6 +274,18 @@ const selectRecordFile = async () => {
   } finally {
     busyState.release();
   }
+};
+
+const importMoves = () => {
+  const settings: BookImportSettings = {
+    sourceType: sourceType.value,
+    sourceDirectory: sourceDir.value.value,
+    sourceRecordFile: sourceFile.value.value,
+    minPly: readInputAsNumber(minPly.value.value),
+    maxPly: readInputAsNumber(maxPly.value.value),
+    playerCriteria: playerCriteria.value,
+  };
+  bookStore.importBookMoves(settings);
 };
 </script>
 
