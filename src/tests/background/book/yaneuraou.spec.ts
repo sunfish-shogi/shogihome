@@ -1,7 +1,7 @@
 import { Readable } from "node:stream";
 import { loadYaneuraOuBook } from "@/background/book/yaneuraou";
 
-describe("background/book", () => {
+describe("background/book/yaneuraou", () => {
   it("loadYaneuraOuBook", async () => {
     const input = Readable.from([
       "#YANEURAOU-DB2016 1.00\n",
