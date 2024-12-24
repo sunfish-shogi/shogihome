@@ -196,7 +196,10 @@ function updateBookMoveOrderByCounts(sfen: string): void {
   book.saved = false;
 }
 
-export async function importBookMoves(settings: BookImportSettings): Promise<BookImportSummary> {
+export async function importBookMoves(
+  settings: BookImportSettings,
+  onProgress?: (progress: number) => void,
+): Promise<BookImportSummary> {
   getAppLogger().info("Importing book moves: %s", JSON.stringify(settings));
 
   const bookRef = book;
@@ -240,6 +243,11 @@ export async function importBookMoves(settings: BookImportSettings): Promise<Boo
   let duplicateCount = 0;
 
   for (const path of paths) {
+    if (onProgress) {
+      const progress = (successFileCount + errorFileCount) / paths.length;
+      onProgress(progress);
+    }
+
     getAppLogger().debug("Importing book moves from: %s", path);
     const format = detectRecordFileFormatByPath(path) as RecordFileFormat;
     const sourceData = await fs.promises.readFile(path);

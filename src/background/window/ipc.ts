@@ -381,7 +381,7 @@ ipcMain.handle(Background.EXPORT_CAPTURE_AS_JPEG, async (event, json: string): P
 ipcMain.handle(Background.CONVERT_RECORD_FILES, async (event, json: string): Promise<string> => {
   validateIPCSender(event.senderFrame);
   const settings = JSON.parse(json) as BatchConversionSettings;
-  return JSON.stringify(await convertRecordFiles(settings));
+  return JSON.stringify(await convertRecordFiles(settings, sendProgress));
 });
 
 ipcMain.handle(Background.LOAD_APP_SETTINGS, async (event): Promise<string> => {
@@ -587,7 +587,7 @@ ipcMain.handle(Background.SAVE_BOOK_IMPORT_SETTINGS, async (event, json: string)
 
 ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promise<string> => {
   validateIPCSender(event.senderFrame);
-  return JSON.stringify(await importBookMoves(JSON.parse(json)));
+  return JSON.stringify(await importBookMoves(JSON.parse(json), sendProgress));
 });
 
 let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
@@ -920,6 +920,10 @@ export function openRecord(path: string): void {
   if (isSupportedRecordFilePath(path)) {
     mainWindow.webContents.send(Renderer.OPEN_RECORD, path);
   }
+}
+
+export function sendProgress(progress: number): void {
+  mainWindow.webContents.send(Renderer.PROGRESS, progress);
 }
 
 setUSIHandlers({

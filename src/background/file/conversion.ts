@@ -42,6 +42,7 @@ async function getAlternativeFilePathWithNumberSuffix(
 
 export async function convertRecordFiles(
   settings: BatchConversionSettings,
+  onProgress?: (progress: number) => void,
 ): Promise<BatchConversionResult> {
   const appSettings = await loadAppSettings();
   const result: BatchConversionResult = {
@@ -67,6 +68,11 @@ export async function convertRecordFiles(
       : new SingleFileWriter(settings, appSettings);
   await writer.open();
   for (const source of sourceFiles) {
+    if (onProgress) {
+      const progress =
+        (result.successTotal + result.failedTotal + result.skippedTotal) / sourceFiles.length;
+      onProgress(progress);
+    }
     const sourceFormat = detectRecordFileFormatByPath(source) as RecordFileFormat;
     try {
       const sourceData = await fs.readFile(source);

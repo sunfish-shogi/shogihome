@@ -303,6 +303,11 @@ export function setup(): void {
   bridge.onUpdateLayoutProfileList((uri, json) => {
     store.updateLayoutProfileList(uri, JSON.parse(json));
   });
+
+  // MISC
+  bridge.onProgress((progress: number) => {
+    busyState.updateProgress(progress);
+  });
 }
 
 export function setupPrompt(): void {

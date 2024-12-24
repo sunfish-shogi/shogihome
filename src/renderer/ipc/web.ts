@@ -463,4 +463,7 @@ export const webAPI: Bridge = {
   getPathForFile(file: File): string {
     return file.name;
   },
+  onProgress(): void {
+    // Do Nothing
+  },
 };

@@ -395,6 +395,9 @@ export function preload(config: Config) {
     getPathForFile() {
       throw new Error("This feature is not available on command line tool");
     },
+    onProgress(): void {
+      // Do Nothing
+    },
   };
 
   global.window = {

@@ -385,6 +385,11 @@ const api: Bridge = {
   getPathForFile(file: File): string {
     return webUtils.getPathForFile(file);
   },
+  onProgress(callback: (progress: number) => void): void {
+    ipcRenderer.on(Renderer.PROGRESS, (_, progress) => {
+      callback(progress);
+    });
+  },
 };
 
 contextBridge.exposeInMainWorld("electronShogiAPI", api);

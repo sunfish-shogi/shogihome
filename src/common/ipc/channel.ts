@@ -104,4 +104,5 @@ export enum Renderer {
   CSA_CLOSE = "csaClose",
   PROMPT_COMMAND = "promptCommand",
   UPDATE_LAYOUT_PROFILE_LIST = "updateLayoutProfileList",
+  PROGRESS = "progress",
 }

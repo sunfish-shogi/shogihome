@@ -141,4 +141,5 @@ export interface Bridge {
   getVersionStatus(): Promise<string>;
   sendTestNotification(): void;
   getPathForFile(file: File): string;
+  onProgress(callback: (progress: number) => void): void;
 }

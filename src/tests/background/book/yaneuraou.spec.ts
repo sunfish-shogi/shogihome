@@ -1,5 +1,5 @@
-import { Readable, Writable } from "node:stream";
-import { loadYaneuraOuBook, storeYaneuraOuBook, validateBookPositionOrdering } from "@/background/book/yaneuraou";
+import { Readable } from "node:stream";
+import { loadYaneuraOuBook, validateBookPositionOrdering } from "@/background/book/yaneuraou";
 
 describe("background/book/yaneuraou", () => {
   describe("loadYaneuraOuBook", () => {
