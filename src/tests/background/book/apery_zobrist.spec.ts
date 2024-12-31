@@ -16,6 +16,10 @@ describe("apery_zobrist", () => {
         wants: "dabcbe6950ce089a",
       },
       {
+        sfen: "lnsgk1snl/1r4g2/p1pppp1pp/6p2/1p5P1/2P6/PPSPPPP1P/7R1/LN1GKGSNL w Bb 12",
+        wants: "ac59e8ffb6da83e7",
+      },
+      {
         sfen: "ln1gk1snl/6gb1/2sppppp1/p7p/2R6/Pr4P2/2PPPPN1P/1BGK2S2/LNS2G2L w 3Pp 26",
         wants: "ffa73ad01aa22070",
       },

@@ -38,7 +38,7 @@ export function toAperyPiece(piece: Piece): number {
   return pieceIndexMap[piece.type] + (piece.color === Color.BLACK ? 0 : 16);
 }
 
-export function toAperyHand(piece: PieceType): number {
+function toAperyHand(piece: PieceType): number {
   return pieceIndexMap[piece];
 }
 

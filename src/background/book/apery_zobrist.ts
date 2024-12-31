@@ -1,5 +1,5 @@
-import { Color, handPieceTypes, Position, Square } from "tsshogi";
-import { toAperyHand, toAperyPiece, toAperySquare } from "./apery_move";
+import { Color, handPieceTypes, PieceType, Position, Square } from "tsshogi";
+import { toAperyPiece, toAperySquare } from "./apery_move";
 
 function fromLittleEndian(hex: string): Buffer {
   const buf = Buffer.from(hex, "hex");
@@ -2686,6 +2686,27 @@ function xorBuffers(buf1: Buffer, buf2: Buffer) {
   return result;
 }
 
+function handIndex(pieceType: PieceType): number {
+  switch (pieceType) {
+    case PieceType.PAWN:
+      return 1;
+    case PieceType.LANCE:
+      return 2;
+    case PieceType.KNIGHT:
+      return 3;
+    case PieceType.SILVER:
+      return 4;
+    case PieceType.GOLD:
+      return 5;
+    case PieceType.BISHOP:
+      return 6;
+    case PieceType.ROOK:
+      return 7;
+    default:
+      throw new Error("Invalid piece type");
+  }
+}
+
 export function hash(hash: string): string {
   const position = Position.newBySFEN(hash);
   if (!position) {
@@ -2703,7 +2724,7 @@ export function hash(hash: string): string {
   }
   for (const pieceType of handPieceTypes) {
     const n = position.hand(position.color).count(pieceType);
-    const pieceIndex = toAperyHand(pieceType);
+    const pieceIndex = handIndex(pieceType);
     result = xorBuffers(result, getHandTable()[(pieceIndex - 1) * 19 + n]);
   }
   if (position.color === Color.WHITE) {
