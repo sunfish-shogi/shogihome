@@ -7,7 +7,7 @@
         <thead>
           <tr>
             <td class="number">No.</td>
-            <td class="text">{{ t.bookMove }}</td>
+            <td class="move">{{ t.bookMove }}</td>
             <td v-show="playable" class="menu">{{ t.play }}</td>
             <td v-show="editable" class="menu">{{ t.edit }}</td>
             <td v-show="editable" class="menu">{{ t.remove }}</td>
@@ -33,7 +33,7 @@
                 </option>
               </select>
             </td>
-            <td class="text">
+            <td class="move">
               <span>{{ formatMove(position, entry.move) }}</span>
             </td>
             <td v-show="playable" class="menu">
@@ -195,6 +195,10 @@ table.list > tbody > tr > td > * {
 }
 td.menu {
   text-align: center;
+}
+td.move {
+  text-align: left;
+  width: 8em;
 }
 td.text {
   text-align: left;
