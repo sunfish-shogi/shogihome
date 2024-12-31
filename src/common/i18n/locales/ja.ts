@@ -144,6 +144,7 @@ export const ja: Texts = {
   draw: "引き分け",
   impass: "持将棋",
   repetitionDraw: "千日手",
+  repetition: "千日手",
   mate: "詰み",
   noMate: "不詰",
   mateSearch: "詰み探索",

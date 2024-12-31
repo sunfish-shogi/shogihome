@@ -1,4 +1,4 @@
-import { BookLoadingMode, BookMove } from "@/common/book";
+import { BookLoadingMode, BookMove, BookMoveEx } from "@/common/book";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
 import api from "@/renderer/ipc/api";
@@ -9,14 +9,14 @@ import { useAppSettings } from "./settings";
 import { useConfirmationStore } from "./confirm";
 import { BookImportSettings, SourceType } from "@/common/settings/book";
 import { t } from "@/common/i18n";
-import { ImmutablePosition } from "tsshogi";
+import { ImmutableRecord } from "tsshogi";
 
 export class BookStore {
   private _mode: BookLoadingMode = "in-memory";
-  private _moves: BookMove[] = [];
+  private _moves: BookMoveEx[] = [];
   private _reactive: UnwrapNestedRefs<BookStore>;
 
-  constructor(private position: ImmutablePosition) {
+  constructor(private record: ImmutableRecord) {
     this._reactive = reactive(this);
   }
 
@@ -28,21 +28,34 @@ export class BookStore {
     return this._mode;
   }
 
-  get moves(): BookMove[] {
+  get moves(): BookMoveEx[] {
     return this._moves;
   }
 
   private async reloadBookMoves() {
     try {
-      const sfen = this.position.sfen;
-      this._moves = await api.searchBookMoves(sfen);
+      const sfen = this.record.position.sfen;
+      const moves = await api.searchBookMoves(sfen);
+      this._moves = moves.map((bookMove) => {
+        const position = this.record.position.clone();
+        const move = position.createMoveByUSI(bookMove.usi);
+        let repetition = 0;
+        if (move) {
+          position.doMove(move);
+          repetition = this.record.getRepetitionCount(position);
+        }
+        return {
+          ...bookMove,
+          repetition,
+        } as BookMoveEx;
+      });
     } catch (e) {
       useErrorStore().add(e);
     }
   }
 
-  onChangePosition(position: ImmutablePosition) {
-    this.position = position;
+  onChangePosition(record: ImmutableRecord) {
+    this.record = record;
     this.reloadBookMoves();
   }
 
@@ -205,9 +218,9 @@ export class BookStore {
 
 export function createBookStore(): UnwrapNestedRefs<BookStore> {
   const store = useStore();
-  const bookStore = new BookStore(store.record.position).reactive;
+  const bookStore = new BookStore(store.record).reactive;
   store.addEventListener("changePosition", () => {
-    bookStore.onChangePosition(store.record.position);
+    bookStore.onChangePosition(store.record);
   });
   return bookStore;
 }

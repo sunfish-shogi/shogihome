@@ -64,6 +64,7 @@
               <span v-if="entry.percentage !== undefined">({{ entry.percentage }}%)</span>
             </td>
             <td class="text">
+              <span v-if="entry.repetition" class="in-comment-label">{{ t.repetition }}</span>
               <span>{{ entry.comment }}</span>
             </td>
           </tr>
@@ -74,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { BookMove } from "@/common/book";
+import { BookMoveEx } from "@/common/book";
 import { formatMove, ImmutablePosition, Move } from "tsshogi";
 import { computed, onUpdated, PropType, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -95,7 +96,7 @@ const props = defineProps({
     required: true,
   },
   moves: {
-    type: Array as PropType<BookMove[]>,
+    type: Array as PropType<BookMoveEx[]>,
     required: true,
   },
   opacity: {
@@ -142,6 +143,7 @@ const moveList = computed(() => {
             ? Math.round((entry.count / totalCount) * 100)
             : undefined,
         comment: entry.comment,
+        repetition: entry.repetition,
       });
     }
   }
@@ -206,5 +208,17 @@ td.small {
 }
 button > .icon {
   height: 1.4em;
+}
+.in-comment-label {
+  display: inline-block;
+  height: 100%;
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--text-separator-color);
+  border-radius: 5px;
 }
 </style>

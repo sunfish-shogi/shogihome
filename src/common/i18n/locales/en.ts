@@ -144,6 +144,7 @@ export const en: Texts = {
   draw: "Draw",
   impass: "Impass",
   repetitionDraw: "Repetition Draw",
+  repetition: "Repetition",
   mate: "Mate",
   noMate: "No Mate",
   mateSearch: "Mate Search",

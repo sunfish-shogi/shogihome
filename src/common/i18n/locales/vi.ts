@@ -144,6 +144,7 @@ export const vi: Texts = {
   draw: "Hòa",
   impass: "Bế tắc",
   repetitionDraw: "Hòa do lặp nước",
+  repetition: "千日手", // TODO: translate
   mate: "Chiếu hết",
   noMate: "Không chiếu hết",
   mateSearch: "Tìm chiếu hết",

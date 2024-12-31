@@ -19,3 +19,7 @@ export type BookImportSummary = {
   entryCount: number; // 新規に登録された定跡手の数
   duplicateCount: number; // 重複した定跡手の数
 };
+
+export type BookMoveEx = BookMove & {
+  repetition?: number; // 千日手
+};
