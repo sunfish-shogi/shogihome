@@ -40,7 +40,7 @@
     "release": "npm run build && npm run build:dev && git add . && git commit -m \"release\"",
     "release:patch": "npm run license:commit && npm version patch && ts-node scripts/publish-release.ts && npm run docs && npm run release",
     "release:minor": "npm run license:commit && npm version minor && ts-node scripts/publish-release.ts && npm run docs && npm run release",
-    "release:preminor": "npm run license:commit && npm version preminor && npm run release",
+    "release:alpha": "npm run license:commit && npm version preminor --preid alpha && npm run release",
     "release:prerelease": "npm run license:commit && npm version prerelease && npm run release",
     "release:stable": "ts-node scripts/publish-release.ts stable && npm run docs && git add . && git commit -m \"update stable version\"",
     "command:compile": "tsc --project ./tsconfig.cmd.json && tsc-alias",
