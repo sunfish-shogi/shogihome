@@ -4,7 +4,7 @@
       <BookView
         class="book-list"
         :position="store.record.position"
-        :moves="bookMoves"
+        :moves="bookStore.moves"
         :playable="store.isMovableByUser"
         :editable="bookEditable"
         @play="playBookMove"
@@ -52,7 +52,6 @@ const bookStore = useBookStore();
 const isBookOperational = computed(
   () => store.appState === AppState.NORMAL && bookStore.mode === "in-memory",
 );
-const bookMoves = computed(() => bookStore.moves);
 const bookEditable = computed(() => bookStore.mode === "in-memory");
 const editingData = ref<
   BookMove & {
@@ -86,7 +85,7 @@ const playBookMove = (move: Move) => {
 };
 
 const editBookMove = (move: Move) => {
-  const target = bookMoves.value.find((bm) => bm.usi === move.usi);
+  const target = bookStore.moves.find((bm) => bm.usi === move.usi);
   if (!target) {
     return;
   }

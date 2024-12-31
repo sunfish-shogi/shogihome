@@ -141,6 +141,7 @@ export const zh_tw: Texts = {
   draw: "平手",
   impass: "持將棋",
   repetitionDraw: "千日手",
+  repetition: "千日手",
   mate: "詰死",
   noMate: "無詰",
   mateSearch: "詰搜尋",
