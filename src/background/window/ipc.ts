@@ -97,6 +97,7 @@ import * as uri from "@/common/uri";
 import { openPath } from "@/background/helpers/electron";
 import {
   clearBook,
+  getBookFormat,
   importBookMoves,
   isBookUnsaved,
   openBook,
@@ -508,7 +509,7 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show open-book dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
-    { name: "YaneuraOu Book Database", extensions: ["db"] },
+    { name: "Book", extensions: ["db", "bin"] },
   ]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
@@ -520,9 +521,11 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event): Promise<string> 
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show save-book dialog");
-  const ret = await showSaveDialog(appSettings.lastBookFilePath, [
-    { name: "YaneuraOu Book Database", extensions: ["db"] },
-  ]);
+  const filter =
+    getBookFormat() === "yane2016"
+      ? { name: "YaneuraOu Book Database", extensions: ["db"] }
+      : { name: "Apery Book", extensions: ["bin"] };
+  const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
   }

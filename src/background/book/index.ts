@@ -1,16 +1,18 @@
-import fs from "node:fs";
+import fs, { ReadStream } from "node:fs";
 import { BookImportSummary, BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
 import { getAppLogger } from "@/background/log";
 import {
   arrayMoveToCommonBookMove,
   Book,
+  BookEntry,
+  BookFormat,
   commonBookMoveToArray,
   IDX_COUNT,
   IDX_USI,
 } from "./types";
 import {
   loadYaneuraOuBook,
-  searchBookMovesOnTheFly,
+  searchYaneuraOuBookMovesOnTheFly,
   storeYaneuraOuBook,
   validateBookPositionOrdering,
 } from "./yaneuraou";
@@ -25,6 +27,8 @@ import { TextDecodingRule } from "@/common/settings/app";
 import { loadAppSettings } from "@/background/settings";
 import { Color, getBlackPlayerName, getWhitePlayerName, Move } from "tsshogi";
 import { t } from "@/common/i18n";
+import { hash as aperyHash } from "./apery_zobrist";
+import { loadAperyBook, searchAperyBookMovesOnTheFly, storeAperyBook } from "./apery";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
@@ -35,14 +39,25 @@ type InMemoryBook = Book & {
 
 type OnTheFlyBook = {
   type: "on-the-fly";
+  format: BookFormat;
   file: fs.promises.FileHandle;
   size: number;
 };
 
+function retrieveEntry(book: InMemoryBook, sfen: string): BookEntry | undefined {
+  switch (book.format) {
+    case "yane2016":
+      return book.yaneEntries[sfen];
+    case "apery":
+      return book.aperyEntries.get(aperyHash(sfen));
+  }
+}
+
 function emptyBook(): BookHandle {
   return {
     type: "in-memory",
-    entries: {},
+    format: "yane2016",
+    yaneEntries: {},
     entryCount: 0,
     duplicateCount: 0,
     saved: true,
@@ -55,6 +70,62 @@ export function isBookUnsaved(): boolean {
   return book.type === "in-memory" && !book.saved;
 }
 
+export function getBookFormat(): BookFormat {
+  return book.format;
+}
+
+function getFormatByPath(path: string): "yane2016" | "apery" {
+  return path.endsWith(".db") ? "yane2016" : "apery";
+}
+
+async function openBookOnTheFly(path: string, size: number): Promise<void> {
+  getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
+  const format = getFormatByPath(path);
+  const file = await fs.promises.open(path, "r");
+  try {
+    if (
+      format === "yane2016" &&
+      !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
+    ) {
+      throw new Error("Book is not ordered by position"); // FIXME: i18n
+    }
+  } catch (e) {
+    await file.close();
+    throw e;
+  }
+  replaceBook({
+    type: "on-the-fly",
+    format,
+    file,
+    size,
+  });
+}
+
+async function openBookInMemory(path: string, size: number): Promise<void> {
+  getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
+  let file: ReadStream | undefined;
+  try {
+    let book: Book;
+    switch (getFormatByPath(path)) {
+      case "yane2016":
+        file = fs.createReadStream(path, "utf-8");
+        book = await loadYaneuraOuBook(file);
+        break;
+      case "apery":
+        file = fs.createReadStream(path, { highWaterMark: 128 * 1024 });
+        book = await loadAperyBook(file);
+        break;
+    }
+    replaceBook({
+      type: "in-memory",
+      saved: true,
+      ...book,
+    });
+  } finally {
+    file?.close();
+  }
+}
+
 export async function openBook(
   path: string,
   options?: BookLoadingOptions,
@@ -63,35 +134,18 @@ export async function openBook(
   if (!stat.isFile()) {
     throw new Error("Not a file: " + path);
   }
+
   const size = stat.size;
   if (options && size > options.onTheFlyThresholdMB * 1024 * 1024) {
-    getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
-    const file = await fs.promises.open(path, "r");
-    try {
-      if (!(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))) {
-        throw new Error("Book is not ordered by position"); // FIXME: i18n
-      }
-    } catch (e) {
-      await file.close();
-      throw e;
-    }
-    return replaceBook({
-      type: "on-the-fly",
-      file,
-      size,
-    }).type;
+    await openBookOnTheFly(path, size);
+    return "on-the-fly";
   } else {
-    getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
-    const file = fs.createReadStream(path, "utf-8");
-    return replaceBook({
-      type: "in-memory",
-      saved: true,
-      ...(await loadYaneuraOuBook(file)),
-    }).type;
+    await openBookInMemory(path, size);
+    return "in-memory";
   }
 }
 
-function replaceBook(newBook: BookHandle): BookHandle {
+function replaceBook(newBook: BookHandle) {
   clearBook();
   book = newBook;
   if (book.type === "in-memory") {
@@ -100,7 +154,6 @@ function replaceBook(newBook: BookHandle): BookHandle {
     }
     getAppLogger().info("Loaded book with %d entries", book.entryCount);
   }
-  return book;
 }
 
 export async function saveBook(path: string) {
@@ -110,7 +163,20 @@ export async function saveBook(path: string) {
   const file = fs.createWriteStream(path, "utf-8");
   try {
     book.saved = true;
-    await storeYaneuraOuBook(book, file);
+    switch (book.format) {
+      case "yane2016":
+        if (!path.endsWith(".db")) {
+          throw new Error("Invalid file extension: " + path);
+        }
+        await storeYaneuraOuBook(book, file);
+        break;
+      case "apery":
+        if (!path.endsWith(".bin")) {
+          throw new Error("Invalid file extension: " + path);
+        }
+        await storeAperyBook(book, file);
+        break;
+    }
   } catch (e) {
     file.close();
     book.saved = false;
@@ -127,12 +193,24 @@ export function clearBook(): void {
 
 export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
   if (book.type === "in-memory") {
-    const moves = book.entries[sfen]?.moves || [];
+    const moves = retrieveEntry(book, sfen)?.moves || [];
     return moves.map(arrayMoveToCommonBookMove);
   } else {
-    const moves = await searchBookMovesOnTheFly(sfen, book.file, book.size);
+    const searchFunc =
+      book.format === "yane2016" ? searchYaneuraOuBookMovesOnTheFly : searchAperyBookMovesOnTheFly;
+    const moves = await searchFunc(sfen, book.file, book.size);
     return moves.map(arrayMoveToCommonBookMove);
   }
+}
+
+function updateBookEntry(entry: BookEntry, move: BookMove): void {
+  for (let i = 0; i < entry.moves.length; i++) {
+    if (entry.moves[i][IDX_USI] === move.usi) {
+      entry.moves[i] = commonBookMoveToArray(move);
+      return;
+    }
+  }
+  entry.moves.push(commonBookMoveToArray(move));
 }
 
 export function updateBookMove(sfen: string, move: BookMove): void {
@@ -140,22 +218,37 @@ export function updateBookMove(sfen: string, move: BookMove): void {
     return;
   }
   book.saved = false;
-  const entry = book.entries[sfen];
-  if (entry) {
-    for (let i = 0; i < entry.moves.length; i++) {
-      if (entry.moves[i][IDX_USI] === move.usi) {
-        entry.moves[i] = commonBookMoveToArray(move);
-        return;
-      }
+  if (book.format === "yane2016") {
+    const entry = book.yaneEntries[sfen];
+    if (entry) {
+      updateBookEntry(entry, move);
+    } else {
+      book.yaneEntries[sfen] = {
+        comment: "",
+        moves: [commonBookMoveToArray(move)],
+        minPly: 0,
+      };
+      book.entryCount++;
     }
-    entry.moves.push(commonBookMoveToArray(move));
   } else {
-    book.entries[sfen] = {
-      comment: "",
-      moves: [commonBookMoveToArray(move)],
-      minPly: 0,
-    };
-    book.entryCount++;
+    if (move.score === undefined || move.count === undefined) {
+      throw new Error("Apery book does not allow to omit score or count"); // FIXME: i18n
+    }
+    if (move.usi2 || move.depth !== undefined || move.comment) {
+      throw new Error("Apery book does not support opponent-move, depth, or comment"); // FIXME: i18n
+    }
+    const hash = aperyHash(sfen);
+    const entry = book.aperyEntries.get(hash);
+    if (entry) {
+      updateBookEntry(entry, move);
+    } else {
+      book.aperyEntries.set(hash, {
+        comment: "",
+        moves: [commonBookMoveToArray(move)],
+        minPly: 0,
+      });
+      book.entryCount++;
+    }
   }
 }
 
@@ -163,7 +256,7 @@ export function removeBookMove(sfen: string, usi: string): void {
   if (book.type === "on-the-fly") {
     return;
   }
-  const entry = book.entries[sfen];
+  const entry = retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -175,7 +268,7 @@ export function updateBookMoveOrder(sfen: string, usi: string, order: number): v
   if (book.type === "on-the-fly") {
     return;
   }
-  const entry = book.entries[sfen];
+  const entry = retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -192,7 +285,7 @@ function updateBookMoveOrderByCounts(sfen: string): void {
   if (book.type === "on-the-fly") {
     return;
   }
-  const entry = book.entries[sfen];
+  const entry = retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -306,7 +399,7 @@ export async function importBookMoves(
 
       const sfen = position.sfen;
       const usi = node.move.usi;
-      const bookMoves = bookRef.entries[sfen]?.moves || [];
+      const bookMoves = retrieveEntry(bookRef, sfen)?.moves || [];
       const moves = bookMoves.map(arrayMoveToCommonBookMove);
       const existing = moves.find((move) => move.usi === usi);
       if (existing) {

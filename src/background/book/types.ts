@@ -1,10 +1,25 @@
 import { BookMove as CommonBookMove } from "@/common/book";
 
-export type Book = {
-  entries: { [sfen: string]: BookEntry };
+export type BookFormatYane2016 = "yane2016";
+export type BookFormatApery = "apery";
+export type BookFormat = BookFormatYane2016 | BookFormatApery;
+
+type BookCommon = {
   entryCount: number;
   duplicateCount: number;
 };
+
+export type YaneBook = BookCommon & {
+  format: BookFormatYane2016;
+  yaneEntries: { [sfen: string]: BookEntry };
+};
+
+export type AperyBook = BookCommon & {
+  format: BookFormatApery;
+  aperyEntries: Map<bigint, BookEntry>;
+};
+
+export type Book = YaneBook | AperyBook;
 
 export type BookEntry = {
   comment: string; // 局面に対するコメント

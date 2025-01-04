@@ -1,7 +1,9 @@
 import path from "node:path";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import {
   clearBook,
+  getBookFormat,
   importBookMoves,
   openBook,
   removeBookMove,
@@ -12,8 +14,19 @@ import {
 } from "@/background/book";
 import { getTempPathForTesting } from "@/background/proc/env";
 import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book";
+import { createTestAperyBookFile } from "@/tests/mock/book";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
+
+function sha256File(filePath: string) {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash("sha256");
+    const stream = fs.createReadStream(filePath);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.on("end", () => resolve(hash.digest("hex")));
+    stream.on("error", reject);
+  });
+}
 
 describe("background/book", () => {
   beforeAll(() => {
@@ -24,49 +37,115 @@ describe("background/book", () => {
     clearBook();
   });
 
+  it("default book format", () => {
+    expect(getBookFormat()).toBe("yane2016");
+  });
+
   describe("openBook", () => {
-    const patterns = [
-      { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
-      { options: { onTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
-    ];
-    for (const pattern of patterns) {
-      it(`mode=${pattern.mode}`, async () => {
-        const mode = await openBook("src/tests/testdata/book/yaneuraou.db", pattern.options);
-        expect(mode).toBe(pattern.mode);
+    describe("yaneuraou.db", () => {
+      const patterns = [
+        { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
+        { options: { onTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
+      ];
+      for (const pattern of patterns) {
+        it(`mode=${pattern.mode}`, async () => {
+          const mode = await openBook("src/tests/testdata/book/yaneuraou.db", pattern.options);
+          expect(mode).toBe(pattern.mode);
 
-        const moves = await searchBookMoves(
-          "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-        );
-        expect(moves).toHaveLength(5);
-        expect(moves[0].usi).toBe("2g2f");
-        expect(moves[0].usi2).toBe("3c3d");
-        expect(moves[0].score).toBe(63);
-        expect(moves[0].depth).toBe(27);
-        expect(moves[1].usi).toBe("7g7f");
-        expect(moves[1].usi2).toBeUndefined();
-        expect(moves[1].score).toBe(20);
-        expect(moves[1].depth).toBe(25);
-        expect(moves[2].usi).toBe("5g5f");
-        expect(moves[3].usi).toBe("2h7h");
-        expect(moves[4].usi).toBe("3g3f");
-        const moves2 = await searchBookMoves(
-          "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
-        );
-        expect(moves2).toHaveLength(3);
-        const moves3 = await searchBookMoves(
-          "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
-        );
-        expect(moves3).toHaveLength(0);
+          const moves = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+          );
+          expect(moves).toHaveLength(5);
+          expect(moves[0].usi).toBe("2g2f");
+          expect(moves[0].usi2).toBe("3c3d");
+          expect(moves[0].score).toBe(63);
+          expect(moves[0].depth).toBe(27);
+          expect(moves[1].usi).toBe("7g7f");
+          expect(moves[1].usi2).toBeUndefined();
+          expect(moves[1].score).toBe(20);
+          expect(moves[1].depth).toBe(25);
+          expect(moves[2].usi).toBe("5g5f");
+          expect(moves[3].usi).toBe("2h7h");
+          expect(moves[4].usi).toBe("3g3f");
+          const moves2 = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+          );
+          expect(moves2).toHaveLength(3);
+          const moves3 = await searchBookMoves(
+            "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
+          );
+          expect(moves3).toHaveLength(0);
 
-        // comments
-        expect(moves[0].comment).toBe(
-          // In on-the-fly mode, comment-only lines will be ignored.
-          pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
-        );
-        expect(moves[1].comment).toBe("single line comment");
-        expect(moves[2].comment).toBe("");
-      });
-    }
+          // comments
+          expect(moves[0].comment).toBe(
+            // In on-the-fly mode, comment-only lines will be ignored.
+            pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
+          );
+          expect(moves[1].comment).toBe("single line comment");
+          expect(moves[2].comment).toBe("");
+        });
+      }
+    });
+
+    describe("apery.bin", () => {
+      const patterns = [
+        { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
+        { options: { onTheFlyThresholdMB: 0.00005 }, mode: "on-the-fly" },
+      ];
+      for (const pattern of patterns) {
+        it(`mode=${pattern.mode}`, async () => {
+          const mode = await openBook("src/tests/testdata/book/apery.bin", pattern.options);
+          expect(mode).toBe(pattern.mode);
+
+          const moves = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 4",
+          );
+          expect(moves).toHaveLength(3);
+          expect(moves[0].usi).toBe("4c4d");
+          expect(moves[0].score).toBe(-30);
+          expect(moves[0].count).toBe(69);
+          expect(moves[1].usi).toBe("3d3e");
+          expect(moves[1].score).toBe(-50);
+          expect(moves[1].count).toBe(23);
+          expect(moves[2].usi).toBe("2c2d");
+          expect(moves[2].score).toBe(-100);
+          expect(moves[2].count).toBe(8);
+
+          const singleMoveCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 2",
+            "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 6",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL b - 7",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/7P1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 8",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7p1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL b p 9",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1B1K5/LNSG1GSNL w Pp 10",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1+b1K5/LNSG1GSNL b Pbp 11",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w BPbp 12",
+            "lnsgkgsnl/7r1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b BPbp 13",
+            "lnsgkgsnl/7r1/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w Bbp 14",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b Bbp 15",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bbp 16",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 17",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bp 18",
+          ];
+          for (const sfen of singleMoveCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(1);
+          }
+
+          const notFoundCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+            "lnsgk1snl/4r1g2/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 19",
+          ];
+          for (const sfen of notFoundCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(0);
+          }
+        });
+      }
+    });
   });
 
   it("saveBook", async () => {
@@ -103,13 +182,121 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 `);
   });
 
-  it("copy", async () => {
-    const copyFilePath = path.join(tmpdir, "copy.db");
-    await openBook("src/tests/testdata/book/yaneuraou.db");
-    await saveBook(copyFilePath);
-    const output = fs.readFileSync(copyFilePath, "utf-8");
-    const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-copy.db", "utf-8");
-    expect(output).toBe(expected);
+  describe("updateBookMove", () => {
+    it("yaneuraou", async () => {
+      const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
+      updateBookMove(sfen, {
+        usi: "2f2e",
+        usi2: "8d8e",
+        score: 42,
+        depth: 20,
+        count: 123,
+        comment: "yokofu",
+      });
+      updateBookMove(sfen, {
+        usi: "6i7h",
+        usi2: "4a3b",
+        score: -30,
+        depth: 19,
+        count: 21,
+        comment: "",
+      });
+      const moves = await searchBookMoves(sfen);
+      expect(moves).toHaveLength(2);
+      expect(moves[0]).toEqual({
+        usi: "2f2e",
+        usi2: "8d8e",
+        score: 42,
+        depth: 20,
+        count: 123,
+        comment: "yokofu",
+      });
+      expect(moves[1]).toEqual({
+        usi: "6i7h",
+        usi2: "4a3b",
+        score: -30,
+        depth: 19,
+        count: 21,
+        comment: "",
+      });
+    });
+
+    it("apery", async () => {
+      await openBook("src/tests/testdata/book/apery.bin");
+      const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
+      try {
+        updateBookMove(sfen, {
+          usi: "2f2e",
+          usi2: "8d8e",
+          score: 42,
+          depth: 20,
+          count: 123,
+          comment: "yokofu",
+        });
+        throw "should not reach here";
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+      }
+      expect(await searchBookMoves(sfen)).toHaveLength(0);
+      updateBookMove(sfen, {
+        usi: "2f2e",
+        score: 42,
+        count: 123,
+        comment: "",
+      });
+      updateBookMove(sfen, {
+        usi: "6i7h",
+        score: -30,
+        count: 21,
+        comment: "",
+      });
+      const moves = await searchBookMoves(sfen);
+      expect(moves).toHaveLength(2);
+      expect(moves[0]).toEqual({
+        usi: "2f2e",
+        score: 42,
+        count: 123,
+        comment: "",
+      });
+      expect(moves[1]).toEqual({
+        usi: "6i7h",
+        score: -30,
+        count: 21,
+        comment: "",
+      });
+    });
+  });
+
+  describe("copy", () => {
+    it("yaneuraou", async () => {
+      const copyFilePath = path.join(tmpdir, "copy.db");
+      await openBook("src/tests/testdata/book/yaneuraou.db");
+      await saveBook(copyFilePath);
+      const output = fs.readFileSync(copyFilePath, "utf-8");
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-copy.db", "utf-8");
+      expect(output).toBe(expected);
+    });
+
+    it("apery", async () => {
+      const copyFilePath = path.join(tmpdir, "copy.bin");
+      await openBook("src/tests/testdata/book/apery.bin");
+      await saveBook(copyFilePath);
+      const output = fs.readFileSync(copyFilePath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/apery.bin", "hex");
+      expect(output).toBe(expected);
+    });
+
+    it("apery large", async () => {
+      // チャンクの境界処理をテストするために大きなファイルを作成
+      const sourcePath = path.join(tmpdir, "source.bin");
+      await createTestAperyBookFile(sourcePath, 1_000_000); // 1MB
+      await openBook(sourcePath);
+      const copyFilePath = path.join(tmpdir, "copy-large.bin");
+      await saveBook(copyFilePath);
+      const output = await sha256File(copyFilePath);
+      const expected = await sha256File(sourcePath);
+      expect(output).toBe(expected);
+    });
   });
 
   it("updateBookMoveOrder", async () => {

@@ -44,6 +44,7 @@ import { humanPlayer } from "@/renderer/players/human";
 import { t } from "@/common/i18n";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import BookView from "@/renderer/view/primitive/BookView.vue";
+import { useErrorStore } from "@/renderer/store/error";
 
 const store = useStore();
 const bookStore = useBookStore();
@@ -111,15 +112,19 @@ const updateBookMoveOrder = (move: Move, order: number) => {
   bookStore.updateMoveOrder(store.record.position.sfen, move.usi, order);
 };
 
-const onEditBookMove = (data: EditResult) => {
+const onEditBookMove = async (data: EditResult) => {
   if (!editingData.value) {
     return;
   }
-  bookStore.updateMove(editingData.value.sfen, {
-    usi: editingData.value.usi,
-    ...data,
-  });
-  editingData.value = undefined;
+  try {
+    await bookStore.updateMove(editingData.value.sfen, {
+      usi: editingData.value.usi,
+      ...data,
+    });
+    editingData.value = undefined;
+  } catch (e) {
+    useErrorStore().add(e);
+  }
 };
 
 const onCancelEditBookMove = () => {

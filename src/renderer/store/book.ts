@@ -117,18 +117,15 @@ export class BookStore {
       });
   }
 
-  updateMove(sfen: string, move: BookMove) {
+  async updateMove(sfen: string, move: BookMove) {
     useBusyState().retain();
-    api
+    return api
       .updateBookMove(sfen, move)
       .then(() => this.reloadBookMoves())
       .then(async () => {
         const settings = await api.loadBookImportSettings();
         settings.sourceType = SourceType.MEMORY;
         await api.saveBookImportSettings(settings);
-      })
-      .catch((e) => {
-        useErrorStore().add(e);
       })
       .finally(() => {
         useBusyState().release();
