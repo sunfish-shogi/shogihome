@@ -198,8 +198,9 @@ import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useErrorStore } from "@/renderer/store/error";
 
 const lazyUpdateDelay = 100;
-const marginHor = 150;
-const marginVer = 200;
+const windowMarginHor = 150;
+const windowMarginVer = 200;
+const frameMargin = 2; // 境界部分の丸めによる周囲の映り込みを防ぐ
 const aspectRatio = 16 / 9;
 
 const store = useStore();
@@ -255,10 +256,10 @@ const textShadow = computed(() => {
 });
 
 const maxSize = computed(() => {
-  const height = appSettings.positionImageSize / zoom.value;
-  const width = height * aspectRatio;
-  const maxWidth = windowSize.width - marginHor;
-  const maxHeight = windowSize.height - marginVer;
+  const height = appSettings.positionImageSize / zoom.value - frameMargin * 2;
+  const width = height * aspectRatio + frameMargin * 2;
+  const maxWidth = windowSize.width - windowMarginHor;
+  const maxHeight = windowSize.height - windowMarginVer;
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
@@ -359,7 +360,12 @@ const changeType = (value: string) => {
 const getRect = () => {
   const elem = board.value as HTMLElement;
   const domRect = elem.getBoundingClientRect();
-  return new Rect(domRect.x, domRect.y, domRect.width, domRect.height);
+  return new Rect(
+    domRect.x + frameMargin,
+    domRect.y + frameMargin,
+    domRect.width - frameMargin * 2,
+    domRect.height - frameMargin * 2,
+  );
 };
 
 const saveAsPNG = () => {
