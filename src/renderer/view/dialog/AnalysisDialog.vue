@@ -87,8 +87,12 @@
         </div>
       </div>
       <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="onStart()">解析実行</button>
-        <button data-hotkey="Escape" @click="onCancel()">キャンセル</button>
+        <button data-hotkey="Enter" autofocus @click="onStart()">
+          {{ t.analyze }}
+        </button>
+        <button data-hotkey="Escape" @click="onCancel()">
+          {{ t.cancel }}
+        </button>
       </div>
     </dialog>
   </div>
