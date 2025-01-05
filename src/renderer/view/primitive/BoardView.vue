@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="frame" :style="main.frame.style" @click="clickFrame()">
+    <div ref="frame" class="frame" :style="main.frame.style" @click="clickFrame()">
       <!-- 盤面 -->
       <div class="board" :style="main.boardStyle">
         <div v-if="board.background.textureImagePath" :style="board.background.style">
@@ -62,16 +62,31 @@
         style="object-fit: cover; object-position: left top"
       />
 
+      <!-- ドラッグ中の駒 -->
+      <div v-if="state.isDragging" class="dragged-piece" :style="dragStyle">
+        <img class="piece-image" :src="state.piecePath" />
+      </div>
+
       <!-- 操作用レイヤー -->
       <div class="board" :style="main.boardStyle">
         <div
           v-for="square in board.squares"
           :key="square.id"
           :style="square.style"
-          @click.stop.prevent="clickSquare(square.file, square.rank)"
+          @mousedown.stop.prevent="dragSquare(square.file, square.rank, $event)"
+          @touchstart.stop.prevent="dragSquare(square.file, square.rank, $event)"
+          @mouseup.stop.prevent="dropSquare(square.file, square.rank, $event)"
           @dblclick.stop.prevent="clickSquareR(square.file, square.rank)"
           @contextmenu.stop.prevent="clickSquareR(square.file, square.rank)"
         ></div>
+        <!-- <div
+          v-for="square in board.squares"
+          :key="square.id"
+          :style="square.style"
+          @click.stop.prevent="clickSquare(square.file, square.rank)"
+          @dblclick.stop.prevent="clickSquareR(square.file, square.rank)"
+          @contextmenu.stop.prevent="clickSquareR(square.file, square.rank)"
+        ></div> -->
         <div v-if="board.promotion" class="promotion-selector" :style="board.promotion.style">
           <div class="select-button promote" @click.stop.prevent="clickPromote()">
             <img class="piece-image" :src="board.promotion.promoteImagePath" draggable="false" />
@@ -169,7 +184,7 @@ import {
   PositionChange,
   secondsToHHMMSS,
 } from "tsshogi";
-import { computed, reactive, watch, PropType } from "vue";
+import { computed, reactive, ref, watch, PropType } from "vue";
 import {
   BoardImageType,
   BoardLabelType,
@@ -188,10 +203,16 @@ import {
 } from "./board/hand";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { CompactLayoutBuilder } from "./board/compact";
+import { commonParams } from "./board/params";
 
 type State = {
   pointer: Square | Piece | null;
   reservedMove: Move | null;
+  isDragging: boolean;
+  draggedFrom: Square | null;
+  draggedPiece: Piece | null;
+  piecePath: string | null;
+  pieceSelected: boolean;
 };
 
 const props = defineProps({
@@ -321,6 +342,11 @@ const emit = defineEmits<{
 const state = reactive({
   pointer: null,
   reservedMove: null,
+  isDragging: false,
+  draggedFrom: null,
+  draggedPiece: null,
+  piecePath: null,
+  pieceSelected: false,
 } as State);
 
 const resetState = () => {
@@ -335,9 +361,17 @@ watch(
   },
 );
 
+const frame = ref<HTMLElement | null>(null);
+
 const clickFrame = () => {
-  resetState();
+  // resetState();
 };
+
+const dragStyle = reactive({
+  position: "absolute",
+  width: "0px",
+  height: "0px",
+});
 
 const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color | undefined) => {
   const prevPointer = state.pointer;
@@ -398,6 +432,85 @@ const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color 
     return;
   }
   state.pointer = newPointer;
+};
+
+const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) => {
+  if (event.button === 0) {
+    const square = new Square(file, rank);
+    const piece = props.position.board.at(square);
+    if ((!props.allowMove && !props.allowEdit) || !piece) {
+      return;
+    }
+    if (!props.allowEdit && piece.color !== props.position.color) {
+      return;
+    }
+    moveDraggedPiece(event);
+
+    if (!square.equals(state.draggedFrom)) {
+      state.draggedFrom = square;
+      state.draggedPiece = piece;
+      state.piecePath = config.value.pieceImages[piece.color][piece.type];
+      state.pieceSelected = false;
+      updatePointer(state.draggedFrom, !state.draggedPiece, state.draggedPiece?.color);
+    }
+
+    state.isDragging = true;
+    window.addEventListener('mousemove', moveDraggedPiece);
+    window.addEventListener('mouseup', stopDragging);
+  }
+};
+
+const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
+  const frameRect = frame.value.getBoundingClientRect();
+  const width = commonParams.piece.width * main.value.ratio;
+  const height = commonParams.piece.height * main.value.ratio;
+  dragStyle.left = (event.clientX - frameRect.left) - width / 2 + "px";
+  dragStyle.top = (event.clientY - frameRect.top) - height / 2 + "px";
+  dragStyle.width = width + "px";
+  dragStyle.height = height + "px";
+};
+
+const stopDragging = () => {
+  state.isDragging = false;
+
+  window.removeEventListener('mousemove', moveDraggedPiece);
+  window.removeEventListener('mouseup', stopDragging);
+};
+
+const dropSquare = (file: number, rank: number, event: event) => {
+  if (event.button === 0) {
+    stopDragging();
+
+    if (!state.draggedPiece) {
+      return;
+    }
+
+    const square = new Square(file, rank);
+    const piece = props.position.board.at(square);
+    const empty = !piece;
+    
+    if (square.equals(state.draggedFrom)) {
+      if (state.pieceSelected) {
+        resetState();
+        state.draggedFrom = null;
+        state.draggedPiece = null;
+        state.piecePath = null;
+        state.pieceSelected = false;
+      } else {
+        state.pieceSelected = true;
+      }
+      return;
+    }
+
+    if (piece?.color == state.draggedPiece?.color) {
+      resetState();
+    } else {
+      updatePointer(square, empty, piece?.color);
+    }
+    state.draggedFrom = null;
+    state.draggedPiece = null;
+    state.piecePath = null;
+  }
 };
 
 const clickSquare = (file: number, rank: number) => {
