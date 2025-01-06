@@ -208,11 +208,11 @@ import { commonParams } from "./board/params";
 type State = {
   pointer: Square | Piece | null;
   reservedMove: Move | null;
+  pieceSelected: boolean;
   isDragging: boolean;
   draggedFrom: Square | null;
   draggedPiece: Piece | null;
   piecePath: string | null;
-  pieceSelected: boolean;
 };
 
 const props = defineProps({
@@ -342,16 +342,17 @@ const emit = defineEmits<{
 const state = reactive({
   pointer: null,
   reservedMove: null,
+  pieceSelected: false,
   isDragging: false,
   draggedFrom: null,
   draggedPiece: null,
   piecePath: null,
-  pieceSelected: false,
 } as State);
 
 const resetState = () => {
   state.pointer = null;
   state.reservedMove = null;
+  state.pieceSelected = false;
 };
 
 watch(
@@ -438,25 +439,30 @@ const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
   if (event.button === 0) {
     const square = new Square(file, rank);
     const piece = props.position.board.at(square);
-    if ((!props.allowMove && !props.allowEdit) || !piece) {
+    const empty = !piece;
+
+    console.log("Drag", file, rank);
+
+    const prevPointer = state.pointer;
+    const newPointer = square;
+
+    if ((!props.allowMove && !props.allowEdit) || empty) {
       return;
     }
     if (!props.allowEdit && piece.color !== props.position.color) {
       return;
     }
-    moveDraggedPiece(event);
 
-    if (!square.equals(state.draggedFrom)) {
-      state.draggedFrom = square;
-      state.draggedPiece = piece;
+    if (!newPointer.equals(prevPointer)) {
+      resetState();
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
-      state.pieceSelected = false;
-      updatePointer(state.draggedFrom, !state.draggedPiece, state.draggedPiece?.color);
     }
-
+    moveDraggedPiece(event);
     state.isDragging = true;
     window.addEventListener('mousemove', moveDraggedPiece);
     window.addEventListener('mouseup', stopDragging);
+    
+    state.pointer = newPointer;
   }
 };
 
@@ -479,37 +485,100 @@ const stopDragging = () => {
 
 const dropSquare = (file: number, rank: number, event: event) => {
   if (event.button === 0) {
-    stopDragging();
-
-    if (!state.draggedPiece) {
-      return;
-    }
-
     const square = new Square(file, rank);
     const piece = props.position.board.at(square);
     const empty = !piece;
-    
-    if (square.equals(state.draggedFrom)) {
-      if (state.pieceSelected) {
-        resetState();
-        state.draggedFrom = null;
-        state.draggedPiece = null;
-        state.piecePath = null;
-        state.pieceSelected = false;
-      } else {
-        state.pieceSelected = true;
-      }
+
+    stopDragging();
+
+    console.log("Drop", file, rank);
+
+    const prevPointer = state.pointer;
+    const newPointer = square;
+
+    console.log(prevPointer, newPointer);
+    if (!prevPointer) {
       return;
     }
 
-    if (piece?.color == state.draggedPiece?.color) {
-      resetState();
-    } else {
-      updatePointer(square, empty, piece?.color);
+    if (prevPointer instanceof Square && newPointer instanceof Square && newPointer.equals(prevPointer)) {
+      state.pieceSelected = !state.pieceSelected;
+      if (!state.pieceSelected) {
+        resetState();
+      }
+      return;
     }
-    state.draggedFrom = null;
-    state.draggedPiece = null;
-    state.piecePath = null;
+    // if (prevPointer instanceof Piece && newPointer instanceof Piece && newPointer.equals(prevPointer)) {
+    //   state.pieceSelected = !state.pieceSelected;
+    //   return;
+    // }
+    const editFrom = prevPointer;
+    const editTo = newPointer instanceof Square ? newPointer : newPointer.color;
+    if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
+      emit("edit", {
+        move: {
+          from: prevPointer,
+          to: editTo,
+        },
+      });
+      return;
+    }
+    if (props.allowMove && newPointer instanceof Square) {
+      const moveFrom = prevPointer instanceof Square ? prevPointer : prevPointer.type;
+      const moveTo = newPointer;
+      const move = props.position.createMove(moveFrom, moveTo);
+      if (!move) {
+        return;
+      }
+      const noProm = props.position.isValidMove(move);
+      const prom = props.position.isValidMove(move.withPromote());
+      if (noProm && prom) {
+        state.reservedMove = move;
+        return;
+      }
+      if (noProm) {
+        emit("move", move);
+        return;
+      }
+      if (prom) {
+        emit("move", move.withPromote());
+        return;
+      }
+      resetState();
+    }
+
+    if ((!props.allowMove && !props.allowEdit) || empty) {
+      return;
+    }
+    if (!props.allowEdit && piece.color !== props.position.color) {
+      return;
+    }
+
+    // if (!state.draggedPiece) {
+    //   return;
+    // }
+    
+    // if (square.equals(state.draggedFrom)) {
+    //   if (state.pieceSelected) {
+    //     resetState();
+    //     state.draggedFrom = null;
+    //     state.draggedPiece = null;
+    //     state.piecePath = null;
+    //     state.pieceSelected = false;
+    //   } else {
+    //     state.pieceSelected = true;
+    //   }
+    //   return;
+    // }
+
+    // if (piece?.color == state.draggedPiece?.color) {
+    //   resetState();
+    // } else {
+    //   updatePointer(square, empty, piece?.color);
+    // }
+    // state.draggedFrom = null;
+    // state.draggedPiece = null;
+    // state.piecePath = null;
   }
 };
 
