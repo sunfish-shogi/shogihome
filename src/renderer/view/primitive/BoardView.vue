@@ -97,20 +97,6 @@
       </div>
       <div class="hand" :style="main.blackHandStyle">
         <div
-          :style="blackHand.touchAreaStyle"
-          @click.stop.prevent="clickHandArea(Color.BLACK)"
-        ></div>
-        <!-- <div
-          :style="blackHand.touchAreaStyle"
-          @mousedown.stop.prevent="dragHandArea(Color.BLACK, $event)"
-        ></div> -->
-        <!-- <div
-          v-for="pointer in blackHand.pointers"
-          :key="pointer.id"
-          :style="pointer.style"
-          @click.stop.prevent="clickHand(Color.BLACK, pointer.type)"
-        ></div> -->
-        <div
           v-for="pointer in blackHand.pointers"
           :key="pointer.id"
           :style="pointer.style"
@@ -119,20 +105,6 @@
         ></div>
       </div>
       <div class="hand" :style="main.whiteHandStyle">
-        <div
-          :style="whiteHand.touchAreaStyle"
-          @click.stop.prevent="clickHandArea(Color.WHITE)"
-        ></div>
-        <!-- <div
-          :style="whiteHand.touchAreaStyle"
-          @mousedown.stop.prevent="dragHandArea(Color.WHITE, $event)"
-        ></div> -->
-        <!-- <div
-          v-for="pointer in whiteHand.pointers"
-          :key="pointer.id"
-          :style="pointer.style"
-          @click.stop.prevent="clickHand(Color.WHITE, pointer.type)"
-        ></div> -->
         <div
           v-for="pointer in whiteHand.pointers"
           :key="pointer.id"
@@ -418,7 +390,7 @@ const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color 
   }
   if (prevPointer) {
     const editFrom = prevPointer;
-    const editTo = newPointer instanceof Square ? newPointer : newPointer.color;
+    const editTo = newPointer instanceof Square ? newPointer : (newPointer as Piece).color;
     if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
       emit("edit", {
         move: {
@@ -476,7 +448,7 @@ const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
     if (!props.allowEdit && piece.color !== props.position.color) {
       return;
     }
-    if (!prevPointer || !newPointer.equals(prevPointer)) {
+    if (!prevPointer || (prevPointer instanceof Square && !newPointer.equals(prevPointer))) {
       resetState();
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
@@ -510,7 +482,7 @@ const dropSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
       return;
     }
     const editFrom = prevPointer;
-    const editTo = newPointer instanceof Square ? newPointer : newPointer.color;
+    const editTo = newPointer instanceof Square ? newPointer : (newPointer as Piece).color;
     if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
       emit("edit", {
         move: {
@@ -567,7 +539,7 @@ const dragHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
     if (!props.allowEdit && color !== props.position.color) {
       return;
     }
-    if (!prevPointer || !newPointer.equals(prevPointer)) {
+    if (!prevPointer || (prevPointer instanceof Piece && !newPointer.equals(prevPointer))) {
       resetState();
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
@@ -598,6 +570,17 @@ const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
       }
       return;
     }
+    const editFrom = prevPointer;
+    const editTo = newPointer instanceof Square ? newPointer : (newPointer as Piece).color;
+    if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
+      emit("edit", {
+        move: {
+          from: prevPointer,
+          to: editTo,
+        },
+      });
+      return;
+    }
     resetState();
   }
 };
@@ -622,26 +605,6 @@ const stopDragging = () => {
   state.isDragging = false;
   window.removeEventListener('mousemove', moveDraggedPiece);
   window.removeEventListener('mouseup', stopDragging);
-};
-
-const clickSquare = (file: number, rank: number) => {
-  const square = new Square(file, rank);
-  const piece = props.position.board.at(square);
-  const empty = !piece;
-  updatePointer(square, empty, piece?.color);
-};
-
-const clickHandArea = (color: Color) => {
-  console.log("Click hand area", color);
-  // 局面編集の場合はどの持ち駒でもない領域をクリックしても移動先として認識する。
-  // empty = true なので移動先としてのみ利用され選択は残らない。
-  updatePointer(new Piece(color, PieceType.PAWN), true, color);
-};
-
-const clickHand = (color: Color, type: PieceType) => {
-  console.log("Click hand area", color, type);
-  const empty = props.position.hand(color).count(type) === 0;
-  updatePointer(new Piece(color, type), empty, color);
 };
 
 const clickSquareR = (file: number, rank: number) => {
