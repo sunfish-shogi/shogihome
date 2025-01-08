@@ -522,7 +522,7 @@ const startDragging = (event: MouseEvent | TouchEvent) => {
   // ドラッグ操作を開始する
   state.isDragging = true;
   moveDraggedPiece(event);
-  if(event instanceof MouseEvent) {
+  if (event instanceof MouseEvent) {
     window.addEventListener("mousemove", moveDraggedPiece);
     window.addEventListener("mouseup", stopDragging);
   } else {
