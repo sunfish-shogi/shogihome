@@ -101,7 +101,9 @@
           :key="pointer.id"
           :style="pointer.style"
           @mousedown.stop.prevent="dragHand(Color.BLACK, pointer.type, $event)"
+          @touchstart.stop.prevent="dragHand(Color.BLACK, pointer.type, $event)"
           @mouseup.stop.prevent="dropHand(Color.BLACK, pointer.type, $event)"
+          @touchend.stop.prevent="dropHand(Color.BLACK, pointer.type, $event)"
         ></div>
       </div>
       <div class="hand" :style="main.whiteHandStyle">
@@ -110,7 +112,9 @@
           :key="pointer.id"
           :style="pointer.style"
           @mousedown.stop.prevent="dragHand(Color.WHITE, pointer.type, $event)"
+          @touchstart.stop.prevent="dragHand(Color.WHITE, pointer.type, $event)"
           @mouseup.stop.prevent="dropHand(Color.WHITE, pointer.type, $event)"
+          @touchend.stop.prevent="dropHand(Color.WHITE, pointer.type, $event)"
         ></div>
       </div>
 
