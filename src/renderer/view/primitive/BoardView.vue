@@ -5,7 +5,7 @@
       class="frame"
       :style="main.frame.style"
       @mousedown.stop.prevent="clickFrame()"
-      @touchdown.stop.prevent="clickFrame()"
+      @touchstart.stop.prevent="clickFrame()"
     >
       <!-- 盤面 -->
       <div class="board" :style="main.boardStyle">
@@ -393,9 +393,7 @@ const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
     moveDraggedPiece(event);
-    state.isDragging = true;
-    window.addEventListener("mousemove", moveDraggedPiece);
-    window.addEventListener("mouseup", stopDragging);
+    startDragging();
     state.pointer = newPointer;
   }
 };
@@ -482,9 +480,7 @@ const dragHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
     moveDraggedPiece(event);
-    state.isDragging = true;
-    window.addEventListener("mousemove", moveDraggedPiece);
-    window.addEventListener("mouseup", stopDragging);
+    startDragging();
     state.pointer = newPointer;
   }
 };
@@ -524,6 +520,15 @@ const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
   }
 };
 
+const startDragging = () => {
+  // ドラッグ操作を開始する
+  state.isDragging = true;
+  window.removeEventListener("mousemove", moveDraggedPiece);
+  window.removeEventListener("mouseup", stopDragging);
+  window.removeEventListener("touchmove", moveDraggedPiece);
+  window.removeEventListener("touchend", stopDragging);
+};
+
 const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
   // 駒をドラッグ中に位置を更新する
   const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
@@ -544,6 +549,8 @@ const stopDragging = () => {
   state.isDragging = false;
   window.removeEventListener("mousemove", moveDraggedPiece);
   window.removeEventListener("mouseup", stopDragging);
+  window.removeEventListener("touchmove", moveDraggedPiece);
+  window.removeEventListener("touchend", stopDragging);
 };
 
 const clickSquareR = (file: number, rank: number) => {
