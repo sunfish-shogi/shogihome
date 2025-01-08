@@ -392,8 +392,7 @@ const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
       resetState();
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
-    moveDraggedPiece(event);
-    startDragging();
+    startDragging(event);
     state.pointer = newPointer;
   }
 };
@@ -405,7 +404,7 @@ const dropSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
     const empty = !piece;
     const prevPointer = state.pointer;
     const newPointer = square;
-    stopDragging();
+    stopDragging(event);
     if (!prevPointer) {
       return;
     }
@@ -479,8 +478,7 @@ const dragHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
       resetState();
       state.piecePath = config.value.pieceImages[piece.color][piece.type];
     }
-    moveDraggedPiece(event);
-    startDragging();
+    startDragging(event);
     state.pointer = newPointer;
   }
 };
@@ -490,7 +488,7 @@ const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
     const piece = new Piece(color, type);
     const prevPointer = state.pointer;
     const newPointer = piece;
-    stopDragging();
+    stopDragging(event);
     if (!prevPointer) {
       return;
     }
@@ -520,13 +518,17 @@ const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
   }
 };
 
-const startDragging = () => {
+const startDragging = (event: MouseEvent | TouchEvent) => {
   // ドラッグ操作を開始する
   state.isDragging = true;
-  window.removeEventListener("mousemove", moveDraggedPiece);
-  window.removeEventListener("mouseup", stopDragging);
-  window.removeEventListener("touchmove", moveDraggedPiece);
-  window.removeEventListener("touchend", stopDragging);
+  moveDraggedPiece(event);
+  if(event instanceof MouseEvent) {
+    window.addEventListener("mousemove", moveDraggedPiece);
+    window.addEventListener("mouseup", stopDragging);
+  } else {
+    window.addEventListener("touchmove", moveDraggedPiece);
+    window.addEventListener("touchend", stopDragging);
+  }
 };
 
 const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
@@ -544,13 +546,16 @@ const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
   dragStyle.height = height + "px";
 };
 
-const stopDragging = () => {
+const stopDragging = (event: MouseEvent | TouchEvent) => {
   // ドラッグ操作を終了する
   state.isDragging = false;
-  window.removeEventListener("mousemove", moveDraggedPiece);
-  window.removeEventListener("mouseup", stopDragging);
-  window.removeEventListener("touchmove", moveDraggedPiece);
-  window.removeEventListener("touchend", stopDragging);
+  if (event instanceof MouseEvent) {
+    window.removeEventListener("mousemove", moveDraggedPiece);
+    window.removeEventListener("mouseup", stopDragging);
+  } else {
+    window.removeEventListener("touchmove", moveDraggedPiece);
+    window.removeEventListener("touchend", stopDragging);
+  }
 };
 
 const clickSquareR = (file: number, rank: number) => {
