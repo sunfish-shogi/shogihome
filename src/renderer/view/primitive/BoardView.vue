@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div 
-      ref="frame" 
-      class="frame" 
-      :style="main.frame.style" 
+    <div
+      ref="frame"
+      class="frame"
+      :style="main.frame.style"
       @mousedown.stop.prevent="clickFrame()"
       @touchdown.stop.prevent="clickFrame()"
     >
@@ -178,7 +178,7 @@ import {
   secondsToHHMMSS,
 } from "tsshogi";
 import { computed, reactive, ref, watch, PropType } from "vue";
-import type { CSSProperties } from 'vue';
+import type { CSSProperties } from "vue";
 import {
   BoardImageType,
   BoardLabelType,
@@ -371,72 +371,8 @@ const dragStyle = reactive<CSSProperties>({
   height: "0px",
 });
 
-const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color | undefined) => {
-  const prevPointer = state.pointer;
-  resetState();
-  if (
-    newPointer instanceof Square &&
-    prevPointer instanceof Square &&
-    newPointer.equals(prevPointer)
-  ) {
-    return;
-  }
-  if (
-    newPointer instanceof Piece &&
-    prevPointer instanceof Piece &&
-    newPointer.equals(prevPointer)
-  ) {
-    return;
-  }
-  if (prevPointer) {
-    const editFrom = prevPointer;
-    const editTo = newPointer instanceof Square ? newPointer : (newPointer as Piece).color;
-    if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
-      emit("edit", {
-        move: {
-          from: prevPointer,
-          to: editTo,
-        },
-      });
-      return;
-    }
-    if (props.allowMove && newPointer instanceof Square) {
-      const moveFrom = prevPointer instanceof Square ? prevPointer : prevPointer.type;
-      const moveTo = newPointer;
-      const move = props.position.createMove(moveFrom, moveTo);
-      if (!move) {
-        return;
-      }
-      const noProm = props.position.isValidMove(move);
-      const prom = props.position.isValidMove(move.withPromote());
-      if (noProm && prom) {
-        state.reservedMove = move;
-        return;
-      }
-      if (noProm) {
-        emit("move", move);
-        return;
-      }
-      if (prom) {
-        emit("move", move.withPromote());
-        return;
-      }
-    }
-  }
-  if ((!props.allowMove && !props.allowEdit) || empty) {
-    return;
-  }
-  if (!props.allowEdit && color !== props.position.color) {
-    return;
-  }
-  state.pointer = newPointer;
-};
-
 const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) => {
-  if ((
-    event instanceof MouseEvent && event.button === 0) || 
-    event instanceof TouchEvent
-  ) {
+  if ((event instanceof MouseEvent && event.button === 0) || event instanceof TouchEvent) {
     const square = new Square(file, rank);
     const piece = props.position.board.at(square);
     const empty = !piece;
@@ -454,17 +390,14 @@ const dragSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
     }
     moveDraggedPiece(event);
     state.isDragging = true;
-    window.addEventListener('mousemove', moveDraggedPiece);
-    window.addEventListener('mouseup', stopDragging);
+    window.addEventListener("mousemove", moveDraggedPiece);
+    window.addEventListener("mouseup", stopDragging);
     state.pointer = newPointer;
   }
 };
 
 const dropSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) => {
-  if ((
-    event instanceof MouseEvent && event.button === 0) || 
-    event instanceof TouchEvent
-  ) {
+  if ((event instanceof MouseEvent && event.button === 0) || event instanceof TouchEvent) {
     const square = new Square(file, rank);
     const piece = props.position.board.at(square);
     const empty = !piece;
@@ -474,7 +407,11 @@ const dropSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
     if (!prevPointer) {
       return;
     }
-    if (prevPointer instanceof Square && newPointer instanceof Square && newPointer.equals(prevPointer)) {
+    if (
+      prevPointer instanceof Square &&
+      newPointer instanceof Square &&
+      newPointer.equals(prevPointer)
+    ) {
       state.pieceSelected = !state.pieceSelected;
       if (!state.pieceSelected) {
         resetState();
@@ -525,10 +462,7 @@ const dropSquare = (file: number, rank: number, event: MouseEvent | TouchEvent) 
 };
 
 const dragHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent) => {
-  if ((
-    event instanceof MouseEvent && event.button === 0) || 
-    event instanceof TouchEvent
-  ) {
+  if ((event instanceof MouseEvent && event.button === 0) || event instanceof TouchEvent) {
     const piece = new Piece(color, type);
     const empty = props.position.hand(color).count(type) === 0;
     const prevPointer = state.pointer;
@@ -545,17 +479,14 @@ const dragHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
     }
     moveDraggedPiece(event);
     state.isDragging = true;
-    window.addEventListener('mousemove', moveDraggedPiece);
-    window.addEventListener('mouseup', stopDragging); 
+    window.addEventListener("mousemove", moveDraggedPiece);
+    window.addEventListener("mouseup", stopDragging);
     state.pointer = newPointer;
   }
 };
 
 const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent) => {
-  if ((
-    event instanceof MouseEvent && event.button === 0) || 
-    event instanceof TouchEvent
-  ) {
+  if ((event instanceof MouseEvent && event.button === 0) || event instanceof TouchEvent) {
     const piece = new Piece(color, type);
     const prevPointer = state.pointer;
     const newPointer = piece;
@@ -563,7 +494,11 @@ const dropHand = (color: Color, type: PieceType, event: MouseEvent | TouchEvent)
     if (!prevPointer) {
       return;
     }
-    if (prevPointer instanceof Piece && newPointer instanceof Piece && newPointer.equals(prevPointer)) {
+    if (
+      prevPointer instanceof Piece &&
+      newPointer instanceof Piece &&
+      newPointer.equals(prevPointer)
+    ) {
       state.pieceSelected = !state.pieceSelected;
       if (!state.pieceSelected) {
         resetState();
@@ -593,8 +528,8 @@ const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
   const width = commonParams.piece.width * main.value.ratio;
   const height = commonParams.piece.height * main.value.ratio;
   if (frameRect) {
-    dragStyle.left = (clientX - frameRect.left) - width / 2 + "px";
-    dragStyle.top = (clientY - frameRect.top) - height / 2 + "px";
+    dragStyle.left = clientX - frameRect.left - width / 2 + "px";
+    dragStyle.top = clientY - frameRect.top - height / 2 + "px";
   }
   dragStyle.width = width + "px";
   dragStyle.height = height + "px";
@@ -603,8 +538,8 @@ const moveDraggedPiece = (event: MouseEvent | TouchEvent) => {
 const stopDragging = () => {
   // ドラッグ操作を終了する
   state.isDragging = false;
-  window.removeEventListener('mousemove', moveDraggedPiece);
-  window.removeEventListener('mouseup', stopDragging);
+  window.removeEventListener("mousemove", moveDraggedPiece);
+  window.removeEventListener("mouseup", stopDragging);
 };
 
 const clickSquareR = (file: number, rank: number) => {
