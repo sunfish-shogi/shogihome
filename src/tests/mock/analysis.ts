@@ -1,4 +1,5 @@
-import { AnalysisSettings, CommentBehavior } from "@/common/settings/analysis";
+import { AnalysisSettings } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { USIEngine } from "@/common/settings/usi";
 
 const engine: USIEngine = {

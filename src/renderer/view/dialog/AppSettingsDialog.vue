@@ -552,7 +552,7 @@
           </div>
           <!-- CSA V3 で出力 -->
           <div class="form-item">
-            <div class="form-item-label-wide">CSA V3 で出力</div>
+            <div class="form-item-label-wide">{{ t.csaV3Output }}</div>
             <ToggleButton
               :value="original.useCSAV3"
               @change="(checked: boolean) => (update.useCSAV3 = checked)"
@@ -805,6 +805,25 @@
               <Icon :icon="IconType.HELP" />
             </button>
           </div>
+          <!-- コメントの形式 -->
+          <div class="form-item">
+            <div class="form-item-label-wide">{{ t.commentFormat }}</div>
+            <HorizontalSelector
+              class="selector"
+              :value="original.searchCommentFormat"
+              :items="[
+                { label: t.shogiHome, value: SearchCommentFormat.SHOGIHOME },
+                { label: 'Floodgate', value: SearchCommentFormat.FLOODGATE },
+                { label: 'CSA V3', value: SearchCommentFormat.CSA3 },
+                { label: 'ShogiGUI', value: SearchCommentFormat.SHOGIGUI },
+              ]"
+              @change="
+                (value: string) => {
+                  update.searchCommentFormat = value as SearchCommentFormat;
+                }
+              "
+            />
+          </div>
         </div>
         <hr />
         <!-- アプリバージョン -->
@@ -946,6 +965,7 @@ import { fileNameTemplateWikiPageURL, maxPVLengthSettingWikiPageURL } from "@/co
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { BoardLayoutType } from "@/common/settings/layout";
+import { SearchCommentFormat } from "@/common/settings/comment";
 
 const returnCodeToName: { [name: string]: string } = {
   "\r\n": "crlf",

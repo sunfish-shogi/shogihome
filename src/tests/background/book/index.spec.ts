@@ -43,47 +43,60 @@ describe("background/book", () => {
 
   describe("openBook", () => {
     describe("yaneuraou.db", () => {
+      const sources = [
+        "src/tests/testdata/book/yaneuraou.db",
+        "src/tests/testdata/book/yaneuraou-crlf.db",
+        "src/tests/testdata/book/yaneuraou-bom-crlf.db",
+        "src/tests/testdata/book/yaneuraou-no-header.db",
+        "src/tests/testdata/book/yaneuraou-bom-no-header.db",
+      ];
       const patterns = [
         { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
         { options: { onTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
       ];
       for (const pattern of patterns) {
-        it(`mode=${pattern.mode}`, async () => {
-          const mode = await openBook("src/tests/testdata/book/yaneuraou.db", pattern.options);
-          expect(mode).toBe(pattern.mode);
+        for (const source of sources) {
+          it(`mode=${pattern.mode} source=${source}`, async () => {
+            const mode = await openBook(source, pattern.options);
+            expect(mode).toBe(pattern.mode);
 
-          const moves = await searchBookMoves(
-            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-          );
-          expect(moves).toHaveLength(5);
-          expect(moves[0].usi).toBe("2g2f");
-          expect(moves[0].usi2).toBe("3c3d");
-          expect(moves[0].score).toBe(63);
-          expect(moves[0].depth).toBe(27);
-          expect(moves[1].usi).toBe("7g7f");
-          expect(moves[1].usi2).toBeUndefined();
-          expect(moves[1].score).toBe(20);
-          expect(moves[1].depth).toBe(25);
-          expect(moves[2].usi).toBe("5g5f");
-          expect(moves[3].usi).toBe("2h7h");
-          expect(moves[4].usi).toBe("3g3f");
-          const moves2 = await searchBookMoves(
-            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
-          );
-          expect(moves2).toHaveLength(3);
-          const moves3 = await searchBookMoves(
-            "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
-          );
-          expect(moves3).toHaveLength(0);
+            const moves = await searchBookMoves(
+              "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+            );
+            expect(moves).toHaveLength(5);
+            expect(moves[0].usi).toBe("2g2f");
+            expect(moves[0].usi2).toBe("3c3d");
+            expect(moves[0].score).toBe(63);
+            expect(moves[0].depth).toBe(27);
+            expect(moves[1].usi).toBe("7g7f");
+            expect(moves[1].usi2).toBeUndefined();
+            expect(moves[1].score).toBe(20);
+            expect(moves[1].depth).toBe(25);
+            expect(moves[2].usi).toBe("5g5f");
+            expect(moves[3].usi).toBe("2h7h");
+            expect(moves[4].usi).toBe("3g3f");
+            const moves2 = await searchBookMoves(
+              "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+            );
+            expect(moves2).toHaveLength(3);
+            const moves3 = await searchBookMoves(
+              "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
+            );
+            expect(moves3).toHaveLength(0);
+            const moves4 = await searchBookMoves(
+              "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1",
+            );
+            expect(moves4).toHaveLength(3);
 
-          // comments
-          expect(moves[0].comment).toBe(
-            // In on-the-fly mode, comment-only lines will be ignored.
-            pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
-          );
-          expect(moves[1].comment).toBe("single line comment");
-          expect(moves[2].comment).toBe("");
-        });
+            // comments
+            expect(moves[0].comment).toBe(
+              // In on-the-fly mode, comment-only lines will be ignored.
+              pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
+            );
+            expect(moves[1].comment).toBe("single line comment");
+            expect(moves[2].comment).toBe("");
+          });
+        }
       }
     });
 
@@ -110,6 +123,39 @@ describe("background/book", () => {
           expect(moves[2].usi).toBe("2c2d");
           expect(moves[2].score).toBe(-100);
           expect(moves[2].count).toBe(8);
+
+          const singleMoveCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 2",
+            "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 6",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL b - 7",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/7P1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 8",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7p1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL b p 9",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1B1K5/LNSG1GSNL w Pp 10",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1+b1K5/LNSG1GSNL b Pbp 11",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w BPbp 12",
+            "lnsgkgsnl/7r1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b BPbp 13",
+            "lnsgkgsnl/7r1/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w Bbp 14",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b Bbp 15",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bbp 16",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 17",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bp 18",
+          ];
+          for (const sfen of singleMoveCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(1);
+          }
+
+          const notFoundCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+            "lnsgk1snl/4r1g2/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 19",
+          ];
+          for (const sfen of notFoundCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(0);
+          }
         });
       }
     });
@@ -140,12 +186,12 @@ describe("background/book", () => {
     const output = fs.readFileSync(tempFilePath, "utf-8");
     expect(output).toBe(`#YANEURAOU-DB2016 1.00
 sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/2P7/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1
-3c3d 6g6f -32  
+3c3d 6g6f -32 none 
 sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 2g2f 8c8d 42 20 123
 #ibisha
 #popular
-7g7f 3c3d   
+7g7f 3c3d none none 
 `);
   });
 

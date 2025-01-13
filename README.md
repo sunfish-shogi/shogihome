@@ -43,9 +43,9 @@ https://github.com/sunfish-shogi/shogihome/wiki
 
 ![スクリーンショット1](docs/screenshots/screenshot001.png)
 
-![スクリーンショット2](docs/screenshots/screenshot002.png)
-
 ![スクリーンショット3](docs/screenshots/screenshot003.png)
+
+![モバイル](docs/screenshots/mobile001.png)
 
 ## ダウンロード
 
@@ -64,6 +64,7 @@ USI や CSA プロトコルの通信ログの出力はデフォルトで無効�
 
 GitHub のアカウントをお持ちの方は Issue/PullRequest を活用してください。
 大きな変更はいきなり着手せず Issue を作成してください。
+Issue や PullRequest を作成する際は、必ず Template を使用してください。
 
 GitHub アカウントをお持ちでない場合は [送信フォーム](https://form.run/@sunfish-shogi-1650819491) でご連絡ください。
 

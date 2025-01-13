@@ -167,6 +167,12 @@ export function preload(config: Config) {
     async convertRecordFiles(): Promise<string> {
       throw new Error("This feature is not available on command line tool");
     },
+    async showSelectSFENDialog(): Promise<string> {
+      throw new Error("This feature is not available on command line tool");
+    },
+    async loadSFENFile(): Promise<string[]> {
+      throw new Error("This feature is not available on command line tool");
+    },
     onOpenRecord(): void {
       // Do Nothing
     },

@@ -29,6 +29,7 @@ import { LogLevel } from "@/common/log";
 import { Language } from "@/common/i18n";
 import { RecordFileFormat } from "@/common/file/record";
 import { BoardLayoutType } from "@/common/settings/layout";
+import { SearchCommentFormat } from "@/common/settings/comment";
 
 class AppSettingsStore {
   private settings = defaultAppSettings();
@@ -193,6 +194,9 @@ class AppSettingsStore {
   }
   get maxPVTextLength(): number {
     return this.merged.maxPVTextLength;
+  }
+  get searchCommentFormat(): SearchCommentFormat {
+    return this.merged.searchCommentFormat;
   }
   get showElapsedTimeInRecordView(): boolean {
     return this.merged.showElapsedTimeInRecordView;

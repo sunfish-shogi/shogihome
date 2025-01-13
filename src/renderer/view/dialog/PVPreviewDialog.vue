@@ -88,7 +88,7 @@ import { EvaluationViewFrom, getPieceImageURLTemplate } from "@/common/settings/
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
 import { SearchInfoSenderType } from "@/renderer/store/record";
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { AppState } from "@/common/control/state";
 import { useMessageStore } from "@/renderer/store/message";
 

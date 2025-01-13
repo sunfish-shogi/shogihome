@@ -10,7 +10,7 @@
       <div class="group">
         <button @click="onPush(InitialPositionSFEN.STANDARD)">
           <Icon :icon="IconType.GAME" />
-          <div class="label">{{ t.nonHandicap }}</div>
+          <div class="label">{{ t.noHandicap }}</div>
         </button>
         <button @click="onPush(InitialPositionSFEN.HANDICAP_LANCE)">
           <Icon :icon="IconType.GAME" />

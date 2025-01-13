@@ -1,4 +1,4 @@
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment";
 import {
   Color,
   InitialPositionSFEN,
@@ -164,6 +164,7 @@ describe("store/record", () => {
     const recordManager = new RecordManager();
     recordManager.appendSearchComment(
       SearchInfoSenderType.RESEARCHER,
+      SearchCommentFormat.SHOGIHOME,
       {
         depth: 8,
         score: 158,
@@ -180,6 +181,7 @@ describe("store/record", () => {
     );
     recordManager.appendSearchComment(
       SearchInfoSenderType.PLAYER,
+      SearchCommentFormat.SHOGIHOME,
       {
         depth: 10,
         score: 210,
@@ -201,12 +203,14 @@ describe("store/record", () => {
     const recordManager = new RecordManager();
     recordManager.appendSearchComment(
       SearchInfoSenderType.PLAYER,
+      SearchCommentFormat.SHOGIHOME,
       { mate: 15 },
       CommentBehavior.APPEND,
       { engineName: "Engine01" },
     );
     recordManager.appendSearchComment(
       SearchInfoSenderType.RESEARCHER,
+      SearchCommentFormat.SHOGIHOME,
       { mate: -SCORE_MATE_INFINITE },
       CommentBehavior.APPEND,
       { engineName: "Engine02" },
@@ -215,6 +219,67 @@ describe("store/record", () => {
       "*詰み=先手勝ち:15手\n*エンジン=Engine01\n\n#詰み=後手勝ち\n#エンジン=Engine02\n",
     );
     expect(recordManager.unsaved).toBeTruthy();
+  });
+
+  it("appendSearchComment/third-party", () => {
+    const recordManager = new RecordManager();
+    const pv1 = [
+      new Move(new Square(5, 3), new Square(5, 4), false, Color.WHITE, PieceType.PAWN, null),
+      new Move(new Square(2, 5), new Square(3, 3), true, Color.BLACK, PieceType.KNIGHT, null),
+    ];
+    const pv2 = [
+      new Move(PieceType.GOLD, new Square(5, 4), false, Color.BLACK, PieceType.GOLD, null),
+      new Move(new Square(5, 3), new Square(6, 2), false, Color.WHITE, PieceType.KING, null),
+    ];
+    const pv3 = [
+      new Move(new Square(7, 8), new Square(3, 8), true, Color.WHITE, PieceType.ROOK, null),
+      new Move(PieceType.PAWN, new Square(3, 7), false, Color.BLACK, PieceType.PAWN, null),
+    ];
+    const searchInfo1 = { depth: 10, score: 210, nodes: 12345678, pv: pv1 };
+    const searchInfo2 = { depth: 15, mate: 22, pv: pv2 };
+    const searchInfo3 = { mate: -16, nodes: 123456, pv: pv3 };
+    const searchInfo4 = { pv: pv3 };
+    for (const format of [
+      SearchCommentFormat.FLOODGATE,
+      SearchCommentFormat.CSA3,
+      SearchCommentFormat.SHOGIGUI,
+    ]) {
+      for (const sender of [SearchInfoSenderType.PLAYER, SearchInfoSenderType.RESEARCHER]) {
+        recordManager.appendSearchComment(sender, format, searchInfo1, CommentBehavior.APPEND);
+        recordManager.appendSearchComment(sender, format, searchInfo2, CommentBehavior.APPEND);
+        recordManager.appendSearchComment(sender, format, searchInfo3, CommentBehavior.APPEND);
+        recordManager.appendSearchComment(sender, format, searchInfo4, CommentBehavior.APPEND);
+      }
+    }
+    expect(recordManager.record.current.comment).toBe(
+      // Floodgate
+      "* 210 -5354FU +2533NK\n" +
+        "* 30000 +0054KI -5362OU\n" +
+        "* -30000 -7838RY +0037FU\n" +
+        "* 0 -7838RY +0037FU\n" +
+        "* 210 -5354FU +2533NK\n" +
+        "* 30000 +0054KI -5362OU\n" +
+        "* -30000 -7838RY +0037FU\n" +
+        "* 0 -7838RY +0037FU\n" +
+        // CSA V3
+        "* 210 -5354FU +2533NK #12345678\n" +
+        "* 30000 +0054KI -5362OU\n" +
+        "* -30000 -7838RY +0037FU #123456\n" +
+        "* 0 -7838RY +0037FU\n" +
+        "* 210 -5354FU +2533NK #12345678\n" +
+        "* 30000 +0054KI -5362OU\n" +
+        "* -30000 -7838RY +0037FU #123456\n" +
+        "* 0 -7838RY +0037FU\n" +
+        // ShogiGUI
+        "*対局 深さ 10 ノード数 12345678 評価値 210 読み筋 △５四歩(53) ▲３三桂成(25)\n" +
+        "*対局 深さ 15 評価値 30000 読み筋 ▲５四金打 △６二玉(53)\n" +
+        "*対局 ノード数 123456 評価値 -30000 読み筋 △３八飛成(78) ▲３七歩打\n" +
+        "*対局 読み筋 △３八飛成(78) ▲３七歩打\n" +
+        "*解析 深さ 10 ノード数 12345678 評価値 210 読み筋 △５四歩(53) ▲３三桂成(25)\n" +
+        "*解析 深さ 15 評価値 30000 読み筋 ▲５四金打 △６二玉(53)\n" +
+        "*解析 ノード数 123456 評価値 -30000 読み筋 △３八飛成(78) ▲３七歩打\n" +
+        "*解析 読み筋 △３八飛成(78) ▲３七歩打",
+    );
   });
 
   describe("inCommentPVs", () => {

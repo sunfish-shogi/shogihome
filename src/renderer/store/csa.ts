@@ -18,12 +18,13 @@ import {
   SpecialMoveType,
 } from "tsshogi";
 import { Clock } from "./clock";
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { RecordManager, SearchInfoSenderType } from "./record";
 import { t } from "@/common/i18n";
 import { GameResult } from "@/common/game/result";
 import { USIPlayer } from "@/renderer/players/usi";
 import { TimeStates } from "@/common/game/time";
+import { useAppSettings } from "./settings";
 
 export const loginRetryIntervalSeconds = 10;
 
@@ -381,9 +382,11 @@ export class CSAGameManager {
     }
 
     // コメントを記録する。
+    const appSettings = useAppSettings();
     if (isMyMove && this.searchInfo && this.settings.enableComment) {
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
+        appSettings.searchCommentFormat,
         this.searchInfo,
         CommentBehavior.APPEND,
       );

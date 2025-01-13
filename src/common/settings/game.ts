@@ -17,6 +17,11 @@ export function defaultTimeLimitSettings(): TimeLimitSettings {
   };
 }
 
+export type GameStartPositionType =
+  | InitialPositionType
+  | "current" // 現局面
+  | "list"; // 局面集
+
 export enum JishogiRule {
   NONE = "none",
   GENERAL24 = "general24",
@@ -31,7 +36,9 @@ export type GameSettings = {
   white: PlayerSettings;
   timeLimit: TimeLimitSettings;
   whiteTimeLimit?: TimeLimitSettings;
-  startPosition?: InitialPositionType;
+  startPosition: GameStartPositionType; // v1.21.0 から undefined を廃止
+  startPositionListFile: string;
+  startPositionListOrder: "sequential" | "shuffle";
   enableEngineTimeout: boolean;
   humanIsFront: boolean;
   enableComment: boolean;
@@ -47,6 +54,9 @@ export function defaultGameSettings(): GameSettings {
     black: defaultPlayerSettings(),
     white: defaultPlayerSettings(),
     timeLimit: defaultTimeLimitSettings(),
+    startPosition: InitialPositionType.STANDARD, // v1.21.0 から平手初期配置をデフォルトに変更
+    startPositionListFile: "",
+    startPositionListOrder: "sequential",
     enableEngineTimeout: false,
     humanIsFront: true,
     enableComment: true,
@@ -61,6 +71,10 @@ export function defaultGameSettings(): GameSettings {
 export function normalizeGameSettings(settings: GameSettings): GameSettings {
   return {
     ...defaultGameSettings(),
+    ...{
+      // v1.21.0 までは startPosition を省略可能で、それが現在の current に相当していた。
+      startPosition: "current",
+    },
     ...settings,
     black: {
       ...defaultPlayerSettings(),

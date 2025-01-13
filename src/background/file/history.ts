@@ -1,4 +1,5 @@
 import path from "node:path";
+import os from "node:os";
 import { promises as fs } from "node:fs";
 import { getAppPath } from "@/background/proc/env";
 import {
@@ -10,6 +11,7 @@ import {
 import { getAppLogger } from "@/background/log";
 import AsyncLock from "async-lock";
 import { openPath } from "@/background/helpers/electron";
+import { exists } from "@/background/helpers/file";
 
 const historyMaxLength = 20;
 
@@ -25,18 +27,30 @@ const lock = new AsyncLock();
 
 export async function getHistoryWithoutLock(): Promise<RecordFileHistory> {
   try {
-    await fs.lstat(historyPath);
+    if (!(await exists(historyPath))) {
+      return { entries: [] };
+    }
     return {
       ...getEmptyHistory(),
       ...JSON.parse(await fs.readFile(historyPath, "utf8")),
     };
-  } catch {
+  } catch (e) {
+    getAppLogger().warn(`failed to load history: ${e}`);
     return { entries: [] };
   }
 }
 
-function saveHistories(history: RecordFileHistory): Promise<void> {
-  return fs.writeFile(historyPath, JSON.stringify(history, undefined, 2), "utf8");
+let tempFilePath: string | undefined;
+
+async function saveHistories(history: RecordFileHistory): Promise<void> {
+  if (!tempFilePath) {
+    tempFilePath = path.join(
+      await fs.mkdtemp(path.join(os.tmpdir(), "shogihome-history-")),
+      "temp.json",
+    );
+  }
+  await fs.writeFile(tempFilePath, JSON.stringify(history, undefined, 2), "utf8");
+  await fs.rename(tempFilePath, historyPath);
 }
 
 function issueEntryID(): string {

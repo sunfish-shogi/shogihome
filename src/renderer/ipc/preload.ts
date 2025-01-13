@@ -117,6 +117,12 @@ const api: Bridge = {
   async convertRecordFiles(json: string): Promise<string> {
     return await ipcRenderer.invoke(Background.CONVERT_RECORD_FILES, json);
   },
+  async showSelectSFENDialog(lastPath: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SELECT_SFEN_DIALOG, lastPath);
+  },
+  async loadSFENFile(path: string): Promise<string[]> {
+    return await ipcRenderer.invoke(Background.LOAD_SFEN_FILE, path);
+  },
   async loadRecordFileHistory(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_RECORD_FILE_HISTORY);
   },

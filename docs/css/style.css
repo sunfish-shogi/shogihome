@@ -67,7 +67,7 @@ nav li {
 article {
   color: darkslategray;
   margin: 0px;
-  padding: 1em 5% 1em 5%;
+  padding: 1em 0 1em 0;
 }
 
 article a {
@@ -76,8 +76,13 @@ article a {
 }
 
 section {
-  margin: 1em 0 7em 0;
-  scroll-margin-top: 120px;
+  margin: 0;
+  padding: 1em 0 7em 0;
+  scroll-margin-top: 40px;
+}
+
+section.bg2 {
+  background: #e0e6e6;
 }
 
 section div {
@@ -209,6 +214,12 @@ img.small-icon {
   height: 1em;
   vertical-align: -0.2em;
   margin: 0px;
+}
+
+.slides {
+  margin: 3em 0 3em 0;
+  padding: 3em 0 3em 0;
+  background: linear-gradient(180deg, #f0f0f0, 5%, white);
 }
 
 .row {

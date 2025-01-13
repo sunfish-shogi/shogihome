@@ -1,3 +1,4 @@
+import { CommentBehavior } from "./comment";
 import { USIEngine } from "./usi";
 
 type StartCriteria = {
@@ -32,13 +33,6 @@ function defaultPerMoveCriteria(): PerMoveCriteria {
   return {
     maxSeconds: 5,
   };
-}
-
-export enum CommentBehavior {
-  NONE = "none",
-  INSERT = "insert",
-  APPEND = "append",
-  OVERWRITE = "overwrite",
 }
 
 export type AnalysisSettings = {

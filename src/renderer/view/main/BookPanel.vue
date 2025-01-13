@@ -16,7 +16,7 @@
         <button @click="onResetBook">{{ t.clear }}</button>
         <button @click="onOpenBook">{{ t.open }}</button>
         <button :disabled="!isBookOperational" @click="onSaveBook">{{ t.saveAs }}</button>
-        <button :disabled="!isBookOperational" @click="onAddBookMoves">指し手追加</button>
+        <button :disabled="!isBookOperational" @click="onAddBookMoves">{{ t.addMoves }}</button>
       </div>
       <BookMoveDialog
         v-if="editingData"

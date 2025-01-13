@@ -385,6 +385,30 @@ ipcMain.handle(Background.CONVERT_RECORD_FILES, async (event, json: string): Pro
   return JSON.stringify(await convertRecordFiles(settings, sendProgress));
 });
 
+ipcMain.handle(
+  Background.SHOW_SELECT_SFEN_DIALOG,
+  async (event, lastPath: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug("show select-SFEN dialog");
+    const ret = await showOpenDialog(["openFile"], lastPath, [
+      { name: "SFEN", extensions: ["sfen"] },
+    ]);
+    return ret;
+  },
+);
+
+ipcMain.handle(Background.LOAD_SFEN_FILE, async (event, path: string): Promise<string[]> => {
+  validateIPCSender(event.senderFrame);
+  if (!path.endsWith(".sfen")) {
+    throw new Error(`${t.fileExtensionNotSupported}: ${path}`);
+  }
+  const data = await fs.readFile(path, "utf-8");
+  return data
+    .replace(/^\uFEFF/, "") // remove BOM
+    .split(/[\r\n]+/) // split by line
+    .filter((line) => line !== ""); // remove empty lines
+});
+
 ipcMain.handle(Background.LOAD_APP_SETTINGS, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("load app settings");

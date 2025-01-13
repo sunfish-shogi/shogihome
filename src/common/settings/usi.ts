@@ -189,9 +189,6 @@ function isValidOptionValue(option: USIEngineOption): boolean {
       if (typeof option.value !== "string") {
         return false;
       }
-      if (!option.vars.includes(option.value)) {
-        return false;
-      }
       break;
   }
   return true;

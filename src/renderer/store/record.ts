@@ -29,9 +29,11 @@ import {
   Square,
   Piece,
   Color,
+  formatCSAMove,
+  formatKIFMove,
 } from "tsshogi";
 import { getSituationText } from "./score";
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment";
 import { t, localizeError } from "@/common/i18n";
 import {
   ExportOptions,
@@ -219,6 +221,50 @@ function buildSearchComment(
   }
   if (comment && options?.engineName) {
     comment += `${prefix}エンジン=${options.engineName}\n`;
+  }
+  return comment;
+}
+
+function buildFloodgateSearchComment(searchInfo: SearchInfo): string {
+  const score =
+    searchInfo.mate !== undefined
+      ? searchInfo.mate > 0
+        ? 30000
+        : -30000
+      : searchInfo.score !== undefined
+        ? searchInfo.score
+        : 0;
+  let comment = `* ${score}`;
+  for (const move of searchInfo.pv || []) {
+    comment += " " + formatCSAMove(move);
+  }
+  return comment;
+}
+
+function buildCSA3SearchComment(searchInfo: SearchInfo): string {
+  const floodgate = buildFloodgateSearchComment(searchInfo);
+  return floodgate + (searchInfo.nodes !== undefined ? ` #${searchInfo.nodes}` : "");
+}
+
+function buildShogiGUISearchComment(type: SearchInfoSenderType, searchInfo: SearchInfo): string {
+  // *[<種類>] [<multipv>] [時間 <時間>] [深さ <深さ>] [ノード数 <ノード数>] [評価値 <評価値>] [<読み筋>]
+  let comment = `*${type === SearchInfoSenderType.PLAYER ? "対局" : "解析"}`;
+  if (searchInfo.depth !== undefined) {
+    comment += ` 深さ ${searchInfo.depth}`;
+  }
+  if (searchInfo.nodes !== undefined) {
+    comment += ` ノード数 ${searchInfo.nodes}`;
+  }
+  if (searchInfo.score !== undefined) {
+    comment += ` 評価値 ${searchInfo.score}`;
+  } else if (searchInfo.mate !== undefined) {
+    comment += ` 評価値 ${searchInfo.mate > 0 ? 30000 : -30000}`;
+  }
+  if (searchInfo.pv?.length) {
+    comment += " 読み筋";
+    for (const move of searchInfo.pv) {
+      comment += " " + (move.color === Color.BLACK ? "▲" : "△") + formatKIFMove(move);
+    }
   }
   return comment;
 }
@@ -665,6 +711,7 @@ export class RecordManager {
 
   appendSearchComment(
     type: SearchInfoSenderType,
+    format: SearchCommentFormat,
     searchInfo: SearchInfo,
     behavior: CommentBehavior,
     options?: {
@@ -672,7 +719,21 @@ export class RecordManager {
       engineName?: string;
     },
   ): void {
-    let comment = buildSearchComment(this.record.position, type, searchInfo, options);
+    let comment: string;
+    switch (format) {
+      case SearchCommentFormat.SHOGIHOME:
+        comment = buildSearchComment(this.record.position, type, searchInfo, options);
+        break;
+      case SearchCommentFormat.FLOODGATE:
+        comment = buildFloodgateSearchComment(searchInfo);
+        break;
+      case SearchCommentFormat.CSA3:
+        comment = buildCSA3SearchComment(searchInfo);
+        break;
+      case SearchCommentFormat.SHOGIGUI:
+        comment = buildShogiGUISearchComment(type, searchInfo);
+        break;
+    }
     if (options?.header) {
       comment = options.header + "\n" + comment;
     }

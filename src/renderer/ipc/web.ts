@@ -233,6 +233,12 @@ export const webAPI: Bridge = {
   async convertRecordFiles(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async showSelectSFENDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async loadSFENFile(): Promise<string[]> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   onOpenRecord(): void {
     // Do Nothing
   },

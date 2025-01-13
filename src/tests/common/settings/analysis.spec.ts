@@ -1,8 +1,5 @@
-import {
-  AnalysisSettings,
-  CommentBehavior,
-  normalizeAnalysisSettings,
-} from "@/common/settings/analysis";
+import { AnalysisSettings, normalizeAnalysisSettings } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import * as uri from "@/common/uri";
 
 describe("settings/analysis", () => {

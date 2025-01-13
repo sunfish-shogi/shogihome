@@ -191,6 +191,7 @@ export class AnalysisManager {
     // コメントを書き込む。
     this.recordManager.appendSearchComment(
       SearchInfoSenderType.RESEARCHER,
+      appSettings.searchCommentFormat,
       this.searchInfo,
       this.settings.commentBehavior,
       {

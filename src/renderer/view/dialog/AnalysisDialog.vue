@@ -87,8 +87,12 @@
         </div>
       </div>
       <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="onStart()">解析実行</button>
-        <button data-hotkey="Escape" @click="onCancel()">キャンセル</button>
+        <button data-hotkey="Enter" autofocus @click="onStart()">
+          {{ t.analyze }}
+        </button>
+        <button data-hotkey="Escape" @click="onCancel()">
+          {{ t.cancel }}
+        </button>
       </div>
     </dialog>
   </div>
@@ -99,7 +103,8 @@ import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import api from "@/renderer/ipc/api";
-import { AnalysisSettings, CommentBehavior } from "@/common/settings/analysis";
+import { AnalysisSettings } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { onBeforeUnmount, onMounted, ref } from "vue";

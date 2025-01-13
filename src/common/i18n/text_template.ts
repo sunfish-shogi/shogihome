@@ -220,6 +220,8 @@ export type Texts = {
   autoSavingDirectory: string;
   recordFileName: string;
   select: string;
+  shuffle: string;
+  csaV3Output: string;
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;
@@ -276,6 +278,7 @@ export type Texts = {
   swapSenteGote: string;
   pieceToss: string;
   currentPosition: string;
+  positionList: string;
   enableEngineTimeout: string;
   setDifferentTimeForGote: string;
   nextTurn: string;
@@ -288,6 +291,7 @@ export type Texts = {
   numberOfThreads: string;
   multiPV: string;
   startPosition: string;
+  beginFromThisPosition: string;
   maxMoves: string;
   gameRepetition: string;
   jishogi: string;
@@ -368,7 +372,7 @@ export type Texts = {
   hashUsage: string;
   stop: string;
   resume: string;
-  nonHandicap: string;
+  noHandicap: string;
   lanceHandicap: string;
   rightLanceHandicap: string;
   bishopHandicap: string;
@@ -432,6 +436,7 @@ export type Texts = {
   mistakeThreshold: string;
   blunderThreshold: string;
   maxPVLength: string;
+  commentFormat: string;
   gothic: string;
   mincho: string;
   appVersion: string;
@@ -472,6 +477,7 @@ export type Texts = {
   bookMove: string;
   play: string;
   edit: string;
+  addMoves: string;
   freq: string;
   frequency: string;
   new: string;

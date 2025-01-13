@@ -32,7 +32,7 @@ import { USIEngine } from "@/common/settings/usi";
 
 vi.mock("@/renderer/ipc/api");
 
-export const mockAPI = api as Mocked<API>;
+const mockAPI = api as Mocked<API>;
 
 export function applyMockHandlers(manager: CSAGameManager) {
   const handlers = {

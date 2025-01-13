@@ -34,11 +34,16 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMo
   };
 }
 
-export async function loadAperyBook(input: Readable): Promise<AperyBook> {
+export function loadAperyBook(input: Readable): Promise<AperyBook> {
   return new Promise((resolve, reject) => {
     const entries = new Map<bigint, BookEntry>();
     let entryCount = 0;
     let duplicateCount = 0;
+
+    input.on("end", () => {
+      resolve({ format: "apery", aperyEntries: entries, entryCount, duplicateCount });
+    });
+    input.on("error", reject);
 
     input.on("data", (chunk: Buffer) => {
       if (chunk.length % 16 !== 0) {
@@ -64,11 +69,6 @@ export async function loadAperyBook(input: Readable): Promise<AperyBook> {
         }
       }
     });
-
-    input.on("end", () => {
-      resolve({ format: "apery", aperyEntries: entries, entryCount, duplicateCount });
-    });
-    input.on("error", reject);
   });
 }
 
@@ -127,7 +127,7 @@ export async function searchAperyBookMovesOnTheFly(
   return bookMoves;
 }
 
-export async function storeAperyBook(book: AperyBook, output: Writable): Promise<void> {
+export function storeAperyBook(book: AperyBook, output: Writable): Promise<void> {
   return new Promise((resolve, reject) => {
     output.on("finish", resolve);
     output.on("error", reject);

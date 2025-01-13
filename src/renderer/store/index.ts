@@ -42,7 +42,7 @@ import { AppState, ResearchState } from "@/common/control/state";
 import { Attachment, ListItem, useMessageStore } from "./message";
 import * as uri from "@/common/uri";
 import { AnalysisManager } from "./analysis";
-import { AnalysisSettings, CommentBehavior } from "@/common/settings/analysis";
+import { AnalysisSettings } from "@/common/settings/analysis";
 import { MateSearchSettings } from "@/common/settings/mate";
 import { LogLevel } from "@/common/log";
 import { CSAGameManager, CSAGameState } from "./csa";
@@ -63,6 +63,7 @@ import { useBusyState } from "./busy";
 import { Confirmation, useConfirmationStore } from "./confirm";
 import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp";
+import { CommentBehavior } from "@/common/settings/comment";
 
 export type PVPreview = {
   position: ImmutablePosition;
@@ -281,7 +282,14 @@ class Store {
       engineName?: string;
     },
   ): void {
-    this.recordManager.appendSearchComment(type, searchInfo, behavior, options);
+    const appSettings = useAppSettings();
+    this.recordManager.appendSearchComment(
+      type,
+      appSettings.searchCommentFormat,
+      searchInfo,
+      behavior,
+      options,
+    );
   }
 
   appendMovesSilently(moves: Move[], opt?: DoMoveOption): number {

@@ -220,17 +220,25 @@ describe("settings/usi", () => {
       value: "b",
       vars: ["a", "b", "c"],
     };
+    const validComboOption2: USIEngineOption = {
+      name: "MyCombo2",
+      type: "combo",
+      order: 5,
+      default: "a",
+      value: "x",
+      vars: ["a", "b", "c"],
+    };
     const validFilenameOption: USIEngineOption = {
       name: "MyFilename",
       type: "filename",
-      order: 5,
+      order: 6,
       default: "<empty>",
       value: "/path/to/file",
     };
     const validButtonOption: USIEngineOption = {
       name: "MyButton",
       type: "button",
-      order: 6,
+      order: 7,
     };
 
     it("ok", () => {
@@ -246,6 +254,7 @@ describe("settings/usi", () => {
             USI_Hash: validUSIHashOption,
             MyString: validStringOption,
             MyCombo: validComboOption,
+            MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
           },
@@ -267,6 +276,7 @@ describe("settings/usi", () => {
             USI_Hash: validUSIHashOption,
             MyString: validStringOption,
             MyCombo: validComboOption,
+            MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
           },
@@ -294,6 +304,7 @@ describe("settings/usi", () => {
             USI_Hash: validUSIHashOption,
             MyString: validStringOption,
             MyCombo: validComboOption,
+            MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
           },
@@ -322,6 +333,7 @@ describe("settings/usi", () => {
             },
             MyString: validStringOption,
             MyCombo: validComboOption,
+            MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
           },
@@ -349,6 +361,7 @@ describe("settings/usi", () => {
               value: 123,
             },
             MyCombo: validComboOption,
+            MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
           },

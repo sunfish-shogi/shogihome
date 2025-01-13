@@ -12,11 +12,14 @@ import {
   IDX_SCORE,
   IDX_USI,
   IDX_USI2,
-  MOVE_NONE,
 } from "./types";
 import { getAppLogger } from "@/background/log";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
+
+const MOVE_NONE = "none";
+const SCORE_NONE = "none";
+const DEPTH_NONE = "none";
 
 const SFENMarker = "sfen ";
 const CommentMarker1 = "#";
@@ -89,8 +92,9 @@ function parseLine(line: string): Line {
       move: [
         columns[0], // usi
         columns[1] === MOVE_NONE ? undefined : columns[1], // usi2
-        columns[2] ? parseInt(columns[2], 10) : undefined, // score
-        columns[3] ? parseInt(columns[3], 10) : undefined, // depth
+        // ShogiHome v1.20.0 は score と depth の省略時に空文字を出力する実装なので空文字も判定に含める。
+        columns[2] === SCORE_NONE || columns[2] === "" ? undefined : parseInt(columns[2], 10), // score
+        columns[3] === DEPTH_NONE || columns[3] === "" ? undefined : parseInt(columns[3], 10), // depth
         columns[4] ? parseInt(columns[4], 10) : undefined, // counts
         commentIndex < line.length ? line.slice(commentIndex).replace(/^(#|\/\/)/, "") : "", // comment
       ],
@@ -117,6 +121,9 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   let entryCount = 0;
   let duplicateCount = 0;
   reader.on("line", (line) => {
+    if (lineNo === 0) {
+      line = line.replace(/^\uFEFF/, "");
+    }
     const parsed = parseLine(line);
     switch (parsed.type) {
       case "comment":
@@ -162,15 +169,15 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   return { format: "yane2016", yaneEntries: entries, entryCount, duplicateCount };
 }
 
-export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
+export function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
+  if (book.format !== "yane2016") {
+    return Promise.reject(new Error(`Expected book format "yane2016" but got "${book.format}"`));
+  }
   return new Promise((resolve, reject) => {
     output.on("finish", resolve);
     output.on("error", reject);
 
     output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-    if (book.format !== "yane2016") {
-      throw new Error("Invalid book format: " + book.format);
-    }
     for (const sfen of Object.keys(book.yaneEntries).sort()) {
       const entry = book.yaneEntries[sfen];
       output.write(SFENMarker + sfen + "\n");
@@ -185,9 +192,13 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
             " " +
             (move[IDX_USI2] || MOVE_NONE) +
             " " +
-            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : "") +
+            // やねうら王や BookConv は連続するスペースをまとめて読み込むので、
+            // 値の省略時には空文字列ではなく 1 文字以上の出力が必要である。
+            // やねうら王のブログではその場合の書き方を言及していないが、
+            // 数値として解析できない文字列であれば実装上は問題ないことがわかっている。
+            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : SCORE_NONE) +
             " " +
-            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : "") +
+            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : DEPTH_NONE) +
             " " +
             (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
             "\n",
@@ -248,8 +259,18 @@ function readLineFromBuffer(buffer: Buffer, size: number, offset: number = 0): s
 }
 
 function findSFENMarker(buffer: Buffer, size: number, isFileHead: boolean): number {
-  if (isFileHead && checkSFENMarker(0, buffer)) {
-    return 0;
+  if (isFileHead) {
+    // 通常はファイルの先頭にヘッダーがあるが、いきなり SFEN が来ても扱えるようにする。
+    if (checkSFENMarker(0, buffer)) {
+      return 0;
+    } else if (
+      buffer[0] === 0xef &&
+      buffer[1] === 0xbb &&
+      buffer[2] === 0xbf &&
+      checkSFENMarker(3, buffer)
+    ) {
+      return 3;
+    }
   }
   for (let i = 0; i < size - (SFENMarker.length + 1); i++) {
     if ((buffer[i] === LF || buffer[i] === CR) && checkSFENMarker(i + 1, buffer)) {
@@ -280,8 +301,9 @@ async function binarySearch(
       if (read.bytesRead === 0) {
         break;
       }
-      sfenOffset = head + findSFENMarker(buffer, read.bytesRead, head === 0);
-      if (sfenOffset >= 0) {
+      const offset = findSFENMarker(buffer, read.bytesRead, head === 0);
+      if (offset >= 0) {
+        sfenOffset = head + offset;
         break;
       }
       head += bufferSize - (SFENMarker.length + 1);
@@ -336,10 +358,11 @@ export async function searchYaneuraOuBookMovesOnTheFly(
     if (parsed.type === "comment") {
       // On-the-fly ではコメント行を無視する。
       continue;
-    } else if (parsed.type !== "move") {
+    } else if (parsed.type === "move") {
+      moves.push(parsed.move);
+    } else {
       break;
     }
-    moves.push(parsed.move);
   }
   return moves;
 }

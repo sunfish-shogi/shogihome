@@ -3,6 +3,7 @@ import { LogLevel, LogType } from "@/common/log";
 import { RecordFileFormat } from "@/common/file/record";
 import { defaultRecordFileNameTemplate } from "@/common/file/path";
 import { BoardLayoutType } from "./layout";
+import { SearchCommentFormat } from "./comment";
 
 export enum Thema {
   STANDARD = "standard",
@@ -199,6 +200,7 @@ export type AppSettings = {
   badMoveLevelThreshold3: number;
   badMoveLevelThreshold4: number;
   maxPVTextLength: number;
+  searchCommentFormat: SearchCommentFormat;
 
   // Record View
   showElapsedTimeInRecordView: boolean;
@@ -296,6 +298,7 @@ export type AppSettingsUpdate = {
   badMoveLevelThreshold3?: number;
   badMoveLevelThreshold4?: number;
   maxPVTextLength?: number;
+  searchCommentFormat?: SearchCommentFormat;
   showElapsedTimeInRecordView?: boolean;
   showCommentInRecordView?: boolean;
   enableAppLog?: boolean;
@@ -399,6 +402,7 @@ export function defaultAppSettings(opt?: {
     badMoveLevelThreshold3: 20,
     badMoveLevelThreshold4: 50,
     maxPVTextLength: 15,
+    searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     showElapsedTimeInRecordView: true,
     showCommentInRecordView: true,
     enableAppLog: false,

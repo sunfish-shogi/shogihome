@@ -10,11 +10,13 @@ import {
   judgeJishogiDeclaration,
   Move,
   PieceType,
+  Record,
+  RecordFormatType,
   reverseColor,
   SpecialMoveType,
   Square,
 } from "tsshogi";
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { RecordManager, SearchInfoSenderType } from "./record";
 import { Clock } from "./clock";
 import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder";
@@ -28,6 +30,7 @@ import {
   Z_VALUE_95,
   Z_VALUE_99,
 } from "@/common/statistics";
+import { useAppSettings } from "./settings";
 
 enum GameState {
   IDLE = "idle",
@@ -116,11 +119,78 @@ function newGameResults(name1: string, name2: string): GameResults {
   };
 }
 
+export class StartPositionList {
+  private usiList: string[] = [];
+  private maxRepeat: number = 1;
+  private index = 0;
+  private repeat = 0;
+
+  clear(): void {
+    this.usiList = [];
+    this.maxRepeat = 1;
+    this.index = 0;
+    this.repeat = 0;
+  }
+
+  async reset(params: {
+    filePath: string;
+    swapPlayers: boolean;
+    order: "sequential" | "shuffle";
+    maxGames: number;
+  }): Promise<void> {
+    // load SFEN file
+    const usiList = await api.loadSFENFile(params.filePath);
+    if (params.order === "shuffle") {
+      for (let i = usiList.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [usiList[i], usiList[j]] = [usiList[j], usiList[i]];
+      }
+    }
+    const maxPositions = Math.ceil(params.maxGames / (params.swapPlayers ? 2 : 1));
+    if (usiList.length > maxPositions) {
+      usiList.length = maxPositions;
+    }
+
+    // validate USI
+    if (usiList.length === 0) {
+      throw new Error("No available positions in the list.");
+    }
+    for (let i = 0; i < usiList.length; i++) {
+      const record = Record.newByUSI(usiList[i]);
+      if (!(record instanceof Record)) {
+        throw new Error(`Invalid USI: ${record}: ${usiList[i]}`);
+      }
+    }
+
+    this.usiList = usiList;
+    this.maxRepeat = params.swapPlayers ? 2 : 1;
+    this.index = 0;
+    this.repeat = 0;
+  }
+
+  next(): string {
+    if (this.usiList.length === 0) {
+      return "position startpos";
+    }
+    if (this.repeat < this.maxRepeat) {
+      this.repeat++;
+    } else {
+      this.index++;
+      this.repeat = 1;
+      if (this.index >= this.usiList.length) {
+        this.index = 0;
+      }
+    }
+    return this.usiList[this.index];
+  }
+}
+
 export class GameManager {
   private state: GameState;
   private _settings: GameSettings;
   private startPly = 0;
   private repeat = 0;
+  private startPositionList = new StartPositionList();
   private blackPlayer?: Player;
   private whitePlayer?: Player;
   private playerBuilder = defaultPlayerBuilder();
@@ -224,13 +294,22 @@ export class GameManager {
     this._settings = settings;
     this.playerBuilder = playerBuilder;
     this.repeat = 0;
-    if (!settings.startPosition) {
+    if (settings.startPosition === "current") {
       // 連続対局用に何手目から開始するかを記憶する。
       this.startPly = this.recordManager.record.current.ply;
     }
     this._results = newGameResults(settings.black.name, settings.white.name);
-    // プレイヤーを初期化する。
     try {
+      // 初期局面リストを読み込む。
+      if (settings.startPosition === "list") {
+        await this.startPositionList.reset({
+          filePath: settings.startPositionListFile,
+          swapPlayers: settings.swapPlayers,
+          order: settings.startPositionListOrder,
+          maxGames: settings.repeat,
+        });
+      }
+      // プレイヤーを初期化する。
       this.blackPlayer = await this.playerBuilder.build(this.settings.black, (info) =>
         this.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
       );
@@ -245,6 +324,7 @@ export class GameManager {
         this.onError(errorOnClose);
       } finally {
         this.state = GameState.IDLE;
+        this.startPositionList.clear();
       }
       throw new Error(`GameManager#start: ${t.failedToStartNewGame}: ${e}`);
     }
@@ -257,11 +337,22 @@ export class GameManager {
     // 連続対局の回数をカウントアップする。
     this.repeat++;
     // 初期局面を設定する。
-    if (this.settings.startPosition) {
-      this.recordManager.resetByInitialPositionType(this.settings.startPosition);
-    } else if (this.recordManager.record.current.ply !== this.startPly) {
-      this.recordManager.changePly(this.startPly);
-      this.recordManager.removeNextMove();
+    switch (this.settings.startPosition) {
+      case "current":
+        if (this.recordManager.record.current.ply !== this.startPly) {
+          this.recordManager.changePly(this.startPly);
+          this.recordManager.removeNextMove();
+        }
+        break;
+      case "list":
+        this.recordManager.importRecord(this.startPositionList.next(), {
+          type: RecordFormatType.USI,
+          markAsSaved: true,
+        });
+        this.recordManager.updateComment(t.beginFromThisPosition);
+        break;
+      default:
+        this.recordManager.resetByInitialPositionType(this.settings.startPosition);
     }
     // 対局のメタデータを設定する。
     this.recordManager.setGameStartMetadata({
@@ -423,8 +514,10 @@ export class GameManager {
     }
     // コメントを追加する。
     if (info && this.settings.enableComment) {
+      const appSettings = useAppSettings();
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
+        appSettings.searchCommentFormat,
         info,
         CommentBehavior.APPEND,
       );
@@ -563,6 +656,7 @@ export class GameManager {
             })
             .finally(() => {
               this.state = GameState.IDLE;
+              this.startPositionList.clear();
               this.onGameEnd(this.results, specialMoveType);
             });
           return;

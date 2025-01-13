@@ -1,11 +1,22 @@
 import { InitialPositionType, Move, RecordMetadataKey, SpecialMoveType } from "tsshogi";
 import { Clock } from "@/renderer/store/clock";
-import { calculateGameStatistics, GameManager, GameResults } from "@/renderer/store/game";
+import {
+  calculateGameStatistics,
+  GameManager,
+  GameResults,
+  StartPositionList,
+} from "@/renderer/store/game";
 import { RecordManager } from "@/renderer/store/record";
 import { playerURI01, playerURI02, gameSettings10m30s } from "@/tests/mock/game";
 import { createMockPlayer, createMockPlayerBuilder } from "@/tests/mock/player";
 import { GameSettings, JishogiRule } from "@/common/settings/game";
 import { PlayerBuilder } from "@/renderer/players/builder";
+import api, { API } from "@/renderer/ipc/api";
+import { Mocked } from "vitest";
+
+vi.mock("@/renderer/ipc/api");
+
+const mockAPI = api as Mocked<API>;
 
 export interface MockGameHandlers {
   onError(): void;
@@ -128,6 +139,119 @@ describe("store/game", () => {
     expect(statistics.zValue.toPrecision(6)).toBe("5.58440");
     expect(statistics.significance5pc).toBeTruthy();
     expect(statistics.significance1pc).toBeTruthy();
+  });
+
+  it("StartPositionList", async () => {
+    mockAPI.loadSFENFile.mockImplementation(async () => [
+      "position startpos moves 2g2f 3c3d 7g7f",
+      "position startpos moves 2g2f 8c8d 2f2e",
+      "position startpos moves 7g7f 8b3b 2g2f",
+      "position startpos moves 7g7f 8c8d 2g2f",
+    ]);
+    const list = new StartPositionList();
+    expect(list.next()).toBe("position startpos");
+
+    // no swapping / sequential / 2 games
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+      }),
+    ).resolves.toBeUndefined();
+    expect(mockAPI.loadSFENFile).toBeCalledWith("path/to/file.sfen");
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
+
+    // no swapping / shuffle / 2 games
+    const variations = new Set<string>();
+    for (let i = 0; i < 100; i++) {
+      await expect(
+        list.reset({
+          filePath: "path/to/file.sfen",
+          swapPlayers: false,
+          order: "shuffle",
+          maxGames: 2,
+        }),
+      ).resolves.toBeUndefined();
+      const first = list.next();
+      const second = list.next();
+      expect(first).match(/^position startpos moves /);
+      expect(second).match(/^position startpos moves /);
+      expect(first).not.toBe(second);
+      variations.add(first);
+    }
+    expect(variations.size).toBe(4);
+
+    // swapping / sequential / 4 games
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: true,
+        order: "sequential",
+        maxGames: 4,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f"); // 1st position, 1st game
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f"); // 1st position, 2nd game
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e"); // 2nd position, 1st game
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e"); // 2nd position, 2nd game
+
+    // no swapping / sequential / 6 games
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 6,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
+    expect(list.next()).toBe("position startpos moves 7g7f 8b3b 2g2f");
+    expect(list.next()).toBe("position startpos moves 7g7f 8c8d 2g2f");
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
+  });
+
+  it("StartPositionList/empty", async () => {
+    mockAPI.loadSFENFile.mockResolvedValueOnce([]);
+    const list = new StartPositionList();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+      }),
+    ).rejects.toThrow("No available positions in the list.");
+  });
+
+  it("StartPositionList/invalid", async () => {
+    mockAPI.loadSFENFile.mockImplementation(async () => [
+      "position startpos moves 2g2f 3c3d 7g7f",
+      "position startpos moves 2g2f 8c8d 2f2e",
+      "invalid position",
+      "position startpos moves 7g7f 8c8d 2g2f",
+    ]);
+    const list = new StartPositionList();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+      }),
+    ).resolves.toBeUndefined();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 3,
+      }),
+    ).rejects.toThrow("Invalid USI: invalid position");
   });
 
   it("GameManager/resign", () => {
@@ -420,7 +544,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         repeat: 2,
         swapPlayers: false,
       },
@@ -591,7 +715,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.GENERAL24,
       },
       mockPlayerBuilder,
@@ -633,7 +757,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.GENERAL24,
       },
       mockPlayerBuilder,
@@ -675,7 +799,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.GENERAL24,
       },
       mockPlayerBuilder,
@@ -716,7 +840,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.TRY,
       },
       mockPlayerBuilder,
@@ -757,7 +881,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.TRY,
       },
       mockPlayerBuilder,
@@ -795,7 +919,7 @@ describe("store/game", () => {
       mockHandlers,
       {
         ...gameSettings10m30s,
-        startPosition: undefined,
+        startPosition: "current",
         jishogiRule: JishogiRule.TRY,
       },
       mockPlayerBuilder,
@@ -810,6 +934,80 @@ describe("store/game", () => {
         expect(specialMoveType).toBe(SpecialMoveType.FOUL_LOSE);
         expect(recordManager.record.usi).toBe(`position sfen ${sfen}`);
         expect(mockHandlers.onError).toBeCalledTimes(1);
+      },
+    );
+  });
+
+  it("GameManager/startPositionList/valid", () => {
+    mockAPI.loadSFENFile.mockResolvedValueOnce([
+      "position startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5a6b 6h7h 6b7b",
+      "position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 9g9f 9c9d 5i6h 5a5b",
+      "position startpos moves 7g7f 8b3b 2g2f 5a6b 2f2e 3c3d 5i6h 3a4b 6h7h 2b3c 3i4h",
+      "position startpos moves 7g7f 8c8d 2g2f 8d8e 2f2e 4a3b 8h7g 3c3d 7i6h 2b7g+ 6h7g 3a2b",
+    ]);
+    const mockBlackPlayer = createMockPlayer({
+      // 1st game (black)
+      "position startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5a6b 6h7h 6b7b": { usi: "2f2e" },
+      // 2nd game (white)
+      "position startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5a6b 6h7h 6b7b 4i5h": {
+        usi: "resign",
+      },
+      // 3rd game (black)
+      "position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 9g9f 9c9d 5i6h 5a5b": {
+        usi: "3g3f",
+      },
+      // 4th game (white)
+      "position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 9g9f 9c9d 5i6h 5a5b 2e2d": {
+        usi: "resign",
+      },
+    });
+    const mockWhitePlayer = createMockPlayer({
+      // 1st game (white)
+      "position startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5a6b 6h7h 6b7b 2f2e": {
+        usi: "resign",
+      },
+      // 2nd game (black)
+      "position startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5a6b 6h7h 6b7b": { usi: "4i5h" },
+      // 3rd game (white)
+      "position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 9g9f 9c9d 5i6h 5a5b 3g3f": {
+        usi: "resign",
+      },
+      // 4th game (black)
+      "position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 9g9f 9c9d 5i6h 5a5b": {
+        usi: "2e2d",
+      },
+    });
+    const mockPlayerBuilder = createMockPlayerBuilder({
+      [playerURI01]: mockBlackPlayer,
+      [playerURI02]: mockWhitePlayer,
+    });
+    const mockHandlers = createMockHandlers();
+    const recordManager = new RecordManager();
+
+    return invoke(
+      recordManager,
+      mockHandlers,
+      {
+        ...gameSettings10m30s,
+        startPosition: "list",
+        startPositionListFile: "test.sfen",
+        startPositionListOrder: "sequential",
+        repeat: 4,
+      },
+      mockPlayerBuilder,
+      (gameResults, specialMoveType) => {
+        expect(gameResults).toStrictEqual({
+          player1: { name: "USI Engine 02", win: 2 },
+          player2: { name: "USI Engine 01", win: 2 },
+          draw: 0,
+          invalid: 0,
+          total: 4,
+        });
+        expect(specialMoveType).toBe(SpecialMoveType.RESIGN);
+        expect(recordManager.record.metadata.getStandardMetadata(RecordMetadataKey.TITLE)).toBe(
+          "連続対局 4/4",
+        );
+        expect(mockHandlers.onError).not.toBeCalled();
       },
     );
   });

@@ -111,10 +111,18 @@
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.startPosition }}</div>
-              <select ref="startPosition">
+              <select
+                :value="startPosition"
+                @change="
+                  (event) =>
+                    (startPosition = (event.target as HTMLSelectElement)
+                      .value as GameStartPositionType)
+                "
+              >
                 <option value="current">{{ t.currentPosition }}</option>
+                <option value="list">{{ t.positionList }}</option>
                 <option :value="InitialPositionType.STANDARD">
-                  {{ t.nonHandicap }}
+                  {{ t.noHandicap }}
                 </option>
                 <option :value="InitialPositionType.HANDICAP_LANCE">
                   {{ t.lanceHandicap }}
@@ -147,6 +155,21 @@
                   {{ t.tenPiecesHandicap }}
                 </option>
               </select>
+            </div>
+            <div v-show="startPosition === 'list'" class="form-item">
+              <input ref="startPositionListFile" type="text" placeholder="*.sfen" />
+              <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
+            </div>
+            <div v-show="startPosition === 'list'" class="form-item">
+              <ToggleButton
+                :label="t.shuffle"
+                :value="startPositionListShuffle"
+                @change="
+                  (value: boolean) => {
+                    startPositionListShuffle = value;
+                  }
+                "
+              />
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.maxMoves }}</div>
@@ -235,6 +258,7 @@ import { useStore } from "@/renderer/store";
 import {
   defaultGameSettings,
   GameSettings,
+  GameStartPositionType,
   JishogiRule,
   validateGameSettings,
   validateGameSettingsForWeb,
@@ -265,7 +289,9 @@ const whiteMinutes = ref();
 const whiteByoyomi = ref();
 const whiteIncrement = ref();
 const setDifferentTime = ref(false);
-const startPosition = ref();
+const startPosition = ref<GameStartPositionType>(InitialPositionType.STANDARD);
+const startPositionListFile = ref();
+const startPositionListShuffle = ref(false);
 const maxMoves = ref();
 const repeat = ref();
 const jishogiRule = ref();
@@ -325,8 +351,9 @@ onUpdated(() => {
   whiteByoyomi.value.value = whiteTimeLimit.byoyomi;
   whiteIncrement.value.value = whiteTimeLimit.increment;
   setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
-  startPosition.value.value =
-    gameSettings.value.startPosition !== undefined ? gameSettings.value.startPosition : "current";
+  startPosition.value = gameSettings.value.startPosition;
+  startPositionListFile.value.value = gameSettings.value.startPositionListFile;
+  startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
   maxMoves.value.value = gameSettings.value.maxMoves;
   repeat.value.value = gameSettings.value.repeat;
   jishogiRule.value.value = gameSettings.value.jishogiRule;
@@ -363,7 +390,9 @@ const onStart = () => {
       increment: readInputAsNumber(increment.value),
     },
     enableEngineTimeout: enableEngineTimeout.value,
-    startPosition: startPosition.value.value !== "current" ? startPosition.value.value : undefined,
+    startPosition: startPosition.value,
+    startPositionListFile: startPositionListFile.value.value,
+    startPositionListOrder: startPositionListShuffle.value ? "shuffle" : "sequential",
     maxMoves: readInputAsNumber(maxMoves.value),
     repeat: readInputAsNumber(repeat.value),
     jishogiRule: jishogiRule.value.value,
@@ -421,6 +450,18 @@ const onSwapColor = () => {
       whiteIncrement.value.value,
       increment.value.value,
     ];
+  }
+};
+
+const onSelectStartPositionListFile = async () => {
+  useBusyState().retain();
+  try {
+    const sfenPath = await api.showSelectSFENDialog(startPositionListFile.value.value);
+    if (sfenPath) {
+      startPositionListFile.value.value = sfenPath;
+    }
+  } finally {
+    useBusyState().release();
   }
 };
 </script>

@@ -4,8 +4,6 @@ export type BookFormatYane2016 = "yane2016";
 export type BookFormatApery = "apery";
 export type BookFormat = BookFormatYane2016 | BookFormatApery;
 
-export const MOVE_NONE = "none";
-
 type BookCommon = {
   entryCount: number;
   duplicateCount: number;

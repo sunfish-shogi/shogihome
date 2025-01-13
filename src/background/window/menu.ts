@@ -163,7 +163,7 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.initializePosition,
           submenu: [
             menuItem(
-              t.nonHandicap,
+              t.noHandicap,
               MenuEvent.INIT_POSITION,
               [AppState.POSITION_EDITING],
               undefined,

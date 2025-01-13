@@ -50,6 +50,8 @@ export interface Bridge {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteRecordFile(url: string): Promise<string>;
   convertRecordFiles(json: string): Promise<string>;
+  showSelectSFENDialog(lastPath: string): Promise<string>;
+  loadSFENFile(path: string): Promise<string[]>;
   onOpenRecord(callback: (path: string) => void): void;
 
   // Book

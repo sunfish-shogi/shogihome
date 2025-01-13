@@ -82,12 +82,16 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
   const file = await fs.promises.open(path, "r");
-  if (
-    format === "yane2016" &&
-    !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
-  ) {
-    file.close();
-    throw new Error("Book is not ordered by position"); // FIXME: i18n
+  try {
+    if (
+      format === "yane2016" &&
+      !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
+    ) {
+      throw new Error("Book is not ordered by position"); // FIXME: i18n
+    }
+  } catch (e) {
+    await file.close();
+    throw e;
   }
   replaceBook({
     type: "on-the-fly",
@@ -188,23 +192,14 @@ export function clearBook(): void {
 }
 
 export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
-  switch (book.format) {
-    case "yane2016":
-      if (book.type === "in-memory") {
-        const moves = book.yaneEntries[sfen]?.moves || [];
-        return moves.map(arrayMoveToCommonBookMove);
-      } else {
-        const moves = await searchYaneuraOuBookMovesOnTheFly(sfen, book.file, book.size);
-        return moves.map(arrayMoveToCommonBookMove);
-      }
-    case "apery":
-      if (book.type === "in-memory") {
-        const moves = book.aperyEntries.get(aperyHash(sfen))?.moves || [];
-        return moves.map(arrayMoveToCommonBookMove);
-      } else {
-        const moves = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
-        return moves.map(arrayMoveToCommonBookMove);
-      }
+  if (book.type === "in-memory") {
+    const moves = retrieveEntry(book, sfen)?.moves || [];
+    return moves.map(arrayMoveToCommonBookMove);
+  } else {
+    const searchFunc =
+      book.format === "yane2016" ? searchYaneuraOuBookMovesOnTheFly : searchAperyBookMovesOnTheFly;
+    const moves = await searchFunc(sfen, book.file, book.size);
+    return moves.map(arrayMoveToCommonBookMove);
   }
 }
 

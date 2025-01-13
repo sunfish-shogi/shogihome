@@ -66,6 +66,8 @@ export interface API {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteRecordFile(url: string): Promise<string>;
   convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult>;
+  showSelectSFENDialog(lastPath: string): Promise<string>;
+  loadSFENFile(path: string): Promise<string[]>;
 
   // Book
   showOpenBookDialog(): Promise<string>;

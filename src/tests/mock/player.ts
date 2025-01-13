@@ -21,6 +21,9 @@ export function createMockPlayer(moves: { [usi: string]: MoveWithOption }) {
     readyNewGame: vi.fn(() => Promise.resolve()),
     startSearch: vi.fn((p: ImmutablePosition, usi: string, t: TimeStates, h: SearchHandler) => {
       const m = moves[usi];
+      if (!m) {
+        throw new Error("unexpected USI: " + usi);
+      }
       if (m.usi === "no-reply") {
         // eslint-disable-next-line  @typescript-eslint/no-empty-function
         return new Promise<void>(() => {});

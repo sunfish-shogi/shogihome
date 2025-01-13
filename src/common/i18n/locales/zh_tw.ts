@@ -222,6 +222,8 @@ export const zh_tw: Texts = {
   autoSavingDirectory: "棋譜自動保存地點",
   recordFileName: "棋譜檔案名稱",
   select: "選擇",
+  shuffle: "シャッフル", // TODO: translate
+  csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
@@ -278,6 +280,7 @@ export const zh_tw: Texts = {
   swapSenteGote: "先後交換",
   pieceToss: "振り駒", // TODO: translate
   currentPosition: "現在局面",
+  positionList: "局面集", // TODO: translate
   enableEngineTimeout: "開啟引擎時間限制",
   setDifferentTimeForGote: "先後手時間不相同",
   nextTurn: "手番",
@@ -290,6 +293,7 @@ export const zh_tw: Texts = {
   numberOfThreads: "執行緒數",
   multiPV: "多重PV",
   startPosition: "開始局面",
+  beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "最大手數",
   gameRepetition: "連續對局",
   jishogi: "持將棋",
@@ -370,7 +374,7 @@ export const zh_tw: Texts = {
   hashUsage: "Hash使用率",
   stop: "停止",
   resume: "重新開始",
-  nonHandicap: "平手",
+  noHandicap: "平手",
   lanceHandicap: "香落",
   rightLanceHandicap: "右香落",
   bishopHandicap: "角落",
@@ -434,6 +438,7 @@ export const zh_tw: Texts = {
   mistakeThreshold: "惡手閾値",
   blunderThreshold: "大惡手閾値",
   maxPVLength: "PV表示手数", // TODO: translate
+  commentFormat: "コメントの形式", // TODO: translate
   gothic: "黑體",
   mincho: "明體",
   appVersion: "軟體版本",
@@ -474,6 +479,7 @@ export const zh_tw: Texts = {
   bookMove: "定跡手", // TODO: translate
   play: "着手", // TODO: translate
   edit: "編集", // TODO: translate
+  addMoves: "指し手追加", // TODO: translate
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate

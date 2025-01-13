@@ -225,6 +225,8 @@ export const vi: Texts = {
   autoSavingDirectory: "Thư mục lưu tự động",
   recordFileName: "Tên tệp kỳ phổ",
   select: "Chọn",
+  shuffle: "シャッフル", // TODO: translate
+  csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
@@ -281,6 +283,7 @@ export const vi: Texts = {
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "振り駒", // TODO: translate
   currentPosition: "Thế cờ hiện tại",
+  positionList: "局面集", // TODO: translate
   enableEngineTimeout: "Bật hết giờ phần mềm",
   setDifferentTimeForGote: "Đặt thời gian khác cho Hậu",
   nextTurn: "Lượt đi",
@@ -293,6 +296,7 @@ export const vi: Texts = {
   numberOfThreads: "Luồng",
   multiPV: "Nhiều biến",
   startPosition: "Thế cờ ban đầu",
+  beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "Số nước tối đa",
   gameRepetition: "Lặp lại thế cờ",
   jishogi: "Bế tắc",
@@ -373,7 +377,7 @@ export const vi: Texts = {
   hashUsage: "Sử dụng hash",
   stop: "Dừng",
   resume: "Tiếp tục",
-  nonHandicap: "Không chấp",
+  noHandicap: "Không chấp",
   lanceHandicap: "Chấp Thương",
   rightLanceHandicap: "Chấp Thương phải",
   bishopHandicap: "Chấp Tượng",
@@ -437,6 +441,7 @@ export const vi: Texts = {
   mistakeThreshold: "Ngưỡng nước sai lầm",
   blunderThreshold: "Ngưỡng nước sai lầm ngớ ngẩn",
   maxPVLength: "PV表示手数", // TODO: translate
+  commentFormat: "コメントの形式", // TODO: translate
   gothic: "Gothic",
   mincho: "Minh thể",
   appVersion: "Phiên bản ứng dụng",
@@ -477,6 +482,7 @@ export const vi: Texts = {
   bookMove: "定跡手", // TODO: translate
   play: "着手", // TODO: translate
   edit: "編集", // TODO: translate
+  addMoves: "指し手追加", // TODO: translate
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate

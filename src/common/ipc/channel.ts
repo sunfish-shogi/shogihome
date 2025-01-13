@@ -16,6 +16,8 @@ export enum Background {
   EXPORT_CAPTURE_AS_PNG = "exportCaptureAsPNG",
   EXPORT_CAPTURE_AS_JPEG = "exportCaptureAsJPEG",
   CONVERT_RECORD_FILES = "convertRecordFiles",
+  SHOW_SELECT_SFEN_DIALOG = "showSelectSFENDialog",
+  LOAD_SFEN_FILE = "loadSFENFile",
   LOAD_APP_SETTINGS = "loadAppSettings",
   SAVE_APP_SETTINGS = "saveAppSettings",
   LOAD_BATCH_CONVERSION_SETTINGS = "loadBatchConversionSettings",
