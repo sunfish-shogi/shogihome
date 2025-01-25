@@ -18,6 +18,8 @@ export function normalizeWindowSettings(settings: WindowSettings): WindowSetting
   return {
     ...defaultWindowSettings(),
     ...settings,
+    width: Math.max(200, settings.width),
+    height: Math.max(150, settings.height),
   };
 }
 

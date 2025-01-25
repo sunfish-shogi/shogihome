@@ -59,7 +59,11 @@ const windowSettingsPath = path.join(userDir, "window.json");
 
 export function saveWindowSettings(settings: WindowSettings): void {
   try {
-    fs.writeFileSync(windowSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+    fs.writeFileSync(
+      windowSettingsPath,
+      JSON.stringify(normalizeWindowSettings(settings), undefined, 2),
+      "utf8",
+    );
   } catch (e) {
     getAppLogger().error("failed to write window settings: %s", e);
   }
