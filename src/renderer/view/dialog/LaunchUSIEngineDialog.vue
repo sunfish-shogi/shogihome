@@ -5,12 +5,11 @@
       <div class="form-group">
         <div>{{ t.searchEngine }}</div>
         <PlayerSelector
-          :player-uri="engineURI"
+          v-model:player-uri="engineURI"
           :engines="engines"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
-          @select-player="onSelectPlayer"
         />
       </div>
       <div class="form-group warning">
@@ -92,10 +91,6 @@ const onCancel = () => {
 
 const onUpdatePlayerSettings = async (val: USIEngines) => {
   engines.value = val;
-};
-
-const onSelectPlayer = (uri: string) => {
-  engineURI.value = uri;
 };
 </script>
 

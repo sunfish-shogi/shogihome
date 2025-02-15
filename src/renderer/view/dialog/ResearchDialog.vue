@@ -4,32 +4,22 @@
       <div class="title">{{ t.research }}</div>
       <div class="form-group">
         <PlayerSelector
-          :player-uri="engineURI"
+          v-model:player-uri="engineURI"
           :engines="engines"
           :filter-label="USIEngineLabel.RESEARCH"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
-          @select-player="
-            (uri: string) => {
-              engineURI = uri;
-            }
-          "
         />
       </div>
-      <div v-for="(uri, index) in secondaryEngineURIs" :key="index" class="form-group">
+      <div v-for="(_, index) in secondaryEngineURIs" :key="index" class="form-group">
         <PlayerSelector
-          :player-uri="uri"
+          v-model:player-uri="secondaryEngineURIs[index]"
           :engines="engines"
           :filter-label="USIEngineLabel.RESEARCH"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
-          @select-player="
-            (uri: string) => {
-              secondaryEngineURIs[index] = uri;
-            }
-          "
         />
         <button class="remove-button" @click="secondaryEngineURIs.splice(index, 1)">
           {{ t.remove }}
@@ -41,14 +31,7 @@
       </button>
       <div class="form-group">
         <div class="form-item">
-          <ToggleButton
-            :value="enableMaxSeconds"
-            @change="
-              (value: boolean) => {
-                enableMaxSeconds = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableMaxSeconds" />
           <div class="form-item-small-label">{{ t.toPrefix }}</div>
           <input
             ref="maxSeconds"

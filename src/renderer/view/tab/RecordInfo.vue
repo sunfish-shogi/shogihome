@@ -33,7 +33,7 @@
         <ToggleButton
           :value="appSettings.emptyRecordInfoVisibility"
           :label="t.displayEmptyElements"
-          @change="changeEmptyInfoVisibility"
+          @update:value="changeEmptyInfoVisibility"
         />
       </div>
     </div>

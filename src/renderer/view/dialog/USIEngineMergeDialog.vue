@@ -6,18 +6,16 @@
         <div class="select-area row">
           <div class="engine-column">
             <PlayerSelector
-              player-uri=""
+              v-model:player-uri="leftEngineURI"
               :engines="usiEngines"
               :enable-edit-button="false"
-              @select-player="selectLeft"
             />
           </div>
           <div class="engine-column">
             <PlayerSelector
-              player-uri=""
+              v-model:player-uri="rightEngineURI"
               :engines="usiEngines"
               :enable-edit-button="false"
-              @select-player="selectRight"
             />
           </div>
         </div>
@@ -122,14 +120,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
-
-const selectLeft = (uri: string) => {
-  leftEngineURI.value = uri;
-};
-
-const selectRight = (uri: string) => {
-  rightEngineURI.value = uri;
-};
 
 const merge = (name: string, srcURI: string, dstURI: string) => {
   const src = usiEngines.getEngine(srcURI);

@@ -5,26 +5,18 @@
       <div class="form-group">
         <div>{{ t.searchEngine }}</div>
         <PlayerSelector
-          :player-uri="engineURI"
+          v-model:player-uri="engineURI"
           :engines="engines"
           :filter-label="USIEngineLabel.RESEARCH"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
-          @select-player="onSelectPlayer"
         />
       </div>
       <div class="form-group">
         <div>{{ t.startEndCriteria }}</div>
         <div class="form-item">
-          <ToggleButton
-            :value="enableStartNumber"
-            @change="
-              (value: boolean) => {
-                enableStartNumber = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableStartNumber" />
           <div class="form-item-small-label">{{ t.fromPrefix }}{{ t.plyPrefix }}</div>
           <input
             ref="startNumber"
@@ -37,14 +29,7 @@
           <div class="form-item-small-label">{{ t.plySuffix }}{{ t.fromSuffix }}</div>
         </div>
         <div class="form-item">
-          <ToggleButton
-            :value="enableEndNumber"
-            @change="
-              (value: boolean) => {
-                enableEndNumber = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableEndNumber" />
           <div class="form-item-small-label">{{ t.toPrefix }}{{ t.plyPrefix }}</div>
           <input
             ref="endNumber"
@@ -70,6 +55,7 @@
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.moveComments }}</div>
           <HorizontalSelector
+            v-model:value="commentBehavior"
             class="selector"
             :items="[
               { value: CommentBehavior.NONE, label: t.noOutputs },
@@ -77,12 +63,6 @@
               { value: CommentBehavior.APPEND, label: t.appendCommentToBottom },
               { value: CommentBehavior.OVERWRITE, label: t.overwrite },
             ]"
-            :value="commentBehavior"
-            @change="
-              (value: string) => {
-                commentBehavior = value as CommentBehavior;
-              }
-            "
           />
         </div>
       </div>
@@ -184,10 +164,6 @@ const onCancel = () => {
 
 const onUpdatePlayerSettings = async (val: USIEngines) => {
   engines.value = val;
-};
-
-const onSelectPlayer = (uri: string) => {
-  engineURI.value = uri;
 };
 </script>
 

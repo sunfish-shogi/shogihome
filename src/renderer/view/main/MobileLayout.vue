@@ -33,14 +33,9 @@
         />
         <ToggleButton
           v-if="showRecordViewOnBottom"
+          v-model:value="commentEditorMode"
           label="コメント編集モード"
           :height="toggleHeight"
-          :value="commentEditorMode"
-          @change="
-            (value) => {
-              commentEditorMode = value;
-            }
-          "
         />
       </div>
       <div

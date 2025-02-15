@@ -2,7 +2,7 @@
   <div style="display: inline-block">
     <div class="container">
       <div class="toggle" :style="toggleStyle">
-        <input :id="id" type="checkbox" :checked="value" @change="onChange" />
+        <input :id="id" v-model="model" type="checkbox" />
         <div class="slider" :style="sliderStyle"></div>
         <div class="knob" :style="knobStyle"></div>
       </div>
@@ -17,11 +17,9 @@
 import { computed } from "vue";
 import { issueDOMID } from "@/renderer/helpers/unique";
 
+const model = defineModel<boolean>("value", { required: true });
+
 const props = defineProps({
-  value: {
-    type: Boolean,
-    required: true,
-  },
   label: {
     type: String,
     default: "",
@@ -31,10 +29,6 @@ const props = defineProps({
     default: 20,
   },
 });
-
-const emit = defineEmits<{
-  change: [value: boolean];
-}>();
 
 const id = issueDOMID();
 const toggleStyle = computed(() => ({
@@ -52,10 +46,6 @@ const labelStyle = computed(() => ({
   fontSize: `${props.height * 0.7}px`,
   lineHeight: `${props.height}px`,
 }));
-const onChange = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  emit("change", input.checked);
-};
 </script>
 
 <style scoped>

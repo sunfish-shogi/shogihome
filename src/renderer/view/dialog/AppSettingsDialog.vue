@@ -18,7 +18,7 @@
                 { label: '繁體中文', value: Language.ZH_TW },
                 { label: 'Tiếng Việt', value: Language.VI },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.language = value as Language;
                 }
@@ -55,7 +55,7 @@
                 { label: t.darkGreen, value: Thema.DARK_GREEN },
                 { label: t.dark, value: Thema.DARK },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.thema = value as Thema;
                 }
@@ -74,7 +74,7 @@
                 { label: t.bgContain, value: BackgroundImageType.CONTAIN },
                 { label: t.bgTile, value: BackgroundImageType.TILE },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.backgroundImageType = value as BackgroundImageType;
                 }
@@ -106,7 +106,7 @@
                 { label: t.compact, value: BoardLayoutType.COMPACT },
                 { label: t.portrait, value: BoardLayoutType.PORTRAIT },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.boardLayoutType = value as BoardLayoutType;
                 }
@@ -131,7 +131,7 @@
                   { label: t.customImage, value: PieceImageType.CUSTOM_IMAGE },
                 ].filter((item) => !isMobileWebApp() || item.value !== PieceImageType.CUSTOM_IMAGE)
               "
-              @change="
+              @update:value="
                 (value: string) => {
                   update.pieceImage = value as PieceImageType;
                 }
@@ -157,7 +157,7 @@
               <ToggleButton
                 :label="t.imageHasMarginsRemoveForLargerDisplay"
                 :value="original.deletePieceImageMargin"
-                @change="(checked: boolean) => (update.deletePieceImageMargin = checked)"
+                @update:value="(checked: boolean) => (update.deletePieceImageMargin = checked)"
               />
             </div>
           </div>
@@ -183,7 +183,7 @@
                   { label: t.customImage, value: BoardImageType.CUSTOM_IMAGE },
                 ].filter((item) => !isMobileWebApp() || item.value !== BoardImageType.CUSTOM_IMAGE)
               "
-              @change="
+              @update:value="
                 (value: string) => {
                   update.boardImage = value as BoardImageType;
                 }
@@ -221,7 +221,7 @@
                   (item) => !isMobileWebApp() || item.value !== PieceStandImageType.CUSTOM_IMAGE,
                 )
               "
-              @change="
+              @update:value="
                 (value: string) => {
                   update.pieceStandImage = value as PieceStandImageType;
                 }
@@ -247,7 +247,7 @@
             <div class="form-item-label-wide">{{ t.transparent }}</div>
             <ToggleButton
               :value="original.enableTransparent"
-              @change="(checked: boolean) => (update.enableTransparent = checked)"
+              @update:value="(checked: boolean) => (update.enableTransparent = checked)"
             />
           </div>
           <!-- 盤の不透明度 -->
@@ -309,7 +309,7 @@
             </div>
             <ToggleButton
               :value="original.boardLabelType != BoardLabelType.NONE"
-              @change="
+              @update:value="
                 (checked: boolean) =>
                   (update.boardLabelType = checked ? BoardLabelType.STANDARD : BoardLabelType.NONE)
               "
@@ -322,7 +322,7 @@
             </div>
             <ToggleButton
               :value="original.leftSideControlType != LeftSideControlType.NONE"
-              @change="
+              @update:value="
                 (checked: boolean) =>
                   (update.leftSideControlType = checked
                     ? LeftSideControlType.STANDARD
@@ -337,7 +337,7 @@
             </div>
             <ToggleButton
               :value="original.rightSideControlType != RightSideControlType.NONE"
-              @change="
+              @update:value="
                 (checked: boolean) =>
                   (update.rightSideControlType = checked
                     ? RightSideControlType.STANDARD
@@ -356,7 +356,7 @@
                 { label: t.twoColumns, value: TabPaneType.DOUBLE },
                 { label: `${t.twoColumns} v2`, value: TabPaneType.DOUBLE_V2 },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.tabPaneType = value as TabPaneType;
                 }
@@ -428,7 +428,7 @@
                 { label: t.anyTurn, value: ClockSoundTarget.ALL },
                 { label: t.onlyHumanTurn, value: ClockSoundTarget.ONLY_USER },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.clockSoundTarget = value as ClockSoundTarget;
                 }
@@ -456,7 +456,7 @@
                 { label: '.csa', value: RecordFileFormat.CSA },
                 { label: '.jkf', value: RecordFileFormat.JKF },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.defaultRecordFileFormat = value as RecordFileFormat;
                 }
@@ -475,7 +475,7 @@
                 { label: t.strict, value: TextDecodingRule.STRICT },
                 { label: t.autoDetect, value: TextDecodingRule.AUTO_DETECT },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.textDecodingRule = value as TextDecodingRule;
                 }
@@ -495,7 +495,7 @@
                 { label: 'LF (UNIX/Mac)', value: 'lf' },
                 { label: `CR (${t.old90sMac})`, value: 'cr' },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.returnCode = nameToReturnCode[value];
                 }
@@ -549,7 +549,7 @@
             <div class="form-item-label-wide">{{ t.csaV3Output }}</div>
             <ToggleButton
               :value="original.useCSAV3"
-              @change="(checked: boolean) => (update.useCSAV3 = checked)"
+              @update:value="(checked: boolean) => (update.useCSAV3 = checked)"
             />
           </div>
           <!-- USI の局面表記 -->
@@ -562,7 +562,7 @@
                 { label: t.onlySFEN, value: 'false' },
                 { label: 'startpos / SFEN', value: 'true' },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.enableUSIFileStartpos = value === 'true';
                 }
@@ -579,7 +579,7 @@
                 { label: t.onlySFEN, value: 'false' },
                 { label: 'SFEN / resign', value: 'true' },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.enableUSIFileResign = value === 'true';
                 }
@@ -621,7 +621,7 @@
             </div>
             <ToggleButton
               :value="original.translateEngineOptionName"
-              @change="(checked: boolean) => (update.translateEngineOptionName = checked)"
+              @update:value="(checked: boolean) => (update.translateEngineOptionName = checked)"
             />
             <div class="form-item-small-label">({{ t.functionalOnJapaneseOnly }})</div>
           </div>
@@ -663,7 +663,7 @@
                   value: EvaluationViewFrom.BLACK,
                 },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.evaluationViewFrom = value as EvaluationViewFrom;
                 }
@@ -811,7 +811,7 @@
                 { label: 'CSA V3', value: SearchCommentFormat.CSA3 },
                 { label: 'ShogiGUI', value: SearchCommentFormat.SHOGIGUI },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.searchCommentFormat = value as SearchCommentFormat;
                 }
@@ -870,7 +870,7 @@
             <div class="form-item-label-wide">{{ t.enableAppLog }}</div>
             <ToggleButton
               :value="original.enableAppLog"
-              @change="(checked: boolean) => (update.enableAppLog = checked)"
+              @update:value="(checked: boolean) => (update.enableAppLog = checked)"
             />
           </div>
           <!-- USI通信ログを出力 -->
@@ -878,7 +878,7 @@
             <div class="form-item-label-wide">{{ t.enableUSILog }}</div>
             <ToggleButton
               :value="original.enableUSILog"
-              @change="(checked: boolean) => (update.enableUSILog = checked)"
+              @update:value="(checked: boolean) => (update.enableUSILog = checked)"
             />
           </div>
           <!-- CSA通信ログを出力 -->
@@ -886,7 +886,7 @@
             <div class="form-item-label-wide">{{ t.enableCSALog }}</div>
             <ToggleButton
               :value="original.enableCSALog"
-              @change="(checked: boolean) => (update.enableCSALog = checked)"
+              @update:value="(checked: boolean) => (update.enableCSALog = checked)"
             />
           </div>
           <!-- ログレベル -->
@@ -901,7 +901,7 @@
                 { label: 'WARN', value: LogLevel.WARN },
                 { label: 'ERROR', value: LogLevel.ERROR },
               ]"
-              @change="
+              @update:value="
                 (value: string) => {
                   update.logLevel = value as LogLevel;
                 }

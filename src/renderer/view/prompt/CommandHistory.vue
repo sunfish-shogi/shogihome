@@ -2,24 +2,8 @@
   <div>
     <div class="root column">
       <div class="tools row">
-        <ToggleButton
-          :value="autoScroll"
-          :label="t.autoScroll"
-          @change="
-            (value) => {
-              autoScroll = value;
-            }
-          "
-        />
-        <ToggleButton
-          :value="showTimestamp"
-          :label="t.showTimestamp"
-          @change="
-            (value) => {
-              showTimestamp = value;
-            }
-          "
-        />
+        <ToggleButton v-model:value="autoScroll" :label="t.autoScroll" />
+        <ToggleButton v-model:value="showTimestamp" :label="t.showTimestamp" />
         <input
           class="search-text"
           type="text"

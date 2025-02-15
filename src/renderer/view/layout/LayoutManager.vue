@@ -41,7 +41,7 @@
             class="color-toggle"
             :value="!!customProfile.backgroundColor"
             :label="t.backgroundColor"
-            @change="
+            @update:value="
               (value) => updateCustomProfileProp('backgroundColor', value ? '#000000' : undefined)
             "
           />
@@ -56,7 +56,7 @@
             class="backdrop-toggle"
             :value="!!customProfile.dialogBackdrop"
             :label="t.dialogBackdrop"
-            @change="(value) => updateCustomProfileProp('dialogBackdrop', value)"
+            @update:value="(value) => updateCustomProfileProp('dialogBackdrop', value)"
           />
         </div>
         <div class="row">
@@ -128,14 +128,18 @@
               <ToggleButton
                 :value="!!component.rightControlBox"
                 :label="t.rightControlBox"
-                @change="(value) => updateCustomProfileComponent(index, 'rightControlBox', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'rightControlBox', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.leftControlBox"
                 :label="t.leftControlBox"
-                @change="(value) => updateCustomProfileComponent(index, 'leftControlBox', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'leftControlBox', value)
+                "
               />
             </span>
             <span>
@@ -146,7 +150,7 @@
                   { label: t.compact, value: BoardLayoutType.COMPACT },
                   { label: t.portrait, value: BoardLayoutType.PORTRAIT },
                 ]"
-                @change="(value) => updateCustomProfileComponent(index, 'layoutType', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'layoutType', value)"
               />
             </span>
           </div>
@@ -155,14 +159,16 @@
               <ToggleButton
                 :value="!!component.showCommentColumn"
                 :label="t.comments"
-                @change="(value) => updateCustomProfileComponent(index, 'showCommentColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showCommentColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showElapsedTimeColumn"
                 :label="t.elapsedTime"
-                @change="
+                @update:value="
                   (value) => updateCustomProfileComponent(index, 'showElapsedTimeColumn', value)
                 "
               />
@@ -171,14 +177,16 @@
               <ToggleButton
                 :value="!!component.topControlBox"
                 :label="t.topControlBox"
-                @change="(value) => updateCustomProfileComponent(index, 'topControlBox', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'topControlBox', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.branches"
                 :label="t.branches"
-                @change="(value) => updateCustomProfileComponent(index, 'branches', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'branches', value)"
               />
             </span>
           </div>
@@ -190,14 +198,14 @@
                   { label: t.rawScore, value: EvaluationChartType.RAW },
                   { label: t.estimatedWinRate, value: EvaluationChartType.WIN_RATE },
                 ]"
-                @change="(value) => updateCustomProfileComponent(index, 'chartType', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'chartType', value)"
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showLegend"
                 :label="t.legends"
-                @change="(value) => updateCustomProfileComponent(index, 'showLegend', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'showLegend', value)"
               />
             </span>
           </div>
@@ -206,63 +214,75 @@
               <ToggleButton
                 :value="!!component.historyMode"
                 :label="t.historyMode"
-                @change="(value) => updateCustomProfileComponent(index, 'historyMode', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'historyMode', value)"
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showHeader"
                 :label="t.headers"
-                @change="(value) => updateCustomProfileComponent(index, 'showHeader', value)"
+                @update:value="(value) => updateCustomProfileComponent(index, 'showHeader', value)"
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showTimeColumn"
                 :label="t.elapsedTime"
-                @change="(value) => updateCustomProfileComponent(index, 'showTimeColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showTimeColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showMultiPvColumn"
                 :label="t.rank"
-                @change="(value) => updateCustomProfileComponent(index, 'showMultiPvColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showMultiPvColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showDepthColumn"
                 :label="t.depth"
-                @change="(value) => updateCustomProfileComponent(index, 'showDepthColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showDepthColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showNodesColumn"
                 :label="t.nodes"
-                @change="(value) => updateCustomProfileComponent(index, 'showNodesColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showNodesColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showScoreColumn"
                 :label="t.score"
-                @change="(value) => updateCustomProfileComponent(index, 'showScoreColumn', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showScoreColumn', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showPlayButton"
                 :label="t.playButton"
-                @change="(value) => updateCustomProfileComponent(index, 'showPlayButton', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showPlayButton', value)
+                "
               />
             </span>
             <span class="property">
               <ToggleButton
                 :value="!!component.showSuggestionsCount"
                 :label="t.suggestionsCount"
-                @change="
+                @update:value="
                   (value) => updateCustomProfileComponent(index, 'showSuggestionsCount', value)
                 "
               />
@@ -273,7 +293,9 @@
               <ToggleButton
                 :value="!!component.showBookmark"
                 :label="t.bookmark"
-                @change="(value) => updateCustomProfileComponent(index, 'showBookmark', value)"
+                @update:value="
+                  (value) => updateCustomProfileComponent(index, 'showBookmark', value)
+                "
               />
             </span>
           </div>

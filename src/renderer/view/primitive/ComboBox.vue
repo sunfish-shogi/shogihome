@@ -2,11 +2,12 @@
   <div style="display: inline-block">
     <div class="row wrap">
       <select
-        ref="select"
         size="1"
+        :value="selectValue"
         @change="
-          () => {
-            free = select.value === '__FREE_TEXT__';
+          (event) => {
+            const value = (event.target as HTMLSelectElement).value;
+            emit('update:modelValue', value === '__FREE_TEXT__' ? input.value : value);
           }
         "
       >
@@ -21,14 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, Ref, ref } from "vue";
+import { computed, PropType, Ref, ref } from "vue";
 
 type Option = {
   value: string;
   label: string;
 };
 
-defineProps({
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
+  },
   options: {
     type: Array as PropType<Option[]>,
     required: true,
@@ -39,34 +44,15 @@ defineProps({
   },
 });
 
-const select = ref() as Ref<HTMLSelectElement>;
-const input = ref() as Ref<HTMLInputElement>;
-const free = ref(false);
+const emit = defineEmits(["update:modelValue"]);
 
-const setValue = (value: string) => {
-  for (const option of select.value.querySelectorAll("option")) {
-    if (option.value === value) {
-      option.selected = true;
-      free.value = false;
-      return;
-    }
-  }
-  select.value.value = "__FREE_TEXT__";
-  input.value.value = value;
-  free.value = true;
-};
-const getValue = () => {
-  const selected = Array.from(select.value.querySelectorAll("option")).find((option) => {
-    if (option.selected) {
-      return option.value;
-    }
-  });
-  if (selected?.value === "__FREE_TEXT__") {
-    return input.value.value;
-  }
-  return selected?.value || "";
-};
-defineExpose({ setValue, getValue });
+const selectValue = computed(() =>
+  props.options.some((option) => option.value === props.modelValue)
+    ? props.modelValue
+    : "__FREE_TEXT__",
+);
+const free = ref(selectValue.value === "__FREE_TEXT__");
+const input = ref() as Ref<HTMLInputElement>;
 </script>
 
 <style scoped>

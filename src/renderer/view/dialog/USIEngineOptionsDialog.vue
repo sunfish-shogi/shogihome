@@ -4,12 +4,7 @@
       <div class="title">{{ t.manageEngines }}</div>
       <div class="form-group">
         <div class="option-filter">
-          <input
-            ref="filter"
-            class="filter"
-            :placeholder="t.filterByOptionName"
-            @input="updateFilter"
-          />
+          <input v-model.trim="filter" class="filter" :placeholder="t.filterByOptionName" />
         </div>
         <div class="column option-list">
           <!-- 名前 -->
@@ -39,13 +34,13 @@
           <div v-show="!filterWords.length" class="row option">
             <div class="option-name">{{ t.displayName }}</div>
             <div class="option-value">
-              <input ref="engineNameInput" class="option-value-text" type="text" />
+              <input v-model="engine.name" class="option-value-text" type="text" />
             </div>
           </div>
           <!-- オプション -->
           <div
-            v-for="option in options"
-            v-show="option.visible"
+            v-for="(option, index) in options"
+            v-show="optionVisibility[index]"
             :key="option.name"
             class="row option"
           >
@@ -61,11 +56,7 @@
                 <!-- 数値 (spin) -->
                 <input
                   v-if="option.type === 'spin'"
-                  :ref="
-                    (el) => {
-                      inputs[option.name] = el as HTMLInputElement;
-                    }
-                  "
+                  v-model.number="option.currentValue"
                   class="option-value-number"
                   type="number"
                   :min="option.min"
@@ -76,11 +67,7 @@
                 <!-- 文字列 (string) -->
                 <input
                   v-if="option.type === 'string'"
-                  :ref="
-                    (el) => {
-                      inputs[option.name] = el as HTMLInputElement;
-                    }
-                  "
+                  v-model="option.currentValue"
                   class="option-value-text"
                   type="text"
                   :name="option.name"
@@ -88,11 +75,7 @@
                 <!-- ファイル名 (filename) -->
                 <input
                   v-if="option.type === 'filename'"
-                  :ref="
-                    (el) => {
-                      inputs[option.name] = el as HTMLInputElement;
-                    }
-                  "
+                  v-model="option.currentValue"
                   class="option-value-filename"
                   type="text"
                   :name="option.name"
@@ -107,12 +90,7 @@
                 <!-- ブール値 (check) -->
                 <HorizontalSelector
                   v-if="option.type === 'check'"
-                  :ref="
-                    (el: unknown) => {
-                      selectors[option.name] = el as InstanceType<typeof HorizontalSelector>;
-                    }
-                  "
-                  value=""
+                  v-model:value="option.currentValue as string"
                   :items="
                     option.default
                       ? [
@@ -129,11 +107,7 @@
                 <!-- 選択 (combo) -->
                 <ComboBox
                   v-if="option.type === 'combo'"
-                  :ref="
-                    (el: unknown) => {
-                      selectors[option.name] = el as InstanceType<typeof ComboBox>;
-                    }
-                  "
+                  v-model="option.currentValue as string"
                   :options="[
                     { value: '', label: t.defaultValue },
                     ...option.vars.map((v) => ({ value: v, label: v })),
@@ -152,7 +126,7 @@
               <span
                 v-if="option.type !== 'button' && (option.default || option.default === 0)"
                 class="option-default-value"
-                :class="{ highlight: option.value !== option.default }"
+                :class="{ highlight: option.currentValue !== option.default }"
               >
                 {{ t.defaultValue }}:
                 {{
@@ -168,16 +142,8 @@
                 v-if="option.name === 'USI_Ponder' && option.type === 'check'"
                 class="additional"
               >
-                <ToggleButton
-                  :label="t.earlyPonder"
-                  :value="enableEarlyPonder"
-                  @change="
-                    (value: boolean) => {
-                      enableEarlyPonder = value;
-                    }
-                  "
-                />
-                <div v-show="enableEarlyPonder" class="form-group warning">
+                <ToggleButton v-model:value="engine.enableEarlyPonder" :label="t.earlyPonder" />
+                <div v-show="engine.enableEarlyPonder" class="form-group warning">
                   <div class="note">
                     {{ t.earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions }}
                     {{ t.ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior }}
@@ -207,7 +173,6 @@
 import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import api from "@/renderer/ipc/api";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import {
@@ -215,8 +180,9 @@ import {
   getUSIEngineOptionCurrentValue,
   mergeUSIEngine,
   USIEngine,
+  USIEngineOption,
 } from "@/common/settings/usi";
-import { computed, onBeforeUnmount, onMounted, onUpdated, PropType, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, PropType, ref } from "vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -241,20 +207,26 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
+type Option = USIEngineOption & {
+  displayName: string;
+  currentValue: string | number;
+};
+
 const busyState = useBusyState();
 const appSettings = useAppSettings();
 const dialog = ref();
-const engineNameInput = ref();
-const enableEarlyPonder = ref(false);
-const filter = ref();
-const filterWords = ref([] as string[]);
-const inputs = ref({} as { [key: string]: HTMLInputElement | HTMLSelectElement });
-const selectors = ref(
-  {} as { [key: string]: InstanceType<typeof HorizontalSelector> | InstanceType<typeof ComboBox> },
-);
+const filter = ref("");
+const filterWords = computed(() => filter.value.split(/ +/).filter((s) => s));
 const engine = ref(emptyUSIEngine());
-let defaultValueLoaded = false;
-let defaultValueApplied = false;
+const options = ref<Option[]>([]);
+const optionVisibility = computed(() =>
+  options.value.map(
+    (option) =>
+      filterWords.value.length === 0 ||
+      (option.displayName && filterString(option.displayName, filterWords.value)) ||
+      filterString(option.name, filterWords.value),
+  ),
+);
 
 busyState.retain();
 onMounted(async () => {
@@ -264,9 +236,13 @@ onMounted(async () => {
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
     engine.value = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
     mergeUSIEngine(engine.value, props.latest);
-    engineNameInput.value.value = engine.value.name;
-    enableEarlyPonder.value = engine.value.enableEarlyPonder;
-    defaultValueLoaded = true;
+    options.value = Object.values(engine.value.options)
+      .sort((a, b): number => (a.order < b.order ? -1 : 1))
+      .map((option) => ({
+        displayName: appSettings.translateEngineOptionName ? usiOptionNameMap[option.name] : "",
+        ...option,
+        currentValue: getUSIEngineOptionCurrentValue(option) ?? (option.type === "spin" ? 0 : ""),
+      }));
   } catch (e) {
     useErrorStore().add(e);
     emit("cancel");
@@ -275,55 +251,9 @@ onMounted(async () => {
   }
 });
 
-const options = computed(() =>
-  Object.values(engine.value.options)
-    .sort((a, b): number => (a.order < b.order ? -1 : 1))
-    .map((option) => {
-      const ret = {
-        displayName: "",
-        ...option,
-        value: getUSIEngineOptionCurrentValue(option),
-        visible: true,
-      };
-      if (appSettings.translateEngineOptionName) {
-        ret.displayName = usiOptionNameMap[option.name];
-      }
-      if (filterWords.value.length > 0) {
-        ret.visible =
-          (ret.displayName && filterString(ret.displayName, filterWords.value)) ||
-          filterString(ret.name, filterWords.value);
-      }
-      return ret;
-    }),
-);
-
-onUpdated(() => {
-  if (!defaultValueLoaded || defaultValueApplied) {
-    return;
-  }
-  for (const option of options.value) {
-    if (option.value === undefined) {
-      continue;
-    }
-    if (option.type === "check" || option.type === "combo") {
-      selectors.value[option.name].setValue((option.value as string) || "");
-    } else if (inputs.value[option.name]) {
-      inputs.value[option.name].value = option.value + "";
-    }
-  }
-  defaultValueApplied = true;
-});
-
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
-
-const updateFilter = () => {
-  filterWords.value = String(filter.value.value)
-    .trim()
-    .split(/ +/)
-    .filter((s) => s);
-};
 
 const openEngineDir = () => {
   api.openExplorer(engine.value.path);
@@ -360,9 +290,9 @@ const selectFile = async (name: string) => {
   busyState.retain();
   try {
     const path = await api.showSelectFileDialog();
-    const elem = inputs.value[name];
-    if (path && elem) {
-      elem.value = path;
+    const option = options.value.find((option) => option.name === name);
+    if (path && option) {
+      option.currentValue = path;
     }
   } catch (e) {
     useErrorStore().add(e);
@@ -384,37 +314,30 @@ const sendOptionButtonSignal = async (name: string) => {
 };
 
 const reset = () => {
-  engineNameInput.value.value = engine.value.defaultName;
-  enableEarlyPonder.value = engine.value.enableEarlyPonder;
-  Object.values(engine.value.options).forEach((option) => {
-    const value =
-      option.type !== "button" && option.default !== undefined ? option.default + "" : "";
-    if (option.type === "check" || option.type === "combo") {
-      selectors.value[option.name].setValue(value);
-    } else if (inputs.value[option.name]) {
-      inputs.value[option.name].value = value;
+  engine.value.name = engine.value.defaultName;
+  engine.value.enableEarlyPonder = false;
+  options.value.forEach((option) => {
+    if (option.type === "button") {
+      return;
     }
+    option.currentValue = option.default ?? (option.type === "spin" ? 0 : "");
   });
 };
 
 const ok = () => {
-  engine.value.name = engineNameInput.value.value;
-  engine.value.enableEarlyPonder = enableEarlyPonder.value;
-  Object.values(engine.value.options).forEach((option) => {
-    if (option.type === "button") {
+  options.value.forEach((option) => {
+    const engineOption = engine.value.options[option.name];
+    if (engineOption.type === "button") {
       return;
     }
-    if (option.type === "check") {
-      option.value = (selectors.value[option.name].getValue() as "true" | "false") || undefined;
-    } else if (option.type === "combo") {
-      option.value = selectors.value[option.name].getValue() || undefined;
-    } else if (inputs.value[option.name]) {
-      const elem = inputs.value[option.name];
-      option.value = !elem.value
-        ? undefined
-        : option.type === "spin"
-          ? readInputAsNumber(elem as HTMLInputElement)
-          : elem.value;
+    if (engineOption.type === "check") {
+      engineOption.value = (option.currentValue as "true" | "false" | "") || undefined;
+    } else if (engineOption.type === "combo") {
+      engineOption.value = (option.currentValue as string) || undefined;
+    } else if (engineOption.type === "spin") {
+      engineOption.value = option.currentValue as number;
+    } else {
+      engineOption.value = (option.currentValue as string) || undefined;
     }
   });
   emit("ok", engine.value);
