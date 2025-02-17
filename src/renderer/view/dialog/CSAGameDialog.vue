@@ -13,7 +13,7 @@
         <div class="form-group">
           <div>{{ t.player }}</div>
           <PlayerSelector
-            :player-uri="playerURI"
+            v-model:player-uri="playerURI"
             :contains-human="true"
             :contains-basic-engines="true"
             :engines="engines"
@@ -22,19 +22,11 @@
             :display-thread-state="true"
             :display-multi-pv-state="true"
             @update-engines="onUpdatePlayerSettings"
-            @select-player="onSelectPlayer"
           />
           <hr v-if="uri.isUSIEngine(playerURI)" />
           <div v-if="uri.isUSIEngine(playerURI)" class="form-item">
             <div class="form-item-label-wide">{{ t.restartItEveryGame }}</div>
-            <ToggleButton
-              :value="restartPlayerEveryGame"
-              @change="
-                (value: boolean) => {
-                  restartPlayerEveryGame = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="restartPlayerEveryGame" />
           </div>
         </div>
         <div class="form-group">
@@ -55,12 +47,7 @@
           <hr />
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.version }}</div>
-            <select
-              ref="protocolVersion"
-              class="long-text"
-              value="CSA_v121"
-              @change="onChangeProtocolVersion"
-            >
+            <select v-model="protocolVersion" class="long-text">
               <option :value="CSAProtocolVersion.V121">
                 {{ t.csaProtocolV121 }}
               </option>
@@ -69,10 +56,7 @@
               </option>
             </select>
           </div>
-          <div
-            v-if="selectedProtocolVersion === CSAProtocolVersion.V121"
-            class="form-group warning"
-          >
+          <div v-if="protocolVersion === CSAProtocolVersion.V121" class="form-group warning">
             <div class="note">
               {{ t.notSendPVOnStandardCSAProtocol }}
             </div>
@@ -100,15 +84,11 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.password }}</div>
-            <input ref="password" class="long-text" type="password" />
+            <input ref="password" class="long-text" :type="revealPassword ? 'text' : 'password'" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide"></div>
-            <ToggleButton
-              :label="t.revealPassword"
-              :value="false"
-              @change="onTogglePasswordVisibility"
-            />
+            <ToggleButton v-model:value="revealPassword" :label="t.revealPassword" />
           </div>
           <div class="form-group warning">
             <div v-if="isEncryptionAvailable" class="note">
@@ -136,14 +116,7 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePing }}</div>
-            <ToggleButton
-              :value="blankLinePing"
-              @change="
-                (value: boolean) => {
-                  blankLinePing = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="blankLinePing" />
           </div>
           <div v-show="blankLinePing" class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePingInitialDelay }}</div>
@@ -175,14 +148,7 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.saveHistory }}</div>
-            <ToggleButton
-              :value="saveHistory"
-              @change="
-                (value: boolean) => {
-                  saveHistory = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="saveHistory" />
           </div>
           <hr />
           <div class="form-item">
@@ -193,53 +159,25 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.autoRelogin }}</div>
-            <ToggleButton
-              :value="autoRelogin"
-              @change="
-                (value: boolean) => {
-                  autoRelogin = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="autoRelogin" />
           </div>
         </div>
         <div class="form-group">
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.outputComments }}</div>
-            <ToggleButton
-              :value="enableComment"
-              @change="
-                (value: boolean) => {
-                  enableComment = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="enableComment" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">
               {{ t.saveRecordAutomatically }}
             </div>
-            <ToggleButton
-              :value="enableAutoSave"
-              @change="
-                (value: boolean) => {
-                  enableAutoSave = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="enableAutoSave" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">
               {{ t.adjustBoardAutomatically }}
             </div>
-            <ToggleButton
-              :value="autoFlip"
-              @change="
-                (value: boolean) => {
-                  autoFlip = value;
-                }
-              "
-            />
+            <ToggleButton v-model:value="autoFlip" />
           </div>
         </div>
       </div>
@@ -297,12 +235,12 @@ const busyState = useBusyState();
 const messageStore = useMessageStore();
 const appSettings = useAppSettings();
 const dialog = ref();
-const protocolVersion = ref();
-const selectedProtocolVersion = ref(CSAProtocolVersion.V121);
+const protocolVersion = ref(CSAProtocolVersion.V121);
 const host = ref();
 const port = ref();
 const id = ref();
 const password = ref();
+const revealPassword = ref(false);
 const keepaliveInitialDelay = ref();
 const blankLinePing = ref(false);
 const blankLineInitialDelay = ref();
@@ -348,8 +286,7 @@ onUpdated(() => {
     return;
   }
   const defaultSettings = buildCSAGameSettingsByHistory(history.value, 0);
-  protocolVersion.value.value = selectedProtocolVersion.value =
-    defaultSettings.server.protocolVersion;
+  protocolVersion.value = defaultSettings.server.protocolVersion;
   host.value.value = defaultSettings.server.host;
   port.value.value = defaultSettings.server.port;
   id.value.value = defaultSettings.server.id;
@@ -387,7 +324,7 @@ const buildConfig = (): CSAGameSettings => {
   return {
     player: buildPlayerSettings(playerURI.value),
     server: {
-      protocolVersion: protocolVersion.value.value,
+      protocolVersion: protocolVersion.value,
       host: String(host.value.value || "").trim(),
       port: Number(port.value.value),
       id: String(id.value.value || "").trim(),
@@ -469,19 +406,11 @@ const onUpdatePlayerSettings = async (val: USIEngines) => {
   engines.value = val;
 };
 
-const onSelectPlayer = (uri: string) => {
-  playerURI.value = uri;
-};
-
-const onTogglePasswordVisibility = (value: boolean) => {
-  password.value.type = value ? "text" : "password";
-};
-
 const onChangeHistory = (event: Event) => {
   const select = event.target as HTMLSelectElement;
   const server = history.value.serverHistory[Number(select.value)];
   if (server) {
-    protocolVersion.value.value = selectedProtocolVersion.value = server.protocolVersion;
+    protocolVersion.value = server.protocolVersion;
     host.value.value = server.host;
     port.value.value = server.port;
     id.value.value = server.id;
@@ -493,10 +422,6 @@ const onChangeHistory = (event: Event) => {
       blankLineInterval.value.value = server.blankLinePing.interval;
     }
   }
-};
-
-const onChangeProtocolVersion = () => {
-  selectedProtocolVersion.value = protocolVersion.value.value;
 };
 
 const logEnabled = computed(() => {

@@ -69,28 +69,20 @@
     </div>
     <div v-if="showBottomControl" class="row wrap options">
       <div v-if="subAreaToggleLabel" class="option">
-        <ToggleButton
-          :label="subAreaToggleLabel"
-          :value="showSubArea"
-          @change="
-            (enabled: boolean) => {
-              showSubArea = enabled;
-            }
-          "
-        />
+        <ToggleButton v-model:value="showSubArea" :label="subAreaToggleLabel" />
       </div>
       <div v-if="elapsedTimeToggleLabel" class="option">
         <ToggleButton
           :label="elapsedTimeToggleLabel"
           :value="showElapsedTime"
-          @change="(enabled: boolean) => emit('toggleShowElapsedTime', enabled)"
+          @update:value="(enabled: boolean) => emit('toggleShowElapsedTime', enabled)"
         />
       </div>
       <div v-if="commentToggleLabel" class="option">
         <ToggleButton
           :label="commentToggleLabel"
           :value="showComment"
-          @change="(enabled: boolean) => emit('toggleShowComment', enabled)"
+          @update:value="(enabled: boolean) => emit('toggleShowComment', enabled)"
         />
       </div>
     </div>

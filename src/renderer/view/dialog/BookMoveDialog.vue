@@ -17,14 +17,7 @@
             :value="score || 0"
             :readonly="!enableScore"
           />
-          <ToggleButton
-            :value="enableScore"
-            @change="
-              (value: boolean) => {
-                enableScore = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableScore" />
         </div>
         <div class="form-item">
           <div class="form-item-label">{{ t.depth }}</div>
@@ -36,14 +29,7 @@
             :value="depth || 0"
             :readonly="!enableDepth"
           />
-          <ToggleButton
-            :value="enableDepth"
-            @change="
-              (value: boolean) => {
-                enableDepth = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableDepth" />
         </div>
         <div class="form-item">
           <div class="form-item-label">{{ t.frequency }}</div>
@@ -55,14 +41,7 @@
             :value="count || 0"
             :readonly="!enableCount"
           />
-          <ToggleButton
-            :value="enableCount"
-            @change="
-              (value: boolean) => {
-                enableCount = value;
-              }
-            "
-          />
+          <ToggleButton v-model:value="enableCount" />
         </div>
         <div class="form-item">
           <div class="form-item-label">{{ t.comments }}</div>

@@ -3,8 +3,8 @@
     <div class="column">
       <div class="row">
         <HorizontalSelector
+          v-model:value="mode"
           :height="24"
-          :value="mode"
           :items="[
             {
               value: CommandType.SEND,
@@ -15,11 +15,6 @@
             },
             { value: CommandType.RECEIVE, label: `\u25C0 ${t.shogiHome}` },
           ]"
-          @change="
-            (value) => {
-              mode = value as CommandType;
-            }
-          "
         />
         <input
           class="grow"
@@ -42,33 +37,9 @@
         </datalist>
       </div>
       <div class="row settings">
-        <ToggleButton
-          :value="allowBlankLine"
-          :label="t.allowBlankLine"
-          @change="
-            (value) => {
-              allowBlankLine = value;
-            }
-          "
-        />
-        <ToggleButton
-          :value="trim"
-          :label="t.removeSpaceFromBothEnds"
-          @change="
-            (value) => {
-              trim = value;
-            }
-          "
-        />
-        <ToggleButton
-          :value="collapse"
-          :label="t.collapseSequentialSpaces"
-          @change="
-            (value) => {
-              collapse = value;
-            }
-          "
-        />
+        <ToggleButton v-model:value="allowBlankLine" :label="t.allowBlankLine" />
+        <ToggleButton v-model:value="trim" :label="t.removeSpaceFromBothEnds" />
+        <ToggleButton v-model:value="collapse" :label="t.collapseSequentialSpaces" />
       </div>
     </div>
   </div>

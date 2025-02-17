@@ -4,17 +4,12 @@
       <div class="title">定跡手追加</div>
       <div>
         <HorizontalSelector
-          :value="sourceType"
+          v-model:value="sourceType"
           :items="[
             { value: SourceType.MEMORY, label: '現在の棋譜から' },
             { value: SourceType.FILE, label: 'ファイルから' },
             { value: SourceType.DIRECTORY, label: 'フォルダから' },
           ]"
-          @change="
-            (value) => {
-              sourceType = value as SourceType;
-            }
-          "
         />
       </div>
       <div class="form-group scroll">
@@ -67,18 +62,13 @@
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
           <HorizontalSelector
-            :value="playerCriteria"
+            v-model:value="playerCriteria"
             :items="[
               { value: PlayerCriteria.ALL, label: '全ての対局者' },
               { value: PlayerCriteria.BLACK, label: '先手のみ' },
               { value: PlayerCriteria.WHITE, label: '後手のみ' },
               { value: PlayerCriteria.FILTER_BY_NAME, label: '名前でフィルタ' },
             ]"
-            @change="
-              (value) => {
-                playerCriteria = value as PlayerCriteria;
-              }
-            "
           />
         </div>
         <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">

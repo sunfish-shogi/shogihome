@@ -31,19 +31,19 @@
                   :value="!!engine.labels[USIEngineLabel.GAME]"
                   :label="t.game"
                   :height="18"
-                  @change="(value) => changeLabel(engine.uri, USIEngineLabel.GAME, value)"
+                  @update:value="(value) => changeLabel(engine.uri, USIEngineLabel.GAME, value)"
                 />
                 <CheckBox
                   :value="!!engine.labels[USIEngineLabel.RESEARCH]"
                   :label="t.research"
                   :height="18"
-                  @change="(value) => changeLabel(engine.uri, USIEngineLabel.RESEARCH, value)"
+                  @update:value="(value) => changeLabel(engine.uri, USIEngineLabel.RESEARCH, value)"
                 />
                 <CheckBox
                   :value="!!engine.labels[USIEngineLabel.MATE]"
                   :label="t.mateSearch"
                   :height="18"
-                  @change="(value) => changeLabel(engine.uri, USIEngineLabel.MATE, value)"
+                  @update:value="(value) => changeLabel(engine.uri, USIEngineLabel.MATE, value)"
                 />
               </div>
             </div>

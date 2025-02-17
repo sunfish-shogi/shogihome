@@ -4,7 +4,7 @@
       <div class="title">{{ t.mateSearch }}</div>
       <div class="form-group scroll">
         <PlayerSelector
-          :player-uri="engineURI"
+          v-model:player-uri="engineURI"
           :engines="engines"
           :filter-label="USIEngineLabel.MATE"
           :display-thread-state="true"
@@ -12,11 +12,6 @@
           @update-engines="
             (val: USIEngines) => {
               engines = val;
-            }
-          "
-          @select-player="
-            (uri: string) => {
-              engineURI = uri;
             }
           "
         />

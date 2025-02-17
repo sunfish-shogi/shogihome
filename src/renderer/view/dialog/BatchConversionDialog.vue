@@ -16,94 +16,27 @@
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.formats }}</div>
           <div class="formats">
-            <ToggleButton
-              class="toggle"
-              label=".kif"
-              :value="sourceFormats.kif"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.kif = val;
-                }
-              "
-            />
-            <ToggleButton
-              class="toggle"
-              label=".kifu"
-              :value="sourceFormats.kifu"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.kifu = val;
-                }
-              "
-            />
-            <ToggleButton
-              class="toggle"
-              label=".ki2"
-              :value="sourceFormats.ki2"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.ki2 = val;
-                }
-              "
-            />
-            <ToggleButton
-              class="toggle"
-              label=".ki2u"
-              :value="sourceFormats.ki2u"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.ki2u = val;
-                }
-              "
-            />
-            <ToggleButton
-              class="toggle"
-              label=".csa"
-              :value="sourceFormats.csa"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.csa = val;
-                }
-              "
-            />
-            <ToggleButton
-              class="toggle"
-              label=".jkf"
-              :value="sourceFormats.jkf"
-              @change="
-                (val: boolean) => {
-                  sourceFormats.jkf = val;
-                }
-              "
-            />
+            <ToggleButton v-model:value="sourceFormats.kif" class="toggle" label=".kif" />
+            <ToggleButton v-model:value="sourceFormats.kifu" class="toggle" label=".kifu" />
+            <ToggleButton v-model:value="sourceFormats.ki2" class="toggle" label=".ki2" />
+            <ToggleButton v-model:value="sourceFormats.ki2u" class="toggle" label=".ki2u" />
+            <ToggleButton v-model:value="sourceFormats.csa" class="toggle" label=".csa" />
+            <ToggleButton v-model:value="sourceFormats.jkf" class="toggle" label=".jkf" />
           </div>
         </div>
         <div class="form-item row">
           <div class="form-item-label-wide">{{ t.subdirectories }}</div>
-          <ToggleButton
-            class="toggle"
-            :value="subdirectories"
-            @change="
-              (val: boolean) => {
-                subdirectories = val;
-              }
-            "
-          />
+          <ToggleButton v-model:value="subdirectories" class="toggle" />
         </div>
         <hr />
         <div>{{ t.outputs }}</div>
         <div class="form-item center">
           <HorizontalSelector
+            v-model:value="destinationType"
             :items="[
               { label: t.separate, value: DestinationType.DIRECTORY },
               { label: t.merge, value: DestinationType.SINGLE_FILE },
             ]"
-            :value="destinationType"
-            @change="
-              (val: string) => {
-                destinationType = val as DestinationType;
-              }
-            "
           />
         </div>
         <div v-show="destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
@@ -119,6 +52,7 @@
           <div class="form-item-label-wide">{{ t.format }}</div>
           <div class="formats">
             <HorizontalSelector
+              v-model:value="destinationFormat"
               :items="[
                 { label: '.kif', value: RecordFileFormat.KIF },
                 { label: '.kifu', value: RecordFileFormat.KIFU },
@@ -127,30 +61,17 @@
                 { label: '.csa', value: RecordFileFormat.CSA },
                 { label: '.jkf', value: RecordFileFormat.JKF },
               ]"
-              :value="destinationFormat"
-              @change="
-                (val: string) => {
-                  destinationFormat = val as RecordFileFormat;
-                }
-              "
             />
           </div>
         </div>
         <div v-show="destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
           <div class="form-item-label-wide">{{ t.createSubdirectories }}</div>
-          <ToggleButton
-            class="toggle"
-            :value="createSubdirectories"
-            @change="
-              (val: boolean) => {
-                createSubdirectories = val;
-              }
-            "
-          />
+          <ToggleButton v-model:value="createSubdirectories" class="toggle" />
         </div>
         <div v-show="destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
           <div class="form-item-label-wide">{{ t.nameConflictAction }}</div>
           <HorizontalSelector
+            v-model:value="fileNameConflictAction"
             :items="[
               { label: t.overwrite, value: FileNameConflictAction.OVERWRITE },
               {
@@ -159,12 +80,6 @@
               },
               { label: t.skip, value: FileNameConflictAction.SKIP },
             ]"
-            :value="fileNameConflictAction"
-            @change="
-              (val: string) => {
-                fileNameConflictAction = val as FileNameConflictAction;
-              }
-            "
           />
         </div>
         <div v-show="destinationType === DestinationType.SINGLE_FILE" class="form-item row">

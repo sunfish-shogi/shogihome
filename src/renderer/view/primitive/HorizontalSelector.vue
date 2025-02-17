@@ -7,7 +7,7 @@
           :name="name"
           :checked="item.value === value"
           :value="item.value"
-          @change="emit('change', item.value)"
+          @change="emit('update:value', item.value)"
         />
         <div class="button" :style="buttonStyle">
           <div class="label">{{ item.label }}</div>
@@ -41,7 +41,7 @@ const props = defineProps({
   },
 });
 const emit = defineEmits<{
-  change: [value: string];
+  "update:value": [value: string];
 }>();
 
 const container = ref() as Ref<HTMLDivElement>;
@@ -61,7 +61,7 @@ const setValue = (value: string) => {
   for (const input of container.value.querySelectorAll("input")) {
     if (input.value === value) {
       input.checked = true;
-      emit("change", value);
+      emit("update:value", value);
       break;
     }
   }

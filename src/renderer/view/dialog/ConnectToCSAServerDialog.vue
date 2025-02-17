@@ -32,15 +32,11 @@
         </div>
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.password }}</div>
-          <input ref="password" class="long-text" type="password" />
+          <input ref="password" class="long-text" :type="revealPassword ? 'text' : 'password'" />
         </div>
         <div class="form-item">
           <div class="form-item-label-wide"></div>
-          <ToggleButton
-            :label="t.revealPassword"
-            :value="false"
-            @change="onTogglePasswordVisibility"
-          />
+          <ToggleButton v-model:value="revealPassword" :label="t.revealPassword" />
         </div>
       </div>
       <div class="form-group warning">
@@ -83,6 +79,7 @@ const host = ref();
 const port = ref();
 const id = ref();
 const password = ref();
+const revealPassword = ref(false);
 
 onMounted(() => {
   showModalDialog(dialog.value, onCancel);
@@ -92,10 +89,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
-
-const onTogglePasswordVisibility = (value: boolean) => {
-  password.value.type = value ? "text" : "password";
-};
 
 const onStart = () => {
   const settings = {

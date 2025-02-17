@@ -7,7 +7,7 @@
           <div class="half-column">
             <div class="top-label">{{ t.senteOrShitate }}</div>
             <PlayerSelector
-              :player-uri="blackPlayerURI"
+              v-model:player-uri="blackPlayerURI"
               :contains-human="true"
               :contains-basic-engines="true"
               :engines="engines"
@@ -16,14 +16,13 @@
               :display-thread-state="true"
               :display-multi-pv-state="true"
               @update-engines="onUpdatePlayerSettings"
-              @select-player="onSelectBlackPlayer"
             />
           </div>
           <div class="half-column">
             <div class="top-label">{{ t.goteOrUwate }}</div>
             <PlayerSelector
               v-if="whitePlayerURI"
-              :player-uri="whitePlayerURI"
+              v-model:player-uri="whitePlayerURI"
               :contains-human="true"
               :contains-basic-engines="true"
               :engines="engines"
@@ -32,7 +31,6 @@
               :display-thread-state="true"
               :display-multi-pv-state="true"
               @update-engines="onUpdatePlayerSettings"
-              @select-player="onSelectWhitePlayer"
             />
           </div>
         </div>
@@ -56,46 +54,61 @@
               <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
             </div>
             <div class="form-item">
-              <ToggleButton
-                :label="t.enableEngineTimeout"
-                :value="enableEngineTimeout"
-                @change="
-                  (value: boolean) => {
-                    enableEngineTimeout = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="enableEngineTimeout" :label="t.enableEngineTimeout" />
             </div>
           </div>
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.allottedTime }}</div>
-              <input ref="whiteHours" class="time" type="number" min="0" max="99" step="1" />
+              <input
+                ref="whiteHours"
+                class="time"
+                type="number"
+                min="0"
+                max="99"
+                step="1"
+                :disabled="!setDifferentTime"
+              />
               <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
-              <input ref="whiteMinutes" class="time" type="number" min="0" max="59" step="1" />
+              <input
+                ref="whiteMinutes"
+                class="time"
+                type="number"
+                min="0"
+                max="59"
+                step="1"
+                :disabled="!setDifferentTime"
+              />
               <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.byoyomi }}</div>
-              <input ref="whiteByoyomi" class="time" type="number" min="0" max="60" step="1" />
+              <input
+                ref="whiteByoyomi"
+                class="time"
+                type="number"
+                min="0"
+                max="60"
+                step="1"
+                :disabled="!setDifferentTime"
+              />
               <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.increments }}</div>
-              <input ref="whiteIncrement" class="time" type="number" min="0" max="99" step="1" />
+              <input
+                ref="whiteIncrement"
+                class="time"
+                type="number"
+                min="0"
+                max="99"
+                step="1"
+                :disabled="!setDifferentTime"
+              />
               <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
             </div>
             <div class="form-item">
-              <ToggleButton
-                :label="t.setDifferentTimeForGote"
-                :value="setDifferentTime"
-                @change="
-                  (value: boolean) => {
-                    setDifferentTime = value;
-                    onUpdateSetDifferentTime();
-                  }
-                "
-              />
+              <ToggleButton v-model:value="setDifferentTime" :label="t.setDifferentTimeForGote" />
             </div>
           </div>
         </div>
@@ -111,14 +124,7 @@
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.startPosition }}</div>
-              <select
-                :value="startPosition"
-                @change="
-                  (event) =>
-                    (startPosition = (event.target as HTMLSelectElement)
-                      .value as GameStartPositionType)
-                "
-              >
+              <select v-model="startPosition">
                 <option value="current">{{ t.currentPosition }}</option>
                 <option value="list">{{ t.positionList }}</option>
                 <option :value="InitialPositionType.STANDARD">
@@ -161,15 +167,7 @@
               <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
             </div>
             <div v-show="startPosition === 'list'" class="form-item">
-              <ToggleButton
-                :label="t.shuffle"
-                :value="startPositionListShuffle"
-                @change="
-                  (value: boolean) => {
-                    startPositionListShuffle = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="startPositionListShuffle" :label="t.shuffle" />
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.maxMoves }}</div>
@@ -191,48 +189,16 @@
           </div>
           <div class="half-column">
             <div class="form-item">
-              <ToggleButton
-                :label="t.swapTurnWhenGameRepetition"
-                :value="swapPlayers"
-                @change="
-                  (value: boolean) => {
-                    swapPlayers = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="swapPlayers" :label="t.swapTurnWhenGameRepetition" />
             </div>
             <div class="form-item">
-              <ToggleButton
-                :label="t.outputComments"
-                :value="enableComment"
-                @change="
-                  (value: boolean) => {
-                    enableComment = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="enableComment" :label="t.outputComments" />
             </div>
             <div class="form-item">
-              <ToggleButton
-                :label="t.saveRecordAutomatically"
-                :value="enableAutoSave"
-                @change="
-                  (value: boolean) => {
-                    enableAutoSave = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="enableAutoSave" :label="t.saveRecordAutomatically" />
             </div>
             <div class="form-item">
-              <ToggleButton
-                :label="t.adjustBoardToHumanPlayer"
-                :value="humanIsFront"
-                @change="
-                  (value: boolean) => {
-                    humanIsFront = value;
-                  }
-                "
-              />
+              <ToggleButton v-model:value="humanIsFront" :label="t.adjustBoardToHumanPlayer" />
             </div>
           </div>
         </div>
@@ -329,13 +295,6 @@ onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
 
-const onUpdateSetDifferentTime = () => {
-  whiteHours.value.disabled = !setDifferentTime.value;
-  whiteMinutes.value.disabled = !setDifferentTime.value;
-  whiteByoyomi.value.disabled = !setDifferentTime.value;
-  whiteIncrement.value.disabled = !setDifferentTime.value;
-};
-
 onUpdated(() => {
   if (!defaultValueLoaded || defaultValueApplied) {
     return;
@@ -362,7 +321,6 @@ onUpdated(() => {
   enableAutoSave.value = gameSettings.value.enableAutoSave;
   humanIsFront.value = gameSettings.value.humanIsFront;
   defaultValueApplied = true;
-  onUpdateSetDifferentTime();
 });
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {
@@ -425,13 +383,6 @@ const onCancel = () => {
 
 const onUpdatePlayerSettings = (val: USIEngines) => {
   engines.value = val;
-};
-
-const onSelectBlackPlayer = (uri: string) => {
-  blackPlayerURI.value = uri;
-};
-const onSelectWhitePlayer = (uri: string) => {
-  whitePlayerURI.value = uri;
 };
 
 const onSwapColor = () => {

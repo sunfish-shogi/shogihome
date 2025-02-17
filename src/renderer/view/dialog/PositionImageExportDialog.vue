@@ -54,7 +54,7 @@
                   { value: PositionImageTypeface.GOTHIC, label: t.gothic },
                   { value: PositionImageTypeface.MINCHO, label: t.mincho },
                 ]"
-                @change="changeTypeface"
+                @update:value="changeTypeface"
               />
             </div>
             <div>
@@ -89,7 +89,7 @@
                   { value: PositionImageFontWeight.W400X, label: t.bold },
                   { value: PositionImageFontWeight.W700X, label: t.extraBold },
                 ]"
-                @change="(v) => changeFontWeight(v as PositionImageFontWeight)"
+                @update:value="(v) => changeFontWeight(v as PositionImageFontWeight)"
               />
             </div>
           </div>
@@ -104,7 +104,7 @@
                 { value: PositionImageHandLabelType.TSUME_SHOGI, label: t.tsumeShogi },
                 { value: PositionImageHandLabelType.NONE, label: t.none },
               ]"
-              @change="changeHandLabel"
+              @update:value="changeHandLabel"
             />
           </div>
           <div class="form-item">
@@ -118,7 +118,7 @@
             <ToggleButton
               :value="appSettings.useBookmarkAsPositionImageHeader"
               :label="t.useBookmarkAsHeader"
-              @change="changeWhetherToUseBookmark"
+              @update:value="changeWhetherToUseBookmark"
             />
           </div>
         </div>
@@ -131,7 +131,7 @@
               { value: PositionImageStyle.BOOK, label: t.bookStyle },
               { value: PositionImageStyle.GAME, label: t.gameStyle },
             ]"
-            @change="changeType"
+            @update:value="changeType"
           />
           <input
             class="number"

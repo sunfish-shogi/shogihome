@@ -1,13 +1,7 @@
 <template>
   <div>
     <div class="root">
-      <select
-        ref="playerSelect"
-        class="player-select"
-        size="1"
-        :value="playerUri"
-        @change="onPlayerChange"
-      >
+      <select ref="playerSelect" v-model="selectedPlayerURI" class="player-select" size="1">
         <option v-if="containsHuman" :value="uri.ES_HUMAN">{{ t.human }}</option>
         <option v-for="engine in filteredEngines.engineList" :key="engine.uri" :value="engine.uri">
           {{ engine.name }}
@@ -73,11 +67,9 @@ import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 
+const selectedPlayerURI = defineModel<string>("playerUri", { required: true });
+
 const props = defineProps({
-  playerUri: {
-    type: String,
-    required: true,
-  },
   containsHuman: {
     type: Boolean,
     default: false,
@@ -118,7 +110,6 @@ const emit = defineEmits<{
 }>();
 
 const busyState = useBusyState();
-const playerSelect = ref();
 const engineOptionsDialog = ref(null as USIEngine | null);
 
 const filteredEngines = computed(() => {
@@ -126,20 +117,20 @@ const filteredEngines = computed(() => {
 });
 
 const ponderState = computed(() => {
-  if (!uri.isUSIEngine(props.playerUri)) {
+  if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(props.playerUri);
+  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
   return engine && getUSIEngineOptionCurrentValue(engine.options[USIPonder]) === "true"
     ? "ON"
     : "OFF";
 });
 
 const threadState = computed(() => {
-  if (!uri.isUSIEngine(props.playerUri)) {
+  if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(props.playerUri);
+  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
   if (!engine) {
     return null;
   }
@@ -148,10 +139,10 @@ const threadState = computed(() => {
 });
 
 const multiPVState = computed(() => {
-  if (!uri.isUSIEngine(props.playerUri)) {
+  if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(props.playerUri);
+  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
   if (!engine) {
     return null;
   }
@@ -160,12 +151,12 @@ const multiPVState = computed(() => {
 });
 
 const isPlayerSettingsEnabled = computed(() => {
-  return uri.isUSIEngine(props.playerUri);
+  return uri.isUSIEngine(selectedPlayerURI.value);
 });
 
 const openPlayerSettings = () => {
-  if (uri.isUSIEngine(props.playerUri)) {
-    const engine = filteredEngines.value.getEngine(props.playerUri);
+  if (uri.isUSIEngine(selectedPlayerURI.value)) {
+    const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
     if (!engine) {
       useErrorStore().add("利用可能なエンジンが選択されていません。");
       return;
@@ -191,10 +182,6 @@ const savePlayerSettings = async (settings: USIEngine) => {
 
 const closePlayerSettings = () => {
   engineOptionsDialog.value = null;
-};
-
-const onPlayerChange = () => {
-  emit("selectPlayer", playerSelect.value.value);
 };
 </script>
 
