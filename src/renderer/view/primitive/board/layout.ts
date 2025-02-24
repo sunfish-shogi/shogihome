@@ -42,7 +42,7 @@ export type Layout = {
 };
 
 export type BoardBackground = {
-  gridImagePath: string;
+  gridColor: string;
   textureImagePath: string | null;
   style: { [key: string]: string };
 };

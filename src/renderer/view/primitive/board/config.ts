@@ -20,7 +20,7 @@ export type Config = {
   pieceStandImageType: PieceStandImageType;
   kingPieceType: KingPieceType;
   pieceImages: PieceImages;
-  boardGridImage: string;
+  boardGridColor: string;
   boardTextureImage: string | null;
   pieceStandImage: string | null;
   boardImageOpacity: number;
@@ -50,7 +50,7 @@ export function newConfig(params: {
     pieceStandImageType: params.pieceStandImageType,
     kingPieceType: params.kingPieceType,
     pieceImages: getPieceTextureMap(params.pieceImageURLTemplate, params.kingPieceType),
-    boardGridImage: getBoardGridURL(params.boardImageType),
+    boardGridColor: getBoardGridColor(params.boardImageType),
     boardTextureImage: getBoardTextureURL(params.boardImageType, params.customBoardImageURL),
     pieceStandImage: getPieceStandTextureURL(
       params.pieceStandImageType,
@@ -63,7 +63,6 @@ export function newConfig(params: {
     flip: params.flip,
     hideClock: params.hideClock,
   };
-  preloadImage(config.boardGridImage);
   if (config.boardTextureImage) {
     preloadImage(config.boardTextureImage);
   }
@@ -101,12 +100,12 @@ function getPieceTextureMap(template: string, kingPieceType: KingPieceType): Pie
   return m;
 }
 
-function getBoardGridURL(type: BoardImageType): string {
+function getBoardGridColor(type: BoardImageType): string {
   switch (type) {
     default:
-      return "./board/grid.svg";
+      return "black";
     case BoardImageType.DARK:
-      return "./board/grid_white.svg";
+      return "white";
   }
 }
 

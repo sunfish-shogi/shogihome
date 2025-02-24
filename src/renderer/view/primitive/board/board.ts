@@ -61,7 +61,7 @@ export class BoardLayoutBuilder {
       opacity: this.config.boardImageOpacity.toString(),
     };
     return {
-      gridImagePath: this.config.boardGridImage,
+      gridColor: this.config.boardGridColor,
       textureImagePath: this.config.boardTextureImage,
       style,
     };

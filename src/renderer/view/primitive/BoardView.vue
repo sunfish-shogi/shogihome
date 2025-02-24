@@ -7,7 +7,7 @@
           <img class="full" :src="board.background.textureImagePath" />
         </div>
         <div :style="board.background.style">
-          <img class="full" :src="board.background.gridImagePath" />
+          <BoardGrid class="full" :color="board.background.gridColor" />
         </div>
         <div v-for="square in board.squares" :key="square.id" :style="square.backgroundStyle"></div>
         <div v-for="piece in board.pieces" :key="piece.id" :style="piece.style">
@@ -188,6 +188,7 @@ import {
 } from "./board/hand";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { CompactLayoutBuilder } from "./board/compact";
+import BoardGrid from "./BoardGrid.vue";
 
 type State = {
   pointer: Square | Piece | null;
