@@ -78,6 +78,9 @@ class AppSettingsStore {
   get boardImageFileURL(): string | undefined {
     return this.merged.boardImageFileURL;
   }
+  get boardGridColor(): string | null {
+    return this.merged.boardGridColor;
+  }
   get pieceStandImage(): PieceStandImageType {
     return this.merged.pieceStandImage;
   }

@@ -25,12 +25,13 @@
           <div v-else class="game">
             <BoardView
               :board-image-type="appSettings.boardImage"
+              :custom-board-image-url="appSettings.boardImageFileURL"
+              :board-grid-color="appSettings.boardGridColor || undefined"
               :piece-stand-image-type="appSettings.pieceStandImage"
-              :board-label-type="appSettings.boardLabelType"
+              :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
               :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
               :king-piece-type="appSettings.kingPieceType"
-              :custom-board-image-url="appSettings.boardImageFileURL"
-              :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
+              :board-label-type="appSettings.boardLabelType"
               :max-size="maxSize"
               :position="store.record.position"
               :last-move="lastMove"

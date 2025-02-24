@@ -1,10 +1,5 @@
 <template>
-  <svg
-    width="439.21539mm"
-    height="479.79199mm"
-    viewBox="0 0 439.21539 479.79199"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="439.21539mm" height="479.79199mm" viewBox="0 0 439.21539 479.79199">
     <g transform="translate(-225.09593,-247.17041)">
       <g transform="matrix(0.49900175,0,0,0.49800041,222.93016,244.53834)">
         <g :style="`stroke: ${color}; stroke-width: 2`">

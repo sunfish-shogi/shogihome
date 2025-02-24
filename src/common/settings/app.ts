@@ -148,6 +148,7 @@ export type AppSettings = {
   deletePieceImageMargin: boolean;
   boardImage: BoardImageType;
   boardImageFileURL?: string;
+  boardGridColor: string | null;
   pieceStandImage: PieceStandImageType;
   pieceStandImageFileURL?: string;
   enableTransparent: boolean;
@@ -246,82 +247,7 @@ export function isLogEnabled(type: LogType, appSettings: AppSettings): boolean {
   }
 }
 
-export type AppSettingsUpdate = {
-  language?: Language;
-  thema?: Thema;
-  backgroundImageType?: BackgroundImageType;
-  backgroundImageFileURL?: string;
-  boardLayoutType?: BoardLayoutType;
-  pieceImage?: PieceImageType;
-  kingPieceType?: KingPieceType;
-  pieceImageFileURL?: string;
-  croppedPieceImageBaseURL?: string;
-  croppedPieceImageQuery?: string; // キャッシュ回避用のクエリ
-  deletePieceImageMargin?: boolean;
-  boardImage?: BoardImageType;
-  boardImageFileURL?: string;
-  pieceStandImage?: PieceStandImageType;
-  pieceStandImageFileURL?: string;
-  enableTransparent?: boolean;
-  boardOpacity?: number;
-  pieceStandOpacity?: number;
-  recordOpacity?: number;
-  boardLabelType?: BoardLabelType;
-  leftSideControlType?: LeftSideControlType;
-  rightSideControlType?: RightSideControlType;
-  pieceVolume?: number;
-  clockVolume?: number;
-  clockPitch?: number;
-  clockSoundTarget?: ClockSoundTarget;
-  boardFlipping?: boolean;
-  tabPaneType?: TabPaneType;
-  tab?: Tab;
-  tab2?: Tab;
-  topPaneHeightPercentage?: number;
-  topPanePreviousHeightPercentage?: number;
-  bottomLeftPaneWidthPercentage?: number;
-  defaultRecordFileFormat?: RecordFileFormat;
-  textDecodingRule?: TextDecodingRule;
-  returnCode?: string;
-  autoSaveDirectory?: string;
-  recordFileNameTemplate?: string;
-  useCSAV3?: boolean;
-  enableUSIFileStartpos?: boolean;
-  enableUSIFileResign?: boolean;
-  bookOnTheFlyThresholdMB?: number;
-  translateEngineOptionName?: boolean;
-  engineTimeoutSeconds?: number;
-  evaluationViewFrom?: EvaluationViewFrom;
-  maxArrowsPerEngine?: number;
-  coefficientInSigmoid?: number;
-  badMoveLevelThreshold1?: number;
-  badMoveLevelThreshold2?: number;
-  badMoveLevelThreshold3?: number;
-  badMoveLevelThreshold4?: number;
-  maxPVTextLength?: number;
-  searchCommentFormat?: SearchCommentFormat;
-  showElapsedTimeInRecordView?: boolean;
-  showCommentInRecordView?: boolean;
-  enableAppLog?: boolean;
-  enableUSILog?: boolean;
-  enableCSALog?: boolean;
-  logLevel?: LogLevel;
-  positionImageStyle?: PositionImageStyle;
-  positionImageSize?: number;
-  positionImageTypeface?: PositionImageTypeface;
-  positionImageHandLabelType?: PositionImageHandLabelType;
-  useBookmarkAsPositionImageHeader?: boolean;
-  positionImageHeader?: string;
-  positionImageCharacterY?: number;
-  positionImageFontScale?: number;
-  positionImageFontWeight?: PositionImageFontWeight;
-  lastRecordFilePath?: string;
-  lastBookFilePath?: string;
-  lastUSIEngineFilePath?: string;
-  lastImageExportFilePath?: string;
-  lastOtherFilePath?: string;
-  emptyRecordInfoVisibility?: boolean;
-};
+export type AppSettingsUpdate = Partial<AppSettings>;
 
 export function buildUpdatedAppSettings(org: AppSettings, update: AppSettingsUpdate): AppSettings {
   const updated = {
@@ -375,6 +301,7 @@ export function defaultAppSettings(opt?: {
     kingPieceType: KingPieceType.GYOKU_AND_OSHO,
     deletePieceImageMargin: false,
     boardImage: BoardImageType.RESIN2,
+    boardGridColor: null,
     pieceStandImage: PieceStandImageType.STANDARD,
     enableTransparent: false,
     boardOpacity: 1.0,

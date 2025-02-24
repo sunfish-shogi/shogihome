@@ -10,19 +10,14 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.language }}</div>
             <HorizontalSelector
+              v-model:value="update.language"
               class="selector"
-              :value="original.language"
               :items="[
                 { label: '日本語', value: Language.JA },
                 { label: 'English', value: Language.EN },
                 { label: '繁體中文', value: Language.ZH_TW },
                 { label: 'Tiếng Việt', value: Language.VI },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.language = value as Language;
-                }
-              "
             />
           </div>
           <div class="form-group warning">
@@ -45,8 +40,8 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.theme }}</div>
             <HorizontalSelector
+              v-model:value="update.thema"
               class="selector"
-              :value="original.thema"
               :items="[
                 { label: t.green, value: Thema.STANDARD },
                 { label: t.cherryBlossom, value: Thema.CHERRY_BLOSSOM },
@@ -55,43 +50,27 @@
                 { label: t.darkGreen, value: Thema.DARK_GREEN },
                 { label: t.dark, value: Thema.DARK },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.thema = value as Thema;
-                }
-              "
             />
           </div>
           <!-- 背景画像 -->
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.backgroundImage }}</div>
             <HorizontalSelector
+              v-model:value="update.backgroundImageType"
               class="selector"
-              :value="original.backgroundImageType"
               :items="[
                 { label: t.none, value: BackgroundImageType.NONE },
                 { label: t.bgCover, value: BackgroundImageType.COVER },
                 { label: t.bgContain, value: BackgroundImageType.CONTAIN },
                 { label: t.bgTile, value: BackgroundImageType.TILE },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.backgroundImageType = value as BackgroundImageType;
-                }
-              "
             />
           </div>
-          <div
-            v-show="
-              (update.backgroundImageType ?? original.backgroundImageType) !==
-              BackgroundImageType.NONE
-            "
-            class="form-item"
-          >
+          <div v-show="update.backgroundImageType !== BackgroundImageType.NONE" class="form-item">
             <div class="form-item-label-wide"></div>
             <ImageSelector
               class="image-selector"
-              :default-url="original.backgroundImageFileURL"
+              :default-url="update.backgroundImageFileURL"
               @select="(url: string) => (update.backgroundImageFileURL = url)"
             />
           </div>
@@ -99,26 +78,21 @@
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.boardLayout }}</div>
             <HorizontalSelector
+              v-model:value="update.boardLayoutType"
               class="selector"
-              :value="original.boardLayoutType"
               :items="[
                 { label: t.standard, value: BoardLayoutType.STANDARD },
                 { label: t.compact, value: BoardLayoutType.COMPACT },
                 { label: t.portrait, value: BoardLayoutType.PORTRAIT },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.boardLayoutType = value as BoardLayoutType;
-                }
-              "
             />
           </div>
           <!-- 駒画像 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.piece }}</div>
             <HorizontalSelector
+              v-model:value="update.pieceImage"
               class="selector"
-              :value="original.pieceImage"
               :items="
                 [
                   { label: t.singleKanjiPiece, value: PieceImageType.HITOMOJI },
@@ -131,33 +105,24 @@
                   { label: t.customImage, value: PieceImageType.CUSTOM_IMAGE },
                 ].filter((item) => !isMobileWebApp() || item.value !== PieceImageType.CUSTOM_IMAGE)
               "
-              @update:value="
-                (value: string) => {
-                  update.pieceImage = value as PieceImageType;
-                }
-              "
             />
             <div
-              v-show="(update.pieceImage ?? original.pieceImage) === PieceImageType.CUSTOM_IMAGE"
+              v-show="update.pieceImage === PieceImageType.CUSTOM_IMAGE"
               ref="pieceImageSelector"
               class="form-item"
             >
               <div class="form-item-label-wide"></div>
               <ImageSelector
                 class="image-selector"
-                :default-url="original.pieceImageFileURL"
+                :default-url="update.pieceImageFileURL"
                 @select="(url: string) => (update.pieceImageFileURL = url)"
               />
             </div>
-            <div
-              v-show="(update.pieceImage ?? original.pieceImage) === PieceImageType.CUSTOM_IMAGE"
-              class="form-item"
-            >
+            <div v-show="update.pieceImage === PieceImageType.CUSTOM_IMAGE" class="form-item">
               <div class="form-item-label-wide"></div>
               <ToggleButton
+                v-model:value="update.deletePieceImageMargin"
                 :label="t.imageHasMarginsRemoveForLargerDisplay"
-                :value="original.deletePieceImageMargin"
-                @update:value="(checked: boolean) => (update.deletePieceImageMargin = checked)"
               />
             </div>
           </div>
@@ -165,8 +130,8 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.board }}</div>
             <HorizontalSelector
+              v-model:value="update.boardImage"
               class="selector"
-              :value="original.boardImage"
               :items="
                 [
                   { label: t.lightWoodyTexture, value: BoardImageType.LIGHT },
@@ -183,30 +148,38 @@
                   { label: t.customImage, value: BoardImageType.CUSTOM_IMAGE },
                 ].filter((item) => !isMobileWebApp() || item.value !== BoardImageType.CUSTOM_IMAGE)
               "
-              @update:value="
-                (value: string) => {
-                  update.boardImage = value as BoardImageType;
-                }
-              "
             />
           </div>
-          <div
-            v-show="(update.boardImage ?? original.boardImage) === BoardImageType.CUSTOM_IMAGE"
-            class="form-item"
-          >
+          <div v-show="update.boardImage === BoardImageType.CUSTOM_IMAGE" class="form-item">
             <div class="form-item-label-wide"></div>
             <ImageSelector
               class="image-selector"
-              :default-url="original.boardImageFileURL"
+              :default-url="update.boardImageFileURL"
               @select="(url: string) => (update.boardImageFileURL = url)"
+            />
+          </div>
+          <!-- マス目 -->
+          <div class="form-item">
+            <div class="form-item-label-wide">マス目</div>
+            <ToggleButton
+              v-once
+              :value="!!update.boardGridColor"
+              label="色を選択"
+              @update:value="(value) => (update.boardGridColor = value ? 'black' : null)"
+            />
+            <input
+              v-show="update.boardGridColor"
+              v-model="update.boardGridColor"
+              class="color-selector"
+              type="color"
             />
           </div>
           <!-- 駒台画像 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.pieceStand }}</div>
             <HorizontalSelector
+              v-model:value="update.pieceStandImage"
               class="selector"
-              :value="original.pieceStandImage"
               :items="
                 [
                   { label: t.standard, value: PieceStandImageType.STANDARD },
@@ -221,84 +194,63 @@
                   (item) => !isMobileWebApp() || item.value !== PieceStandImageType.CUSTOM_IMAGE,
                 )
               "
-              @update:value="
-                (value: string) => {
-                  update.pieceStandImage = value as PieceStandImageType;
-                }
-              "
             />
           </div>
           <div
-            v-show="
-              (update.pieceStandImage ?? original.pieceStandImage) ===
-              PieceStandImageType.CUSTOM_IMAGE
-            "
+            v-show="update.pieceStandImage === PieceStandImageType.CUSTOM_IMAGE"
             class="form-item"
           >
             <div class="form-item-label-wide"></div>
             <ImageSelector
               class="image-selector"
-              :default-url="original.pieceStandImageFileURL"
+              :default-url="update.pieceStandImageFileURL"
               @select="(url: string) => (update.pieceStandImageFileURL = url)"
             />
           </div>
           <!-- 透過表示 -->
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.transparent }}</div>
-            <ToggleButton
-              :value="original.enableTransparent"
-              @update:value="(checked: boolean) => (update.enableTransparent = checked)"
-            />
+            <ToggleButton v-model:value="update.enableTransparent" />
           </div>
           <!-- 盤の不透明度 -->
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.boardOpacity }}</div>
+            <!-- FIXME: 無限ループの可能性あり -->
             <input
-              :value="original.boardOpacity * 100"
-              :readonly="!(update.enableTransparent ?? original.enableTransparent)"
+              :value="update.boardOpacity * 100"
+              :readonly="!update.enableTransparent"
               type="number"
               max="100"
               min="0"
-              @input="
-                (event) => {
-                  update.boardOpacity = readInputAsNumber(event.target as HTMLInputElement) / 100;
-                }
-              "
+              @input="(event) => (update.boardOpacity = inputEventToNumber(event) / 100)"
             />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 駒台の不透明度 -->
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.pieceStandOpacity }}</div>
+            <!-- FIXME: 無限ループの可能性あり -->
             <input
-              :value="original.pieceStandOpacity * 100"
-              :readonly="!(update.enableTransparent ?? original.enableTransparent)"
+              :value="update.pieceStandOpacity * 100"
+              :readonly="!update.enableTransparent"
               type="number"
               max="100"
               min="0"
-              @input="
-                (event) => {
-                  update.pieceStandOpacity =
-                    readInputAsNumber(event.target as HTMLInputElement) / 100;
-                }
-              "
+              @input="(event) => (update.pieceStandOpacity = inputEventToNumber(event) / 100)"
             />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 棋譜の不透明度 -->
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.recordOpacity }}</div>
+            <!-- FIXME: 無限ループの可能性あり -->
             <input
-              :value="original.recordOpacity * 100"
-              :readonly="!(update.enableTransparent ?? original.enableTransparent)"
+              :value="update.recordOpacity * 100"
+              :readonly="!update.enableTransparent"
               type="number"
               max="100"
               min="0"
-              @input="
-                (event) => {
-                  update.recordOpacity = readInputAsNumber(event.target as HTMLInputElement) / 100;
-                }
-              "
+              @input="(event) => (update.recordOpacity = inputEventToNumber(event) / 100)"
             />
             <div class="form-item-small-label">%</div>
           </div>
@@ -308,7 +260,8 @@
               {{ t.showFileAndRank }}
             </div>
             <ToggleButton
-              :value="original.boardLabelType != BoardLabelType.NONE"
+              v-once
+              :value="update.boardLabelType != BoardLabelType.NONE"
               @update:value="
                 (checked: boolean) =>
                   (update.boardLabelType = checked ? BoardLabelType.STANDARD : BoardLabelType.NONE)
@@ -321,7 +274,8 @@
               {{ t.showLeftControls }}
             </div>
             <ToggleButton
-              :value="original.leftSideControlType != LeftSideControlType.NONE"
+              v-once
+              :value="update.leftSideControlType != LeftSideControlType.NONE"
               @update:value="
                 (checked: boolean) =>
                   (update.leftSideControlType = checked
@@ -336,7 +290,8 @@
               {{ t.showRightControls }}
             </div>
             <ToggleButton
-              :value="original.rightSideControlType != RightSideControlType.NONE"
+              v-once
+              :value="update.rightSideControlType != RightSideControlType.NONE"
               @update:value="
                 (checked: boolean) =>
                   (update.rightSideControlType = checked
@@ -349,18 +304,13 @@
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.tabViewStyle }}</div>
             <HorizontalSelector
+              v-model:value="update.tabPaneType"
               class="selector"
-              :value="original.tabPaneType"
               :items="[
                 { label: t.oneColumn, value: TabPaneType.SINGLE },
                 { label: t.twoColumns, value: TabPaneType.DOUBLE },
                 { label: `${t.twoColumns} v2`, value: TabPaneType.DOUBLE_V2 },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.tabPaneType = value as TabPaneType;
-                }
-              "
             />
           </div>
         </div>
@@ -371,49 +321,19 @@
           <!-- 駒音の大きさ -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.pieceSoundVolume }}</div>
-            <input
-              :value="original.pieceVolume"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.pieceVolume = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model.number="update.pieceVolume" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 時計音の大きさ -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.clockSoundVolume }}</div>
-            <input
-              :value="original.clockVolume"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.clockVolume = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model.number="update.clockVolume" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 時計音の高さ -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.clockSoundPitch }}</div>
-            <input
-              :value="original.clockPitch"
-              type="number"
-              max="880"
-              min="220"
-              @input="
-                (event) => {
-                  update.clockPitch = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model="update.clockPitch" type="number" max="880" min="220" />
             <div class="form-item-small-label">Hz ({{ t.between(220, 880) }})</div>
           </div>
           <!-- 時計音の対象 -->
@@ -422,17 +342,12 @@
               {{ t.clockSoundTarget }}
             </div>
             <HorizontalSelector
+              v-model:value="update.clockSoundTarget"
               class="selector"
-              :value="original.clockSoundTarget"
               :items="[
                 { label: t.anyTurn, value: ClockSoundTarget.ALL },
                 { label: t.onlyHumanTurn, value: ClockSoundTarget.ONLY_USER },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.clockSoundTarget = value as ClockSoundTarget;
-                }
-              "
             />
           </div>
         </div>
@@ -446,8 +361,8 @@
               {{ t.defaultRecordFileFormat }}
             </div>
             <HorizontalSelector
+              v-model:value="update.defaultRecordFileFormat"
               class="selector"
-              :value="original.defaultRecordFileFormat"
               :items="[
                 { label: '.kif (Shift_JIS)', value: RecordFileFormat.KIF },
                 { label: '.kifu (UTF-8)', value: RecordFileFormat.KIFU },
@@ -456,11 +371,6 @@
                 { label: '.csa', value: RecordFileFormat.CSA },
                 { label: '.jkf', value: RecordFileFormat.JKF },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.defaultRecordFileFormat = value as RecordFileFormat;
-                }
-              "
             />
           </div>
           <!-- 文字コード -->
@@ -469,17 +379,12 @@
               {{ t.textEncoding }}
             </div>
             <HorizontalSelector
+              v-model:value="update.textDecodingRule"
               class="selector"
-              :value="original.textDecodingRule"
               :items="[
                 { label: t.strict, value: TextDecodingRule.STRICT },
                 { label: t.autoDetect, value: TextDecodingRule.AUTO_DETECT },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.textDecodingRule = value as TextDecodingRule;
-                }
-              "
             />
           </div>
           <!-- 改行文字 -->
@@ -488,8 +393,9 @@
               {{ t.newlineCharacter }}
             </div>
             <HorizontalSelector
+              v-once
               class="selector"
-              :value="returnCodeToName[original.returnCode]"
+              :value="returnCodeToName[update.returnCode]"
               :items="[
                 { label: 'CRLF (Windows)', value: 'crlf' },
                 { label: 'LF (UNIX/Mac)', value: 'lf' },
@@ -509,14 +415,9 @@
             </div>
             <input
               ref="autoSaveDirectory"
+              v-model="update.autoSaveDirectory"
               class="file-path"
-              :value="original.autoSaveDirectory"
               type="text"
-              @input="
-                (event) => {
-                  update.autoSaveDirectory = (event.target as HTMLInputElement).value;
-                }
-              "
             />
             <button class="thin" @click="selectAutoSaveDirectory">
               {{ t.select }}
@@ -530,16 +431,7 @@
             <div class="form-item-label-wide">
               {{ t.recordFileName }}
             </div>
-            <input
-              class="file-path"
-              :value="original.recordFileNameTemplate"
-              type="text"
-              @input="
-                (event) => {
-                  update.recordFileNameTemplate = (event.target as HTMLInputElement).value;
-                }
-              "
-            />
+            <input v-model="update.recordFileNameTemplate" class="file-path" type="text" />
             <button class="thin auxiliary" @click="howToWriteFileNameTemplate">
               <Icon :icon="IconType.HELP" />
             </button>
@@ -547,17 +439,15 @@
           <!-- CSA V3 で出力 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.csaV3Output }}</div>
-            <ToggleButton
-              :value="original.useCSAV3"
-              @update:value="(checked: boolean) => (update.useCSAV3 = checked)"
-            />
+            <ToggleButton v-model:value="update.useCSAV3" />
           </div>
           <!-- USI の局面表記 -->
           <div class="form-item row">
             <div class="form-item-label-wide">{{ t.positionOfUSIOutput }}</div>
             <HorizontalSelector
+              v-once
               class="selector"
-              :value="String(original.enableUSIFileStartpos)"
+              :value="String(update.enableUSIFileStartpos)"
               :items="[
                 { label: t.onlySFEN, value: 'false' },
                 { label: 'startpos / SFEN', value: 'true' },
@@ -574,7 +464,7 @@
             <div class="form-item-label-wide">{{ t.movesOfUSIOutput }}</div>
             <HorizontalSelector
               class="selector"
-              :value="String(original.enableUSIFileResign)"
+              :value="String(update.enableUSIFileResign)"
               :items="[
                 { label: t.onlySFEN, value: 'false' },
                 { label: 'SFEN / resign', value: 'true' },
@@ -595,17 +485,10 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.readOnlyThreshold }}</div>
             <input
-              :value="original.bookOnTheFlyThresholdMB"
+              v-model.number="update.bookOnTheFlyThresholdMB"
               type="number"
               max="4096"
               min="0"
-              @input="
-                (event) => {
-                  update.bookOnTheFlyThresholdMB = readInputAsNumber(
-                    event.target as HTMLInputElement,
-                  );
-                }
-              "
             />
             <div class="form-item-small-label">MB ({{ t.between(0, 4096) }})</div>
           </div>
@@ -619,10 +502,7 @@
             <div class="form-item-label-wide">
               {{ t.translateOptionName }}
             </div>
-            <ToggleButton
-              :value="original.translateEngineOptionName"
-              @update:value="(checked: boolean) => (update.translateEngineOptionName = checked)"
-            />
+            <ToggleButton v-model:value="update.translateEngineOptionName" />
             <div class="form-item-small-label">({{ t.functionalOnJapaneseOnly }})</div>
           </div>
           <!-- 最大起動待ち時間 -->
@@ -631,15 +511,10 @@
               {{ t.maxStartupTime }}
             </div>
             <input
-              :value="original.engineTimeoutSeconds"
+              v-model.number:value="update.engineTimeoutSeconds"
               type="number"
               max="300"
               min="1"
-              @input="
-                (event) => {
-                  update.engineTimeoutSeconds = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
             />
             <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(1, 300) }})</div>
           </div>
@@ -654,8 +529,8 @@
               {{ t.signOfEvaluation }}
             </div>
             <HorizontalSelector
+              v-model:value="update.evaluationViewFrom"
               class="selector"
-              :value="original.evaluationViewFrom"
               :items="[
                 { label: t.swapEachTurnChange, value: EvaluationViewFrom.EACH },
                 {
@@ -663,11 +538,6 @@
                   value: EvaluationViewFrom.BLACK,
                 },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.evaluationViewFrom = value as EvaluationViewFrom;
-                }
-              "
             />
           </div>
           <!-- 矢印の表示本数 -->
@@ -675,17 +545,7 @@
             <div class="form-item-label-wide">
               {{ t.maxArrows }}
             </div>
-            <input
-              :value="original.maxArrowsPerEngine"
-              type="number"
-              max="10"
-              min="0"
-              @input="
-                (event) => {
-                  update.maxArrowsPerEngine = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model.number="update.maxArrowsPerEngine" type="number" max="10" min="0" />
             <div class="form-item-small-label">({{ t.between(0, 10) }})</div>
           </div>
           <!-- 勝率換算係数 -->
@@ -693,17 +553,7 @@
             <div class="form-item-label-wide">
               {{ t.winRateCoefficient }}
             </div>
-            <input
-              :value="original.coefficientInSigmoid"
-              type="number"
-              max="10000"
-              min="1"
-              @input="
-                (event) => {
-                  update.coefficientInSigmoid = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model.number="update.coefficientInSigmoid" type="number" max="10000" min="1" />
             <div class="form-item-small-label">
               ({{ t.recommended }}: {{ t.between(600, 1500) }})
             </div>
@@ -711,89 +561,31 @@
           <!-- 緩手の閾値 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.inaccuracyThreshold }}</div>
-            <input
-              :value="original.badMoveLevelThreshold1"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.badMoveLevelThreshold1 = readInputAsNumber(
-                    event.target as HTMLInputElement,
-                  );
-                }
-              "
-            />
+            <input v-model.number="update.badMoveLevelThreshold1" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 疑問手の閾値 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.dubiousThreshold }}</div>
-            <input
-              :value="original.badMoveLevelThreshold2"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.badMoveLevelThreshold2 = readInputAsNumber(
-                    event.target as HTMLInputElement,
-                  );
-                }
-              "
-            />
+            <input v-model.number="update.badMoveLevelThreshold2" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 悪手の閾値 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.mistakeThreshold }}</div>
-            <input
-              :value="original.badMoveLevelThreshold3"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.badMoveLevelThreshold3 = readInputAsNumber(
-                    event.target as HTMLInputElement,
-                  );
-                }
-              "
-            />
+            <input v-model.number="update.badMoveLevelThreshold3" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 大悪手の閾値 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.blunderThreshold }}</div>
-            <input
-              :value="original.badMoveLevelThreshold4"
-              type="number"
-              max="100"
-              min="0"
-              @input="
-                (event) => {
-                  update.badMoveLevelThreshold4 = readInputAsNumber(
-                    event.target as HTMLInputElement,
-                  );
-                }
-              "
-            />
+            <input v-model.number="update.badMoveLevelThreshold4" type="number" max="100" min="0" />
             <div class="form-item-small-label">%</div>
           </div>
           <!-- PV表示手数 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.maxPVLength }}</div>
-            <input
-              :value="original.maxPVTextLength"
-              type="number"
-              max="100"
-              min="5"
-              @input="
-                (event) => {
-                  update.maxPVTextLength = readInputAsNumber(event.target as HTMLInputElement);
-                }
-              "
-            />
+            <input v-model.number="update.maxPVTextLength" type="number" max="100" min="5" />
             <div class="form-item-small-label">({{ t.between(5, 100) }})</div>
             <button class="thin auxiliary" @click="whatIsMaxPVLengthSetting">
               <Icon :icon="IconType.HELP" />
@@ -803,19 +595,14 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.commentFormat }}</div>
             <HorizontalSelector
+              v-model:value="update.searchCommentFormat"
               class="selector"
-              :value="original.searchCommentFormat"
               :items="[
                 { label: t.shogiHome, value: SearchCommentFormat.SHOGIHOME },
                 { label: 'Floodgate', value: SearchCommentFormat.FLOODGATE },
                 { label: 'CSA V3', value: SearchCommentFormat.CSA3 },
                 { label: 'ShogiGUI', value: SearchCommentFormat.SHOGIGUI },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.searchCommentFormat = value as SearchCommentFormat;
-                }
-              "
             />
           </div>
         </div>
@@ -868,44 +655,30 @@
           <!-- アプリログを出力 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.enableAppLog }}</div>
-            <ToggleButton
-              :value="original.enableAppLog"
-              @update:value="(checked: boolean) => (update.enableAppLog = checked)"
-            />
+            <ToggleButton v-model:value="update.enableAppLog" />
           </div>
           <!-- USI通信ログを出力 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.enableUSILog }}</div>
-            <ToggleButton
-              :value="original.enableUSILog"
-              @update:value="(checked: boolean) => (update.enableUSILog = checked)"
-            />
+            <ToggleButton v-model:value="update.enableUSILog" />
           </div>
           <!-- CSA通信ログを出力 -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.enableCSALog }}</div>
-            <ToggleButton
-              :value="original.enableCSALog"
-              @update:value="(checked: boolean) => (update.enableCSALog = checked)"
-            />
+            <ToggleButton v-model:value="update.enableCSALog" />
           </div>
           <!-- ログレベル -->
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.logLevel }}</div>
             <HorizontalSelector
+              v-model:value="update.logLevel"
               class="selector"
-              :value="original.logLevel"
               :items="[
                 { label: 'DEBUG', value: LogLevel.DEBUG },
                 { label: 'INFO', value: LogLevel.INFO },
                 { label: 'WARN', value: LogLevel.WARN },
                 { label: 'ERROR', value: LogLevel.ERROR },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.logLevel = value as LogLevel;
-                }
-              "
             />
           </div>
         </div>
@@ -938,13 +711,12 @@ import {
   BackgroundImageType,
   TextDecodingRule,
   ClockSoundTarget,
-  AppSettingsUpdate,
 } from "@/common/settings/app";
 import ImageSelector from "@/renderer/view/dialog/ImageSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useStore } from "@/renderer/store";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
+import { inputEventToNumber } from "@/renderer/helpers/form.js";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import api, { appInfo, isMobileWebApp, isNative } from "@/renderer/ipc/api";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
@@ -975,8 +747,58 @@ const nameToReturnCode: { [name: string]: string } = {
 
 const store = useStore();
 const busyState = useBusyState();
-const original = useAppSettings().clone;
-const update = ref({} as AppSettingsUpdate);
+const org = useAppSettings();
+const update = ref({
+  language: org.language,
+  thema: org.thema,
+  backgroundImageType: org.backgroundImageType,
+  backgroundImageFileURL: org.backgroundImageFileURL,
+  boardLayoutType: org.boardLayoutType,
+  pieceImage: org.pieceImage,
+  pieceImageFileURL: org.pieceImageFileURL,
+  deletePieceImageMargin: org.deletePieceImageMargin,
+  boardImage: org.boardImage,
+  boardImageFileURL: org.boardImageFileURL,
+  boardGridColor: org.boardGridColor,
+  pieceStandImage: org.pieceStandImage,
+  pieceStandImageFileURL: org.pieceStandImageFileURL,
+  enableTransparent: org.enableTransparent,
+  boardOpacity: org.boardOpacity,
+  pieceStandOpacity: org.pieceStandOpacity,
+  recordOpacity: org.recordOpacity,
+  boardLabelType: org.boardLabelType,
+  leftSideControlType: org.leftSideControlType,
+  rightSideControlType: org.rightSideControlType,
+  tabPaneType: org.tabPaneType,
+  pieceVolume: org.pieceVolume,
+  clockVolume: org.clockVolume,
+  clockPitch: org.clockPitch,
+  clockSoundTarget: org.clockSoundTarget,
+  defaultRecordFileFormat: org.defaultRecordFileFormat,
+  textDecodingRule: org.textDecodingRule,
+  returnCode: returnCodeToName[org.returnCode],
+  autoSaveDirectory: org.autoSaveDirectory,
+  recordFileNameTemplate: org.recordFileNameTemplate,
+  useCSAV3: org.useCSAV3,
+  enableUSIFileStartpos: org.enableUSIFileStartpos,
+  enableUSIFileResign: org.enableUSIFileResign,
+  bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
+  translateEngineOptionName: org.translateEngineOptionName,
+  engineTimeoutSeconds: org.engineTimeoutSeconds,
+  evaluationViewFrom: org.evaluationViewFrom,
+  maxArrowsPerEngine: org.maxArrowsPerEngine,
+  coefficientInSigmoid: org.coefficientInSigmoid,
+  badMoveLevelThreshold1: org.badMoveLevelThreshold1,
+  badMoveLevelThreshold2: org.badMoveLevelThreshold2,
+  badMoveLevelThreshold3: org.badMoveLevelThreshold3,
+  badMoveLevelThreshold4: org.badMoveLevelThreshold4,
+  maxPVTextLength: org.maxPVTextLength,
+  searchCommentFormat: org.searchCommentFormat,
+  enableAppLog: org.enableAppLog,
+  enableUSILog: org.enableUSILog,
+  enableCSALog: org.enableCSALog,
+  logLevel: org.logLevel,
+});
 const autoSaveDirectory = ref();
 const dialog = ref();
 const versionStatus = ref({} as VersionStatus);
@@ -1069,17 +891,17 @@ const cancel = () => {
 .section-title {
   font-size: 1.1em;
 }
-input.toggle {
-  height: 1em;
-  width: 1em;
-  margin-right: 10px;
-}
 input.file-path {
   width: 250px;
 }
 .image-selector {
   display: inline-block;
   width: 200px;
+}
+.color-selector {
+  display: inline-block;
+  height: 24px;
+  margin-left: 5px;
 }
 .selector {
   max-width: 400px;
