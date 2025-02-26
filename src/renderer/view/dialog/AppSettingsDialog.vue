@@ -393,19 +393,13 @@
               {{ t.newlineCharacter }}
             </div>
             <HorizontalSelector
-              v-once
+              v-model:value="update.returnCode"
               class="selector"
-              :value="returnCodeToName[update.returnCode]"
               :items="[
-                { label: 'CRLF (Windows)', value: 'crlf' },
-                { label: 'LF (UNIX/Mac)', value: 'lf' },
-                { label: `CR (${t.old90sMac})`, value: 'cr' },
+                { label: 'CRLF (Windows)', value: '\r\n' },
+                { label: 'LF (UNIX/Mac)', value: '\n' },
+                { label: `CR (${t.old90sMac})`, value: '\r' },
               ]"
-              @update:value="
-                (value: string) => {
-                  update.returnCode = nameToReturnCode[value];
-                }
-              "
             />
           </div>
           <!-- 自動保存先 -->
@@ -733,18 +727,6 @@ import { useBusyState } from "@/renderer/store/busy";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { SearchCommentFormat } from "@/common/settings/comment";
 
-const returnCodeToName: { [name: string]: string } = {
-  "\r\n": "crlf",
-  "\n": "lf",
-  "\r": "cr",
-};
-
-const nameToReturnCode: { [name: string]: string } = {
-  crlf: "\r\n",
-  lf: "\n",
-  cr: "\r",
-};
-
 const store = useStore();
 const busyState = useBusyState();
 const org = useAppSettings();
@@ -776,7 +758,7 @@ const update = ref({
   clockSoundTarget: org.clockSoundTarget,
   defaultRecordFileFormat: org.defaultRecordFileFormat,
   textDecodingRule: org.textDecodingRule,
-  returnCode: returnCodeToName[org.returnCode],
+  returnCode: org.returnCode,
   autoSaveDirectory: org.autoSaveDirectory,
   recordFileNameTemplate: org.recordFileNameTemplate,
   useCSAV3: org.useCSAV3,
