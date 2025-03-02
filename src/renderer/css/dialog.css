@@ -13,6 +13,10 @@ dialog {
   background: rgba(0, 0, 0, 0.3);
 }
 
+.dialog-no-backdrop dialog::backdrop {
+  background: rgba(0, 0, 0, 0);
+}
+
 dialog button {
   margin: 0px 5px 0px 5px;
   padding: 5px 15px 5px 15px;
