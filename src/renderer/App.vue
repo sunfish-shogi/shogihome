@@ -52,11 +52,17 @@
     <button v-if="!isNative() && !isMobileWebApp()" class="copyright" @click="openCopyright">
       &copy;
     </button>
+    <!-- copy/paste イベントを拾えない問題があるので隠しボタンを置いて google/hotkey でイベントを受け取る。 -->
+    <!-- https://github.com/sunfish-shogi/shogihome/issues/1114 -->
+    <div ref="clipboard" hidden>
+      <button data-hotkey="Mod+c" @click="onCopy"></button>
+      <button data-hotkey="Mod+v" @click="onPaste"></button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import StandardLayout from "@/renderer/view/main/StandardLayout.vue";
 import GameDialog from "@/renderer/view/dialog/GameDialog.vue";
 import CSAGameDialog from "@/renderer/view/dialog/CSAGameDialog.vue";
@@ -94,7 +100,9 @@ import CustomLayout from "./view/main/CustomLayout.vue";
 import MobileLayout from "./view/main/MobileLayout.vue";
 import api, { isMobileWebApp, isNative } from "./ipc/api";
 import { openCopyright } from "./helpers/copyright";
+import { installHotKeyForMainWindow } from "./devices/hotkey";
 
+const clipboard = ref();
 const appSettings = useAppSettings();
 const store = useStore();
 const messageStore = useMessageStore();
@@ -102,16 +110,17 @@ const errorStore = useErrorStore();
 const busyState = useBusyState();
 const confirmation = useConfirmationStore();
 
+const onCopy = () => {
+  store.copyRecordKIF();
+};
+
+const onPaste = () => {
+  store.showPasteDialog();
+};
+
 onMounted(() => {
+  installHotKeyForMainWindow(clipboard.value);
   const body = document.getElementsByTagName("body")[0];
-  body.addEventListener("copy", (event) => {
-    store.copyRecordKIF();
-    event.preventDefault();
-  });
-  body.addEventListener("paste", (event) => {
-    store.showPasteDialog();
-    event.preventDefault();
-  });
   body.addEventListener("dragover", (event: DragEvent) => {
     event.preventDefault();
   });
