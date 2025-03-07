@@ -336,10 +336,18 @@ onUpdated(() => {
   background-color: var(--text-bg-color-selected);
 }
 .move-element.has-branch:not(.selected):hover {
-  background-color: color-mix(in srgb, var(--text-bg-color-warning) 70%, var(--hovered-text-bg-color));
+  background-color: color-mix(
+    in srgb,
+    var(--text-bg-color-warning) 70%,
+    var(--hovered-text-bg-color)
+  );
 }
 .move-element.selected:hover {
-  background-color: color-mix(in srgb, var(--text-bg-color-selected) 70%, var(--hovered-text-bg-color));
+  background-color: color-mix(
+    in srgb,
+    var(--text-bg-color-selected) 70%,
+    var(--hovered-text-bg-color)
+  );
 }
 .move-element:last-child {
   margin-bottom: 1em;

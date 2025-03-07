@@ -19,11 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(entry, index) of moveList"
-            :key="entry.usi"
-            class="move-element"
-          >
+          <tr v-for="(entry, index) of moveList" :key="entry.usi" class="move-element">
             <td class="order">
               <select
                 v-if="editable"
