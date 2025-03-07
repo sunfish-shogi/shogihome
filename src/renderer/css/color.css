@@ -13,6 +13,7 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: lightgray;
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -69,6 +70,7 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: #f8c3bf;
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -125,6 +127,7 @@
   --text-bg-color-selected: #bc8e7e;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: #d4a65e;
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -181,6 +184,7 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: #dddde9;
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -237,6 +241,7 @@
   --text-bg-color-selected: #4444b3;
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: gray;
   --text-separator-color: gainsboro;
   --text-dashed-separator-color: lightgray;
   --input-border-color: gray;
@@ -293,6 +298,7 @@
   --text-bg-color-selected: #4444b3;
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: gray;
   --text-separator-color: gainsboro;
   --text-dashed-separator-color: lightgray;
   --input-border-color: gray;

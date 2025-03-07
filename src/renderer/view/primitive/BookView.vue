@@ -19,7 +19,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(entry, index) of moveList" :key="entry.usi">
+          <tr
+            v-for="(entry, index) of moveList"
+            :key="entry.usi"
+            class="move-element"
+          >
             <td class="order">
               <select
                 v-if="editable"
@@ -174,6 +178,9 @@ const moveList = computed(() => {
   color: var(--text-color);
   font-size: 0.85em;
 }
+table.list {
+  border-collapse: collapse;
+}
 table.list > thead > tr > td {
   background-color: var(--text-bg-color);
   position: sticky;
@@ -183,13 +190,13 @@ table.list > thead > tr > td {
   white-space: nowrap;
   overflow: hidden;
   margin: 0;
-  padding: 0 0 0 2px;
+  padding: 0 2px 0 2px;
 }
 table.list > tbody > tr > td {
   white-space: nowrap;
   overflow: hidden;
   margin: 0;
-  padding: 0 0 0 2px;
+  padding: 0 2px 0 2px;
   vertical-align: middle;
 }
 table.list > tbody > tr > td > * {
@@ -230,5 +237,8 @@ button > .icon {
   box-sizing: border-box;
   border: 1px solid var(--text-separator-color);
   border-radius: 5px;
+}
+.move-element:hover {
+  background-color: var(--hovered-text-bg-color);
 }
 </style>
