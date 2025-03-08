@@ -337,15 +337,8 @@ onUpdated(() => {
 }
 .move-element.has-branch:not(.selected):hover {
   background-color: color-mix(
-    in srgb,
-    var(--text-bg-color-warning) 80%,
-    var(--hovered-text-bg-color)
-  );
-}
-.move-element.selected:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--text-bg-color-selected) 80%,
+    in hsl,
+    var(--text-bg-color-warning) 90%,
     var(--hovered-text-bg-color)
   );
 }

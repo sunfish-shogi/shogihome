@@ -14,7 +14,7 @@
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );
@@ -75,7 +75,7 @@
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );
@@ -136,7 +136,7 @@
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );
@@ -197,7 +197,7 @@
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );
@@ -258,7 +258,7 @@
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );
@@ -319,7 +319,7 @@
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
   --hovered-text-bg-color: color-mix(
-    in srgb,
+    in hsl,
     var(--text-bg-color) 70%,
     var(--text-bg-color-disabled)
   );

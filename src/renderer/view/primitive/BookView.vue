@@ -234,7 +234,4 @@ button > .icon {
   border: 1px solid var(--text-separator-color);
   border-radius: 5px;
 }
-.move-element:hover {
-  background-color: var(--hovered-text-bg-color);
-}
 </style>
