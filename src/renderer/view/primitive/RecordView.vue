@@ -327,7 +327,7 @@ onUpdated(() => {
   scroll-margin: 1em;
 }
 .move-element:hover {
-  background-color: color-mix(in srgb, var(--text-bg-color) 80%, var(--hovered-text-bg-color));
+  background-color: var(--hovered-text-bg-color);
 }
 .move-element.has-branch:not(.selected) {
   background-color: var(--text-bg-color-warning);
