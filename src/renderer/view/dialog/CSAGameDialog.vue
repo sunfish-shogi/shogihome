@@ -63,7 +63,7 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.host }}</div>
-            <input ref="host" class="long-text" list="csa-server-host" type="text" />
+            <input v-model.trim="host" class="long-text" list="csa-server-host" type="text" />
             <datalist id="csa-server-host">
               <option value="gserver.computer-shogi.org"></option>
               <option value="wdoor.c.u-tokyo.ac.jp"></option>
@@ -73,18 +73,18 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.portNumber }}</div>
-            <input ref="port" class="number" list="csa-server-port-number" type="number" />
+            <input v-model.number="port" class="number" list="csa-server-port-number" type="number" />
             <datalist id="csa-server-port-number">
               <option value="4081"></option>
             </datalist>
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">ID</div>
-            <input ref="id" class="long-text" type="text" />
+            <input v-model.trim="id" class="long-text" type="text" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.password }}</div>
-            <input ref="password" class="long-text" :type="revealPassword ? 'text' : 'password'" />
+            <input v-model.trim="password" class="long-text" :type="revealPassword ? 'text' : 'password'" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide"></div>
@@ -103,7 +103,7 @@
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.keepaliveInitialDelay }}</div>
             <input
-              ref="keepaliveInitialDelay"
+              v-model.number="keepaliveInitialDelay"
               class="number"
               type="number"
               value="10"
@@ -121,7 +121,7 @@
           <div v-show="blankLinePing" class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePingInitialDelay }}</div>
             <input
-              ref="blankLineInitialDelay"
+              v-model.number="blankLineInitialDelay"
               class="number"
               type="number"
               value="40"
@@ -135,7 +135,7 @@
           <div v-show="blankLinePing" class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePingInterval }}</div>
             <input
-              ref="blankLineInterval"
+              v-model.number="blankLineInterval"
               class="number"
               type="number"
               value="40"
@@ -155,7 +155,7 @@
             <div class="form-item-label-wide number">
               {{ t.gameRepetition }}
             </div>
-            <input ref="repeat" class="number" type="number" min="1" />
+            <input v-model.number="repeat" class="number" type="number" min="1" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.autoRelogin }}</div>
@@ -220,7 +220,6 @@ import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import { PlayerSettings } from "@/common/settings/player";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -236,17 +235,17 @@ const messageStore = useMessageStore();
 const appSettings = useAppSettings();
 const dialog = ref();
 const protocolVersion = ref(CSAProtocolVersion.V121);
-const host = ref();
-const port = ref();
-const id = ref();
-const password = ref();
+const host = ref("");
+const port = ref(4081);
+const id = ref("");
+const password = ref("");
 const revealPassword = ref(false);
-const keepaliveInitialDelay = ref();
+const keepaliveInitialDelay = ref(0);
 const blankLinePing = ref(false);
-const blankLineInitialDelay = ref();
-const blankLineInterval = ref();
+const blankLineInitialDelay = ref(0);
+const blankLineInterval = ref(0);
 const saveHistory = ref(true);
-const repeat = ref();
+const repeat = ref(0);
 const autoRelogin = ref(false);
 const restartPlayerEveryGame = ref(false);
 const enableComment = ref(false);
@@ -287,15 +286,15 @@ onUpdated(() => {
   }
   const defaultSettings = buildCSAGameSettingsByHistory(history.value, 0);
   protocolVersion.value = defaultSettings.server.protocolVersion;
-  host.value.value = defaultSettings.server.host;
-  port.value.value = defaultSettings.server.port;
-  id.value.value = defaultSettings.server.id;
-  password.value.value = defaultSettings.server.password;
-  keepaliveInitialDelay.value.value = defaultSettings.server.tcpKeepalive.initialDelay;
+  host.value = defaultSettings.server.host;
+  port.value = defaultSettings.server.port;
+  id.value = defaultSettings.server.id;
+  password.value = defaultSettings.server.password;
+  keepaliveInitialDelay.value = defaultSettings.server.tcpKeepalive.initialDelay;
   blankLinePing.value = !!defaultSettings.server.blankLinePing;
-  blankLineInitialDelay.value.value = defaultSettings.server.blankLinePing?.initialDelay || 40;
-  blankLineInterval.value.value = defaultSettings.server.blankLinePing?.interval || 40;
-  repeat.value.value = defaultSettings.repeat;
+  blankLineInitialDelay.value = defaultSettings.server.blankLinePing?.initialDelay || 40;
+  blankLineInterval.value = defaultSettings.server.blankLinePing?.interval || 40;
+  repeat.value = defaultSettings.repeat;
   autoRelogin.value = defaultSettings.autoRelogin;
   restartPlayerEveryGame.value = defaultSettings.restartPlayerEveryGame;
   enableComment.value = defaultSettings.enableComment;
@@ -325,21 +324,21 @@ const buildConfig = (): CSAGameSettings => {
     player: buildPlayerSettings(playerURI.value),
     server: {
       protocolVersion: protocolVersion.value,
-      host: String(host.value.value || "").trim(),
-      port: Number(port.value.value),
-      id: String(id.value.value || "").trim(),
-      password: String(password.value.value || "").trim(),
+      host: host.value,
+      port: port.value,
+      id: id.value,
+      password: password.value,
       tcpKeepalive: {
-        initialDelay: readInputAsNumber(keepaliveInitialDelay.value),
+        initialDelay: keepaliveInitialDelay.value,
       },
       blankLinePing: blankLinePing.value
         ? {
-            initialDelay: readInputAsNumber(blankLineInitialDelay.value),
-            interval: readInputAsNumber(blankLineInterval.value),
+            initialDelay: blankLineInitialDelay.value,
+            interval: blankLineInterval.value,
           }
         : undefined,
     },
-    repeat: readInputAsNumber(repeat.value),
+    repeat: repeat.value,
     autoRelogin: autoRelogin.value,
     restartPlayerEveryGame: restartPlayerEveryGame.value,
     enableComment: enableComment.value,
@@ -411,15 +410,15 @@ const onChangeHistory = (event: Event) => {
   const server = history.value.serverHistory[Number(select.value)];
   if (server) {
     protocolVersion.value = server.protocolVersion;
-    host.value.value = server.host;
-    port.value.value = server.port;
-    id.value.value = server.id;
-    password.value.value = server.password;
-    keepaliveInitialDelay.value.value = server.tcpKeepalive.initialDelay;
+    host.value = server.host;
+    port.value = server.port;
+    id.value = server.id;
+    password.value = server.password;
+    keepaliveInitialDelay.value = server.tcpKeepalive.initialDelay;
     blankLinePing.value = !!server.blankLinePing;
     if (server.blankLinePing) {
-      blankLineInitialDelay.value.value = server.blankLinePing.initialDelay;
-      blankLineInterval.value.value = server.blankLinePing.interval;
+      blankLineInitialDelay.value = server.blankLinePing.initialDelay;
+      blankLineInterval.value = server.blankLinePing.interval;
     }
   }
 };
