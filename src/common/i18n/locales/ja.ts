@@ -550,13 +550,10 @@ export const ja: Texts = {
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
   notSendPVOnStandardCSAProtocol: "標準のCSAプロトコルでは評価値や読み筋が送信されません。",
-  csaProtocolSendPlaintextPassword: "CSAプロトコルの規格上パスワードは平文で送信されます。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "OSの暗号化機能が利用できないため、入力したパスワードは平文で保存されます。",
   pleaseUncheckSaveHistoryIfNotWantSave:
     "保存したくない場合は「履歴に保存する」のチェックを外してください。",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "なお、履歴の保存に関係なくCSAプロトコルの規格上パスワードは平文で送信されます。",
   whenNewVersionIsAvailableItWillBeNotified: "新しいバージョンが利用可能になると通知されます。",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     "上のボタンで「これは通知のテストです。」というメッセージを確認してください。",

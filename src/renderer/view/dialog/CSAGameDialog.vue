@@ -26,7 +26,7 @@
           <hr v-if="uri.isUSIEngine(playerURI)" />
           <div v-if="uri.isUSIEngine(playerURI)" class="form-item">
             <div class="form-item-label-wide">{{ t.restartItEveryGame }}</div>
-            <ToggleButton v-model:value="restartPlayerEveryGame" />
+            <ToggleButton v-model:value="csaGameSettings.restartPlayerEveryGame" />
           </div>
         </div>
         <div class="form-group">
@@ -47,7 +47,7 @@
           <hr />
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.version }}</div>
-            <select v-model="protocolVersion" class="long-text">
+            <select v-model="csaGameSettings.server.protocolVersion" class="long-text">
               <option :value="CSAProtocolVersion.V121">
                 {{ t.csaProtocolV121 }}
               </option>
@@ -56,14 +56,22 @@
               </option>
             </select>
           </div>
-          <div v-if="protocolVersion === CSAProtocolVersion.V121" class="form-group warning">
+          <div
+            v-if="csaGameSettings.server.protocolVersion === CSAProtocolVersion.V121"
+            class="form-group warning"
+          >
             <div class="note">
               {{ t.notSendPVOnStandardCSAProtocol }}
             </div>
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.host }}</div>
-            <input ref="host" class="long-text" list="csa-server-host" type="text" />
+            <input
+              v-model.trim="csaGameSettings.server.host"
+              class="long-text"
+              list="csa-server-host"
+              type="text"
+            />
             <datalist id="csa-server-host">
               <option value="gserver.computer-shogi.org"></option>
               <option value="wdoor.c.u-tokyo.ac.jp"></option>
@@ -73,37 +81,48 @@
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.portNumber }}</div>
-            <input ref="port" class="number" list="csa-server-port-number" type="number" />
+            <input
+              v-model.number="csaGameSettings.server.port"
+              class="number"
+              list="csa-server-port-number"
+              type="number"
+            />
             <datalist id="csa-server-port-number">
               <option value="4081"></option>
             </datalist>
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">ID</div>
-            <input ref="id" class="long-text" type="text" />
+            <input v-model.trim="csaGameSettings.server.id" class="long-text" type="text" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.password }}</div>
-            <input ref="password" class="long-text" :type="revealPassword ? 'text' : 'password'" />
+            <input
+              v-model.trim="csaGameSettings.server.password"
+              class="long-text"
+              :type="revealPassword ? 'text' : 'password'"
+            />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide"></div>
             <ToggleButton v-model:value="revealPassword" :label="t.revealPassword" />
           </div>
-          <div class="form-group warning">
-            <div v-if="isEncryptionAvailable" class="note">
-              {{ t.csaProtocolSendPlaintextPassword }}
-            </div>
-            <div v-else class="note">
+          <div v-if="isFloodgate && !validFloodgatePassword" class="form-group warning">
+            <div class="note">Floodgate のパスワードはゲーム名で始まる必要があります。</div>
+          </div>
+          <div v-else-if="isFloodgate && !officialFloodgateGameName" class="form-group warning">
+            <div class="note">Floodgate の公式なゲーム名ではありません。</div>
+          </div>
+          <div v-if="!isEncryptionAvailable" class="form-group warning">
+            <div class="note">
               {{ t.passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable }}
               {{ t.pleaseUncheckSaveHistoryIfNotWantSave }}
-              {{ t.csaProtocolSendPlaintextPasswordRegardlessOfHistory }}
             </div>
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.keepaliveInitialDelay }}</div>
             <input
-              ref="keepaliveInitialDelay"
+              v-model.number="csaGameSettings.server.tcpKeepalive.initialDelay"
               class="number"
               type="number"
               value="10"
@@ -121,7 +140,7 @@
           <div v-show="blankLinePing" class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePingInitialDelay }}</div>
             <input
-              ref="blankLineInitialDelay"
+              v-model.number="blankLinePingSettings.initialDelay"
               class="number"
               type="number"
               value="40"
@@ -135,7 +154,7 @@
           <div v-show="blankLinePing" class="form-item">
             <div class="form-item-label-wide">{{ t.blankLinePingInterval }}</div>
             <input
-              ref="blankLineInterval"
+              v-model.number="blankLinePingSettings.interval"
               class="number"
               type="number"
               value="40"
@@ -155,29 +174,29 @@
             <div class="form-item-label-wide number">
               {{ t.gameRepetition }}
             </div>
-            <input ref="repeat" class="number" type="number" min="1" />
+            <input v-model.number="csaGameSettings.repeat" class="number" type="number" min="1" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.autoRelogin }}</div>
-            <ToggleButton v-model:value="autoRelogin" />
+            <ToggleButton v-model:value="csaGameSettings.autoRelogin" />
           </div>
         </div>
         <div class="form-group">
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.outputComments }}</div>
-            <ToggleButton v-model:value="enableComment" />
+            <ToggleButton v-model:value="csaGameSettings.enableComment" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">
               {{ t.saveRecordAutomatically }}
             </div>
-            <ToggleButton v-model:value="enableAutoSave" />
+            <ToggleButton v-model:value="csaGameSettings.enableAutoSave" />
           </div>
           <div class="form-item">
             <div class="form-item-label-wide">
               {{ t.adjustBoardAutomatically }}
             </div>
-            <ToggleButton v-model:value="autoFlip" />
+            <ToggleButton v-model:value="csaGameSettings.autoFlip" />
           </div>
         </div>
       </div>
@@ -215,12 +234,13 @@ import {
   defaultCSAGameSettingsHistory,
   exportCSAGameSettingsForCLI,
   compressCSAGameSettingsForCLI,
+  defaultCSAGameSettings,
+  BlankLinePingSettings,
 } from "@/common/settings/csa";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import { PlayerSettings } from "@/common/settings/player";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -229,29 +249,21 @@ import { IconType } from "@/renderer/assets/icons";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
+import { useConfirmationStore } from "@/renderer/store/confirm";
 
 const store = useStore();
 const busyState = useBusyState();
 const messageStore = useMessageStore();
 const appSettings = useAppSettings();
 const dialog = ref();
-const protocolVersion = ref(CSAProtocolVersion.V121);
-const host = ref();
-const port = ref();
-const id = ref();
-const password = ref();
-const revealPassword = ref(false);
-const keepaliveInitialDelay = ref();
+const csaGameSettings = ref(defaultCSAGameSettings());
 const blankLinePing = ref(false);
-const blankLineInitialDelay = ref();
-const blankLineInterval = ref();
+const blankLinePingSettings = ref<BlankLinePingSettings>({
+  initialDelay: 40,
+  interval: 40,
+});
+const revealPassword = ref(false);
 const saveHistory = ref(true);
-const repeat = ref();
-const autoRelogin = ref(false);
-const restartPlayerEveryGame = ref(false);
-const enableComment = ref(false);
-const enableAutoSave = ref(false);
-const autoFlip = ref(false);
 const isEncryptionAvailable = ref(false);
 const history = ref(defaultCSAGameSettingsHistory());
 const engines = ref(new USIEngines());
@@ -285,24 +297,26 @@ onUpdated(() => {
   if (!defaultValueLoaded || defaultValueApplied) {
     return;
   }
-  const defaultSettings = buildCSAGameSettingsByHistory(history.value, 0);
-  protocolVersion.value = defaultSettings.server.protocolVersion;
-  host.value.value = defaultSettings.server.host;
-  port.value.value = defaultSettings.server.port;
-  id.value.value = defaultSettings.server.id;
-  password.value.value = defaultSettings.server.password;
-  keepaliveInitialDelay.value.value = defaultSettings.server.tcpKeepalive.initialDelay;
-  blankLinePing.value = !!defaultSettings.server.blankLinePing;
-  blankLineInitialDelay.value.value = defaultSettings.server.blankLinePing?.initialDelay || 40;
-  blankLineInterval.value.value = defaultSettings.server.blankLinePing?.interval || 40;
-  repeat.value.value = defaultSettings.repeat;
-  autoRelogin.value = defaultSettings.autoRelogin;
-  restartPlayerEveryGame.value = defaultSettings.restartPlayerEveryGame;
-  enableComment.value = defaultSettings.enableComment;
-  enableAutoSave.value = defaultSettings.enableAutoSave;
-  autoFlip.value = defaultSettings.autoFlip;
-  playerURI.value = defaultSettings.player.uri;
+  const settings = buildCSAGameSettingsByHistory(history.value, 0);
+  csaGameSettings.value = JSON.parse(JSON.stringify(settings));
+  if (csaGameSettings.value.server.blankLinePing) {
+    blankLinePing.value = true;
+    blankLinePingSettings.value = csaGameSettings.value.server.blankLinePing;
+  }
+  playerURI.value = csaGameSettings.value.player.uri;
   defaultValueApplied = true;
+});
+
+const isFloodgate = computed(() => {
+  return csaGameSettings.value.server.host === "wdoor.c.u-tokyo.ac.jp";
+});
+
+const validFloodgatePassword = computed(() => {
+  return /^[A-Za-z0-9]+-[0-9]+-[0-9]+F?,/.test(csaGameSettings.value.server.password);
+});
+
+const officialFloodgateGameName = computed(() => {
+  return csaGameSettings.value.server.password.startsWith("floodgate-");
 });
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {
@@ -322,80 +336,82 @@ const buildPlayerSettings = (playerURI: string): PlayerSettings => {
 
 const buildConfig = (): CSAGameSettings => {
   return {
+    ...csaGameSettings.value,
     player: buildPlayerSettings(playerURI.value),
     server: {
-      protocolVersion: protocolVersion.value,
-      host: String(host.value.value || "").trim(),
-      port: Number(port.value.value),
-      id: String(id.value.value || "").trim(),
-      password: String(password.value.value || "").trim(),
-      tcpKeepalive: {
-        initialDelay: readInputAsNumber(keepaliveInitialDelay.value),
-      },
-      blankLinePing: blankLinePing.value
-        ? {
-            initialDelay: readInputAsNumber(blankLineInitialDelay.value),
-            interval: readInputAsNumber(blankLineInterval.value),
-          }
-        : undefined,
+      ...csaGameSettings.value.server,
+      blankLinePing: blankLinePing.value ? blankLinePingSettings.value : undefined,
     },
-    repeat: readInputAsNumber(repeat.value),
-    autoRelogin: autoRelogin.value,
-    restartPlayerEveryGame: restartPlayerEveryGame.value,
-    enableComment: enableComment.value,
-    enableAutoSave: enableAutoSave.value,
-    autoFlip: autoFlip.value,
   };
 };
 
-const onExportYAML = () => {
-  const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
-  if (settings instanceof Error) {
-    useErrorStore().add(settings);
-    return;
+const confirm = (action: () => void) => {
+  if (isFloodgate.value && (!validFloodgatePassword.value || !officialFloodgateGameName.value)) {
+    useConfirmationStore().show({
+      message: "Floodgate のパスワードのルールに則していませんが、よろしいですか？",
+      onOk: action,
+    });
+  } else {
+    action();
   }
-  navigator.clipboard.writeText(YAML.stringify(settings));
-  messageStore.enqueue({
-    text: t.yamlFormatSettingsCopiedToClipboard,
+};
+
+const onExportYAML = () => {
+  confirm(() => {
+    const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
+    if (settings instanceof Error) {
+      useErrorStore().add(settings);
+      return;
+    }
+    navigator.clipboard.writeText(YAML.stringify(settings));
+    messageStore.enqueue({
+      text: t.yamlFormatSettingsCopiedToClipboard,
+    });
   });
 };
 
 const onExportJSON = () => {
-  const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
-  if (settings instanceof Error) {
-    useErrorStore().add(settings);
-    return;
-  }
-  navigator.clipboard.writeText(JSON.stringify(settings, null, 2));
-  messageStore.enqueue({
-    text: t.jsonFormatSettingsCopiedToClipboard,
+  confirm(() => {
+    const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
+    if (settings instanceof Error) {
+      useErrorStore().add(settings);
+      return;
+    }
+    navigator.clipboard.writeText(JSON.stringify(settings, null, 2));
+    messageStore.enqueue({
+      text: t.jsonFormatSettingsCopiedToClipboard,
+    });
   });
 };
 
 const onExportCommand = () => {
-  const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
-  if (settings instanceof Error) {
-    useErrorStore().add(settings);
-    return;
-  }
-  compressCSAGameSettingsForCLI(settings).then((compressed) => {
-    navigator.clipboard.writeText(`npx usi-csa-bridge --base64 ${compressed}`);
-    messageStore.enqueue({
-      text: t.usiCsaBridgeCommandCopiedToClipboard,
+  confirm(() => {
+    const settings = exportCSAGameSettingsForCLI(buildConfig(), appSettings);
+    if (settings instanceof Error) {
+      useErrorStore().add(settings);
+      return;
+    }
+    compressCSAGameSettingsForCLI(settings).then((compressed) => {
+      navigator.clipboard.writeText(`npx usi-csa-bridge --base64 ${compressed}`);
+      messageStore.enqueue({
+        text: t.usiCsaBridgeCommandCopiedToClipboard,
+      });
     });
   });
 };
 
 const onStart = () => {
-  const csaGameSettings = buildConfig();
-  const error = validateCSAGameSettings(csaGameSettings);
-  if (error) {
-    useErrorStore().add(error);
-  } else {
-    store.loginCSAGame(csaGameSettings, {
-      saveHistory: saveHistory.value,
-    });
-  }
+  confirm(() => {
+    const csaGameSettings = buildConfig();
+    const error = validateCSAGameSettings(csaGameSettings);
+    if (error) {
+      useErrorStore().add(error);
+    } else {
+      store.loginCSAGame(csaGameSettings, {
+        saveHistory: saveHistory.value,
+      });
+    }
+  });
 };
 
 const onCancel = () => {
@@ -410,16 +426,10 @@ const onChangeHistory = (event: Event) => {
   const select = event.target as HTMLSelectElement;
   const server = history.value.serverHistory[Number(select.value)];
   if (server) {
-    protocolVersion.value = server.protocolVersion;
-    host.value.value = server.host;
-    port.value.value = server.port;
-    id.value.value = server.id;
-    password.value.value = server.password;
-    keepaliveInitialDelay.value.value = server.tcpKeepalive.initialDelay;
+    csaGameSettings.value.server = JSON.parse(JSON.stringify(server));
     blankLinePing.value = !!server.blankLinePing;
     if (server.blankLinePing) {
-      blankLineInitialDelay.value.value = server.blankLinePing.initialDelay;
-      blankLineInterval.value.value = server.blankLinePing.interval;
+      blankLinePingSettings.value = server.blankLinePing;
     }
   }
 };

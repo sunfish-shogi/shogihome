@@ -545,11 +545,9 @@ export const zh_tw: Texts = {
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
   pleaseEnableLogsAndRestart: "請在程式設定中開啟紀錄並重新啟動本程式。",
   notSendPVOnStandardCSAProtocol: "在標準的CSA協定中不會送出評價值以及思考棋步。",
-  csaProtocolSendPlaintextPassword: "在CSA協定中，密碼為明文傳輸。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "由於無法使用系統的加密機能，輸入的密碼將會以明文保存。",
   pleaseUncheckSaveHistoryIfNotWantSave: "若不想保存密碼，請不要將「保存紀錄」勾選。",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory: "不過，CSA協定仍會以明文傳輸您的密碼。",
   whenNewVersionIsAvailableItWillBeNotified: "將會在新版本發布時進行通知。",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     "上方按鈕會發送「這是測試用的通知。」的通知訊息。",
