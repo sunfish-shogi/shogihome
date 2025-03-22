@@ -216,7 +216,7 @@
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.boardOpacity }}</div>
             <input
-              v-model="update.boardOpacity"
+              v-model.number="update.boardOpacity"
               :readonly="!update.enableTransparent"
               type="number"
               max="100"
@@ -228,7 +228,7 @@
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.pieceStandOpacity }}</div>
             <input
-              v-model="update.pieceStandOpacity"
+              v-model.number="update.pieceStandOpacity"
               :readonly="!update.enableTransparent"
               type="number"
               max="100"
@@ -240,7 +240,7 @@
           <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.recordOpacity }}</div>
             <input
-              v-model="update.recordOpacity"
+              v-model.number="update.recordOpacity"
               :readonly="!update.enableTransparent"
               type="number"
               max="100"
@@ -401,12 +401,7 @@
             <div class="form-item-label-wide">
               {{ t.autoSavingDirectory }}
             </div>
-            <input
-              ref="autoSaveDirectory"
-              v-model="update.autoSaveDirectory"
-              class="file-path"
-              type="text"
-            />
+            <input v-model="update.autoSaveDirectory" class="file-path" type="text" />
             <button class="thin" @click="selectAutoSaveDirectory">
               {{ t.select }}
             </button>
@@ -795,7 +790,6 @@ const update = ref({
   logLevel: org.logLevel,
   enableHardwareAcceleration: org.enableHardwareAcceleration,
 });
-const autoSaveDirectory = ref();
 const dialog = ref();
 const versionStatus = ref({} as VersionStatus);
 
@@ -852,9 +846,9 @@ const saveAndClose = async () => {
 const selectAutoSaveDirectory = async () => {
   busyState.retain();
   try {
-    const path = await api.showSelectDirectoryDialog(autoSaveDirectory.value.value);
+    const path = await api.showSelectDirectoryDialog(update.value.autoSaveDirectory);
     if (path) {
-      autoSaveDirectory.value.value = update.value.autoSaveDirectory = path;
+      update.value.autoSaveDirectory = path;
     }
   } catch (e) {
     useErrorStore().add(e);
@@ -864,7 +858,7 @@ const selectAutoSaveDirectory = async () => {
 };
 
 const onOpenAutoSaveDirectory = () => {
-  api.openExplorer(autoSaveDirectory.value.value);
+  api.openExplorer(update.value.autoSaveDirectory);
 };
 
 const howToWriteFileNameTemplate = () => {
