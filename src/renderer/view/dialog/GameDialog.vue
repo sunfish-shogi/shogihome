@@ -38,30 +38,54 @@
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.allottedTime }}</div>
-              <input ref="hours" class="time" type="number" min="0" max="99" step="1" />
+              <input v-model.number="hours" class="time" type="number" min="0" max="99" step="1" />
               <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
-              <input ref="minutes" class="time" type="number" min="0" max="59" step="1" />
+              <input
+                v-model.number="minutes"
+                class="time"
+                type="number"
+                min="0"
+                max="59"
+                step="1"
+              />
               <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.byoyomi }}</div>
-              <input ref="byoyomi" class="time" type="number" min="0" max="60" step="1" />
+              <input
+                v-model.number="byoyomi"
+                class="time"
+                type="number"
+                min="0"
+                max="60"
+                step="1"
+              />
               <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.increments }}</div>
-              <input ref="increment" class="time" type="number" min="0" max="99" step="1" />
+              <input
+                v-model.number="increment"
+                class="time"
+                type="number"
+                min="0"
+                max="99"
+                step="1"
+              />
               <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
             </div>
             <div class="form-item">
-              <ToggleButton v-model:value="enableEngineTimeout" :label="t.enableEngineTimeout" />
+              <ToggleButton
+                v-model:value="gameSettings.enableEngineTimeout"
+                :label="t.enableEngineTimeout"
+              />
             </div>
           </div>
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.allottedTime }}</div>
               <input
-                ref="whiteHours"
+                v-model.number="whiteHours"
                 class="time"
                 type="number"
                 min="0"
@@ -71,7 +95,7 @@
               />
               <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
               <input
-                ref="whiteMinutes"
+                v-model.number="whiteMinutes"
                 class="time"
                 type="number"
                 min="0"
@@ -84,7 +108,7 @@
             <div class="form-item">
               <div class="form-item-label">{{ t.byoyomi }}</div>
               <input
-                ref="whiteByoyomi"
+                v-model.number="whiteByoyomi"
                 class="time"
                 type="number"
                 min="0"
@@ -97,7 +121,7 @@
             <div class="form-item">
               <div class="form-item-label">{{ t.increments }}</div>
               <input
-                ref="whiteIncrement"
+                v-model.number="whiteIncrement"
                 class="time"
                 type="number"
                 min="0"
@@ -124,7 +148,7 @@
           <div class="half-column">
             <div class="form-item">
               <div class="form-item-label">{{ t.startPosition }}</div>
-              <select v-model="startPosition">
+              <select v-model="gameSettings.startPosition">
                 <option value="current">{{ t.currentPosition }}</option>
                 <option value="list">{{ t.positionList }}</option>
                 <option :value="InitialPositionType.STANDARD">
@@ -162,24 +186,28 @@
                 </option>
               </select>
             </div>
-            <div v-show="startPosition === 'list'" class="form-item">
-              <input ref="startPositionListFile" type="text" placeholder="*.sfen" />
+            <div v-show="gameSettings.startPosition === 'list'" class="form-item">
+              <input
+                v-model="gameSettings.startPositionListFile"
+                type="text"
+                placeholder="*.sfen"
+              />
               <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
             </div>
-            <div v-show="startPosition === 'list'" class="form-item">
+            <div v-show="gameSettings.startPosition === 'list'" class="form-item">
               <ToggleButton v-model:value="startPositionListShuffle" :label="t.shuffle" />
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.maxMoves }}</div>
-              <input ref="maxMoves" class="number" type="number" min="1" />
+              <input v-model.number="gameSettings.maxMoves" class="number" type="number" min="1" />
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.gameRepetition }}</div>
-              <input ref="repeat" class="number" type="number" min="1" />
+              <input v-model.number="gameSettings.repeat" class="number" type="number" min="1" />
             </div>
             <div class="form-item">
               <div class="form-item-label">{{ t.jishogi }}</div>
-              <select ref="jishogiRule">
+              <select v-model="gameSettings.jishogiRule">
                 <option :value="JishogiRule.NONE">{{ t.none }}</option>
                 <option :value="JishogiRule.GENERAL24">{{ t.rule24 }}</option>
                 <option :value="JishogiRule.GENERAL27">{{ t.rule27 }}</option>
@@ -189,16 +217,25 @@
           </div>
           <div class="half-column">
             <div class="form-item">
-              <ToggleButton v-model:value="swapPlayers" :label="t.swapTurnWhenGameRepetition" />
+              <ToggleButton
+                v-model:value="gameSettings.swapPlayers"
+                :label="t.swapTurnWhenGameRepetition"
+              />
             </div>
             <div class="form-item">
-              <ToggleButton v-model:value="enableComment" :label="t.outputComments" />
+              <ToggleButton v-model:value="gameSettings.enableComment" :label="t.outputComments" />
             </div>
             <div class="form-item">
-              <ToggleButton v-model:value="enableAutoSave" :label="t.saveRecordAutomatically" />
+              <ToggleButton
+                v-model:value="gameSettings.enableAutoSave"
+                :label="t.saveRecordAutomatically"
+              />
             </div>
             <div class="form-item">
-              <ToggleButton v-model:value="humanIsFront" :label="t.adjustBoardToHumanPlayer" />
+              <ToggleButton
+                v-model:value="gameSettings.humanIsFront"
+                :label="t.adjustBoardToHumanPlayer"
+              />
             </div>
           </div>
         </div>
@@ -218,20 +255,18 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { USIEngineLabel, USIEngine, USIEngines } from "@/common/settings/usi";
-import { ref, onMounted, onUpdated, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import api, { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
   defaultGameSettings,
   GameSettings,
-  GameStartPositionType,
   JishogiRule,
   validateGameSettings,
   validateGameSettingsForWeb,
 } from "@/common/settings/game";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
@@ -245,33 +280,21 @@ import { useBusyState } from "@/renderer/store/busy";
 const store = useStore();
 const busyState = useBusyState();
 const dialog = ref();
-const hours = ref();
-const minutes = ref();
-const byoyomi = ref();
-const increment = ref();
-const enableEngineTimeout = ref(false);
-const whiteHours = ref();
-const whiteMinutes = ref();
-const whiteByoyomi = ref();
-const whiteIncrement = ref();
+const hours = ref(0);
+const minutes = ref(0);
+const byoyomi = ref(0);
+const increment = ref(0);
+const whiteHours = ref(0);
+const whiteMinutes = ref(0);
+const whiteByoyomi = ref(0);
+const whiteIncrement = ref(0);
 const setDifferentTime = ref(false);
-const startPosition = ref<GameStartPositionType>(InitialPositionType.STANDARD);
-const startPositionListFile = ref();
 const startPositionListShuffle = ref(false);
-const maxMoves = ref();
-const repeat = ref();
-const jishogiRule = ref();
-const swapPlayers = ref(false);
-const enableComment = ref(false);
-const enableAutoSave = ref(false);
-const humanIsFront = ref(false);
 const gameSettings = ref(defaultGameSettings());
 const engines = ref(new USIEngines());
 const blackPlayerURI = ref("");
 const whitePlayerURI = ref("");
 
-let defaultValueLoaded = false;
-let defaultValueApplied = false;
 busyState.retain();
 
 onMounted(async () => {
@@ -280,9 +303,19 @@ onMounted(async () => {
     engines.value = await api.loadUSIEngines();
     blackPlayerURI.value = gameSettings.value.black.uri;
     whitePlayerURI.value = gameSettings.value.white.uri;
+    hours.value = Math.floor(gameSettings.value.timeLimit.timeSeconds / 3600);
+    minutes.value = Math.floor(gameSettings.value.timeLimit.timeSeconds / 60) % 60;
+    byoyomi.value = gameSettings.value.timeLimit.byoyomi;
+    increment.value = gameSettings.value.timeLimit.increment;
+    const whiteTimeLimit = gameSettings.value.whiteTimeLimit || gameSettings.value.timeLimit;
+    whiteHours.value = Math.floor(whiteTimeLimit.timeSeconds / 3600);
+    whiteMinutes.value = Math.floor(whiteTimeLimit.timeSeconds / 60) % 60;
+    whiteByoyomi.value = whiteTimeLimit.byoyomi;
+    whiteIncrement.value = whiteTimeLimit.increment;
+    setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
+    startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
     showModalDialog(dialog.value, onCancel);
     installHotKeyForDialog(dialog.value);
-    defaultValueLoaded = true;
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -293,34 +326,6 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
-});
-
-onUpdated(() => {
-  if (!defaultValueLoaded || defaultValueApplied) {
-    return;
-  }
-  hours.value.value = Math.floor(gameSettings.value.timeLimit.timeSeconds / 3600);
-  minutes.value.value = Math.floor(gameSettings.value.timeLimit.timeSeconds / 60) % 60;
-  byoyomi.value.value = gameSettings.value.timeLimit.byoyomi;
-  increment.value.value = gameSettings.value.timeLimit.increment;
-  enableEngineTimeout.value = gameSettings.value.enableEngineTimeout;
-  const whiteTimeLimit = gameSettings.value.whiteTimeLimit || gameSettings.value.timeLimit;
-  whiteHours.value.value = Math.floor(whiteTimeLimit.timeSeconds / 3600);
-  whiteMinutes.value.value = Math.floor(whiteTimeLimit.timeSeconds / 60) % 60;
-  whiteByoyomi.value.value = whiteTimeLimit.byoyomi;
-  whiteIncrement.value.value = whiteTimeLimit.increment;
-  setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
-  startPosition.value = gameSettings.value.startPosition;
-  startPositionListFile.value.value = gameSettings.value.startPositionListFile;
-  startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
-  maxMoves.value.value = gameSettings.value.maxMoves;
-  repeat.value.value = gameSettings.value.repeat;
-  jishogiRule.value.value = gameSettings.value.jishogiRule;
-  swapPlayers.value = gameSettings.value.swapPlayers;
-  enableComment.value = gameSettings.value.enableComment;
-  enableAutoSave.value = gameSettings.value.enableAutoSave;
-  humanIsFront.value = gameSettings.value.humanIsFront;
-  defaultValueApplied = true;
 });
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {
@@ -339,41 +344,33 @@ const buildPlayerSettings = (playerURI: string): PlayerSettings => {
 };
 
 const onStart = () => {
-  const gameSettings: GameSettings = {
+  const newSettings: GameSettings = {
+    ...gameSettings.value,
     black: buildPlayerSettings(blackPlayerURI.value),
     white: buildPlayerSettings(whitePlayerURI.value),
     timeLimit: {
-      timeSeconds: (readInputAsNumber(hours.value) * 60 + readInputAsNumber(minutes.value)) * 60,
-      byoyomi: readInputAsNumber(byoyomi.value),
-      increment: readInputAsNumber(increment.value),
+      timeSeconds: (hours.value * 60 + minutes.value) * 60,
+      byoyomi: byoyomi.value,
+      increment: increment.value,
     },
-    enableEngineTimeout: enableEngineTimeout.value,
-    startPosition: startPosition.value,
-    startPositionListFile: startPositionListFile.value.value,
     startPositionListOrder: startPositionListShuffle.value ? "shuffle" : "sequential",
-    maxMoves: readInputAsNumber(maxMoves.value),
-    repeat: readInputAsNumber(repeat.value),
-    jishogiRule: jishogiRule.value.value,
-    swapPlayers: swapPlayers.value,
-    enableComment: enableComment.value,
-    enableAutoSave: enableAutoSave.value,
-    humanIsFront: humanIsFront.value,
   };
   if (setDifferentTime.value) {
-    gameSettings.whiteTimeLimit = {
-      timeSeconds:
-        (readInputAsNumber(whiteHours.value) * 60 + readInputAsNumber(whiteMinutes.value)) * 60,
-      byoyomi: readInputAsNumber(whiteByoyomi.value),
-      increment: readInputAsNumber(whiteIncrement.value),
+    newSettings.whiteTimeLimit = {
+      timeSeconds: (whiteHours.value * 60 + whiteMinutes.value) * 60,
+      byoyomi: whiteByoyomi.value,
+      increment: whiteIncrement.value,
     };
+  } else {
+    delete newSettings.whiteTimeLimit;
   }
   const error = isNative()
-    ? validateGameSettings(gameSettings)
-    : validateGameSettingsForWeb(gameSettings);
+    ? validateGameSettings(newSettings)
+    : validateGameSettingsForWeb(newSettings);
   if (error) {
     useErrorStore().add(error);
   } else {
-    store.startGame(gameSettings);
+    store.startGame(newSettings);
   }
 };
 
@@ -388,28 +385,19 @@ const onUpdatePlayerSettings = (val: USIEngines) => {
 const onSwapColor = () => {
   [blackPlayerURI.value, whitePlayerURI.value] = [whitePlayerURI.value, blackPlayerURI.value];
   if (setDifferentTime.value) {
-    [hours.value.value, whiteHours.value.value] = [whiteHours.value.value, hours.value.value];
-    [minutes.value.value, whiteMinutes.value.value] = [
-      whiteMinutes.value.value,
-      minutes.value.value,
-    ];
-    [byoyomi.value.value, whiteByoyomi.value.value] = [
-      whiteByoyomi.value.value,
-      byoyomi.value.value,
-    ];
-    [increment.value.value, whiteIncrement.value.value] = [
-      whiteIncrement.value.value,
-      increment.value.value,
-    ];
+    [hours.value, whiteHours.value] = [whiteHours.value, hours.value];
+    [minutes.value, whiteMinutes.value] = [whiteMinutes.value, minutes.value];
+    [byoyomi.value, whiteByoyomi.value] = [whiteByoyomi.value, byoyomi.value];
+    [increment.value, whiteIncrement.value] = [whiteIncrement.value, increment.value];
   }
 };
 
 const onSelectStartPositionListFile = async () => {
   useBusyState().retain();
   try {
-    const sfenPath = await api.showSelectSFENDialog(startPositionListFile.value.value);
+    const sfenPath = await api.showSelectSFENDialog(gameSettings.value.startPositionListFile);
     if (sfenPath) {
-      startPositionListFile.value.value = sfenPath;
+      gameSettings.value.startPositionListFile = sfenPath;
     }
   } finally {
     useBusyState().release();
