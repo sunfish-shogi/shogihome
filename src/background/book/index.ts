@@ -231,20 +231,22 @@ export function updateBookMove(sfen: string, move: BookMove): void {
       book.entryCount++;
     }
   } else {
-    if (move.score === undefined || move.count === undefined) {
-      throw new Error("Apery book does not allow to omit score or count"); // FIXME: i18n
-    }
-    if (move.usi2 || move.depth !== undefined || move.comment) {
-      throw new Error("Apery book does not support opponent-move, depth, or comment"); // FIXME: i18n
-    }
+    const sanitizedMove = {
+      score: 0, // required for Apery book
+      count: 0, // required for Apery book
+      ...move,
+      comment: "", // not supported
+    };
+    delete sanitizedMove.usi2; // not supported
+    delete sanitizedMove.depth; // not supported
     const hash = aperyHash(sfen);
     const entry = book.aperyEntries.get(hash);
     if (entry) {
-      updateBookEntry(entry, move);
+      updateBookEntry(entry, sanitizedMove);
     } else {
       book.aperyEntries.set(hash, {
         comment: "",
-        moves: [commonBookMoveToArray(move)],
+        moves: [commonBookMoveToArray(sanitizedMove)],
         minPly: 0,
       });
       book.entryCount++;

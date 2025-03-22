@@ -237,23 +237,10 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     it("apery", async () => {
       await openBook("src/tests/testdata/book/apery.bin");
       const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
-      try {
-        updateBookMove(sfen, {
-          usi: "2f2e",
-          usi2: "8d8e",
-          score: 42,
-          depth: 20,
-          count: 123,
-          comment: "yokofu",
-        });
-        throw "should not reach here";
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-      }
-      expect(await searchBookMoves(sfen)).toHaveLength(0);
       updateBookMove(sfen, {
         usi: "2f2e",
         score: 42,
+        depth: 20,
         count: 123,
         comment: "",
       });
