@@ -282,10 +282,16 @@ export async function importBookMoves(
         if (!settings.playerName) {
           throw new Error("player name is not set");
         }
-        if (blackPlayerName?.indexOf(settings.playerName.toLowerCase()) === -1) {
+        if (
+          !blackPlayerName ||
+          blackPlayerName?.indexOf(settings.playerName.toLowerCase()) === -1
+        ) {
           targetColorSet[Color.BLACK] = false;
         }
-        if (whitePlayerName?.indexOf(settings.playerName.toLowerCase()) === -1) {
+        if (
+          !whitePlayerName ||
+          whitePlayerName?.indexOf(settings.playerName.toLowerCase()) === -1
+        ) {
           targetColorSet[Color.WHITE] = false;
         }
         break;
