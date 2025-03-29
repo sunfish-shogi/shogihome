@@ -313,6 +313,7 @@ export type Texts = {
   byoyomi: string;
   increments: string;
   startEndCriteria: string;
+  descending: string;
   endCriteria1Move: string;
   outputSettings: string;
   noOutputs: string;

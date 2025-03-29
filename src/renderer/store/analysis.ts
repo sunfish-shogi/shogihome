@@ -15,8 +15,6 @@ type ErrorCallback = (e: unknown) => void;
 export class AnalysisManager {
   private researcher?: USIPlayer;
   private settings = defaultAnalysisSettings();
-  private ply?: number;
-  private actualMove?: Move;
   private lastSearchInfo?: SearchInfo;
   private searchInfo?: SearchInfo;
   private timerHandle?: number;
@@ -49,11 +47,36 @@ export class AnalysisManager {
     }
     await this.setupEngine(settings.usi as USIEngine);
     this.settings = settings;
-    this.ply = undefined;
-    this.actualMove = undefined;
     this.lastSearchInfo = undefined;
     this.searchInfo = undefined;
-    setTimeout(() => this.next());
+    this.recordManager.changePly(this.firstPly());
+    if (this.settings.descending && !(this.recordManager.record.current.move instanceof Move)) {
+      // 降順の場合に「投了」や「中断」などの特殊な指し手はスキップする。
+      this.recordManager.goBack();
+    }
+    setTimeout(() => this.search());
+  }
+
+  private firstPly(): number {
+    if (!this.settings.descending) {
+      // 昇順の場合
+      if (this.settings.startCriteria.enableNumber) {
+        // 開始手数が指定されている場合はそれに従う。
+        return this.settings.startCriteria.number - 1;
+      } else {
+        // 開始手数が指定されていない場合は棋譜の先頭から開始する。
+        return 0;
+      }
+    } else {
+      // 降順の場合
+      if (this.settings.endCriteria.enableNumber) {
+        // 終了手数が指定されている場合はそれに従う。
+        return this.settings.endCriteria.number;
+      } else {
+        // 終了手数が指定されていない場合は棋譜の末尾から開始する。
+        return this.recordManager.record.length;
+      }
+    }
   }
 
   close(): void {
@@ -87,7 +110,42 @@ export class AnalysisManager {
     }
   }
 
-  private next(): void {
+  private searchNextPosition() {
+    // 次の局面へ移動する。
+    const lastPly = this.recordManager.record.current.ply;
+    if (!this.settings.descending) {
+      // 昇順の場合
+      this.recordManager.goForward();
+      // 終了条件を満たしている場合はここで打ち切る。
+      if (
+        this.settings.endCriteria.enableNumber &&
+        this.recordManager.record.current.ply > this.settings.endCriteria.number
+      ) {
+        this.finish();
+        return;
+      }
+    } else {
+      // 降順の場合
+      this.recordManager.goBack();
+      // 終了条件を満たしている場合はここで打ち切る。
+      if (
+        this.settings.startCriteria.enableNumber &&
+        this.recordManager.record.current.ply < this.settings.startCriteria.number - 1
+      ) {
+        this.finish();
+        return;
+      }
+    }
+    // 局面が変わっていない場合は終了する。
+    const record = this.recordManager.record;
+    if (record.current.ply === lastPly) {
+      this.finish();
+      return;
+    }
+    this.search();
+  }
+
+  private search(): void {
     // タイマーを解除する。
     this.clearTimer();
     // エンジンが初期化されていない場合は終了する。
@@ -99,37 +157,12 @@ export class AnalysisManager {
     // 探索情報をシフトする。
     this.lastSearchInfo = this.searchInfo;
     this.searchInfo = undefined;
-    // 次の手数を決定する。
-    if (this.ply !== undefined) {
-      // 2 回目以降は 1 手ずつ進める。
-      this.ply = this.ply + 1;
-    } else if (this.settings.startCriteria.enableNumber) {
-      // 開始手数が指定されている場合はそれに従う。
-      this.ply = this.settings.startCriteria.number - 1;
-    } else {
-      // 開始手数が指定されていない場合は棋譜の先頭から開始する。
-      this.ply = 0;
-    }
-    // 終了条件を満たしている場合はここで打ち切る。
-    if (this.settings.endCriteria.enableNumber && this.ply >= this.settings.endCriteria.number) {
-      this.finish();
-      return;
-    }
-    // 対象の局面へ移動する。
-    this.recordManager.changePly(this.ply);
-    // 対象の局面が存在しない場合は終了する。
-    const record = this.recordManager.record;
-    if (record.current.ply !== this.ply) {
-      this.finish();
-      return;
-    }
     // 最終局面の場合は終了する。
+    const record = this.recordManager.record;
     if (!record.current.next && !(record.current.move instanceof Move)) {
       this.finish();
       return;
     }
-    // 最後に指した手を取得する。
-    this.actualMove = record.current.move instanceof Move ? record.current.move : undefined;
     // タイマーをセットする。
     this.setTimer();
     // 探索を開始する。
@@ -148,7 +181,7 @@ export class AnalysisManager {
   private setTimer(): void {
     this.timerHandle = window.setTimeout(() => {
       this.onResult();
-      this.next();
+      this.searchNextPosition();
     }, this.settings.perMoveCriteria.maxSeconds * 1e3);
   }
 
@@ -163,22 +196,27 @@ export class AnalysisManager {
     if (!this.searchInfo || !this.lastSearchInfo) {
       return;
     }
-    const record = this.recordManager.record;
-    const color = reverseColor(record.position.color);
+    const searchInfo1 = this.settings.descending ? this.searchInfo : this.lastSearchInfo;
+    const searchInfo2 = this.settings.descending ? this.lastSearchInfo : this.searchInfo;
+    // 逆順の場合は 1 手後の局面に結果を書き込む
+    const orgPly = this.recordManager.record.current.ply;
+    if (this.settings.descending) {
+      this.recordManager.changePly(orgPly + 1);
+    }
+    // 直前の指し手の結果を出すので、次の手番に対して反転した値を使用する。
+    const color = reverseColor(this.recordManager.record.position.color);
     const sign = color === Color.BLACK ? 1 : -1;
     // 手番側から見た評価値
-    const negaScore =
-      this.searchInfo.score !== undefined ? this.searchInfo.score * sign : undefined;
+    const negaScore = searchInfo2.score !== undefined ? searchInfo2.score * sign : undefined;
     // 1 手前の局面からの評価値の変動
     const scoreDelta =
-      this.searchInfo.score !== undefined && this.lastSearchInfo.score !== undefined
-        ? (this.searchInfo.score - this.lastSearchInfo.score) * sign
+      searchInfo2.score !== undefined && searchInfo1.score !== undefined
+        ? (searchInfo2.score - searchInfo1.score) * sign
         : undefined;
     // エンジンが示す最善手と一致しているかどうか
+    const actualMove = this.recordManager.record.current.move;
     const isBestMove =
-      this.actualMove && this.lastSearchInfo.pv
-        ? this.actualMove.equals(this.lastSearchInfo.pv[0])
-        : undefined;
+      actualMove instanceof Move && searchInfo1.pv ? actualMove.equals(searchInfo1.pv[0]) : false;
     // コメントの先頭に付与するヘッダーを作成する。
     const appSettings = useAppSettings();
     let header = "";
@@ -192,13 +230,17 @@ export class AnalysisManager {
     this.recordManager.appendSearchComment(
       SearchInfoSenderType.RESEARCHER,
       appSettings.searchCommentFormat,
-      this.searchInfo,
+      searchInfo2,
       this.settings.commentBehavior,
       {
         header,
         engineName: this.settings.usi?.name,
       },
     );
+    // 逆順の場合は元の局面に戻す。
+    if (this.settings.descending) {
+      this.recordManager.changePly(orgPly);
+    }
   }
 
   updateSearchInfo(info: SearchInfo): void {

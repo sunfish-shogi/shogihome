@@ -7,13 +7,13 @@ export function getSituationText(score: number): string {
     return "先手有利";
   } else if (score >= 200) {
     return "先手有望";
-  } else if (score >= -200) {
+  } else if (score > -200) {
     return "互角";
-  } else if (score >= -400) {
+  } else if (score > -400) {
     return "後手有望";
-  } else if (score >= -600) {
+  } else if (score > -600) {
     return "後手有利";
-  } else if (score >= -1500) {
+  } else if (score > -1500) {
     return "後手優勢";
   } else {
     return "後手勝勢";

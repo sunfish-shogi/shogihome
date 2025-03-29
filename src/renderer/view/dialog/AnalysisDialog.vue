@@ -16,37 +16,46 @@
       <div class="form-group">
         <div>{{ t.startEndCriteria }}</div>
         <div class="form-item">
-          <ToggleButton v-model:value="enableStartNumber" />
+          <ToggleButton v-model:value="settings.startCriteria.enableNumber" />
           <div class="form-item-small-label">{{ t.fromPrefix }}{{ t.plyPrefix }}</div>
           <input
-            ref="startNumber"
+            v-model.number="settings.startCriteria.number"
             class="small"
             type="number"
             min="1"
             step="1"
-            :disabled="!enableStartNumber"
+            :disabled="!settings.startCriteria.enableNumber"
           />
           <div class="form-item-small-label">{{ t.plySuffix }}{{ t.fromSuffix }}</div>
         </div>
         <div class="form-item">
-          <ToggleButton v-model:value="enableEndNumber" />
+          <ToggleButton v-model:value="settings.endCriteria.enableNumber" />
           <div class="form-item-small-label">{{ t.toPrefix }}{{ t.plyPrefix }}</div>
           <input
-            ref="endNumber"
+            v-model.number="settings.endCriteria.number"
             class="small"
             type="number"
             min="1"
             step="1"
-            :disabled="!enableEndNumber"
+            :disabled="!settings.endCriteria.enableNumber"
           />
           <div class="form-item-small-label">{{ t.plySuffix }}{{ t.toSuffix }}</div>
+        </div>
+        <div class="form-item">
+          <ToggleButton v-model:value="settings.descending" :label="t.descending" />
         </div>
       </div>
       <div class="form-group">
         <div>{{ t.endCriteria1Move }}</div>
         <div class="form-item">
           <div class="form-item-small-label">{{ t.toPrefix }}</div>
-          <input ref="maxSecondsPerMove" class="small" type="number" min="0" step="1" />
+          <input
+            v-model.number="settings.perMoveCriteria.maxSeconds"
+            class="small"
+            type="number"
+            min="0"
+            step="1"
+          />
           <div class="form-item-small-label">{{ t.secondsSuffix }}{{ t.toSuffix }}</div>
         </div>
       </div>
@@ -55,7 +64,7 @@
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.moveComments }}</div>
           <HorizontalSelector
-            v-model:value="commentBehavior"
+            v-model:value="settings.commentBehavior"
             class="selector"
             :items="[
               { value: CommentBehavior.NONE, label: t.noOutputs },
@@ -81,9 +90,8 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import api from "@/renderer/ipc/api";
-import { AnalysisSettings } from "@/common/settings/analysis";
+import { defaultAnalysisSettings, validateAnalysisSettings } from "@/common/settings/analysis";
 import { CommentBehavior } from "@/common/settings/comment";
 import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
@@ -98,12 +106,7 @@ import { useBusyState } from "@/renderer/store/busy";
 const store = useStore();
 const busyState = useBusyState();
 const dialog = ref();
-const enableStartNumber = ref(false);
-const startNumber = ref();
-const enableEndNumber = ref(false);
-const endNumber = ref();
-const maxSecondsPerMove = ref();
-const commentBehavior = ref(CommentBehavior.NONE);
+const settings = ref(defaultAnalysisSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
 
@@ -113,15 +116,9 @@ onMounted(async () => {
   showModalDialog(dialog.value, onCancel);
   installHotKeyForDialog(dialog.value);
   try {
-    const analysisSettings = await api.loadAnalysisSettings();
+    settings.value = await api.loadAnalysisSettings();
     engines.value = await api.loadUSIEngines();
-    engineURI.value = analysisSettings.usi?.uri || "";
-    enableStartNumber.value = analysisSettings.startCriteria.enableNumber;
-    startNumber.value.value = analysisSettings.startCriteria.number;
-    enableEndNumber.value = analysisSettings.endCriteria.enableNumber;
-    endNumber.value.value = analysisSettings.endCriteria.number;
-    maxSecondsPerMove.value.value = analysisSettings.perMoveCriteria.maxSeconds;
-    commentBehavior.value = analysisSettings.commentBehavior;
+    engineURI.value = settings.value.usi?.uri || "";
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -140,22 +137,16 @@ const onStart = () => {
     return;
   }
   const engine = engines.value.getEngine(engineURI.value);
-  const analysisSettings: AnalysisSettings = {
+  const newSettings = {
+    ...settings.value,
     usi: engine,
-    startCriteria: {
-      enableNumber: enableStartNumber.value,
-      number: readInputAsNumber(startNumber.value),
-    },
-    endCriteria: {
-      enableNumber: enableEndNumber.value,
-      number: readInputAsNumber(endNumber.value),
-    },
-    perMoveCriteria: {
-      maxSeconds: readInputAsNumber(maxSecondsPerMove.value),
-    },
-    commentBehavior: commentBehavior.value,
   };
-  store.startAnalysis(analysisSettings);
+  const error = validateAnalysisSettings(newSettings);
+  if (error) {
+    useErrorStore().add(error);
+    return;
+  }
+  store.startAnalysis(newSettings);
 };
 
 const onCancel = () => {

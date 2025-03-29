@@ -315,6 +315,7 @@ export const zh_tw: Texts = {
   byoyomi: "讀秒",
   increments: "增秒",
   startEndCriteria: "開始・結束條件",
+  descending: "逆順", // TODO: Translate
   endCriteria1Move: "局面結束條件",
   outputSettings: "輸出設定",
   noOutputs: "不輸出",

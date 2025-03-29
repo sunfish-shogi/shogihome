@@ -318,6 +318,7 @@ export const ja: Texts = {
   byoyomi: "秒読み",
   increments: "増加",
   startEndCriteria: "開始・終了条件",
+  descending: "逆順",
   endCriteria1Move: "局面ごとの終了条件",
   outputSettings: "出力設定",
   noOutputs: "出力しない",

@@ -318,6 +318,7 @@ export const en: Texts = {
   byoyomi: "Byoyomi",
   increments: "Increments",
   startEndCriteria: "Start/End Criteria",
+  descending: "Descending",
   endCriteria1Move: "End Criteria for 1 Move",
   outputSettings: "Output Settings",
   noOutputs: "No Outputs",

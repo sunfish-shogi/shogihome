@@ -26,5 +26,6 @@ export const analysisSettings: AnalysisSettings = {
   perMoveCriteria: {
     maxSeconds: 1,
   },
+  descending: false,
   commentBehavior: CommentBehavior.APPEND,
 };

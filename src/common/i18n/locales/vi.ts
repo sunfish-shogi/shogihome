@@ -318,6 +318,7 @@ export const vi: Texts = {
   byoyomi: "Byoyomi",
   increments: "Cộng thời gian",
   startEndCriteria: "Điều kiện bắt đầu/kết thúc",
+  descending: "逆順", // TODO: Translate
   endCriteria1Move: "Điều kiện kết thúc cho mỗi nước đi",
   outputSettings: "Tùy chọn xuất",
   noOutputs: "Không xuất",
