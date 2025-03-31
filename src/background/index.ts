@@ -51,6 +51,7 @@ contextMenu({
   },
 });
 
+app.disableHardwareAcceleration();
 app.enableSandbox();
 
 app.once("will-finish-launching", () => {
@@ -140,6 +141,11 @@ const dockMenu = Menu.buildFromTemplate([
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
+  app.getGPUInfo("complete").then((gpuInfo) => {
+    getAppLogger().info("GPU_FEATURE_STATUS: %s", JSON.stringify(app.getGPUFeatureStatus()));
+    getAppLogger().info("GPU_INFO: %s", JSON.stringify(gpuInfo));
+  });
+
   if (isDevelopment()) {
     getAppLogger().info("install Vue3 Dev Tools");
     // Install Vue DevTools
