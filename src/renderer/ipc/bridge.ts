@@ -13,6 +13,7 @@ export interface Bridge {
   onClosable(): void;
   onClose(callback: (confirmations: string[]) => void): void;
   onSendError(callback: (e: string) => void): void;
+  onSendMessage(callback: (json: string) => void): void;
   onMenuEvent(callback: (event: MenuEvent) => void): void;
 
   // Settings

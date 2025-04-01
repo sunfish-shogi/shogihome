@@ -29,6 +29,7 @@ import { LogLevel } from "@/common/log";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import { useMessageStore } from "@/renderer/store/message";
 
 export function setup(): void {
   const store = useStore();
@@ -66,6 +67,9 @@ export function setup(): void {
   });
   bridge.onSendError((e: string) => {
     useErrorStore().add(e);
+  });
+  bridge.onSendMessage((json: string) => {
+    useMessageStore().enqueue(JSON.parse(json));
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bridge.onMenuEvent((event: MenuEvent, ...args: any[]) => {

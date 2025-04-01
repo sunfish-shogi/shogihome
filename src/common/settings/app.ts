@@ -236,6 +236,9 @@ export type AppSettings = {
 
   // Record Info View
   emptyRecordInfoVisibility: boolean;
+
+  // Low Level
+  enableHardwareAcceleration: boolean;
 };
 
 export function isLogEnabled(type: LogType, appSettings: AppSettings): boolean {
@@ -366,6 +369,7 @@ export function defaultAppSettings(opt?: {
     lastImageExportFilePath: "",
     lastOtherFilePath: "",
     emptyRecordInfoVisibility: true,
+    enableHardwareAcceleration: true,
   };
 }
 

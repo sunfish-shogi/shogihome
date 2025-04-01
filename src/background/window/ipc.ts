@@ -109,6 +109,7 @@ import {
   updateBookMoveOrder,
 } from "@/background/book";
 import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
+import { Message } from "@/common/message";
 
 const isWindows = process.platform === "win32";
 
@@ -946,6 +947,10 @@ export function sendError(e: Error): void {
     return;
   }
   mainWindow.webContents.send(Renderer.SEND_ERROR, e.message || e.name);
+}
+
+export function sendMessage(message: Message): void {
+  mainWindow.webContents.send(Renderer.SEND_MESSAGE, JSON.stringify(message));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

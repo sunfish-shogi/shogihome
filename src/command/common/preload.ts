@@ -65,6 +65,9 @@ export function preload(config: Config) {
     onSendError(): void {
       // Do Nothing
     },
+    onSendMessage(): void {
+      // Do Nothing
+    },
     onMenuEvent(): void {
       // Do Nothing
     },

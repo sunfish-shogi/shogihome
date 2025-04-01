@@ -28,6 +28,11 @@ const api: Bridge = {
       callback(e);
     });
   },
+  onSendMessage(callback: (json: string) => void): void {
+    ipcRenderer.on(Renderer.SEND_MESSAGE, (_, json) => {
+      callback(json);
+    });
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onMenuEvent(callback: (event: MenuEvent, ...args: any[]) => void): void {
     ipcRenderer.on(Renderer.MENU_EVENT, (_, event, ...args) => callback(event, ...args));

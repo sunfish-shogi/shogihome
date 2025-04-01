@@ -38,7 +38,7 @@ import { generateRecordFileName, join } from "@/renderer/helpers/path";
 import { ResearchSettings } from "@/common/settings/research";
 import { USIPlayerMonitor, USIMonitor } from "./usi";
 import { AppState, ResearchState } from "@/common/control/state";
-import { Attachment, ListItem, useMessageStore } from "./message";
+import { useMessageStore } from "./message";
 import * as uri from "@/common/uri";
 import { AnalysisManager } from "./analysis";
 import { AnalysisSettings } from "@/common/settings/analysis";
@@ -63,6 +63,7 @@ import { Confirmation, useConfirmationStore } from "./confirm";
 import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp";
 import { CommentBehavior } from "@/common/settings/comment";
+import { Attachment, ListItem } from "@/common/message";
 
 export type PVPreview = {
   position: ImmutablePosition;

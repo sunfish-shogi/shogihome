@@ -669,6 +669,19 @@
               ]"
             />
           </div>
+          <div v-if="isNative()" class="form-group warning">
+            <div class="note">
+              {{ t.shouldRestartToApplyLowLevelSettings }}
+            </div>
+          </div>
+          <!-- ハードウェアアクセラレーション無効化 -->
+          <div v-if="isNative()" class="form-item">
+            <div class="form-item-label-wide">Enable HWA</div>
+            <ToggleButton v-model:value="update.enableHardwareAcceleration" />
+            <button class="thin auxiliary" @click="aboutDisableHWASetting">
+              <Icon :icon="IconType.HELP" />
+            </button>
+          </div>
         </div>
       </div>
       <div class="main-buttons">
@@ -715,7 +728,11 @@ import { RecordFileFormat } from "@/common/file/record";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { VersionStatus } from "@/common/version";
-import { fileNameTemplateWikiPageURL, maxPVLengthSettingWikiPageURL } from "@/common/links/github";
+import {
+  disableHWASettingWikiPageURL,
+  fileNameTemplateWikiPageURL,
+  maxPVLengthSettingWikiPageURL,
+} from "@/common/links/github";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { BoardLayoutType } from "@/common/settings/layout";
@@ -776,6 +793,7 @@ const update = ref({
   enableUSILog: org.enableUSILog,
   enableCSALog: org.enableCSALog,
   logLevel: org.logLevel,
+  enableHardwareAcceleration: org.enableHardwareAcceleration,
 });
 const autoSaveDirectory = ref();
 const dialog = ref();
@@ -855,6 +873,10 @@ const howToWriteFileNameTemplate = () => {
 
 const whatIsMaxPVLengthSetting = () => {
   api.openWebBrowser(maxPVLengthSettingWikiPageURL);
+};
+
+const aboutDisableHWASetting = () => {
+  api.openWebBrowser(disableHWASettingWikiPageURL);
 };
 
 const sendTestNotification = () => {

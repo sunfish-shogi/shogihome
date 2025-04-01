@@ -535,6 +535,7 @@ export const ja: Texts = {
   canOpenLogDirectoryFromMenu:
     "※ログの出力先は「デバッグ」-「ログファイルの場所を開く」で開きます。",
   hasNoOldLogCleanUpFeature: "※現在、古いログファイルの自動削除機能はありません。",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。",
   processingPleaseWait: "処理中です。お待ちください。",
   importingFollowingRecordOrPosition: "以下の棋譜(または局面)を取り込みます。",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN:

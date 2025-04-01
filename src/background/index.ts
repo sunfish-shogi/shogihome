@@ -51,6 +51,9 @@ contextMenu({
   },
 });
 
+if (!appSettings.enableHardwareAcceleration) {
+  app.disableHardwareAcceleration();
+}
 app.enableSandbox();
 
 app.once("will-finish-launching", () => {

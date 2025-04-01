@@ -531,6 +531,7 @@ export const zh_tw: Texts = {
   shouldRestartToApplyLogSettings: "※您需要重新啟動本程式以使用變更後的紀錄設定。",
   canOpenLogDirectoryFromMenu: "※紀錄的輸出檔案可以在「偵錯」-「開啟紀錄檔案資料夾」開啟。",
   hasNoOldLogCleanUpFeature: "※現在並沒有舊紀錄的自動刪除機制。",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
   processingPleaseWait: "現在處理中。請稍待一會。",
   importingFollowingRecordOrPosition: "將匯入以下棋譜（局面）。",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "※支援KIF/KI2/CSA/USI/SFEN/JKF/USEN形式。",

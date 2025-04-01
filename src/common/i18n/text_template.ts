@@ -528,6 +528,7 @@ export type Texts = {
   shouldRestartToApplyLogSettings: string;
   canOpenLogDirectoryFromMenu: string;
   hasNoOldLogCleanUpFeature: string;
+  shouldRestartToApplyLowLevelSettings: string;
   processingPleaseWait: string;
   importingFollowingRecordOrPosition: string;
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: string;

@@ -270,6 +270,9 @@ class AppSettingsStore {
   get emptyRecordInfoVisibility(): boolean {
     return this.merged.emptyRecordInfoVisibility;
   }
+  get enableHardwareAcceleration(): boolean {
+    return this.merged.enableHardwareAcceleration;
+  }
 
   async loadAppSettings(): Promise<void> {
     this.settings = await api.loadAppSettings();

@@ -535,6 +535,7 @@ export const vi: Texts = {
   canOpenLogDirectoryFromMenu:
     '*Bạn có thể mở đường dẫn log qua menu "Gỡ lỗi" - "Mở đường dẫn log".',
   hasNoOldLogCleanUpFeature: "*Ứng dụng này không có tính năng dọn dẹp. Vui lòng tự xóa log cũ.",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
   processingPleaseWait: "Đang tải, vui lòng chờ.",
   importingFollowingRecordOrPosition: "Đang nhập kỳ phổ (hoặc thế cờ) dưới đây.",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Hỗ trợ KIF, KI2, CSA, USI, SFEN, JKF, và USEN.",

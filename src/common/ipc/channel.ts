@@ -89,6 +89,7 @@ export enum Background {
 export enum Renderer {
   CLOSE = "close",
   SEND_ERROR = "sendError",
+  SEND_MESSAGE = "sendMessage",
   MENU_EVENT = "menuEvent",
   UPDATE_APP_SETTINGS = "updateAppSettings",
   OPEN_RECORD = "openRecord",

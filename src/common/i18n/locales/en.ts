@@ -535,6 +535,7 @@ export const en: Texts = {
   canOpenLogDirectoryFromMenu:
     '*You can open log directory from "Debug" - "Open Log Directory" menu.',
   hasNoOldLogCleanUpFeature: "*This app has no clean-up feature. Please remove old logs manually.",
+  shouldRestartToApplyLowLevelSettings: "*You should restart this app to apply low-level settings.",
   processingPleaseWait: "Processing, please wait.",
   importingFollowingRecordOrPosition: "Importing the following record(or position).",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Supports KIF, KI2, CSA, USI, SFEN, JKF, and USEN.",
