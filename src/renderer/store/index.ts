@@ -743,11 +743,11 @@ class Store {
 
   private onSaveRecord(): void {
     const appSettings = useAppSettings();
-    const fname = generateRecordFileName(
-      this.recordManager.record.metadata,
-      appSettings.recordFileNameTemplate,
-      appSettings.defaultRecordFileFormat,
-    );
+    const fname = generateRecordFileName(this.recordManager.record.metadata, {
+      ply: this.recordManager.record.length,
+      template: appSettings.recordFileNameTemplate,
+      extension: appSettings.defaultRecordFileFormat,
+    });
     const path = join(appSettings.autoSaveDirectory, fname);
     this.saveRecordByPath(path).catch((e) => {
       useErrorStore().add(e);
@@ -1233,11 +1233,11 @@ class Store {
         const appSettings = useAppSettings();
         const defaultPath =
           (!options?.format && path) ||
-          generateRecordFileName(
-            this.recordManager.record.metadata,
-            appSettings.recordFileNameTemplate,
-            options?.format || appSettings.defaultRecordFileFormat,
-          );
+          generateRecordFileName(this.recordManager.record.metadata, {
+            ply: this.recordManager.record.length,
+            template: appSettings.recordFileNameTemplate,
+            extension: options?.format || appSettings.defaultRecordFileFormat,
+          });
         return api.showSaveRecordDialog(defaultPath);
       })
       .then((path) => {

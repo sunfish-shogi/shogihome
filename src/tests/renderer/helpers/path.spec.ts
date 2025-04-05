@@ -87,10 +87,13 @@ describe("helpers/path", () => {
     meta.setStandardMetadata(RecordMetadataKey.BLACK_NAME, "先手の人");
     meta.setStandardMetadata(RecordMetadataKey.WHITE_NAME, "後手の人");
     expect(
-      generateRecordFileName(meta, "棋譜-{datetime}{_title}{_sente}{_gote}-{hex5}", ".csa"),
+      generateRecordFileName(meta, {
+        template: "棋譜-{datetime}{_title}{_sente}{_gote}-{hex5}",
+        extension: ".csa",
+      }),
     ).toMatch(/^棋譜-20220101_My New Game_先手の人_後手の人-[0-9A-F]{5}\.csa$/);
-    expect(generateRecordFileName(meta, "{title_}{sente_}{gote_}{hex5}", "jkf")).toMatch(
-      /^My New Game_先手の人_後手の人_[0-9A-F]{5}\.jkf$/,
-    );
+    expect(
+      generateRecordFileName(meta, { template: "{title_}{sente_}{gote_}{hex5}", extension: "jkf" }),
+    ).toMatch(/^My New Game_先手の人_後手の人_[0-9A-F]{5}\.jkf$/);
   });
 });

@@ -36,6 +36,18 @@
           <div v-if="entry.class === HistoryClass.USER" class="file-path">
             {{ entry.userFilePath }}
           </div>
+          <div
+            v-if="
+              entry.class === HistoryClass.BACKUP_V2 &&
+              (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
+            "
+            class="file-path"
+          >
+            <span v-if="entry.title">{{ entry.title }} / </span>
+            <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
+            <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
+            <span>{{ entry.ply || 0 }}手</span>
+          </div>
         </div>
       </div>
       <div class="main-buttons">
