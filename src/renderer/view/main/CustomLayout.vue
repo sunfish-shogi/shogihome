@@ -4,7 +4,7 @@
       v-for="c in components"
       :key="`${c.type}.${c.index}`"
       class="component"
-      :style="{ ...c.rect.style, zIndex: 1e5 - c.index }"
+      :style="{ ...c.rect.style, ...c.style, zIndex: 1e5 - c.index }"
     >
       <BoardPane
         v-if="c.type === 'Board'"
@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { LayoutProfile, BoardLayoutType } from "@/common/settings/layout";
+import { LayoutProfile, BoardLayoutType, UIComponent } from "@/common/settings/layout";
 import { computed } from "vue";
 import { Rect } from "@/common/assets/geometry";
 import { LeftSideControlType, RightSideControlType } from "@/common/settings/app";
@@ -88,12 +88,25 @@ const props = defineProps<{ profile: LayoutProfile }>();
 
 const appSettings = useAppSettings();
 
+function componentStyle(c: UIComponent) {
+  switch (c.type) {
+    case "ControlGroup1":
+    case "ControlGroup2":
+      return {
+        fontSize: `${Math.min((c.width - c.height * 0.2) * 0.2, c.height * 0.08)}px`,
+      };
+    default:
+      return {};
+  }
+}
+
 const components = computed(() => {
   return props.profile.components.map((c, i) => {
     return {
       ...c,
       index: i,
       rect: new Rect(c.left, c.top, c.width, c.height),
+      style: componentStyle(c),
     };
   });
 });

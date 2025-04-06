@@ -83,8 +83,8 @@ describe("store/game", () => {
 
   it("statistics/case1", async () => {
     const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 15 },
-      player2: { name: "Player2", win: 3 },
+      player1: { name: "Player1", win: 15, winBlack: 8, winWhite: 7 },
+      player2: { name: "Player2", win: 3, winBlack: 1, winWhite: 2 },
       draw: 2,
       invalid: 1,
       total: 21,
@@ -103,8 +103,8 @@ describe("store/game", () => {
 
   it("statistics/case2", async () => {
     const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 9 },
-      player2: { name: "Player2", win: 1 },
+      player1: { name: "Player1", win: 9, winBlack: 5, winWhite: 4 },
+      player2: { name: "Player2", win: 1, winBlack: 0, winWhite: 1 },
       draw: 2,
       invalid: 1,
       total: 13,
@@ -123,8 +123,8 @@ describe("store/game", () => {
 
   it("statistics/case3", async () => {
     const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 76 },
-      player2: { name: "Player2", win: 21 },
+      player1: { name: "Player1", win: 76, winBlack: 31, winWhite: 45 },
+      player2: { name: "Player2", win: 21, winBlack: 9, winWhite: 12 },
       draw: 2,
       invalid: 1,
       total: 100,
@@ -288,8 +288,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 1 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 1, winBlack: 1, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -410,8 +410,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 1,
           total: 1,
@@ -486,8 +486,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 02", win: 0 },
-          player2: { name: "USI Engine 01", win: 2 },
+          player1: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 01", win: 2, winBlack: 1, winWhite: 1 },
           draw: 0,
           invalid: 0,
           total: 2,
@@ -551,8 +551,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 2 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 2, winBlack: 2, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 2,
@@ -607,8 +607,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 1,
           invalid: 0,
           total: 1,
@@ -664,8 +664,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 1,
           invalid: 0,
           total: 1,
@@ -721,8 +721,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 1 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 1, winBlack: 1, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -763,8 +763,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 1 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 1, winBlack: 0, winWhite: 1 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -805,8 +805,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 1 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 1, winBlack: 0, winWhite: 1 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -846,8 +846,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 1 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 1, winBlack: 1, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -887,8 +887,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 0 },
-          player2: { name: "USI Engine 02", win: 1 },
+          player1: { name: "USI Engine 01", win: 0, winBlack: 0, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 1, winBlack: 0, winWhite: 1 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -925,8 +925,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 01", win: 1 },
-          player2: { name: "USI Engine 02", win: 0 },
+          player1: { name: "USI Engine 01", win: 1, winBlack: 1, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 1,
@@ -997,8 +997,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 02", win: 2 },
-          player2: { name: "USI Engine 01", win: 2 },
+          player1: { name: "USI Engine 02", win: 2, winBlack: 2, winWhite: 0 },
+          player2: { name: "USI Engine 01", win: 2, winBlack: 2, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 4,

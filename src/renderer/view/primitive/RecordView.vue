@@ -43,22 +43,33 @@
     <div v-else-if="showBranches" class="row branch-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
-      <div ref="branchList" class="auto branch-list">
-        <div
-          v-for="(branch, index) in branches"
-          :key="index"
-          class="row move-element"
-          :class="{ selected: branch.activeBranch }"
-          @click="changeBranch(index)"
-        >
-          <div class="move-text">{{ branch.displayText }}</div>
-          <div v-if="showComment" class="move-comment">
-            <span v-if="branch.bookmark" class="bookmark">{{ branch.bookmark }}</span>
-            {{ branch.comment }}
+      <div class="column regular-interval auto">
+        <div ref="branchList" class="auto branch-list">
+          <div
+            v-for="(branch, index) in branches"
+            :key="index"
+            class="row move-element"
+            :class="{ selected: branch.activeBranch }"
+            @click="changeBranch(index)"
+          >
+            <div class="move-text">{{ branch.displayText }}</div>
+            <div v-if="showComment" class="move-comment">
+              <span v-if="branch.bookmark" class="bookmark">{{ branch.bookmark }}</span>
+              {{ branch.comment }}
+            </div>
           </div>
         </div>
+        <div v-if="!isMainBranch">
+          <button
+            class="branch-bottom-control"
+            :disabled="!operational"
+            @click="emit('backToMainBranch')"
+          >
+            {{ backToMainBranchLabel }}
+          </button>
+        </div>
       </div>
-      <div class="column branch-list-control">
+      <div class="column branch-side-control">
         <button :disabled="!operational" @click="swapWithPreviousBranch()">
           <Icon :icon="IconType.ARROW_UP" />
         </button>
@@ -113,6 +124,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  backToMainBranchLabel: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
   subAreaToggleLabel: {
     type: String,
     required: false,
@@ -157,6 +173,7 @@ const emit = defineEmits<{
   goEnd: [];
   selectMove: [ply: number];
   selectBranch: [index: number];
+  backToMainBranch: [];
   swapWithPreviousBranch: [];
   swapWithNextBranch: [];
   toggleShowElapsedTime: [enabled: boolean];
@@ -214,6 +231,19 @@ const swapWithNextBranch = () => {
     emit("swapWithNextBranch");
   }
 };
+
+const isMainBranch = computed(() => {
+  for (
+    let node: ImmutableNode | null = props.record.first;
+    node && node.activeBranch;
+    node = node.next
+  ) {
+    if (node === props.record.current) {
+      return true;
+    }
+  }
+  return false;
+});
 
 const branches = computed(() => {
   if (!props.record.branchBegin.branch) {
@@ -306,16 +336,20 @@ onUpdated(() => {
   overflow-y: auto;
   color: var(--text-color);
 }
-.branch-list-control {
+.branch-bottom-control {
+  width: 100%;
+  padding: 2px;
+}
+.branch-side-control {
   width: 40px;
   height: 100%;
 }
-.branch-list-control button {
+.branch-side-control button {
   height: 50%;
   width: 100%;
   padding: 0;
 }
-.branch-list-control button .icon {
+.branch-side-control button .icon {
   height: 40px;
   max-height: 100%;
 }

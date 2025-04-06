@@ -108,6 +108,8 @@ export const zh_tw: Texts = {
   gameProgress: "對局過程",
   allGamesCompleted: "連續對局結束",
   wins: "勝利數目",
+  winsOnBlack: "勝ち数(先手)", // TODO: Translate
+  winsOnWhite: "勝ち数(後手)", // TODO: Translate
   draws: "平手數目",
   validGames: "有效對局數",
   invalidGames: "無效對局數",
@@ -364,6 +366,7 @@ export const zh_tw: Texts = {
   automaticBackup: "自動備份",
   restore: "復原",
   loadRecordFromWeb: "從網際網路取得棋譜",
+  backToMainBranch: "本譜に戻る", // TODO: Translate
   fetchLatestData: "取得最新資料",
   sourceURL: "來源網址",
   ok: "OK",

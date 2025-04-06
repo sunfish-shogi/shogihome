@@ -43,6 +43,8 @@ enum GameState {
 export type PlayerGameResults = {
   name: string;
   win: number;
+  winBlack: number;
+  winWhite: number;
 };
 
 export type GameResults = {
@@ -111,8 +113,8 @@ type ErrorCallback = (e: unknown) => void;
 
 function newGameResults(name1: string, name2: string): GameResults {
   return {
-    player1: { name: name1, win: 0 },
-    player2: { name: name2, win: 0 },
+    player1: { name: name1, win: 0, winBlack: 0, winWhite: 0 },
+    player2: { name: name2, win: 0, winBlack: 0, winWhite: 0 },
     draw: 0,
     invalid: 0,
     total: 0,
@@ -689,9 +691,11 @@ export class GameManager {
     switch (gameResult) {
       case GameResult.WIN:
         this._results.player1.win++;
+        this._results.player1.winBlack++;
         break;
       case GameResult.LOSE:
         this._results.player2.win++;
+        this._results.player2.winWhite++;
         break;
       case GameResult.DRAW:
         this._results.draw++;

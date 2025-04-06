@@ -22,6 +22,10 @@ export type BackupEntry = {
 
 export type BackupEntryV2 = {
   class: HistoryClass.BACKUP_V2;
+  title?: string;
+  blackPlayerName?: string;
+  whitePlayerName?: string;
+  ply?: number;
   kif: string;
 };
 

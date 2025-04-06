@@ -15,6 +15,7 @@ import {
   unpromotedPieceType,
   Position,
   ImmutableHand,
+  Record,
 } from "tsshogi";
 import { Player, SearchHandler } from "./player";
 import { TimeStates } from "@/common/game/time";
@@ -57,12 +58,18 @@ export class BasicPlayer implements Player {
     handler: SearchHandler,
   ): Promise<void> {
     this.timer = setTimeout(() => {
-      let move: Move | null;
+      let move: Move | null = null;
       if (this.uri === uri.ES_BASIC_ENGINE_RANDOM) {
         move = this.searchRandom(position);
       } else {
-        const p = position.clone();
-        move = this.search(this.uri, p, 2)[0];
+        const record = Record.newByUSI(usi);
+        if (record instanceof Record) {
+          const repCheck = (p: ImmutablePosition) => {
+            // 相手番かつ迂回経路で千日手になる可能性があるので1回でも出現してたら回避する。
+            return record.getRepetitionCount(p) >= 1;
+          };
+          move = this.search(this.uri, position.clone(), 2, repCheck)[0];
+        }
       }
       if (move === null) {
         handler.onResign();
@@ -105,7 +112,12 @@ export class BasicPlayer implements Player {
     return null;
   }
 
-  private search(playerURI: string, position: Position, depth: number): [Move, number] | [null, 0] {
+  private search(
+    playerURI: string,
+    position: Position,
+    depth: number,
+    repCheck?: (position: ImmutablePosition) => boolean,
+  ): [Move, number] | [null, 0] {
     const moves = listMoves(position);
     let bestMove: Move | null = null;
     let bestScore = -Infinity;
@@ -115,7 +127,11 @@ export class BasicPlayer implements Player {
         continue;
       }
       score -=
-        depth > 1 ? this.search(playerURI, position, depth - 1)[1] : this.see(position, move.to);
+        repCheck && repCheck(position)
+          ? 1000
+          : depth > 1
+            ? this.search(playerURI, position, depth - 1)[1]
+            : this.see(position, move.to);
       position.undoMove(move);
       score += Math.random() * 10;
       if (score > bestScore) {
@@ -126,7 +142,7 @@ export class BasicPlayer implements Player {
     return bestMove ? [bestMove, bestScore] : [null, 0];
   }
 
-  private see(position: Position, to: Square): number {
+  private see(position: ImmutablePosition, to: Square): number {
     const myPieces: PieceType[] = [];
     const enemyPieces: PieceType[] = [position.board.at(to)!.type];
     for (const from of position.listAttackers(to)) {

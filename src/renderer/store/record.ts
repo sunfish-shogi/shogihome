@@ -652,6 +652,10 @@ export class RecordManager {
     return false;
   }
 
+  resetAllBranchSelection() {
+    this._record.resetAllBranchSelection();
+  }
+
   removeCurrentMove(): boolean {
     if (this._record.removeCurrentMove()) {
       this._unsaved = true;

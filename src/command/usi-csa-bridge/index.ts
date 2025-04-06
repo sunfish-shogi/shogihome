@@ -193,13 +193,13 @@ async function main() {
   const returnCode = returnCodeName() === "CRLF" ? "\r\n" : "\n";
 
   function onSaveRecord() {
-    const fileName = generateRecordFileName(
-      recordManager.record.metadata,
-      recordFileNameTemplate() ||
+    const fileName = generateRecordFileName(recordManager.record, {
+      template:
+        recordFileNameTemplate() ||
         cliSettings.recordFileNameTemplate ||
         defaultRecordFileNameTemplate,
-      recordFileFormat() || cliSettings.recordFileFormat || RecordFileFormat.KIF,
-    );
+      extension: recordFileFormat() || cliSettings.recordFileFormat || RecordFileFormat.KIF,
+    });
     const dir = recordDir();
     const filePath = path.join(dir, fileName);
     fs.promises

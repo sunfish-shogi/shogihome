@@ -2,6 +2,7 @@ import path from "node:path";
 import { promises as fs } from "node:fs";
 import { getAppPath } from "@/background/proc/env";
 import {
+  BackupEntryV2,
   HistoryClass,
   RecordFileHistory,
   RecordFileHistoryEntry,
@@ -12,6 +13,8 @@ import AsyncLock from "async-lock";
 import { openPath } from "@/background/helpers/electron";
 import { exists } from "@/background/helpers/file";
 import { writeFileAtomic } from "./atomic";
+import { getBlackPlayerName, getWhitePlayerName, importKIF, Record } from "tsshogi";
+import { getRecordTitleFromMetadata } from "@/common/helpers/metadata";
 
 const historyMaxLength = 20;
 
@@ -104,13 +107,25 @@ export function clearHistory(): Promise<void> {
 }
 
 export function saveBackup(kif: string): Promise<void> {
+  const entry = {
+    class: HistoryClass.BACKUP_V2,
+    kif,
+  } as BackupEntryV2;
+
+  const record = importKIF(kif);
+  if (record instanceof Record) {
+    entry.title = getRecordTitleFromMetadata(record.metadata);
+    entry.blackPlayerName = getBlackPlayerName(record.metadata);
+    entry.whitePlayerName = getWhitePlayerName(record.metadata);
+    entry.ply = record.length;
+  }
+
   return lock.acquire("history", async () => {
     const history = await getHistoryWithoutLock();
     history.entries.push({
       id: issueEntryID(),
       time: new Date().toISOString(),
-      class: HistoryClass.BACKUP_V2,
-      kif,
+      ...entry,
     });
     trancate(history);
     await saveHistories(history);

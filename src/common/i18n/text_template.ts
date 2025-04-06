@@ -106,6 +106,8 @@ export type Texts = {
   gameProgress: string;
   allGamesCompleted: string;
   wins: string;
+  winsOnBlack: string;
+  winsOnWhite: string;
   draws: string;
   validGames: string;
   invalidGames: string;
@@ -362,6 +364,7 @@ export type Texts = {
   automaticBackup: string;
   restore: string;
   loadRecordFromWeb: string;
+  backToMainBranch: string;
   fetchLatestData: string;
   sourceURL: string;
   ok: string;
