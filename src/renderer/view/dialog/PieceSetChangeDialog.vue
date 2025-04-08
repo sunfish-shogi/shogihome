@@ -7,15 +7,11 @@
           <div v-for="pieceType of pieceTypes" :key="pieceType">
             <span class="piece-name">{{ standardPieceName(pieceType) }}</span>
             <input
-              :ref="(el) => (inputs[pieceType] = el as HTMLInputElement)"
+              v-model.number="counts[pieceType]"
               class="number"
               type="number"
               min="0"
               max="18"
-              :value="
-                counts[pieceType] +
-                (isPromotable(pieceType) ? counts[promotedPieceType(pieceType)] : 0)
-              "
             />
           </div>
         </div>
@@ -36,7 +32,6 @@
 import { t } from "@/common/i18n";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { showModalDialog } from "@/renderer/helpers/dialog";
-import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useStore } from "@/renderer/store";
 import { PieceSet } from "@/renderer/store/record";
 import {
@@ -50,7 +45,6 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const store = useStore();
 const dialog = ref();
-const inputs = ref({} as { [key: string]: HTMLInputElement });
 
 const pieceTypes = [
   PieceType.KING,
@@ -62,7 +56,16 @@ const pieceTypes = [
   PieceType.LANCE,
   PieceType.PAWN,
 ];
-const counts = countExistingPieces(store.record.position);
+const rawCounts = countExistingPieces(store.record.position);
+const counts = ref(
+  Object.fromEntries(
+    pieceTypes.map((pieceType) => [
+      pieceType,
+      rawCounts[pieceType] +
+        (isPromotable(pieceType) ? rawCounts[promotedPieceType(pieceType)] : 0),
+    ]),
+  ),
+);
 
 onMounted(() => {
   showModalDialog(dialog.value, cancel);
@@ -76,9 +79,7 @@ onBeforeUnmount(() => {
 const ok = () => {
   const update = Object.fromEntries(
     pieceTypes.map((pieceType) => {
-      const input = inputs.value[pieceType];
-      const count = readInputAsNumber(input);
-      return [pieceType, count];
+      return [pieceType, counts.value[pieceType]];
     }),
   ) as PieceSet;
   store.closePieceSetChangeDialog(update);
