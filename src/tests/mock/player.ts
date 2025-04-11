@@ -68,3 +68,9 @@ export function createMockPlayerBuilder(playerMap: { [uri: string]: Player }) {
     }),
   };
 }
+
+export function createErrorPlayerBuilder() {
+  return {
+    build: vi.fn().mockImplementation(() => Promise.reject(new Error("failed to create player"))),
+  };
+}

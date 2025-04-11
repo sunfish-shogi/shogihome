@@ -171,9 +171,14 @@ export class CSAGameManager {
     this.playerBuilder = playerBuilder;
     this.repeat = 0;
     // プレイヤーを初期化する。
-    this.player = await this.playerBuilder.build(this._settings.player, (info) =>
-      this.recordManager.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
-    );
+    try {
+      this.player = await this.playerBuilder.build(this._settings.player, (info) =>
+        this.recordManager.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
+      );
+    } catch (e) {
+      this._state = CSAGameState.OFFLINE;
+      throw e;
+    }
     // サーバーへのログインと対局開始を試みる。
     // NOTICE: エラーの場合は自動的にリトライするのでこの関数の呼び元にはエラーを伝搬しない。
     this.doLogin().catch(this.onError);
