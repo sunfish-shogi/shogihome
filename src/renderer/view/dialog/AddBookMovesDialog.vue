@@ -4,7 +4,7 @@
       <div class="title">定跡手追加</div>
       <div>
         <HorizontalSelector
-          v-model:value="sourceType"
+          v-model:value="settings.sourceType"
           :items="[
             { value: SourceType.MEMORY, label: '現在の棋譜から' },
             { value: SourceType.FILE, label: 'ファイルから' },
@@ -13,8 +13,10 @@
         />
       </div>
       <div class="form-group scroll">
-        <div v-show="sourceType === 'memory' && !inMemoryList.length">指し手がありません。</div>
-        <table v-show="sourceType === 'memory' && inMemoryList.length" class="move-list">
+        <div v-show="settings.sourceType === 'memory' && !inMemoryList.length">
+          指し手がありません。
+        </div>
+        <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
           <tbody>
             <tr v-for="move of inMemoryList" :key="move.ply">
               <td v-if="move.type === 'move'">{{ move.ply }}</td>
@@ -35,8 +37,8 @@
             </tr>
           </tbody>
         </table>
-        <div v-show="sourceType === 'directory'" class="form-item row">
-          <input ref="sourceDir" class="grow" type="text" />
+        <div v-show="settings.sourceType === 'directory'" class="form-item row">
+          <input v-model="settings.sourceDirectory" class="grow" type="text" />
           <button class="thin" @click="selectDirectory()">
             {{ t.select }}
           </button>
@@ -44,25 +46,48 @@
             <Icon :icon="IconType.OPEN_FOLDER" />
           </button>
         </div>
-        <div v-show="sourceType === 'file'" class="form-item row">
-          <input ref="sourceFile" class="grow" type="text" />
+        <div v-show="settings.sourceType === 'file'" class="form-item row">
+          <input v-model="settings.sourceRecordFile" class="grow" type="text" />
           <button class="thin" @click="selectRecordFile()">
             {{ t.select }}
           </button>
         </div>
-        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+        <div
+          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+          class="form-item row"
+        >
           <span>{{ t.fromPrefix }}</span>
-          <input ref="minPly" class="small" type="number" min="0" step="1" value="0" />
+          <input
+            v-model.number="settings.minPly"
+            class="small"
+            type="number"
+            min="0"
+            step="1"
+            value="0"
+          />
           <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
         </div>
-        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+        <div
+          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+          class="form-item row"
+        >
           <span>{{ t.toPrefix }}</span>
-          <input ref="maxPly" class="small" type="number" min="0" step="1" value="1000" />
+          <input
+            v-model.number="settings.maxPly"
+            class="small"
+            type="number"
+            min="0"
+            step="1"
+            value="1000"
+          />
           <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
         </div>
-        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+        <div
+          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+          class="form-item row"
+        >
           <HorizontalSelector
-            v-model:value="playerCriteria"
+            v-model:value="settings.playerCriteria"
             :items="[
               { value: PlayerCriteria.ALL, label: '全ての対局者' },
               { value: PlayerCriteria.BLACK, label: '先手のみ' },
@@ -71,17 +96,20 @@
             ]"
           />
         </div>
-        <div v-show="sourceType === 'directory' || sourceType === 'file'" class="form-item row">
+        <div
+          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+          class="form-item row"
+        >
           <input
-            v-show="playerCriteria === 'filterByName'"
-            ref="playerName"
+            v-show="settings.playerCriteria === 'filterByName'"
+            v-model="settings.playerName"
             class="grow"
             type="text"
             placeholder="ここに対局者名の一部を入力"
           />
         </div>
       </div>
-      <div v-show="sourceType === 'directory' || sourceType === 'file'">
+      <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
         <button class="import" @click="importMoves">取り込む</button>
       </div>
       <div class="main-buttons">
@@ -110,12 +138,11 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import api from "@/renderer/ipc/api";
 import {
-  BookImportSettings,
+  defaultBookImportSettings,
   PlayerCriteria,
   SourceType,
   validateBookImportSettings,
 } from "@/common/settings/book";
-import { readInputAsNumber } from "@/renderer/helpers/form";
 
 type InMemoryMove = {
   type: "move";
@@ -139,13 +166,7 @@ const bookStore = useBookStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
 const dialog = ref();
-const sourceDir = ref();
-const sourceFile = ref();
-const sourceType = ref<SourceType>(SourceType.MEMORY);
-const minPly = ref();
-const maxPly = ref();
-const playerCriteria = ref<PlayerCriteria>(PlayerCriteria.ALL);
-const playerName = ref();
+const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 
 const setupInMemoryList = async () => {
@@ -194,14 +215,7 @@ busyState.retain();
 onMounted(async () => {
   try {
     await setupInMemoryList();
-    const settings = await api.loadBookImportSettings();
-    sourceType.value = settings.sourceType;
-    sourceDir.value.value = settings.sourceDirectory;
-    sourceFile.value.value = settings.sourceRecordFile;
-    minPly.value.value = settings.minPly.toString();
-    maxPly.value.value = settings.maxPly.toString();
-    playerCriteria.value = settings.playerCriteria;
-    playerName.value.value = settings.playerName || "";
+    settings.value = await api.loadBookImportSettings();
     showModalDialog(dialog.value, onClose);
     installHotKeyForDialog(dialog.value);
   } catch (e) {
@@ -242,10 +256,9 @@ const updateScore = (move: InMemoryMove) => {
 const selectDirectory = async () => {
   busyState.retain();
   try {
-    const input = sourceDir.value as HTMLInputElement;
-    const path = await api.showSelectDirectoryDialog(input.value);
+    const path = await api.showSelectDirectoryDialog(settings.value.sourceDirectory);
     if (path) {
-      input.value = path;
+      settings.value.sourceDirectory = path;
     }
   } catch (e) {
     useErrorStore().add(e);
@@ -255,17 +268,15 @@ const selectDirectory = async () => {
 };
 
 const openDirectory = () => {
-  const input = sourceDir.value as HTMLInputElement;
-  api.openExplorer(input.value);
+  api.openExplorer(settings.value.sourceDirectory);
 };
 
 const selectRecordFile = async () => {
   busyState.retain();
   try {
-    const input = sourceFile.value as HTMLInputElement;
     const path = await api.showOpenRecordDialog();
     if (path) {
-      input.value = path;
+      settings.value.sourceRecordFile = path;
     }
   } catch (e) {
     useErrorStore().add(e);
@@ -275,21 +286,12 @@ const selectRecordFile = async () => {
 };
 
 const importMoves = () => {
-  const settings: BookImportSettings = {
-    sourceType: sourceType.value,
-    sourceDirectory: sourceDir.value.value,
-    sourceRecordFile: sourceFile.value.value,
-    minPly: readInputAsNumber(minPly.value),
-    maxPly: readInputAsNumber(maxPly.value),
-    playerCriteria: playerCriteria.value,
-    playerName: playerName.value.value,
-  };
-  const error = validateBookImportSettings(settings);
+  const error = validateBookImportSettings(settings.value);
   if (error) {
     useErrorStore().add(error);
     return;
   }
-  bookStore.importBookMoves(settings);
+  bookStore.importBookMoves(settings.value);
 };
 </script>
 

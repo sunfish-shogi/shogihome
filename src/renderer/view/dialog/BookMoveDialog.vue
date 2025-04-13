@@ -10,11 +10,10 @@
         <div class="form-item">
           <div class="form-item-label">{{ t.evaluation }}</div>
           <input
-            ref="scoreInput"
+            v-model.number="scoreValue"
             :min="-32767"
             :max="32767"
             type="number"
-            :value="score || 0"
             :readonly="!enableScore"
           />
           <ToggleButton v-model:value="enableScore" />
@@ -22,11 +21,10 @@
         <div class="form-item">
           <div class="form-item-label">{{ t.depth }}</div>
           <input
-            ref="depthInput"
+            v-model.number="depthValue"
             :min="0"
             :max="127"
             type="number"
-            :value="depth || 0"
             :readonly="!enableDepth"
           />
           <ToggleButton v-model:value="enableDepth" />
@@ -34,18 +32,17 @@
         <div class="form-item">
           <div class="form-item-label">{{ t.frequency }}</div>
           <input
-            ref="countInput"
+            v-model.number="countValue"
             :min="0"
             :max="2147483647"
             type="number"
-            :value="count || 0"
             :readonly="!enableCount"
           />
           <ToggleButton v-model:value="enableCount" />
         </div>
         <div class="form-item">
           <div class="form-item-label">{{ t.comments }}</div>
-          <textarea ref="commentInput" :value="comment" />
+          <textarea v-model="commentValue" />
         </div>
       </div>
       <div class="main-buttons">
@@ -73,7 +70,6 @@ export type Result = {
 import { t } from "@/common/i18n";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { showModalDialog } from "@/renderer/helpers/dialog";
-import { readInputAsNumber } from "@/renderer/helpers/form";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 
@@ -91,10 +87,10 @@ const emits = defineEmits<{
 }>();
 
 const dialog = ref();
-const scoreInput = ref();
-const depthInput = ref();
-const countInput = ref();
-const commentInput = ref();
+const scoreValue = ref(props.score || 0);
+const depthValue = ref(props.depth || 0);
+const countValue = ref(props.count || 0);
+const commentValue = ref(props.comment || "");
 const enableScore = ref(props.score !== undefined);
 const enableDepth = ref(props.depth !== undefined);
 const enableCount = ref(props.count !== undefined);
@@ -110,10 +106,10 @@ onBeforeUnmount(() => {
 
 const onOk = () => {
   emits("ok", {
-    score: enableScore.value ? readInputAsNumber(scoreInput.value) : undefined,
-    depth: enableDepth.value ? readInputAsNumber(depthInput.value) : undefined,
-    count: enableCount.value ? readInputAsNumber(countInput.value) : undefined,
-    comment: commentInput.value.value,
+    score: enableScore.value ? scoreValue.value : undefined,
+    depth: enableDepth.value ? depthValue.value : undefined,
+    count: enableCount.value ? countValue.value : undefined,
+    comment: commentValue.value,
   });
 };
 
