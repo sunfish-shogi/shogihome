@@ -3,6 +3,7 @@
     <Splitpanes
       class="main-frame"
       horizontal
+      :maximize-panes="false"
       :dbl-click-splitter="false"
       @resize="onResizeMain"
       @resized="onResizedMain"
@@ -62,6 +63,7 @@
           v-else
           class="bottom-frame"
           vertical
+          :maximize-panes="false"
           :dbl-click-splitter="false"
           @resize="onResizeBottom"
           @resized="onResizedBottom"
@@ -185,29 +187,29 @@ const onUnhideTabView = () => {
 };
 
 const mainLazyUpdate = new Lazy();
-const onResizeMain = (panes: { size: number }[]) => {
-  const newValue = panes[0].size;
+const onResizeMain = (args: { panes: { size: number }[] }) => {
+  const newValue = args.panes[0].size;
   mainLazyUpdate.after(() => {
     topPaneHeightPercentage.value = newValue;
   }, lazyUpdateDelay);
 };
-const onResizedMain = (panes: { size: number }[]) => {
+const onResizedMain = (args: { panes: { size: number }[] }) => {
   mainLazyUpdate.clear();
-  const newValue = panes[0].size;
+  const newValue = args.panes[0].size;
   topPaneHeightPercentage.value = newValue;
   updateAppSettings({ topPaneHeightPercentage: newValue });
 };
 
 const bottomLazyUpdate = new Lazy();
-const onResizeBottom = (panes: { size: number }[]) => {
-  const newValue = panes[0].size;
+const onResizeBottom = (args: { panes: { size: number }[] }) => {
+  const newValue = args.panes[0].size;
   bottomLazyUpdate.after(() => {
     bottomLeftPaneWidthPercentage.value = newValue;
   }, lazyUpdateDelay);
 };
-const onResizedBottom = (panes: { size: number }[]) => {
+const onResizedBottom = (args: { panes: { size: number }[] }) => {
   bottomLazyUpdate.clear();
-  const newValue = panes[0].size;
+  const newValue = args.panes[0].size;
   bottomLeftPaneWidthPercentage.value = newValue;
   updateAppSettings({ bottomLeftPaneWidthPercentage: newValue });
 };
