@@ -97,6 +97,13 @@ export enum TextDecodingRule {
   AUTO_DETECT = "autoDetect",
 }
 
+export enum NodeCountFormat {
+  PLAIN = "plain",
+  COMMA_SEPARATED = "commaSeparated",
+  COMPACT = "compact",
+  JAPANESE = "japanese",
+}
+
 export enum EvaluationViewFrom {
   BLACK = "black",
   EACH = "each",
@@ -194,6 +201,7 @@ export type AppSettings = {
   // Engine
   translateEngineOptionName: boolean;
   engineTimeoutSeconds: number;
+  nodeCountFormat: NodeCountFormat;
 
   // Evaluation
   evaluationViewFrom: EvaluationViewFrom;
@@ -339,6 +347,7 @@ export function defaultAppSettings(opt?: {
     flippedBook: true,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
+    nodeCountFormat: NodeCountFormat.COMMA_SEPARATED,
     evaluationViewFrom: EvaluationViewFrom.EACH,
     maxArrowsPerEngine: 3,
     coefficientInSigmoid: 600,

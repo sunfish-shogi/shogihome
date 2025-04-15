@@ -271,6 +271,9 @@ export const zh_tw: Texts = {
   signOfEvaluation: "評價值符號",
   maxArrows: "箭頭顯示數量",
   winRateCoefficient: "勝率換算係數",
+  nodeCountFormat: "ノード数表記", // TODO: Translate
+  plainNumber: "装飾無し", // TODO: Translate
+  commaSeparated: "カンマ区切り", // TODO: Translate
   monitor: "引擎監視",
   hideTabView: "最小化",
   expandTabView: "展開分頁",
