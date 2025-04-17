@@ -269,6 +269,9 @@ export type Texts = {
   signOfEvaluation: string;
   maxArrows: string;
   winRateCoefficient: string;
+  nodeCountFormat: string;
+  plainNumber: string;
+  commaSeparated: string;
   monitor: string;
   hideTabView: string;
   expandTabView: string;

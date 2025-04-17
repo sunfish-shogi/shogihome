@@ -28,11 +28,11 @@
         </div>
         <div class="header">
           <span>NPS: </span>
-          <span>{{ monitor.nps || "---" }}</span>
+          <span>{{ (monitor.nps && formatNodeCount(monitor.nps)) || "---" }}</span>
         </div>
         <div class="header">
           <span>{{ t.nodes }}: </span>
-          <span>{{ monitor.nodes || "---" }}</span>
+          <span>{{ (monitor.nodes && formatNodeCount(monitor.nodes)) || "---" }}</span>
         </div>
         <div class="header">
           <span>{{ t.hashUsage }}: </span>
@@ -89,7 +89,7 @@
                 }}{{ info.selectiveDepth }}
               </td>
               <td v-if="showNodesColumn" class="nodes">
-                {{ info.nodes }}
+                {{ info.nodes && formatNodeCount(info.nodes) }}
               </td>
               <td v-if="showScoreColumn" class="score">
                 {{
@@ -153,7 +153,7 @@ import { USIInfo, USIPlayerMonitor } from "@/renderer/store/usi";
 import { computed, onBeforeUpdate, reactive, ref } from "vue";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
-import { EvaluationViewFrom } from "@/common/settings/app";
+import { EvaluationViewFrom, NodeCountFormat } from "@/common/settings/app";
 import { Color, Move, Position } from "tsshogi";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useStore } from "@/renderer/store";
@@ -175,6 +175,7 @@ const props = defineProps({
 });
 
 const store = useStore();
+const appSettings = useAppSettings();
 const listHeader = ref();
 const columnWidthMap = {} as { [key: string]: number };
 const columnStyleMap = reactive({} as { [key: string]: { minWidth: string } });
@@ -202,6 +203,19 @@ const paused = computed(() => {
   return store.isPausedResearchEngine(props.monitor.sessionID);
 });
 
+const formatNodeCount = computed(() => {
+  switch (appSettings.nodeCountFormat) {
+    case NodeCountFormat.COMMA_SEPARATED:
+      return (count: number) => count.toLocaleString();
+    case NodeCountFormat.COMPACT:
+      return Intl.NumberFormat("en-US", { notation: "compact" }).format;
+    case NodeCountFormat.JAPANESE:
+      return Intl.NumberFormat("ja-JP", { notation: "compact" }).format;
+    default:
+      return (count: number) => count.toString();
+  }
+});
+
 const multiPV = computed(() => {
   return store.getResearchMultiPV(props.monitor.sessionID);
 });
@@ -214,7 +228,7 @@ const enableHighlight = computed(() => {
 });
 
 const evaluationViewFrom = computed(() => {
-  return useAppSettings().evaluationViewFrom;
+  return appSettings.evaluationViewFrom;
 });
 const getDisplayScore = (score: number, color: Color, evaluationViewFrom: EvaluationViewFrom) => {
   return evaluationViewFrom === EvaluationViewFrom.EACH || color == Color.BLACK ? score : -score;

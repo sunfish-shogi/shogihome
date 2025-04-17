@@ -274,6 +274,9 @@ export const vi: Texts = {
   signOfEvaluation: "Dấu giá trị đánh giá",
   maxArrows: "Số mũi tên hiển thị",
   winRateCoefficient: "Hệ số tỷ lệ thắng",
+  nodeCountFormat: "ノード数表記", // TODO: Translate
+  plainNumber: "装飾無し", // TODO: Translate
+  commaSeparated: "カンマ区切り", // TODO: Translate
   monitor: "Theo dõi",
   hideTabView: "Ẩn",
   expandTabView: "Mở hiển thị thẻ",

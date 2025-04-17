@@ -8,6 +8,7 @@ import {
   EvaluationViewFrom,
   KingPieceType,
   LeftSideControlType,
+  NodeCountFormat,
   PieceImageType,
   PieceStandImageType,
   PositionImageFontWeight,
@@ -179,6 +180,9 @@ class AppSettingsStore {
   }
   get engineTimeoutSeconds(): number {
     return this.merged.engineTimeoutSeconds;
+  }
+  get nodeCountFormat(): NodeCountFormat {
+    return this.merged.nodeCountFormat;
   }
   get evaluationViewFrom(): EvaluationViewFrom {
     return this.merged.evaluationViewFrom;

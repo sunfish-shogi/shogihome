@@ -501,6 +501,20 @@
             <input v-model.number="update.engineTimeoutSeconds" type="number" max="300" min="1" />
             <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(1, 300) }})</div>
           </div>
+          <!-- ノード数表記 -->
+          <div class="form-item">
+            <div class="form-item-label-wide">{{ t.nodeCountFormat }}</div>
+            <HorizontalSelector
+              v-model:value="update.nodeCountFormat"
+              class="selector"
+              :items="[
+                { label: t.plainNumber, value: NodeCountFormat.PLAIN },
+                { label: t.commaSeparated, value: NodeCountFormat.COMMA_SEPARATED },
+                { label: t.compact, value: NodeCountFormat.COMPACT },
+                { label: '日本語', value: NodeCountFormat.JAPANESE },
+              ]"
+            />
+          </div>
         </div>
         <hr v-if="!isMobileWebApp()" />
         <!-- 評価値・期待勝率・読み筋 -->
@@ -708,6 +722,7 @@ import {
   TextDecodingRule,
   ClockSoundTarget,
   AppSettingsUpdate,
+  NodeCountFormat,
 } from "@/common/settings/app";
 import ImageSelector from "@/renderer/view/dialog/ImageSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -775,6 +790,7 @@ const update = ref({
   bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
+  nodeCountFormat: org.nodeCountFormat,
   evaluationViewFrom: org.evaluationViewFrom,
   maxArrowsPerEngine: org.maxArrowsPerEngine,
   coefficientInSigmoid: org.coefficientInSigmoid,
