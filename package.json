@@ -1,6 +1,6 @@
 {
   "name": "electron-shogi",
-  "version": "1.21.4",
+  "version": "1.21.5",
   "description": "Shogi Frontend Application",
   "author": "Kubo, Ryosuke",
   "license": "MIT",
