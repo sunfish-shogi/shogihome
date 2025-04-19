@@ -192,9 +192,15 @@ export class CSAGameManager {
         await this.player.close();
         this.player = undefined;
       }
-      this.player = await this.playerBuilder.build(this._settings.player, (info) =>
-        this.recordManager.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
-      );
+      try {
+        this.player = await this.playerBuilder.build(this._settings.player, (info) =>
+          this.recordManager.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
+        );
+      } catch (e) {
+        this._state = CSAGameState.LOGIN_FAILED;
+        this.close(ReloginBehavior.RELOGIN_WITH_INTERVAL);
+        throw e;
+      }
     }
     await this.doLogin();
   }
