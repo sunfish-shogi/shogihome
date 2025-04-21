@@ -44,8 +44,12 @@ jobs:
         with:
           path: dist
           merge-multiple: true
-      - uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
-        with:
-          name: ShogiHome ${{ github.ref_name }}
-          files: dist/release-*.zip
-          draft: true
+      - name: Create GitHub Release
+        run: |
+          gh release create "$TAG_NAME" \
+            --title "ShogiHome $TAG_NAME" \
+            --draft \
+            dist/release-*.zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.ref_name }}
