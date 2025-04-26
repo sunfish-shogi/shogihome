@@ -435,6 +435,8 @@ export const zh_tw: Texts = {
   vertical: "垂直調整",
   size: "大小",
   none: "無",
+  all: "全て", // TODO: translate
+  firstMoveOnly: "1手のみ", // TODO: translate
   bgCover: "圖片置中",
   bgContain: "擴大表示",
   bgTile: "磁磚狀表示",

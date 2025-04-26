@@ -4,6 +4,7 @@ import {
   BackgroundImageType,
   BoardImageType,
   BoardLabelType,
+  BookMoveInsertionFromPVScoreTarget,
   ClockSoundTarget,
   EvaluationViewFrom,
   KingPieceType,
@@ -276,6 +277,14 @@ class AppSettingsStore {
   }
   get enableHardwareAcceleration(): boolean {
     return this.merged.enableHardwareAcceleration;
+  }
+
+  get bookMoveInsertionFromPVMaxDepth(): number {
+    return this.merged.bookMoveInsertionFromPVMaxDepth;
+  }
+
+  get bookMoveInsertionFromPVScoreTarget(): BookMoveInsertionFromPVScoreTarget {
+    return this.merged.bookMoveInsertionFromPVScoreTarget;
   }
 
   async loadAppSettings(): Promise<void> {

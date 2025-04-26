@@ -433,6 +433,8 @@ export type Texts = {
   vertical: string;
   size: string;
   none: string;
+  all: string;
+  firstMoveOnly: string;
   bgCover: string;
   bgContain: string;
   bgTile: string;

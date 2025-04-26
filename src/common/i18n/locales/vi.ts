@@ -438,6 +438,8 @@ export const vi: Texts = {
   vertical: "Dọc",
   size: "Kích cỡ",
   none: "Không",
+  all: "全て", // TODO: translate
+  firstMoveOnly: "1手のみ", // TODO: translate
   bgCover: "Hiện đơn",
   bgContain: "Phóng to",
   bgTile: "Mảnh ghép",

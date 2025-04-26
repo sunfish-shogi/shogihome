@@ -138,6 +138,12 @@ export enum PositionImageFontWeight {
   W700X = "700+",
 }
 
+export enum BookMoveInsertionFromPVScoreTarget {
+  NONE = "none",
+  ROOT = "root",
+  ALL = "all",
+}
+
 export type AppSettings = {
   // Language
   language: Language;
@@ -247,6 +253,10 @@ export type AppSettings = {
 
   // Low Level
   enableHardwareAcceleration: boolean;
+
+  // Experimental
+  bookMoveInsertionFromPVMaxDepth: number;
+  bookMoveInsertionFromPVScoreTarget: BookMoveInsertionFromPVScoreTarget;
 };
 
 export function isLogEnabled(type: LogType, appSettings: AppSettings): boolean {
@@ -379,6 +389,8 @@ export function defaultAppSettings(opt?: {
     lastOtherFilePath: "",
     emptyRecordInfoVisibility: true,
     enableHardwareAcceleration: true,
+    bookMoveInsertionFromPVMaxDepth: 10,
+    bookMoveInsertionFromPVScoreTarget: BookMoveInsertionFromPVScoreTarget.ROOT,
   };
 }
 
