@@ -48,6 +48,14 @@
         </template>
         <template #left-control>
           <div class="full column reverse">
+            <button
+              class="control-item-wide"
+              :disabled="!enableBookInsertion"
+              @click="insertToBook"
+            >
+              <Icon :icon="IconType.BOOK" />
+              <span>定跡に登録</span>
+            </button>
             <button class="control-item-wide" :disabled="!enableInsertion" @click="insertToRecord">
               <Icon :icon="IconType.TREE" />
               <span>{{ t.insertToRecord }}</span>
@@ -72,6 +80,11 @@
         </div>
       </div>
     </dialog>
+    <AddBookMovesFromPVDialog
+      v-if="showBookInsertionDialog"
+      @ok="onInsertToBookOk"
+      @cancel="onInsertToBookCancel"
+    />
   </div>
 </template>
 
@@ -85,13 +98,19 @@ import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
-import { EvaluationViewFrom, getPieceImageURLTemplate } from "@/common/settings/app";
+import {
+  BookMoveInsertionFromPVScoreTarget,
+  EvaluationViewFrom,
+  getPieceImageURLTemplate,
+} from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
 import { SearchInfoSenderType } from "@/renderer/store/record";
 import { CommentBehavior } from "@/common/settings/comment";
 import { AppState } from "@/common/control/state";
 import { useMessageStore } from "@/renderer/store/message";
+import { useBookStore } from "@/renderer/store/book";
+import AddBookMovesFromPVDialog from "@/renderer/view/dialog/AddBookMovesFromPV.vue";
 
 const props = defineProps({
   position: {
@@ -145,11 +164,13 @@ const emit = defineEmits<{
 
 const store = useStore();
 const messageStore = useMessageStore();
+const bookStore = useBookStore();
 const appSettings = useAppSettings();
 const dialog = ref();
 const maxSize = reactive(new RectSize(0, 0));
 const record = reactive(new Record());
 const flip = ref(appSettings.boardFlipping);
+const showBookInsertionDialog = ref(false);
 
 const updateSize = () => {
   maxSize.width = window.innerWidth * 0.8;
@@ -281,6 +302,52 @@ const insertToComment = () => {
   messageStore.enqueue({
     text: t.insertedComment,
   });
+};
+
+const enableBookInsertion = computed(() => {
+  return store.appState === AppState.NORMAL && bookStore.mode === "in-memory";
+});
+
+const insertToBook = () => {
+  showBookInsertionDialog.value = true;
+};
+
+const onInsertToBookOk = async (
+  maxDepth: number,
+  scoreTarget: BookMoveInsertionFromPVScoreTarget,
+) => {
+  showBookInsertionDialog.value = false;
+
+  const position = props.position.clone();
+  const pv = props.pv;
+  let depth = props.depth;
+  for (let i = 0; i < pv.length && i < maxDepth; i++) {
+    const sfen = position.sfen;
+    const usi = pv[i].usi;
+    const usi2 = i < pv.length - 1 ? pv[i + 1].usi : undefined;
+    const score =
+      scoreTarget === BookMoveInsertionFromPVScoreTarget.ALL ||
+      (scoreTarget === BookMoveInsertionFromPVScoreTarget.ROOT && i === 0)
+        ? props.score
+        : undefined;
+    const org = (await bookStore.searchMoves(sfen)).find((m) => m.usi === usi);
+    bookStore.updateMove(sfen, {
+      usi,
+      usi2,
+      score,
+      depth: depth && Math.max(0, depth),
+      count: org?.count,
+      comment: "",
+    });
+    if (!position.doMove(pv[i])) {
+      break;
+    }
+    depth = depth && depth - 1;
+  }
+};
+
+const onInsertToBookCancel = () => {
+  showBookInsertionDialog.value = false;
 };
 </script>
 

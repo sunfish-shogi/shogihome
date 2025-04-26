@@ -435,6 +435,8 @@ export const ja: Texts = {
   vertical: "垂直方向",
   size: "サイズ",
   none: "なし",
+  all: "全て",
+  firstMoveOnly: "1手のみ",
   bgCover: "1枚で表示",
   bgContain: "拡大して表示",
   bgTile: "タイル状に表示",

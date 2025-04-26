@@ -435,6 +435,8 @@ export const en: Texts = {
   vertical: "Vertical",
   size: "Size",
   none: "None",
+  all: "All",
+  firstMoveOnly: "1st move only",
   bgCover: "Cover",
   bgContain: "Contain",
   bgTile: "Tile",
