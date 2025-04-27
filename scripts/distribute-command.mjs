@@ -24,6 +24,7 @@ const packageJson = {
   },
   homepage:
     "https://github.com/sunfish-shogi/shogihome/blob/main/src/command/usi-csa-bridge#readme",
+  type: "commonjs",
   main: "index.js",
   bin: {
     cli: "index.js",
