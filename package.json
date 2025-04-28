@@ -26,7 +26,7 @@
     "build": "npm run install:esbuild && vite build --outDir docs/webapp",
     "build:dev": "npm run install:esbuild && vite build --outDir docs/webapp-dev",
     "preview": "npm run install:esbuild && vite preview",
-    "test": "npm run install:esbuild && vitest run",
+    "test": "npm run install:esbuild && npm run install:electron && vitest run",
     "bench": "npm run install:esbuild && vitest bench",
     "coverage": "npm test -- --coverage",
     "test:ui": "npm run install:esbuild && vitest --ui --coverage",
