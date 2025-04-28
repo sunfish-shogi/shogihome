@@ -1,6 +1,6 @@
-import { GameSettings, JishogiRule, normalizeGameSettings } from "@/common/settings/game";
+import { GameSettings, JishogiRule, normalizeGameSettings } from "@/common/settings/game.js";
 import { InitialPositionType } from "tsshogi";
-import * as uri from "@/common/uri";
+import * as uri from "@/common/uri.js";
 
 describe("settings/game", () => {
   it("normalize", () => {

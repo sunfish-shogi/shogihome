@@ -4,10 +4,10 @@ import {
   emptyLayoutProfileList,
   LayoutProfile,
   removeCustomLayoutProfile,
-} from "@/common/settings/layout";
+} from "@/common/settings/layout.js";
 import { UnwrapNestedRefs, reactive } from "vue";
-import api from "@/renderer/ipc/api";
-import * as uri from "@/common/uri";
+import api from "@/renderer/ipc/api.js";
+import * as uri from "@/common/uri.js";
 
 export class Store {
   private _reactive: UnwrapNestedRefs<Store>;

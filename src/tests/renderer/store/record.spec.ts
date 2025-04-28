@@ -1,4 +1,4 @@
-import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment";
+import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment.js";
 import {
   Color,
   InitialPositionSFEN,
@@ -12,8 +12,8 @@ import {
   formatPV,
   specialMove,
 } from "tsshogi";
-import { SCORE_MATE_INFINITE } from "@/common/game/usi";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/store/record";
+import { SCORE_MATE_INFINITE } from "@/common/game/usi.js";
+import { RecordManager, SearchInfoSenderType } from "@/renderer/store/record.js";
 
 describe("store/record", () => {
   it("new", () => {

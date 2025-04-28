@@ -1,4 +1,4 @@
-import { GameSettings, JishogiRule } from "@/common/settings/game";
+import { GameSettings, JishogiRule } from "@/common/settings/game.js";
 import { InitialPositionType } from "tsshogi";
 
 export const playerURI01 = "es://usi/test-engine-01";

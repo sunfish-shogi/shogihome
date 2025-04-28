@@ -1,16 +1,16 @@
-import { BookLoadingMode, BookMove, BookMoveEx } from "@/common/book";
+import { BookLoadingMode, BookMove, BookMoveEx } from "@/common/book.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
-import api from "@/renderer/ipc/api";
-import { useErrorStore } from "./error";
-import { useBusyState } from "./busy";
-import { useMessageStore } from "./message";
-import { useAppSettings } from "./settings";
-import { useConfirmationStore } from "./confirm";
-import { BookImportSettings, SourceType } from "@/common/settings/book";
-import { t } from "@/common/i18n";
+import api from "@/renderer/ipc/api.js";
+import { useErrorStore } from "./error.js";
+import { useBusyState } from "./busy.js";
+import { useMessageStore } from "./message.js";
+import { useAppSettings } from "./settings.js";
+import { useConfirmationStore } from "./confirm.js";
+import { BookImportSettings, SourceType } from "@/common/settings/book.js";
+import { t } from "@/common/i18n/index.js";
 import { ImmutableRecord } from "tsshogi";
-import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen";
+import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 export class BookStore {
   private _mode: BookLoadingMode = "in-memory";

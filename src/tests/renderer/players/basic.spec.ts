@@ -1,5 +1,5 @@
-import * as uri from "@/common/uri";
-import { BasicPlayer } from "@/renderer/players/basic";
+import * as uri from "@/common/uri.js";
+import { BasicPlayer } from "@/renderer/players/basic.js";
 import { importKI2, Move, Record } from "tsshogi";
 
 const timeStates = {

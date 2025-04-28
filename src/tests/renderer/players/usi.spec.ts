@@ -1,4 +1,4 @@
-import api, { API } from "@/renderer/ipc/api";
+import api, { API } from "@/renderer/ipc/api.js";
 import {
   onUSIBestMove,
   onUSICheckmate,
@@ -6,12 +6,12 @@ import {
   onUSIInfo,
   onUSINoMate,
   USIPlayer,
-} from "@/renderer/players/usi";
+} from "@/renderer/players/usi.js";
 import { Move, parsePV, Record } from "tsshogi";
-import { testUSIEngine, testUSIEngineWithPonder } from "@/tests/mock/usi";
+import { testUSIEngine, testUSIEngineWithPonder } from "@/tests/mock/usi.js";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

@@ -1,7 +1,7 @@
 import { InitialPositionType } from "tsshogi";
-import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player";
-import { t } from "@/common/i18n";
-import * as uri from "@/common/uri";
+import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player.js";
+import { t } from "@/common/i18n/index.js";
+import * as uri from "@/common/uri.js";
 
 export type TimeLimitSettings = {
   timeSeconds: number;

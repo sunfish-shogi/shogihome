@@ -1,7 +1,8 @@
 import https from "node:https";
 import http from "node:http";
-import { getAppLogger } from "@/background/log";
-import { convert } from "encoding-japanese";
+import { getAppLogger } from "@/background/log.js";
+import ejpn from "encoding-japanese";
+const convert = ejpn.convert;
 
 export function fetch(url: string): Promise<string> {
   return new Promise((resolve, reject) => {

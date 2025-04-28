@@ -1,15 +1,15 @@
 import { Move, Record } from "tsshogi";
-import api, { API } from "@/renderer/ipc/api";
-import { ResearchManager } from "@/renderer/store/research";
+import api, { API } from "@/renderer/ipc/api.js";
+import { ResearchManager } from "@/renderer/store/research.js";
 import {
   researchSettings,
   researchSettingsMax5Seconds,
   researchSettingsSecondaryEngines,
-} from "@/tests/mock/research";
+} from "@/tests/mock/research.js";
 import { Mocked } from "vitest";
-import { USIEngine, USIEngineOption } from "@/common/settings/usi";
+import { USIEngine, USIEngineOption } from "@/common/settings/usi.js";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

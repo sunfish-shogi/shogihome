@@ -1,9 +1,16 @@
-import { BoardImageType, BoardLabelType } from "@/common/settings/app";
-import { Config } from "./config";
-import { boardParams, commonParams } from "./params";
+import { BoardImageType, BoardLabelType } from "@/common/settings/app.js";
+import { Config } from "./config.js";
+import { boardParams, commonParams } from "./params.js";
 import { Color, ImmutableBoard, Move, Piece, PieceType, reverseColor, Square } from "tsshogi";
-import { Board, BoardBackground, BoardLabel, BoardPiece, BoardSquare, Promotion } from "./layout";
-import { Point } from "@/common/assets/geometry";
+import {
+  Board,
+  BoardBackground,
+  BoardLabel,
+  BoardPiece,
+  BoardSquare,
+  Promotion,
+} from "./layout.js";
+import { Point } from "@/common/assets/geometry.js";
 
 const boardBackgroundColorMap = {
   [BoardImageType.LIGHT]: "rgba(0, 0, 0, 0)",

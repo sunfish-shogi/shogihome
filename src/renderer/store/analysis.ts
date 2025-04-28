@@ -1,13 +1,13 @@
-import { SearchInfo } from "@/renderer/players/player";
-import { USIPlayer } from "@/renderer/players/usi";
-import { AnalysisSettings, defaultAnalysisSettings } from "@/common/settings/analysis";
-import { AppSettings } from "@/common/settings/app";
-import { USIEngine } from "@/common/settings/usi";
+import { SearchInfo } from "@/renderer/players/player.js";
+import { USIPlayer } from "@/renderer/players/usi.js";
+import { AnalysisSettings, defaultAnalysisSettings } from "@/common/settings/analysis.js";
+import { AppSettings } from "@/common/settings/app.js";
+import { USIEngine } from "@/common/settings/usi.js";
 import { Color, Move, reverseColor } from "tsshogi";
-import { RecordManager, SearchInfoSenderType } from "./record";
-import { scoreToPercentage } from "./score";
-import { useAppSettings } from "./settings";
-import { t } from "@/common/i18n";
+import { RecordManager, SearchInfoSenderType } from "./record.js";
+import { scoreToPercentage } from "./score.js";
+import { useAppSettings } from "./settings.js";
+import { t } from "@/common/i18n/index.js";
 
 type FinishCallback = () => void;
 type ErrorCallback = (e: unknown) => void;

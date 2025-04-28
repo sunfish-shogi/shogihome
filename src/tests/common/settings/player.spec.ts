@@ -1,4 +1,4 @@
-import { PlayerSettings, validatePlayerSettings } from "@/common/settings/player";
+import { PlayerSettings, validatePlayerSettings } from "@/common/settings/player.js";
 
 describe("settings/player", () => {
   describe("validate", () => {

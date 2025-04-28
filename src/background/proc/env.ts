@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { getElectron } from "@/background/helpers/portability";
 
 export function isDevelopment(): boolean {
   return process.env.npm_lifecycle_event === "electron:serve" && !isTest();
@@ -35,41 +34,3 @@ export function getTempPathForTesting(): string {
   }
   return tempPathForTesting;
 }
-
-export function getAppPath(name: "userData" | "logs" | "exe" | "documents" | "pictures"): string {
-  // test
-  if (isTest()) {
-    const tempPath = path.join(getTempPathForTesting(), name);
-    fs.mkdirSync(tempPath, { recursive: true });
-    return tempPath;
-  }
-
-  // electron app
-  const app = getElectron()?.app;
-  if (app) {
-    return app.getPath(name);
-  }
-
-  // command line tool
-  switch (name) {
-    case "logs":
-      return path.join(process.cwd(), "logs");
-    case "exe":
-      return process.argv[1];
-    default:
-      return process.cwd();
-  }
-}
-
-export function getPreloadPath() {
-  return isProduction() ? "./preload.js" : "../../../packed/preload.js";
-}
-
-export const electronLicensePath = path.join(
-  path.dirname(getAppPath("exe")),
-  "LICENSE.electron.txt",
-);
-export const chromiumLicensePath = path.join(
-  path.dirname(getAppPath("exe")),
-  "LICENSES.chromium.html",
-);

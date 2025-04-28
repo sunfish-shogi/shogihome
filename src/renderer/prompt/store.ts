@@ -1,13 +1,13 @@
-import { PromptTarget } from "@/common/advanced/prompt";
+import { PromptTarget } from "@/common/advanced/prompt.js";
 import { UnwrapNestedRefs, reactive } from "vue";
-import api from "@/renderer/ipc/api";
+import api from "@/renderer/ipc/api.js";
 import {
   Command,
   CommandHistory,
   CommandType,
   addCommand,
   newCommand,
-} from "@/common/advanced/command";
+} from "@/common/advanced/command.js";
 
 type CommandWithID = Command & { id: number };
 

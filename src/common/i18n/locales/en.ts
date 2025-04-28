@@ -1,5 +1,5 @@
-import { ordinal } from "@/common/helpers/string";
-import { Texts } from "@/common/i18n/text_template";
+import { ordinal } from "@/common/helpers/string.js";
+import { Texts } from "@/common/i18n/text_template.js";
 
 export const en: Texts = {
   shogiHome: "ShogiHome",

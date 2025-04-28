@@ -1,20 +1,20 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
-import { getAppPath } from "@/background/proc/env";
+import { getAppPath } from "@/background/proc/path-electron.js";
 import {
   BackupEntryV2,
   HistoryClass,
   RecordFileHistory,
   RecordFileHistoryEntry,
   getEmptyHistory,
-} from "@/common/file/history";
-import { getAppLogger } from "@/background/log";
+} from "@/common/file/history.js";
+import { getAppLogger } from "@/background/log.js";
 import AsyncLock from "async-lock";
-import { openPath } from "@/background/helpers/electron";
-import { exists } from "@/background/helpers/file";
-import { writeFileAtomic } from "./atomic";
+import { openPath } from "@/background/helpers/electron.js";
+import { exists } from "@/background/helpers/file.js";
+import { writeFileAtomic } from "./atomic.js";
 import { getBlackPlayerName, getWhitePlayerName, importKIF, Record } from "tsshogi";
-import { getRecordTitleFromMetadata } from "@/common/helpers/metadata";
+import { getRecordTitleFromMetadata } from "@/common/helpers/metadata.js";
 
 const historyMaxLength = 20;
 

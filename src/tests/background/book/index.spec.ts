@@ -11,10 +11,10 @@ import {
   searchBookMoves,
   updateBookMove,
   updateBookMoveOrder,
-} from "@/background/book";
-import { getTempPathForTesting } from "@/background/proc/env";
-import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book";
-import { createTestAperyBookFile } from "@/tests/mock/book";
+} from "@/background/book/index.js";
+import { getTempPathForTesting } from "@/background/proc/env.js";
+import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book.js";
+import { createTestAperyBookFile } from "@/tests/mock/book.js";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
 

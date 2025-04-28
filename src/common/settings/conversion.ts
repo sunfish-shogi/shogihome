@@ -1,5 +1,5 @@
-import { RecordFileFormat } from "@/common/file/record";
-import { t } from "@/common/i18n";
+import { RecordFileFormat } from "@/common/file/record.js";
+import { t } from "@/common/i18n/index.js";
 
 export enum DestinationType {
   DIRECTORY = "directory",

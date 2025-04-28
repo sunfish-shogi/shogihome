@@ -1,4 +1,4 @@
-import { createMessageStore } from "@/renderer/store/message";
+import { createMessageStore } from "@/renderer/store/message.js";
 
 describe("store/message", () => {
   it("message", () => {

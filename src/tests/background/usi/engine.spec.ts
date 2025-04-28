@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import * as log4js from "log4js";
-import { EngineProcess, GameResult } from "@/background/usi/engine";
-import { ChildProcess } from "@/background/usi/process";
+import { EngineProcess, GameResult } from "@/background/usi/engine.js";
+import { ChildProcess } from "@/background/usi/process.js";
 import { MockedClass } from "vitest";
 
-vi.mock("@/background/usi/process");
+vi.mock("@/background/usi/process.js");
 
 const mockChildProcess = ChildProcess as MockedClass<typeof ChildProcess>;
 

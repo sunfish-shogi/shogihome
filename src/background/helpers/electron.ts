@@ -1,9 +1,9 @@
-import { getElectron, requireElectron } from "@/background/helpers/portability";
-import { exists } from "./file";
-import { t } from "@/common/i18n";
+import { exists } from "./file.js";
+import { t } from "@/common/i18n/index.js";
+import { app, Notification, shell } from "electron";
 
 export function getAppVersion(): string {
-  return requireElectron().app.getVersion();
+  return app.getVersion();
 }
 
 export async function openPath(path: string) {
@@ -11,27 +11,13 @@ export async function openPath(path: string) {
   if (!(await exists(path))) {
     throw new Error(t.failedToOpenDirectory(path));
   }
-  requireElectron().shell.openPath(path);
+  shell.openPath(path);
 }
 
 export function showNotification(title: string, body: string) {
-  new (requireElectron().Notification)({
+  new Notification({
     title,
     body,
     timeoutType: "never",
   }).show();
-}
-
-export function preventAppSuspension(): number | undefined {
-  const electron = getElectron();
-  if (electron) {
-    return electron.powerSaveBlocker.start("prevent-app-suspension");
-  }
-}
-
-export function allowAppSuspension(id: number) {
-  const electron = getElectron();
-  if (electron) {
-    electron.powerSaveBlocker.stop(id);
-  }
 }

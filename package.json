@@ -16,6 +16,7 @@
     "url": "https://github.com/sunfish-shogi/shogihome/issues"
   },
   "homepage": "https://github.com/sunfish-shogi/shogihome#readme",
+  "type": "module",
   "scripts": {
     "audit:scripts": "tsx scripts/audit-scripts.ts",
     "install:esbuild": "npm run audit:scripts && node node_modules/esbuild/install.js",
@@ -47,11 +48,11 @@
     "release:beta": "npm run license:commit && npm version preminor --preid beta",
     "release:pre": "npm run license:commit && npm version prerelease",
     "release:stable": "tsx scripts/publish-release.ts stable && npm run docs && git add . && git commit -m \"update stable version\"",
-    "command:compile": "tsc --project ./tsconfig.cmd.json && tsc-alias",
-    "usi-csa-bridge:build": "npm run command:compile && webpack --config-name command:usi-csa-bridge && node scripts/distribute-command.mjs usi-csa-bridge",
+    "usi-csa-bridge:build": "webpack --config-name command:usi-csa-bridge && node scripts/distribute-command.mjs usi-csa-bridge",
     "usi-csa-bridge:install": "npm run usi-csa-bridge:build && npm install -g ./dist/command/usi-csa-bridge"
   },
   "main": "dist/src/background/index.js",
+  "module": "dist/src/background/index.js",
   "dependencies": {
     "@github/hotkey": "^3.1.0",
     "async-lock": "^1.4.0",
@@ -99,6 +100,7 @@
     "license-checker": "^25.0.1",
     "prettier": "^3.0.1",
     "terser-webpack-plugin": "^5.3.6",
+    "ts-loader": "^9.5.2",
     "tsc-alias": "^1.7.0",
     "tsx": "^4.19.3",
     "typescript": "^5.5.4",

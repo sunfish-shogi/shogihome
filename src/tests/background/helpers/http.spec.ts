@@ -1,6 +1,6 @@
 import http from "node:http";
 import { promises as fs } from "node:fs";
-import { fetch } from "@/background/helpers/http";
+import { fetch } from "@/background/helpers/http.js";
 
 describe("helpsers/http", () => {
   it("fetch/utf8", async () => {

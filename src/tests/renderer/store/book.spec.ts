@@ -1,11 +1,11 @@
-import api, { API } from "@/renderer/ipc/api";
-import { defaultAppSettings } from "@/common/settings/app";
-import { BookStore } from "@/renderer/store/book";
-import { useAppSettings } from "@/renderer/store/settings";
+import api, { API } from "@/renderer/ipc/api.js";
+import { defaultAppSettings } from "@/common/settings/app.js";
+import { BookStore } from "@/renderer/store/book.js";
+import { useAppSettings } from "@/renderer/store/settings.js";
 import { Record } from "tsshogi";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

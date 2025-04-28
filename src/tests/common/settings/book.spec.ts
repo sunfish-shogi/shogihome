@@ -1,4 +1,4 @@
-import { PlayerCriteria, SourceType, validateBookImportSettings } from "@/common/settings/book";
+import { PlayerCriteria, SourceType, validateBookImportSettings } from "@/common/settings/book.js";
 
 describe("settings/book", () => {
   it("validateBookImportSettings", () => {

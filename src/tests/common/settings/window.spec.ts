@@ -1,4 +1,4 @@
-import { buildWindowSettings, normalizeWindowSettings } from "@/common/settings/window";
+import { buildWindowSettings, normalizeWindowSettings } from "@/common/settings/window.js";
 
 describe("settings/window", () => {
   it("buildWindowSettings", () => {

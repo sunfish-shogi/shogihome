@@ -1,9 +1,9 @@
-import { Language } from "./languages";
-import { en } from "./locales/en";
-import { ja } from "./locales/ja";
-import { zh_tw } from "./locales/zh_tw";
-import { vi } from "./locales/vi";
-import { Texts } from "./text_template";
+import { Language } from "./languages.js";
+import { en } from "./locales/en.js";
+import { ja } from "./locales/ja.js";
+import { zh_tw } from "./locales/zh_tw.js";
+import { vi } from "./locales/vi.js";
+import { Texts } from "./text_template.js";
 
 export const t = ja;
 

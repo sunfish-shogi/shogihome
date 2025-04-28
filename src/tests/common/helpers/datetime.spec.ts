@@ -1,4 +1,8 @@
-import { getDateString, getDateTimeString, getDateTimeStringMs } from "@/common/helpers/datetime";
+import {
+  getDateString,
+  getDateTimeString,
+  getDateTimeStringMs,
+} from "@/common/helpers/datetime.js";
 
 describe("helpers/datetime", () => {
   it("getDateTimeString", async () => {

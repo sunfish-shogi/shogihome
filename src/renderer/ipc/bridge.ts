@@ -1,11 +1,11 @@
-import { CommandType } from "@/common/advanced/command";
-import { PromptTarget } from "@/common/advanced/prompt";
-import { BookLoadingMode } from "@/common/book";
-import { MenuEvent } from "@/common/control/menu";
-import { AppState, ResearchState } from "@/common/control/state";
-import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
-import { GameResult } from "@/common/game/result";
-import { LogLevel, LogType } from "@/common/log";
+import { CommandType } from "@/common/advanced/command.js";
+import { PromptTarget } from "@/common/advanced/prompt.js";
+import { BookLoadingMode } from "@/common/book.js";
+import { MenuEvent } from "@/common/control/menu.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
+import { CSAGameResult, CSASpecialMove } from "@/common/game/csa.js";
+import { GameResult } from "@/common/game/result.js";
+import { LogLevel, LogType } from "@/common/log.js";
 
 export interface Bridge {
   // Core

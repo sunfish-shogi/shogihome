@@ -6,14 +6,14 @@ import {
   getHistory,
   loadBackup,
   saveBackup,
-} from "@/background/file/history";
-import { getAppPath } from "@/background/proc/env";
+} from "@/background/file/history.js";
+import { getAppPath } from "@/background/proc/path-electron.js";
 import {
   BackupEntryV2,
   HistoryClass,
   RecordFileHistory,
   UserFileEntry,
-} from "@/common/file/history";
+} from "@/common/file/history.js";
 
 const userDir = getAppPath("userData");
 const historyPath = path.join(userDir, "record_file_history.json");

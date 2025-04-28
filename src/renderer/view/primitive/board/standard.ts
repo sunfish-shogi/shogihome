@@ -1,8 +1,8 @@
 import { Color, ImmutablePosition, reverseColor } from "tsshogi";
-import { Point, RectSize } from "@/common/assets/geometry";
-import { standardViewParams } from "./params";
-import { Config } from "./config";
-import { Clock, Control, Frame, Layout, PlayerName, Turn } from "./layout";
+import { Point, RectSize } from "@/common/assets/geometry.js";
+import { standardViewParams } from "./params.js";
+import { Config } from "./config.js";
+import { Clock, Control, Frame, Layout, PlayerName, Turn } from "./layout.js";
 
 export class StandardLayoutBuilder {
   constructor(private config: Config) {}

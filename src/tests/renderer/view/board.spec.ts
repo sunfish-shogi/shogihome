@@ -1,13 +1,13 @@
 import { shallowMount } from "@vue/test-utils";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
 import { Position } from "tsshogi";
-import { RectSize } from "@/common/assets/geometry";
+import { RectSize } from "@/common/assets/geometry.js";
 import {
   BoardImageType,
   BoardLabelType,
   KingPieceType,
   PieceStandImageType,
-} from "@/common/settings/app";
+} from "@/common/settings/app.js";
 
 describe("BoardView", () => {
   it("hitomoji", () => {

@@ -1,9 +1,9 @@
-import { Language, t } from "@/common/i18n";
-import { LogLevel, LogType } from "@/common/log";
-import { RecordFileFormat } from "@/common/file/record";
-import { defaultRecordFileNameTemplate } from "@/common/file/path";
-import { BoardLayoutType } from "./layout";
-import { SearchCommentFormat } from "./comment";
+import { Language, t } from "@/common/i18n/index.js";
+import { LogLevel, LogType } from "@/common/log.js";
+import { RecordFileFormat } from "@/common/file/record.js";
+import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
+import { BoardLayoutType } from "./layout.js";
+import { SearchCommentFormat } from "./comment.js";
 
 export enum Thema {
   STANDARD = "standard",

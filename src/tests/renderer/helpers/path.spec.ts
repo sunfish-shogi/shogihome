@@ -1,4 +1,4 @@
-import { generateRecordFileName, dirname, join, basename } from "@/renderer/helpers/path";
+import { generateRecordFileName, dirname, join, basename } from "@/renderer/helpers/path.js";
 import { Move, Record, RecordMetadataKey, SpecialMoveType } from "tsshogi";
 
 describe("helpers/path", () => {

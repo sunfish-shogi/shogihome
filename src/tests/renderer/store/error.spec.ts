@@ -1,4 +1,4 @@
-import { createErrorStore } from "@/renderer/store/error";
+import { createErrorStore } from "@/renderer/store/error.js";
 
 describe("store/error", () => {
   it("errors", () => {

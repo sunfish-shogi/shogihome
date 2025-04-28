@@ -1,4 +1,4 @@
 {
   "extends": "./tsconfig",
-  "include": ["src/background/index.ts", "src/renderer/ipc/preload.ts"]
+  "include": ["src/background/index.ts"]
 }

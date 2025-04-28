@@ -1,4 +1,5 @@
-import { Encoding, convert, detect } from "encoding-japanese";
+import ejpn, { Encoding } from "encoding-japanese";
+const [convert, detect] = [ejpn.convert, ejpn.detect];
 
 export function encodeText(data: string, encoding: Encoding): Uint8Array {
   if (encoding === "ASCII" || encoding === "UTF8") {

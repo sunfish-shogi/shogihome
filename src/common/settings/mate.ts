@@ -1,4 +1,4 @@
-import { USIEngine } from "./usi";
+import { USIEngine } from "./usi.js";
 
 export type MateSearchSettings = {
   usi?: USIEngine;

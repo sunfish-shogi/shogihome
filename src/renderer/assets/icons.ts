@@ -1,4 +1,4 @@
-import preloadImage from "./preload";
+import preloadImage from "./preload.js";
 
 export enum IconType {
   BUSY = "busy",

@@ -1,6 +1,6 @@
-import { t } from "@/common/i18n";
-import { USIEngine, validateUSIEngine } from "./usi";
-import * as uri from "@/common/uri";
+import { t } from "@/common/i18n/index.js";
+import { USIEngine, validateUSIEngine } from "./usi.js";
+import * as uri from "@/common/uri.js";
 
 export type PlayerSettings = {
   name: string;

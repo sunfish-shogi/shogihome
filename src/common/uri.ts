@@ -1,4 +1,4 @@
-import { t } from "./i18n";
+import { t } from "./i18n/index.js";
 
 export const ES_HUMAN = "es://human";
 export const ES_BASIC_ENGINE_PREFIX = "es://basic-engine/";

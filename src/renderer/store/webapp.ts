@@ -1,6 +1,6 @@
 import { exportKIF, ImmutableRecord, importKIF, Record, RecordMetadataKey } from "tsshogi";
-import { useErrorStore } from "./error";
-import { isMobileWebApp, isNative } from "@/renderer/ipc/api";
+import { useErrorStore } from "./error.js";
+import { isMobileWebApp, isNative } from "@/renderer/ipc/api.js";
 
 const mobileRecordStorageKey = "mobile:record";
 const mobilePlyStorageKey = "mobile:ply";

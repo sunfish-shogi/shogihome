@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { Rect } from "@/common/assets/geometry";
-import { getAppLogger } from "@/background/log";
-import { loadAppSettings } from "@/background/settings";
-import { requireElectron } from "@/background/helpers/portability";
-import { WebContents } from "electron";
+import { Rect } from "@/common/assets/geometry.js";
+import { getAppLogger } from "@/background/log.js";
+import { loadAppSettings } from "@/background/settings.js";
+import { BrowserWindow, dialog, WebContents } from "electron";
 
 const jpegQuality = 85;
 
@@ -29,12 +28,12 @@ async function exportCaptureImage(
     width: Math.floor(rect.width * zoomLevel),
     height: Math.floor(rect.height * zoomLevel),
   });
-  const win = requireElectron().BrowserWindow.getFocusedWindow();
+  const win = BrowserWindow.getFocusedWindow();
   if (!win) {
     throw new Error("Failed to open dialog by unexpected error.");
   }
   const appSettings = await loadAppSettings();
-  const ret = await requireElectron().dialog.showSaveDialog(win, {
+  const ret = await dialog.showSaveDialog(win, {
     defaultPath: path.dirname(appSettings.lastImageExportFilePath),
     properties: ["createDirectory", "showOverwriteConfirmation"],
     filters: [{ name: ext.toUpperCase(), extensions: [ext] }],

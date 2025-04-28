@@ -5,17 +5,17 @@ import {
   USIEngineOptionType,
   USIHash,
   USIPonder,
-} from "@/common/settings/usi";
-import { Logger } from "@/background/log";
-import { SCORE_MATE_INFINITE, USIInfoCommand } from "@/common/game/usi";
-import { ChildProcess } from "./process";
+} from "@/common/settings/usi.js";
+import { Logger } from "@/background/log.js";
+import { SCORE_MATE_INFINITE, USIInfoCommand } from "@/common/game/usi.js";
+import { ChildProcess } from "./process.js";
 import {
   addCommand,
   Command,
   CommandHistory,
   CommandType,
   newCommand,
-} from "@/common/advanced/command";
+} from "@/common/advanced/command.js";
 
 export type EngineProcessOption = {
   timeout?: number;

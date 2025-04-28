@@ -23,14 +23,14 @@ import {
   buildUpdatedAppSettings,
   defaultAppSettings,
   validateAppSettings,
-} from "@/common/settings/app";
+} from "@/common/settings/app.js";
 import { UnwrapNestedRefs, reactive } from "vue";
-import api from "@/renderer/ipc/api";
-import { LogLevel } from "@/common/log";
-import { Language } from "@/common/i18n";
-import { RecordFileFormat } from "@/common/file/record";
-import { BoardLayoutType } from "@/common/settings/layout";
-import { SearchCommentFormat } from "@/common/settings/comment";
+import api from "@/renderer/ipc/api.js";
+import { LogLevel } from "@/common/log.js";
+import { Language } from "@/common/i18n/index.js";
+import { RecordFileFormat } from "@/common/file/record.js";
+import { BoardLayoutType } from "@/common/settings/layout.js";
+import { SearchCommentFormat } from "@/common/settings/comment.js";
 
 class AppSettingsStore {
   private settings = defaultAppSettings();

@@ -1,4 +1,4 @@
-import * as uri from "@/common/uri";
+import * as uri from "@/common/uri.js";
 import {
   appendCSAGameSettingsHistory,
   CSAGameSettings,
@@ -9,14 +9,14 @@ import {
   importCSAGameSettingsForCLI,
   normalizeSecureCSAGameSettingsHistory,
   validateCSAGameSettings,
-} from "@/common/settings/csa";
-import { defaultAppSettings } from "@/common/settings/app";
+} from "@/common/settings/csa.js";
+import { defaultAppSettings } from "@/common/settings/app.js";
 import {
   csaGameSettings,
   csaGameSettingsForCLI,
   emptyCSAGameSettingsHistory,
   playerURI,
-} from "@/tests/mock/csa";
+} from "@/tests/mock/csa.js";
 
 describe("settings/csa", () => {
   it("validate/noError", () => {

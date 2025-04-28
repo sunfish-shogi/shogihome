@@ -1,22 +1,22 @@
 /* eslint-disable no-console */
-import { defaultAnalysisSettings } from "@/common/settings/analysis";
-import { defaultAppSettings } from "@/common/settings/app";
-import { defaultGameSettings } from "@/common/settings/game";
-import { defaultResearchSettings } from "@/common/settings/research";
-import { USIEngines } from "@/common/settings/usi";
-import { LogLevel } from "@/common/log";
-import { Bridge } from "@/renderer/ipc/bridge";
-import { t } from "@/common/i18n";
-import { defaultCSAGameSettingsHistory } from "@/common/settings/csa";
-import { defaultMateSearchSettings } from "@/common/settings/mate";
-import { defaultBatchConversionSettings } from "@/common/settings/conversion";
-import { getEmptyHistory } from "@/common/file/history";
-import { BookLoadingMode } from "@/common/book";
-import { VersionStatus } from "@/common/version";
-import { SessionStates } from "@/common/advanced/monitor";
-import { emptyLayoutProfileList } from "@/common/settings/layout";
-import * as uri from "@/common/uri";
-import { basename } from "@/renderer/helpers/path";
+import { defaultAnalysisSettings } from "@/common/settings/analysis.js";
+import { defaultAppSettings } from "@/common/settings/app.js";
+import { defaultGameSettings } from "@/common/settings/game.js";
+import { defaultResearchSettings } from "@/common/settings/research.js";
+import { USIEngines } from "@/common/settings/usi.js";
+import { LogLevel } from "@/common/log.js";
+import { Bridge } from "@/renderer/ipc/bridge.js";
+import { t } from "@/common/i18n/index.js";
+import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
+import { defaultMateSearchSettings } from "@/common/settings/mate.js";
+import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
+import { getEmptyHistory } from "@/common/file/history.js";
+import { BookLoadingMode } from "@/common/book.js";
+import { VersionStatus } from "@/common/version.js";
+import { SessionStates } from "@/common/advanced/monitor.js";
+import { emptyLayoutProfileList } from "@/common/settings/layout.js";
+import * as uri from "@/common/uri.js";
+import { basename } from "@/renderer/helpers/path.js";
 
 enum STORAGE_KEY {
   APP_SETTINGS = "appSetting",

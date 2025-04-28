@@ -1,5 +1,5 @@
 import { Color, handPieceTypes, PieceType, Position, Square } from "tsshogi";
-import { toAperyPiece, toAperySquare } from "./apery_move";
+import { toAperyPiece, toAperySquare } from "./apery_move.js";
 
 const pieceTable = [
   0xc96d191cf6f6aea6n,

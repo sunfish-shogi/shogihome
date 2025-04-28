@@ -4,7 +4,7 @@
 
 import { ArgumentsParser } from "@/command/common/arguments";
 import { LogLevel } from "@/common/log";
-import { Language } from "@/common/i18n";
+import { Language } from "@/common/i18n/index";
 const argParser = new ArgumentsParser("usi-csa-bridge", [
   "path/to/csa_game_config.yaml",
   "path/to/csa_game_config.json",

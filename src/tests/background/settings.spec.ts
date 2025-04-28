@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { getAppPath } from "@/background/proc/env";
+import { getAppPath } from "@/background/proc/path-electron.js";
 import {
   loadAnalysisSettings,
   loadAppSettings,
@@ -24,19 +24,19 @@ import {
   saveResearchSettings,
   saveUSIEngines,
   saveWindowSettings,
-} from "@/background/settings";
-import { defaultWindowSettings } from "@/common/settings/window";
-import { defaultAppSettings } from "@/common/settings/app";
-import { defaultBatchConversionSettings } from "@/common/settings/conversion";
-import { defaultGameSettings } from "@/common/settings/game";
-import { defaultCSAGameSettingsHistory } from "@/common/settings/csa";
-import { defaultAnalysisSettings } from "@/common/settings/analysis";
-import { defaultMateSearchSettings } from "@/common/settings/mate";
-import { emptyLayoutProfileList } from "@/common/settings/layout";
-import { defaultBookImportSettings } from "@/common/settings/book";
-import { USIEngines } from "@/common/settings/usi";
-import { testUSIEngine } from "@/tests/mock/usi";
-import { defaultResearchSettings } from "@/common/settings/research";
+} from "@/background/settings.js";
+import { defaultWindowSettings } from "@/common/settings/window.js";
+import { defaultAppSettings } from "@/common/settings/app.js";
+import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
+import { defaultGameSettings } from "@/common/settings/game.js";
+import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
+import { defaultAnalysisSettings } from "@/common/settings/analysis.js";
+import { defaultMateSearchSettings } from "@/common/settings/mate.js";
+import { emptyLayoutProfileList } from "@/common/settings/layout.js";
+import { defaultBookImportSettings } from "@/common/settings/book.js";
+import { USIEngines } from "@/common/settings/usi.js";
+import { testUSIEngine } from "@/tests/mock/usi.js";
+import { defaultResearchSettings } from "@/common/settings/research.js";
 
 const userDir = getAppPath("userData");
 
