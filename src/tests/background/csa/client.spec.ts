@@ -1,12 +1,12 @@
-import { Client } from "@/background/csa/client";
-import { Socket } from "@/background/csa/socket";
-import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
+import { Client } from "@/background/csa/client.js";
+import { Socket } from "@/background/csa/socket.js";
+import { CSAGameResult, CSASpecialMove } from "@/common/game/csa.js";
 import { Color } from "tsshogi";
 import * as log4js from "log4js";
-import { csaServerSettings } from "@/tests/mock/csa";
+import { csaServerSettings } from "@/tests/mock/csa.js";
 import { MockedClass } from "vitest";
 
-vi.mock("@/background/csa/socket");
+vi.mock("@/background/csa/socket.js");
 
 const mockSocket = Socket as MockedClass<typeof Socket>;
 

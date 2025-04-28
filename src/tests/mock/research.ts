@@ -1,5 +1,5 @@
-import { ResearchSettings } from "@/common/settings/research";
-import { testUSIEngine } from "./usi";
+import { ResearchSettings } from "@/common/settings/research.js";
+import { testUSIEngine } from "./usi.js";
 
 export const researchSettings: ResearchSettings = {
   usi: testUSIEngine,

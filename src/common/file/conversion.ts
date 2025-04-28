@@ -1,4 +1,4 @@
-import { RecordFileFormat } from "./record";
+import { RecordFileFormat } from "./record.js";
 
 export type BatchConversionResult = {
   success: { [format in RecordFileFormat]?: number };

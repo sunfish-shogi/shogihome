@@ -1,5 +1,5 @@
-import { t } from "@/common/i18n";
-import { USIEngine } from "./usi";
+import { t } from "@/common/i18n/index.js";
+import { USIEngine } from "./usi.js";
 
 export type SecondaryResearchSettings = {
   usi?: USIEngine;

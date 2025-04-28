@@ -1,4 +1,4 @@
-import { Clock } from "@/renderer/store/clock";
+import { Clock } from "@/renderer/store/clock.js";
 
 describe("store/clock", () => {
   beforeAll(() => {

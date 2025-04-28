@@ -1,9 +1,9 @@
-import api, { API } from "@/renderer/ipc/api";
-import { PieceImageType, Tab, TabPaneType, Thema } from "@/common/settings/app";
-import { createAppSettings } from "@/renderer/store/settings";
+import api, { API } from "@/renderer/ipc/api.js";
+import { PieceImageType, Tab, TabPaneType, Thema } from "@/common/settings/app.js";
+import { createAppSettings } from "@/renderer/store/settings.js";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

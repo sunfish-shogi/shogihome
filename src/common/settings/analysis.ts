@@ -1,5 +1,5 @@
-import { CommentBehavior } from "./comment";
-import { USIEngine } from "./usi";
+import { CommentBehavior } from "./comment.js";
+import { USIEngine } from "./usi.js";
 
 type StartCriteria = {
   enableNumber: boolean;

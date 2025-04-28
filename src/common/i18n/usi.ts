@@ -1,4 +1,4 @@
-import { Language } from "./languages";
+import { Language } from "./languages.js";
 
 type USIOptionNameMap = { [key: string]: string };
 

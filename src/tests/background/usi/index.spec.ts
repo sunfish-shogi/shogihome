@@ -12,12 +12,12 @@ import {
   setHandlers,
   setOption,
   setupPlayer,
-} from "@/background/usi";
-import { ChildProcess } from "@/background/usi/process";
-import { testUSIEngine } from "@/tests/mock/usi";
+} from "@/background/usi/index.js";
+import { ChildProcess } from "@/background/usi/process.js";
+import { testUSIEngine } from "@/tests/mock/usi.js";
 import { MockedClass } from "vitest";
 
-vi.mock("@/background/usi/process");
+vi.mock("@/background/usi/process.js");
 
 const mockChildProcess = ChildProcess as MockedClass<typeof ChildProcess>;
 

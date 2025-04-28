@@ -1,4 +1,4 @@
-import { createStore } from "@/renderer/store";
+import { createStore } from "@/renderer/store/index.js";
 import { Move } from "tsshogi";
 
 describe("store/webapp", () => {

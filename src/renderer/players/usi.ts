@@ -1,5 +1,5 @@
-import api from "@/renderer/ipc/api";
-import { parseUSIPV, USIInfoCommand } from "@/common/game/usi";
+import api from "@/renderer/ipc/api.js";
+import { parseUSIPV, USIInfoCommand } from "@/common/game/usi.js";
 import {
   getUSIEngineMultiPV,
   getUSIEnginePonder,
@@ -7,11 +7,11 @@ import {
   MultiPV,
   USIEngine,
   USIMultiPV,
-} from "@/common/settings/usi";
+} from "@/common/settings/usi.js";
 import { Color, ImmutablePosition, Move, Position } from "tsshogi";
-import { Player, SearchInfo, SearchHandler, MateHandler } from "./player";
-import { GameResult } from "@/common/game/result";
-import { TimeStates } from "@/common/game/time";
+import { Player, SearchInfo, SearchHandler, MateHandler } from "./player.js";
+import { GameResult } from "@/common/game/result.js";
+import { TimeStates } from "@/common/game/time.js";
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 

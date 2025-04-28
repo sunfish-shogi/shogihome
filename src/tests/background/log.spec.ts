@@ -1,6 +1,6 @@
 import child_process from "node:child_process";
-import { getTailCommand, tailLogFile } from "@/background/log";
-import { LogType } from "@/common/log";
+import { getTailCommand, tailLogFile } from "@/background/log.js";
+import { LogType } from "@/common/log.js";
 
 describe("log", () => {
   afterEach(() => {

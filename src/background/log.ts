@@ -1,10 +1,11 @@
 import path from "node:path";
 import child_process from "node:child_process";
-import * as log4js from "log4js";
-import { getDateTimeString } from "@/common/helpers/datetime";
-import { getAppPath, isTest } from "./proc/env";
-import { LogLevel, LogType } from "@/common/log";
-import { openPath } from "./helpers/electron";
+import log4js from "log4js";
+import { getDateTimeString } from "@/common/helpers/datetime.js";
+import { isTest } from "./proc/env.js";
+import { LogLevel, LogType } from "@/common/log.js";
+import { openPath } from "./helpers/electron.js";
+import { getAppPath } from "./proc/path-electron.js";
 
 const rootDir = getAppPath("logs");
 

@@ -1,8 +1,8 @@
-import { t } from "@/common/i18n";
+import { t } from "@/common/i18n/index.js";
 import { Notification } from "electron";
-import { loadAppSettings } from "@/background/settings";
-import { cropPieceImage } from "@/background/image/cropper";
-import { AppSettingsUpdate, PieceImageType } from "@/common/settings/app";
+import { loadAppSettings } from "@/background/settings.js";
+import { cropPieceImage } from "@/background/image/cropper.js";
+import { AppSettingsUpdate, PieceImageType } from "@/common/settings/app.js";
 
 export async function refreshCustomPieceImages(
   onUpdateAppSettings: (update: AppSettingsUpdate) => void,

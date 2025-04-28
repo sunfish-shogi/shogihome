@@ -17,9 +17,9 @@ import {
   ImmutableHand,
   Record,
 } from "tsshogi";
-import { Player, SearchHandler } from "./player";
-import { TimeStates } from "@/common/game/time";
-import * as uri from "@/common/uri";
+import { Player, SearchHandler } from "./player.js";
+import { TimeStates } from "@/common/game/time.js";
+import * as uri from "@/common/uri.js";
 
 const pieceValues: { [key in PieceType]: number } = {
   [PieceType.PAWN]: 100,

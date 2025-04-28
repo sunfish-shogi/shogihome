@@ -1,48 +1,53 @@
 import fs from "node:fs";
 import path from "node:path";
-import { USIEngines } from "@/common/settings/usi";
-import { AppSettings, defaultAppSettings, normalizeAppSettings } from "@/common/settings/app";
+import { USIEngines } from "@/common/settings/usi.js";
+import { AppSettings, defaultAppSettings, normalizeAppSettings } from "@/common/settings/app.js";
 import {
   defaultWindowSettings,
   normalizeWindowSettings,
   WindowSettings,
-} from "@/common/settings/window";
-import { defaultGameSettings, GameSettings, normalizeGameSettings } from "@/common/settings/game";
+} from "@/common/settings/window.js";
+import {
+  defaultGameSettings,
+  GameSettings,
+  normalizeGameSettings,
+} from "@/common/settings/game.js";
 import {
   defaultResearchSettings,
   normalizeResearchSettings,
   ResearchSettings,
-} from "@/common/settings/research";
+} from "@/common/settings/research.js";
 import {
   AnalysisSettings,
   defaultAnalysisSettings,
   normalizeAnalysisSettings,
-} from "@/common/settings/analysis";
-import { getAppLogger } from "@/background/log";
+} from "@/common/settings/analysis.js";
+import { getAppLogger } from "@/background/log.js";
 import {
   CSAGameSettingsHistory as CSAGameSettingsHistory,
   decryptCSAGameSettingsHistory,
   defaultCSAGameSettingsHistory,
   encryptCSAGameSettingsHistory,
   normalizeSecureCSAGameSettingsHistory,
-} from "@/common/settings/csa";
-import { DecryptString, EncryptString, isEncryptionAvailable } from "./helpers/encrypt";
-import { getAppPath, getPortableExeDir } from "./proc/env";
+} from "@/common/settings/csa.js";
+import { DecryptString, EncryptString, isEncryptionAvailable } from "./helpers/encrypt.js";
+import { getPortableExeDir } from "./proc/env.js";
 import {
   MateSearchSettings as MateSearchSettings,
   defaultMateSearchSettings,
   normalizeMateSearchSettings,
-} from "@/common/settings/mate";
+} from "@/common/settings/mate.js";
 import {
   BatchConversionSettings,
   defaultBatchConversionSettings,
   normalizeBatchConversionSettings as normalizeBatchConversionSettings,
-} from "@/common/settings/conversion";
-import { exists } from "./helpers/file";
-import { emptyLayoutProfileList, LayoutProfileList } from "@/common/settings/layout";
-import { openPath } from "./helpers/electron";
-import { BookImportSettings, defaultBookImportSettings } from "@/common/settings/book";
-import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic";
+} from "@/common/settings/conversion.js";
+import { exists } from "./helpers/file.js";
+import { emptyLayoutProfileList, LayoutProfileList } from "@/common/settings/layout.js";
+import { openPath } from "./helpers/electron.js";
+import { BookImportSettings, defaultBookImportSettings } from "@/common/settings/book.js";
+import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic.js";
+import { getAppPath } from "./proc/path-electron.js";
 
 const userDir = getAppPath("userData");
 const rootDir = getPortableExeDir() || userDir;

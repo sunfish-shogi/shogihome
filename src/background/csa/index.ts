@@ -1,10 +1,14 @@
-import { CSAServerSettings } from "@/common/settings/csa";
-import { getAppLogger, getCSALogger } from "@/background/log";
-import { Client, State } from "@/background/csa/client";
-import { CSASessionState } from "@/common/advanced/monitor";
-import { CommandHistory, CommandType, Command } from "@/common/advanced/command";
-import { CSAGameResult, CSAGameSummary, CSAPlayerStates, CSASpecialMove } from "@/common/game/csa";
-import { allowAppSuspension, preventAppSuspension } from "@/background/helpers/electron";
+import { CSAServerSettings } from "@/common/settings/csa.js";
+import { getCSALogger } from "@/background/log.js";
+import { Client, State } from "@/background/csa/client.js";
+import { CSASessionState } from "@/common/advanced/monitor.js";
+import { CommandHistory, CommandType, Command } from "@/common/advanced/command.js";
+import {
+  CSAGameResult,
+  CSAGameSummary,
+  CSAPlayerStates,
+  CSASpecialMove,
+} from "@/common/game/csa.js";
 
 interface Handlers {
   onCSAGameSummary(sessionID: number, gameSummary: CSAGameSummary): void;

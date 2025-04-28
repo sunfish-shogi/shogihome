@@ -1,4 +1,4 @@
-import { createConfirmationStore } from "@/renderer/store/confirm";
+import { createConfirmationStore } from "@/renderer/store/confirm.js";
 
 describe("store/confirm", () => {
   it("showConfirmation", () => {

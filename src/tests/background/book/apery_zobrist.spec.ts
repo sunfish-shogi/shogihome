@@ -1,4 +1,4 @@
-import { hash } from "@/background/book/apery_zobrist";
+import { hash } from "@/background/book/apery_zobrist.js";
 
 describe("apery_zobrist", () => {
   it("hash", () => {

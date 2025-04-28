@@ -1,4 +1,4 @@
-import api, { isNative } from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api.js";
 import {
   Color,
   exportCSA,
@@ -21,9 +21,9 @@ import {
   Position,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
-import { GameSettings } from "@/common/settings/game";
-import { ClockSoundTarget, Tab, TextDecodingRule } from "@/common/settings/app";
-import { beepShort, beepUnlimited, playPieceBeat, stopBeep } from "@/renderer/devices/audio";
+import { GameSettings } from "@/common/settings/game.js";
+import { ClockSoundTarget, Tab, TextDecodingRule } from "@/common/settings/app.js";
+import { beepShort, beepUnlimited, playPieceBeat, stopBeep } from "@/renderer/devices/audio.js";
 import {
   RecordManager,
   SearchInfoSenderType,
@@ -32,38 +32,38 @@ import {
   UpdateCustomDataHandler,
   PieceSet,
   UpdateTreeHandler,
-} from "./record";
-import { calculateGameStatistics, GameManager, GameResults } from "./game";
-import { generateRecordFileName, join } from "@/renderer/helpers/path";
-import { ResearchSettings } from "@/common/settings/research";
-import { USIPlayerMonitor, USIMonitor } from "./usi";
-import { AppState, ResearchState } from "@/common/control/state";
-import { useMessageStore } from "./message";
-import * as uri from "@/common/uri";
-import { AnalysisManager } from "./analysis";
-import { AnalysisSettings } from "@/common/settings/analysis";
-import { MateSearchSettings } from "@/common/settings/mate";
-import { LogLevel } from "@/common/log";
-import { CSAGameManager, CSAGameState } from "./csa";
-import { Clock } from "./clock";
-import { CSAGameSettings, appendCSAGameSettingsHistory } from "@/common/settings/csa";
-import { defaultPlayerBuilder } from "@/renderer/players/builder";
-import { USIInfoCommand } from "@/common/game/usi";
-import { ResearchManager } from "./research";
-import { SearchInfo } from "@/renderer/players/player";
-import { useAppSettings } from "./settings";
-import { t } from "@/common/i18n";
-import { MateSearchManager } from "./mate";
-import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record";
-import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record";
-import { setOnStartSearchHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi";
-import { useErrorStore } from "./error";
-import { useBusyState } from "./busy";
-import { Confirmation, useConfirmationStore } from "./confirm";
-import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout";
-import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp";
-import { CommentBehavior } from "@/common/settings/comment";
-import { Attachment, ListItem } from "@/common/message";
+} from "./record.js";
+import { calculateGameStatistics, GameManager, GameResults } from "./game.js";
+import { generateRecordFileName, join } from "@/renderer/helpers/path.js";
+import { ResearchSettings } from "@/common/settings/research.js";
+import { USIPlayerMonitor, USIMonitor } from "./usi.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
+import { useMessageStore } from "./message.js";
+import * as uri from "@/common/uri.js";
+import { AnalysisManager } from "./analysis.js";
+import { AnalysisSettings } from "@/common/settings/analysis.js";
+import { MateSearchSettings } from "@/common/settings/mate.js";
+import { LogLevel } from "@/common/log.js";
+import { CSAGameManager, CSAGameState } from "./csa.js";
+import { Clock } from "./clock.js";
+import { CSAGameSettings, appendCSAGameSettingsHistory } from "@/common/settings/csa.js";
+import { defaultPlayerBuilder } from "@/renderer/players/builder.js";
+import { USIInfoCommand } from "@/common/game/usi.js";
+import { ResearchManager } from "./research.js";
+import { SearchInfo } from "@/renderer/players/player.js";
+import { useAppSettings } from "./settings.js";
+import { t } from "@/common/i18n/index.js";
+import { MateSearchManager } from "./mate.js";
+import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record.js";
+import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record.js";
+import { setOnStartSearchHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi.js";
+import { useErrorStore } from "./error.js";
+import { useBusyState } from "./busy.js";
+import { Confirmation, useConfirmationStore } from "./confirm.js";
+import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout.js";
+import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp.js";
+import { CommentBehavior } from "@/common/settings/comment.js";
+import { Attachment, ListItem } from "@/common/message.js";
 
 export type PVPreview = {
   position: ImmutablePosition;

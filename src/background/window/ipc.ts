@@ -1,5 +1,13 @@
-import { BrowserWindow, dialog, FileFilter, ipcMain, shell, WebContents } from "electron";
-import { Background, Renderer } from "@/common/ipc/channel";
+import {
+  BrowserWindow,
+  dialog,
+  FileFilter,
+  ipcMain,
+  powerSaveBlocker,
+  shell,
+  WebContents,
+} from "electron";
+import { Background, Renderer } from "@/common/ipc/channel.js";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import url from "node:url";
@@ -24,11 +32,11 @@ import {
   saveMateSearchSettings,
   saveResearchSettings,
   saveUSIEngines,
-} from "@/background/settings";
-import { USIEngine, USIEngines } from "@/common/settings/usi";
-import { MenuEvent } from "@/common/control/menu";
-import { USIInfoCommand } from "@/common/game/usi";
-import { AppState, ResearchState } from "@/common/control/state";
+} from "@/background/settings.js";
+import { USIEngine, USIEngines } from "@/common/settings/usi.js";
+import { MenuEvent } from "@/common/control/menu.js";
+import { USIInfoCommand } from "@/common/game/usi.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
 import {
   gameover as usiGameover,
   getUSIEngineInfo as usiGetUSIEngineInfo,
@@ -47,10 +55,10 @@ import {
   getCommandHistory as getUSICommandHistory,
   invokeCommand as invokeUSICommand,
   setHandlers as setUSIHandlers,
-} from "@/background/usi";
-import { GameResult } from "@/common/game/result";
-import { LogLevel, LogType } from "@/common/log";
-import { getAppLogger, openLogFile } from "@/background/log";
+} from "@/background/usi/index.js";
+import { GameResult } from "@/common/game/result.js";
+import { LogLevel, LogType } from "@/common/log.js";
+import { getAppLogger, openLogFile } from "@/background/log.js";
 import {
   login as csaLogin,
   logout as csaLogout,
@@ -63,39 +71,44 @@ import {
   getCommandHistory as getCSACommandHistory,
   invokeCommand as invokeCSACommand,
   setHandlers,
-} from "@/background/csa";
-import { CSAGameResult, CSAGameSummary, CSAPlayerStates, CSASpecialMove } from "@/common/game/csa";
-import { CSAServerSettings } from "@/common/settings/csa";
-import { isEncryptionAvailable } from "@/background/helpers/encrypt";
-import { validateIPCSender } from "./security";
-import { t } from "@/common/i18n";
-import { Rect } from "@/common/assets/geometry";
-import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture";
-import { cropPieceImage } from "@/background/image/cropper";
-import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path";
-import { fileURLToPath } from "@/background/helpers/url";
-import { AppSettingsUpdate } from "@/common/settings/app";
-import { convertRecordFiles } from "@/background/file/conversion";
-import { BatchConversionSettings } from "@/common/settings/conversion";
+} from "@/background/csa/index.js";
+import {
+  CSAGameResult,
+  CSAGameSummary,
+  CSAPlayerStates,
+  CSASpecialMove,
+} from "@/common/game/csa.js";
+import { CSAServerSettings } from "@/common/settings/csa.js";
+import { isEncryptionAvailable } from "@/background/helpers/encrypt.js";
+import { validateIPCSender } from "./security.js";
+import { t } from "@/common/i18n/index.js";
+import { Rect } from "@/common/assets/geometry.js";
+import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.js";
+import { cropPieceImage } from "@/background/image/cropper.js";
+import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
+import { fileURLToPath } from "@/background/helpers/url.js";
+import { AppSettingsUpdate } from "@/common/settings/app.js";
+import { convertRecordFiles } from "@/background/file/conversion.js";
+import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import {
   addHistory,
   clearHistory,
   getHistory,
   loadBackup,
   saveBackup,
-} from "@/background/file/history";
-import { getAppPath } from "@/background/proc/env";
-import { fetchInitialRecordFileRequest } from "@/background/proc/args";
-import { isSupportedRecordFilePath } from "@/background/file/extensions";
-import { readStatus as readVersionStatus } from "@/background/version";
-import { sendTestNotification } from "./debug";
-import { SessionStates } from "@/common/advanced/monitor";
-import { createCommandWindow } from "./prompt";
-import { PromptTarget } from "@/common/advanced/prompt";
-import { Command, CommandType } from "@/common/advanced/command";
-import { fetch } from "@/background/helpers/http";
-import * as uri from "@/common/uri";
-import { openPath } from "@/background/helpers/electron";
+} from "@/background/file/history.js";
+import { getAppPath } from "@/background/proc/path-electron.js";
+import { fetchInitialRecordFileRequest } from "@/background/proc/args.js";
+import { isSupportedRecordFilePath } from "@/background/file/extensions.js";
+import { readStatus as readVersionStatus } from "@/background/version.js";
+import { sendTestNotification } from "./debug.js";
+import { SessionStates } from "@/common/advanced/monitor.js";
+import { createCommandWindow } from "./prompt.js";
+import { PromptTarget } from "@/common/advanced/prompt.js";
+import { Command, CommandType } from "@/common/advanced/command.js";
+import { fetch } from "@/background/helpers/http.js";
+import * as uri from "@/common/uri.js";
+import { openPath } from "@/background/helpers/electron.js";
 import {
   clearBook,
   getBookFormat,
@@ -107,9 +120,9 @@ import {
   searchBookMoves,
   updateBookMove,
   updateBookMoveOrder,
-} from "@/background/book";
-import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book";
-import { Message } from "@/common/message";
+} from "@/background/book/index.js";
+import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
+import { Message } from "@/common/message.js";
 
 const isWindows = process.platform === "win32";
 

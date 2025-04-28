@@ -1,6 +1,6 @@
 import { BrowserWindow } from "electron";
-import { PromptTarget } from "@/common/advanced/prompt";
-import { createAuxiliaryWindow } from "./auxiliary";
+import { PromptTarget } from "@/common/advanced/prompt.js";
+import { createAuxiliaryWindow } from "./auxiliary.js";
 
 export function createCommandWindow(
   parent: BrowserWindow,

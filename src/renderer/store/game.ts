@@ -1,7 +1,7 @@
-import { LogLevel } from "@/common/log";
-import api from "@/renderer/ipc/api";
-import { Player, SearchInfo } from "@/renderer/players/player";
-import { defaultGameSettings, GameSettings, JishogiRule } from "@/common/settings/game";
+import { LogLevel } from "@/common/log.js";
+import api from "@/renderer/ipc/api.js";
+import { Player, SearchInfo } from "@/renderer/players/player.js";
+import { defaultGameSettings, GameSettings, JishogiRule } from "@/common/settings/game.js";
 import {
   Color,
   formatMove,
@@ -16,21 +16,21 @@ import {
   SpecialMoveType,
   Square,
 } from "tsshogi";
-import { CommentBehavior } from "@/common/settings/comment";
-import { RecordManager, SearchInfoSenderType } from "./record";
-import { Clock } from "./clock";
-import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder";
-import { GameResult } from "@/common/game/result";
-import { t } from "@/common/i18n";
-import { TimeStates } from "@/common/game/time";
+import { CommentBehavior } from "@/common/settings/comment.js";
+import { RecordManager, SearchInfoSenderType } from "./record.js";
+import { Clock } from "./clock.js";
+import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder.js";
+import { GameResult } from "@/common/game/result.js";
+import { t } from "@/common/i18n/index.js";
+import { TimeStates } from "@/common/game/time.js";
 import {
   calculateEloRatingFromWinRate,
   calculateWinRateConfidenceInterval,
   calculateZValue,
   Z_VALUE_95,
   Z_VALUE_99,
-} from "@/common/statistics";
-import { useAppSettings } from "./settings";
+} from "@/common/statistics.js";
+import { useAppSettings } from "./settings.js";
 
 enum GameState {
   IDLE = "idle",

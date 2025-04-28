@@ -1,4 +1,4 @@
-import { validateHTTPRequest, validateIPCSender } from "@/background/window/security";
+import { validateHTTPRequest, validateIPCSender } from "@/background/window/security.js";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 describe("security", () => {

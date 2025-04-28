@@ -1,4 +1,4 @@
-import { Texts } from "@/common/i18n/text_template";
+import { Texts } from "@/common/i18n/text_template.js";
 
 export const ja: Texts = {
   shogiHome: "ShogiHome",

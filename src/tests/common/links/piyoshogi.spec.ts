@@ -1,4 +1,4 @@
-import { piyoShogiURL } from "@/common/links/piyoshogi";
+import { piyoShogiURL } from "@/common/links/piyoshogi.js";
 import { Record } from "tsshogi";
 
 describe("piyoshogi", () => {

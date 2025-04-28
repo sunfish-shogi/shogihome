@@ -1,5 +1,5 @@
-import * as uri from "@/common/uri";
-import { t } from "@/common/i18n";
+import * as uri from "@/common/uri.js";
+import { t } from "@/common/i18n/index.js";
 
 type UIComponentCommon = {
   left: number;

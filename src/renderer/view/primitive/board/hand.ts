@@ -7,11 +7,11 @@ import {
   reverseColor,
   Square,
 } from "tsshogi";
-import { Config } from "./config";
-import { PieceStandImageType } from "@/common/settings/app";
-import { commonParams, compactHandParams, handParams, portraitHandParams } from "./params";
-import { Hand, HandNumber, HandPiece, HandPointer } from "./layout";
-import { Point } from "@/common/assets/geometry";
+import { Config } from "./config.js";
+import { PieceStandImageType } from "@/common/settings/app.js";
+import { commonParams, compactHandParams, handParams, portraitHandParams } from "./params.js";
+import { Hand, HandNumber, HandPiece, HandPointer } from "./layout.js";
+import { Point } from "@/common/assets/geometry.js";
 
 const pieceStandBackgroundColorMap = {
   [PieceStandImageType.STANDARD]: "#8b4513",

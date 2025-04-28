@@ -1,21 +1,21 @@
-import { BatchConversionResult } from "@/common/file/conversion";
+import { BatchConversionResult } from "@/common/file/conversion.js";
 import {
   RecordFileFormat,
   detectRecordFileFormatByPath,
   exportRecordAsBuffer,
   importRecordFromBuffer,
-} from "@/common/file/record";
+} from "@/common/file/record.js";
 import {
   BatchConversionSettings,
   DestinationType,
   FileNameConflictAction,
-} from "@/common/settings/conversion";
+} from "@/common/settings/conversion.js";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { getAppLogger } from "@/background/log";
-import { AppSettings, TextDecodingRule } from "@/common/settings/app";
-import { exists, listFiles } from "@/background/helpers/file";
-import { loadAppSettings } from "@/background/settings";
+import { getAppLogger } from "@/background/log.js";
+import { AppSettings, TextDecodingRule } from "@/common/settings/app.js";
+import { exists, listFiles } from "@/background/helpers/file.js";
+import { loadAppSettings } from "@/background/settings.js";
 import {
   ImmutableNode,
   ImmutableRecord,

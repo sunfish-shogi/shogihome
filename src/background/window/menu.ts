@@ -8,31 +8,32 @@ import {
   MenuItemConstructorOptions,
   shell,
 } from "electron";
-import { openAutoSaveDirectory, openSettingsDirectory } from "@/background/settings";
-import { getTailCommand, openLogFile, openLogsDirectory, tailLogFile } from "@/background/log";
+import { openAutoSaveDirectory, openSettingsDirectory } from "@/background/settings.js";
+import { getTailCommand, openLogFile, openLogsDirectory, tailLogFile } from "@/background/log.js";
 import {
   onMenuEvent,
   onUpdateAppState,
   sendError,
   sendMessage,
   updateAppSettings,
-} from "@/background/window/ipc";
-import { MenuEvent } from "@/common/control/menu";
-import { AppState, ResearchState } from "@/common/control/state";
-import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help";
-import { t } from "@/common/i18n";
+} from "@/background/window/ipc.js";
+import { MenuEvent } from "@/common/control/menu.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
+import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help.js";
+import { t } from "@/common/i18n/index.js";
 import { InitialPositionSFEN } from "tsshogi";
-import { chromiumLicensePath, electronLicensePath, getAppPath } from "@/background/proc/env";
-import { openBackupDirectory } from "@/background/file/history";
-import { openCacheDirectory } from "@/background/image/cache";
-import { refreshCustomPieceImages, sendTestNotification } from "./debug";
-import { LogType } from "@/common/log";
-import { createLayoutManagerWindow } from "./layout";
-import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github";
-import { materialIconsGuideURL } from "@/common/links/google";
-import { openPath } from "@/background/helpers/electron";
-import { createMonitorWindow } from "./monitor";
-import { createListItems } from "@/common/message";
+import { getAppPath } from "@/background/proc/path-electron.js";
+import { chromiumLicensePath, electronLicensePath } from "@/background/proc/path.js";
+import { openBackupDirectory } from "@/background/file/history.js";
+import { openCacheDirectory } from "@/background/image/cache.js";
+import { refreshCustomPieceImages, sendTestNotification } from "./debug.js";
+import { LogType } from "@/common/log.js";
+import { createLayoutManagerWindow } from "./layout.js";
+import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github.js";
+import { materialIconsGuideURL } from "@/common/links/google.js";
+import { openPath } from "@/background/helpers/electron.js";
+import { createMonitorWindow } from "./monitor.js";
+import { createListItems } from "@/common/message.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";

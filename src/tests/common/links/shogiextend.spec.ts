@@ -1,4 +1,4 @@
-import { shogiExtendSharedBoardURL } from "@/common/links/shogiextend";
+import { shogiExtendSharedBoardURL } from "@/common/links/shogiextend.js";
 import { Record } from "tsshogi";
 
 describe("shogiextend", () => {

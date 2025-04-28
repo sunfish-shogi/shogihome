@@ -2,11 +2,11 @@ import path from "node:path";
 import url from "node:url";
 import crypto from "node:crypto";
 import { promises as fs } from "node:fs";
-import { getAppLogger } from "@/background/log";
+import { getAppLogger } from "@/background/log.js";
 import { Jimp } from "jimp";
-import { imageCacheDir } from "./cache";
-import { exists } from "@/background/helpers/file";
-import { getPieceImageAssetNameByIndex } from "@/common/assets/pieces";
+import { imageCacheDir } from "./cache.js";
+import { exists } from "@/background/helpers/file.js";
+import { getPieceImageAssetNameByIndex } from "@/common/assets/pieces.js";
 
 const marginRatio = 0.05;
 

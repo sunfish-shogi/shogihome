@@ -1,4 +1,4 @@
-import { RecordFileFormat } from "@/common/file/record";
+import { RecordFileFormat } from "@/common/file/record.js";
 import { ImmutableRecord } from "tsshogi";
 
 export type RecordProperties = {

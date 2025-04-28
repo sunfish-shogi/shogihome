@@ -1,5 +1,5 @@
-import { exists } from "@/background/helpers/file";
-import { iconSourceMap } from "@/renderer/assets/icons";
+import { exists } from "@/background/helpers/file.js";
+import { iconSourceMap } from "@/renderer/assets/icons.js";
 
 describe("assets/icons", () => {
   describe("checkIconFilePaths", () => {

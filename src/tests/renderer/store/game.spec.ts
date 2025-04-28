@@ -1,20 +1,20 @@
 import { InitialPositionType, Move, RecordMetadataKey, SpecialMoveType } from "tsshogi";
-import { Clock } from "@/renderer/store/clock";
+import { Clock } from "@/renderer/store/clock.js";
 import {
   calculateGameStatistics,
   GameManager,
   GameResults,
   StartPositionList,
-} from "@/renderer/store/game";
-import { RecordManager } from "@/renderer/store/record";
-import { playerURI01, playerURI02, gameSettings10m30s } from "@/tests/mock/game";
-import { createMockPlayer, createMockPlayerBuilder } from "@/tests/mock/player";
-import { GameSettings, JishogiRule } from "@/common/settings/game";
-import { PlayerBuilder } from "@/renderer/players/builder";
-import api, { API } from "@/renderer/ipc/api";
+} from "@/renderer/store/game.js";
+import { RecordManager } from "@/renderer/store/record.js";
+import { playerURI01, playerURI02, gameSettings10m30s } from "@/tests/mock/game.js";
+import { createMockPlayer, createMockPlayerBuilder } from "@/tests/mock/player.js";
+import { GameSettings, JishogiRule } from "@/common/settings/game.js";
+import { PlayerBuilder } from "@/renderer/players/builder.js";
+import api, { API } from "@/renderer/ipc/api.js";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

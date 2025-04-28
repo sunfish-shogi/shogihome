@@ -1,8 +1,8 @@
-import api, { API } from "@/renderer/ipc/api";
-import { Store } from "@/renderer/layout/store";
+import api, { API } from "@/renderer/ipc/api.js";
+import { Store } from "@/renderer/layout/store.js";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

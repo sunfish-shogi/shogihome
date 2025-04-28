@@ -1,11 +1,11 @@
-import { defaultPlayerBuilder } from "@/renderer/players/builder";
-import { HumanPlayer } from "@/renderer/players/human";
-import { USIPlayer } from "@/renderer/players/usi";
-import api, { API } from "@/renderer/ipc/api";
-import * as uri from "@/common/uri";
+import { defaultPlayerBuilder } from "@/renderer/players/builder.js";
+import { HumanPlayer } from "@/renderer/players/human.js";
+import { USIPlayer } from "@/renderer/players/usi.js";
+import api, { API } from "@/renderer/ipc/api.js";
+import * as uri from "@/common/uri.js";
 import { Mocked } from "vitest";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import { Readable, Writable } from "node:stream";
-import { AperyBook, BookEntry, BookMove, IDX_COUNT, IDX_SCORE, IDX_USI } from "./types";
-import { fromAperyMove, toAperyMove } from "./apery_move";
-import { hash } from "./apery_zobrist";
+import { AperyBook, BookEntry, BookMove, IDX_COUNT, IDX_SCORE, IDX_USI } from "./types.js";
+import { fromAperyMove, toAperyMove } from "./apery_move.js";
+import { hash } from "./apery_zobrist.js";
 
 // Apery 定跡フォーマット
 //

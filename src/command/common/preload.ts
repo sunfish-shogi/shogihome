@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { LogDestination, getAppLogger, setLogDestinations } from "@/background/log";
+import { LogDestination, getAppLogger, setLogDestinations } from "@/background/log.js";
 import {
   login as csaLogin,
   logout as csaLogout,
@@ -9,7 +9,7 @@ import {
   win as csaWin,
   stop as csaStop,
   setHandlers as setCSAHandlers,
-} from "@/background/csa";
+} from "@/background/csa/index.js";
 import {
   ready as usiReady,
   setOption as usiSetOption,
@@ -23,13 +23,13 @@ import {
   stop as usiStop,
   gameover as usiGameover,
   quit as usiQuit,
-} from "@/background/usi";
-import { GameResult } from "@/common/game/result";
-import { LogLevel, LogType } from "@/common/log";
-import { USIEngine } from "@/common/settings/usi";
-import { Bridge } from "@/renderer/ipc/bridge";
-import { BookLoadingMode } from "@/common/book";
-import { Language, setLanguage } from "@/common/i18n";
+} from "@/background/usi/index.js";
+import { GameResult } from "@/common/game/result.js";
+import { LogLevel, LogType } from "@/common/log.js";
+import { USIEngine } from "@/common/settings/usi.js";
+import { Bridge } from "@/renderer/ipc/bridge.js";
+import { BookLoadingMode } from "@/common/book.js";
+import { Language, setLanguage } from "@/common/i18n/index.js";
 
 type Config = {
   appLogFile: boolean;
@@ -416,7 +416,7 @@ export function preload(config: Config) {
   } as unknown as Window & typeof globalThis;
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const usi = require("@/renderer/players/usi");
+  const usi = require("@/renderer/players/usi.js");
   setUSIHandlers({
     onUSIBestMove: usi.onUSIBestMove,
     onUSICheckmate: usi.onUSICheckmate,
@@ -427,7 +427,7 @@ export function preload(config: Config) {
     sendPromptCommand: () => {},
   });
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const csa = require("@/renderer/store/csa");
+  const csa = require("@/renderer/store/csa.js");
   setCSAHandlers({
     onCSAGameSummary: csa.onCSAGameSummary,
     onCSAReject: csa.onCSAReject,

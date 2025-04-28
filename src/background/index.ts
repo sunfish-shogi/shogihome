@@ -1,22 +1,22 @@
 "use strict";
 
 import { app, BrowserWindow, session, Menu, dialog } from "electron";
-import { loadAppSettingsOnce } from "@/background/settings";
+import { loadAppSettingsOnce } from "@/background/settings.js";
 import {
   getAppLogger,
   LogDestination,
   setLogDestinations,
   shutdownLoggers,
-} from "@/background/log";
-import { isActiveSessionExists, quitAll as usiQuitAll } from "@/background/usi";
-import { validateHTTPRequest } from "./window/security";
-import { getPortableExeDir, isDevelopment, isPortable, isTest } from "@/background/proc/env";
-import { setLanguage, t } from "@/common/i18n";
-import { setInitialFilePath } from "./proc/args";
+} from "@/background/log.js";
+import { isActiveSessionExists, quitAll as usiQuitAll } from "@/background/usi/index.js";
+import { validateHTTPRequest } from "./window/security.js";
+import { getPortableExeDir, isDevelopment, isPortable, isTest } from "@/background/proc/env.js";
+import { setLanguage, t } from "@/common/i18n/index.js";
+import { setInitialFilePath } from "./proc/args.js";
 import contextMenu from "electron-context-menu";
-import { LogType } from "@/common/log";
-import { isLogEnabled } from "@/common/settings/app";
-import { createWindow } from "./window/main";
+import { LogType } from "@/common/log.js";
+import { isLogEnabled } from "@/common/settings/app.js";
+import { createWindow } from "./window/main.js";
 import { spawn } from "child_process";
 
 const appSettings = loadAppSettingsOnce();

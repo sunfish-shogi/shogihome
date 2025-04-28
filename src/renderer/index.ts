@@ -5,13 +5,13 @@ import "./css/control.css";
 import "./css/dialog.css";
 import { createApp, watch } from "vue";
 import App from "@/renderer/App.vue";
-import api, { appInfo, isMobileWebApp } from "@/renderer/ipc/api";
-import { setup as setupIPC } from "@/renderer/ipc/setup";
-import { useStore } from "@/renderer/store";
+import api, { appInfo, isMobileWebApp } from "@/renderer/ipc/api.js";
+import { setup as setupIPC } from "@/renderer/ipc/setup.js";
+import { useStore } from "@/renderer/store/index.js";
 import { Chart, registerables } from "chart.js";
-import { LogLevel } from "@/common/log";
-import { useAppSettings } from "./store/settings";
-import { setLanguage, t } from "@/common/i18n";
+import { LogLevel } from "@/common/log.js";
+import { useAppSettings } from "./store/settings.js";
+import { setLanguage, t } from "@/common/i18n/index.js";
 import { default as dayjs } from "dayjs";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _en from "dayjs/locale/en";
@@ -20,7 +20,7 @@ import * as _ja from "dayjs/locale/ja";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as _zh_tw from "dayjs/locale/zh-tw";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useErrorStore } from "@/renderer/store/error";
+import { useErrorStore } from "@/renderer/store/error.js";
 
 api.log(LogLevel.INFO, `start renderer process: APP_VERSION=${appInfo.appVersion}`);
 

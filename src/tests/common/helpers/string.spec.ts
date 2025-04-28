@@ -1,4 +1,4 @@
-import { filter, ordinal } from "@/common/helpers/string";
+import { filter, ordinal } from "@/common/helpers/string.js";
 
 describe("helpers/string", () => {
   it("ordinal", () => {

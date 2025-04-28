@@ -1,10 +1,11 @@
-import * as uri from "@/common/uri";
-import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player";
-import { t } from "@/common/i18n";
-import { USIEngineForCLI, exportUSIEnginesForCLI, importUSIEnginesForCLI } from "./usi";
-import { RecordFileFormat } from "@/common/file/record";
-import { AppSettings } from "./app";
-import { base64Decode, base64Encode } from "encoding-japanese";
+import * as uri from "@/common/uri.js";
+import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player.js";
+import { t } from "@/common/i18n/index.js";
+import { USIEngineForCLI, exportUSIEnginesForCLI, importUSIEnginesForCLI } from "./usi.js";
+import { RecordFileFormat } from "@/common/file/record.js";
+import { AppSettings } from "./app.js";
+import ejpn from "encoding-japanese";
+const [base64Decode, base64Encode] = [ejpn.base64Decode, ejpn.base64Encode];
 
 export enum CSAProtocolVersion {
   V121 = "v121",

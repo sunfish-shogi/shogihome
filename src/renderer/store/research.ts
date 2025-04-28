@@ -1,11 +1,11 @@
-import { ResearchSettings, defaultResearchSettings } from "@/common/settings/research";
-import { USIPlayer } from "@/renderer/players/usi";
-import { SearchInfo } from "@/renderer/players/player";
+import { ResearchSettings, defaultResearchSettings } from "@/common/settings/research.js";
+import { USIPlayer } from "@/renderer/players/usi.js";
+import { SearchInfo } from "@/renderer/players/player.js";
 import { ImmutableRecord } from "tsshogi";
-import { USIEngine } from "@/common/settings/usi";
-import { SearchInfoSenderType } from "./record";
-import { useAppSettings } from "./settings";
-import { Lazy } from "@/renderer/helpers/lazy";
+import { USIEngine } from "@/common/settings/usi.js";
+import { SearchInfoSenderType } from "./record.js";
+import { useAppSettings } from "./settings.js";
+import { Lazy } from "@/renderer/helpers/lazy.js";
 
 function getSenderTypeByIndex(index: number): SearchInfoSenderType | undefined {
   switch (index) {

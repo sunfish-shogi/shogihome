@@ -1,16 +1,17 @@
 import fs from "node:fs";
 import url from "node:url";
 import path from "node:path";
-import { Releases, VersionStatus } from "@/common/version";
-import { getAppPath, isDevelopment, isTest } from "@/background/proc/env";
-import { exists } from "@/background/helpers/file";
-import { fetch } from "@/background/helpers/http";
+import { Releases, VersionStatus } from "@/common/version.js";
+import { isDevelopment, isTest } from "@/background/proc/env.js";
+import { exists } from "@/background/helpers/file.js";
+import { fetch } from "@/background/helpers/http.js";
 import * as semver from "semver";
-import { t } from "@/common/i18n";
-import { getAppLogger } from "@/background/log";
-import { getAppVersion, showNotification } from "@/background/helpers/electron";
-import { ghRepository, ghioDomain } from "@/common/links/github";
-import { writeFileAtomic } from "./file/atomic";
+import { t } from "@/common/i18n/index.js";
+import { getAppLogger } from "@/background/log.js";
+import { getAppVersion, showNotification } from "@/background/helpers/electron.js";
+import { ghRepository, ghioDomain } from "@/common/links/github.js";
+import { writeFileAtomic } from "./file/atomic.js";
+import { getAppPath } from "./proc/path-electron.js";
 
 const minimumCheckIntervalMs = isDevelopment()
   ? 60 * 1000 // Dev: 1 minute

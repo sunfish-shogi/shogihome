@@ -2,9 +2,9 @@ import {
   AnalysisSettings,
   normalizeAnalysisSettings,
   validateAnalysisSettings,
-} from "@/common/settings/analysis";
-import { CommentBehavior } from "@/common/settings/comment";
-import * as uri from "@/common/uri";
+} from "@/common/settings/analysis.js";
+import { CommentBehavior } from "@/common/settings/comment.js";
+import * as uri from "@/common/uri.js";
 
 describe("settings/analysis", () => {
   it("normalize", () => {

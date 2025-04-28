@@ -1,6 +1,6 @@
-import { getElectron, requireElectron } from "@/background/helpers/portability";
-import { exists } from "./file";
-import { t } from "@/common/i18n";
+import { exists } from "./file.js";
+import { t } from "@/common/i18n/index.js";
+import { app, Notification, shell } from "electron";
 
 export function getAppVersion(): string {
   return requireElectron().app.getVersion();

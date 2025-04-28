@@ -1,5 +1,6 @@
-import { getAppLogger } from "@/background/log";
-import { requireElectron, getElectron } from "@/background/helpers/portability";
+import { getAppLogger } from "@/background/log.js";
+import { safeStorage } from "electron";
+import { isTest } from "@/background/proc/env.js";
 
 export function isEncryptionAvailable(): boolean {
   return !!getElectron()?.safeStorage.isEncryptionAvailable();

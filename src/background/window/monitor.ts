@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { createAuxiliaryWindow } from "./auxiliary";
+import { createAuxiliaryWindow } from "./auxiliary.js";
 
 let win: BrowserWindow | null = null;
 

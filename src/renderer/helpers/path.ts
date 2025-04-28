@@ -1,7 +1,10 @@
 import { getBlackPlayerName, getWhitePlayerName, ImmutableRecord, Move } from "tsshogi";
-import { getDateString } from "@/common/helpers/datetime";
-import { defaultRecordFileNameTemplate } from "@/common/file/path";
-import { getDateStringFromMetadata, getRecordTitleFromMetadata } from "@/common/helpers/metadata";
+import { getDateString } from "@/common/helpers/datetime.js";
+import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
+import {
+  getDateStringFromMetadata,
+  getRecordTitleFromMetadata,
+} from "@/common/helpers/metadata.js";
 
 export function basename(path: string): string {
   return path.substring(Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1);

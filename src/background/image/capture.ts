@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
-import { Rect } from "@/common/assets/geometry";
-import { getAppLogger } from "@/background/log";
-import { loadAppSettings } from "@/background/settings";
-import { requireElectron } from "@/background/helpers/portability";
-import { WebContents } from "electron";
+import { Rect } from "@/common/assets/geometry.js";
+import { getAppLogger } from "@/background/log.js";
+import { loadAppSettings } from "@/background/settings.js";
+import { BrowserWindow, dialog, WebContents } from "electron";
 
 const jpegQuality = 85;
 

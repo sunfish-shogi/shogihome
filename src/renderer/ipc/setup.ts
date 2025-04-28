@@ -1,7 +1,7 @@
 import { watch } from "vue";
 import { SpecialMoveType } from "tsshogi";
-import { useStore } from "@/renderer/store";
-import { useStore as usePromptStore } from "@/renderer/prompt/store";
+import { useStore } from "@/renderer/store/index.js";
+import { useStore as usePromptStore } from "@/renderer/prompt/store.js";
 import {
   onUSIBestMove,
   onUSICheckmate,
@@ -9,12 +9,12 @@ import {
   onUSICheckmateTimeout,
   onUSIInfo,
   onUSINoMate,
-} from "@/renderer/players/usi";
-import { humanPlayer } from "@/renderer/players/human";
-import { bridge } from "@/renderer/ipc/api";
-import { MenuEvent } from "@/common/control/menu";
-import { USIInfoCommand } from "@/common/game/usi";
-import { AppState, ResearchState } from "@/common/control/state";
+} from "@/renderer/players/usi.js";
+import { humanPlayer } from "@/renderer/players/human.js";
+import { bridge } from "@/renderer/ipc/api.js";
+import { MenuEvent } from "@/common/control/menu.js";
+import { USIInfoCommand } from "@/common/game/usi.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
 import {
   onCSAClose,
   onCSAGameResult,
@@ -22,14 +22,14 @@ import {
   onCSAMove,
   onCSAReject,
   onCSAStart,
-} from "@/renderer/store/csa";
-import { useAppSettings } from "@/renderer/store/settings";
-import { t } from "@/common/i18n";
-import { LogLevel } from "@/common/log";
-import { useErrorStore } from "@/renderer/store/error";
-import { useBusyState } from "@/renderer/store/busy";
-import { useConfirmationStore } from "@/renderer/store/confirm";
-import { useMessageStore } from "@/renderer/store/message";
+} from "@/renderer/store/csa.js";
+import { useAppSettings } from "@/renderer/store/settings.js";
+import { t } from "@/common/i18n/index.js";
+import { LogLevel } from "@/common/log.js";
+import { useErrorStore } from "@/renderer/store/error.js";
+import { useBusyState } from "@/renderer/store/busy.js";
+import { useConfirmationStore } from "@/renderer/store/confirm.js";
+import { useMessageStore } from "@/renderer/store/message.js";
 
 export function setup(): void {
   const store = useStore();

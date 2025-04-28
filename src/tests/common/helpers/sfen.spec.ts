@@ -1,4 +1,4 @@
-import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen";
+import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 describe("helpers/sfen", () => {
   it("flippedSFEN", () => {

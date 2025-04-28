@@ -1,8 +1,8 @@
-import { Config } from "./config";
+import { Config } from "./config.js";
 import { Color, ImmutablePosition, reverseColor } from "tsshogi";
-import { Frame, Layout, PlayerName, Turn } from "./layout";
-import { portraitViewParams } from "./params";
-import { Point, RectSize } from "@/common/assets/geometry";
+import { Frame, Layout, PlayerName, Turn } from "./layout.js";
+import { portraitViewParams } from "./params.js";
+import { Point, RectSize } from "@/common/assets/geometry.js";
 
 export class PortraitLayoutBuilder {
   constructor(private config: Config) {}

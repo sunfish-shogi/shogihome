@@ -1,15 +1,15 @@
-import { checkUpdates } from "@/background/version";
+import { checkUpdates } from "@/background/version.js";
 import http from "node:http";
 import path from "node:path";
 import fs from "node:fs";
-import { Releases, VersionStatus } from "@/common/version";
-import { getAppPath } from "@/background/proc/env";
-import * as log from "@/background/log";
-import * as electron from "@/background/helpers/electron";
+import { Releases, VersionStatus } from "@/common/version.js";
+import { getAppPath } from "@/background/proc/path-electron.js";
+import * as log from "@/background/log.js";
+import * as electron from "@/background/helpers/electron.js";
 import { Mocked } from "vitest";
-import { getNopLogger } from "@/tests/mock/log";
+import { getNopLogger } from "@/tests/mock/log.js";
 
-vi.mock("@/background/log");
+vi.mock("@/background/log.js");
 
 const mockLog = log as Mocked<typeof log>;
 

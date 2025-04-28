@@ -10,7 +10,7 @@ import {
   InvalidUSIError,
   PieceNotExistsError,
 } from "tsshogi";
-import { t } from "./translation_table";
+import { t } from "./translation_table.js";
 
 export function localizeError(err: Error): Error {
   if (err instanceof InvalidPieceNameError) {

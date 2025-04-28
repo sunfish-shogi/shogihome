@@ -1,4 +1,3 @@
-import path from "node:path";
 import { app, BrowserWindow } from "electron";
 import {
   getAppState,
@@ -7,16 +6,17 @@ import {
   openRecord,
   sendError,
   setupIPC,
-} from "@/background/window/ipc";
-import { loadWindowSettings, saveWindowSettings } from "@/background/settings";
-import { buildWindowSettings } from "@/common/settings/window";
-import { getAppLogger } from "@/background/log";
-import { AppState } from "@/common/control/state";
-import { getPreloadPath, isDevelopment, isPreview, isTest } from "@/background/proc/env";
-import { checkUpdates } from "@/background/version";
-import { setupMenu } from "@/background/window/menu";
-import { t } from "@/common/i18n";
-import { ghioDomain } from "@/common/links/github";
+} from "@/background/window/ipc.js";
+import { loadWindowSettings, saveWindowSettings } from "@/background/settings.js";
+import { buildWindowSettings } from "@/common/settings/window.js";
+import { getAppLogger } from "@/background/log.js";
+import { AppState } from "@/common/control/state.js";
+import { isDevelopment, isPreview, isTest } from "@/background/proc/env.js";
+import { checkUpdates } from "@/background/version.js";
+import { setupMenu } from "@/background/window/menu.js";
+import { t } from "@/common/i18n/index.js";
+import { ghioDomain } from "@/common/links/github.js";
+import { getPreloadPath, getPreviewHTMLPath, getProductionHTMLPath } from "./path.js";
 
 export function createWindow(onClosed: () => void) {
   let settings = loadWindowSettings();

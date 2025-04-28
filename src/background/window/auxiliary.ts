@@ -1,7 +1,7 @@
-import path from "node:path";
 import { BrowserWindow } from "electron";
-import { getPreloadPath, isDevelopment, isPreview, isTest } from "@/background/proc/env";
-import { getAppLogger } from "@/background/log";
+import { isDevelopment, isPreview, isTest } from "@/background/proc/env.js";
+import { getAppLogger } from "@/background/log.js";
+import { getPreloadPath, getPreviewHTMLPath, getProductionHTMLPath } from "./path.js";
 
 export function createAuxiliaryWindow(
   name: string,

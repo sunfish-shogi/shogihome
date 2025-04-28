@@ -1,16 +1,16 @@
-import { convertRecordFiles } from "@/background/file/conversion";
-import { RecordFileFormat } from "@/common/file/record";
+import { convertRecordFiles } from "@/background/file/conversion.js";
+import { RecordFileFormat } from "@/common/file/record.js";
 import {
   DestinationType,
   FileNameConflictAction,
   defaultBatchConversionSettings,
-} from "@/common/settings/conversion";
+} from "@/common/settings/conversion.js";
 import fs from "node:fs";
 import path from "node:path";
-import { listFiles } from "@/background/helpers/file";
-import { defaultAppSettings } from "@/common/settings/app";
-import { saveAppSettings } from "@/background/settings";
-import { getTempPathForTesting } from "@/background/proc/env";
+import { listFiles } from "@/background/helpers/file.js";
+import { defaultAppSettings } from "@/common/settings/app.js";
+import { saveAppSettings } from "@/background/settings.js";
+import { getTempPathForTesting } from "@/background/proc/env.js";
 
 const tmpdir = path.join(getTempPathForTesting(), "conversion");
 

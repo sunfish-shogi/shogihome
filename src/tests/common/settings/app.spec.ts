@@ -3,7 +3,7 @@ import {
   getPieceImageURLTemplate,
   defaultAppSettings,
   PieceImageType,
-} from "@/common/settings/app";
+} from "@/common/settings/app.js";
 
 describe("settings/csa", () => {
   it("normalize", () => {

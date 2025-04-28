@@ -1,6 +1,6 @@
-import { RecordFileFormat } from "@/common/file/record";
+import { RecordFileFormat } from "@/common/file/record.js";
 import { Record, SpecialMoveType } from "tsshogi";
-import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record";
+import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record.js";
 
 describe("helpers/record", () => {
   it("detectUnsupportedRecordProperties", () => {

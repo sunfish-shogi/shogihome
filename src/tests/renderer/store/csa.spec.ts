@@ -1,6 +1,6 @@
-import api, { API } from "@/renderer/ipc/api";
-import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
-import { CSAProtocolVersion } from "@/common/settings/csa";
+import api, { API } from "@/renderer/ipc/api.js";
+import { CSAGameResult, CSASpecialMove } from "@/common/game/csa.js";
+import { CSAProtocolVersion } from "@/common/settings/csa.js";
 import {
   Color,
   InitialPositionSFEN,
@@ -10,7 +10,7 @@ import {
   Square,
   specialMove,
 } from "tsshogi";
-import { Clock } from "@/renderer/store/clock";
+import { Clock } from "@/renderer/store/clock.js";
 import {
   CSAGameManager,
   CSAGameState,
@@ -18,24 +18,24 @@ import {
   onCSAGameSummary,
   onCSAMove,
   onCSAStart,
-} from "@/renderer/store/csa";
-import { RecordManager } from "@/renderer/store/record";
+} from "@/renderer/store/csa.js";
+import { RecordManager } from "@/renderer/store/record.js";
 import {
   csaGameSettings,
   csaGameSummary,
   csaGameSummaryInvalidPosition,
   csaGameSummaryWithUnequalTimeConfig,
   playerURI,
-} from "@/tests/mock/csa";
+} from "@/tests/mock/csa.js";
 import {
   createErrorPlayerBuilder,
   createMockPlayer,
   createMockPlayerBuilder,
-} from "@/tests/mock/player";
+} from "@/tests/mock/player.js";
 import { Mocked } from "vitest";
-import { USIEngine } from "@/common/settings/usi";
+import { USIEngine } from "@/common/settings/usi.js";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 

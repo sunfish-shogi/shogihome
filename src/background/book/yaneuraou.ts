@@ -12,8 +12,8 @@ import {
   IDX_SCORE,
   IDX_USI,
   IDX_USI2,
-} from "./types";
-import { getAppLogger } from "@/background/log";
+} from "./types.js";
+import { getAppLogger } from "@/background/log.js";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
 

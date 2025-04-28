@@ -1,5 +1,5 @@
 import { RecordMetadataKey } from "tsshogi";
-import { t } from "./translation_table";
+import { t } from "./translation_table.js";
 
 export function getRecordMetadataName(key: RecordMetadataKey): string {
   switch (key) {

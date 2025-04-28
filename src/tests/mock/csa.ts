@@ -1,14 +1,14 @@
-import { RecordFileFormat } from "@/common/file/record";
-import { CSAGameSummary } from "@/common/game/csa";
+import { RecordFileFormat } from "@/common/file/record.js";
+import { CSAGameSummary } from "@/common/game/csa.js";
 import {
   CSAGameSettings,
   CSAGameSettingsForCLI,
   CSAGameSettingsHistory,
   CSAProtocolVersion,
   CSAServerSettings as CSAServerSettings,
-} from "@/common/settings/csa";
-import { PlayerSettings } from "@/common/settings/player";
-import { defaultRecordFileNameTemplate } from "@/common/file/path";
+} from "@/common/settings/csa.js";
+import { PlayerSettings } from "@/common/settings/player.js";
+import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
 import { Color } from "tsshogi";
 
 export const playerURI = "es://usi-engine/test-engine";

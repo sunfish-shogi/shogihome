@@ -1,6 +1,6 @@
 import { shell } from "electron";
-import { readStatus } from "@/background/version";
-import { howToUseWikiPageURL, websiteURL } from "@/common/links/github";
+import { readStatus } from "@/background/version.js";
+import { howToUseWikiPageURL, websiteURL } from "@/common/links/github.js";
 
 export function openWebsite(): void {
   shell.openExternal(websiteURL);

@@ -1,4 +1,4 @@
-import { urlSafeBase64Encode } from "@/common/helpers/base64";
+import { urlSafeBase64Encode } from "@/common/helpers/base64.js";
 import { ImmutableRecord } from "tsshogi";
 
 const sharedBoardURL = "https://www.shogi-extend.com/share-board";

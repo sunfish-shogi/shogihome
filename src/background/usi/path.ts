@@ -1,5 +1,5 @@
 import path from "node:path";
-import { getPortableExeDir } from "@/background/proc/env";
+import { getPortableExeDir } from "@/background/proc/env.js";
 
 export function resolveEnginePath(enginePath: string): string {
   const portableExeDir = getPortableExeDir();

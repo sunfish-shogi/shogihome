@@ -1,6 +1,6 @@
-import { MateSearchSettings } from "@/common/settings/mate";
-import { USIPlayer } from "@/renderer/players/usi";
-import { useAppSettings } from "./settings";
+import { MateSearchSettings } from "@/common/settings/mate.js";
+import { USIPlayer } from "@/renderer/players/usi.js";
+import { useAppSettings } from "./settings.js";
 import { ImmutableRecord, Move } from "tsshogi";
 
 type CheckmateCallback = (moves: Move[]) => void;

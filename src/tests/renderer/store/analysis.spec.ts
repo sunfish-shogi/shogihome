@@ -1,11 +1,11 @@
-import { AnalysisManager } from "@/renderer/store/analysis";
-import { RecordManager } from "@/renderer/store/record";
-import { analysisSettings as baseAnalysisSettings } from "@/tests/mock/analysis";
-import { USIPlayer } from "@/renderer/players/usi";
+import { AnalysisManager } from "@/renderer/store/analysis.js";
+import { RecordManager } from "@/renderer/store/record.js";
+import { analysisSettings as baseAnalysisSettings } from "@/tests/mock/analysis.js";
+import { USIPlayer } from "@/renderer/players/usi.js";
 import { MockedClass } from "vitest";
-import { CommentBehavior } from "@/common/settings/comment";
+import { CommentBehavior } from "@/common/settings/comment.js";
 
-vi.mock("@/renderer/players/usi");
+vi.mock("@/renderer/players/usi.js");
 
 const mockUSIPlayer = USIPlayer as MockedClass<typeof USIPlayer>;
 

@@ -1,10 +1,10 @@
-import api, { API } from "@/renderer/ipc/api";
-import { CommandType } from "@/common/advanced/command";
-import { Store } from "@/renderer/prompt/store";
+import api, { API } from "@/renderer/ipc/api.js";
+import { CommandType } from "@/common/advanced/command.js";
+import { Store } from "@/renderer/prompt/store.js";
 import { Mocked } from "vitest";
-import { PromptTarget } from "@/common/advanced/prompt";
+import { PromptTarget } from "@/common/advanced/prompt.js";
 
-vi.mock("@/renderer/ipc/api");
+vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 
