@@ -11,7 +11,7 @@ export function createAuxiliaryWindow(
 ): BrowserWindow {
   const win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, getPreloadPath()),
+      preload: getPreloadPath(),
       // on development, disable webSecurity to allow mix of "file://" and "http://localhost:5173"
       webSecurity: !isDevelopment(),
       // NOTE: 現状、子ウィンドウではタイマーの実行が抑制されても困るケースが無いので、スロットリングは有効(デフォルト)にしておく。
@@ -46,14 +46,14 @@ export function createAuxiliaryWindow(
   } else if (isPreview()) {
     // Preview
     getAppLogger().info("load app URL (%s)", name);
-    win.loadFile(path.join(__dirname, "../../../" + name + ".html"), { query }).catch((e) => {
+    win.loadFile(getPreviewHTMLPath(name), { query }).catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });
   } else {
     // Production
     getAppLogger().info("load app URL (%s)", name);
-    win.loadFile(path.join(__dirname, "../" + name + ".html"), { query }).catch((e) => {
+    win.loadFile(getProductionHTMLPath(name), { query }).catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });

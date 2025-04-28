@@ -30,7 +30,7 @@ export function createWindow(onClosed: () => void) {
     fullscreenable: true,
     fullscreen: settings.fullscreen,
     webPreferences: {
-      preload: path.join(__dirname, getPreloadPath()),
+      preload: getPreloadPath(),
       // on development, disable webSecurity to allow mix of "file://" and "http://localhost:5173"
       webSecurity: !isDevelopment(),
       // 対局や棋譜解析の用途では処理の遅延が致命的なのでスロットリングを無効にする。
@@ -80,14 +80,14 @@ export function createWindow(onClosed: () => void) {
   } else if (isPreview()) {
     // Preview
     getAppLogger().info("load app URL");
-    win.loadFile(path.join(__dirname, "../../../index.html")).catch((e) => {
+    win.loadFile(getPreviewHTMLPath("index")).catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });
   } else {
     // Production
     getAppLogger().info("load app URL");
-    win.loadFile(path.join(__dirname, "../index.html")).catch((e) => {
+    win.loadFile(getProductionHTMLPath("index")).catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });
