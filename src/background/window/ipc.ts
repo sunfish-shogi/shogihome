@@ -770,7 +770,9 @@ ipcMain.handle(Background.USI_QUIT, (event, sessionID: number) => {
 ipcMain.handle(Background.CSA_LOGIN, (event, json: string): number => {
   validateIPCSender(event.senderFrame);
   const settings: CSAServerSettings = JSON.parse(json);
-  return csaLogin(settings);
+  const sessionID = csaLogin(settings);
+  preventAppSuspension(getPowerSaveBlockKeyForCSA(sessionID));
+  return sessionID;
 });
 
 ipcMain.handle(Background.CSA_LOGOUT, (event, sessionID: number): void => {
@@ -1026,7 +1028,29 @@ setHandlers({
   },
   onCSAClose(sessionID: number): void {
     mainWindow.webContents.send(Renderer.CSA_CLOSE, sessionID);
+    allowAppSuspension(getPowerSaveBlockKeyForCSA(sessionID));
   },
   sendPromptCommand: sendPromptCommand.bind(this, PromptTarget.CSA),
   sendError: sendError,
 });
+
+function getPowerSaveBlockKeyForCSA(sessionID: number): string {
+  return `csa:${sessionID}`;
+}
+
+const powerSaveBlockMap = new Map<string, number>();
+
+function preventAppSuspension(key: string) {
+  const id = powerSaveBlocker.start("prevent-app-suspension");
+  powerSaveBlockMap.set(key, id);
+  getAppLogger().info("prevent app suspension: blocker=%d", id);
+}
+
+function allowAppSuspension(key: string) {
+  const id = powerSaveBlockMap.get(key);
+  if (id !== undefined) {
+    powerSaveBlocker.stop(id);
+    powerSaveBlockMap.delete(key);
+    getAppLogger().info("allow app suspension: blocker=%d", id);
+  }
+}

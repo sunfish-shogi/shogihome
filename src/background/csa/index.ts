@@ -31,7 +31,6 @@ export function setHandlers(handlers: Handlers): void {
 }
 
 let lastSessionID = 0;
-let powerSaveBlockID: number | undefined = undefined;
 
 function issueSessionID(): number {
   lastSessionID += 1;
@@ -43,22 +42,11 @@ const sessionRemoveDelay = 20e3;
 
 function registerClient(client: Client): void {
   clients.set(client.sessionID, client);
-  if (powerSaveBlockID === undefined) {
-    powerSaveBlockID = preventAppSuspension();
-    if (powerSaveBlockID !== undefined) {
-      getAppLogger().info("prevent app suspension: blocker=%d", powerSaveBlockID);
-    }
-  }
 }
 
 function unregisterClient(sessionID: number): void {
   setTimeout(() => {
     clients.delete(sessionID);
-    if (clients.size === 0 && powerSaveBlockID !== undefined) {
-      allowAppSuspension(powerSaveBlockID);
-      getAppLogger().info("allow app suspension: blocker=%d", powerSaveBlockID);
-      powerSaveBlockID = undefined;
-    }
   }, sessionRemoveDelay);
 }
 
