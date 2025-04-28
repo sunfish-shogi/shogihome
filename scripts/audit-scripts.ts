@@ -26,6 +26,16 @@ function checkPackageJson(packageJsonPath: string) {
       }
       break;
 
+    // The postinstall is introduced since https://github.com/unrs/unrs-resolver/pull/66 (v1.6.0)
+    case "unrs-resolver":
+      if (!scripts?.postinstall) {
+        throw new Error(`Package ${name}@${version} is missing postinstall scripts`);
+      }
+      if (!scripts.postinstall.match(/^napi-postinstall unrs-resolver [\d.]+ check$/)) {
+        throw new Error(`Package ${name}@${version} has unexpected postinstall scripts`);
+      }
+      break;
+
     // Other packages should not have postinstall scripts
     default:
       if (scripts?.postinstall) {
