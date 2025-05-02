@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import * as builder from "electron-builder";
 // eslint-disable-next-line no-restricted-imports
-import config from "../.electron-builder.config";
+import config from "../.electron-builder.config.mjs";
 
 const target = process.argv[2];
 
