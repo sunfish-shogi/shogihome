@@ -1,6 +1,7 @@
 <template>
+  <!-- FIXME: この div は多分いらない -->
   <div>
-    <dialog ref="dialog" class="root">
+    <DialogFrame limited @cancel="onCancel">
       <div class="title">{{ t.csaProtocolOnlineGame }}</div>
       <div class="form-group scroll">
         <div v-if="!logEnabled" class="form-group warning">
@@ -215,15 +216,15 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
+    </DialogFrame>
   </div>
 </template>
 
 <script setup lang="ts">
 import YAML from "yaml";
 import { t } from "@/common/i18n";
-import { USIEngineLabel, USIEngine, USIEngines } from "@/common/settings/usi";
-import { ref, onMounted, computed, onBeforeUnmount } from "vue";
+import { USIEngine, USIEngines, PredefinedUSIEngineTag } from "@/common/settings/usi";
+import { ref, onMounted, computed } from "vue";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
@@ -237,11 +238,9 @@ import {
   defaultCSAGameSettings,
   BlankLinePingSettings,
 } from "@/common/settings/csa";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import { PlayerSettings } from "@/common/settings/player";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -256,12 +255,12 @@ import {
   isValidFloodgatePassword,
   officialCSAServerDomain,
 } from "@/common/game/csa";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
 const messageStore = useMessageStore();
 const appSettings = useAppSettings();
-const dialog = ref();
 const csaGameSettings = ref(defaultCSAGameSettings());
 const blankLinePing = ref(false);
 const blankLinePingSettings = ref<BlankLinePingSettings>({
@@ -289,18 +288,12 @@ onMounted(async () => {
       blankLinePingSettings.value = csaGameSettings.value.server.blankLinePing;
     }
     playerURI.value = csaGameSettings.value.player.uri;
-    showModalDialog(dialog.value, onCancel);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const isFloodgate = computed(() => csaGameSettings.value.server.host === floodgateDomain);
@@ -435,8 +428,8 @@ const logEnabled = computed(() => {
 </script>
 
 <style scoped>
-.root {
-  width: 560px;
+.form-group {
+  min-width: 510px;
 }
 input.number {
   width: 100px;

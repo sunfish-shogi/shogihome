@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame limited @cancel="onClose">
+    <div class="root">
       <div class="title">{{ t.batchConversion }}</div>
       <div class="form-group scroll">
         <div>{{ t.inputs }}</div>
@@ -125,8 +125,8 @@
       <div class="main-buttons">
         <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
@@ -138,11 +138,9 @@ import {
   FileNameConflictAction,
   defaultBatchConversionSettings,
 } from "@/common/settings/conversion";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import api from "@/renderer/ipc/api";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { t } from "@/common/i18n";
@@ -153,11 +151,11 @@ import { LogType, LogLevel } from "@/common/log";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
 const appSettings = useAppSettings();
-const dialog = ref();
 const settings = ref(defaultBatchConversionSettings());
 const sourceFormats = ref({
   kif: false,
@@ -173,8 +171,6 @@ busyState.retain();
 onMounted(async () => {
   try {
     settings.value = await api.loadBatchConversionSettings();
-    showModalDialog(dialog.value, onClose);
-    installHotKeyForDialog(dialog.value);
     const sf = settings.value.sourceFormats;
     sourceFormats.value = {
       kif: sf.includes(RecordFileFormat.KIF),
@@ -190,10 +186,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const selectSourceDirectory = async () => {

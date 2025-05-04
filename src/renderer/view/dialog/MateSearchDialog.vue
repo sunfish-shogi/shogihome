@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.mateSearch }}</div>
       <div class="form-group scroll">
         <PlayerSelector
@@ -22,34 +22,30 @@
         </button>
         <button data-hotkey="Escape" @click="onCancel()">{{ t.cancel }}</button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { MateSearchSettings } from "@/common/settings/mate";
 import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import api from "@/renderer/ipc/api";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import PlayerSelector from "./PlayerSelector.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const engines = ref(new USIEngines());
 const engineURI = ref("");
 
 busyState.retain();
 
 onMounted(async () => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
   try {
     const mateSearchSettings = await api.loadMateSearchSettings();
     engines.value = await api.loadUSIEngines();
@@ -60,10 +56,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onStart = () => {

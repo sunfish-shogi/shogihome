@@ -1,6 +1,7 @@
 <template>
+  <!-- FIXME: この div は多分いらない -->
   <div>
-    <dialog ref="dialog">
+    <DialogFrame @cancel="onCancel">
       <div class="title">{{ t.game }}</div>
       <div class="form-group full-column">
         <div class="row regular-interval">
@@ -248,14 +249,14 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
+    </DialogFrame>
   </div>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { USIEngineLabel, USIEngine, USIEngines } from "@/common/settings/usi";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted } from "vue";
 import api, { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
@@ -265,21 +266,19 @@ import {
   validateGameSettings,
   validateGameSettingsForWeb,
 } from "@/common/settings/game";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import { PlayerSettings } from "@/common/settings/player";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { InitialPositionType } from "tsshogi";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const hours = ref(0);
 const minutes = ref(0);
 const byoyomi = ref(0);
@@ -314,18 +313,12 @@ onMounted(async () => {
     whiteIncrement.value = whiteTimeLimit.increment;
     setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
     startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
-    showModalDialog(dialog.value, onCancel);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog">
+  <DialogFrame limited @cancel="onClose">
+    <div class="root">
       <div class="title">定跡手追加</div>
       <div>
         <HorizontalSelector
@@ -117,16 +117,14 @@
           {{ t.close }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
@@ -143,6 +141,7 @@ import {
   SourceType,
   validateBookImportSettings,
 } from "@/common/settings/book";
+import DialogFrame from "./DialogFrame.vue";
 
 type InMemoryMove = {
   type: "move";
@@ -165,7 +164,6 @@ const store = useStore();
 const bookStore = useBookStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
-const dialog = ref();
 const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 
@@ -216,18 +214,12 @@ onMounted(async () => {
   try {
     await setupInMemoryList();
     settings.value = await api.loadBookImportSettings();
-    showModalDialog(dialog.value, onClose);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     errorStore.add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onClose = () => {
@@ -296,7 +288,7 @@ const importMoves = () => {
 </script>
 
 <style scoped>
-dialog {
+root {
   width: 600px;
   height: 80%;
   max-width: 100%;

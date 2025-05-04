@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.launchUSIEngine }}({{ t.adminMode }})</div>
       <div class="form-group">
         <div>{{ t.searchEngine }}</div>
@@ -28,16 +28,14 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import PlayerSelector from "./PlayerSelector.vue";
 import { USIEngines } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
@@ -46,19 +44,17 @@ import { PromptTarget } from "@/common/advanced/prompt";
 import { Tab } from "@/common/settings/app";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
 const appSettings = useAppSettings();
-const dialog = ref();
 const engines = ref(new USIEngines());
 const engineURI = ref("");
 
 busyState.retain();
 
 onMounted(async () => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
   try {
     engines.value = await api.loadUSIEngines();
   } catch (e) {
@@ -67,10 +63,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onStart = async () => {

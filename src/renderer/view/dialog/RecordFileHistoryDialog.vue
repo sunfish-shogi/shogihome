@@ -1,79 +1,75 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
-      <div class="title">{{ t.history }}</div>
-      <div class="form-group scroll list-area">
-        <div v-if="entries.length === 0">
-          {{ t.noHistory }}
+  <DialogFrame limited @cancel="onClose">
+    <div class="title">{{ t.history }}</div>
+    <div class="form-group scroll list-area">
+      <div v-if="entries.length === 0">
+        {{ t.noHistory }}
+      </div>
+      <div v-for="(entry, index) of entries" :key="index" class="entry">
+        <hr v-if="index !== 0" />
+        <div class="header">
+          <span class="left">
+            <span class="class">{{
+              entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
+            }}</span>
+            <span class="time">{{
+              dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
+            }}</span>
+            <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
+          </span>
+          <span class="right">
+            <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
+              {{ t.open }}
+            </button>
+            <button
+              v-if="entry.class === HistoryClass.BACKUP"
+              @click="restoreV1(entry.backupFileName)"
+            >
+              {{ t.restore }}
+            </button>
+            <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
+              {{ t.restore }}
+            </button>
+          </span>
         </div>
-        <div v-for="(entry, index) of entries" :key="index" class="entry">
-          <hr v-if="index !== 0" />
-          <div class="header">
-            <span class="left">
-              <span class="class">{{
-                entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
-              }}</span>
-              <span class="time">{{
-                dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
-              }}</span>
-              <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
-            </span>
-            <span class="right">
-              <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
-                {{ t.open }}
-              </button>
-              <button
-                v-if="entry.class === HistoryClass.BACKUP"
-                @click="restoreV1(entry.backupFileName)"
-              >
-                {{ t.restore }}
-              </button>
-              <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
-                {{ t.restore }}
-              </button>
-            </span>
-          </div>
-          <div v-if="entry.class === HistoryClass.USER" class="file-path">
-            {{ entry.userFilePath }}
-          </div>
-          <div
-            v-if="
-              entry.class === HistoryClass.BACKUP_V2 &&
-              (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
-            "
-            class="file-path"
-          >
-            <span v-if="entry.title">{{ entry.title }} / </span>
-            <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
-            <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
-            <span>{{ entry.ply || 0 }}手</span>
-          </div>
+        <div v-if="entry.class === HistoryClass.USER" class="file-path">
+          {{ entry.userFilePath }}
+        </div>
+        <div
+          v-if="
+            entry.class === HistoryClass.BACKUP_V2 &&
+            (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
+          "
+          class="file-path"
+        >
+          <span v-if="entry.title">{{ entry.title }} / </span>
+          <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
+          <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
+          <span>{{ entry.ply || 0 }}手</span>
         </div>
       </div>
-      <div class="main-buttons">
-        <button @click="clear">{{ t.clearHistory }}</button>
-        <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div class="main-buttons">
+      <button @click="clear">{{ t.clearHistory }}</button>
+      <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import dayjs from "dayjs";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { HistoryClass, RecordFileHistoryEntry } from "@/common/file/history";
 import api from "@/renderer/ipc/api";
 import { getDateTimeString } from "@/common/helpers/datetime";
-import { showModalDialog } from "@/renderer/helpers/dialog";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { t } from "@/common/i18n";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import DialogFrame from "./DialogFrame.vue";
 
-const dialog = ref();
 const entries = ref([] as RecordFileHistoryEntry[]);
 const store = useStore();
 const busyState = useBusyState();
@@ -84,18 +80,12 @@ onMounted(async () => {
   try {
     const history = await api.loadRecordFileHistory();
     entries.value = history.entries.reverse();
-    showModalDialog(dialog.value, onClose);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const open = (path: string) => {

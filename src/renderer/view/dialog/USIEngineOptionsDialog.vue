@@ -1,180 +1,173 @@
 <template>
-  <div>
-    <dialog ref="dialog">
-      <div class="title">{{ t.manageEngines }}</div>
-      <div class="form-group">
-        <div class="option-filter">
-          <input v-model.trim="filter" class="filter" :placeholder="t.filterByOptionName" />
+  <DialogFrame @cancel="cancel">
+    <div class="title">{{ t.manageEngines }}</div>
+    <div class="form-group">
+      <div class="option-filter">
+        <input v-model.trim="filter" class="filter" :placeholder="t.filterByOptionName" />
+      </div>
+      <div class="column option-list">
+        <!-- 名前 -->
+        <div class="row option">
+          <div class="option-name">{{ t.engineName }}</div>
+          <div class="option-unchangeable">{{ engine.defaultName }}</div>
         </div>
-        <div class="column option-list">
-          <!-- 名前 -->
-          <div class="row option">
-            <div class="option-name">{{ t.engineName }}</div>
-            <div class="option-unchangeable">{{ engine.defaultName }}</div>
+        <!-- 作者 -->
+        <div v-show="!filterWords.length" class="row option">
+          <div class="option-name">{{ t.author }}</div>
+          <div class="option-unchangeable">{{ engine.author }}</div>
+        </div>
+        <!-- 場所 -->
+        <div v-show="!filterWords.length" class="row option">
+          <div class="option-name">{{ t.enginePath }}</div>
+          <div class="option-unchangeable">
+            <div>{{ engine.path }}</div>
+            <button class="thin" @click="replaceEnginePath">
+              {{ t.replaceEnginePath }}
+            </button>
+            <button class="thin" @click="openEngineDir">
+              {{ t.openDirectory }}
+            </button>
           </div>
-          <!-- 作者 -->
-          <div v-show="!filterWords.length" class="row option">
-            <div class="option-name">{{ t.author }}</div>
-            <div class="option-unchangeable">{{ engine.author }}</div>
+        </div>
+        <!-- 表示名 -->
+        <div v-show="!filterWords.length" class="row option">
+          <div class="option-name">{{ t.displayName }}</div>
+          <div class="option-value">
+            <input v-model="engine.name" class="option-value-text" type="text" />
           </div>
-          <!-- 場所 -->
-          <div v-show="!filterWords.length" class="row option">
-            <div class="option-name">{{ t.enginePath }}</div>
-            <div class="option-unchangeable">
-              <div>{{ engine.path }}</div>
-              <button class="thin" @click="replaceEnginePath">
-                {{ t.replaceEnginePath }}
-              </button>
-              <button class="thin" @click="openEngineDir">
-                {{ t.openDirectory }}
-              </button>
-            </div>
+        </div>
+        <!-- オプション -->
+        <div
+          v-for="(option, index) in options"
+          v-show="optionVisibility[index]"
+          :key="option.name"
+          class="row option"
+        >
+          <div class="option-name">
+            <!-- オプション名 -->
+            {{ option.displayName || option.name }}
+            <span v-if="option.displayName" class="option-name-original">
+              {{ option.name }}
+            </span>
           </div>
-          <!-- 表示名 -->
-          <div v-show="!filterWords.length" class="row option">
-            <div class="option-name">{{ t.displayName }}</div>
-            <div class="option-value">
-              <input v-model="engine.name" class="option-value-text" type="text" />
-            </div>
-          </div>
-          <!-- オプション -->
-          <div
-            v-for="(option, index) in options"
-            v-show="optionVisibility[index]"
-            :key="option.name"
-            class="row option"
-          >
-            <div class="option-name">
-              <!-- オプション名 -->
-              {{ option.displayName || option.name }}
-              <span v-if="option.displayName" class="option-name-original">
-                {{ option.name }}
-              </span>
-            </div>
-            <div class="option-value">
-              <span class="option-value-control">
-                <!-- 数値 (spin) -->
-                <input
-                  v-if="option.type === 'spin'"
-                  v-model.number="option.currentValue"
-                  class="option-value-number"
-                  type="number"
-                  :min="option.min"
-                  :max="option.max"
-                  step="1"
-                  :name="option.name"
-                />
-                <!-- 文字列 (string) -->
-                <input
-                  v-if="option.type === 'string'"
-                  v-model="option.currentValue"
-                  class="option-value-text"
-                  type="text"
-                  :name="option.name"
-                />
-                <!-- ファイル名 (filename) -->
-                <input
-                  v-if="option.type === 'filename'"
-                  v-model="option.currentValue"
-                  class="option-value-filename"
-                  type="text"
-                  :name="option.name"
-                />
-                <button
-                  v-if="option.type === 'filename'"
-                  class="thin"
-                  @click="selectFile(option.name)"
-                >
-                  {{ t.select }}
-                </button>
-                <!-- ブール値 (check) -->
-                <HorizontalSelector
-                  v-if="option.type === 'check'"
-                  v-model:value="option.currentValue as string"
-                  :items="
-                    option.default
-                      ? [
-                          { value: 'true', label: 'ON' },
-                          { value: 'false', label: 'OFF' },
-                        ]
-                      : [
-                          { value: '', label: t.defaultValue },
-                          { value: 'true', label: 'ON' },
-                          { value: 'false', label: 'OFF' },
-                        ]
-                  "
-                />
-                <!-- 選択 (combo) -->
-                <ComboBox
-                  v-if="option.type === 'combo'"
-                  v-model="option.currentValue as string"
-                  :options="[
-                    { value: '', label: t.defaultValue },
-                    ...option.vars.map((v) => ({ value: v, label: v })),
-                  ]"
-                  :free-text-label="t.freeTextUnsafe"
-                />
-                <button
-                  v-if="option.type === 'button'"
-                  class="thin"
-                  @click="sendOptionButtonSignal(option.name)"
-                >
-                  {{ t.invoke }}
-                </button>
-              </span>
-              <!-- デフォルト値 -->
-              <span
-                v-if="option.type !== 'button' && (option.default || option.default === 0)"
-                class="option-default-value"
-                :class="{ highlight: option.currentValue !== option.default }"
+          <div class="option-value">
+            <span class="option-value-control">
+              <!-- 数値 (spin) -->
+              <input
+                v-if="option.type === 'spin'"
+                v-model.number="option.currentValue"
+                class="option-value-number"
+                type="number"
+                :min="option.min"
+                :max="option.max"
+                step="1"
+                :name="option.name"
+              />
+              <!-- 文字列 (string) -->
+              <input
+                v-if="option.type === 'string'"
+                v-model="option.currentValue"
+                class="option-value-text"
+                type="text"
+                :name="option.name"
+              />
+              <!-- ファイル名 (filename) -->
+              <input
+                v-if="option.type === 'filename'"
+                v-model="option.currentValue"
+                class="option-value-filename"
+                type="text"
+                :name="option.name"
+              />
+              <button
+                v-if="option.type === 'filename'"
+                class="thin"
+                @click="selectFile(option.name)"
               >
-                {{ t.defaultValue }}:
-                {{
-                  option.type === "check"
-                    ? option.default === "true"
-                      ? "ON"
-                      : "OFF"
-                    : option.default
-                }}
-              </span>
-              <!-- 早期 ponder -->
-              <div
-                v-if="option.name === 'USI_Ponder' && option.type === 'check'"
-                class="additional"
+                {{ t.select }}
+              </button>
+              <!-- ブール値 (check) -->
+              <HorizontalSelector
+                v-if="option.type === 'check'"
+                v-model:value="option.currentValue as string"
+                :items="
+                  option.default
+                    ? [
+                        { value: 'true', label: 'ON' },
+                        { value: 'false', label: 'OFF' },
+                      ]
+                    : [
+                        { value: '', label: t.defaultValue },
+                        { value: 'true', label: 'ON' },
+                        { value: 'false', label: 'OFF' },
+                      ]
+                "
+              />
+              <!-- 選択 (combo) -->
+              <ComboBox
+                v-if="option.type === 'combo'"
+                v-model="option.currentValue as string"
+                :options="[
+                  { value: '', label: t.defaultValue },
+                  ...option.vars.map((v) => ({ value: v, label: v })),
+                ]"
+                :free-text-label="t.freeTextUnsafe"
+              />
+              <button
+                v-if="option.type === 'button'"
+                class="thin"
+                @click="sendOptionButtonSignal(option.name)"
               >
-                <ToggleButton v-model:value="engine.enableEarlyPonder" :label="t.earlyPonder" />
-                <div v-show="engine.enableEarlyPonder" class="form-group warning">
-                  <div class="note">
-                    {{ t.earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions }}
-                    {{ t.ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior }}
-                  </div>
+                {{ t.invoke }}
+              </button>
+            </span>
+            <!-- デフォルト値 -->
+            <span
+              v-if="option.type !== 'button' && (option.default || option.default === 0)"
+              class="option-default-value"
+              :class="{ highlight: option.currentValue !== option.default }"
+            >
+              {{ t.defaultValue }}:
+              {{
+                option.type === "check"
+                  ? option.default === "true"
+                    ? "ON"
+                    : "OFF"
+                  : option.default
+              }}
+            </span>
+            <!-- 早期 ponder -->
+            <div v-if="option.name === 'USI_Ponder' && option.type === 'check'" class="additional">
+              <ToggleButton v-model:value="engine.enableEarlyPonder" :label="t.earlyPonder" />
+              <div v-show="engine.enableEarlyPonder" class="form-group warning">
+                <div class="note">
+                  {{ t.earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions }}
+                  {{ t.ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior }}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <button class="wide" @click="reset()">
-        {{ t.resetToEngineDefaultValues }}
+    </div>
+    <button class="wide" @click="reset()">
+      {{ t.resetToEngineDefaultValues }}
+    </button>
+    <div class="main-buttons">
+      <button data-hotkey="Enter" autofocus @click="ok()">
+        {{ okButtonText }}
       </button>
-      <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="ok()">
-          {{ okButtonText }}
-        </button>
-        <button data-hotkey="Escape" @click="cancel()">
-          {{ t.cancel }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+      <button data-hotkey="Escape" @click="cancel()">
+        {{ t.cancel }}
+      </button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import api from "@/renderer/ipc/api";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import {
   emptyUSIEngine,
   getUSIEngineOptionCurrentValue,
@@ -182,7 +175,7 @@ import {
   USIEngine,
   USIEngineOption,
 } from "@/common/settings/usi";
-import { computed, onBeforeUnmount, onMounted, PropType, ref } from "vue";
+import { computed, onMounted, PropType, ref } from "vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -190,6 +183,7 @@ import ComboBox from "@/renderer/view/primitive/ComboBox.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import DialogFrame from "./DialogFrame.vue";
 
 const props = defineProps({
   latest: {
@@ -214,7 +208,6 @@ type Option = USIEngineOption & {
 
 const busyState = useBusyState();
 const appSettings = useAppSettings();
-const dialog = ref();
 const filter = ref("");
 const filterWords = computed(() => filter.value.split(/ +/).filter((s) => s));
 const engine = ref(emptyUSIEngine());
@@ -230,8 +223,6 @@ const optionVisibility = computed(() =>
 
 busyState.retain();
 onMounted(async () => {
-  showModalDialog(dialog.value, cancel);
-  installHotKeyForDialog(dialog.value);
   try {
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
     engine.value = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
@@ -249,10 +240,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const openEngineDir = () => {

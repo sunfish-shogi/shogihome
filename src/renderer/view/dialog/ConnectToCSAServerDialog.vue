@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.connectToCSAServer }}({{ t.adminMode }})</div>
       <div class="form-group">
         <div class="form-item">
@@ -55,41 +55,30 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { PromptTarget } from "@/common/advanced/prompt";
 import { t } from "@/common/i18n";
 import { CSAProtocolVersion, validateCSAServerSettings } from "@/common/settings/csa";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { Tab } from "@/common/settings/app";
 import { useErrorStore } from "@/renderer/store/error";
 import { floodgateDomain, officialCSAServerDomain } from "@/common/game/csa";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
-const dialog = ref();
 const host = ref();
 const port = ref();
 const id = ref();
 const password = ref();
 const revealPassword = ref(false);
-
-onMounted(() => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
-});
 
 const onStart = () => {
   const settings = {

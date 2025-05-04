@@ -1,6 +1,7 @@
 <template>
+  <!-- FIXME: この div は多分いらない -->
   <div>
-    <dialog ref="dialog">
+    <DialogFrame @cancel="cancel">
       <div class="title">{{ t.engineManagement }}</div>
       <div class="form-group">
         <div class="engine-filter">
@@ -11,7 +12,7 @@
             @input="updateFilter"
           />
         </div>
-        <div class="column engine-list">
+        <div ref="list" class="column engine-list">
           <div v-if="usiEngines.engineList.length === 0" class="engine">
             {{ t.noEngineRegistered }}
           </div>
@@ -69,7 +70,7 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
+    </DialogFrame>
   </div>
   <USIEngineOptionsDialog
     v-if="optionDialog"
@@ -97,33 +98,44 @@ import {
   ImmutableUSIEngines,
 } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { ref, onMounted, onBeforeUnmount, computed, onUpdated } from "vue";
+import { ref, onMounted, computed, onBeforeUnmount } from "vue";
 import USIEngineOptionsDialog from "@/renderer/view/dialog/USIEngineOptionsDialog.vue";
 import CheckBox from "@/renderer/view/primitive/CheckBox.vue";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
+const list = ref();
 const optionDialog = ref(null as USIEngine | null);
 const mergeDialog = ref(false);
 const usiEngines = ref(new USIEngines());
 const filter = ref();
 const filterWords = ref([] as string[]);
 const lastAdded = ref("");
+let observer: MutationObserver | null = null;
 let scrollTo = "";
 
 busyState.retain();
 
+const onUpdated = () => {
+  if (scrollTo) {
+    const element = list.value?.querySelector(`[value="${scrollTo}"]`);
+    element?.scrollIntoView({ behavior: "auto", block: "nearest" });
+    scrollTo = "";
+  }
+};
+
 onMounted(async () => {
-  showModalDialog(dialog.value, cancel);
-  installHotKeyForDialog(dialog.value);
   try {
+    observer = new MutationObserver(() => onUpdated());
+    observer.observe(list.value, {
+      childList: true,
+      subtree: true,
+    });
     usiEngines.value = await api.loadUSIEngines();
   } catch (e) {
     useErrorStore().add(e);
@@ -134,15 +146,7 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
-});
-
-onUpdated(() => {
-  if (scrollTo) {
-    const element = dialog.value.querySelector(`[value="${scrollTo}"]`);
-    element?.scrollIntoView({ behavior: "auto", block: "nearest" });
-    scrollTo = "";
-  }
+  observer?.disconnect();
 });
 
 const engines = computed(() =>

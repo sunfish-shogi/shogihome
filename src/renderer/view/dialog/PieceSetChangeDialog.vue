@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="cancel">
+    <div class="root">
       <div class="title">{{ t.changePieceSet }}</div>
       <div class="form-group">
         <div class="list row wrap">
@@ -24,14 +24,12 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
 import { PieceSet } from "@/renderer/store/record";
 import {
@@ -41,10 +39,10 @@ import {
   promotedPieceType,
   standardPieceName,
 } from "tsshogi";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { ref } from "vue";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
-const dialog = ref();
 
 const pieceTypes = [
   PieceType.KING,
@@ -66,15 +64,6 @@ const counts = ref(
     ]),
   ),
 );
-
-onMounted(() => {
-  showModalDialog(dialog.value, cancel);
-  installHotKeyForDialog(dialog.value);
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
-});
 
 const ok = () => {
   const update = Object.fromEntries(
