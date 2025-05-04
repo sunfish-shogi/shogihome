@@ -149,8 +149,8 @@ const cancel = () => {
 
 <style scoped>
 .form-group {
-  width: 100%;
-  max-width: 600px;
+  width: 600px;
+  max-width: 100%;
 }
 .select-area {
   width: 100%;
