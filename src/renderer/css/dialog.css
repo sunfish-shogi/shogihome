@@ -1,20 +1,6 @@
 dialog {
-  display: flex;
-  flex-direction: column;
   color: var(--dialog-color);
-  background-color: var(--dialog-bg-color);
-  border: 1px solid var(--dialog-border-color);
-  border-radius: 10px 10px 10px 10px;
-  padding: 15px;
   font-size: 1rem;
-}
-
-.dialog-backdrop dialog::backdrop {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.dialog-no-backdrop dialog::backdrop {
-  background: rgba(0, 0, 0, 0);
 }
 
 dialog button {
@@ -118,9 +104,8 @@ dialog .note:nth-child(n + 2) {
 dialog .main-buttons {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin-top: 5px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 dialog .main-buttons button {
@@ -140,13 +125,23 @@ dialog button .icon + span {
   line-height: 1.4em;
 }
 
-dialog .message-box {
+dialog.message-box {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px 10px 10px 10px;
+  padding: 15px;
+  color: var(--info-dialog-color);
+  background-color: var(--info-dialog-bg-color);
+  border: 3px solid var(--info-dialog-border-color);
+}
+
+dialog.message-box .message-area {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-dialog .message-box .icon {
+dialog.message-box .icon {
   margin-right: 15px;
 }
 
