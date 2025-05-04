@@ -2,11 +2,11 @@
   <DialogFrame @cancel="onCancel">
     <div class="root">
       <div class="title">{{ t.mateSearch }}</div>
-      <div class="form-group scroll">
+      <div class="form-group">
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :filter-label="USIEngineLabel.MATE"
+          :default-tag="PredefinedUSIEngineTag.MATE"
           :display-thread-state="true"
           :display-multi-pv-state="false"
           @update-engines="
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { MateSearchSettings } from "@/common/settings/mate";
-import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
+import { PredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";

@@ -18,7 +18,7 @@
             :contains-human="true"
             :contains-basic-engines="true"
             :engines="engines"
-            :filter-label="USIEngineLabel.GAME"
+            :default-tag="PredefinedUSIEngineTag.GAME"
             :display-ponder-state="true"
             :display-thread-state="true"
             :display-multi-pv-state="true"

@@ -6,7 +6,7 @@
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :filter-label="USIEngineLabel.RESEARCH"
+          :default-tag="PredefinedUSIEngineTag.RESEARCH"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -16,7 +16,7 @@
         <PlayerSelector
           v-model:player-uri="secondaryEngineURIs[index]"
           :engines="engines"
-          :filter-label="USIEngineLabel.RESEARCH"
+          :default-tag="PredefinedUSIEngineTag.RESEARCH"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -64,7 +64,7 @@ import {
   ResearchSettings,
   validateResearchSettings,
 } from "@/common/settings/research";
-import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
+import { PredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
