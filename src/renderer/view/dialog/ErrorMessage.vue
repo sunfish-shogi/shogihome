@@ -1,7 +1,7 @@
 <template>
   <div>
-    <dialog ref="dialog" class="error">
-      <div class="message-box">
+    <dialog ref="dialog" class="message-box">
+      <div class="message-area">
         <Icon :icon="IconType.ERROR" />
         <div class="column">
           <div class="notice">
@@ -66,17 +66,17 @@ const onClose = () => {
 </style>
 
 <style scoped>
-dialog.error {
+dialog {
   color: var(--error-dialog-color);
   background-color: var(--error-dialog-bg-color);
-  border: 3px solid var(--error-dialog-border-color);
+  border-color: var(--error-dialog-border-color);
 }
 
-dialog.error button {
+dialog button {
   color: var(--error-dialog-button-color);
   background: linear-gradient(to top, var(--error-dialog-button-bg-color) 80%, white 140%);
 }
-dialog.error button:hover {
+dialog button:hover {
   background: linear-gradient(to top, var(--hovered-error-dialog-button-bg-color) 80%, white 140%);
 }
 </style>

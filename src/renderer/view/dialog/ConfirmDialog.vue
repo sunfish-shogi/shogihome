@@ -1,7 +1,7 @@
 <template>
   <div>
-    <dialog ref="dialog" class="confirm">
-      <div class="message-box">
+    <dialog ref="dialog" class="message-box">
+      <div class="message-area">
         <Icon :icon="IconType.QUESTION" />
         <div class="message">{{ store.message }}</div>
       </div>
@@ -44,11 +44,3 @@ onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
 </script>
-
-<style scoped>
-dialog.confirm {
-  color: var(--info-dialog-color);
-  background-color: var(--info-dialog-bg-color);
-  border: 3px solid var(--info-dialog-border-color);
-}
-</style>

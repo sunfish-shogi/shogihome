@@ -1,7 +1,7 @@
 <template>
   <div>
-    <dialog ref="dialog" class="info">
-      <div class="message-box">
+    <dialog ref="dialog" class="message-box">
+      <div class="message-area">
         <Icon :icon="IconType.INFO" />
         <div class="message">
           <div v-for="(line, index) of store.message.text.split('\n')" :key="index">
@@ -61,11 +61,6 @@ const onClose = () => {
 </script>
 
 <style scoped>
-dialog.info {
-  color: var(--info-dialog-color);
-  background-color: var(--info-dialog-bg-color);
-  border: 3px solid var(--info-dialog-border-color);
-}
 .attachment {
   text-align: center;
 }
