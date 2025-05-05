@@ -27,10 +27,10 @@
         }}</span>
       </div>
       <div class="column reverse" :style="layout.blackHand.style">
-        <span class="hand" :class="layout.typefaceClass">☗{{ layout.blackHand.text }}</span>
+        <span class="hand black" :class="layout.typefaceClass">☗{{ layout.blackHand.text }}</span>
       </div>
       <div v-if="!hideWhiteHand" class="column reverse" :style="layout.whiteHand.style">
-        <span class="hand" :class="layout.typefaceClass">☖{{ layout.whiteHand.text }}</span>
+        <span class="hand white" :class="layout.typefaceClass">☖{{ layout.whiteHand.text }}</span>
       </div>
     </div>
   </div>
@@ -338,9 +338,13 @@ const layout = computed(() => {
 }
 .hand {
   display: inline-block;
-  text-align: top;
-  writing-mode: vertical-rl;
   text-orientation: upright;
   letter-spacing: 0px;
+}
+.hand.black {
+  writing-mode: vertical-lr;
+}
+.hand.white {
+  writing-mode: vertical-rl;
 }
 </style>
