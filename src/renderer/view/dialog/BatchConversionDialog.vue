@@ -1,8 +1,9 @@
 <template>
-  <DialogFrame limited @cancel="onClose">
-    <div class="root">
+  <!-- FIXME: この div は多分いらない -->
+  <div>
+    <DialogFrame @cancel="onClose">
       <div class="title">{{ t.batchConversion }}</div>
-      <div class="form-group scroll">
+      <div class="form-group">
         <div>{{ t.inputs }}</div>
         <div class="form-item row">
           <input v-model="settings.source" class="grow" type="text" />
@@ -125,8 +126,8 @@
       <div class="main-buttons">
         <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
       </div>
-    </div>
-  </DialogFrame>
+    </DialogFrame>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -311,8 +312,8 @@ const onClose = () => {
 </script>
 
 <style scoped>
-.root {
-  width: 540px;
+.form-group {
+  width: 520px;
 }
 .formats {
   display: inline-block;

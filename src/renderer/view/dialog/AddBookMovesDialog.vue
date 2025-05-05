@@ -1,6 +1,7 @@
 <template>
-  <DialogFrame limited @cancel="onClose">
-    <div class="root">
+  <!-- FIXME: この div は多分いらない -->
+  <div>
+    <DialogFrame limited @cancel="onClose">
       <div class="title">定跡手追加</div>
       <div>
         <HorizontalSelector
@@ -117,8 +118,8 @@
           {{ t.close }}
         </button>
       </div>
-    </div>
-  </DialogFrame>
+    </DialogFrame>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -288,11 +289,10 @@ const importMoves = () => {
 </script>
 
 <style scoped>
-root {
-  width: 600px;
-  height: 80%;
-  max-width: 100%;
-  max-height: 800px;
+.form-group {
+  width: 580px;
+  min-height: calc(80vh - 200px);
+  max-height: 600px;
 }
 table.move-list td {
   font-size: 0.8em;
