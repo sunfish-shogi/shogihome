@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "./Icon.vue";
-import { computed, onBeforeUnmount, onMounted, PropType, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, PropType, reactive, ref } from "vue";
 
 const props = defineProps({
   value: {
@@ -67,15 +67,15 @@ const emit = defineEmits<{
 
 const root = ref<HTMLElement | null>();
 const show = ref(false);
-const tagStates = ref(new Map<string, boolean>());
+const tagStates = reactive(new Map<string, boolean>());
 
 for (const tag of props.selectedTags.filter((tag) => tag)) {
-  tagStates.value.set(tag, true);
+  tagStates.set(tag, true);
 }
 
 const tags = computed(() => {
   return props.tags.map((tag) => {
-    const selected = tagStates.value.get(tag.name);
+    const selected = tagStates.get(tag.name);
     const backgroundColor = selected ? tag.color : "#eee";
     return {
       name: tag.name,
@@ -89,7 +89,7 @@ const tags = computed(() => {
 });
 
 const filteredItems = computed(() => {
-  const wants = Array.from(tagStates.value.entries())
+  const wants = Array.from(tagStates.entries())
     .filter((e) => e[1])
     .map((e) => e[0]);
   if (wants.length === 0) {
