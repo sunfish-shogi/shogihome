@@ -434,6 +434,7 @@ describe("settings/usi", () => {
         game: true,
         mate: false,
       },
+      tags: ["対局"],
       enableEarlyPonder: false,
     });
   });
