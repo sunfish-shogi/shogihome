@@ -149,11 +149,11 @@
         <Icon :icon="IconType.SAVE" />
         <span>PNG</span>
       </button>
-      <button autofocus data-hotkey="Enter" @click="saveAsJPEG">
+      <button data-hotkey="Enter" @click="saveAsJPEG">
         <Icon :icon="IconType.SAVE" />
         <span>JPEG</span>
       </button>
-      <button autofocus data-hotkey="Escape" @click="onClose">
+      <button data-hotkey="Escape" @click="onClose">
         <Icon :icon="IconType.CLOSE" />
         <span>{{ t.close }}</span>
       </button>
