@@ -352,6 +352,7 @@ export class USIEngines {
 
   addEngine(engine: USIEngine): void {
     this.engines[engine.uri] = engine;
+    this.updateTagColorMapping();
   }
 
   updateEngine(engine: USIEngine): boolean {
@@ -359,6 +360,7 @@ export class USIEngines {
       return false;
     }
     this.engines[engine.uri] = engine;
+    this.updateTagColorMapping();
     return true;
   }
 
@@ -367,6 +369,7 @@ export class USIEngines {
       return false;
     }
     delete this.engines[uri];
+    this.updateTagColorMapping();
     return true;
   }
 
