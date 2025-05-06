@@ -1,68 +1,65 @@
 <template>
-  <!-- FIXME: この div は多分いらない -->
-  <div>
-    <DialogFrame @cancel="cancel">
-      <div class="title">{{ t.engineManagement }}</div>
-      <div class="form-group">
-        <div class="engine-filter">
-          <input
-            ref="filter"
-            class="filter"
-            :placeholder="t.filterByEngineName"
-            @input="updateFilter"
-          />
+  <DialogFrame @cancel="cancel">
+    <div class="title">{{ t.engineManagement }}</div>
+    <div class="form-group">
+      <div class="engine-filter">
+        <input
+          ref="filter"
+          class="filter"
+          :placeholder="t.filterByEngineName"
+          @input="updateFilter"
+        />
+      </div>
+      <div ref="list" class="column engine-list">
+        <div v-if="usiEngines.engineList.length === 0" class="engine">
+          {{ t.noEngineRegistered }}
         </div>
-        <div ref="list" class="column engine-list">
-          <div v-if="usiEngines.engineList.length === 0" class="engine">
-            {{ t.noEngineRegistered }}
-          </div>
-          <div
-            v-for="engine in engines"
-            v-show="engine.visible"
-            :key="engine.uri"
-            class="row engine"
-            :value="engine.uri"
-          >
-            <div class="column">
-              <div class="engine-name" :class="{ highlight: engine.uri === lastAdded }">
-                {{ engine.name }}
-              </div>
-              <div class="row tags">
-                <div
-                  v-for="tag of engine.tags"
-                  :key="tag.name"
-                  class="tag"
-                  :style="{ backgroundColor: tag.color }"
-                >
-                  {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
-                </div>
-                <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
-              </div>
+        <div
+          v-for="engine in engines"
+          v-show="engine.visible"
+          :key="engine.uri"
+          class="row engine"
+          :value="engine.uri"
+        >
+          <div class="column">
+            <div class="engine-name" :class="{ highlight: engine.uri === lastAdded }">
+              {{ engine.name }}
             </div>
-            <div class="column space-evenly">
-              <div class="row space-evenly">
-                <button @click="openOptions(engine.uri)">{{ t.config }}</button>
-                <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
-                <button @click="remove(engine.uri)">{{ t.remove }}</button>
+            <div class="row tags">
+              <div
+                v-for="tag of engine.tags"
+                :key="tag.name"
+                class="tag"
+                :style="{ backgroundColor: tag.color }"
+              >
+                {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
               </div>
+              <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
+            </div>
+          </div>
+          <div class="column space-evenly">
+            <div class="row space-evenly">
+              <button @click="openOptions(engine.uri)">{{ t.config }}</button>
+              <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
+              <button @click="remove(engine.uri)">{{ t.remove }}</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="menu row">
-        <button class="wide" @click="add()">{{ t.add }}</button>
-        <button class="wide" @click="openMerge()">{{ t.compareAndMerge }}</button>
-      </div>
-      <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="saveAndClose()">
-          {{ t.saveAndClose }}
-        </button>
-        <button data-hotkey="Escape" @click="cancel()">
-          {{ t.cancel }}
-        </button>
-      </div>
-    </DialogFrame>
-  </div>
+    </div>
+    <div class="menu row">
+      <button class="wide" @click="add()">{{ t.add }}</button>
+      <button class="wide" @click="openMerge()">{{ t.compareAndMerge }}</button>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Enter" autofocus @click="saveAndClose()">
+        {{ t.saveAndClose }}
+      </button>
+      <button data-hotkey="Escape" @click="cancel()">
+        {{ t.cancel }}
+      </button>
+    </div>
+  </DialogFrame>
   <USIEngineOptionsDialog
     v-if="optionDialog"
     :latest="optionDialog"

@@ -1,133 +1,115 @@
 <template>
-  <!-- FIXME: この div は多分いらない -->
-  <div>
-    <DialogFrame @cancel="onClose">
-      <div class="title">{{ t.batchConversion }}</div>
-      <div class="form-group">
-        <div>{{ t.inputs }}</div>
-        <div class="form-item row">
-          <input v-model="settings.source" class="grow" type="text" />
-          <button class="thin" @click="selectSourceDirectory">
-            {{ t.select }}
-          </button>
-          <button class="thin open-dir" @click="openDirectory(settings.source)">
-            <Icon :icon="IconType.OPEN_FOLDER" />
-          </button>
+  <DialogFrame @cancel="onClose">
+    <div class="title">{{ t.batchConversion }}</div>
+    <div class="form-group">
+      <div>{{ t.inputs }}</div>
+      <div class="form-item row">
+        <input v-model="settings.source" class="grow" type="text" />
+        <button class="thin" @click="selectSourceDirectory">
+          {{ t.select }}
+        </button>
+        <button class="thin open-dir" @click="openDirectory(settings.source)">
+          <Icon :icon="IconType.OPEN_FOLDER" />
+        </button>
+      </div>
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.formats }}</div>
+        <div class="formats">
+          <ToggleButton v-model:value="sourceFormats.kif" class="toggle" label=".kif" />
+          <ToggleButton v-model:value="sourceFormats.kifu" class="toggle" label=".kifu" />
+          <ToggleButton v-model:value="sourceFormats.ki2" class="toggle" label=".ki2" />
+          <ToggleButton v-model:value="sourceFormats.ki2u" class="toggle" label=".ki2u" />
+          <ToggleButton v-model:value="sourceFormats.csa" class="toggle" label=".csa" />
+          <ToggleButton v-model:value="sourceFormats.jkf" class="toggle" label=".jkf" />
         </div>
-        <div class="form-item">
-          <div class="form-item-label-wide">{{ t.formats }}</div>
-          <div class="formats">
-            <ToggleButton v-model:value="sourceFormats.kif" class="toggle" label=".kif" />
-            <ToggleButton v-model:value="sourceFormats.kifu" class="toggle" label=".kifu" />
-            <ToggleButton v-model:value="sourceFormats.ki2" class="toggle" label=".ki2" />
-            <ToggleButton v-model:value="sourceFormats.ki2u" class="toggle" label=".ki2u" />
-            <ToggleButton v-model:value="sourceFormats.csa" class="toggle" label=".csa" />
-            <ToggleButton v-model:value="sourceFormats.jkf" class="toggle" label=".jkf" />
-          </div>
-        </div>
-        <div class="form-item row">
-          <div class="form-item-label-wide">{{ t.subdirectories }}</div>
-          <ToggleButton v-model:value="settings.subdirectories" class="toggle" />
-        </div>
-        <hr />
-        <div>{{ t.outputs }}</div>
-        <div class="form-item center">
+      </div>
+      <div class="form-item row">
+        <div class="form-item-label-wide">{{ t.subdirectories }}</div>
+        <ToggleButton v-model:value="settings.subdirectories" class="toggle" />
+      </div>
+      <hr />
+      <div>{{ t.outputs }}</div>
+      <div class="form-item center">
+        <HorizontalSelector
+          v-model:value="settings.destinationType"
+          :items="[
+            { label: t.separate, value: DestinationType.DIRECTORY },
+            { label: t.merge, value: DestinationType.SINGLE_FILE },
+          ]"
+        />
+      </div>
+      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+        <input v-model="settings.destination" class="grow" type="text" />
+        <button class="thin" @click="selectDestinationDirectory">
+          {{ t.select }}
+        </button>
+        <button class="thin open-dir" @click="openDirectory(settings.destination)">
+          <Icon :icon="IconType.OPEN_FOLDER" />
+        </button>
+      </div>
+      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+        <div class="form-item-label-wide">{{ t.format }}</div>
+        <div class="formats">
           <HorizontalSelector
-            v-model:value="settings.destinationType"
+            v-model:value="settings.destinationFormat"
             :items="[
-              { label: t.separate, value: DestinationType.DIRECTORY },
-              { label: t.merge, value: DestinationType.SINGLE_FILE },
+              { label: '.kif', value: RecordFileFormat.KIF },
+              { label: '.kifu', value: RecordFileFormat.KIFU },
+              { label: '.ki2', value: RecordFileFormat.KI2 },
+              { label: '.ki2u', value: RecordFileFormat.KI2U },
+              { label: '.csa', value: RecordFileFormat.CSA },
+              { label: '.jkf', value: RecordFileFormat.JKF },
             ]"
           />
         </div>
-        <div
-          v-show="settings.destinationType !== DestinationType.SINGLE_FILE"
-          class="form-item row"
-        >
-          <input v-model="settings.destination" class="grow" type="text" />
-          <button class="thin" @click="selectDestinationDirectory">
-            {{ t.select }}
-          </button>
-          <button class="thin open-dir" @click="openDirectory(settings.destination)">
-            <Icon :icon="IconType.OPEN_FOLDER" />
-          </button>
-        </div>
-        <div
-          v-show="settings.destinationType !== DestinationType.SINGLE_FILE"
-          class="form-item row"
-        >
-          <div class="form-item-label-wide">{{ t.format }}</div>
-          <div class="formats">
-            <HorizontalSelector
-              v-model:value="settings.destinationFormat"
-              :items="[
-                { label: '.kif', value: RecordFileFormat.KIF },
-                { label: '.kifu', value: RecordFileFormat.KIFU },
-                { label: '.ki2', value: RecordFileFormat.KI2 },
-                { label: '.ki2u', value: RecordFileFormat.KI2U },
-                { label: '.csa', value: RecordFileFormat.CSA },
-                { label: '.jkf', value: RecordFileFormat.JKF },
-              ]"
-            />
-          </div>
-        </div>
-        <div
-          v-show="settings.destinationType !== DestinationType.SINGLE_FILE"
-          class="form-item row"
-        >
-          <div class="form-item-label-wide">{{ t.createSubdirectories }}</div>
-          <ToggleButton v-model:value="settings.createSubdirectories" class="toggle" />
-        </div>
-        <div
-          v-show="settings.destinationType !== DestinationType.SINGLE_FILE"
-          class="form-item row"
-        >
-          <div class="form-item-label-wide">{{ t.nameConflictAction }}</div>
-          <HorizontalSelector
-            v-model:value="settings.fileNameConflictAction"
-            :items="[
-              { label: t.overwrite, value: FileNameConflictAction.OVERWRITE },
-              {
-                label: t.numberSuffix,
-                value: FileNameConflictAction.NUMBER_SUFFIX,
-              },
-              { label: t.skip, value: FileNameConflictAction.SKIP },
-            ]"
-          />
-        </div>
-        <div
-          v-show="settings.destinationType === DestinationType.SINGLE_FILE"
-          class="form-item row"
-        >
-          <input v-model="settings.singleFileDestination" class="grow" type="text" />
-          <button class="thin" @click="selectDestinationFile">
-            {{ t.select }}
-          </button>
-          <button class="thin open-dir" @click="openDirectory(settings.singleFileDestination)">
-            <Icon :icon="IconType.OPEN_FOLDER" />
-          </button>
-        </div>
       </div>
-      <button class="wide" data-hotkey="Enter" @click="convert">
-        {{ t.convert }}
-      </button>
-      <button
-        v-if="appSettings.enableAppLog && appSettings.logLevel === LogLevel.DEBUG"
-        class="wide"
-        @click="openLogFile"
-      >
-        {{ t.openLogFile }}
-      </button>
-      <div v-else class="form-group warning">
-        <div class="note">
-          {{ t.forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart }}
-        </div>
+      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+        <div class="form-item-label-wide">{{ t.createSubdirectories }}</div>
+        <ToggleButton v-model:value="settings.createSubdirectories" class="toggle" />
       </div>
-      <div class="main-buttons">
-        <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
+      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+        <div class="form-item-label-wide">{{ t.nameConflictAction }}</div>
+        <HorizontalSelector
+          v-model:value="settings.fileNameConflictAction"
+          :items="[
+            { label: t.overwrite, value: FileNameConflictAction.OVERWRITE },
+            {
+              label: t.numberSuffix,
+              value: FileNameConflictAction.NUMBER_SUFFIX,
+            },
+            { label: t.skip, value: FileNameConflictAction.SKIP },
+          ]"
+        />
       </div>
-    </DialogFrame>
-  </div>
+      <div v-show="settings.destinationType === DestinationType.SINGLE_FILE" class="form-item row">
+        <input v-model="settings.singleFileDestination" class="grow" type="text" />
+        <button class="thin" @click="selectDestinationFile">
+          {{ t.select }}
+        </button>
+        <button class="thin open-dir" @click="openDirectory(settings.singleFileDestination)">
+          <Icon :icon="IconType.OPEN_FOLDER" />
+        </button>
+      </div>
+    </div>
+    <button class="wide" data-hotkey="Enter" @click="convert">
+      {{ t.convert }}
+    </button>
+    <button
+      v-if="appSettings.enableAppLog && appSettings.logLevel === LogLevel.DEBUG"
+      class="wide"
+      @click="openLogFile"
+    >
+      {{ t.openLogFile }}
+    </button>
+    <div v-else class="form-group warning">
+      <div class="note">
+        {{ t.forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart }}
+      </div>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
