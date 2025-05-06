@@ -179,6 +179,32 @@ function labelsToTags(labels: USIEngineLabels): string[] {
     .map(([key]) => labelToTag(key as USIEngineLabel));
 }
 
+function tagToLabel(tag: string): USIEngineLabel | undefined {
+  switch (tag) {
+    case getPredefinedUSIEngineTag("game"):
+      return USIEngineLabel.GAME;
+    case getPredefinedUSIEngineTag("research"):
+      return USIEngineLabel.RESEARCH;
+    case getPredefinedUSIEngineTag("mate"):
+      return USIEngineLabel.MATE;
+  }
+}
+
+function tagsToLabels(tags: string[]): USIEngineLabels {
+  const labels: USIEngineLabels = {
+    [USIEngineLabel.GAME]: false,
+    [USIEngineLabel.RESEARCH]: false,
+    [USIEngineLabel.MATE]: false,
+  };
+  for (const tag of tags) {
+    const label = tagToLabel(tag);
+    if (label) {
+      labels[label] = true;
+    }
+  }
+  return labels;
+}
+
 export function mergeUSIEngine(engine: USIEngine, local: USIEngine): void {
   engine.uri = local.uri;
   engine.name = local.name;
@@ -422,6 +448,7 @@ export class USIEngines {
       this.engines[uri].tags.push(tag);
     }
     this.updateTagColorMapping();
+    this.engines[uri].labels = tagsToLabels(this.engines[uri].tags);
   }
 
   removeTag(uri: string, tag: string): void {
@@ -430,6 +457,7 @@ export class USIEngines {
     }
     this.engines[uri].tags = this.engines[uri].tags?.filter((t) => t !== tag);
     this.updateTagColorMapping();
+    this.engines[uri].labels = tagsToLabels(this.engines[uri].tags || []);
   }
 
   private updateTagColorMapping(): void {
