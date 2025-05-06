@@ -1,261 +1,241 @@
 <template>
-  <div>
-    <dialog ref="dialog">
-      <div class="title">{{ t.game }}</div>
-      <div class="form-group full-column">
-        <div class="row regular-interval">
-          <div class="half-column">
-            <div class="top-label">{{ t.senteOrShitate }}</div>
-            <PlayerSelector
-              v-model:player-uri="blackPlayerURI"
-              :contains-human="true"
-              :contains-basic-engines="true"
-              :engines="engines"
-              :filter-label="USIEngineLabel.GAME"
-              :display-ponder-state="true"
-              :display-thread-state="true"
-              :display-multi-pv-state="true"
-              @update-engines="onUpdatePlayerSettings"
+  <DialogFrame @cancel="onCancel">
+    <div class="title">{{ t.game }}</div>
+    <div class="form-group full-column">
+      <div class="row regular-interval">
+        <div class="half-column">
+          <div class="top-label">{{ t.senteOrShitate }}</div>
+          <PlayerSelector
+            v-model:player-uri="blackPlayerURI"
+            :contains-human="true"
+            :contains-basic-engines="true"
+            :engines="engines"
+            :default-tag="getPredefinedUSIEngineTag('game')"
+            :display-ponder-state="true"
+            :display-thread-state="true"
+            :display-multi-pv-state="true"
+            @update-engines="onUpdatePlayerSettings"
+          />
+        </div>
+        <div class="half-column">
+          <div class="top-label">{{ t.goteOrUwate }}</div>
+          <PlayerSelector
+            v-if="whitePlayerURI"
+            v-model:player-uri="whitePlayerURI"
+            :contains-human="true"
+            :contains-basic-engines="true"
+            :engines="engines"
+            :default-tag="getPredefinedUSIEngineTag('game')"
+            :display-ponder-state="true"
+            :display-thread-state="true"
+            :display-multi-pv-state="true"
+            @update-engines="onUpdatePlayerSettings"
+          />
+        </div>
+      </div>
+      <div class="row regular-interval">
+        <div class="half-column">
+          <div class="form-item">
+            <div class="form-item-label">{{ t.allottedTime }}</div>
+            <input v-model.number="hours" class="time" type="number" min="0" max="99" step="1" />
+            <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
+            <input v-model.number="minutes" class="time" type="number" min="0" max="59" step="1" />
+            <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.byoyomi }}</div>
+            <input v-model.number="byoyomi" class="time" type="number" min="0" max="60" step="1" />
+            <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.increments }}</div>
+            <input
+              v-model.number="increment"
+              class="time"
+              type="number"
+              min="0"
+              max="99"
+              step="1"
+            />
+            <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.enableEngineTimeout"
+              :label="t.enableEngineTimeout"
             />
           </div>
-          <div class="half-column">
-            <div class="top-label">{{ t.goteOrUwate }}</div>
-            <PlayerSelector
-              v-if="whitePlayerURI"
-              v-model:player-uri="whitePlayerURI"
-              :contains-human="true"
-              :contains-basic-engines="true"
-              :engines="engines"
-              :filter-label="USIEngineLabel.GAME"
-              :display-ponder-state="true"
-              :display-thread-state="true"
-              :display-multi-pv-state="true"
-              @update-engines="onUpdatePlayerSettings"
+        </div>
+        <div class="half-column">
+          <div class="form-item">
+            <div class="form-item-label">{{ t.allottedTime }}</div>
+            <input
+              v-model.number="whiteHours"
+              class="time"
+              type="number"
+              min="0"
+              max="99"
+              step="1"
+              :disabled="!setDifferentTime"
+            />
+            <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
+            <input
+              v-model.number="whiteMinutes"
+              class="time"
+              type="number"
+              min="0"
+              max="59"
+              step="1"
+              :disabled="!setDifferentTime"
+            />
+            <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.byoyomi }}</div>
+            <input
+              v-model.number="whiteByoyomi"
+              class="time"
+              type="number"
+              min="0"
+              max="60"
+              step="1"
+              :disabled="!setDifferentTime"
+            />
+            <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.increments }}</div>
+            <input
+              v-model.number="whiteIncrement"
+              class="time"
+              type="number"
+              min="0"
+              max="99"
+              step="1"
+              :disabled="!setDifferentTime"
+            />
+            <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
+          </div>
+          <div class="form-item">
+            <ToggleButton v-model:value="setDifferentTime" :label="t.setDifferentTimeForGote" />
+          </div>
+        </div>
+      </div>
+      <div class="players-control">
+        <button @click="onSwapColor">
+          <Icon :icon="IconType.SWAP_H" />
+          <span>{{ t.swapSenteGote }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="form-group full-column">
+      <div class="row regular-interval">
+        <div class="half-column">
+          <div class="form-item">
+            <div class="form-item-label">{{ t.startPosition }}</div>
+            <select v-model="gameSettings.startPosition">
+              <option value="current">{{ t.currentPosition }}</option>
+              <option value="list">{{ t.positionList }}</option>
+              <option :value="InitialPositionType.STANDARD">
+                {{ t.noHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_LANCE">
+                {{ t.lanceHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_RIGHT_LANCE">
+                {{ t.rightLanceHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_BISHOP">
+                {{ t.bishopHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_ROOK">
+                {{ t.rookHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_ROOK_LANCE">
+                {{ t.rookLanceHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_2PIECES">
+                {{ t.twoPiecesHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_4PIECES">
+                {{ t.fourPiecesHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_6PIECES">
+                {{ t.sixPiecesHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_8PIECES">
+                {{ t.eightPiecesHandicap }}
+              </option>
+              <option :value="InitialPositionType.HANDICAP_10PIECES">
+                {{ t.tenPiecesHandicap }}
+              </option>
+            </select>
+          </div>
+          <div v-show="gameSettings.startPosition === 'list'" class="form-item">
+            <input v-model="gameSettings.startPositionListFile" type="text" placeholder="*.sfen" />
+            <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
+          </div>
+          <div v-show="gameSettings.startPosition === 'list'" class="form-item">
+            <ToggleButton v-model:value="startPositionListShuffle" :label="t.shuffle" />
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.maxMoves }}</div>
+            <input v-model.number="gameSettings.maxMoves" class="number" type="number" min="1" />
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.gameRepetition }}</div>
+            <input v-model.number="gameSettings.repeat" class="number" type="number" min="1" />
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.jishogi }}</div>
+            <select v-model="gameSettings.jishogiRule">
+              <option :value="JishogiRule.NONE">{{ t.none }}</option>
+              <option :value="JishogiRule.GENERAL24">{{ t.rule24 }}</option>
+              <option :value="JishogiRule.GENERAL27">{{ t.rule27 }}</option>
+              <option :value="JishogiRule.TRY">{{ t.tryRule }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="half-column">
+          <div class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.swapPlayers"
+              :label="t.swapTurnWhenGameRepetition"
+            />
+          </div>
+          <div class="form-item">
+            <ToggleButton v-model:value="gameSettings.enableComment" :label="t.outputComments" />
+          </div>
+          <div class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.enableAutoSave"
+              :label="t.saveRecordAutomatically"
+            />
+          </div>
+          <div class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.humanIsFront"
+              :label="t.adjustBoardToHumanPlayer"
             />
           </div>
         </div>
-        <div class="row regular-interval">
-          <div class="half-column">
-            <div class="form-item">
-              <div class="form-item-label">{{ t.allottedTime }}</div>
-              <input v-model.number="hours" class="time" type="number" min="0" max="99" step="1" />
-              <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
-              <input
-                v-model.number="minutes"
-                class="time"
-                type="number"
-                min="0"
-                max="59"
-                step="1"
-              />
-              <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.byoyomi }}</div>
-              <input
-                v-model.number="byoyomi"
-                class="time"
-                type="number"
-                min="0"
-                max="60"
-                step="1"
-              />
-              <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.increments }}</div>
-              <input
-                v-model.number="increment"
-                class="time"
-                type="number"
-                min="0"
-                max="99"
-                step="1"
-              />
-              <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <ToggleButton
-                v-model:value="gameSettings.enableEngineTimeout"
-                :label="t.enableEngineTimeout"
-              />
-            </div>
-          </div>
-          <div class="half-column">
-            <div class="form-item">
-              <div class="form-item-label">{{ t.allottedTime }}</div>
-              <input
-                v-model.number="whiteHours"
-                class="time"
-                type="number"
-                min="0"
-                max="99"
-                step="1"
-                :disabled="!setDifferentTime"
-              />
-              <div class="form-item-small-label">{{ t.hoursSuffix }}</div>
-              <input
-                v-model.number="whiteMinutes"
-                class="time"
-                type="number"
-                min="0"
-                max="59"
-                step="1"
-                :disabled="!setDifferentTime"
-              />
-              <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.byoyomi }}</div>
-              <input
-                v-model.number="whiteByoyomi"
-                class="time"
-                type="number"
-                min="0"
-                max="60"
-                step="1"
-                :disabled="!setDifferentTime"
-              />
-              <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.increments }}</div>
-              <input
-                v-model.number="whiteIncrement"
-                class="time"
-                type="number"
-                min="0"
-                max="99"
-                step="1"
-                :disabled="!setDifferentTime"
-              />
-              <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
-            </div>
-            <div class="form-item">
-              <ToggleButton v-model:value="setDifferentTime" :label="t.setDifferentTimeForGote" />
-            </div>
-          </div>
-        </div>
-        <div class="players-control">
-          <button @click="onSwapColor">
-            <Icon :icon="IconType.SWAP_H" />
-            <span>{{ t.swapSenteGote }}</span>
-          </button>
-        </div>
       </div>
-      <div class="form-group full-column">
-        <div class="row regular-interval">
-          <div class="half-column">
-            <div class="form-item">
-              <div class="form-item-label">{{ t.startPosition }}</div>
-              <select v-model="gameSettings.startPosition">
-                <option value="current">{{ t.currentPosition }}</option>
-                <option value="list">{{ t.positionList }}</option>
-                <option :value="InitialPositionType.STANDARD">
-                  {{ t.noHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_LANCE">
-                  {{ t.lanceHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_RIGHT_LANCE">
-                  {{ t.rightLanceHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_BISHOP">
-                  {{ t.bishopHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_ROOK">
-                  {{ t.rookHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_ROOK_LANCE">
-                  {{ t.rookLanceHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_2PIECES">
-                  {{ t.twoPiecesHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_4PIECES">
-                  {{ t.fourPiecesHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_6PIECES">
-                  {{ t.sixPiecesHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_8PIECES">
-                  {{ t.eightPiecesHandicap }}
-                </option>
-                <option :value="InitialPositionType.HANDICAP_10PIECES">
-                  {{ t.tenPiecesHandicap }}
-                </option>
-              </select>
-            </div>
-            <div v-show="gameSettings.startPosition === 'list'" class="form-item">
-              <input
-                v-model="gameSettings.startPositionListFile"
-                type="text"
-                placeholder="*.sfen"
-              />
-              <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
-            </div>
-            <div v-show="gameSettings.startPosition === 'list'" class="form-item">
-              <ToggleButton v-model:value="startPositionListShuffle" :label="t.shuffle" />
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.maxMoves }}</div>
-              <input v-model.number="gameSettings.maxMoves" class="number" type="number" min="1" />
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.gameRepetition }}</div>
-              <input v-model.number="gameSettings.repeat" class="number" type="number" min="1" />
-            </div>
-            <div class="form-item">
-              <div class="form-item-label">{{ t.jishogi }}</div>
-              <select v-model="gameSettings.jishogiRule">
-                <option :value="JishogiRule.NONE">{{ t.none }}</option>
-                <option :value="JishogiRule.GENERAL24">{{ t.rule24 }}</option>
-                <option :value="JishogiRule.GENERAL27">{{ t.rule27 }}</option>
-                <option :value="JishogiRule.TRY">{{ t.tryRule }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="half-column">
-            <div class="form-item">
-              <ToggleButton
-                v-model:value="gameSettings.swapPlayers"
-                :label="t.swapTurnWhenGameRepetition"
-              />
-            </div>
-            <div class="form-item">
-              <ToggleButton v-model:value="gameSettings.enableComment" :label="t.outputComments" />
-            </div>
-            <div class="form-item">
-              <ToggleButton
-                v-model:value="gameSettings.enableAutoSave"
-                :label="t.saveRecordAutomatically"
-              />
-            </div>
-            <div class="form-item">
-              <ToggleButton
-                v-model:value="gameSettings.humanIsFront"
-                :label="t.adjustBoardToHumanPlayer"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="onStart()">
-          {{ t.startGame }}
-        </button>
-        <button data-hotkey="Escape" @click="onCancel()">
-          {{ t.cancel }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Enter" autofocus @click="onStart()">
+        {{ t.startGame }}
+      </button>
+      <button data-hotkey="Escape" @click="onCancel()">
+        {{ t.cancel }}
+      </button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { USIEngineLabel, USIEngine, USIEngines } from "@/common/settings/usi";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { USIEngine, USIEngines, getPredefinedUSIEngineTag } from "@/common/settings/usi";
+import { ref, onMounted } from "vue";
 import api, { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
@@ -265,21 +245,19 @@ import {
   validateGameSettings,
   validateGameSettingsForWeb,
 } from "@/common/settings/game";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import * as uri from "@/common/uri.js";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import { PlayerSettings } from "@/common/settings/player";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { InitialPositionType } from "tsshogi";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const hours = ref(0);
 const minutes = ref(0);
 const byoyomi = ref(0);
@@ -314,18 +292,12 @@ onMounted(async () => {
     whiteIncrement.value = whiteTimeLimit.increment;
     setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
     startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
-    showModalDialog(dialog.value, onCancel);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {

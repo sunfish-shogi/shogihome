@@ -1,132 +1,128 @@
 <template>
-  <div>
-    <dialog ref="dialog">
-      <div class="title">定跡手追加</div>
-      <div>
+  <DialogFrame limited @cancel="onClose">
+    <div class="title">定跡手追加</div>
+    <div>
+      <HorizontalSelector
+        v-model:value="settings.sourceType"
+        :items="[
+          { value: SourceType.MEMORY, label: '現在の棋譜から' },
+          { value: SourceType.FILE, label: 'ファイルから' },
+          { value: SourceType.DIRECTORY, label: 'フォルダから' },
+        ]"
+      />
+    </div>
+    <div class="form-group scroll">
+      <div v-show="settings.sourceType === 'memory' && !inMemoryList.length">
+        指し手がありません。
+      </div>
+      <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
+        <tbody>
+          <tr v-for="move of inMemoryList" :key="move.ply">
+            <td v-if="move.type === 'move'">{{ move.ply }}</td>
+            <td v-if="move.type === 'move'">{{ move.text }}</td>
+            <td v-if="move.type === 'move'">
+              <span v-if="move.score !== undefined">{{ t.score }} {{ move.score }}</span>
+            </td>
+            <td v-if="move.type === 'move'">
+              <button v-if="!move.exists" class="thin" @click="registerMove(move)">登録</button>
+              <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
+                更新
+              </button>
+            </td>
+            <td v-if="move.type === 'move'"><span v-if="move.last">(現在の手)</span></td>
+            <td v-if="move.type === 'branch'" class="branch" colspan="5">
+              {{ move.ply }}手目から分岐:
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-show="settings.sourceType === 'directory'" class="form-item row">
+        <input v-model="settings.sourceDirectory" class="grow" type="text" />
+        <button class="thin" @click="selectDirectory()">
+          {{ t.select }}
+        </button>
+        <button class="thin open-dir" @click="openDirectory()">
+          <Icon :icon="IconType.OPEN_FOLDER" />
+        </button>
+      </div>
+      <div v-show="settings.sourceType === 'file'" class="form-item row">
+        <input v-model="settings.sourceRecordFile" class="grow" type="text" />
+        <button class="thin" @click="selectRecordFile()">
+          {{ t.select }}
+        </button>
+      </div>
+      <div
+        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+        class="form-item row"
+      >
+        <span>{{ t.fromPrefix }}</span>
+        <input
+          v-model.number="settings.minPly"
+          class="small"
+          type="number"
+          min="0"
+          step="1"
+          value="0"
+        />
+        <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
+      </div>
+      <div
+        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+        class="form-item row"
+      >
+        <span>{{ t.toPrefix }}</span>
+        <input
+          v-model.number="settings.maxPly"
+          class="small"
+          type="number"
+          min="0"
+          step="1"
+          value="1000"
+        />
+        <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
+      </div>
+      <div
+        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+        class="form-item row"
+      >
         <HorizontalSelector
-          v-model:value="settings.sourceType"
+          v-model:value="settings.playerCriteria"
           :items="[
-            { value: SourceType.MEMORY, label: '現在の棋譜から' },
-            { value: SourceType.FILE, label: 'ファイルから' },
-            { value: SourceType.DIRECTORY, label: 'フォルダから' },
+            { value: PlayerCriteria.ALL, label: '全ての対局者' },
+            { value: PlayerCriteria.BLACK, label: '先手のみ' },
+            { value: PlayerCriteria.WHITE, label: '後手のみ' },
+            { value: PlayerCriteria.FILTER_BY_NAME, label: '名前でフィルタ' },
           ]"
         />
       </div>
-      <div class="form-group scroll">
-        <div v-show="settings.sourceType === 'memory' && !inMemoryList.length">
-          指し手がありません。
-        </div>
-        <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
-          <tbody>
-            <tr v-for="move of inMemoryList" :key="move.ply">
-              <td v-if="move.type === 'move'">{{ move.ply }}</td>
-              <td v-if="move.type === 'move'">{{ move.text }}</td>
-              <td v-if="move.type === 'move'">
-                <span v-if="move.score !== undefined">{{ t.score }} {{ move.score }}</span>
-              </td>
-              <td v-if="move.type === 'move'">
-                <button v-if="!move.exists" class="thin" @click="registerMove(move)">登録</button>
-                <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
-                  更新
-                </button>
-              </td>
-              <td v-if="move.type === 'move'"><span v-if="move.last">(現在の手)</span></td>
-              <td v-if="move.type === 'branch'" class="branch" colspan="5">
-                {{ move.ply }}手目から分岐:
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div v-show="settings.sourceType === 'directory'" class="form-item row">
-          <input v-model="settings.sourceDirectory" class="grow" type="text" />
-          <button class="thin" @click="selectDirectory()">
-            {{ t.select }}
-          </button>
-          <button class="thin open-dir" @click="openDirectory()">
-            <Icon :icon="IconType.OPEN_FOLDER" />
-          </button>
-        </div>
-        <div v-show="settings.sourceType === 'file'" class="form-item row">
-          <input v-model="settings.sourceRecordFile" class="grow" type="text" />
-          <button class="thin" @click="selectRecordFile()">
-            {{ t.select }}
-          </button>
-        </div>
-        <div
-          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-          class="form-item row"
-        >
-          <span>{{ t.fromPrefix }}</span>
-          <input
-            v-model.number="settings.minPly"
-            class="small"
-            type="number"
-            min="0"
-            step="1"
-            value="0"
-          />
-          <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
-        </div>
-        <div
-          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-          class="form-item row"
-        >
-          <span>{{ t.toPrefix }}</span>
-          <input
-            v-model.number="settings.maxPly"
-            class="small"
-            type="number"
-            min="0"
-            step="1"
-            value="1000"
-          />
-          <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
-        </div>
-        <div
-          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-          class="form-item row"
-        >
-          <HorizontalSelector
-            v-model:value="settings.playerCriteria"
-            :items="[
-              { value: PlayerCriteria.ALL, label: '全ての対局者' },
-              { value: PlayerCriteria.BLACK, label: '先手のみ' },
-              { value: PlayerCriteria.WHITE, label: '後手のみ' },
-              { value: PlayerCriteria.FILTER_BY_NAME, label: '名前でフィルタ' },
-            ]"
-          />
-        </div>
-        <div
-          v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-          class="form-item row"
-        >
-          <input
-            v-show="settings.playerCriteria === 'filterByName'"
-            v-model="settings.playerName"
-            class="grow"
-            type="text"
-            placeholder="ここに対局者名の一部を入力"
-          />
-        </div>
+      <div
+        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+        class="form-item row"
+      >
+        <input
+          v-show="settings.playerCriteria === 'filterByName'"
+          v-model="settings.playerName"
+          class="grow"
+          type="text"
+          placeholder="ここに対局者名の一部を入力"
+        />
       </div>
-      <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
-        <button class="import" @click="importMoves">取り込む</button>
-      </div>
-      <div class="main-buttons">
-        <button autofocus data-hotkey="Escape" @click="onClose">
-          {{ t.close }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
+      <button class="import" @click="importMoves">取り込む</button>
+    </div>
+    <div class="main-buttons">
+      <button autofocus data-hotkey="Escape" @click="onClose">
+        {{ t.close }}
+      </button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
@@ -143,6 +139,7 @@ import {
   SourceType,
   validateBookImportSettings,
 } from "@/common/settings/book";
+import DialogFrame from "./DialogFrame.vue";
 
 type InMemoryMove = {
   type: "move";
@@ -165,7 +162,6 @@ const store = useStore();
 const bookStore = useBookStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
-const dialog = ref();
 const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 
@@ -216,18 +212,12 @@ onMounted(async () => {
   try {
     await setupInMemoryList();
     settings.value = await api.loadBookImportSettings();
-    showModalDialog(dialog.value, onClose);
-    installHotKeyForDialog(dialog.value);
   } catch (e) {
     errorStore.add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onClose = () => {
@@ -296,11 +286,10 @@ const importMoves = () => {
 </script>
 
 <style scoped>
-dialog {
-  width: 600px;
-  height: 80%;
-  max-width: 100%;
-  max-height: 800px;
+.form-group {
+  width: 580px;
+  min-height: calc(80vh - 200px);
+  max-height: 600px;
 }
 table.move-list td {
   font-size: 0.8em;

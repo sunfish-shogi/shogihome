@@ -12,6 +12,7 @@ export const testUSIEngine: USIEngine = {
     research: true,
     mate: false,
   },
+  tags: ["対局"],
   enableEarlyPonder: false,
 };
 

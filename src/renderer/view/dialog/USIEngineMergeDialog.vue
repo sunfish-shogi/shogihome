@@ -1,98 +1,95 @@
 <template>
-  <div>
-    <dialog ref="dialog">
-      <div class="title">{{ t.compareEngineSettings }}</div>
-      <div class="form-group">
-        <div class="select-area row">
-          <div class="engine-column">
-            <PlayerSelector
-              v-model:player-uri="leftEngineURI"
-              :engines="usiEngines"
-              :enable-edit-button="false"
-            />
-          </div>
-          <div class="engine-column">
-            <PlayerSelector
-              v-model:player-uri="rightEngineURI"
-              :engines="usiEngines"
-              :enable-edit-button="false"
-            />
-          </div>
+  <DialogFrame @cancel="cancel">
+    <div class="title">{{ t.compareEngineSettings }}</div>
+    <div class="form-group">
+      <div class="select-area row">
+        <div class="engine-column">
+          <PlayerSelector
+            v-model:player-uri="leftEngineURI"
+            :engines="usiEngines"
+            :enable-edit-button="false"
+          />
         </div>
-        <div class="option-area">
-          <div v-if="leftEngineURI === '' || rightEngineURI === ''">
-            {{ t.pleaseSelectEngines }}
+        <div class="engine-column">
+          <PlayerSelector
+            v-model:player-uri="rightEngineURI"
+            :engines="usiEngines"
+            :enable-edit-button="false"
+          />
+        </div>
+      </div>
+      <div class="option-area">
+        <div v-if="leftEngineURI === '' || rightEngineURI === ''">
+          {{ t.pleaseSelectEngines }}
+        </div>
+        <div v-else-if="diff.length === 0">{{ t.noDifference }}</div>
+        <div v-for="option of diff" :key="option.name" class="option">
+          <div>
+            <span>{{ option.displayName }}</span>
+            <span v-if="option.displayName"> (</span>
+            <span>{{ option.name }}</span>
+            <span v-if="option.displayName">)</span>
           </div>
-          <div v-else-if="diff.length === 0">{{ t.noDifference }}</div>
-          <div v-for="option of diff" :key="option.name" class="option">
-            <div>
-              <span>{{ option.displayName }}</span>
-              <span v-if="option.displayName"> (</span>
-              <span>{{ option.name }}</span>
-              <span v-if="option.displayName">)</span>
+          <div class="row">
+            <div class="engine-column">
+              <input
+                v-if="option.leftValue !== undefined"
+                class="option-value"
+                readonly
+                :value="option.leftValue"
+              />
             </div>
-            <div class="row">
-              <div class="engine-column">
-                <input
-                  v-if="option.leftValue !== undefined"
-                  class="option-value"
-                  readonly
-                  :value="option.leftValue"
-                />
-              </div>
-              <div class="engine-column">
-                <input
-                  v-if="option.rightValue !== undefined"
-                  class="option-value"
-                  readonly
-                  :value="option.rightValue"
-                />
-              </div>
+            <div class="engine-column">
+              <input
+                v-if="option.rightValue !== undefined"
+                class="option-value"
+                readonly
+                :value="option.rightValue"
+              />
             </div>
-            <div v-if="!option.mergeable">{{ t.thisItemCannotBeMerged }}</div>
-            <div v-else class="row">
-              <div class="engine-column">
-                <button @click="mergeToLeft(option.name)">
-                  <Icon :icon="IconType.BACK" />
-                  {{ t.mergeToLeft }}
-                </button>
-              </div>
-              <div class="engine-column">
-                <button @click="mergeToRight(option.name)">
-                  {{ t.mergeToRight }}
-                  <Icon :icon="IconType.NEXT" />
-                </button>
-              </div>
+          </div>
+          <div v-if="!option.mergeable">{{ t.thisItemCannotBeMerged }}</div>
+          <div v-else class="row">
+            <div class="engine-column">
+              <button @click="mergeToLeft(option.name)">
+                <Icon :icon="IconType.BACK" />
+                {{ t.mergeToLeft }}
+              </button>
+            </div>
+            <div class="engine-column">
+              <button @click="mergeToRight(option.name)">
+                {{ t.mergeToRight }}
+                <Icon :icon="IconType.NEXT" />
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="ok()">
-          {{ t.ok }}
-        </button>
-        <button data-hotkey="Escape" @click="cancel()">
-          {{ t.cancel }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Enter" autofocus @click="ok()">
+        {{ t.ok }}
+      </button>
+      <button data-hotkey="Escape" @click="cancel()">
+        {{ t.cancel }}
+      </button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, PropType, reactive, ref } from "vue";
+import { computed, PropType, reactive, ref } from "vue";
 import PlayerSelector from "./PlayerSelector.vue";
 import {
   compareUSIEngineOptions,
   getUSIEngineOptionCurrentValue,
   ImmutableUSIEngines,
 } from "@/common/settings/usi";
-import { showModalDialog } from "@/renderer/helpers/dialog";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { t, usiOptionNameMap } from "@/common/i18n";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useAppSettings } from "@/renderer/store/settings";
+import DialogFrame from "./DialogFrame.vue";
 
 const props = defineProps({
   engines: {
@@ -107,19 +104,9 @@ const emit = defineEmits<{
 }>();
 
 const appSettings = useAppSettings();
-const dialog = ref();
 const usiEngines = reactive(props.engines.getClone());
 const leftEngineURI = ref("");
 const rightEngineURI = ref("");
-
-onMounted(async () => {
-  showModalDialog(dialog.value, cancel);
-  installHotKeyForDialog(dialog.value);
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
-});
 
 const merge = (name: string, srcURI: string, dstURI: string) => {
   const src = usiEngines.getEngine(srcURI);
@@ -162,8 +149,8 @@ const cancel = () => {
 
 <style scoped>
 .form-group {
-  width: 100%;
-  max-width: 600px;
+  width: 600px;
+  max-width: 100%;
 }
 .select-area {
   width: 100%;

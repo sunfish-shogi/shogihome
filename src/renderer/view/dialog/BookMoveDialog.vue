@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.bookMove }}</div>
       <div class="form-group">
         <div class="form-item">
@@ -53,8 +53,8 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script lang="ts">
@@ -68,10 +68,9 @@ export type Result = {
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { showModalDialog } from "@/renderer/helpers/dialog";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
+import DialogFrame from "./DialogFrame.vue";
 
 const props = defineProps<{
   move: string;
@@ -86,7 +85,6 @@ const emits = defineEmits<{
   cancel: [];
 }>();
 
-const dialog = ref();
 const scoreValue = ref(props.score || 0);
 const depthValue = ref(props.depth || 0);
 const countValue = ref(props.count || 0);
@@ -94,15 +92,6 @@ const commentValue = ref(props.comment || "");
 const enableScore = ref(props.score !== undefined);
 const enableDepth = ref(props.depth !== undefined);
 const enableCount = ref(props.count !== undefined);
-
-onMounted(async () => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
-});
 
 const onOk = () => {
   emits("ok", {

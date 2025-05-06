@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.research }}</div>
       <div class="form-group">
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :filter-label="USIEngineLabel.RESEARCH"
+          :default-tag="getPredefinedUSIEngineTag('research')"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -16,7 +16,7 @@
         <PlayerSelector
           v-model:player-uri="secondaryEngineURIs[index]"
           :engines="engines"
-          :filter-label="USIEngineLabel.RESEARCH"
+          :default-tag="getPredefinedUSIEngineTag('research')"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -52,34 +52,32 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import api from "@/renderer/ipc/api";
 import {
   defaultResearchSettings,
   ResearchSettings,
   validateResearchSettings,
 } from "@/common/settings/research";
-import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
+import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const researchSettings = ref(defaultResearchSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
@@ -90,8 +88,6 @@ const maxSeconds = ref();
 busyState.retain();
 
 onMounted(async () => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
   try {
     researchSettings.value = await api.loadResearchSettings();
     engines.value = await api.loadUSIEngines();
@@ -105,10 +101,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onStart = () => {

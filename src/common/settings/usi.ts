@@ -110,6 +110,17 @@ export type USIEngineLabels = {
   [USIEngineLabel.MATE]?: boolean;
 };
 
+export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate"): string {
+  switch (type) {
+    case "game":
+      return t.game;
+    case "research":
+      return t.research;
+    case "mate":
+      return t.mateSearch;
+  }
+}
+
 export type USIEngine = {
   uri: string;
   name: string;
@@ -117,7 +128,8 @@ export type USIEngine = {
   author: string;
   path: string;
   options: { [name: string]: USIEngineOption };
-  labels?: USIEngineLabels;
+  labels?: USIEngineLabels; // deprecated: use tags instead
+  tags?: string[];
   enableEarlyPonder: boolean;
 };
 
@@ -134,6 +146,11 @@ export function emptyUSIEngine(): USIEngine {
       research: true,
       mate: true,
     },
+    tags: [
+      getPredefinedUSIEngineTag("game"),
+      getPredefinedUSIEngineTag("research"),
+      getPredefinedUSIEngineTag("mate"),
+    ],
     enableEarlyPonder: false,
   };
 }
@@ -143,6 +160,23 @@ export function duplicateEngine(src: USIEngine): USIEngine {
   engine.uri = issueEngineURI();
   engine.name = t.copyOf(engine.name);
   return engine;
+}
+
+function labelToTag(label: USIEngineLabel): string {
+  switch (label) {
+    case USIEngineLabel.GAME:
+      return getPredefinedUSIEngineTag("game");
+    case USIEngineLabel.RESEARCH:
+      return getPredefinedUSIEngineTag("research");
+    case USIEngineLabel.MATE:
+      return getPredefinedUSIEngineTag("mate");
+  }
+}
+
+function labelsToTags(labels: USIEngineLabels): string[] {
+  return Object.entries(labels)
+    .filter(([key, val]) => val && labelToTag(key as USIEngineLabel))
+    .map(([key]) => labelToTag(key as USIEngineLabel));
 }
 
 export function mergeUSIEngine(engine: USIEngine, local: USIEngine): void {
@@ -156,6 +190,7 @@ export function mergeUSIEngine(engine: USIEngine, local: USIEngine): void {
     engineOption.value = localOption.value;
   });
   engine.labels = local.labels;
+  engine.tags = local.tags || labelsToTags(local.labels || {});
   engine.enableEarlyPonder = local.enableEarlyPonder;
 }
 
@@ -274,14 +309,28 @@ export interface ImmutableUSIEngines {
   hasEngine(uri: string): boolean;
   getEngine(uri: string): USIEngine | undefined;
   get engineList(): USIEngine[];
+  get tagList(): { name: string; color: string }[];
+  getTagColor(tag: string): string;
   get json(): string;
   get jsonWithIndent(): string;
   getClone(): USIEngines;
-  filterByLabel(label: USIEngineLabel): USIEngines;
 }
+
+const tagColorPalette: { [code: string]: string } = {
+  blue: "#1565C0",
+  green: "#2E7D32",
+  orange: "#D84315",
+  brown: "#5D4037",
+  purple: "#7B1FA2",
+  indigo: "#303F9F",
+  amber: "#EF6C00",
+  gray: "#616161",
+  pink: "#C2185B",
+} as const;
 
 export class USIEngines {
   private engines: { [uri: string]: USIEngine } = {};
+  private tagColorMapping: { [tag: string]: string } = {};
 
   constructor(json?: string) {
     if (json) {
@@ -299,8 +348,11 @@ export class USIEngines {
               ...emptyEngine.labels,
               ...engine.labels,
             },
+            tags: engine.tags || labelsToTags(engine.labels || {}),
           };
         });
+      this.tagColorMapping = src.tagColorMapping || {};
+      this.updateTagColorMapping();
     }
   }
 
@@ -310,6 +362,7 @@ export class USIEngines {
 
   addEngine(engine: USIEngine): void {
     this.engines[engine.uri] = engine;
+    this.updateTagColorMapping();
   }
 
   updateEngine(engine: USIEngine): boolean {
@@ -317,6 +370,7 @@ export class USIEngines {
       return false;
     }
     this.engines[engine.uri] = engine;
+    this.updateTagColorMapping();
     return true;
   }
 
@@ -325,6 +379,7 @@ export class USIEngines {
       return false;
     }
     delete this.engines[uri];
+    this.updateTagColorMapping();
     return true;
   }
 
@@ -344,6 +399,66 @@ export class USIEngines {
     });
   }
 
+  get tagList(): { name: string; color: string }[] {
+    return Object.entries(this.tagColorMapping)
+      .map(([name, color]) => ({
+        name,
+        color: tagColorPalette[color],
+      }))
+      .sort((a, b) => (a.name > b.name ? 1 : -1));
+  }
+
+  getTagColor(tag: string): string {
+    const color = this.tagColorMapping[tag] || "blue";
+    return tagColorPalette[color] || tagColorPalette.blue;
+  }
+
+  addTag(uri: string, tag: string): void {
+    if (!this.engines[uri]) {
+      return;
+    }
+    this.engines[uri].tags = this.engines[uri].tags || [];
+    if (!this.engines[uri].tags.includes(tag)) {
+      this.engines[uri].tags.push(tag);
+    }
+    this.updateTagColorMapping();
+  }
+
+  removeTag(uri: string, tag: string): void {
+    if (!this.engines[uri]) {
+      return;
+    }
+    this.engines[uri].tags = this.engines[uri].tags?.filter((t) => t !== tag);
+    this.updateTagColorMapping();
+  }
+
+  private updateTagColorMapping(): void {
+    const usedTags = new Set<string>();
+    for (const engine of Object.values(this.engines)) {
+      for (const tag of engine.tags ?? []) {
+        usedTags.add(tag);
+      }
+    }
+    const allColors = Object.keys(tagColorPalette);
+    const usedColors = new Set(Object.values(this.tagColorMapping));
+    const availableColors = allColors.filter((color) => !usedColors.has(color));
+
+    let indexForNew = Object.keys(this.tagColorMapping).length;
+    for (const tag of usedTags) {
+      if (!this.tagColorMapping[tag]) {
+        const assignedColor = availableColors.shift() ?? allColors[indexForNew % allColors.length];
+        this.tagColorMapping[tag] = assignedColor;
+        indexForNew++;
+      }
+    }
+
+    for (const tag of Object.keys(this.tagColorMapping)) {
+      if (!usedTags.has(tag)) {
+        delete this.tagColorMapping[tag];
+      }
+    }
+  }
+
   get json(): string {
     return JSON.stringify(this);
   }
@@ -354,14 +469,6 @@ export class USIEngines {
 
   getClone(): USIEngines {
     return new USIEngines(this.json);
-  }
-
-  filterByLabel(label: USIEngineLabel): USIEngines {
-    const engines = new USIEngines();
-    this.engineList
-      .filter((engine) => engine.labels && engine.labels[label])
-      .forEach((engine) => engines.addEngine(engine));
-    return engines;
   }
 }
 

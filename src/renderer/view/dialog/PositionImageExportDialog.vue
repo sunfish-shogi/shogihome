@@ -1,166 +1,164 @@
 <template>
-  <div>
-    <dialog ref="dialog">
-      <div class="row">
-        <div ref="board" class="board" :class="appSettings.positionImageStyle">
-          <div v-if="appSettings.positionImageStyle === PositionImageStyle.BOOK" class="book">
-            <SimpleBoardView
-              :max-size="maxSize"
-              :position="store.record.position"
-              :black-name="blackName"
-              :white-name="whiteName"
-              :hide-white-hand="
-                appSettings.positionImageHandLabelType === PositionImageHandLabelType.TSUME_SHOGI
-              "
-              :header="header"
-              :footer="store.record.current.comment"
-              :last-move="lastMove"
-              :typeface="appSettings.positionImageTypeface"
-              :font-weight="fontWeight"
-              :text-shadow="textShadow"
-              :character-y="appSettings.positionImageCharacterY"
-              :font-scale="appSettings.positionImageFontScale"
-            />
-          </div>
-          <div v-else class="game">
-            <BoardView
-              :board-image-type="appSettings.boardImage"
-              :custom-board-image-url="appSettings.boardImageFileURL"
-              :board-grid-color="appSettings.boardGridColor || undefined"
-              :piece-stand-image-type="appSettings.pieceStandImage"
-              :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
-              :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
-              :king-piece-type="appSettings.kingPieceType"
-              :board-label-type="appSettings.boardLabelType"
-              :max-size="maxSize"
-              :position="store.record.position"
-              :last-move="lastMove"
-              :flip="appSettings.boardFlipping"
-              :hide-clock="true"
-              :black-player-name="blackPlayerName"
-              :white-player-name="whitePlayerName"
-            />
-          </div>
+  <DialogFrame @cancel="onClose">
+    <div class="row">
+      <div ref="board" class="board" :class="appSettings.positionImageStyle">
+        <div v-if="appSettings.positionImageStyle === PositionImageStyle.BOOK" class="book">
+          <SimpleBoardView
+            :max-size="maxSize"
+            :position="store.record.position"
+            :black-name="blackName"
+            :white-name="whiteName"
+            :hide-white-hand="
+              appSettings.positionImageHandLabelType === PositionImageHandLabelType.TSUME_SHOGI
+            "
+            :header="header"
+            :footer="store.record.current.comment"
+            :last-move="lastMove"
+            :typeface="appSettings.positionImageTypeface"
+            :font-weight="fontWeight"
+            :text-shadow="textShadow"
+            :character-y="appSettings.positionImageCharacterY"
+            :font-scale="appSettings.positionImageFontScale"
+          />
         </div>
-        <div
-          v-if="appSettings.positionImageStyle === PositionImageStyle.BOOK"
-          class="side-controls column"
-        >
-          <div class="form-item">
-            <div>
-              {{ t.typeface }}
-              <HorizontalSelector
-                :value="appSettings.positionImageTypeface"
-                :items="[
-                  { value: PositionImageTypeface.GOTHIC, label: t.gothic },
-                  { value: PositionImageTypeface.MINCHO, label: t.mincho },
-                ]"
-                @update:value="changeTypeface"
-              />
-            </div>
-            <div>
-              {{ t.vertical }}
-              <input
-                class="number"
-                type="number"
-                min="-100"
-                max="100"
-                :value="appSettings.positionImageCharacterY"
-                @change="changeCharacterY"
-              />
-            </div>
-            <div>
-              {{ t.size }}
-              <input
-                class="number"
-                type="number"
-                min="0"
-                max="200"
-                :value="Math.round(appSettings.positionImageFontScale * 100)"
-                @change="changeFontScale"
-              />
-              <span class="form-item-small-label">%</span>
-            </div>
-            <div>
-              {{ t.weight }}
-              <HorizontalSelector
-                :value="String(appSettings.positionImageFontWeight)"
-                :items="[
-                  { value: PositionImageFontWeight.W400, label: t.thin },
-                  { value: PositionImageFontWeight.W400X, label: t.bold },
-                  { value: PositionImageFontWeight.W700X, label: t.extraBold },
-                ]"
-                @update:value="(v) => changeFontWeight(v as PositionImageFontWeight)"
-              />
-            </div>
-          </div>
-          <div class="form-item">
-            {{ t.handLabel }}
+        <div v-else class="game">
+          <BoardView
+            :board-image-type="appSettings.boardImage"
+            :custom-board-image-url="appSettings.boardImageFileURL"
+            :board-grid-color="appSettings.boardGridColor || undefined"
+            :piece-stand-image-type="appSettings.pieceStandImage"
+            :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
+            :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
+            :king-piece-type="appSettings.kingPieceType"
+            :board-label-type="appSettings.boardLabelType"
+            :max-size="maxSize"
+            :position="store.record.position"
+            :last-move="lastMove"
+            :flip="appSettings.boardFlipping"
+            :hide-clock="true"
+            :black-player-name="blackPlayerName"
+            :white-player-name="whitePlayerName"
+          />
+        </div>
+      </div>
+      <div
+        v-if="appSettings.positionImageStyle === PositionImageStyle.BOOK"
+        class="side-controls column"
+      >
+        <div class="form-item">
+          <div>
+            {{ t.typeface }}
             <HorizontalSelector
-              :value="appSettings.positionImageHandLabelType"
+              :value="appSettings.positionImageTypeface"
               :items="[
-                { value: PositionImageHandLabelType.PLAYER_NAME, label: t.playerName },
-                { value: PositionImageHandLabelType.SENTE_GOTE, label: '「先手｜後手」' },
-                { value: PositionImageHandLabelType.MOCHIGOMA, label: '「持駒」' },
-                { value: PositionImageHandLabelType.TSUME_SHOGI, label: t.tsumeShogi },
-                { value: PositionImageHandLabelType.NONE, label: t.none },
+                { value: PositionImageTypeface.GOTHIC, label: t.gothic },
+                { value: PositionImageTypeface.MINCHO, label: t.mincho },
               ]"
-              @update:value="changeHandLabel"
+              @update:value="changeTypeface"
             />
           </div>
-          <div class="form-item">
-            {{ t.header }}
+          <div>
+            {{ t.vertical }}
             <input
-              class="header"
-              :value="appSettings.positionImageHeader"
-              :placeholder="t.typeCustomTitleHere"
-              @input="changeHeaderText"
+              class="number"
+              type="number"
+              min="-100"
+              max="100"
+              :value="appSettings.positionImageCharacterY"
+              @change="changeCharacterY"
             />
-            <ToggleButton
-              :value="appSettings.useBookmarkAsPositionImageHeader"
-              :label="t.useBookmarkAsHeader"
-              @update:value="changeWhetherToUseBookmark"
+          </div>
+          <div>
+            {{ t.size }}
+            <input
+              class="number"
+              type="number"
+              min="0"
+              max="200"
+              :value="Math.round(appSettings.positionImageFontScale * 100)"
+              @change="changeFontScale"
+            />
+            <span class="form-item-small-label">%</span>
+          </div>
+          <div>
+            {{ t.weight }}
+            <HorizontalSelector
+              :value="String(appSettings.positionImageFontWeight)"
+              :items="[
+                { value: PositionImageFontWeight.W400, label: t.thin },
+                { value: PositionImageFontWeight.W400X, label: t.bold },
+                { value: PositionImageFontWeight.W700X, label: t.extraBold },
+              ]"
+              @update:value="(v) => changeFontWeight(v as PositionImageFontWeight)"
             />
           </div>
         </div>
-      </div>
-      <div>
-        <div class="form-item center">
+        <div class="form-item">
+          {{ t.handLabel }}
           <HorizontalSelector
-            :value="appSettings.positionImageStyle"
+            :value="appSettings.positionImageHandLabelType"
             :items="[
-              { value: PositionImageStyle.BOOK, label: t.bookStyle },
-              { value: PositionImageStyle.GAME, label: t.gameStyle },
+              { value: PositionImageHandLabelType.PLAYER_NAME, label: t.playerName },
+              { value: PositionImageHandLabelType.SENTE_GOTE, label: '「先手｜後手」' },
+              { value: PositionImageHandLabelType.MOCHIGOMA, label: '「持駒」' },
+              { value: PositionImageHandLabelType.TSUME_SHOGI, label: t.tsumeShogi },
+              { value: PositionImageHandLabelType.NONE, label: t.none },
             ]"
-            @update:value="changeType"
+            @update:value="changeHandLabel"
           />
+        </div>
+        <div class="form-item">
+          {{ t.header }}
           <input
-            class="number"
-            type="number"
-            min="400"
-            max="2000"
-            :value="appSettings.positionImageSize"
-            @input="changeSize"
+            class="header"
+            :value="appSettings.positionImageHeader"
+            :placeholder="t.typeCustomTitleHere"
+            @input="changeHeaderText"
           />
-          <span class="form-item-small-label">px</span>
+          <ToggleButton
+            :value="appSettings.useBookmarkAsPositionImageHeader"
+            :label="t.useBookmarkAsHeader"
+            @update:value="changeWhetherToUseBookmark"
+          />
         </div>
       </div>
-      <div class="main-buttons">
-        <button autofocus data-hotkey="Enter" @click="saveAsPNG">
-          <Icon :icon="IconType.SAVE" />
-          <span>PNG</span>
-        </button>
-        <button autofocus data-hotkey="Enter" @click="saveAsJPEG">
-          <Icon :icon="IconType.SAVE" />
-          <span>JPEG</span>
-        </button>
-        <button autofocus data-hotkey="Escape" @click="onClose">
-          <Icon :icon="IconType.CLOSE" />
-          <span>{{ t.close }}</span>
-        </button>
+    </div>
+    <div>
+      <div class="form-item center">
+        <HorizontalSelector
+          :value="appSettings.positionImageStyle"
+          :items="[
+            { value: PositionImageStyle.BOOK, label: t.bookStyle },
+            { value: PositionImageStyle.GAME, label: t.gameStyle },
+          ]"
+          @update:value="changeType"
+        />
+        <input
+          class="number"
+          type="number"
+          min="400"
+          max="2000"
+          :value="appSettings.positionImageSize"
+          @input="changeSize"
+        />
+        <span class="form-item-small-label">px</span>
       </div>
-    </dialog>
-  </div>
+    </div>
+    <div class="main-buttons">
+      <button autofocus data-hotkey="Enter" @click="saveAsPNG">
+        <Icon :icon="IconType.SAVE" />
+        <span>PNG</span>
+      </button>
+      <button data-hotkey="Enter" @click="saveAsJPEG">
+        <Icon :icon="IconType.SAVE" />
+        <span>JPEG</span>
+      </button>
+      <button data-hotkey="Escape" @click="onClose">
+        <Icon :icon="IconType.CLOSE" />
+        <span>{{ t.close }}</span>
+      </button>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
@@ -169,8 +167,6 @@ import { t } from "@/common/i18n";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
 import SimpleBoardView from "@/renderer/view/primitive/SimpleBoardView.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
-import { showModalDialog } from "@/renderer/helpers/dialog";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import { Rect, RectSize } from "@/common/assets/geometry";
 import {
@@ -197,6 +193,7 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useErrorStore } from "@/renderer/store/error";
+import DialogFrame from "./DialogFrame.vue";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;
@@ -212,7 +209,6 @@ const lastMove = computed(() => {
   const record = store.record;
   return record.current.move instanceof Move ? record.current.move : null;
 });
-const dialog = ref();
 const board = ref();
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
 const zoom = ref(window.devicePixelRatio);
@@ -227,13 +223,10 @@ const updateSize = () => {
 };
 
 onMounted(() => {
-  showModalDialog(dialog.value, onClose);
-  installHotKeyForDialog(dialog.value);
   window.addEventListener("resize", updateSize);
 });
 
 onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
   window.removeEventListener("resize", updateSize);
 });
 

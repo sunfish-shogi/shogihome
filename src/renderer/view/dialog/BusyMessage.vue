@@ -1,7 +1,7 @@
 <template>
   <div>
-    <dialog ref="dialog" class="busy">
-      <div class="message-box">
+    <dialog ref="dialog" class="message-box">
+      <div class="message-area">
         <Icon :icon="IconType.BUSY" />
         <div class="message">{{ t.processingPleaseWait }}</div>
       </div>
@@ -31,9 +31,9 @@ const progressPercent = computed(() => {
 </script>
 
 <style scoped>
-dialog.busy {
+dialog {
   color: var(--busy-dialog-color);
   background-color: var(--busy-dialog-bg-color);
-  border: 3px solid var(--busy-dialog-border-color);
+  border-color: var(--busy-dialog-border-color);
 }
 </style>

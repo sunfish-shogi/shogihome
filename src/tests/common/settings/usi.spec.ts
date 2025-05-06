@@ -434,6 +434,7 @@ describe("settings/usi", () => {
         game: true,
         mate: false,
       },
+      tags: ["対局"],
       enableEarlyPonder: false,
     });
   });
@@ -751,6 +752,36 @@ describe("settings/usi", () => {
       research: true,
       mate: true,
     });
+  });
+
+  it("USIEngines/tags", () => {
+    const engines = new USIEngines(
+      JSON.stringify({
+        engines: {
+          "es://usi-engine/a": {
+            tags: ["研究", "NNUE"],
+          },
+          "es://usi-engine/b": {
+            labels: {
+              game: true,
+              research: false,
+              mate: true,
+            },
+          },
+        },
+      }),
+    );
+    expect(engines.getEngine("es://usi-engine/a")?.tags).toStrictEqual(["研究", "NNUE"]);
+    expect(engines.getEngine("es://usi-engine/b")?.tags).toStrictEqual(["対局", "詰み探索"]);
+    expect(engines.tagList).toHaveLength(4);
+    engines.addTag("es://usi-engine/b", "DL");
+    expect(engines.getEngine("es://usi-engine/a")?.tags).toStrictEqual(["研究", "NNUE"]);
+    expect(engines.getEngine("es://usi-engine/b")?.tags).toStrictEqual(["対局", "詰み探索", "DL"]);
+    expect(engines.tagList).toHaveLength(5);
+    engines.removeTag("es://usi-engine/b", "詰み探索");
+    expect(engines.getEngine("es://usi-engine/a")?.tags).toStrictEqual(["研究", "NNUE"]);
+    expect(engines.getEngine("es://usi-engine/b")?.tags).toStrictEqual(["対局", "DL"]);
+    expect(engines.tagList).toHaveLength(4);
   });
 
   it("USIEngines/exportUSIEnginesForCLI", () => {

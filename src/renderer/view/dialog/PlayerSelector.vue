@@ -1,19 +1,13 @@
 <template>
   <div>
     <div class="root">
-      <select ref="playerSelect" v-model="selectedPlayerURI" class="player-select" size="1">
-        <option v-if="containsHuman" :value="uri.ES_HUMAN">{{ t.human }}</option>
-        <option v-for="engine in filteredEngines.engineList" :key="engine.uri" :value="engine.uri">
-          {{ engine.name }}
-        </option>
-        <option
-          v-for="playerURI in containsBasicEngines && uri.ES_BASIC_ENGINE_LIST"
-          :key="playerURI"
-          :value="playerURI"
-        >
-          {{ uri.basicEngineName(playerURI) }}
-        </option>
-      </select>
+      <DropdownList
+        v-model:value="selectedPlayerURI"
+        class="player-select"
+        :tags="engines.tagList"
+        :items="listItems"
+        :selected-tags="[defaultTag]"
+      />
       <div v-if="displayPonderState" class="row player-info">
         <span class="player-info-key">{{ t.ponder }}:</span>
         <span class="player-info-value">{{ ponderState || "---" }}</span>
@@ -59,13 +53,14 @@ import {
   ImmutableUSIEngines,
   USIPonder,
   USIEngines,
-  USIEngineLabel,
   getUSIEngineThreads,
   getUSIEngineMultiPV,
+  getPredefinedUSIEngineTag,
 } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
 
 const selectedPlayerURI = defineModel<string>("playerUri", { required: true });
 
@@ -82,8 +77,9 @@ const props = defineProps({
     type: Object as PropType<ImmutableUSIEngines>,
     required: true,
   },
-  filterLabel: {
-    type: String as PropType<USIEngineLabel>,
+  defaultTag: {
+    type: String as PropType<string>,
+    required: false,
     default: null,
   },
   displayPonderState: {
@@ -112,15 +108,31 @@ const emit = defineEmits<{
 const busyState = useBusyState();
 const engineOptionsDialog = ref(null as USIEngine | null);
 
-const filteredEngines = computed(() => {
-  return props.filterLabel ? props.engines.filterByLabel(props.filterLabel) : props.engines;
+const listItems = computed(() => {
+  const items = [];
+  if (props.containsHuman) {
+    items.push({ label: t.human, value: uri.ES_HUMAN, tags: [getPredefinedUSIEngineTag("game")] });
+  }
+  for (const engine of props.engines.engineList) {
+    items.push({ label: engine.name, value: engine.uri, tags: engine.tags });
+  }
+  if (props.containsBasicEngines) {
+    for (const playerURI of uri.ES_BASIC_ENGINE_LIST) {
+      items.push({
+        label: uri.basicEngineName(playerURI),
+        value: playerURI,
+        tags: [getPredefinedUSIEngineTag("game")],
+      });
+    }
+  }
+  return items;
 });
 
 const ponderState = computed(() => {
   if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
+  const engine = props.engines.getEngine(selectedPlayerURI.value);
   return engine && getUSIEngineOptionCurrentValue(engine.options[USIPonder]) === "true"
     ? "ON"
     : "OFF";
@@ -130,7 +142,7 @@ const threadState = computed(() => {
   if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
+  const engine = props.engines.getEngine(selectedPlayerURI.value);
   if (!engine) {
     return null;
   }
@@ -142,7 +154,7 @@ const multiPVState = computed(() => {
   if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
   }
-  const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
+  const engine = props.engines.getEngine(selectedPlayerURI.value);
   if (!engine) {
     return null;
   }
@@ -156,7 +168,7 @@ const isPlayerSettingsEnabled = computed(() => {
 
 const openPlayerSettings = () => {
   if (uri.isUSIEngine(selectedPlayerURI.value)) {
-    const engine = filteredEngines.value.getEngine(selectedPlayerURI.value);
+    const engine = props.engines.getEngine(selectedPlayerURI.value);
     if (!engine) {
       useErrorStore().add("利用可能なエンジンが選択されていません。");
       return;

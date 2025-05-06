@@ -1,7 +1,7 @@
 <template>
   <div>
-    <dialog ref="dialog" class="busy">
-      <div class="message-box">
+    <dialog ref="dialog" class="message-box">
+      <div class="message-area">
         <Icon :icon="IconType.BUSY" />
         <div class="message">
           <span v-if="store.csaGameState === CSAGameState.READY">
@@ -99,11 +99,3 @@ const onOpenServerPrompt = () => {
   api.openPrompt(PromptTarget.CSA, store.csaServerSessionID, name);
 };
 </script>
-
-<style scoped>
-dialog.busy {
-  color: var(--info-dialog-color);
-  background-color: var(--info-dialog-bg-color);
-  border: 3px solid var(--info-dialog-border-color);
-}
-</style>

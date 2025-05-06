@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.recordAnalysis }}</div>
       <div class="form-group">
         <div>{{ t.searchEngine }}</div>
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :filter-label="USIEngineLabel.RESEARCH"
+          :default-tag="getPredefinedUSIEngineTag('research')"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -83,29 +83,27 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import api from "@/renderer/ipc/api";
 import { defaultAnalysisSettings, validateAnalysisSettings } from "@/common/settings/analysis";
 import { CommentBehavior } from "@/common/settings/comment";
-import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
+import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const settings = ref(defaultAnalysisSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
@@ -113,8 +111,6 @@ const engineURI = ref("");
 busyState.retain();
 
 onMounted(async () => {
-  showModalDialog(dialog.value, onCancel);
-  installHotKeyForDialog(dialog.value);
   try {
     settings.value = await api.loadAnalysisSettings();
     engines.value = await api.loadUSIEngines();
@@ -125,10 +121,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onStart = () => {

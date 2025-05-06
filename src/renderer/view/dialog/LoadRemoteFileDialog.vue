@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="root">
+  <DialogFrame @cancel="onCancel">
+    <div class="root">
       <div class="title">{{ t.loadRecordFromWeb }}</div>
       <div class="form-group">
         <div class="form-item">
@@ -18,31 +18,27 @@
           {{ t.cancel }}
         </button>
       </div>
-    </dialog>
-  </div>
+    </div>
+  </DialogFrame>
 </template>
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { onBeforeUnmount, onMounted, ref } from "vue";
-import { showModalDialog } from "@/renderer/helpers/dialog";
-import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
+import { onMounted, ref } from "vue";
 import { useStore } from "@/renderer/store";
 import { isNative } from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import DialogFrame from "./DialogFrame.vue";
 
 const store = useStore();
 const busyState = useBusyState();
-const dialog = ref();
 const input = ref();
 const localStorageLastURLKey = "LoadRemoteFileDialog.lastURL";
 
 busyState.retain();
 onMounted(async () => {
   try {
-    showModalDialog(dialog.value);
-    installHotKeyForDialog(dialog.value);
     input.value.focus();
     input.value.value = localStorage.getItem(localStorageLastURLKey);
     if (!isNative()) {
@@ -55,10 +51,6 @@ onMounted(async () => {
   } finally {
     busyState.release();
   }
-});
-
-onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
 });
 
 const onOK = () => {
