@@ -7,7 +7,7 @@
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :default-tag="PredefinedUSIEngineTag.RESEARCH"
+          :default-tag="getPredefinedUSIEngineTag('research')"
           :display-thread-state="true"
           :display-multi-pv-state="true"
           @update-engines="onUpdatePlayerSettings"
@@ -92,7 +92,7 @@ import { t } from "@/common/i18n";
 import api from "@/renderer/ipc/api";
 import { defaultAnalysisSettings, validateAnalysisSettings } from "@/common/settings/analysis";
 import { CommentBehavior } from "@/common/settings/comment";
-import { PredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
+import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";

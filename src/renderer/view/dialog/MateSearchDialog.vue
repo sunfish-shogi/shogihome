@@ -6,7 +6,7 @@
         <PlayerSelector
           v-model:player-uri="engineURI"
           :engines="engines"
-          :default-tag="PredefinedUSIEngineTag.MATE"
+          :default-tag="getPredefinedUSIEngineTag('mate')"
           :display-thread-state="true"
           :display-multi-pv-state="false"
           @update-engines="
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { MateSearchSettings } from "@/common/settings/mate";
-import { PredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
+import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";

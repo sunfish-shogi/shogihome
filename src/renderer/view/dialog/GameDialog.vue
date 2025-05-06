@@ -12,7 +12,7 @@
               :contains-human="true"
               :contains-basic-engines="true"
               :engines="engines"
-              :default-tag="PredefinedUSIEngineTag.GAME"
+              :default-tag="getPredefinedUSIEngineTag('game')"
               :display-ponder-state="true"
               :display-thread-state="true"
               :display-multi-pv-state="true"
@@ -27,7 +27,7 @@
               :contains-human="true"
               :contains-basic-engines="true"
               :engines="engines"
-              :default-tag="PredefinedUSIEngineTag.GAME"
+              :default-tag="getPredefinedUSIEngineTag('game')"
               :display-ponder-state="true"
               :display-thread-state="true"
               :display-multi-pv-state="true"
@@ -255,7 +255,7 @@
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { USIEngine, USIEngines, PredefinedUSIEngineTag } from "@/common/settings/usi";
+import { USIEngine, USIEngines, getPredefinedUSIEngineTag } from "@/common/settings/usi";
 import { ref, onMounted } from "vue";
 import api, { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";

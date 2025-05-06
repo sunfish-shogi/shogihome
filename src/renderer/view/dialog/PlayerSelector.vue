@@ -55,7 +55,7 @@ import {
   USIEngines,
   getUSIEngineThreads,
   getUSIEngineMultiPV,
-  PredefinedUSIEngineTag,
+  getPredefinedUSIEngineTag,
 } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
@@ -111,7 +111,7 @@ const engineOptionsDialog = ref(null as USIEngine | null);
 const listItems = computed(() => {
   const items = [];
   if (props.containsHuman) {
-    items.push({ label: t.human, value: uri.ES_HUMAN, tags: [PredefinedUSIEngineTag.GAME] });
+    items.push({ label: t.human, value: uri.ES_HUMAN, tags: [getPredefinedUSIEngineTag("game")] });
   }
   for (const engine of props.engines.engineList) {
     items.push({ label: engine.name, value: engine.uri, tags: engine.tags });
@@ -121,7 +121,7 @@ const listItems = computed(() => {
       items.push({
         label: uri.basicEngineName(playerURI),
         value: playerURI,
-        tags: [PredefinedUSIEngineTag.GAME],
+        tags: [getPredefinedUSIEngineTag("game")],
       });
     }
   }

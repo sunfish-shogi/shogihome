@@ -110,17 +110,16 @@ export type USIEngineLabels = {
   [USIEngineLabel.MATE]?: boolean;
 };
 
-export const PredefinedUSIEngineTag = {
-  GAME: t.game,
-  RESEARCH: t.research,
-  MATE: t.mateSearch,
-} as const;
-
-const labelToTagMap = {
-  [USIEngineLabel.GAME]: PredefinedUSIEngineTag.GAME,
-  [USIEngineLabel.RESEARCH]: PredefinedUSIEngineTag.RESEARCH,
-  [USIEngineLabel.MATE]: PredefinedUSIEngineTag.MATE,
-};
+export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate"): string {
+  switch (type) {
+    case "game":
+      return t.game;
+    case "research":
+      return t.research;
+    case "mate":
+      return t.mateSearch;
+  }
+}
 
 export type USIEngine = {
   uri: string;
@@ -148,9 +147,9 @@ export function emptyUSIEngine(): USIEngine {
       mate: true,
     },
     tags: [
-      PredefinedUSIEngineTag.GAME,
-      PredefinedUSIEngineTag.RESEARCH,
-      PredefinedUSIEngineTag.MATE,
+      getPredefinedUSIEngineTag("game"),
+      getPredefinedUSIEngineTag("research"),
+      getPredefinedUSIEngineTag("mate"),
     ],
     enableEarlyPonder: false,
   };
@@ -163,10 +162,21 @@ export function duplicateEngine(src: USIEngine): USIEngine {
   return engine;
 }
 
-function convertOldLabelsToTags(labels: USIEngineLabels): string[] {
+function labelToTag(label: USIEngineLabel): string {
+  switch (label) {
+    case USIEngineLabel.GAME:
+      return getPredefinedUSIEngineTag("game");
+    case USIEngineLabel.RESEARCH:
+      return getPredefinedUSIEngineTag("research");
+    case USIEngineLabel.MATE:
+      return getPredefinedUSIEngineTag("mate");
+  }
+}
+
+function labelsToTags(labels: USIEngineLabels): string[] {
   return Object.entries(labels)
-    .filter(([key, val]) => val && labelToTagMap[key as USIEngineLabel])
-    .map(([key]) => labelToTagMap[key as USIEngineLabel]);
+    .filter(([key, val]) => val && labelToTag(key as USIEngineLabel))
+    .map(([key]) => labelToTag(key as USIEngineLabel));
 }
 
 export function mergeUSIEngine(engine: USIEngine, local: USIEngine): void {
@@ -180,7 +190,7 @@ export function mergeUSIEngine(engine: USIEngine, local: USIEngine): void {
     engineOption.value = localOption.value;
   });
   engine.labels = local.labels;
-  engine.tags = local.tags || convertOldLabelsToTags(local.labels || {});
+  engine.tags = local.tags || labelsToTags(local.labels || {});
   engine.enableEarlyPonder = local.enableEarlyPonder;
 }
 
@@ -338,7 +348,7 @@ export class USIEngines {
               ...emptyEngine.labels,
               ...engine.labels,
             },
-            tags: engine.tags || convertOldLabelsToTags(engine.labels || {}),
+            tags: engine.tags || labelsToTags(engine.labels || {}),
           };
         });
       this.tagColorMapping = src.tagColorMapping || {};

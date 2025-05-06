@@ -18,7 +18,7 @@
             :contains-human="true"
             :contains-basic-engines="true"
             :engines="engines"
-            :default-tag="PredefinedUSIEngineTag.GAME"
+            :default-tag="getPredefinedUSIEngineTag('game')"
             :display-ponder-state="true"
             :display-thread-state="true"
             :display-multi-pv-state="true"
@@ -223,7 +223,7 @@
 <script setup lang="ts">
 import YAML from "yaml";
 import { t } from "@/common/i18n";
-import { USIEngine, USIEngines, PredefinedUSIEngineTag } from "@/common/settings/usi";
+import { USIEngine, USIEngines, getPredefinedUSIEngineTag } from "@/common/settings/usi";
 import { ref, onMounted, computed } from "vue";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
