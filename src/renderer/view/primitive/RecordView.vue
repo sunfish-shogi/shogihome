@@ -283,6 +283,7 @@ onUpdated(() => {
 .control {
   width: 100%;
   height: 8.6%;
+  min-height: 23px;
 }
 .control button {
   height: 100%;
