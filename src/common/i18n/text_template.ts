@@ -113,7 +113,6 @@ export type Texts = {
   invalidGames: string;
   eloRatingDiff: string;
   ignoreDraws: string;
-  drawCountAsHalfWins: string;
   zValue: string;
   significance5pc: string;
   significance1pc: string;

@@ -59,9 +59,6 @@ export type GameStatistics = {
   rating: number;
   ratingLower: number;
   ratingUpper: number;
-  ratingWithDraw: number;
-  ratingWithDrawLower: number;
-  ratingWithDrawUpper: number;
   npIsGreaterThan5: boolean;
   zValue: number;
   significance5pc: boolean;
@@ -70,30 +67,17 @@ export type GameStatistics = {
 
 export function calculateGameStatistics(results: GameResults): GameStatistics {
   const n = results.player1.win + results.player2.win;
-  const nWithDraw = n + results.draw;
   const wins = Math.max(results.player1.win, results.player2.win);
   const winRate = wins / n;
   const winRateCI = calculateWinRateConfidenceInterval(Z_VALUE_95, winRate, n);
-  const winRateWithDraw = (wins + results.draw * 0.5) / nWithDraw;
-  const winRateWithDrawCI = calculateWinRateConfidenceInterval(
-    Z_VALUE_95,
-    winRateWithDraw,
-    nWithDraw,
-  );
   const rating = calculateEloRatingFromWinRate(winRate);
   const ratingLower = calculateEloRatingFromWinRate(winRate - winRateCI);
   const ratingUpper = calculateEloRatingFromWinRate(winRate + winRateCI);
-  const ratingWithDraw = calculateEloRatingFromWinRate(winRateWithDraw);
-  const ratingWithDrawLower = calculateEloRatingFromWinRate(winRateWithDraw - winRateWithDrawCI);
-  const ratingWithDrawUpper = calculateEloRatingFromWinRate(winRateWithDraw + winRateWithDrawCI);
   const zValue = Math.abs(calculateZValue(results.player1.win, n, 0.5));
   return {
     rating,
     ratingLower,
     ratingUpper,
-    ratingWithDraw,
-    ratingWithDrawLower,
-    ratingWithDrawUpper,
     npIsGreaterThan5: n > 10,
     zValue,
     significance5pc: zValue > Z_VALUE_95,

@@ -118,7 +118,6 @@ export const ja: Texts = {
   invalidGames: "無効対局数",
   eloRatingDiff: "レーティング差",
   ignoreDraws: "引き分け無効",
-  drawCountAsHalfWins: "引き分け0.5勝",
   zValue: "Z値",
   significance5pc: "有意水準5%",
   significance1pc: "有意水準1%",
