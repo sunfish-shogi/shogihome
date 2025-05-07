@@ -115,7 +115,6 @@ export const zh_tw: Texts = {
   invalidGames: "無效對局數",
   eloRatingDiff: "等級分相差",
   ignoreDraws: "忽略平手對局",
-  drawCountAsHalfWins: "平手作0.5勝",
   zValue: "Z值",
   significance5pc: "顯著性水準5%",
   significance1pc: "顯著性水準1%",

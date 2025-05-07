@@ -92,9 +92,6 @@ describe("store/game", () => {
     expect(statistics.rating.toPrecision(6)).toBe("279.588");
     expect(statistics.ratingLower.toPrecision(6)).toBe("116.129");
     expect(statistics.ratingUpper.toPrecision(6)).toBe("NaN");
-    expect(statistics.ratingWithDraw.toPrecision(6)).toBe("240.824");
-    expect(statistics.ratingWithDrawLower.toPrecision(6)).toBe("88.5114");
-    expect(statistics.ratingWithDrawUpper.toPrecision(6)).toBe("638.632");
     expect(statistics.zValue.toPrecision(6)).toBe("2.82843");
     expect(statistics.npIsGreaterThan5).toBeTruthy();
     expect(statistics.significance5pc).toBeTruthy();
@@ -113,9 +110,6 @@ describe("store/game", () => {
     expect(statistics.rating.toPrecision(6)).toBe("381.697");
     expect(statistics.ratingLower.toPrecision(6)).toBe("158.982");
     expect(statistics.ratingUpper.toPrecision(6)).toBe("NaN");
-    expect(statistics.ratingWithDraw.toPrecision(6)).toBe("279.588");
-    expect(statistics.ratingWithDrawLower.toPrecision(6)).toBe("86.8675");
-    expect(statistics.ratingWithDrawUpper.toPrecision(6)).toBe("NaN");
     expect(statistics.zValue.toPrecision(6)).toBe("2.52982");
     expect(statistics.significance5pc).toBeTruthy();
     expect(statistics.significance1pc).toBeFalsy();
@@ -133,9 +127,6 @@ describe("store/game", () => {
     expect(statistics.rating.toPrecision(6)).toBe("223.438");
     expect(statistics.ratingLower.toPrecision(6)).toBe("148.469");
     expect(statistics.ratingUpper.toPrecision(6)).toBe("323.370");
-    expect(statistics.ratingWithDraw.toPrecision(6)).toBe("217.627");
-    expect(statistics.ratingWithDrawLower.toPrecision(6)).toBe("143.798");
-    expect(statistics.ratingWithDrawUpper.toPrecision(6)).toBe("314.877");
     expect(statistics.zValue.toPrecision(6)).toBe("5.58440");
     expect(statistics.significance5pc).toBeTruthy();
     expect(statistics.significance1pc).toBeTruthy();

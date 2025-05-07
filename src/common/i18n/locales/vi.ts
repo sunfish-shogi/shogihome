@@ -118,7 +118,6 @@ export const vi: Texts = {
   invalidGames: "Ván không hợp lệ",
   eloRatingDiff: "Khoảng cách Elo",
   ignoreDraws: "Bỏ qua ván hòa",
-  drawCountAsHalfWins: "Hòa bằng nửa ván thắng",
   zValue: "Giá trị Z",
   significance5pc: "Độ nổi bật 5%",
   significance1pc: "Độ nổi bật 1%",

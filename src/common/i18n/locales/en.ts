@@ -118,7 +118,6 @@ export const en: Texts = {
   invalidGames: "Invalid Games",
   eloRatingDiff: "Elo Rating Diff",
   ignoreDraws: "Ignore Draws",
-  drawCountAsHalfWins: "Draws Count as Half Wins",
   zValue: "Z Value",
   significance5pc: "5% Significance",
   significance1pc: "1% Significance",

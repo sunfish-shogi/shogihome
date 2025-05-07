@@ -110,13 +110,6 @@ function getMessageAttachmentsByGameResults(results: GameResults): Attachment[] 
           ],
         },
         {
-          text: `${t.eloRatingDiff} (${t.drawCountAsHalfWins})`,
-          children: [
-            `${statistics.ratingWithDraw.toFixed(2)}`,
-            `95% CI: [${statistics.ratingWithDrawLower.toFixed(1)}, ${statistics.ratingWithDrawUpper.toFixed(1)}]`,
-          ],
-        },
-        {
           text: "二項検定", // TODO: i18n
           children: [
             `np > 5: ${statistics.npIsGreaterThan5 ? "True" : "False"}`,
