@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="message-box">
-      <div class="message-area">
-        <Icon :icon="IconType.BUSY" />
-        <div class="message">{{ t.processingPleaseWait }}</div>
-      </div>
-      <div v-if="progressPercent">{{ progressPercent }}%</div>
-    </dialog>
-  </div>
+  <dialog ref="dialog" class="message-box">
+    <div class="message-area">
+      <Icon :icon="IconType.BUSY" />
+      <div class="message">{{ t.processingPleaseWait }}</div>
+    </div>
+    <div v-if="progressPercent">{{ progressPercent }}%</div>
+  </dialog>
 </template>
 
 <script setup lang="ts">

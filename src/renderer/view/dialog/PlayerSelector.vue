@@ -1,36 +1,32 @@
 <template>
-  <div>
-    <div class="root">
-      <DropdownList
-        v-model:value="selectedPlayerURI"
-        class="player-select"
-        :tags="engines.tagList"
-        :items="listItems"
-        :selected-tags="[defaultTag]"
-      />
-      <div v-if="displayPonderState" class="row player-info">
-        <span class="player-info-key">{{ t.ponder }}:</span>
-        <span class="player-info-value">{{ ponderState || "---" }}</span>
-      </div>
-      <div v-if="displayThreadState" class="row player-info">
-        <span class="player-info-key">{{ t.numberOfThreads }}:</span>
-        <span class="player-info-value">{{ threadState || "---" }}</span>
-      </div>
-      <div v-if="displayMultiPvState" class="row player-info">
-        <span class="player-info-key">{{ t.suggestionsCount }}:</span>
-        <span class="player-info-value">{{ multiPVState || "---" }}</span>
-      </div>
-      <button
-        v-if="enableEditButton"
-        class="player-settings"
-        :disabled="!isPlayerSettingsEnabled"
-        @click="openPlayerSettings"
-      >
-        <Icon :icon="IconType.SETTINGS" />
-        <span>{{ t.settings }}</span>
-      </button>
-    </div>
+  <DropdownList
+    v-model:value="selectedPlayerURI"
+    class="player-select"
+    :tags="engines.tagList"
+    :items="listItems"
+    :selected-tags="[defaultTag]"
+  />
+  <div v-if="displayPonderState" class="row player-info">
+    <span class="player-info-key">{{ t.ponder }}:</span>
+    <span class="player-info-value">{{ ponderState || "---" }}</span>
   </div>
+  <div v-if="displayThreadState" class="row player-info">
+    <span class="player-info-key">{{ t.numberOfThreads }}:</span>
+    <span class="player-info-value">{{ threadState || "---" }}</span>
+  </div>
+  <div v-if="displayMultiPvState" class="row player-info">
+    <span class="player-info-key">{{ t.suggestionsCount }}:</span>
+    <span class="player-info-value">{{ multiPVState || "---" }}</span>
+  </div>
+  <button
+    v-if="enableEditButton"
+    class="player-settings"
+    :disabled="!isPlayerSettingsEnabled"
+    @click="openPlayerSettings"
+  >
+    <Icon :icon="IconType.SETTINGS" />
+    <span>{{ t.settings }}</span>
+  </button>
   <USIEngineOptionsDialog
     v-if="engineOptionsDialog"
     :latest="engineOptionsDialog"
@@ -198,9 +194,6 @@ const closePlayerSettings = () => {
 </script>
 
 <style scoped>
-.root {
-  width: 100%;
-}
 .player-select {
   width: 100%;
   margin-bottom: 5px;

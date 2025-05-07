@@ -1,42 +1,40 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="message-box">
-      <div class="message-area">
-        <Icon :icon="IconType.BUSY" />
-        <div class="message">
-          <span v-if="store.csaGameState === CSAGameState.READY">
-            {{ t.waitingForNewGame }}
-          </span>
-          <span v-if="store.csaGameState === CSAGameState.PLAYER_SETUP">
-            {{ t.waitingForPlayerSetup }}
-          </span>
-          <span v-if="store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL">
-            {{ t.tryToReloginToCSAServerNSecondsLater(remainingSeconds) }}
-          </span>
-          <span v-if="store.csaGameState === CSAGameState.WAITING_LOGIN">
-            {{ t.tryingToConnectAndLoginToCSAServer }}
-          </span>
-        </div>
+  <dialog ref="dialog" class="message-box">
+    <div class="message-area">
+      <Icon :icon="IconType.BUSY" />
+      <div class="message">
+        <span v-if="store.csaGameState === CSAGameState.READY">
+          {{ t.waitingForNewGame }}
+        </span>
+        <span v-if="store.csaGameState === CSAGameState.PLAYER_SETUP">
+          {{ t.waitingForPlayerSetup }}
+        </span>
+        <span v-if="store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL">
+          {{ t.tryToReloginToCSAServerNSecondsLater(remainingSeconds) }}
+        </span>
+        <span v-if="store.csaGameState === CSAGameState.WAITING_LOGIN">
+          {{ t.tryingToConnectAndLoginToCSAServer }}
+        </span>
       </div>
-      <div v-if="store.usiSessionIDs.length" class="main-buttons">
-        <button @click="onOpenEnginePrompt()">{{ t.prompt }}({{ t.usiEngine }})</button>
-      </div>
-      <div v-if="store.csaServerSessionID" class="main-buttons">
-        <button @click="onOpenServerPrompt()">{{ t.prompt }}({{ t.csaServer }})</button>
-      </div>
-      <div
-        v-if="
-          store.csaGameState === CSAGameState.READY ||
-          store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL
-        "
-        class="main-buttons"
-      >
-        <button autofocus data-hotkey="Escape" @click="onLogout()">
-          {{ t.cancelGame }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div v-if="store.usiSessionIDs.length" class="main-buttons">
+      <button @click="onOpenEnginePrompt()">{{ t.prompt }}({{ t.usiEngine }})</button>
+    </div>
+    <div v-if="store.csaServerSessionID" class="main-buttons">
+      <button @click="onOpenServerPrompt()">{{ t.prompt }}({{ t.csaServer }})</button>
+    </div>
+    <div
+      v-if="
+        store.csaGameState === CSAGameState.READY ||
+        store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL
+      "
+      class="main-buttons"
+    >
+      <button autofocus data-hotkey="Escape" @click="onLogout()">
+        {{ t.cancelGame }}
+      </button>
+    </div>
+  </dialog>
 </template>
 
 <script setup lang="ts">

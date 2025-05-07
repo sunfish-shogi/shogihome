@@ -1,36 +1,34 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="message-box">
-      <div class="message-area">
-        <Icon :icon="IconType.INFO" />
-        <div class="message">
-          <div v-for="(line, index) of store.message.text.split('\n')" :key="index">
-            {{ line }}
-          </div>
+  <dialog ref="dialog" class="message-box">
+    <div class="message-area">
+      <Icon :icon="IconType.INFO" />
+      <div class="message">
+        <div v-for="(line, index) of store.message.text.split('\n')" :key="index">
+          {{ line }}
         </div>
       </div>
-      <div v-for="(attachment, aidx) in store.message.attachments" :key="aidx" class="attachment">
-        <ul v-if="attachment.type === 'list'" class="list">
-          <li v-for="(item, iidx) in attachment.items" :key="iidx" class="list-item">
-            {{ item.text }}
-            <ul>
-              <li v-for="(child, cidx) in item.children" :key="cidx" class="list-child-item">
-                {{ child }}
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <button v-if="attachment.type === 'link'" @click="api.openWebBrowser(attachment.url)">
-          {{ attachment.text }}
-        </button>
-      </div>
-      <div class="main-buttons">
-        <button autofocus data-hotkey="Escape" @click="onClose()">
-          {{ t.close }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+    </div>
+    <div v-for="(attachment, aidx) in store.message.attachments" :key="aidx" class="attachment">
+      <ul v-if="attachment.type === 'list'" class="list">
+        <li v-for="(item, iidx) in attachment.items" :key="iidx" class="list-item">
+          {{ item.text }}
+          <ul>
+            <li v-for="(child, cidx) in item.children" :key="cidx" class="list-child-item">
+              {{ child }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <button v-if="attachment.type === 'link'" @click="api.openWebBrowser(attachment.url)">
+        {{ attachment.text }}
+      </button>
+    </div>
+    <div class="main-buttons">
+      <button autofocus data-hotkey="Escape" @click="onClose()">
+        {{ t.close }}
+      </button>
+    </div>
+  </dialog>
 </template>
 
 <script setup lang="ts">
