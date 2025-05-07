@@ -49,7 +49,7 @@ const select = async () => {
 </script>
 
 <style scoped>
-container {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;

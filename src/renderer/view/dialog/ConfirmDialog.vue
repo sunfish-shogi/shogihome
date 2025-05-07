@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <dialog ref="dialog" class="message-box">
-      <div class="message-area">
-        <Icon :icon="IconType.QUESTION" />
-        <div class="message">{{ store.message }}</div>
-      </div>
-      <div class="main-buttons">
-        <button data-hotkey="Enter" autofocus @click="onOk()">OK</button>
-        <button data-hotkey="Escape" @click="onClose()">
-          {{ t.cancel }}
-        </button>
-      </div>
-    </dialog>
-  </div>
+  <dialog ref="dialog" class="message-box">
+    <div class="message-area">
+      <Icon :icon="IconType.QUESTION" />
+      <div class="message">{{ store.message }}</div>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Enter" autofocus @click="onOk()">OK</button>
+      <button data-hotkey="Escape" @click="onClose()">
+        {{ t.cancel }}
+      </button>
+    </div>
+  </dialog>
 </template>
 
 <script setup lang="ts">
