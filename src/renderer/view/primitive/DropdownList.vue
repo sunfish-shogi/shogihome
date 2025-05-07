@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "./Icon.vue";
-import { computed, onBeforeUnmount, onMounted, PropType, reactive, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, PropType, reactive, ref, watch } from "vue";
 
 const props = defineProps({
   value: {
@@ -68,10 +68,6 @@ const emit = defineEmits<{
 const root = ref<HTMLElement | null>();
 const show = ref(false);
 const tagStates = reactive(new Map<string, boolean>());
-
-for (const tag of props.selectedTags.filter((tag) => tag)) {
-  tagStates.set(tag, true);
-}
 
 const tags = computed(() => {
   return props.tags.map((tag) => {
@@ -119,6 +115,18 @@ const onSelect = (value: string) => {
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
+  watch(
+    [() => props.selectedTags, () => props.tags],
+    ([selectedTags, tags]) => {
+      tagStates.clear();
+      for (const tag of selectedTags.filter((tag) => tag)) {
+        if (tags.some((t) => t.name === tag)) {
+          tagStates.set(tag, true);
+        }
+      }
+    },
+    { immediate: true, deep: true },
+  );
 });
 
 onBeforeUnmount(() => {
