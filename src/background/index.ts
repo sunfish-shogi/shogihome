@@ -125,7 +125,7 @@ async function installElectronDevTools() {
 // opens a new MacOS App Instance using shell command.
 function openNewInstance() {
   const appPath = app.getPath("exe").replace("/Contents/MacOS/ShogiHome", "");
-  const child = spawn("open", ["-jn", appPath], { detached: true, stdio: "ignore" });
+  const child = spawn("open", ["-n", appPath], { detached: true, stdio: "ignore" });
   child.unref();
 }
 
