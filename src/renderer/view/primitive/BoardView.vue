@@ -72,13 +72,21 @@
           @dblclick.stop.prevent="clickSquareR(square.file, square.rank)"
           @contextmenu.stop.prevent="clickSquareR(square.file, square.rank)"
         ></div>
-        <div v-if="board.promotion" class="promotion-selector" :style="board.promotion.style">
-          <div class="select-button promote" @click.stop.prevent="clickPromote()">
-            <img class="piece-image" :src="board.promotion.promoteImagePath" draggable="false" />
-          </div>
-          <div class="select-button not-promote" @click.stop.prevent="clickNotPromote()">
-            <img class="piece-image" :src="board.promotion.notPromoteImagePath" draggable="false" />
-          </div>
+        <div
+          v-if="board.promote"
+          class="promote"
+          :style="board.promote.style"
+          @click.stop.prevent="clickPromote()"
+        >
+          <img class="piece-image" :src="board.promote.imagePath" draggable="false" />
+        </div>
+        <div
+          v-if="board.doNotPromote"
+          class="not-promote"
+          :style="board.doNotPromote.style"
+          @click.stop.prevent="clickNotPromote()"
+        >
+          <img class="piece-image" :src="board.doNotPromote.imagePath" draggable="false" />
         </div>
       </div>
       <div class="hand" :style="main.blackHandStyle">
@@ -175,6 +183,7 @@ import {
   BoardLabelType,
   KingPieceType,
   PieceStandImageType,
+  PromotionSelectorStyle,
 } from "@/common/settings/app";
 import { RectSize } from "@/common/assets/geometry";
 import { newConfig } from "./board/config";
@@ -241,6 +250,11 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 1.0,
+  },
+  promotionSelectorStyle: {
+    type: String as PropType<PromotionSelectorStyle>,
+    required: false,
+    default: PromotionSelectorStyle.HORIZONTAL,
   },
   boardLabelType: {
     type: String as PropType<BoardLabelType>,
@@ -458,6 +472,7 @@ const config = computed(() => {
     kingPieceType: props.kingPieceType,
     boardImageOpacity: props.boardImageOpacity,
     pieceStandImageOpacity: props.pieceStandImageOpacity,
+    promotionSelectorStyle: props.promotionSelectorStyle,
     boardLabelType: props.boardLabelType,
     upperSizeLimit: props.maxSize,
     flip: props.flip,
@@ -654,14 +669,6 @@ const whitePlayerTimeSeverity = computed(() => {
 }
 .clock-text {
   vertical-align: middle;
-}
-.promotion-selector {
-  overflow: hidden;
-}
-.select-button {
-  float: left;
-  width: 50%;
-  height: 100%;
 }
 .promote {
   background-color: var(--promote-bg-color);

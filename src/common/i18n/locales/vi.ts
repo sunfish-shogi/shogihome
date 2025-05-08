@@ -203,6 +203,10 @@ export const vi: Texts = {
   boardOpacity: "Độ đục bàn cờ",
   pieceStandOpacity: "Độ đục komadai",
   recordOpacity: "Độ đục kỳ phổ",
+  promotionSelector: "成・不成の表示", // TODO: Translate
+  centeredHorizontal: "水平・中央寄せ", // TODO: Translate
+  promoteFirstVertical: "垂直・成優先", // TODO: Translate
+  promoteFirstHorizontal: "水平・成優先", // TODO: Translate
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",

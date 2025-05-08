@@ -5,6 +5,7 @@ import {
   BoardLabelType,
   KingPieceType,
   PieceStandImageType,
+  PromotionSelectorStyle,
 } from "@/common/settings/app.js";
 import preloadImage from "@/renderer/assets/preload.js";
 import { Color, PieceType } from "tsshogi";
@@ -25,6 +26,7 @@ export type Config = {
   pieceStandImage: string | null;
   boardImageOpacity: number;
   pieceStandImageOpacity: number;
+  promotionSelectorStyle: PromotionSelectorStyle;
   boardLabelType: BoardLabelType;
   upperSizeLimit: RectSize;
   flip?: boolean;
@@ -40,6 +42,7 @@ export function newConfig(params: {
   kingPieceType: KingPieceType;
   boardImageOpacity: number;
   pieceStandImageOpacity: number;
+  promotionSelectorStyle: PromotionSelectorStyle;
   boardLabelType: BoardLabelType;
   upperSizeLimit: RectSize;
   flip?: boolean;
@@ -58,6 +61,7 @@ export function newConfig(params: {
     ),
     boardImageOpacity: params.boardImageOpacity,
     pieceStandImageOpacity: params.pieceStandImageOpacity,
+    promotionSelectorStyle: params.promotionSelectorStyle,
     boardLabelType: params.boardLabelType,
     upperSizeLimit: params.upperSizeLimit,
     flip: params.flip,

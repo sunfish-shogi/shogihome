@@ -15,6 +15,7 @@ import {
   PositionImageHandLabelType,
   PositionImageStyle,
   PositionImageTypeface,
+  PromotionSelectorStyle,
   RightSideControlType,
   Tab,
   TabPaneType,
@@ -84,6 +85,9 @@ class AppSettingsStore {
   }
   get pieceStandImage(): PieceStandImageType {
     return this.merged.pieceStandImage;
+  }
+  get promotionSelectorStyle(): PromotionSelectorStyle {
+    return this.merged.promotionSelectorStyle;
   }
   get pieceStandImageFileURL(): string | undefined {
     return this.merged.pieceStandImageFileURL;

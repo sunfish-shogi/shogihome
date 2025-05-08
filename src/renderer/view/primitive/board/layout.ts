@@ -68,8 +68,7 @@ export type BoardSquare = {
 };
 
 export type Promotion = {
-  promoteImagePath: string;
-  notPromoteImagePath: string;
+  imagePath: string;
   style: { [key: string]: string };
 };
 
@@ -78,7 +77,8 @@ export type Board = {
   labels: BoardLabel[];
   pieces: BoardPiece[];
   squares: BoardSquare[];
-  promotion: Promotion | null;
+  promote: Promotion | null;
+  doNotPromote: Promotion | null;
 };
 
 export type HandPiece = {

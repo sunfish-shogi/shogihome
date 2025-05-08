@@ -1,4 +1,4 @@
-import { BoardImageType, BoardLabelType } from "@/common/settings/app.js";
+import { BoardImageType, BoardLabelType, PromotionSelectorStyle } from "@/common/settings/app.js";
 import { Config } from "./config.js";
 import { boardParams, commonParams } from "./params.js";
 import { Color, ImmutableBoard, Move, Piece, PieceType, reverseColor, Square } from "tsshogi";
@@ -215,9 +215,9 @@ export class BoardLayoutBuilder {
     return squares;
   }
 
-  private getPromotion(move?: Move | null): Promotion | null {
+  private getPromotionControls(move?: Move | null): [Promotion | null, Promotion | null] {
     if (!move) {
-      return null;
+      return [null, null];
     }
     const color = this.config.flip ? reverseColor(move.color) : move.color;
     const square = this.config.flip ? move.to.opposite : move.to;
@@ -226,25 +226,45 @@ export class BoardLayoutBuilder {
     const notPromoted = piece.unpromoted();
     const promoteImagePath = this.config.pieceImages[color][promoted.type];
     const notPromoteImagePath = this.config.pieceImages[color][notPromoted.type];
-    const x =
-      (boardParams.leftSquarePadding +
-        boardParams.squareWidth * (square.x === 0 ? 0 : square.x === 8 ? 7 : square.x - 0.5)) *
-      this.ratio;
-    const y = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
-    const width = boardParams.squareWidth * 2 * this.ratio;
+    const width = boardParams.squareWidth * this.ratio;
     const height = boardParams.squareHeight * this.ratio;
-    const style = {
-      left: x + "px",
-      top: y + "px",
+    let x1, y1, x2, y2: number;
+    switch (this.config.promotionSelectorStyle) {
+      case PromotionSelectorStyle.HORIZONTAL:
+        x1 =
+          (boardParams.leftSquarePadding +
+            boardParams.squareWidth * (square.x === 0 ? 0 : square.x === 8 ? 7 : square.x - 0.5)) *
+          this.ratio;
+        y1 = y2 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        x2 = x1 + width;
+        break;
+      case PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM:
+        x1 = x2 = (boardParams.leftSquarePadding + boardParams.squareWidth * square.x) * this.ratio;
+        y1 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        y2 = y1 + (square.y === 8 ? -height : height);
+        break;
+      case PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT:
+        x1 = (boardParams.leftSquarePadding + boardParams.squareWidth * square.x) * this.ratio;
+        y1 = y2 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        x2 = x1 + (square.x === 8 ? -width : width);
+        break;
+    }
+    const promoteStyle = {
+      left: x1 + "px",
+      top: y1 + "px",
       width: width + "px",
       height: height + "px",
-      "font-size": height / 4 + "px",
     };
-    return {
-      promoteImagePath,
-      notPromoteImagePath,
-      style,
+    const doNotPromoteStyle = {
+      left: x2 + "px",
+      top: y2 + "px",
+      width: width + "px",
+      height: height + "px",
     };
+    return [
+      { imagePath: promoteImagePath, style: promoteStyle },
+      { imagePath: notPromoteImagePath, style: doNotPromoteStyle },
+    ];
   }
 
   build(
@@ -253,12 +273,14 @@ export class BoardLayoutBuilder {
     pointer?: Square | Piece | null,
     reservedMoveForPromotion?: Move | null,
   ): Board {
+    const [promote, doNotPromote] = this.getPromotionControls(reservedMoveForPromotion);
     return {
       background: this.background,
       labels: this.labels,
       pieces: this.getPieces(board),
       squares: this.getSquares(lastMove, pointer),
-      promotion: this.getPromotion(reservedMoveForPromotion),
+      promote,
+      doNotPromote,
     };
   }
 }
