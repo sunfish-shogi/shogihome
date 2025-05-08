@@ -60,6 +60,12 @@ export enum PieceStandImageType {
   CUSTOM_IMAGE = "custom-image",
 }
 
+export enum PromotionSelectorStyle {
+  HORIZONTAL = "horizontal",
+  VERTICAL_PREFER_BOTTOM = "verticalPreferBottom",
+  HORIZONTAL_PREFER_RIGHT = "horizontalPreferRight",
+}
+
 export enum BoardLabelType {
   NONE = "none",
   STANDARD = "standard",
@@ -157,6 +163,7 @@ export type AppSettings = {
   boardImageFileURL?: string;
   boardGridColor: string | null;
   pieceStandImage: PieceStandImageType;
+  promotionSelectorStyle: PromotionSelectorStyle;
   pieceStandImageFileURL?: string;
   enableTransparent: boolean;
   boardOpacity: number;
@@ -316,6 +323,7 @@ export function defaultAppSettings(opt?: {
     boardImage: BoardImageType.RESIN2,
     boardGridColor: null,
     pieceStandImage: PieceStandImageType.STANDARD,
+    promotionSelectorStyle: PromotionSelectorStyle.HORIZONTAL,
     enableTransparent: false,
     boardOpacity: 1.0,
     pieceStandOpacity: 1.0,

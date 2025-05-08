@@ -198,6 +198,10 @@ export type Texts = {
   boardOpacity: string;
   pieceStandOpacity: string;
   recordOpacity: string;
+  promotionSelector: string;
+  centeredHorizontal: string;
+  promoteFirstVertical: string;
+  promoteFirstHorizontal: string;
   showFileAndRank: string;
   showLeftControls: string;
   showRightControls: string;

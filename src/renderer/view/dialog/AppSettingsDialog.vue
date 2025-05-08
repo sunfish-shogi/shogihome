@@ -244,6 +244,30 @@
           />
           <div class="form-item-small-label">%</div>
         </div>
+        <!-- 成・不成の表示 -->
+        <div class="form-item">
+          <div class="form-item-label-wide">
+            {{ t.promotionSelector }}
+          </div>
+          <HorizontalSelector
+            v-model:value="update.promotionSelectorStyle"
+            class="selector"
+            :items="[
+              {
+                label: t.centeredHorizontal,
+                value: PromotionSelectorStyle.HORIZONTAL,
+              },
+              {
+                label: t.promoteFirstVertical,
+                value: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
+              },
+              {
+                label: t.promoteFirstHorizontal,
+                value: PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT,
+              },
+            ]"
+          />
+        </div>
         <!-- 段・筋の表示 -->
         <div class="form-item">
           <div class="form-item-label-wide">
@@ -702,6 +726,7 @@ import {
   PieceStandImageType,
   BoardLabelType,
   LeftSideControlType,
+  PromotionSelectorStyle,
   RightSideControlType,
   TabPaneType,
   EvaluationViewFrom,
@@ -757,6 +782,7 @@ const update = ref({
   boardOpacity: Math.round(org.boardOpacity * 100),
   pieceStandOpacity: Math.round(org.pieceStandOpacity * 100),
   recordOpacity: Math.round(org.recordOpacity * 100),
+  promotionSelectorStyle: org.promotionSelectorStyle,
   boardLabelType: org.boardLabelType,
   leftSideControlType: org.leftSideControlType,
   rightSideControlType: org.rightSideControlType,

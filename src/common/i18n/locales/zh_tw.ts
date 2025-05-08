@@ -200,6 +200,10 @@ export const zh_tw: Texts = {
   boardOpacity: "盤面不透明度",
   pieceStandOpacity: "駒台不透明度",
   recordOpacity: "棋譜不透明度",
+  promotionSelector: "成・不成の表示", // TODO: Translate
+  centeredHorizontal: "水平・中央寄せ", // TODO: Translate
+  promoteFirstVertical: "垂直・成優先", // TODO: Translate
+  promoteFirstHorizontal: "水平・成優先", // TODO: Translate
   showFileAndRank: "顯示段・筋",
   showLeftControls: "顯示左側操作按鈕",
   showRightControls: "顯示右側操作按鈕",

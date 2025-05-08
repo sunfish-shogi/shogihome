@@ -9,6 +9,7 @@
       :piece-stand-image-type="appSettings.pieceStandImage"
       :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
       :piece-stand-image-opacity="appSettings.enableTransparent ? appSettings.pieceStandOpacity : 1"
+      :promotion-selector-style="appSettings.promotionSelectorStyle"
       :board-label-type="appSettings.boardLabelType"
       :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
       :king-piece-type="appSettings.kingPieceType"
