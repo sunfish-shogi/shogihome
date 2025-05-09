@@ -456,6 +456,10 @@ export type Texts = {
   stable: string;
   latest: string;
   backgroundColor: string;
+  dialogPosition: string;
+  alignLeft: string;
+  alignRight: string;
+  alignCenter: string;
   dialogBackdrop: string;
   record: string;
   book: string;

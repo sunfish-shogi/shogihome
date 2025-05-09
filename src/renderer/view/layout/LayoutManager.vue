@@ -37,6 +37,18 @@
           />
         </div>
         <div class="row">
+          <span class="key">{{ t.dialogPosition }}:</span>
+          <HorizontalSelector
+            :value="customProfile.dialogPosition || DialogPosition.CENTER"
+            :items="[
+              { label: t.alignLeft, value: DialogPosition.LEFT },
+              { label: t.alignCenter, value: DialogPosition.CENTER },
+              { label: t.alignRight, value: DialogPosition.RIGHT },
+            ]"
+            @update:value="(value) => updateCustomProfileProp('dialogPosition', value)"
+          />
+        </div>
+        <div class="row">
           <ToggleButton
             class="color-toggle"
             :value="!!customProfile.backgroundColor"
@@ -340,6 +352,7 @@ import {
   deserializeLayoutProfile,
   EvaluationChartType,
   serializeLayoutProfile,
+  DialogPosition,
 } from "@/common/settings/layout";
 import { t } from "@/common/i18n";
 import { useMessageStore } from "@/renderer/store/message";

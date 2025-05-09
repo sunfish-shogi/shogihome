@@ -458,6 +458,10 @@ export const zh_tw: Texts = {
   stable: "安定版",
   latest: "最新版",
   backgroundColor: "背景顏色",
+  dialogPosition: "ダイアログ表示位置", // TODO: Translate
+  alignLeft: "左", // TODO: Translate
+  alignRight: "右", // TODO: Translate
+  alignCenter: "中央", // TODO: Translate
   dialogBackdrop: "對話窗背景",
   record: "棋譜",
   book: "定跡",
