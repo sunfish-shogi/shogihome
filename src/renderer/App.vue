@@ -1,5 +1,9 @@
 <template>
-  <div class="root full" :class="[appSettings.thema, dialogStyle]" :style="style">
+  <div
+    class="root full"
+    :class="[appSettings.thema, dialogPosition, dialogBackdrop]"
+    :style="style"
+  >
     <!-- Main Contents -->
     <MobileLayout v-if="isMobileWebApp()" />
     <CustomLayout v-else-if="store.customLayout" :profile="store.customLayout" />
@@ -101,6 +105,7 @@ import MobileLayout from "./view/main/MobileLayout.vue";
 import api, { isMobileWebApp, isNative } from "./ipc/api";
 import { openCopyright } from "./helpers/copyright";
 import { installHotKeyForMainWindow } from "./devices/hotkey";
+import { DialogPosition } from "@/common/settings/layout";
 
 const clipboard = ref();
 const appSettings = useAppSettings();
@@ -133,7 +138,15 @@ onMounted(() => {
   });
 });
 
-const dialogStyle = computed(() =>
+const dialogPosition = computed(() =>
+  !store.customLayout || store.customLayout.dialogPosition === DialogPosition.CENTER
+    ? "dialog-position-center"
+    : store.customLayout.dialogPosition === DialogPosition.LEFT
+      ? "dialog-position-left"
+      : "dialog-position-right",
+);
+
+const dialogBackdrop = computed(() =>
   !store.customLayout || store.customLayout.dialogBackdrop
     ? "dialog-backdrop"
     : "dialog-no-backdrop",

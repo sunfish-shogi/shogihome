@@ -87,10 +87,17 @@ export type UIComponent = UIComponentCommon &
     | ControlGroup2
   );
 
+export enum DialogPosition {
+  LEFT = "left",
+  CENTER = "center",
+  RIGHT = "right",
+}
+
 export type LayoutProfile = {
   uri: string;
   name: string;
   backgroundColor?: string;
+  dialogPosition?: DialogPosition;
   dialogBackdrop?: boolean;
   components: UIComponent[];
 };

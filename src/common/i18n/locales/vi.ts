@@ -461,6 +461,10 @@ export const vi: Texts = {
   stable: "Ổn định",
   latest: "Mới nhất",
   backgroundColor: "Màu nền",
+  dialogPosition: "ダイアログ表示位置", // TODO: Translate
+  alignLeft: "左", // TODO: Translate
+  alignRight: "右", // TODO: Translate
+  alignCenter: "中央", // TODO: Translate
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
   book: "Định thức",

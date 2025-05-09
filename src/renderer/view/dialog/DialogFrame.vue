@@ -40,14 +40,22 @@ dialog {
   background-color: transparent;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-evenly;
+}
+
+.dialog-position-center dialog {
+  align-items: center;
+}
+.dialog-position-left dialog {
+  align-items: flex-start;
+}
+.dialog-position-right dialog {
+  align-items: flex-end;
 }
 
 .dialog-backdrop dialog::backdrop {
   background: rgba(0, 0, 0, 0.3);
 }
-
 .dialog-no-backdrop dialog::backdrop {
   background: rgba(0, 0, 0, 0);
 }
