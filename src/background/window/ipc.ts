@@ -747,10 +747,13 @@ ipcMain.handle(Background.USI_GO_INFINITE, (event, sessionID: number, usi: strin
   usiGoInfinite(sessionID, usi);
 });
 
-ipcMain.handle(Background.USI_GO_MATE, (event, sessionID: number, usi: string) => {
-  validateIPCSender(event.senderFrame);
-  usiGoMate(sessionID, usi);
-});
+ipcMain.handle(
+  Background.USI_GO_MATE,
+  (event, sessionID: number, usi: string, maxSeconds?: number) => {
+    validateIPCSender(event.senderFrame);
+    usiGoMate(sessionID, usi, maxSeconds);
+  },
+);
 
 ipcMain.handle(Background.USI_STOP, (event, sessionID: number) => {
   validateIPCSender(event.senderFrame);

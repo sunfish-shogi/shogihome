@@ -135,6 +135,7 @@ export class USIPlayer implements Player {
   async startMateSearch(
     position: ImmutablePosition,
     usi: string,
+    maxSeconds: number | undefined,
     handler: MateHandler,
   ): Promise<void> {
     this.clearHandlers();
@@ -142,7 +143,7 @@ export class USIPlayer implements Player {
     this.info = undefined;
     this.position = position.clone();
     this.mateHandler = handler;
-    await api.usiGoMate(this.sessionID, this.usi);
+    await api.usiGoMate(this.sessionID, this.usi, maxSeconds);
     onStartSearch(this.sessionID, this.position);
   }
 

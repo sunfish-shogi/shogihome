@@ -78,7 +78,7 @@ export interface Bridge {
   usiGoPonder(sessionID: number, usi: string, timeStatesJSON: string): Promise<void>;
   usiPonderHit(sessionID: number, timeStatesJSON: string): Promise<void>;
   usiGoInfinite(sessionID: number, usi: string): Promise<void>;
-  usiGoMate(sessionID: number, usi: string): Promise<void>;
+  usiGoMate(sessionID: number, usi: string, maxSeconds?: number): Promise<void>;
   usiStop(sessionID: number): Promise<void>;
   usiGameover(sessionID: number, result: GameResult): Promise<void>;
   usiQuit(sessionID: number): Promise<void>;

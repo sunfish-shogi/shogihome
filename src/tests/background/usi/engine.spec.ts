@@ -404,6 +404,11 @@ describe("background/usi/engine", () => {
     onReceive("checkmate notimplemented");
     expect(handlers.checkmateNotImplemented).toBeCalled();
 
+    engine.goMate("position test05", 12.3456);
+    expect(mockChildProcess.prototype.send).lastCalledWith("go mate 12345");
+    onReceive("checkmate 2c2b 3a2b 3c3a+");
+    expect(handlers.checkmate).lastCalledWith("position test05", ["2c2b", "3a2b", "3c3a+"]);
+
     engine.quit();
     onClose();
     expect(handlers.timeout).not.toBeCalled();

@@ -61,10 +61,11 @@ export class MateSearchManager {
     // エンジンを起動する。
     const appSettings = useAppSettings();
     this.engine = new USIPlayer(settings.usi, appSettings.engineTimeoutSeconds);
+    const maxSeconds = settings.enableMaxSeconds ? settings.maxSeconds : undefined;
     try {
       await this.engine.launch();
       await this.engine.readyNewGame();
-      await this.engine.startMateSearch(record.position, record.usi, {
+      await this.engine.startMateSearch(record.position, record.usi, maxSeconds, {
         onCheckmate: (moves) => {
           this.close();
           this.onCheckmate(moves);

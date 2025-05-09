@@ -242,9 +242,9 @@ export function goInfinite(sessionID: number, usi: string): void {
   session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
 }
 
-export function goMate(sessionID: number, usi: string): void {
+export function goMate(sessionID: number, usi: string, maxSeconds?: number): void {
   const session = getSession(sessionID);
-  session.process.goMate(usi);
+  session.process.goMate(usi, maxSeconds);
   session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
 }
 

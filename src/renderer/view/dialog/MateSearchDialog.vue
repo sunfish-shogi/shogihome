@@ -15,6 +15,18 @@
             }
           "
         />
+        <div class="form-item">
+          <ToggleButton v-model:value="mateSearchSettings.enableMaxSeconds" />
+          <div class="form-item-small-label">{{ t.toPrefix }}</div>
+          <input
+            v-model.number="mateSearchSettings.maxSeconds"
+            class="number"
+            type="number"
+            min="1"
+            :disabled="!mateSearchSettings.enableMaxSeconds"
+          />
+          <div class="form-item-small-label">{{ t.secondsSuffix }}{{ t.toSuffix }}</div>
+        </div>
       </div>
       <div class="main-buttons">
         <button data-hotkey="Enter" autofocus @click="onStart()">
@@ -28,7 +40,7 @@
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { MateSearchSettings } from "@/common/settings/mate";
+import { defaultMateSearchSettings, MateSearchSettings } from "@/common/settings/mate";
 import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
@@ -37,19 +49,21 @@ import PlayerSelector from "./PlayerSelector.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "./DialogFrame.vue";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 
 const store = useStore();
 const busyState = useBusyState();
 const engines = ref(new USIEngines());
+const mateSearchSettings = ref<MateSearchSettings>(defaultMateSearchSettings());
 const engineURI = ref("");
 
 busyState.retain();
 
 onMounted(async () => {
   try {
-    const mateSearchSettings = await api.loadMateSearchSettings();
+    mateSearchSettings.value = await api.loadMateSearchSettings();
     engines.value = await api.loadUSIEngines();
-    engineURI.value = mateSearchSettings.usi?.uri || "";
+    engineURI.value = mateSearchSettings.value.usi?.uri || "";
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -64,10 +78,11 @@ const onStart = () => {
     return;
   }
   const engine = engines.value.getEngine(engineURI.value);
-  const mateSearchSettings: MateSearchSettings = {
+  const newSettings: MateSearchSettings = {
+    ...mateSearchSettings.value,
     usi: engine,
   };
-  store.startMateSearch(mateSearchSettings);
+  store.startMateSearch(newSettings);
 };
 
 const onCancel = () => {
@@ -78,5 +93,9 @@ const onCancel = () => {
 <style scoped>
 .root {
   width: 420px;
+}
+input.number {
+  text-align: right;
+  width: 80px;
 }
 </style>

@@ -14,4 +14,6 @@ const engine: USIEngine = {
 
 export const mateSearchSettings: MateSearchSettings = {
   usi: engine,
+  enableMaxSeconds: false,
+  maxSeconds: 10,
 };
