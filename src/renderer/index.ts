@@ -58,6 +58,18 @@ watch([() => store.recordFilePath, () => store.isRecordFileUnsaved], ([path, uns
   updateTitle(path, unsaved);
 });
 
+// PWAの場合はモバイル用の画面に切り替える
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  // iOS Safari の場合は window.navigator.standalone で判定できる
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (window.navigator as any).standalone === true;
+if (isStandalone && !isMobileWebApp()) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("mobile", "");
+  window.location.replace(url.href);
+}
+
 Promise.allSettled([
   // アプリ設定の読み込み
   useAppSettings()
