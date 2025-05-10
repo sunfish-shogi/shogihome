@@ -77,7 +77,6 @@
           class="promote"
           :style="board.promote.style"
           @click.stop.prevent="clickPromote()"
-          @doubleclick.stop.prevent="clickPromote()"
         >
           <img class="piece-image" :src="board.promote.imagePath" draggable="false" />
         </div>
