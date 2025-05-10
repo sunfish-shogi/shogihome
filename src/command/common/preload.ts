@@ -225,8 +225,8 @@ const bridge: Bridge = {
   async usiGoInfinite(sessionID: number, usi: string): Promise<void> {
     usiGoInfinite(sessionID, usi);
   },
-  async usiGoMate(sessionID: number, usi: string): Promise<void> {
-    usiGoMate(sessionID, usi);
+  async usiGoMate(sessionID: number, usi: string, maxSeconds?: number): Promise<void> {
+    usiGoMate(sessionID, usi, maxSeconds);
   },
   async usiStop(sessionID: number): Promise<void> {
     usiStop(sessionID);

@@ -214,8 +214,8 @@ const api: Bridge = {
   async usiGoInfinite(sessionID: number, usi: string): Promise<void> {
     await ipcRenderer.invoke(Background.USI_GO_INFINITE, sessionID, usi);
   },
-  async usiGoMate(sessionID: number, usi: string): Promise<void> {
-    await ipcRenderer.invoke(Background.USI_GO_MATE, sessionID, usi);
+  async usiGoMate(sessionID: number, usi: string, maxSeconds?: number): Promise<void> {
+    await ipcRenderer.invoke(Background.USI_GO_MATE, sessionID, usi, maxSeconds);
   },
   async usiStop(sessionID: number): Promise<void> {
     await ipcRenderer.invoke(Background.USI_STOP, sessionID);

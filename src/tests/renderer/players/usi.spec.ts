@@ -143,8 +143,8 @@ describe("usi", () => {
         onNoMate: vi.fn(),
         onError: vi.fn(),
       };
-      await player.startMateSearch(record.position, usi, handler);
-      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      await player.startMateSearch(record.position, usi, 10, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi, 10);
       onUSICheckmate(100, usi, ["2e5b", "4a5b", "S*4b"]);
       expect(handler.onCheckmate).toBeCalledTimes(1);
       expect(handler.onCheckmate.mock.calls[0][0][0].usi).toBe("2e5b");
@@ -174,8 +174,8 @@ describe("usi", () => {
         onNoMate: vi.fn(),
         onError: vi.fn(),
       };
-      await player.startMateSearch(record.position, usi, handler);
-      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      await player.startMateSearch(record.position, usi, undefined, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi, undefined);
       onUSICheckmateNotImplemented(100);
       expect(handler.onCheckmate).not.toBeCalled();
       expect(handler.onNotImplemented).toBeCalledTimes(1);
@@ -202,8 +202,8 @@ describe("usi", () => {
         onNoMate: vi.fn(),
         onError: vi.fn(),
       };
-      await player.startMateSearch(record.position, usi, handler);
-      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      await player.startMateSearch(record.position, usi, undefined, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi, undefined);
       onUSINoMate(100, usi);
       expect(handler.onCheckmate).not.toBeCalled();
       expect(handler.onNotImplemented).not.toBeCalled();

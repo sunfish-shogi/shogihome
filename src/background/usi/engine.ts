@@ -142,6 +142,7 @@ type ReservedGoCommand = {
   timeState?: TimeState;
   ponder?: boolean;
   mate?: boolean;
+  mateLimit?: number;
 };
 
 function buildTimeOptions(timeState?: TimeState): string {
@@ -425,7 +426,7 @@ export class EngineProcess {
     this.sendReservedGoCommands();
   }
 
-  goMate(position: string): void {
+  goMate(position: string, maxSeconds?: number): void {
     if (this.state !== State.Ready) {
       // Ready ステータス以外で go mate を実行するケースは考えにくいので無効とする。
       this.logger.warn("sid=%d: goMate: unexpected state: %s", this.sessionID, this.state);
@@ -434,6 +435,7 @@ export class EngineProcess {
     this.reservedGoCommand = {
       position,
       mate: true,
+      mateLimit: maxSeconds ? maxSeconds * 1000 : undefined,
     };
     this.sendReservedGoCommands();
   }
@@ -575,7 +577,8 @@ export class EngineProcess {
       timeOptions = buildPonderTimeOptions(this.reservedGoCommand.timeState);
     } else if (this.reservedGoCommand.mate) {
       mainOption = "mate";
-      timeOptions = buildTimeOptions(this.reservedGoCommand.timeState);
+      const mateLimit = this.reservedGoCommand.mateLimit;
+      timeOptions = mateLimit ? Math.floor(mateLimit).toFixed(0) : "infinite";
     } else {
       timeOptions = buildTimeOptions(this.reservedGoCommand.timeState);
     }
