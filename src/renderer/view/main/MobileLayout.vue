@@ -13,10 +13,10 @@
         />
         <RecordPane
           v-if="showRecordViewOnBottom"
-          v-show="!commentEditorMode"
+          v-show="bottomUIType === BottomUIType.RECORD"
           :style="{
             width: `${windowSize.width}px`,
-            height: `${bottomRecordViewSize.height - toggleHeight}px`,
+            height: `${bottomViewSize.height}px`,
           }"
           :show-top-control="false"
           :show-bottom-control="false"
@@ -25,17 +25,26 @@
         />
         <RecordComment
           v-if="showRecordViewOnBottom"
-          v-show="commentEditorMode"
+          v-show="bottomUIType === BottomUIType.COMMENT"
           :style="{
             width: `${windowSize.width}px`,
-            height: `${bottomRecordViewSize.height - toggleHeight}px`,
+            height: `${bottomViewSize.height}px`,
           }"
         />
-        <ToggleButton
+        <RecordInfo
           v-if="showRecordViewOnBottom"
-          v-model:value="commentEditorMode"
-          label="コメント編集モード"
-          :height="toggleHeight"
+          v-show="bottomUIType === BottomUIType.INFO"
+          :size="bottomViewSize"
+        />
+        <HorizontalSelector
+          v-if="showRecordViewOnBottom"
+          v-model:value="bottomUIType"
+          :items="[
+            { label: t.record, value: BottomUIType.RECORD },
+            { label: t.comments, value: BottomUIType.COMMENT },
+            { label: t.recordProperties, value: BottomUIType.INFO },
+          ]"
+          :height="selectorHeight"
         />
       </div>
       <div
@@ -45,22 +54,45 @@
       >
         <MobileControls :style="{ height: `${controlPaneHeight}px` }" />
         <RecordPane
-          :style="{ height: `${(windowSize.height - controlPaneHeight) * 0.6}px` }"
+          v-show="sideUIType === SideUIType.RECORD"
+          :style="{ height: `${sideViewSize.height * 0.6}px` }"
           :show-top-control="false"
           :show-bottom-control="false"
           :show-elapsed-time="true"
           :show-comment="true"
         />
         <RecordComment
+          v-show="sideUIType === SideUIType.RECORD"
           :style="{
             'margin-top': '5px',
-            height: `${(windowSize.height - controlPaneHeight) * 0.4 - 5}px`,
+            height: `${sideViewSize.height * 0.4 - 5}px`,
           }"
+        />
+        <RecordInfo v-show="sideUIType === SideUIType.INFO" :size="sideViewSize" />
+        <HorizontalSelector
+          v-model:value="sideUIType"
+          :items="[
+            { label: t.record, value: SideUIType.RECORD },
+            { label: t.recordProperties, value: SideUIType.INFO },
+          ]"
+          :height="selectorHeight"
         />
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+enum BottomUIType {
+  RECORD = "record",
+  COMMENT = "comment",
+  INFO = "info",
+}
+enum SideUIType {
+  RECORD = "record",
+  INFO = "info",
+}
+</script>
 
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry";
@@ -70,16 +102,19 @@ import BoardPane from "@/renderer/view/main/BoardPane.vue";
 import RecordPane from "@/renderer/view/main/RecordPane.vue";
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import MobileControls from "./MobileControls.vue";
-import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
+import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import { t } from "@/common/i18n";
+import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 
 const lazyUpdateDelay = 80;
-const toggleHeight = 24;
+const selectorHeight = 30;
 const minRecordViewWidth = 250;
 const minRecordViewHeight = 130;
 
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
-const commentEditorMode = ref(false);
+const bottomUIType = ref(BottomUIType.RECORD);
+const sideUIType = ref(SideUIType.RECORD);
 
 const windowLazyUpdate = new Lazy();
 const updateSize = () => {
@@ -119,10 +154,16 @@ const onBoardPaneResize = (size: RectSize) => {
   boardPaneSize.value = size;
 };
 
-const bottomRecordViewSize = computed(() => {
+const bottomViewSize = computed(() => {
   return new RectSize(
     windowSize.width,
-    windowSize.height - boardPaneSize.value.height - controlPaneHeight.value,
+    windowSize.height - boardPaneSize.value.height - controlPaneHeight.value - selectorHeight,
+  );
+});
+const sideViewSize = computed(() => {
+  return new RectSize(
+    windowSize.width - boardPaneSize.value.width,
+    windowSize.height - controlPaneHeight.value - selectorHeight,
   );
 });
 
