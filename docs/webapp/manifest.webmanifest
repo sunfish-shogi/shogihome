@@ -1,0 +1,1 @@
+{"name":"ShogiHome","short_name":"ShogiHome","description":"将棋の対局や棋譜の編集ができるアプリ","start_url":"./","display":"standalone","background_color":"#2f4f4f","theme_color":"#5f8f5f","lang":"ja","scope":"./","icons":[{"sizes":"512x512","src":"favicon.png","type":"image/png"}]}
