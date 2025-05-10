@@ -69,7 +69,7 @@
           :key="square.id"
           :style="square.style"
           @click.stop.prevent="clickSquare(square.file, square.rank)"
-          @dblclick.stop.prevent="clickSquareDouble(square.file, square.rank)"
+          @dblclick.stop.prevent="clickSquareR(square.file, square.rank)"
           @contextmenu.stop.prevent="clickSquareR(square.file, square.rank)"
         ></div>
         <div
@@ -86,6 +86,7 @@
           class="not-promote"
           :style="board.doNotPromote.style"
           @click.stop.prevent="clickNotPromote()"
+          @doubleclick.stop.prevent="clickNotPromote()"
         >
           <img class="piece-image" :src="board.doNotPromote.imagePath" draggable="false" />
         </div>
@@ -444,14 +445,6 @@ const clickSquareR = (file: number, rank: number) => {
   const square = new Square(file, rank);
   if (props.allowEdit && props.position.board.at(square)) {
     emit("edit", { rotate: square });
-  }
-};
-
-const clickSquareDouble = (file: number, rank: number) => {
-  if (props.allowEdit) {
-    clickSquareR(file, rank);
-  } else {
-    clickSquare(file, rank);
   }
 };
 
