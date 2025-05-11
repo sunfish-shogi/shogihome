@@ -304,6 +304,7 @@ const mergeCancel = () => {
 }
 .tag {
   font-size: 0.8em;
+  line-height: 1.5;
   margin: 2px 5px 2px 0px;
   padding: 0px 8px 0px 8px;
   border-radius: 8px;

@@ -165,6 +165,7 @@ onBeforeUnmount(() => {
   z-index: 1000;
 }
 .item {
+  line-height: 1.5;
   padding-left: 0.2em;
   color: var(--text-color);
   background-color: var(--text-bg-color);

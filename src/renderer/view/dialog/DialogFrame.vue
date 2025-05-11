@@ -41,6 +41,7 @@ dialog {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  scrollbar-gutter: stable;
 }
 
 .dialog-position-center dialog {
