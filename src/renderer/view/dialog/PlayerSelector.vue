@@ -4,7 +4,7 @@
     class="player-select"
     :tags="engines.tagList"
     :items="listItems"
-    :selected-tags="[defaultTag]"
+    :default-tags="defaultTags"
   />
   <div v-if="displayPonderState" class="row player-info">
     <span class="player-info-key">{{ t.ponder }}:</span>
@@ -59,6 +59,7 @@ import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
 
 const selectedPlayerURI = defineModel<string>("playerUri", { required: true });
+const defaultTags = computed(() => (props.defaultTag ? [props.defaultTag] : []));
 
 const props = defineProps({
   containsHuman: {
@@ -75,7 +76,6 @@ const props = defineProps({
   },
   defaultTag: {
     type: String as PropType<string>,
-    required: false,
     default: null,
   },
   displayPonderState: {
