@@ -11,7 +11,9 @@
           :key="tag.name"
           class="tag"
           :style="tag.style"
-          @click="() => tagStates.set(tag.name, !tagStates.get(tag.name))"
+          @click="
+            () => (tagStates.has(tag.name) ? tagStates.delete(tag.name) : tagStates.add(tag.name))
+          "
         >
           {{ tag.name }}
         </div>
@@ -56,7 +58,7 @@ const props = defineProps({
     >,
     required: true,
   },
-  selectedTags: {
+  defaultTags: {
     type: Array as PropType<string[]>,
     default: () => [],
   },
@@ -67,11 +69,11 @@ const emit = defineEmits<{
 
 const root = ref<HTMLElement | null>();
 const show = ref(false);
-const tagStates = reactive(new Map<string, boolean>());
+const tagStates = reactive(new Set<string>());
 
 const tags = computed(() => {
   return props.tags.map((tag) => {
-    const selected = tagStates.get(tag.name);
+    const selected = tagStates.has(tag.name);
     const backgroundColor = selected ? tag.color : "#eee";
     return {
       name: tag.name,
@@ -85,9 +87,7 @@ const tags = computed(() => {
 });
 
 const filteredItems = computed(() => {
-  const wants = Array.from(tagStates.entries())
-    .filter((e) => e[1])
-    .map((e) => e[0]);
+  const wants = props.tags.filter((tags) => tagStates.has(tags.name)).map((tag) => tag.name);
   if (wants.length === 0) {
     return props.items;
   }
@@ -116,13 +116,11 @@ const onSelect = (value: string) => {
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
   watch(
-    [() => props.selectedTags, () => props.tags],
-    ([selectedTags, tags]) => {
+    () => props.defaultTags,
+    (defaultTags) => {
       tagStates.clear();
-      for (const tag of selectedTags.filter((tag) => tag)) {
-        if (tags.some((t) => t.name === tag)) {
-          tagStates.set(tag, true);
-        }
+      for (const tag of defaultTags) {
+        tagStates.add(tag);
       }
     },
     { immediate: true, deep: true },
