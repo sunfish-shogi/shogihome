@@ -54,13 +54,6 @@ dialog {
   align-items: flex-end;
 }
 
-.dialog-backdrop dialog::backdrop {
-  background: rgba(0, 0, 0, 0.3);
-}
-.dialog-no-backdrop dialog::backdrop {
-  background: rgba(0, 0, 0, 0);
-}
-
 .frame {
   display: flex;
   flex-direction: column;
