@@ -139,7 +139,7 @@ onMounted(() => {
 });
 
 const dialogPosition = computed(() =>
-  !store.customLayout || store.customLayout.dialogPosition === DialogPosition.CENTER
+  !store.customLayout?.dialogPosition || store.customLayout.dialogPosition === DialogPosition.CENTER
     ? "dialog-position-center"
     : store.customLayout.dialogPosition === DialogPosition.LEFT
       ? "dialog-position-left"
