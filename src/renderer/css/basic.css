@@ -59,6 +59,18 @@ body::-webkit-scrollbar {
   flex: 1;
 }
 
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
 .regular-interval {
   justify-content: space-between;
 }

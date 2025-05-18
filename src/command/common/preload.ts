@@ -145,7 +145,7 @@ const bridge: Bridge = {
   async loadRecordFileBackup(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
-  async loadRemoteRecordFile(): Promise<string> {
+  async loadRemoteTextFile(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
   async convertRecordFiles(): Promise<string> {

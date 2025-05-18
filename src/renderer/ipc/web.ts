@@ -233,7 +233,7 @@ export const webAPI: Bridge = {
   async loadRecordFileBackup(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
-  async loadRemoteRecordFile(): Promise<string> {
+  async loadRemoteTextFile(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async convertRecordFiles(): Promise<string> {

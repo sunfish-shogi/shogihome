@@ -526,7 +526,7 @@ export class RecordManager {
       api.log(LogLevel.ERROR, "RecordManager#importRecordFromRemoteURL: source URL is not set");
       return;
     }
-    const data = await api.loadRemoteRecordFile(url);
+    const data = await api.loadRemoteTextFile(url);
     const recordOrError = this.parseRecordData(data);
     if (recordOrError instanceof Error) {
       throw recordOrError;

@@ -17,6 +17,7 @@ export const vi: Texts = {
   recordFileBatchConversion: "Chuyển đổi kỳ phổ số lượng lớn",
   close: "Đóng",
   quit: "Thoát",
+  reload: "再読み込み", // TODO: Translate
   editing: "Sửa",
   copyAsKIF: "Sao chép (KIF)",
   copyAsKI2: "Sao chép (KI2)",
@@ -148,6 +149,11 @@ export const vi: Texts = {
   repetition: "Hòa do lặp nước",
   mate: "Chiếu hết",
   noMate: "Không chiếu hết",
+  blackWin: "先手勝ち", // TODO: Translate
+  whiteWin: "後手勝ち", // TODO: Translate
+  all: "全て", // TODO: Translate
+  others: "その他", // TODO: Translate
+  minRate: "最小レート", // TODO: Translate
   mateSearch: "Tìm chiếu hết",
   startMateSearch: "Bắt đầu tìm chiếu hết",
   stopMateSearch: "Dừng tìm chiếu hết",

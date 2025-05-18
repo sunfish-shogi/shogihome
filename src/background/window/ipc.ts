@@ -365,7 +365,7 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(Background.LOAD_REMOTE_RECORD_FILE, async (event, url: string) => {
+ipcMain.handle(Background.LOAD_REMOTE_TEXT_FILE, async (event, url: string) => {
   validateIPCSender(event.senderFrame);
   return await fetch(url);
 });

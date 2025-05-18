@@ -1,0 +1,4 @@
+wdoor+floodgate-300-10F+Sora_Ginko+Sd_RTX4060L+20250524163003.csa Sora_Ginko Sd_RTX4060L 84 353 348
+wdoor+floodgate-300-10F+gikou2_1c+AobaFuribisha_w2083_avg_3200p+20250524163004.csa gikou2_1c AobaFuribisha_w2083_avg_3200p 100 582 117
+wdoor+floodgate-300-10F+Frieren+UHJK+20250524163002.csa Frieren UHJK 58 187 490
+wdoor+floodgate-300-10F+m4x+K0_3950X+20250524163008.csa m4x K0_3950X 85 0 703
