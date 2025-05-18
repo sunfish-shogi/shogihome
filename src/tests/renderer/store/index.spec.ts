@@ -456,7 +456,7 @@ describe("store/index", () => {
     expect(store.researchState).toBe(ResearchState.RUNNING);
     expect(mockAPI.saveResearchSettings).toBeCalledTimes(1);
     expect(mockUSIPlayer).toBeCalledTimes(1);
-    expect(mockUSIPlayer.mock.calls[0][0]).toBe(researchSettings.usi);
+    expect(mockUSIPlayer.mock.calls[0][0]).toStrictEqual(researchSettings.usi);
     expect(mockUSIPlayer.prototype.launch).toBeCalledTimes(1);
     // FIXME: 遅延実行の導入によってすぐに呼ばれなくなった。
     //expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);

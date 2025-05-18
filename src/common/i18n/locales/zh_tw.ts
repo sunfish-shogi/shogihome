@@ -149,6 +149,7 @@ export const zh_tw: Texts = {
   startMateSearch: "開始詰搜尋",
   stopMateSearch: "結束詰搜尋",
   noMateFound: "在目前的盤面中找不到詰。",
+  timePerPosition: "思考時間", // TODO: Translate
   timeout: "時間耗盡",
   foulWin: "反則勝利",
   foulLose: "反則敗北",

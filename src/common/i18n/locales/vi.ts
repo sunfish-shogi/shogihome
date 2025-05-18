@@ -152,6 +152,7 @@ export const vi: Texts = {
   startMateSearch: "Bắt đầu tìm chiếu hết",
   stopMateSearch: "Dừng tìm chiếu hết",
   noMateFound: "Không có chiếu hết.",
+  timePerPosition: "思考時間", // TODO: Translate
   timeout: "Hết giờ",
   foulWin: "Thắng do nước đi phạm luật",
   foulLose: "Thua do nước đi phạm luật",
