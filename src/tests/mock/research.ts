@@ -5,12 +5,16 @@ export const researchSettings: ResearchSettings = {
   usi: testUSIEngine,
   enableMaxSeconds: false,
   maxSeconds: 5,
+  overrideMultiPV: false,
+  multiPV: 1,
 };
 
 export const researchSettingsMax5Seconds: ResearchSettings = {
   usi: testUSIEngine,
   enableMaxSeconds: true,
   maxSeconds: 5,
+  overrideMultiPV: false,
+  multiPV: 1,
 };
 
 export const researchSettingsSecondaryEngines: ResearchSettings = {
@@ -18,4 +22,6 @@ export const researchSettingsSecondaryEngines: ResearchSettings = {
   secondaries: [{ usi: testUSIEngine }, { usi: testUSIEngine }],
   enableMaxSeconds: false,
   maxSeconds: 5,
+  overrideMultiPV: false,
+  multiPV: 1,
 };

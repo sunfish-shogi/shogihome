@@ -152,6 +152,7 @@ export const en: Texts = {
   startMateSearch: "Start Mate Search",
   stopMateSearch: "Stop Mate Search",
   noMateFound: "No mate.",
+  timePerPosition: "Time per Position",
   timeout: "Timeout",
   foulWin: "Foul Win",
   foulLose: "Foul Lose",

@@ -147,6 +147,7 @@ export type Texts = {
   startMateSearch: string;
   stopMateSearch: string;
   noMateFound: string;
+  timePerPosition: string;
   timeout: string;
   foulWin: string;
   foulLose: string;

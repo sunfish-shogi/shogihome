@@ -31,17 +31,26 @@
       </button>
       <div class="form-group">
         <div class="form-item">
-          <ToggleButton v-model:value="enableMaxSeconds" />
-          <div class="form-item-small-label">{{ t.toPrefix }}</div>
+          <div class="form-item-label-wide">{{ t.timePerPosition }}</div>
+          <ToggleButton v-model:value="researchSettings.enableMaxSeconds" />
           <input
-            ref="maxSeconds"
-            :value="researchSettings.maxSeconds"
+            v-model.number="researchSettings.maxSeconds"
             class="number"
             type="number"
             min="1"
-            :disabled="!enableMaxSeconds"
+            :disabled="!researchSettings.enableMaxSeconds"
           />
-          <div class="form-item-small-label">{{ t.secondsSuffix }}{{ t.toSuffix }}</div>
+        </div>
+        <div class="form-item">
+          <div class="form-item-label-wide">{{ t.suggestionsCount }}</div>
+          <ToggleButton v-model:value="researchSettings.overrideMultiPV" />
+          <input
+            v-model.number="researchSettings.multiPV"
+            class="number"
+            type="number"
+            min="1"
+            :disabled="!researchSettings.overrideMultiPV"
+          />
         </div>
       </div>
       <div class="main-buttons">
@@ -68,7 +77,6 @@ import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
-import { readInputAsNumber } from "@/renderer/helpers/form";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
@@ -82,8 +90,6 @@ const researchSettings = ref(defaultResearchSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
 const secondaryEngineURIs = ref([] as string[]);
-const enableMaxSeconds = ref(false);
-const maxSeconds = ref();
 
 busyState.retain();
 
@@ -94,7 +100,6 @@ onMounted(async () => {
     engineURI.value = researchSettings.value.usi?.uri || "";
     secondaryEngineURIs.value =
       researchSettings.value.secondaries?.map((engine) => engine.usi?.uri || "") || [];
-    enableMaxSeconds.value = researchSettings.value.enableMaxSeconds;
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -112,18 +117,17 @@ const onStart = () => {
       usi: secondary,
     });
   }
-  const researchSettings: ResearchSettings = {
+  const newSettings: ResearchSettings = {
+    ...researchSettings.value,
     usi: engine,
     secondaries: secondaries,
-    enableMaxSeconds: enableMaxSeconds.value,
-    maxSeconds: readInputAsNumber(maxSeconds.value),
   };
-  const e = validateResearchSettings(researchSettings);
+  const e = validateResearchSettings(newSettings);
   if (e) {
     useErrorStore().add(e);
     return;
   }
-  store.startResearch(researchSettings);
+  store.startResearch(newSettings);
 };
 
 const onCancel = () => {

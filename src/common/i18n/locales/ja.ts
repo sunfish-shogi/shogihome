@@ -152,6 +152,7 @@ export const ja: Texts = {
   startMateSearch: "詰み探索開始",
   stopMateSearch: "詰み探索終了",
   noMateFound: "詰みが見つかりませんでした。",
+  timePerPosition: "思考時間",
   timeout: "時間切れ",
   foulWin: "反則勝ち",
   foulLose: "反則負け",

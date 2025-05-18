@@ -173,4 +173,39 @@ describe("store/research", () => {
     expect(mockAPI.usiStop).toBeCalledTimes(0);
     expect(manager.getMultiPV(101)).toBeUndefined();
   });
+
+  it("overrideMultiPV", async () => {
+    vi.useFakeTimers();
+    mockAPI.usiLaunch.mockResolvedValueOnce(101);
+    mockAPI.usiGoInfinite.mockResolvedValue();
+    mockAPI.usiStop.mockResolvedValue();
+    mockAPI.usiSetOption.mockResolvedValue();
+    const manager = new ResearchManager();
+    await manager.launch({
+      ...researchSettings,
+      overrideMultiPV: true,
+      multiPV: 4,
+      usi: {
+        ...(researchSettings.usi as USIEngine),
+        options: {
+          MultiPV: {
+            name: "MultiPV",
+            order: 1,
+            type: "spin",
+            default: 1,
+            value: 1,
+          } as USIEngineOption,
+        },
+      },
+    });
+    expect(mockAPI.usiLaunch).toBeCalledTimes(1);
+    expect(mockAPI.usiLaunch.mock.calls[0][0].options["MultiPV"]).toStrictEqual({
+      name: "MultiPV",
+      order: 1,
+      type: "spin",
+      default: 1,
+      value: 4,
+    });
+    expect(manager.getMultiPV(101)).toBe(4);
+  });
 });

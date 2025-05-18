@@ -10,12 +10,16 @@ export type ResearchSettings = {
   secondaries?: SecondaryResearchSettings[];
   enableMaxSeconds: boolean;
   maxSeconds: number;
+  overrideMultiPV: boolean;
+  multiPV: number;
 };
 
 export function defaultResearchSettings(): ResearchSettings {
   return {
     enableMaxSeconds: false,
     maxSeconds: 10,
+    overrideMultiPV: false,
+    multiPV: 1,
   };
 }
 

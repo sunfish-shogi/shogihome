@@ -2,7 +2,7 @@ import { ResearchSettings, defaultResearchSettings } from "@/common/settings/res
 import { USIPlayer } from "@/renderer/players/usi.js";
 import { SearchInfo } from "@/renderer/players/player.js";
 import { ImmutableRecord } from "tsshogi";
-import { USIEngine } from "@/common/settings/usi.js";
+import { MultiPV, USIEngine, USIMultiPV } from "@/common/settings/usi.js";
 import { SearchInfoSenderType } from "./record.js";
 import { useAppSettings } from "./settings.js";
 import { Lazy } from "@/renderer/helpers/lazy.js";
@@ -80,7 +80,15 @@ export class ResearchManager {
     const appSettings = useAppSettings();
     const usiEngines = [settings.usi, ...(settings.secondaries?.map((s) => s.usi) || [])];
     this.engines = usiEngines.map((usi, index) => {
-      const usiEngine = usi as USIEngine;
+      const options = usi!.options;
+      if (settings.overrideMultiPV) {
+        if (options[USIMultiPV]?.type === "spin") {
+          options[USIMultiPV].value = settings.multiPV;
+        } else if (options[MultiPV]?.type === "spin") {
+          options[MultiPV].value = settings.multiPV;
+        }
+      }
+      const usiEngine: USIEngine = { ...usi!, options };
       const type = getSenderTypeByIndex(index);
       return {
         usi: new USIPlayer(usiEngine, appSettings.engineTimeoutSeconds, (info) => {
