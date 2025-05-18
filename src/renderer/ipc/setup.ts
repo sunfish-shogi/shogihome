@@ -185,6 +185,9 @@ export function setup(): void {
       case MenuEvent.INIT_POSITION:
         store.initializePositionBySFEN(args[0]);
         break;
+      case MenuEvent.CHANGE_PIECE_SET:
+        store.showPieceSetChangeDialog();
+        break;
       case MenuEvent.START_MATE_SEARCH:
         store.showMateSearchDialog();
         break;
@@ -227,6 +230,9 @@ export function setup(): void {
         break;
       case MenuEvent.CALCULATE_POINTS:
         store.showJishogiPoints();
+        break;
+      case MenuEvent.DISPLAY_GAME_RESULTS:
+        store.showGameResults();
         break;
       case MenuEvent.START_RESEARCH:
         store.showResearchDialog();
