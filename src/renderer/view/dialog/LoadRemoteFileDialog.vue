@@ -7,6 +7,7 @@
         :items="[
           { value: Tab.URL, label: 'URL' },
           { value: Tab.Floodgate, label: 'Floodgate' },
+          { value: Tab.WCSC, label: 'WCSC' },
         ]"
       />
     </div>
@@ -45,7 +46,8 @@
       <button class="reload" @click="updateFloodgateGameList()">{{ t.reload }}</button>
     </div>
     <div v-show="tab === Tab.Floodgate" class="form-group game-list">
-      <div v-for="game in filteredFloodgateGames" :key="game.id">
+      <div v-for="(game, index) in filteredFloodgateGames" :key="game.id">
+        <hr v-if="index !== 0" />
         <div class="game-list-entry row" :class="{ playing: game.playing }">
           <div class="game-label column space-evenly">
             <div class="game-header">
@@ -94,9 +96,35 @@
             <button @click="open(game.url)">{{ t.open }}</button>
           </div>
         </div>
-        <hr />
       </div>
     </div>
+    <!-- WCSC -->
+    <div v-show="tab === Tab.WCSC" class="header row align-center">
+      <div class="filter row align-center">
+        <div class="player-name-filter row align-center">
+          <input v-model.number="wcscEdition" type="number" placeholder="Edition" />
+        </div>
+        <div class="player-name-filter row align-center">
+          <input v-model.trim="wcscSearchWord" placeholder="検索" />
+          <button @click="wcscSearchWord = ''">&#x2715;</button>
+        </div>
+      </div>
+      <button class="reload" @click="updateWCSCGameList()">{{ t.reload }}</button>
+    </div>
+    <div v-show="tab === Tab.WCSC" class="form-group game-list">
+      <div v-for="(game, index) in filteredWCSCGames" :key="game.url">
+        <hr v-if="index !== 0" />
+        <div class="game-list-entry row">
+          <div class="game-label column space-evenly">
+            <div class="game-header">{{ game.title }}</div>
+          </div>
+          <div class="column space-evenly">
+            <button @click="open(game.url)">{{ t.open }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Common buttons -->
     <div class="main-buttons">
       <button v-show="tab === Tab.URL" data-hotkey="Enter" autofocus @click="open(url)">
         {{ t.ok }}
@@ -112,11 +140,14 @@
 enum Tab {
   URL = "url",
   Floodgate = "floodgate",
+  WCSC = "wcsc",
 }
 const localStorageLastTabKey = "LoadRemoteFileDialog.lastTab";
 const localStorageLastURLKey = "LoadRemoteFileDialog.lastURL";
 const localStorageLastFloodgatePlayerNameKey = "LoadRemoteFileDialog.lastFloodgatePlayerName";
 const localStorageLastFloodgateMinRateKey = "LoadRemoteFileDialog.lastFloodgateMinRate";
+const localStorageLastWCSCEditionKey = "LoadRemoteFileDialog.lastWCSCEdition";
+const localStorageLastWCSCSearchWordKey = "LoadRemoteFileDialog.lastWCSCPlayerName";
 </script>
 
 <script setup lang="ts">
@@ -131,6 +162,7 @@ import {
   listLatestGames as listFloodgateLatestGames,
   listPlayers as listFloodgatePlayers,
 } from "@/renderer/external/floodgate";
+import { Game as WCSCGame, listGames as listWCSCGames } from "@/renderer/external/wcsc";
 import DialogFrame from "./DialogFrame.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { getDateTimeString } from "@/common/helpers/datetime";
@@ -148,6 +180,9 @@ const floodgateMinRate = ref(0);
 const floodgateWinner = ref<Color | "all" | "other">("all");
 const floodgateGames = ref<FloodgateGame[]>([]);
 const floodgatePlayerRateMap = ref<Record<string, number>>({});
+const wcscEdition = ref(35);
+const wcscSearchWord = ref("");
+const wcscGames = ref<WCSCGame[]>([]);
 
 async function updateFloodgateGameList() {
   try {
@@ -188,9 +223,32 @@ const filteredFloodgateGames = computed(() => {
   });
 });
 
+async function updateWCSCGameList() {
+  try {
+    busyState.retain();
+    wcscGames.value = await listWCSCGames(wcscEdition.value);
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+}
+
+const filteredWCSCGames = computed(() => {
+  const word = wcscSearchWord.value.toLowerCase();
+  return wcscGames.value.filter((game) => {
+    if (word && !game.title.toLowerCase().includes(word)) {
+      return false;
+    }
+    return true;
+  });
+});
+
 function onUpdateTab(newTab: Tab) {
   if (newTab === Tab.Floodgate && floodgateGames.value.length === 0) {
     updateFloodgateGameList();
+  } else if (newTab === Tab.WCSC && wcscGames.value.length === 0) {
+    updateWCSCGameList();
   }
 }
 
@@ -203,6 +261,8 @@ function open(url: string) {
   localStorage.setItem(localStorageLastURLKey, url);
   localStorage.setItem(localStorageLastFloodgatePlayerNameKey, floodgatePlayerName.value);
   localStorage.setItem(localStorageLastFloodgateMinRateKey, String(floodgateMinRate.value));
+  localStorage.setItem(localStorageLastWCSCEditionKey, String(wcscEdition.value));
+  localStorage.setItem(localStorageLastWCSCSearchWordKey, wcscSearchWord.value);
   store.closeModalDialog();
   store.loadRemoteRecordFile(url);
 }
@@ -220,6 +280,10 @@ onMounted(async () => {
       localStorage.getItem(localStorageLastFloodgatePlayerNameKey) || floodgatePlayerName.value;
     floodgateMinRate.value =
       Number(localStorage.getItem(localStorageLastFloodgateMinRateKey)) || floodgateMinRate.value;
+    wcscEdition.value =
+      Number(localStorage.getItem(localStorageLastWCSCEditionKey)) || wcscEdition.value;
+    wcscSearchWord.value =
+      localStorage.getItem(localStorageLastWCSCSearchWordKey) || wcscSearchWord.value;
     if (!isNative()) {
       return;
     }
