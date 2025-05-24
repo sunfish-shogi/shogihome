@@ -1,0 +1,12 @@
+[
+  { "name": "WCSC 35", "year": 2025, "url": "http://live4.computer-shogi.org/wcsc35/list.txt" },
+  { "name": "WCSC 34", "year": 2024, "url": "http://live4.computer-shogi.org/wcsc34/list.txt" },
+  { "name": "WCSC 33", "year": 2023, "url": "http://live4.computer-shogi.org/wcsc33/list.txt" },
+  { "name": "WCSC 32", "year": 2022, "url": "http://live4.computer-shogi.org/wcsc32/list.txt" },
+  { "name": "WCSC 31", "year": 2021, "url": "http://live4.computer-shogi.org/wcsc31/list.txt" },
+  { "name": "WCSC 29", "year": 2019, "url": "http://live4.computer-shogi.org/wcsc29/list.txt" },
+  { "name": "WCSC 28", "year": 2018, "url": "http://live4.computer-shogi.org/wcsc28/list.txt" },
+  { "name": "WCSC 27", "year": 2017, "url": "http://live4.computer-shogi.org/wcsc27/list.txt" },
+  { "name": "WCSC 26", "year": 2016, "url": "http://live4.computer-shogi.org/wcsc26/list.txt" },
+  { "name": "WCSC 25", "year": 2015, "url": "http://live4.computer-shogi.org/wcsc25/list.txt" }
+]
