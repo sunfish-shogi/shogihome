@@ -1,0 +1,12 @@
+[
+  { "edition": "WCSC 25", "url": "http://live4.computer-shogi.org/wcsc25/list.txt" },
+  { "edition": "WCSC 26", "url": "http://live4.computer-shogi.org/wcsc26/list.txt" },
+  { "edition": "WCSC 27", "url": "http://live4.computer-shogi.org/wcsc27/list.txt" },
+  { "edition": "WCSC 28", "url": "http://live4.computer-shogi.org/wcsc28/list.txt" },
+  { "edition": "WCSC 29", "url": "http://live4.computer-shogi.org/wcsc29/list.txt" },
+  { "edition": "WCSC 31", "url": "http://live4.computer-shogi.org/wcsc31/list.txt" },
+  { "edition": "WCSC 32", "url": "http://live4.computer-shogi.org/wcsc32/list.txt" },
+  { "edition": "WCSC 33", "url": "http://live4.computer-shogi.org/wcsc33/list.txt" },
+  { "edition": "WCSC 34", "url": "http://live4.computer-shogi.org/wcsc34/list.txt" },
+  { "edition": "WCSC 35", "url": "http://live4.computer-shogi.org/wcsc35/list.txt" }
+]
