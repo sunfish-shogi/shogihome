@@ -49,7 +49,7 @@ export interface Bridge {
   clearRecordFileHistory(): Promise<void>;
   saveRecordFileBackup(kif: string): Promise<void>;
   loadRecordFileBackup(name: string): Promise<string>;
-  loadRemoteRecordFile(url: string): Promise<string>;
+  loadRemoteTextFile(url: string): Promise<string>;
   convertRecordFiles(json: string): Promise<string>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;

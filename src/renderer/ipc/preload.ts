@@ -116,8 +116,8 @@ const api: Bridge = {
   async saveRecord(path: string, data: Uint8Array): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_RECORD, path, data);
   },
-  async loadRemoteRecordFile(url: string): Promise<string> {
-    return await ipcRenderer.invoke(Background.LOAD_REMOTE_RECORD_FILE, url);
+  async loadRemoteTextFile(url: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_REMOTE_TEXT_FILE, url);
   },
   async convertRecordFiles(json: string): Promise<string> {
     return await ipcRenderer.invoke(Background.CONVERT_RECORD_FILES, json);

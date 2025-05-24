@@ -11,7 +11,7 @@ export enum Background {
   SHOW_SELECT_DIRECTORY_DIALOG = "showSelectDirectoryDialog",
   SHOW_SELECT_IMAGE_DIALOG = "showSelectImageDialog",
   SHOW_SAVE_MERGED_RECORD_DIALOG = "showSaveMergedRecordDialog",
-  LOAD_REMOTE_RECORD_FILE = "loadRemoteRecordFile",
+  LOAD_REMOTE_TEXT_FILE = "loadRemoteTextFile",
   CROP_PIECE_IMAGE = "cropPieceImage",
   EXPORT_CAPTURE_AS_PNG = "exportCaptureAsPNG",
   EXPORT_CAPTURE_AS_JPEG = "exportCaptureAsJPEG",

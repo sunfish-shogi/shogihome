@@ -17,6 +17,7 @@ export const zh_tw: Texts = {
   recordFileBatchConversion: "棋譜大量轉換",
   close: "關閉",
   quit: "離開",
+  reload: "再読み込み", // TODO: Translate
   editing: "編輯",
   copyAsKIF: "複製KIF棋譜",
   copyAsKI2: "複製KI2棋譜",
@@ -145,6 +146,11 @@ export const zh_tw: Texts = {
   repetition: "千日手",
   mate: "詰死",
   noMate: "無詰",
+  blackWin: "先手勝ち", // TODO: Translate
+  whiteWin: "後手勝ち", // TODO: Translate
+  all: "全て", // TODO: Translate
+  others: "その他", // TODO: Translate
+  minRate: "最小レート", // TODO: Translate
   mateSearch: "詰搜尋",
   startMateSearch: "開始詰搜尋",
   stopMateSearch: "結束詰搜尋",

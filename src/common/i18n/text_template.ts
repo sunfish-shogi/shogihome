@@ -15,6 +15,7 @@ export type Texts = {
   recordFileBatchConversion: string;
   close: string;
   quit: string;
+  reload: string;
   editing: string;
   copyAsKIF: string;
   copyAsKI2: string;
@@ -143,6 +144,11 @@ export type Texts = {
   repetition: string;
   mate: string;
   noMate: string;
+  blackWin: string;
+  whiteWin: string;
+  all: string;
+  others: string;
+  minRate: string;
   mateSearch: string;
   startMateSearch: string;
   stopMateSearch: string;
