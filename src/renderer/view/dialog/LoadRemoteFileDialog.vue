@@ -101,9 +101,11 @@
     <!-- WCSC -->
     <div v-show="tab === Tab.WCSC" class="header row align-center">
       <div class="filter row align-center">
-        <div class="player-name-filter row align-center">
-          <input v-model.number="wcscEdition" type="number" placeholder="Edition" />
-        </div>
+        <select v-model="wcscEdition" class="edition-selector">
+          <option v-for="edition in wcscEditions" :key="edition.edition" :value="edition.edition">
+            {{ edition.edition }}
+          </option>
+        </select>
         <div class="player-name-filter row align-center">
           <input v-model.trim="wcscSearchWord" placeholder="検索" />
           <button @click="wcscSearchWord = ''">&#x2715;</button>
@@ -162,7 +164,12 @@ import {
   listLatestGames as listFloodgateLatestGames,
   listPlayers as listFloodgatePlayers,
 } from "@/renderer/external/floodgate";
-import { Game as WCSCGame, listGames as listWCSCGames } from "@/renderer/external/wcsc";
+import {
+  Edition as WCSCEdition,
+  Game as WCSCGame,
+  listEditions as listWCSCEditions,
+  listGames as listWCSCGames,
+} from "@/renderer/external/wcsc";
 import DialogFrame from "./DialogFrame.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { getDateTimeString } from "@/common/helpers/datetime";
@@ -180,8 +187,9 @@ const floodgateMinRate = ref(0);
 const floodgateWinner = ref<Color | "all" | "other">("all");
 const floodgateGames = ref<FloodgateGame[]>([]);
 const floodgatePlayerRateMap = ref<Record<string, number>>({});
-const wcscEdition = ref(35);
+const wcscEdition = ref("");
 const wcscSearchWord = ref("");
+const wcscEditions = ref([] as WCSCEdition[]);
 const wcscGames = ref<WCSCGame[]>([]);
 
 async function updateFloodgateGameList() {
@@ -226,7 +234,15 @@ const filteredFloodgateGames = computed(() => {
 async function updateWCSCGameList() {
   try {
     busyState.retain();
-    wcscGames.value = await listWCSCGames(wcscEdition.value);
+    wcscEditions.value = await listWCSCEditions();
+    if (wcscEditions.value.length === 0) {
+      return;
+    }
+    const edition =
+      wcscEditions.value.find((edition) => edition.edition === wcscEdition.value) ||
+      wcscEditions.value[0];
+    wcscEdition.value = edition.edition;
+    wcscGames.value = await listWCSCGames(edition.url);
   } catch (e) {
     useErrorStore().add(e);
   } finally {
@@ -261,7 +277,7 @@ function open(url: string) {
   localStorage.setItem(localStorageLastURLKey, url);
   localStorage.setItem(localStorageLastFloodgatePlayerNameKey, floodgatePlayerName.value);
   localStorage.setItem(localStorageLastFloodgateMinRateKey, String(floodgateMinRate.value));
-  localStorage.setItem(localStorageLastWCSCEditionKey, String(wcscEdition.value));
+  localStorage.setItem(localStorageLastWCSCEditionKey, wcscEdition.value);
   localStorage.setItem(localStorageLastWCSCSearchWordKey, wcscSearchWord.value);
   store.closeModalDialog();
   store.loadRemoteRecordFile(url);
@@ -280,8 +296,7 @@ onMounted(async () => {
       localStorage.getItem(localStorageLastFloodgatePlayerNameKey) || floodgatePlayerName.value;
     floodgateMinRate.value =
       Number(localStorage.getItem(localStorageLastFloodgateMinRateKey)) || floodgateMinRate.value;
-    wcscEdition.value =
-      Number(localStorage.getItem(localStorageLastWCSCEditionKey)) || wcscEdition.value;
+    wcscEdition.value = localStorage.getItem(localStorageLastWCSCEditionKey) || wcscEdition.value;
     wcscSearchWord.value =
       localStorage.getItem(localStorageLastWCSCSearchWordKey) || wcscSearchWord.value;
     if (!isNative()) {
@@ -295,6 +310,7 @@ onMounted(async () => {
     busyState.release();
   }
   watch(tab, onUpdateTab, { immediate: true });
+  watch(wcscEdition, updateWCSCGameList);
 });
 </script>
 

@@ -17,7 +17,7 @@ describe("wcsc", () => {
   it("should list games", async () => {
     mockAPI.loadRemoteTextFile.mockResolvedValue(sampleGameList);
 
-    const games = await listGames(35);
+    const games = await listGames("http://example.com/list.txt");
 
     expect(games).toHaveLength(289);
     expect(games[0].title).toBe(
