@@ -7,6 +7,10 @@
       <button :disabled="!operational" data-hotkey="ArrowUp" @click="goBack()">
         <Icon :icon="IconType.BACK" />
       </button>
+      <button :disabled="!operational" data-hotkey="ArrowPlay" @click="goPlay()">
+        <Icon :icon="isPlaying ? IconType.PAUSE : IconType.PLAY" />
+        <!-- <Icon :icon="IconType.PLAY" /> -->
+      </button>
       <button :disabled="!operational" data-hotkey="ArrowDown" @click="goForward">
         <Icon :icon="IconType.NEXT" />
       </button>
@@ -164,11 +168,17 @@ const props = defineProps({
     required: false,
     default: true,
   },
+  isPlaying: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const emit = defineEmits<{
   goBegin: [];
   goBack: [];
+  goPlay: [];
   goForward: [];
   goEnd: [];
   selectMove: [ply: number];
@@ -193,6 +203,12 @@ const goBegin = () => {
 const goBack = () => {
   if (props.operational) {
     emit("goBack");
+  }
+};
+
+const goPlay = () => {
+  if (props.operational) {
+    emit("goPlay");
   }
 };
 

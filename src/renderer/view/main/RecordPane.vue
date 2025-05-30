@@ -14,8 +14,10 @@
         :show-top-control="showTopControl"
         :show-bottom-control="showBottomControl"
         :show-branches="showBranches"
+        :is-playing="isPlaying"
         @go-begin="store.changePly(0)"
         @go-back="store.goBack()"
+        @go-play="onPlay"
         @go-forward="store.goForward()"
         @go-end="store.changePly(Number.MAX_SAFE_INTEGER)"
         @select-move="(ply) => store.changePly(ply)"
@@ -43,7 +45,7 @@ export const minWidth = 200;
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
 import RecordView from "@/renderer/view/primitive/RecordView.vue";
 import { useStore } from "@/renderer/store";
 import { AppState } from "@/common/control/state.js";
@@ -53,6 +55,7 @@ import {
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import BookPanel from "./BookPanel.vue";
+import { SoundManager } from "@/renderer/sound/sound";
 
 defineProps({
   showElapsedTime: {
@@ -105,6 +108,46 @@ const onToggleComment = (enabled: boolean) => {
     showCommentInRecordView: enabled,
   });
 };
+
+// 再生中かどうかを管理するリアクティブ変数
+const isPlaying = ref(false);
+let playIntervalId: NodeJS.Timeout | null = null;
+const soundManager = new SoundManager();
+
+const onPlay = async () => {
+  const intervalTime = 5000;
+  isPlaying.value = !isPlaying.value;
+  if (isPlaying.value) {
+    const text = store.record.current.next?.displayText || "";
+    soundManager.read(text, store.record.current.nextColor);
+    store.goForward();
+    playIntervalId = setInterval(() => {
+      if (store.record.current.next === null) {
+        isPlaying.value = false; // 再生が終了したらフラグを更新
+        if (playIntervalId !== null) {
+          clearInterval(playIntervalId);
+          playIntervalId = null;
+        }
+        return; // 次の手がない場合は何もしない
+      }
+      const text = store.record.current.next.displayText || "";
+      soundManager.read(text, store.record.current.nextColor);
+      store.goForward();
+    }, intervalTime);
+  } else {
+    if (playIntervalId !== null) {
+      clearInterval(playIntervalId);
+      playIntervalId = null;
+    }
+  }
+};
+
+onUnmounted(() => {
+  if (playIntervalId !== null) {
+    clearInterval(playIntervalId); // コンポーネントがアンマウントされるときにインターバルをクリア
+    playIntervalId = null;
+  }
+});
 </script>
 
 <style scoped>
