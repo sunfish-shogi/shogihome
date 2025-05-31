@@ -2,9 +2,27 @@ import https from "node:https";
 import http from "node:http";
 import { getAppLogger } from "@/background/log.js";
 import ejpn from "encoding-japanese";
+import { RateLimiter, WindowRule } from "./limitter.js";
 const convert = ejpn.convert;
 
-export function fetch(url: string): Promise<string> {
+const domainLimiter = new Map<string, RateLimiter>();
+const commonRules: WindowRule[] = [
+  { limit: 4, windowSec: 1 },
+  { limit: 6, windowSec: 4 },
+  { limit: 8, windowSec: 8 },
+  { limit: 10, windowSec: 16 },
+];
+
+export async function fetch(url: string): Promise<string> {
+  const hostName = new URL(url).hostname;
+  let limiter = domainLimiter.get(hostName);
+  if (!limiter) {
+    limiter = new RateLimiter(commonRules);
+    domainLimiter.set(hostName, limiter);
+  }
+
+  await limiter.waitUntilAllowed();
+
   return new Promise((resolve, reject) => {
     const get = url.startsWith("http://") ? http.get : https.get;
     getAppLogger().debug(`fetch remote file: ${url}`);
