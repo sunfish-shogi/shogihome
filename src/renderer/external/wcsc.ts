@@ -1,3 +1,4 @@
+import { wcscGameListsURL } from "@/common/links/github";
 import api from "@/renderer/ipc/api";
 
 export type Edition = {
@@ -12,8 +13,7 @@ export type Game = {
 };
 
 export async function listEditions(): Promise<Edition[]> {
-  const url = "https://sunfish-shogi.github.io/shogihome/misc/wcsc-game-lists.json";
-  const json = await api.loadRemoteTextFile(url);
+  const json = await api.loadRemoteTextFile(wcscGameListsURL);
   return JSON.parse(json) as Edition[];
 }
 
