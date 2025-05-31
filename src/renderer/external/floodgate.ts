@@ -1,3 +1,9 @@
+import {
+  floodgateBaseURL,
+  floodgateGameHistoryURL,
+  floodgatePlayersURL,
+  floodgatePlayingURL,
+} from "@/common/links/floodgate";
 import api from "@/renderer/ipc/api";
 import { Color } from "tsshogi";
 import YAML from "yaml";
@@ -22,11 +28,6 @@ export type Player = {
   name: string;
   rate: number;
 };
-
-const floodgateBaseURL = "http://wdoor.c.u-tokyo.ac.jp";
-const playingURL = `${floodgateBaseURL}/shogi/LATEST/playing.txt`;
-const gameHistoryURL = `${floodgateBaseURL}/shogi/LATEST/floodgate_history_300_10F.yaml`;
-const playersURL = `${floodgateBaseURL}/shogi/LATEST/floodgate-players.txt`;
 
 export async function listLatestGames(): Promise<Game[]> {
   const playing = await listPlayingGames();
@@ -65,7 +66,7 @@ function getCSAFileURL(gameID: string): string | undefined {
 }
 
 async function listPlayingGames(): Promise<Game[]> {
-  const text = await api.loadRemoteTextFile(playingURL);
+  const text = await api.loadRemoteTextFile(floodgatePlayingURL);
   const lines = text.split("\n");
   const games: Game[] = [];
   for (const line of lines) {
@@ -100,7 +101,7 @@ async function listPlayingGames(): Promise<Game[]> {
 }
 
 async function listEndedGames(): Promise<Game[]> {
-  const yaml = await api.loadRemoteTextFile(gameHistoryURL);
+  const yaml = await api.loadRemoteTextFile(floodgateGameHistoryURL);
   const list = YAML.parse(yaml);
   if (!Array.isArray(list)) {
     return [];
@@ -140,7 +141,7 @@ async function listEndedGames(): Promise<Game[]> {
 }
 
 export async function listPlayers(): Promise<Player[]> {
-  const text = await api.loadRemoteTextFile(playersURL);
+  const text = await api.loadRemoteTextFile(floodgatePlayersURL);
   const lines = text.split("\n");
   const players: Player[] = [];
   for (const line of lines) {
