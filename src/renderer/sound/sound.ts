@@ -119,10 +119,36 @@ export class SoundManager {
     return voices;
   }
 
+  isChangeablePiece(pieceType: PieceType): boolean {
+    if (
+      pieceType === PieceType.PAWN ||
+      pieceType === PieceType.LANCE ||
+      pieceType === PieceType.KNIGHT ||
+      pieceType === PieceType.SILVER ||
+      pieceType === PieceType.BISHOP ||
+      pieceType === PieceType.ROOK
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   changeVoice(nextMove: Move): SoundType[] {
     const voices: SoundType[] = [];
     if (nextMove.promote) {
       voices.push(SoundType.NARU);
+    }
+    // ならないかつfromが持ち駒からではない
+    if (
+      !nextMove.promote &&
+      nextMove.from instanceof Square &&
+      this.isChangeablePiece(nextMove.pieceType)
+    ) {
+      if (nextMove.color === Color.BLACK && nextMove.to.rank <= 3) {
+        voices.push(SoundType.NARAZU);
+      } else if (nextMove.color === Color.WHITE && nextMove.to.rank >= 7) {
+        voices.push(SoundType.NARAZU);
+      }
     }
     return voices;
   }
