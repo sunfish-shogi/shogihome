@@ -22,7 +22,7 @@ export class RateLimiter {
       for (const { limit, windowSec } of this.rules) {
         const windowThreshold = now - windowSec * 1000;
         const inWindow = this.timeStamps.filter((t) => t >= windowThreshold);
-        if (inWindow.length >= limit) {
+        if (inWindow.length > limit) {
           const oldest = inWindow[0];
           const earliestRelease = oldest + windowSec * 1000;
           const delta = earliestRelease - now;
