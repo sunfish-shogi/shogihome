@@ -58,11 +58,17 @@ export class SoundManager {
     return voices;
   }
 
-  getPlaceVoice(nextMove: Move): SoundType[] {
+  getPlaceVoice(currentMove: Move, nextMove: Move): SoundType[] {
     const voices: SoundType[] = [];
 
+    if (nextMove.to === currentMove.to) {
+      voices.push(SoundType.ONAJIKU);
+      return voices;
+    }
     const nextPlace = `${nextMove.to.file}${nextMove.to.rank}`;
-    voices.push(nextPlace as SoundType);
+    if (Object.values(SoundType).includes(nextPlace as SoundType)) {
+      voices.push(nextPlace as SoundType);
+    }
 
     return voices;
   }
@@ -133,12 +139,16 @@ export class SoundManager {
 
   gameVoice(current: ImmutableNode): SoundType[] {
     const voices: SoundType[] = [];
+    const currentMove = current.move as Move | null;
+    if (!currentMove) {
+      return voices;
+    }
     const nextMove = current.next?.move as Move | null;
     if (!nextMove) {
       return voices;
     }
     voices.push(...this.turnVoice(nextMove));
-    voices.push(...this.getPlaceVoice(nextMove));
+    voices.push(...this.getPlaceVoice(currentMove, nextMove));
     voices.push(...this.getPieceVoice(nextMove));
     voices.push(...this.changeVoice(nextMove));
     voices.push(...this.utuVoice(nextMove));
@@ -177,6 +187,7 @@ export class SoundManager {
 
   read(current: ImmutableNode): void {
     const voices = this.createVoiceArray(current);
+    console.log(current);
     this.playSequence(voices);
   }
 }
