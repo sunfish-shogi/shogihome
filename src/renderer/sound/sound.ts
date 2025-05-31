@@ -177,7 +177,8 @@ export class SoundManager {
     voices.push(...this.getPlaceVoice(currentMove, nextMove));
     voices.push(...this.getPieceVoice(nextMove));
     voices.push(...this.changeVoice(nextMove));
-    voices.push(...this.utuVoice(nextMove));
+    // TODO: 打つの音声に関しても、打つ以外の手があるときは読んで、ない場合は読まないようにしたい。
+    // voices.push(...this.utuVoice(nextMove));
 
     return voices;
   }
