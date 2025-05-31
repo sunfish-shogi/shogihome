@@ -1,6 +1,4 @@
-import {soundSourceMap, SoundType} from "@/renderer/assets/sound";
-
-const preloadedSounds: { [path: string]: HTMLAudioElement } = {};
+import { soundSourceMap, SoundType } from "@/renderer/assets/sound";
 
 export class SoundManager {
   private synth: SpeechSynthesis;
@@ -28,7 +26,7 @@ export class SoundManager {
 
   async playSequence(names: SoundType[]): Promise<void> {
     let nextScheduleTime = this.audioContext.currentTime;;
-    names.forEach(name => {
+    names.forEach((name) => {
       const audioBuffer = this.audioBuffers.get(name);
       if (!audioBuffer) {
         return;

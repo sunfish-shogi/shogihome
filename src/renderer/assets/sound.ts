@@ -4,7 +4,7 @@ export enum SoundType {
   BLACK = "black",
   WHITE = "white",
   ONAJIKU = "同",
-  ONE_ONE = "１ー",
+  ONE_ONE = "１一",
   ONE_TWO = "１二",
   ONE_THREE = "１三",
   ONE_FOUR = "１四",
