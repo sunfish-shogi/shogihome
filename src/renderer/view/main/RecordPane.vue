@@ -119,7 +119,7 @@ const onPlay = async () => {
   isPlaying.value = !isPlaying.value;
   if (isPlaying.value) {
     const text = store.record.current.next?.displayText || "";
-    soundManager.read(text, store.record.current.nextColor);
+    soundManager.read(store.record.current);
     store.goForward();
     playIntervalId = setInterval(() => {
       if (store.record.current.next === null) {
@@ -131,7 +131,7 @@ const onPlay = async () => {
         return; // 次の手がない場合は何もしない
       }
       const text = store.record.current.next.displayText || "";
-      soundManager.read(text, store.record.current.nextColor);
+      soundManager.read(store.record.current);
       store.goForward();
     }, intervalTime);
   } else {

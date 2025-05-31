@@ -1,4 +1,13 @@
 import { soundSourceMap, SoundType } from "@/renderer/assets/sound";
+import {
+  ImmutableNode,
+  SpecialMoveType,
+  Color,
+  SpecialMove,
+  Move,
+  PieceType,
+  Square,
+} from "tsshogi";
 
 export class SoundManager {
   private synth: SpeechSynthesis;
@@ -25,7 +34,7 @@ export class SoundManager {
   }
 
   async playSequence(names: SoundType[]): Promise<void> {
-    let nextScheduleTime = this.audioContext.currentTime;;
+    let nextScheduleTime = this.audioContext.currentTime;
     names.forEach((name) => {
       const audioBuffer = this.audioBuffers.get(name);
       if (!audioBuffer) {
@@ -39,351 +48,135 @@ export class SoundManager {
     });
   }
 
-  getPlaceVoice(text: string): SoundType | undefined {
-    if (text.includes(SoundType.ONE_ONE)) {
-      return SoundType.ONE_ONE;
-    }
-    if (text.includes(SoundType.ONE_TWO)) {
-      return SoundType.ONE_TWO;
-    }
-    if (text.includes(SoundType.ONE_THREE)) {
-      return SoundType.ONE_THREE;
-    }
-    if (text.includes(SoundType.ONE_FOUR)) {
-      return SoundType.ONE_FOUR;
-    }
-    if (text.includes(SoundType.ONE_FIVE)) {
-      return SoundType.ONE_FIVE;
-    }
-    if (text.includes(SoundType.ONE_SIX)) {
-      return SoundType.ONE_SIX;
-    }
-    if (text.includes(SoundType.ONE_SEVEN)) {
-      return SoundType.ONE_SEVEN;
-    }
-    if (text.includes(SoundType.ONE_EIGHT)) {
-      return SoundType.ONE_EIGHT;
-    }
-    if (text.includes(SoundType.ONE_NINE)) {
-      return SoundType.ONE_NINE;
-    }
-    if (text.includes(SoundType.TWO_ONE)) {
-      return SoundType.TWO_ONE;
-    }
-    if (text.includes(SoundType.TWO_TWO)) {
-      return SoundType.TWO_TWO;
-    }
-    if (text.includes(SoundType.TWO_THREE)) {
-      return SoundType.TWO_THREE;
-    }
-    if (text.includes(SoundType.TWO_FOUR)) {
-      return SoundType.TWO_FOUR;
-    }
-    if (text.includes(SoundType.TWO_FIVE)) {
-      return SoundType.TWO_FIVE;
-    }
-    if (text.includes(SoundType.TWO_SIX)) {
-      return SoundType.TWO_SIX;
-    }
-    if (text.includes(SoundType.TWO_SEVEN)) {
-      return SoundType.TWO_SEVEN;
-    }
-    if (text.includes(SoundType.TWO_EIGHT)) {
-      return SoundType.TWO_EIGHT;
-    }
-    if (text.includes(SoundType.TWO_NINE)) {
-      return SoundType.TWO_NINE;
-    }
-    if (text.includes(SoundType.THREE_ONE)) {
-      return SoundType.THREE_ONE;
-    }
-    if (text.includes(SoundType.THREE_TWO)) {
-      return SoundType.THREE_TWO;
-    }
-    if (text.includes(SoundType.THREE_THREE)) {
-      return SoundType.THREE_THREE;
-    }
-    if (text.includes(SoundType.THREE_FOUR)) {
-      return SoundType.THREE_FOUR;
-    }
-    if (text.includes(SoundType.THREE_FIVE)) {
-      return SoundType.THREE_FIVE;
-    }
-    if (text.includes(SoundType.THREE_SIX)) {
-      return SoundType.THREE_SIX;
-    }
-    if (text.includes(SoundType.THREE_SEVEN)) {
-      return SoundType.THREE_SEVEN;
-    }
-    if (text.includes(SoundType.THREE_EIGHT)) {
-      return SoundType.THREE_EIGHT;
-    }
-    if (text.includes(SoundType.THREE_NINE)) {
-      return SoundType.THREE_NINE;
-    }
-    if (text.includes(SoundType.FOUR_ONE)) {
-      return SoundType.FOUR_ONE;
-    }
-    if (text.includes(SoundType.FOUR_TWO)) {
-      return SoundType.FOUR_TWO;
-    }
-    if (text.includes(SoundType.FOUR_THREE)) {
-      return SoundType.FOUR_THREE;
-    }
-    if (text.includes(SoundType.FOUR_FOUR)) {
-      return SoundType.FOUR_FOUR;
-    }
-    if (text.includes(SoundType.FOUR_FIVE)) {
-      return SoundType.FOUR_FIVE;
-    }
-    if (text.includes(SoundType.FOUR_SIX)) {
-      return SoundType.FOUR_SIX;
-    }
-    if (text.includes(SoundType.FOUR_SEVEN)) {
-      return SoundType.FOUR_SEVEN;
-    }
-    if (text.includes(SoundType.FOUR_EIGHT)) {
-      return SoundType.FOUR_EIGHT;
-    }
-    if (text.includes(SoundType.FOUR_NINE)) {
-      return SoundType.FOUR_NINE;
-    }
-    if (text.includes(SoundType.FIVE_ONE)) {
-      return SoundType.FIVE_ONE;
-    }
-    if (text.includes(SoundType.FIVE_TWO)) {
-      return SoundType.FIVE_TWO;
-    }
-    if (text.includes(SoundType.FIVE_THREE)) {
-      return SoundType.FIVE_THREE;
-    }
-    if (text.includes(SoundType.FIVE_FOUR)) {
-      return SoundType.FIVE_FOUR;
-    }
-    if (text.includes(SoundType.FIVE_FIVE)) {
-      return SoundType.FIVE_FIVE;
-    }
-    if (text.includes(SoundType.FIVE_SIX)) {
-      return SoundType.FIVE_SIX;
-    }
-    if (text.includes(SoundType.FIVE_SEVEN)) {
-      return SoundType.FIVE_SEVEN;
-    }
-    if (text.includes(SoundType.FIVE_EIGHT)) {
-      return SoundType.FIVE_EIGHT;
-    }
-    if (text.includes(SoundType.FIVE_NINE)) {
-      return SoundType.FIVE_NINE;
-    }
-    if (text.includes(SoundType.SIX_ONE)) {
-      return SoundType.SIX_ONE;
-    }
-    if (text.includes(SoundType.SIX_TWO)) {
-      return SoundType.SIX_TWO;
-    }
-    if (text.includes(SoundType.SIX_THREE)) {
-      return SoundType.SIX_THREE;
-    }
-    if (text.includes(SoundType.SIX_FOUR)) {
-      return SoundType.SIX_FOUR;
-    }
-    if (text.includes(SoundType.SIX_FIVE)) {
-      return SoundType.SIX_FIVE;
-    }
-    if (text.includes(SoundType.SIX_SIX)) {
-      return SoundType.SIX_SIX;
-    }
-    if (text.includes(SoundType.SIX_SEVEN)) {
-      return SoundType.SIX_SEVEN;
-    }
-    if (text.includes(SoundType.SIX_EIGHT)) {
-      return SoundType.SIX_EIGHT;
-    }
-    if (text.includes(SoundType.SIX_NINE)) {
-      return SoundType.SIX_NINE;
-    }
-    if (text.includes(SoundType.SEVEN_ONE)) {
-      return SoundType.SEVEN_ONE;
-    }
-    if (text.includes(SoundType.SEVEN_TWO)) {
-      return SoundType.SEVEN_TWO;
-    }
-    if (text.includes(SoundType.SEVEN_THREE)) {
-      return SoundType.SEVEN_THREE;
-    }
-    if (text.includes(SoundType.SEVEN_FOUR)) {
-      return SoundType.SEVEN_FOUR;
-    }
-    if (text.includes(SoundType.SEVEN_FIVE)) {
-      return SoundType.SEVEN_FIVE;
-    }
-    if (text.includes(SoundType.SEVEN_SIX)) {
-      return SoundType.SEVEN_SIX;
-    }
-    if (text.includes(SoundType.SEVEN_SEVEN)) {
-      return SoundType.SEVEN_SEVEN;
-    }
-    if (text.includes(SoundType.SEVEN_EIGHT)) {
-      return SoundType.SEVEN_EIGHT;
-    }
-    if (text.includes(SoundType.SEVEN_NINE)) {
-      return SoundType.SEVEN_NINE;
-    }
-    if (text.includes(SoundType.EIGHT_ONE)) {
-      return SoundType.EIGHT_ONE;
-    }
-    if (text.includes(SoundType.EIGHT_TWO)) {
-      return SoundType.EIGHT_TWO;
-    }
-    if (text.includes(SoundType.EIGHT_THREE)) {
-      return SoundType.EIGHT_THREE;
-    }
-    if (text.includes(SoundType.EIGHT_FOUR)) {
-      return SoundType.EIGHT_FOUR;
-    }
-    if (text.includes(SoundType.EIGHT_FIVE)) {
-      return SoundType.EIGHT_FIVE;
-    }
-    if (text.includes(SoundType.EIGHT_SIX)) {
-      return SoundType.EIGHT_SIX;
-    }
-    if (text.includes(SoundType.EIGHT_SEVEN)) {
-      return SoundType.EIGHT_SEVEN;
-    }
-    if (text.includes(SoundType.EIGHT_EIGHT)) {
-      return SoundType.EIGHT_EIGHT;
-    }
-    if (text.includes(SoundType.EIGHT_NINE)) {
-      return SoundType.EIGHT_NINE;
-    }
-    if (text.includes(SoundType.NINE_ONE)) {
-      return SoundType.NINE_ONE;
-    }
-    if (text.includes(SoundType.NINE_TWO)) {
-      return SoundType.NINE_TWO;
-    }
-    if (text.includes(SoundType.NINE_THREE)) {
-      return SoundType.NINE_THREE;
-    }
-    if (text.includes(SoundType.NINE_FOUR)) {
-      return SoundType.NINE_FOUR;
-    }
-    if (text.includes(SoundType.NINE_FIVE)) {
-      return SoundType.NINE_FIVE;
-    }
-    if (text.includes(SoundType.NINE_SIX)) {
-      return SoundType.NINE_SIX;
-    }
-    if (text.includes(SoundType.NINE_SEVEN)) {
-      return SoundType.NINE_SEVEN;
-    }
-    if (text.includes(SoundType.NINE_EIGHT)) {
-      return SoundType.NINE_EIGHT;
-    }
-    if (text.includes(SoundType.NINE_NINE)) {
-      return SoundType.NINE_NINE;
-    }
-    if (text.includes(SoundType.ONAJIKU)) {
-      return SoundType.ONAJIKU;
-    }
-  }
-
-  getKomaVoice(text: string): SoundType | undefined {
-    if (text.includes(SoundType.NARIKYO)) {
-      return SoundType.NARIKYO;
-    }
-    if (text.includes(SoundType.NARIKEI)) {
-      return SoundType.NARIKEI;
-    }
-    if (text.includes(SoundType.NARIGIN)) {
-      return SoundType.NARIGIN;
-    }
-    if (text.includes(SoundType.FU)) {
-      return SoundType.FU;
-    }
-    if (text.includes(SoundType.KYO)) {
-      return SoundType.KYO;
-    }
-    if (text.includes(SoundType.KEI)) {
-      return SoundType.KEI;
-    }
-    if (text.includes(SoundType.GIN)) {
-      return SoundType.GIN;
-    }
-    if (text.includes(SoundType.KIN)) {
-      return SoundType.KIN;
-    }
-    if (text.includes(SoundType.KAKU)) {
-      return SoundType.KAKU;
-    }
-    if (text.includes(SoundType.HISHA)) {
-      return SoundType.HISHA;
-    }
-    if (text.includes(SoundType.OU)) {
-      return SoundType.OU;
-    }
-    if (text.includes(SoundType.GYOKU)) {
-      return SoundType.GYOKU;
-    }
-    if (text.includes(SoundType.TOKIN)) {
-      return SoundType.TOKIN;
-    }
-    if (text.includes(SoundType.RYU)) {
-      return SoundType.RYU;
-    }
-    if (text.includes(SoundType.UMA)) {
-      return SoundType.UMA;
-    }
-  }
-
-  getChangeVoice(text: string): SoundType | undefined {
-    if (text.includes(SoundType.NARU)) {
-      return SoundType.NARU;
-    }
-    if (text.includes(SoundType.NARAZU)) {
-      return SoundType.NARAZU;
-    }
-  }
-
-  createVoiceArray(displayText: string, nextColor: string): SoundType[] {
+  turnVoice(nextMove: Move): SoundType[] {
     const voices: SoundType[] = [];
-    // 勝敗が決まったときの処理
-    if (nextColor === SoundType.BLACK && displayText.startsWith("投了")) {
-      voices.push(SoundType.MADE);
-      voices.push(SoundType.WHITE_WIN);
-      return voices;
-    } else if (nextColor === SoundType.WHITE && displayText.startsWith("投了")) {
-      voices.push(SoundType.MADE);
-      voices.push(SoundType.BLACK_WIN);
-      return voices;
-    }
-    // 対局中
-    if (nextColor === SoundType.BLACK) {
+    if (nextMove.color === Color.BLACK) {
       voices.push(SoundType.BLACK);
-    } else if (nextColor === SoundType.WHITE) {
+    } else if (nextMove.color === Color.WHITE) {
       voices.push(SoundType.WHITE);
-    }
-    let text = displayText.slice(1);
-    const place = this.getPlaceVoice(text);
-    if (place !== undefined) {
-      voices.push(place);
-      text = text.replace(place, "");
-    }
-    const koma = this.getKomaVoice(text);
-    if (koma !== undefined) {
-      voices.push(koma);
-      text = text.replace(koma, "");
-    }
-    const change = this.getChangeVoice(text);
-    if (change !== undefined) {
-      voices.push(change);
-      text = text.replace(change, "");
     }
     return voices;
   }
 
-  read(displayText: string, nextColor: string) {
-    const voices = this.createVoiceArray(displayText, nextColor);
+  getPlaceVoice(nextMove: Move): SoundType[] {
+    const voices: SoundType[] = [];
+
+    const nextPlace = `${nextMove.to.file}${nextMove.to.rank}`;
+    voices.push(nextPlace as SoundType);
+
+    return voices;
+  }
+
+  getPieceVoice(nextMove: Move): SoundType[] {
+    const voices: SoundType[] = [];
+    switch (nextMove.pieceType) {
+      case PieceType.KING:
+        voices.push(SoundType.GYOKU);
+        break;
+      case PieceType.GOLD:
+        voices.push(SoundType.KIN);
+        break;
+      case PieceType.SILVER:
+        voices.push(SoundType.GIN);
+        break;
+      case PieceType.KNIGHT:
+        voices.push(SoundType.KEI);
+        break;
+      case PieceType.LANCE:
+        voices.push(SoundType.KYO);
+        break;
+      case PieceType.BISHOP:
+        voices.push(SoundType.KAKU);
+        break;
+      case PieceType.ROOK:
+        voices.push(SoundType.HISHA);
+        break;
+      case PieceType.PAWN:
+        voices.push(SoundType.FU);
+        break;
+      case PieceType.PROM_SILVER:
+        voices.push(SoundType.NARIGIN);
+        break;
+      case PieceType.PROM_KNIGHT:
+        voices.push(SoundType.NARIKEI);
+        break;
+      case PieceType.PROM_LANCE:
+        voices.push(SoundType.NARIKYO);
+        break;
+      case PieceType.HORSE:
+        voices.push(SoundType.UMA);
+        break;
+      case PieceType.DRAGON:
+        voices.push(SoundType.RYU);
+        break;
+    }
+    return voices;
+  }
+
+  changeVoice(nextMove: Move): SoundType[] {
+    const voices: SoundType[] = [];
+    if (nextMove.promote) {
+      voices.push(SoundType.NARU);
+    }
+    return voices;
+  }
+
+  utuVoice(nextMove: Move): SoundType[] {
+    const voices: SoundType[] = [];
+    if (!(nextMove.from instanceof Square)) {
+      if (Object.values(PieceType).includes(nextMove.from)) {
+        voices.push(SoundType.UTU);
+      }
+    }
+    return voices;
+  }
+
+  gameVoice(current: ImmutableNode): SoundType[] {
+    const voices: SoundType[] = [];
+    const nextMove = current.next?.move as Move | null;
+    if (!nextMove) {
+      return voices;
+    }
+    voices.push(...this.turnVoice(nextMove));
+    voices.push(...this.getPlaceVoice(nextMove));
+    voices.push(...this.getPieceVoice(nextMove));
+    voices.push(...this.changeVoice(nextMove));
+    voices.push(...this.utuVoice(nextMove));
+
+    return voices;
+  }
+
+  gameEndVoice(current: ImmutableNode): SoundType[] {
+    const voices: SoundType[] = [];
+    if (
+      current.next?.move &&
+      "type" in current.next.move &&
+      current.next?.move.type === SpecialMoveType.RESIGN
+    ) {
+      if (current.next?.nextColor === Color.BLACK) {
+        voices.push(SoundType.MADE);
+        voices.push(SoundType.WHITE_WIN);
+      } else if (current.next?.nextColor === Color.WHITE) {
+        voices.push(SoundType.MADE);
+        voices.push(SoundType.BLACK_WIN);
+      }
+    }
+    return voices;
+  }
+
+  createVoiceArray(current: ImmutableNode): SoundType[] {
+    const voices: SoundType[] = [];
+    // 勝敗が決まったときの処理
+    voices.push(...this.gameEndVoice(current));
+    if (voices.length > 0) {
+      return voices;
+    }
+    voices.push(...this.gameVoice(current));
+    return voices;
+  }
+
+  read(current: ImmutableNode): void {
+    const voices = this.createVoiceArray(current);
     this.playSequence(voices);
   }
 }
