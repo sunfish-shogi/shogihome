@@ -318,9 +318,9 @@ onMounted(async () => {
     }
   } finally {
     busyState.release();
+    watch(tab, onUpdateTab, { immediate: true });
+    watch(wcscEdition, updateWCSCGameList);
   }
-  watch(tab, onUpdateTab, { immediate: true });
-  watch(wcscEdition, updateWCSCGameList);
 });
 </script>
 
