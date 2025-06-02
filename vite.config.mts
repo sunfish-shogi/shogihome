@@ -42,12 +42,14 @@ export default defineConfig({
         "plugins",
         "scripts",
         "dist",
+        "dev-dist",
 
         // テストコード
         "src/tests",
 
         // 設定ファイル
         "vite.config.mts",
+        "vite.config-pwa.mts",
         "webpack.config.cjs",
         ".*.*",
         "**/*.d.ts",
