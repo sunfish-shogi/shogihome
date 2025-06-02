@@ -64,8 +64,8 @@
                 @click="floodgatePlayerName = game.blackName"
               >
                 {{ game.blackName }}
-                <span v-if="floodgatePlayerRateMap[game.blackName]">
-                  ({{ floodgatePlayerRateMap[game.blackName] }})
+                <span v-if="floodgatePlayerRateMap?.get(game.blackName)">
+                  ({{ floodgatePlayerRateMap.get(game.blackName) }})
                 </span>
               </span>
               <span> vs </span>
@@ -79,8 +79,8 @@
                 @click="floodgatePlayerName = game.whiteName"
               >
                 {{ game.whiteName }}
-                <span v-if="floodgatePlayerRateMap[game.whiteName]">
-                  ({{ floodgatePlayerRateMap[game.whiteName] }})
+                <span v-if="floodgatePlayerRateMap?.get(game.whiteName)">
+                  ({{ floodgatePlayerRateMap.get(game.whiteName) }})
                 </span>
               </span>
               <span v-if="game.winner" class="link" @click="floodgateWinner = game.winner">{{
@@ -196,7 +196,7 @@ const floodgatePlayerName = ref("");
 const floodgateMinRate = ref(0);
 const floodgateWinner = ref<Color | "all" | "other">("all");
 const floodgateGames = ref<FloodgateGame[]>([]);
-const floodgatePlayerRateMap = ref<Record<string, number>>({});
+const floodgatePlayerRateMap = ref<Map<string, number> | null>(null);
 const wcscEdition = ref("");
 const wcscSearchWord = ref("");
 const wcscEditions = ref([] as WCSCEdition[]);
@@ -206,10 +206,10 @@ async function updateFloodgateGameList() {
   try {
     busyState.retain();
     floodgateGames.value = await listFloodgateLatestGames();
-    const players = await listFloodgatePlayers();
-    floodgatePlayerRateMap.value = Object.fromEntries(
-      players.map((player) => [player.name, player.rate]),
-    );
+    if (floodgateGames.value.length > 0 && !floodgatePlayerRateMap.value) {
+      const players = await listFloodgatePlayers();
+      floodgatePlayerRateMap.value = new Map(players.map((player) => [player.name, player.rate]));
+    }
   } catch (e) {
     useErrorStore().add(e);
   } finally {
@@ -228,8 +228,8 @@ const filteredFloodgateGames = computed(() => {
       return false;
     }
     if (floodgateMinRate.value > 0) {
-      const blackRate = floodgatePlayerRateMap.value[game.blackName] || 0;
-      const whiteRate = floodgatePlayerRateMap.value[game.whiteName] || 0;
+      const blackRate = floodgatePlayerRateMap.value?.get(game.blackName) || 0;
+      const whiteRate = floodgatePlayerRateMap.value?.get(game.whiteName) || 0;
       if (blackRate < floodgateMinRate.value || whiteRate < floodgateMinRate.value) {
         return false;
       }
@@ -244,9 +244,11 @@ const filteredFloodgateGames = computed(() => {
 async function updateWCSCGameList() {
   try {
     busyState.retain();
-    wcscEditions.value = await listWCSCEditions();
     if (wcscEditions.value.length === 0) {
-      return;
+      wcscEditions.value = await listWCSCEditions();
+      if (wcscEditions.value.length === 0) {
+        return;
+      }
     }
     const edition =
       wcscEditions.value.find((edition) => edition.name === wcscEdition.value) ||
