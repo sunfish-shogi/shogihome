@@ -11,10 +11,11 @@ const outputCSV = path.join(distDir, "download-counts.csv");
 fetch(apiURL)
   .then((response) => response.json())
   .then((releases) => {
-    let csv = `tag,${platformNames.join(",")},sum\n`;
+    let csv = `tag,published,${platformNames.join(",")},sum\n`;
     releases = releases.sort((a, b) => semver.rcompare(a.tag_name, b.tag_name));
     for (const release of releases) {
       const tag = release.tag_name;
+      const published = release.published_at;
       const m = Object.fromEntries(
         release.assets.map((asset) => {
           const platform = asset.name.match(/-([^-]+)\.zip$/)[1];
@@ -23,7 +24,7 @@ fetch(apiURL)
       );
       const columns = platformNames.map((platform) => m[platform] || 0);
       const sum = columns.reduce((a, b) => a + b, 0);
-      csv += `${tag},${columns.join(",")},${sum}\n`;
+      csv += `${tag},${published},${columns.join(",")},${sum}\n`;
     }
     fs.mkdirSync(distDir, { recursive: true });
     fs.writeFileSync(outputCSV, csv);
