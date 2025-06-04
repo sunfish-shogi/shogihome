@@ -128,6 +128,9 @@ export function setup(): void {
       case MenuEvent.COPY_BOARD_SFEN:
         store.copyBoardSFEN();
         break;
+      case MenuEvent.COPY_BOARD_BOD:
+        store.copyBoardBOD();
+        break;
       case MenuEvent.PASTE_RECORD:
         store.showPasteDialog();
         break;

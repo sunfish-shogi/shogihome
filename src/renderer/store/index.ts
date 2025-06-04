@@ -19,6 +19,7 @@ import {
   JishogiDeclarationRule,
   countJishogiPoint,
   Position,
+  exportBOD,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { GameSettings } from "@/common/settings/game.js";
@@ -1151,6 +1152,11 @@ class Store {
 
   copyBoardSFEN(): void {
     const str = this.recordManager.record.sfen;
+    navigator.clipboard.writeText(str);
+  }
+
+  copyBoardBOD(): void {
+    const str = exportBOD(this.recordManager.record);
     navigator.clipboard.writeText(str);
   }
 

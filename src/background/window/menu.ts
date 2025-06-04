@@ -129,7 +129,13 @@ function createMenuTemplate(window: BrowserWindow) {
             menuItem(t.asUSEN, MenuEvent.COPY_RECORD_USEN, null),
           ],
         },
-        menuItem(t.copyPositionAsSFEN, MenuEvent.COPY_BOARD_SFEN, null),
+        {
+          label: t.copyPosition,
+          submenu: [
+            menuItem(t.asSFEN, MenuEvent.COPY_BOARD_SFEN, null),
+            menuItem(t.asBOD, MenuEvent.COPY_BOARD_BOD, null),
+          ],
+        },
         menuItem(
           t.pasteRecordOrPosition,
           MenuEvent.PASTE_RECORD,

@@ -22,6 +22,7 @@ export type Texts = {
   copyAsCSA: string;
   copyAsUSI: string;
   copyAsSFEN: string;
+  copyAsBOD: string;
   copyAsJKF: string;
   copyAsUSEN: string;
   copy: string;
@@ -35,7 +36,9 @@ export type Texts = {
   asUSIAll: string;
   asJSONKifuFormat: string;
   asUSEN: string;
-  copyPositionAsSFEN: string;
+  copyPosition: string;
+  asSFEN: string;
+  asBOD: string;
   pasteRecordOrPosition: string;
   addSpecialMove: string;
   deleteMoves: string;

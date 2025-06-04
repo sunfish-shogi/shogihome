@@ -102,13 +102,17 @@
           <Icon :icon="IconType.COPY" />
           <div class="label">{{ t.copyAsUSI }}</div>
         </button>
+        <button @click="onCopyUSEN">
+          <Icon :icon="IconType.COPY" />
+          <div class="label">{{ t.copyAsUSEN }}</div>
+        </button>
         <button @click="onCopySFEN">
           <Icon :icon="IconType.COPY" />
           <div class="label">{{ t.copyAsSFEN }}</div>
         </button>
-        <button @click="onCopyUSEN">
+        <button @click="onCopyBOD">
           <Icon :icon="IconType.COPY" />
-          <div class="label">{{ t.copyAsUSEN }}</div>
+          <div class="label">{{ t.copyAsBOD }}</div>
         </button>
         <button :disabled="!states.paste" @click="onPaste">
           <Icon :icon="IconType.PASTE" />
@@ -239,20 +243,24 @@ const onCopyCSA = () => {
   store.copyRecordCSA();
   emit("close");
 };
+const onCopyJKF = () => {
+  store.copyRecordJKF();
+  emit("close");
+};
 const onCopyUSI = () => {
   store.copyRecordUSIAll();
+  emit("close");
+};
+const onCopyUSEN = () => {
+  store.copyRecordUSEN();
   emit("close");
 };
 const onCopySFEN = () => {
   store.copyBoardSFEN();
   emit("close");
 };
-const onCopyJKF = () => {
-  store.copyRecordJKF();
-  emit("close");
-};
-const onCopyUSEN = () => {
-  store.copyRecordUSEN();
+const onCopyBOD = () => {
+  store.copyBoardBOD();
   emit("close");
 };
 const onPaste = () => {
