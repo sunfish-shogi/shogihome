@@ -629,6 +629,38 @@ describe("store/index", () => {
     expect(writeText.mock.calls[0][0]).toBe("~0..");
   });
 
+  it("copyBoardBOD", () => {
+    const writeText = vi.fn();
+    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
+      Object.assign(navigator, {
+        clipboard: {
+          writeText,
+        },
+      }),
+    );
+    const store = createStore();
+    store.pasteRecord(sampleKIF);
+    store.copyBoardBOD();
+    expect(writeText).toBeCalledTimes(1);
+    expect(writeText.mock.calls[0][0]).toBe(`後手の持駒：なし
+  ９ ８ ７ ６ ５ ４ ３ ２ １
++---------------------------+
+|v香v桂v銀v金v玉v金v銀v桂v香|一
+| ・v飛 ・ ・ ・ ・ ・v角 ・|二
+|v歩v歩v歩v歩v歩v歩v歩v歩v歩|三
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|四
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|五
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|六
+| 歩 歩 歩 歩 歩 歩 歩 歩 歩|七
+| ・ 角 ・ ・ ・ ・ ・ 飛 ・|八
+| 香 桂 銀 金 玉 金 銀 桂 香|九
++---------------------------+
+先手の持駒：なし
+先手番
+手数＝0    まで
+`);
+  });
+
   it("pasteRecord/kif/success", () => {
     const store = createStore();
     store.pasteRecord(sampleKIF);
