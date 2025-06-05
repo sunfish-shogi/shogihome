@@ -39,8 +39,16 @@ body::-webkit-scrollbar {
   flex-wrap: wrap;
 }
 
+.column.wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
 .row.wrap {
   flex-wrap: wrap;
+}
+
+.row.wrap-reverse {
+  flex-wrap: wrap-reverse;
 }
 
 .column > .auto {

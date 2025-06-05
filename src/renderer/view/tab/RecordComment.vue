@@ -2,24 +2,26 @@
   <div>
     <div ref="root" class="full column root" @copy.stop @paste.stop>
       <textarea class="auto text" :value="comment" :readonly="readonly" @input="change"> </textarea>
-      <div v-if="pvs.length !== 0" class="row play-buttons">
-        <button v-for="(pv, index) of pvs" :key="index" class="play" @click="play(pv)">
-          <Icon :icon="IconType.PLAY" />
-          <span>{{ t.pv }}{{ pvs.length >= 2 ? " " + (index + 1) : "" }}</span>
-        </button>
-      </div>
-      <div v-if="showBookmark" class="bookmark-area">
-        <input
-          type="text"
-          class="bookmark"
-          :value="bookmark"
-          :readonly="readonly"
-          :placeholder="t.bookmark"
-          @input="changeBookmark"
-        />
-        <button class="list" @click="openBookmarkList">
-          <span>{{ t.bookmarkList }}</span>
-        </button>
+      <div class="row wrap-reverse">
+        <div v-if="showBookmark" class="bookmark-area">
+          <input
+            type="text"
+            class="bookmark"
+            :value="bookmark"
+            :readonly="readonly"
+            :placeholder="t.bookmark"
+            @input="changeBookmark"
+          />
+          <button class="list" @click="openBookmarkList">
+            <span>{{ t.bookmarkList }}</span>
+          </button>
+        </div>
+        <div v-if="pvs.length !== 0" class="row play-buttons">
+          <button v-for="(pv, index) of pvs" :key="index" class="play" @click="play(pv)">
+            <Icon :icon="IconType.PLAY" />
+            <span>{{ t.pv }}{{ pvs.length >= 2 ? " " + (index + 1) : "" }}</span>
+          </button>
+        </div>
       </div>
     </div>
     <BookmarkListDialog
@@ -85,6 +87,7 @@ const play = (pv: Move[]) => {
   box-sizing: border-box;
 }
 .play-buttons {
+  padding: 1px 0px 1px 0px;
   height: 28px;
 }
 button {
@@ -96,6 +99,7 @@ button {
 }
 .bookmark-area {
   padding: 1px 0px 1px 0px;
+  margin-right: 5px;
   height: 28px;
   text-align: left;
   white-space: nowrap;
