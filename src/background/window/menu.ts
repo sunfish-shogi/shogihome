@@ -24,7 +24,6 @@ import { t } from "@/common/i18n/index.js";
 import { InitialPositionSFEN } from "tsshogi";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { chromiumLicensePath, electronLicensePath } from "@/background/proc/path.js";
-import { openBackupDirectory } from "@/background/file/history.js";
 import { openCacheDirectory } from "@/background/image/cache.js";
 import { refreshCustomPieceImages, sendTestNotification } from "./debug.js";
 import { LogType } from "@/common/log.js";
@@ -413,12 +412,6 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.cache,
           click: () => {
             openCacheDirectory().catch(sendError);
-          },
-        },
-        {
-          label: t.backup,
-          click: () => {
-            openBackupDirectory().catch(sendError);
           },
         },
         {

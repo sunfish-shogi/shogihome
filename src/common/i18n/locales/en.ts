@@ -81,7 +81,6 @@ export const en: Texts = {
   thisIsTestNotification: "This is a test notification.",
   app: "App",
   log: "Log",
-  backup: "Backup",
   cache: "Cache",
   help: "Help",
   openWebsite: "Open Website",

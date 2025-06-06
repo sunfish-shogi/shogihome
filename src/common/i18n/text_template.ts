@@ -76,7 +76,6 @@ export type Texts = {
   thisIsTestNotification: string;
   app: string;
   log: string;
-  backup: string;
   cache: string;
   help: string;
   openWebsite: string;
