@@ -95,6 +95,11 @@ const props = defineProps({
     type: Object as PropType<ImmutablePosition>,
     required: true,
   },
+  name: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
   multiPv: {
     type: Number,
     required: false,
@@ -204,6 +209,9 @@ const getDisplayScore = (score: number, color: Color, evaluationViewFrom: Evalua
 
 const info = computed(() => {
   const elements = [];
+  if (props.name) {
+    elements.push(`${props.name}`);
+  }
   if (props.depth !== undefined) {
     elements.push(`深さ=${props.depth}`);
   }
@@ -270,6 +278,7 @@ const insertToComment = () => {
       pv: props.pv,
     },
     CommentBehavior.APPEND,
+    { engineName: props.name },
   );
   messageStore.enqueue({
     text: t.insertedComment,

@@ -68,6 +68,7 @@ import { Attachment, ListItem } from "@/common/message.js";
 
 export type PVPreview = {
   position: ImmutablePosition;
+  engineName?: string;
   multiPV?: number;
   depth?: number;
   selectiveDepth?: number;

@@ -399,11 +399,13 @@ export class CSAGameManager {
     // コメントを記録する。
     const appSettings = useAppSettings();
     if (isMyMove && this.searchInfo && this.settings.enableComment) {
+      const engineName = this.gameSummary.players[move.color].playerName;
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
         appSettings.searchCommentFormat,
         this.searchInfo,
         CommentBehavior.APPEND,
+        { engineName },
       );
     }
 
