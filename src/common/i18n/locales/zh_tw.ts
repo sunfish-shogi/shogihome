@@ -78,7 +78,6 @@ export const zh_tw: Texts = {
   thisIsTestNotification: "這是測試用的通知。",
   app: "軟體",
   log: "紀錄檔",
-  backup: "備份",
   cache: "快取",
   help: "協助",
   openWebsite: "官方網站",

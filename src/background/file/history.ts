@@ -10,7 +10,6 @@ import {
 } from "@/common/file/history.js";
 import { getAppLogger } from "@/background/log.js";
 import AsyncLock from "async-lock";
-import { openPath } from "@/background/helpers/electron.js";
 import { exists } from "@/background/helpers/file.js";
 import { writeFileAtomic } from "./atomic.js";
 import { getBlackPlayerName, getWhitePlayerName, importKIF, Record } from "tsshogi";
@@ -20,11 +19,10 @@ const historyMaxLength = 20;
 
 const userDir = getAppPath("userData");
 const historyPath = path.join(userDir, "record_file_history.json");
-const backupDir = path.join(userDir, "backup/kifu");
 
-export function openBackupDirectory(): Promise<void> {
-  return openPath(backupDir);
-}
+// 現在はこのディレクトリに書き出していないが、
+// 古いバージョンで作られたファイルが残っている可能性があるので参照や削除の実装は残しておく
+const backupDir = path.join(userDir, "backup/kifu");
 
 const lock = new AsyncLock();
 

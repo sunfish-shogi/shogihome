@@ -81,7 +81,6 @@ export const ja: Texts = {
   thisIsTestNotification: "これは通知のテストです。",
   app: "アプリ",
   log: "ログ",
-  backup: "バックアップ",
   cache: "キャッシュ",
   help: "ヘルプ",
   openWebsite: "Webサイトを開く",

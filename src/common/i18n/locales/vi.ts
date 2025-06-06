@@ -81,7 +81,6 @@ export const vi: Texts = {
   thisIsTestNotification: "Đây là thông báo thử",
   app: "Ứng dụng",
   log: "Log",
-  backup: "Sao lưu",
   cache: "Bộ nhớ đệm",
   help: "Trợ giúp",
   openWebsite: "Mở trang web",
