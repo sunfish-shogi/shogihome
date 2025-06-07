@@ -303,13 +303,13 @@ describe("store/game", () => {
         expect(mockHandlers.onStopBeep).toBeCalledTimes(8);
         expect(recordManager.record.usi).toBe("position startpos moves 7g7f 3c3d 2g2f");
         expect(recordManager.record.moves[1].comment).toBe(
-          "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n",
+          "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n*エンジン=USI Engine 01\n",
         );
         expect(recordManager.record.moves[2].comment).toBe(
-          "互角\n*評価値=64\n*読み筋=▲２六歩△８四歩\n",
+          "互角\n*評価値=64\n*読み筋=▲２六歩△８四歩\n*エンジン=USI Engine 02\n",
         );
         expect(recordManager.record.moves[3].comment).toBe(
-          "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n",
+          "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n*エンジン=USI Engine 01\n",
         );
         expect(mockHandlers.onError).not.toBeCalled();
       },

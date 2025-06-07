@@ -501,11 +501,13 @@ export class GameManager {
     // コメントを追加する。
     if (info && this.settings.enableComment) {
       const appSettings = useAppSettings();
+      const engineName = this.settings[move.color].name;
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
         appSettings.searchCommentFormat,
         info,
         CommentBehavior.APPEND,
+        { engineName },
       );
     }
     // 駒音を鳴らす。

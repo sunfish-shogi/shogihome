@@ -205,11 +205,11 @@ describe("store/csa", () => {
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
-      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n",
+      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[2].comment).toBe("");
     expect(recordManager.record.moves[3].comment).toBe(
-      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n",
+      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[4].comment).toBe("");
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
@@ -316,11 +316,11 @@ describe("store/csa", () => {
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
-      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n",
+      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[2].comment).toBe("");
     expect(recordManager.record.moves[3].comment).toBe(
-      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n",
+      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[4].comment).toBe("");
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
@@ -627,11 +627,11 @@ describe("store/csa", () => {
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
-      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n",
+      "互角\n*評価値=82\n*読み筋=△３四歩▲２六歩△８四歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[2].comment).toBe("");
     expect(recordManager.record.moves[3].comment).toBe(
-      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n",
+      "互角\n*評価値=78\n*読み筋=△８四歩▲２五歩△８五歩\n*エンジン=me\n",
     );
     expect(recordManager.record.moves[4].comment).toBe("");
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));

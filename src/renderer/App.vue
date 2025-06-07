@@ -42,6 +42,7 @@
     <PVPreviewDialog
       v-if="store.pvPreview"
       :position="store.pvPreview.position"
+      :name="store.pvPreview.engineName"
       :multi-pv="store.pvPreview.multiPV"
       :depth="store.pvPreview.depth"
       :selective-depth="store.pvPreview.selectiveDepth"

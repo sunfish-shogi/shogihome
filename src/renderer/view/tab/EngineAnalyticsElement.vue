@@ -250,6 +250,7 @@ const showPreview = (ite: USIInfo) => {
   }
   useStore().showPVPreviewDialog({
     position,
+    engineName: props.monitor.name,
     multiPV: ite.multiPV,
     depth: ite.depth,
     selectiveDepth: ite.selectiveDepth,
