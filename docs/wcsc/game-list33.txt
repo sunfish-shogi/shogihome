@@ -1,0 +1,800 @@
+V1
+#sub:第33回世界コンピュータ将棋選手権
+第33回世界コンピュータ将棋選手権,決勝7回戦 アストラ将棋 - 東横将棋 20230505161019
+第33回世界コンピュータ将棋選手権,決勝7回戦 アストラ将棋 - 東横将棋 20230505161019
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F7_5-900-5F+masaSHO+Toyoko_Shogi+20230505161019.csa
+第33回世界コンピュータ将棋選手権,決勝7回戦 二番絞り - 大将軍 20230505161016
+第33回世界コンピュータ将棋選手権,決勝7回戦 二番絞り - 大将軍 20230505161016
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F7_7-900-5F+nibanshibori+taishogun+20230505161016.csa
+第33回世界コンピュータ将棋選手権,決勝7回戦 dlshogi with HEROZ - Ryfamate 20230505161013
+第33回世界コンピュータ将棋選手権,決勝7回戦 dlshogi with HEROZ - Ryfamate 20230505161013
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F7_1-900-5F+dlshogi+Ryfamate+20230505161013.csa
+第33回世界コンピュータ将棋選手権,決勝7回戦 やねうら王 - W@nderER 20230505161010
+第33回世界コンピュータ将棋選手権,決勝7回戦 やねうら王 - W@nderER 20230505161010
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F7_3-900-5F+yaneuraou+wanderer+20230505161010.csa
+第33回世界コンピュータ将棋選手権,決勝6回戦 Ryfamate - W@nderER 20230505150556
+第33回世界コンピュータ将棋選手権,決勝6回戦 Ryfamate - W@nderER 20230505150556
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F6_2-900-5F+Ryfamate+wanderer+20230505150556.csa
+第33回世界コンピュータ将棋選手権,決勝6回戦 大将軍 - 東横将棋 20230505150546
+第33回世界コンピュータ将棋選手権,決勝6回戦 大将軍 - 東横将棋 20230505150546
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F6_6-900-5F+taishogun+Toyoko_Shogi+20230505150546.csa
+第33回世界コンピュータ将棋選手権,決勝6回戦 二番絞り - アストラ将棋 20230505150542
+第33回世界コンピュータ将棋選手権,決勝6回戦 二番絞り - アストラ将棋 20230505150542
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F6_5-900-5F+nibanshibori+masaSHO+20230505150542.csa
+第33回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - やねうら王 20230505150540
+第33回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - やねうら王 20230505150540
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F6_1-900-5F+dlshogi+yaneuraou+20230505150540.csa
+第33回世界コンピュータ将棋選手権,決勝5回戦 W@nderER - dlshogi with HEROZ 20230505140046
+第33回世界コンピュータ将棋選手権,決勝5回戦 W@nderER - dlshogi with HEROZ 20230505140046
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F5_1-900-5F+wanderer+dlshogi+20230505140046.csa
+第33回世界コンピュータ将棋選手権,決勝5回戦 大将軍 - アストラ将棋 20230505140020
+第33回世界コンピュータ将棋選手権,決勝5回戦 大将軍 - アストラ将棋 20230505140020
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F5_5-900-5F+taishogun+masaSHO+20230505140020.csa
+第33回世界コンピュータ将棋選手権,決勝5回戦 東横将棋 - 二番絞り 20230505140017
+第33回世界コンピュータ将棋選手権,決勝5回戦 東横将棋 - 二番絞り 20230505140017
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F5_6-900-5F+Toyoko_Shogi+nibanshibori+20230505140017.csa
+第33回世界コンピュータ将棋選手権,決勝5回戦 Ryfamate - やねうら王 20230505140013
+第33回世界コンピュータ将棋選手権,決勝5回戦 Ryfamate - やねうら王 20230505140013
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F5_2-900-5F+Ryfamate+yaneuraou+20230505140013.csa
+第33回世界コンピュータ将棋選手権,決勝4回戦 W@nderER - 大将軍 20230505125520
+第33回世界コンピュータ将棋選手権,決勝4回戦 W@nderER - 大将軍 20230505125520
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F4_4-900-5F+wanderer+taishogun+20230505125520.csa
+第33回世界コンピュータ将棋選手権,決勝4回戦 やねうら王 - 二番絞り 20230505125518
+第33回世界コンピュータ将棋選手権,決勝4回戦 やねうら王 - 二番絞り 20230505125518
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F4_3-900-5F+yaneuraou+nibanshibori+20230505125518.csa
+第33回世界コンピュータ将棋選手権,決勝4回戦 東横将棋 - Ryfamate 20230505125515
+第33回世界コンピュータ将棋選手権,決勝4回戦 東横将棋 - Ryfamate 20230505125515
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F4_2-900-5F+Toyoko_Shogi+Ryfamate+20230505125515.csa
+第33回世界コンピュータ将棋選手権,決勝4回戦 アストラ将棋 - dlshogi with HEROZ 20230505125513
+第33回世界コンピュータ将棋選手権,決勝4回戦 アストラ将棋 - dlshogi with HEROZ 20230505125513
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F4_1-900-5F+masaSHO+dlshogi+20230505125513.csa
+第33回世界コンピュータ将棋選手権,決勝3回戦 二番絞り - W@nderER 20230505115113
+第33回世界コンピュータ将棋選手権,決勝3回戦 二番絞り - W@nderER 20230505115113
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F3_4-900-5F+nibanshibori+wanderer+20230505115113.csa
+第33回世界コンピュータ将棋選手権,決勝3回戦 やねうら王 - 大将軍 20230505115024
+第33回世界コンピュータ将棋選手権,決勝3回戦 やねうら王 - 大将軍 20230505115024
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F3_3-900-5F+yaneuraou+taishogun+20230505115024.csa
+第33回世界コンピュータ将棋選手権,決勝3回戦 アストラ将棋 - Ryfamate 20230505115021
+第33回世界コンピュータ将棋選手権,決勝3回戦 アストラ将棋 - Ryfamate 20230505115021
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F3_2-900-5F+masaSHO+Ryfamate+20230505115021.csa
+第33回世界コンピュータ将棋選手権,決勝3回戦 dlshogi with HEROZ - 東横将棋 20230505115018
+第33回世界コンピュータ将棋選手権,決勝3回戦 dlshogi with HEROZ - 東横将棋 20230505115018
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F3_1-900-5F+dlshogi+Toyoko_Shogi+20230505115018.csa
+第33回世界コンピュータ将棋選手権,決勝2回戦 W@nderER - 東横将棋 20230505103528
+第33回世界コンピュータ将棋選手権,決勝2回戦 W@nderER - 東横将棋 20230505103528
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F2_4-900-5F+wanderer+Toyoko_Shogi+20230505103528.csa
+第33回世界コンピュータ将棋選手権,決勝2回戦 やねうら王 - アストラ将棋 20230505103526
+第33回世界コンピュータ将棋選手権,決勝2回戦 やねうら王 - アストラ将棋 20230505103526
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F2_3-900-5F+yaneuraou+masaSHO+20230505103526.csa
+第33回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - 大将軍 20230505103524
+第33回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - 大将軍 20230505103524
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F2_2-900-5F+Ryfamate+taishogun+20230505103524.csa
+第33回世界コンピュータ将棋選手権,決勝2回戦 dlshogi with HEROZ - 二番絞り 20230505103521
+第33回世界コンピュータ将棋選手権,決勝2回戦 dlshogi with HEROZ - 二番絞り 20230505103521
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F2_1-900-5F+dlshogi+nibanshibori+20230505103521.csa
+第33回世界コンピュータ将棋選手権,決勝1回戦 W@nderER - アストラ将棋 20230505093021
+第33回世界コンピュータ将棋選手権,決勝1回戦 W@nderER - アストラ将棋 20230505093021
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F1_4-900-5F+wanderer+masaSHO+20230505093021.csa
+第33回世界コンピュータ将棋選手権,決勝1回戦 東横将棋 - やねうら王 20230505093019
+第33回世界コンピュータ将棋選手権,決勝1回戦 東横将棋 - やねうら王 20230505093019
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F1_3-900-5F+Toyoko_Shogi+yaneuraou+20230505093019.csa
+第33回世界コンピュータ将棋選手権,決勝1回戦 Ryfamate - 二番絞り 20230505093016
+第33回世界コンピュータ将棋選手権,決勝1回戦 Ryfamate - 二番絞り 20230505093016
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F1_2-900-5F+Ryfamate+nibanshibori+20230505093016.csa
+第33回世界コンピュータ将棋選手権,決勝1回戦 大将軍 - dlshogi with HEROZ 20230505093014
+第33回世界コンピュータ将棋選手権,決勝1回戦 大将軍 - dlshogi with HEROZ 20230505093014
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+F1_1-900-5F+taishogun+dlshogi+20230505093014.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラ - やねうら王 20230504183343
+第33回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラ - やねうら王 20230504183343
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_3-900-5F+cobra+yaneuraou+20230504183343.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 なのは - Ari Shogi 20230504183048
+第33回世界コンピュータ将棋選手権,二次予選9回戦 なのは - Ari Shogi 20230504183048
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_23-900-5F+Nanoha2023+ari+20230504183048.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 ねね将棋 - 十六式いろは煌 20230504183046
+第33回世界コンピュータ将棋選手権,二次予選9回戦 ねね将棋 - 十六式いろは煌 20230504183046
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_20-900-5F+nene+16-168+20230504183046.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 あやめ - HoneyWaffle 20230504183044
+第33回世界コンピュータ将棋選手権,二次予選9回戦 あやめ - HoneyWaffle 20230504183044
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_17-900-5F+Ayame+HoneyWaffle+20230504183044.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 TMOQ - baron 20230504183042
+第33回世界コンピュータ将棋選手権,二次予選9回戦 TMOQ - baron 20230504183042
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_16-900-5F+TMOQ+baron+20230504183042.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 AobaZero - 将スタ君 20230504183038
+第33回世界コンピュータ将棋選手権,二次予選9回戦 AobaZero - 将スタ君 20230504183038
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_14-900-5F+AobaZero+ariga+20230504183038.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Daigorilla - いちびん 20230504183036
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Daigorilla - いちびん 20230504183036
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_15-900-5F+DG+ichibin+20230504183036.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 koron - Lí 20230504183034
+第33回世界コンピュータ将棋選手権,二次予選9回戦 koron - Lí 20230504183034
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_5-900-5F+koron+tanuki+20230504183034.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 ティー○の振り飛車気持ちよすぎだろ！ - Novice 20230504183032
+第33回世界コンピュータ将棋選手権,二次予選9回戦 ティー○の振り飛車気持ちよすぎだろ！ - Novice 20230504183032
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_8-900-5F+XFF+Novice+20230504183032.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - ponkotsu 20230504183030
+第33回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - ponkotsu 20230504183030
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_2-900-5F+nibanshibori+ponkotsu+20230504183030.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Lightweight - アストラ将棋 20230504183027
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Lightweight - アストラ将棋 20230504183027
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_6-900-5F+lightweight+masaSHO+20230504183027.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 W@nderER - mazurka 20230504183025
+第33回世界コンピュータ将棋選手権,二次予選9回戦 W@nderER - mazurka 20230504183025
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_7-900-5F+wanderer+mazurka+20230504183025.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - 大将軍 20230504183019
+第33回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - 大将軍 20230504183019
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_1-900-5F+dlshogi+taishogun+20230504183019.csa
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - 東横将棋 20230504183011
+第33回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - 東横将棋 20230504183011
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U9_9-900-5F+Ryfamate+Toyoko_Shogi+20230504183011.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - Novice 20230504171133
+第33回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - Novice 20230504171133
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_2-900-5F+nibanshibori+Novice+20230504171133.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 なのは - baron 20230504171043
+第33回世界コンピュータ将棋選手権,二次予選8回戦 なのは - baron 20230504171043
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_23-900-5F+Nanoha2023+baron+20230504171043.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Ari Shogi - HoneyWaffle 20230504171041
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Ari Shogi - HoneyWaffle 20230504171041
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_22-900-5F+ari+HoneyWaffle+20230504171041.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 将スタ君 - ねね将棋 20230504171039
+第33回世界コンピュータ将棋選手権,二次予選8回戦 将スタ君 - ねね将棋 20230504171039
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_20-900-5F+ariga+nene+20230504171039.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 TMOQ - ティー○の振り飛車気持ちよすぎだろ！ 20230504171037
+第33回世界コンピュータ将棋選手権,二次予選8回戦 TMOQ - ティー○の振り飛車気持ちよすぎだろ！ 20230504171037
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_8-900-5F+TMOQ+XFF+20230504171037.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 koron - AobaZero 20230504171035
+第33回世界コンピュータ将棋選手権,二次予選8回戦 koron - AobaZero 20230504171035
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_13-900-5F+koron+AobaZero+20230504171035.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Lí - 十六式いろは煌 20230504171032
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Lí - 十六式いろは煌 20230504171032
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_5-900-5F+tanuki+16-168+20230504171032.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 mazurka - あやめ 20230504171030
+第33回世界コンピュータ将棋選手権,二次予選8回戦 mazurka - あやめ 20230504171030
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_17-900-5F+mazurka+Ayame+20230504171030.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 アストラ将棋 - Daigorilla 20230504171027
+第33回世界コンピュータ将棋選手権,二次予選8回戦 アストラ将棋 - Daigorilla 20230504171027
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_15-900-5F+masaSHO+DG+20230504171027.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 いちびん - 名人コブラ 20230504171024
+第33回世界コンピュータ将棋選手権,二次予選8回戦 いちびん - 名人コブラ 20230504171024
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_4-900-5F+ichibin+cobra+20230504171024.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 大将軍 - ponkotsu 20230504171022
+第33回世界コンピュータ将棋選手権,二次予選8回戦 大将軍 - ponkotsu 20230504171022
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_12-900-5F+taishogun+ponkotsu+20230504171022.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 やねうら王 - 東横将棋 20230504171018
+第33回世界コンピュータ将棋選手権,二次予選8回戦 やねうら王 - 東横将棋 20230504171018
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_3-900-5F+yaneuraou+Toyoko_Shogi+20230504171018.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 W@nderER - dlshogi with HEROZ 20230504171016
+第33回世界コンピュータ将棋選手権,二次予選8回戦 W@nderER - dlshogi with HEROZ 20230504171016
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_1-900-5F+wanderer+dlshogi+20230504171016.csa
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Lightweight - Ryfamate 20230504171014
+第33回世界コンピュータ将棋選手権,二次予選8回戦 Lightweight - Ryfamate 20230504171014
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U8_6-900-5F+lightweight+Ryfamate+20230504171014.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - koron 20230504161104
+第33回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - koron 20230504161104
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_13-900-5F+ponkotsu+koron+20230504161104.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 baron - 将スタ君 20230504161051
+第33回世界コンピュータ将棋選手権,二次予選7回戦 baron - 将スタ君 20230504161051
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_24-900-5F+baron+ariga+20230504161051.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 十六式いろは煌 - Ari Shogi 20230504161049
+第33回世界コンピュータ将棋選手権,二次予選7回戦 十六式いろは煌 - Ari Shogi 20230504161049
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_25-900-5F+16-168+ari+20230504161049.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 あやめ - ねね将棋 20230504161047
+第33回世界コンピュータ将棋選手権,二次予選7回戦 あやめ - ねね将棋 20230504161047
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_17-900-5F+Ayame+nene+20230504161047.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 なのは - TMOQ 20230504161045
+第33回世界コンピュータ将棋選手権,二次予選7回戦 なのは - TMOQ 20230504161045
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_16-900-5F+Nanoha2023+TMOQ+20230504161045.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - mazurka 20230504161043
+第33回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - mazurka 20230504161043
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_18-900-5F+HoneyWaffle+mazurka+20230504161043.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Lí - いちびん 20230504161041
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Lí - いちびん 20230504161041
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_5-900-5F+tanuki+ichibin+20230504161041.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Novice - AobaZero 20230504161039
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Novice - AobaZero 20230504161039
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_11-900-5F+Novice+AobaZero+20230504161039.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 ティー○の振り飛車気持ちよすぎだろ！ - アストラ将棋 20230504161037
+第33回世界コンピュータ将棋選手権,二次予選7回戦 ティー○の振り飛車気持ちよすぎだろ！ - アストラ将棋 20230504161037
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_8-900-5F+XFF+masaSHO+20230504161037.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - 大将軍 20230504161033
+第33回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - 大将軍 20230504161033
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_4-900-5F+cobra+taishogun+20230504161033.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Daigorilla - W@nderER 20230504161030
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Daigorilla - W@nderER 20230504161030
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_7-900-5F+DG+wanderer+20230504161030.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 二番絞り 20230504161028
+第33回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 二番絞り 20230504161028
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_2-900-5F+Toyoko_Shogi+nibanshibori+20230504161028.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Ryfamate - やねうら王 20230504161025
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Ryfamate - やねうら王 20230504161025
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_3-900-5F+Ryfamate+yaneuraou+20230504161025.csa
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Lightweight - dlshogi with HEROZ 20230504161023
+第33回世界コンピュータ将棋選手権,二次予選7回戦 Lightweight - dlshogi with HEROZ 20230504161023
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U7_1-900-5F+lightweight+dlshogi+20230504161023.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Novice - 東横将棋 20230504151303
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Novice - 東横将棋 20230504151303
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_9-900-5F+Novice+Toyoko_Shogi+20230504151303.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 大将軍 - ティー○の振り飛車気持ちよすぎだろ！ 20230504151136
+第33回世界コンピュータ将棋選手権,二次予選6回戦 大将軍 - ティー○の振り飛車気持ちよすぎだろ！ 20230504151136
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_8-900-5F+taishogun+XFF+20230504151136.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 二番絞り - Ryfamate 20230504151131
+第33回世界コンピュータ将棋選手権,二次予選6回戦 二番絞り - Ryfamate 20230504151131
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_2-900-5F+nibanshibori+Ryfamate+20230504151131.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 HoneyWaffle - baron 20230504151123
+第33回世界コンピュータ将棋選手権,二次予選6回戦 HoneyWaffle - baron 20230504151123
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_22-900-5F+HoneyWaffle+baron+20230504151123.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 十六式いろは煌 - なのは 20230504151121
+第33回世界コンピュータ将棋選手権,二次予選6回戦 十六式いろは煌 - なのは 20230504151121
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_23-900-5F+16-168+Nanoha2023+20230504151121.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi - 将スタ君 20230504151118
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi - 将スタ君 20230504151118
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_26-900-5F+ari+ariga+20230504151118.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 TMOQ - AobaZero 20230504151115
+第33回世界コンピュータ将棋選手権,二次予選6回戦 TMOQ - AobaZero 20230504151115
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_14-900-5F+TMOQ+AobaZero+20230504151115.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - koron 20230504151112
+第33回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - koron 20230504151112
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_13-900-5F+nene+koron+20230504151112.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 あやめ - いちびん 20230504151109
+第33回世界コンピュータ将棋選手権,二次予選6回戦 あやめ - いちびん 20230504151109
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_17-900-5F+Ayame+ichibin+20230504151109.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 mazurka - Lí 20230504151106
+第33回世界コンピュータ将棋選手権,二次予選6回戦 mazurka - Lí 20230504151106
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_5-900-5F+mazurka+tanuki+20230504151106.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 W@nderER - アストラ将棋 20230504151103
+第33回世界コンピュータ将棋選手権,二次予選6回戦 W@nderER - アストラ将棋 20230504151103
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_7-900-5F+wanderer+masaSHO+20230504151103.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 ponkotsu - Lightweight 20230504151100
+第33回世界コンピュータ将棋選手権,二次予選6回戦 ponkotsu - Lightweight 20230504151100
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_6-900-5F+ponkotsu+lightweight+20230504151100.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 dlshogi with HEROZ - 名人コブラ 20230504151053
+第33回世界コンピュータ将棋選手権,二次予選6回戦 dlshogi with HEROZ - 名人コブラ 20230504151053
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_1-900-5F+dlshogi+cobra+20230504151053.csa
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Daigorilla - やねうら王 20230504151050
+第33回世界コンピュータ将棋選手権,二次予選6回戦 Daigorilla - やねうら王 20230504151050
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U6_3-900-5F+DG+yaneuraou+20230504151050.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - ponkotsu 20230504140459
+第33回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - ponkotsu 20230504140459
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_4-900-5F+cobra+ponkotsu+20230504140459.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi with HEROZ - Ryfamate 20230504140045
+第33回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi with HEROZ - Ryfamate 20230504140045
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_1-900-5F+dlshogi+Ryfamate+20230504140045.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 - アストラ将棋 20230504140043
+第33回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 - アストラ将棋 20230504140043
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_3-900-5F+yaneuraou+masaSHO+20230504140043.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 Novice - Daigorilla 20230504140041
+第33回世界コンピュータ将棋選手権,二次予選5回戦 Novice - Daigorilla 20230504140041
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_11-900-5F+Novice+DG+20230504140041.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 将スタ君 - HoneyWaffle 20230504140038
+第33回世界コンピュータ将棋選手権,二次予選5回戦 将スタ君 - HoneyWaffle 20230504140038
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_22-900-5F+ariga+HoneyWaffle+20230504140038.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 あやめ - なのは 20230504140035
+第33回世界コンピュータ将棋選手権,二次予選5回戦 あやめ - なのは 20230504140035
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_17-900-5F+Ayame+Nanoha2023+20230504140035.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 AobaZero - 十六式いろは煌 20230504140033
+第33回世界コンピュータ将棋選手権,二次予選5回戦 AobaZero - 十六式いろは煌 20230504140033
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_14-900-5F+AobaZero+16-168+20230504140033.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 baron - Ari Shogi 20230504140031
+第33回世界コンピュータ将棋選手権,二次予選5回戦 baron - Ari Shogi 20230504140031
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_24-900-5F+baron+ari+20230504140031.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 ねね将棋 - W@nderER 20230504140029
+第33回世界コンピュータ将棋選手権,二次予選5回戦 ねね将棋 - W@nderER 20230504140029
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_7-900-5F+nene+wanderer+20230504140029.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 東横将棋 - mazurka 20230504140027
+第33回世界コンピュータ将棋選手権,二次予選5回戦 東横将棋 - mazurka 20230504140027
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_9-900-5F+Toyoko_Shogi+mazurka+20230504140027.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 TMOQ - 大将軍 20230504140024
+第33回世界コンピュータ将棋選手権,二次予選5回戦 TMOQ - 大将軍 20230504140024
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_12-900-5F+TMOQ+taishogun+20230504140024.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 ティー○の振り飛車気持ちよすぎだろ！ - Lí 20230504140022
+第33回世界コンピュータ将棋選手権,二次予選5回戦 ティー○の振り飛車気持ちよすぎだろ！ - Lí 20230504140022
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_5-900-5F+XFF+tanuki+20230504140022.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 いちびん - koron 20230504140020
+第33回世界コンピュータ将棋選手権,二次予選5回戦 いちびん - koron 20230504140020
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_13-900-5F+ichibin+koron+20230504140020.csa
+第33回世界コンピュータ将棋選手権,二次予選5回戦 二番絞り - Lightweight 20230504140010
+第33回世界コンピュータ将棋選手権,二次予選5回戦 二番絞り - Lightweight 20230504140010
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U5_2-900-5F+nibanshibori+lightweight+20230504140010.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ティー○の振り飛車気持ちよすぎだろ！ - AobaZero 20230504130047
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ティー○の振り飛車気持ちよすぎだろ！ - AobaZero 20230504130047
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_8-900-5F+XFF+AobaZero+20230504130047.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 koron - HoneyWaffle 20230504125824
+第33回世界コンピュータ将棋選手権,二次予選4回戦 koron - HoneyWaffle 20230504125824
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_13-900-5F+koron+HoneyWaffle+20230504125824.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 あやめ - Novice 20230504125714
+第33回世界コンピュータ将棋選手権,二次予選4回戦 あやめ - Novice 20230504125714
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_11-900-5F+Ayame+Novice+20230504125714.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 baron - 十六式いろは煌 20230504125115
+第33回世界コンピュータ将棋選手権,二次予選4回戦 baron - 十六式いろは煌 20230504125115
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_24-900-5F+baron+16-168+20230504125115.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 なのは - 将スタ君 20230504125112
+第33回世界コンピュータ将棋選手権,二次予選4回戦 なのは - 将スタ君 20230504125112
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_23-900-5F+Nanoha2023+ariga+20230504125112.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Ari Shogi - TMOQ 20230504125109
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Ari Shogi - TMOQ 20230504125109
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_16-900-5F+ari+TMOQ+20230504125109.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - Lightweight 20230504125104
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - Lightweight 20230504125104
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_6-900-5F+nene+lightweight+20230504125104.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Daigorilla - 東横将棋 20230504125101
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Daigorilla - 東横将棋 20230504125101
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_9-900-5F+DG+Toyoko_Shogi+20230504125101.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 名人コブラ - W@nderER 20230504125046
+第33回世界コンピュータ将棋選手権,二次予選4回戦 名人コブラ - W@nderER 20230504125046
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_4-900-5F+cobra+wanderer+20230504125046.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Lí - 二番絞り 20230504125038
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Lí - 二番絞り 20230504125038
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_2-900-5F+tanuki+nibanshibori+20230504125038.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ponkotsu - いちびん 20230504125036
+第33回世界コンピュータ将棋選手権,二次予選4回戦 ponkotsu - いちびん 20230504125036
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_21-900-5F+ponkotsu+ichibin+20230504125036.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 アストラ将棋 - 大将軍 20230504125035
+第33回世界コンピュータ将棋選手権,二次予選4回戦 アストラ将棋 - 大将軍 20230504125035
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_12-900-5F+masaSHO+taishogun+20230504125035.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 やねうら王 - dlshogi with HEROZ 20230504125032
+第33回世界コンピュータ将棋選手権,二次予選4回戦 やねうら王 - dlshogi with HEROZ 20230504125032
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_1-900-5F+yaneuraou+dlshogi+20230504125032.csa
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - mazurka 20230504125027
+第33回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - mazurka 20230504125027
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U4_10-900-5F+Ryfamate+mazurka+20230504125027.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 ponkotsu - やねうら王 20230504114702
+第33回世界コンピュータ将棋選手権,二次予選3回戦 ponkotsu - やねうら王 20230504114702
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_3-900-5F+ponkotsu+yaneuraou+20230504114702.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 大将軍 - いちびん 20230504114659
+第33回世界コンピュータ将棋選手権,二次予選3回戦 大将軍 - いちびん 20230504114659
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_12-900-5F+taishogun+ichibin+20230504114659.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 HoneyWaffle - アストラ将棋 20230504113925
+第33回世界コンピュータ将棋選手権,二次予選3回戦 HoneyWaffle - アストラ将棋 20230504113925
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_19-900-5F+HoneyWaffle+masaSHO+20230504113925.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 koron - Ari Shogi 20230504113322
+第33回世界コンピュータ将棋選手権,二次予選3回戦 koron - Ari Shogi 20230504113322
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_13-900-5F+koron+ari+20230504113322.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 AobaZero - baron 20230504113231
+第33回世界コンピュータ将棋選手権,二次予選3回戦 AobaZero - baron 20230504113231
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_14-900-5F+AobaZero+baron+20230504113231.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 なのは - mazurka 20230504113204
+第33回世界コンピュータ将棋選手権,二次予選3回戦 なのは - mazurka 20230504113204
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_18-900-5F+Nanoha2023+mazurka+20230504113204.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - ねね将棋 20230504113153
+第33回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - ねね将棋 20230504113153
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_4-900-5F+cobra+nene+20230504113153.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Ryfamate - W@nderER 20230504112640
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Ryfamate - W@nderER 20230504112640
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_7-900-5F+Ryfamate+wanderer+20230504112640.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 将スタ君 - ティー○の振り飛車気持ちよすぎだろ！ 20230504112554
+第33回世界コンピュータ将棋選手権,二次予選3回戦 将スタ君 - ティー○の振り飛車気持ちよすぎだろ！ 20230504112554
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_8-900-5F+ariga+XFF+20230504112554.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 dlshogi with HEROZ - TMOQ 20230504112528
+第33回世界コンピュータ将棋選手権,二次予選3回戦 dlshogi with HEROZ - TMOQ 20230504112528
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_1-900-5F+dlshogi+TMOQ+20230504112528.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Lí - Daigorilla 20230504112456
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Lí - Daigorilla 20230504112456
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_5-900-5F+tanuki+DG+20230504112456.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Lightweight - Novice 20230504112313
+第33回世界コンピュータ将棋選手権,二次予選3回戦 Lightweight - Novice 20230504112313
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_6-900-5F+lightweight+Novice+20230504112313.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 十六式いろは煌 - 東横将棋 20230504112211
+第33回世界コンピュータ将棋選手権,二次予選3回戦 十六式いろは煌 - 東横将棋 20230504112211
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_9-900-5F+16-168+Toyoko_Shogi+20230504112211.csa
+第33回世界コンピュータ将棋選手権,二次予選3回戦 二番絞り - あやめ 20230504112133
+第33回世界コンピュータ将棋選手権,二次予選3回戦 二番絞り - あやめ 20230504112133
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U3_2-900-5F+nibanshibori+Ayame+20230504112133.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 W@nderER - ティー○の振り飛車気持ちよすぎだろ！ 20230504105844
+第33回世界コンピュータ将棋選手権,二次予選2回戦 W@nderER - ティー○の振り飛車気持ちよすぎだろ！ 20230504105844
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_7-900-5F+wanderer+XFF+20230504105844.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 大将軍 - やねうら王 20230504105508
+第33回世界コンピュータ将棋選手権,二次予選2回戦 大将軍 - やねうら王 20230504105508
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_3-900-5F+taishogun+yaneuraou+20230504105508.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 koron - 二番絞り 20230504105349
+第33回世界コンピュータ将棋選手権,二次予選2回戦 koron - 二番絞り 20230504105349
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_2-900-5F+koron+nibanshibori+20230504105349.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 ねね将棋 - なのは 20230504105305
+第33回世界コンピュータ将棋選手権,二次予選2回戦 ねね将棋 - なのは 20230504105305
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_20-900-5F+nene+Nanoha2023+20230504105305.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - Lightweight 20230504104550
+第33回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - Lightweight 20230504104550
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_6-900-5F+Toyoko_Shogi+lightweight+20230504104550.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - ponkotsu 20230504104248
+第33回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - ponkotsu 20230504104248
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_21-900-5F+HoneyWaffle+ponkotsu+20230504104248.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 アストラ将棋 - baron 20230504104237
+第33回世界コンピュータ将棋選手権,二次予選2回戦 アストラ将棋 - baron 20230504104237
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_19-900-5F+masaSHO+baron+20230504104237.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 mazurka - 十六式いろは煌 20230504104228
+第33回世界コンピュータ将棋選手権,二次予選2回戦 mazurka - 十六式いろは煌 20230504104228
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_18-900-5F+mazurka+16-168+20230504104228.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 将スタ君 - あやめ 20230504104220
+第33回世界コンピュータ将棋選手権,二次予選2回戦 将スタ君 - あやめ 20230504104220
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_17-900-5F+ariga+Ayame+20230504104220.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 いちびん - TMOQ 20230504104215
+第33回世界コンピュータ将棋選手権,二次予選2回戦 いちびん - TMOQ 20230504104215
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_16-900-5F+ichibin+TMOQ+20230504104215.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Daigorilla - Ari Shogi 20230504104207
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Daigorilla - Ari Shogi 20230504104207
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_15-900-5F+DG+ari+20230504104207.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Ryfamate - Lí 20230504104150
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Ryfamate - Lí 20230504104150
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_5-900-5F+Ryfamate+tanuki+20230504104150.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Novice - 名人コブラ 20230504104137
+第33回世界コンピュータ将棋選手権,二次予選2回戦 Novice - 名人コブラ 20230504104137
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_4-900-5F+Novice+cobra+20230504104137.csa
+第33回世界コンピュータ将棋選手権,二次予選2回戦 dlshogi with HEROZ - AobaZero 20230504104102
+第33回世界コンピュータ将棋選手権,二次予選2回戦 dlshogi with HEROZ - AobaZero 20230504104102
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U2_1-900-5F+dlshogi+AobaZero+20230504104102.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 やねうら王 - 将スタ君 20230504100512
+第33回世界コンピュータ将棋選手権,二次予選1回戦 やねうら王 - 将スタ君 20230504100512
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_3-900-5F+yaneuraou+ariga+20230504100512.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - Daigorilla 20230504100057
+第33回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - Daigorilla 20230504100057
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_14-900-5F+AobaZero+DG+20230504100057.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 TMOQ - koron 20230504100055
+第33回世界コンピュータ将棋選手権,二次予選1回戦 TMOQ - koron 20230504100055
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_13-900-5F+TMOQ+koron+20230504100055.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 大将軍 - あやめ 20230504100053
+第33回世界コンピュータ将棋選手権,二次予選1回戦 大将軍 - あやめ 20230504100053
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_12-900-5F+taishogun+Ayame+20230504100053.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 mazurka - Novice 20230504100051
+第33回世界コンピュータ将棋選手権,二次予選1回戦 mazurka - Novice 20230504100051
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_11-900-5F+mazurka+Novice+20230504100051.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 アストラ将棋 - Ryfamate 20230504100048
+第33回世界コンピュータ将棋選手権,二次予選1回戦 アストラ将棋 - Ryfamate 20230504100048
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_10-900-5F+masaSHO+Ryfamate+20230504100048.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 東横将棋 - ねね将棋 20230504100046
+第33回世界コンピュータ将棋選手権,二次予選1回戦 東横将棋 - ねね将棋 20230504100046
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_9-900-5F+Toyoko_Shogi+nene+20230504100046.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 ティー○の振り飛車気持ちよすぎだろ！ - ponkotsu 20230504100044
+第33回世界コンピュータ将棋選手権,二次予選1回戦 ティー○の振り飛車気持ちよすぎだろ！ - ponkotsu 20230504100044
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_8-900-5F+XFF+ponkotsu+20230504100044.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 W@nderER - HoneyWaffle 20230504100042
+第33回世界コンピュータ将棋選手権,二次予選1回戦 W@nderER - HoneyWaffle 20230504100042
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_7-900-5F+wanderer+HoneyWaffle+20230504100042.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 Lightweight - なのは 20230504100040
+第33回世界コンピュータ将棋選手権,二次予選1回戦 Lightweight - なのは 20230504100040
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_6-900-5F+lightweight+Nanoha2023+20230504100040.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 baron - Lí 20230504100037
+第33回世界コンピュータ将棋選手権,二次予選1回戦 baron - Lí 20230504100037
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_5-900-5F+baron+tanuki+20230504100037.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 十六式いろは煌 - 名人コブラ 20230504100036
+第33回世界コンピュータ将棋選手権,二次予選1回戦 十六式いろは煌 - 名人コブラ 20230504100036
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_4-900-5F+16-168+cobra+20230504100036.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 いちびん - 二番絞り 20230504100034
+第33回世界コンピュータ将棋選手権,二次予選1回戦 いちびん - 二番絞り 20230504100034
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_2-900-5F+ichibin+nibanshibori+20230504100034.csa
+第33回世界コンピュータ将棋選手権,二次予選1回戦 Ari Shogi - dlshogi with HEROZ 20230504100031
+第33回世界コンピュータ将棋選手権,二次予選1回戦 Ari Shogi - dlshogi with HEROZ 20230504100031
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+U1_1-900-5F+ari+dlshogi+20230504100031.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 いちびん - Ari Shogi 20230503173938
+第33回世界コンピュータ将棋選手権,一次予選8回戦 いちびん - Ari Shogi 20230503173938
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_26-900-5F+ichibin+ari+20230503173938.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 こまあそび - まったりゆうちゃん 20230503173657
+第33回世界コンピュータ将棋選手権,一次予選8回戦 こまあそび - まったりゆうちゃん 20230503173657
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_38-900-5F+komaasobi+MattariYuchan+20230503173657.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - 重力場計算法 20230503173609
+第33回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - 重力場計算法 20230503173609
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_43-900-5F+auaushogi+jyuuryoku+20230503173609.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 将スタ君 - 技巧 20230503173601
+第33回世界コンピュータ将棋選手権,一次予選8回戦 将スタ君 - 技巧 20230503173601
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_503-900-5F+ariga+gikou-2023+20230503173601.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 なり金将棋 - JHBR 20230503173553
+第33回世界コンピュータ将棋選手権,一次予選8回戦 なり金将棋 - JHBR 20230503173553
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_49-900-5F+narikin+eii1+20230503173553.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 臥龍 - きふわらべ 20230503173551
+第33回世界コンピュータ将棋選手権,一次予選8回戦 臥龍 - きふわらべ 20230503173551
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_50-900-5F+takada+kifuwarabe+20230503173551.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 隠岐 - カツ丼将棋 20230503173548
+第33回世界コンピュータ将棋選手権,一次予選8回戦 隠岐 - カツ丼将棋 20230503173548
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_36-900-5F+oki+katsudon+20230503173548.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 爆裂駒拾太郎 - 人生送りバント失敗 20230503173543
+第33回世界コンピュータ将棋選手権,一次予選8回戦 爆裂駒拾太郎 - 人生送りバント失敗 20230503173543
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_35-900-5F+bakuretsu+gakkari+20230503173543.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - 元気もりもりニンニクパワー 20230503173540
+第33回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - 元気もりもりニンニクパワー 20230503173540
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_29-900-5F+qinoa+Ninniku+20230503173540.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 十六式いろは煌 - 山田将棋 20230503173536
+第33回世界コンピュータ将棋選手権,一次予選8回戦 十六式いろは煌 - 山田将棋 20230503173536
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_22-900-5F+16-168+yamadashogi+20230503173536.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 手抜き - なのは 20230503173533
+第33回世界コンピュータ将棋選手権,一次予選8回戦 手抜き - なのは 20230503173533
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_24-900-5F+tenuki+Nanoha2023+20230503173533.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 HoneyWaffle - CGP 20230503173531
+第33回世界コンピュータ将棋選手権,一次予選8回戦 HoneyWaffle - CGP 20230503173531
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_30-900-5F+HoneyWaffle+CGP+20230503173531.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 ねね将棋 - baron 20230503173529
+第33回世界コンピュータ将棋選手権,一次予選8回戦 ねね将棋 - baron 20230503173529
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_27-900-5F+nene+baron+20230503173529.csa
+第33回世界コンピュータ将棋選手権,一次予選8回戦 ponkotsu - アストラ将棋 20230503173524
+第33回世界コンピュータ将棋選手権,一次予選8回戦 ponkotsu - アストラ将棋 20230503173524
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L8_37-900-5F+ponkotsu+masaSHO+20230503173524.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 重力場計算法 - JHBR 20230503163348
+第33回世界コンピュータ将棋選手権,一次予選7回戦 重力場計算法 - JHBR 20230503163348
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_45-900-5F+jyuuryoku+eii1+20230503163348.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 まったりゆうちゃん - 手抜き 20230503162704
+第33回世界コンピュータ将棋選手権,一次予選7回戦 まったりゆうちゃん - 手抜き 20230503162704
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_28-900-5F+MattariYuchan+tenuki+20230503162704.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - なり金将棋 20230503162629
+第33回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - なり金将棋 20230503162629
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_44-900-5F+bakuretsu+narikin+20230503162629.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - 元気もりもりニンニクパワー 20230503162621
+第33回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - 元気もりもりニンニクパワー 20230503162621
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_31-900-5F+auaushogi+Ninniku+20230503162621.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - きふわらべ 20230503162618
+第33回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - きふわらべ 20230503162618
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_46-900-5F+komaasobi+kifuwarabe+20230503162618.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 臥龍 - 山田将棋 20230503162615
+第33回世界コンピュータ将棋選手権,一次予選7回戦 臥龍 - 山田将棋 20230503162615
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_33-900-5F+takada+yamadashogi+20230503162615.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 将スタ君 20230503162612
+第33回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 将スタ君 20230503162612
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_36-900-5F+katsudon+ariga+20230503162612.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 CGP - きのあ将棋 20230503162609
+第33回世界コンピュータ将棋選手権,一次予選7回戦 CGP - きのあ将棋 20230503162609
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_29-900-5F+CGP+qinoa+20230503162609.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 隠岐 - 十六式いろは煌 20230503162607
+第33回世界コンピュータ将棋選手権,一次予選7回戦 隠岐 - 十六式いろは煌 20230503162607
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_22-900-5F+oki+16-168+20230503162607.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 Ari Shogi - baron 20230503162604
+第33回世界コンピュータ将棋選手権,一次予選7回戦 Ari Shogi - baron 20230503162604
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_39-900-5F+ari+baron+20230503162604.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 なのは - 人生送りバント失敗 20230503162602
+第33回世界コンピュータ将棋選手権,一次予選7回戦 なのは - 人生送りバント失敗 20230503162602
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_24-900-5F+Nanoha2023+gakkari+20230503162602.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 技巧 - ponkotsu 20230503162600
+第33回世界コンピュータ将棋選手権,一次予選7回戦 技巧 - ponkotsu 20230503162600
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_37-900-5F+gikou-2023+ponkotsu+20230503162600.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 いちびん - ねね将棋 20230503162558
+第33回世界コンピュータ将棋選手権,一次予選7回戦 いちびん - ねね将棋 20230503162558
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_26-900-5F+ichibin+nene+20230503162558.csa
+第33回世界コンピュータ将棋選手権,一次予選7回戦 アストラ将棋 - HoneyWaffle 20230503162551
+第33回世界コンピュータ将棋選手権,一次予選7回戦 アストラ将棋 - HoneyWaffle 20230503162551
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L7_119-900-5F+masaSHO+HoneyWaffle+20230503162551.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 あうあう将棋 - 手抜き 20230503153224
+第33回世界コンピュータ将棋選手権,一次予選6回戦 あうあう将棋 - 手抜き 20230503153224
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_28-900-5F+auaushogi+tenuki+20230503153224.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 baron - まったりゆうちゃん 20230503153148
+第33回世界コンピュータ将棋選手権,一次予選6回戦 baron - まったりゆうちゃん 20230503153148
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_38-900-5F+baron+MattariYuchan+20230503153148.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 きふわらべ - JHBR 20230503153055
+第33回世界コンピュータ将棋選手権,一次予選6回戦 きふわらべ - JHBR 20230503153055
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_51-900-5F+kifuwarabe+eii1+20230503153055.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 重力場計算法 - なり金将棋 20230503153051
+第33回世界コンピュータ将棋選手権,一次予選6回戦 重力場計算法 - なり金将棋 20230503153051
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_45-900-5F+jyuuryoku+narikin+20230503153051.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 臥龍 - 爆裂駒拾太郎 20230503153044
+第33回世界コンピュータ将棋選手権,一次予選6回戦 臥龍 - 爆裂駒拾太郎 20230503153044
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_44-900-5F+takada+bakuretsu+20230503153044.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - 山田将棋 20230503153041
+第33回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - 山田将棋 20230503153041
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_33-900-5F+gakkari+yamadashogi+20230503153041.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 隠岐 - 元気もりもりニンニクパワー 20230503153039
+第33回世界コンピュータ将棋選手権,一次予選6回戦 隠岐 - 元気もりもりニンニクパワー 20230503153039
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_31-900-5F+oki+Ninniku+20230503153039.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 こまあそび - CGP 20230503153036
+第33回世界コンピュータ将棋選手権,一次予選6回戦 こまあそび - CGP 20230503153036
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_30-900-5F+komaasobi+CGP+20230503153036.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 Ari Shogi - カツ丼将棋 20230503153034
+第33回世界コンピュータ将棋選手権,一次予選6回戦 Ari Shogi - カツ丼将棋 20230503153034
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_36-900-5F+ari+katsudon+20230503153034.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 十六式いろは煌 - いちびん 20230503153031
+第33回世界コンピュータ将棋選手権,一次予選6回戦 十六式いろは煌 - いちびん 20230503153031
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_22-900-5F+16-168+ichibin+20230503153031.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 技巧 - きのあ将棋 20230503153028
+第33回世界コンピュータ将棋選手権,一次予選6回戦 技巧 - きのあ将棋 20230503153028
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_29-900-5F+gikou-2023+qinoa+20230503153028.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 HoneyWaffle - なのは 20230503153026
+第33回世界コンピュータ将棋選手権,一次予選6回戦 HoneyWaffle - なのは 20230503153026
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_24-900-5F+HoneyWaffle+Nanoha2023+20230503153026.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 将スタ君 - ponkotsu 20230503153024
+第33回世界コンピュータ将棋選手権,一次予選6回戦 将スタ君 - ponkotsu 20230503153024
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_37-900-5F+ariga+ponkotsu+20230503153024.csa
+第33回世界コンピュータ将棋選手権,一次予選6回戦 ねね将棋 - アストラ将棋 20230503153019
+第33回世界コンピュータ将棋選手権,一次予選6回戦 ねね将棋 - アストラ将棋 20230503153019
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L6_27-900-5F+nene+masaSHO+20230503153019.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 きふわらべ - あうあう将棋 20230503143820
+第33回世界コンピュータ将棋選手権,一次予選5回戦 きふわらべ - あうあう将棋 20230503143820
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_43-900-5F+kifuwarabe+auaushogi+20230503143820.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 まったりゆうちゃん - 隠岐 20230503143735
+第33回世界コンピュータ将棋選手権,一次予選5回戦 まったりゆうちゃん - 隠岐 20230503143735
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_38-900-5F+MattariYuchan+oki+20230503143735.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - アストラ将棋 20230503143719
+第33回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - アストラ将棋 20230503143719
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_29-900-5F+qinoa+masaSHO+20230503143719.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - 臥龍 20230503143622
+第33回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - 臥龍 20230503143622
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_50-900-5F+eii1+takada+20230503143622.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 重力場計算法 - こまあそび 20230503143620
+第33回世界コンピュータ将棋選手権,一次予選5回戦 重力場計算法 - こまあそび 20230503143620
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_45-900-5F+jyuuryoku+komaasobi+20230503143620.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 爆裂駒拾太郎 - 山田将棋 20230503143618
+第33回世界コンピュータ将棋選手権,一次予選5回戦 爆裂駒拾太郎 - 山田将棋 20230503143618
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_33-900-5F+bakuretsu+yamadashogi+20230503143618.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 人生送りバント失敗 - 将スタ君 20230503143609
+第33回世界コンピュータ将棋選手権,一次予選5回戦 人生送りバント失敗 - 将スタ君 20230503143609
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_35-900-5F+gakkari+ariga+20230503143609.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 手抜き - Ari Shogi 20230503143605
+第33回世界コンピュータ将棋選手権,一次予選5回戦 手抜き - Ari Shogi 20230503143605
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_28-900-5F+tenuki+ari+20230503143605.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 元気もりもりニンニクパワー - カツ丼将棋 20230503143550
+第33回世界コンピュータ将棋選手権,一次予選5回戦 元気もりもりニンニクパワー - カツ丼将棋 20230503143550
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_31-900-5F+Ninniku+katsudon+20230503143550.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 CGP - 技巧 20230503143547
+第33回世界コンピュータ将棋選手権,一次予選5回戦 CGP - 技巧 20230503143547
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_30-900-5F+CGP+gikou-2023+20230503143547.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 なり金将棋 - いちびん 20230503143543
+第33回世界コンピュータ将棋選手権,一次予選5回戦 なり金将棋 - いちびん 20230503143543
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_26-900-5F+narikin+ichibin+20230503143543.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 十六式いろは煌 - HoneyWaffle 20230503143541
+第33回世界コンピュータ将棋選手権,一次予選5回戦 十六式いろは煌 - HoneyWaffle 20230503143541
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_22-900-5F+16-168+HoneyWaffle+20230503143541.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 なのは - baron 20230503143536
+第33回世界コンピュータ将棋選手権,一次予選5回戦 なのは - baron 20230503143536
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_24-900-5F+Nanoha2023+baron+20230503143536.csa
+第33回世界コンピュータ将棋選手権,一次予選5回戦 ねね将棋 - ponkotsu 20230503143529
+第33回世界コンピュータ将棋選手権,一次予選5回戦 ねね将棋 - ponkotsu 20230503143529
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L5_27-900-5F+nene+ponkotsu+20230503143529.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - ねね将棋 20230503134232
+第33回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - ねね将棋 20230503134232
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_27-900-5F+qinoa+nene+20230503134232.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 技巧 - 爆裂駒拾太郎 20230503134224
+第33回世界コンピュータ将棋選手権,一次予選4回戦 技巧 - 爆裂駒拾太郎 20230503134224
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_44-900-5F+gikou-2023+bakuretsu+20230503134224.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - JHBR 20230503134209
+第33回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - JHBR 20230503134209
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_33-900-5F+yamadashogi+eii1+20230503134209.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 まったりゆうちゃん - 重力場計算法 20230503134149
+第33回世界コンピュータ将棋選手権,一次予選4回戦 まったりゆうちゃん - 重力場計算法 20230503134149
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_38-900-5F+MattariYuchan+jyuuryoku+20230503134149.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 元気もりもりニンニクパワー - きふわらべ 20230503134119
+第33回世界コンピュータ将棋選手権,一次予選4回戦 元気もりもりニンニクパワー - きふわらべ 20230503134119
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_31-900-5F+Ninniku+kifuwarabe+20230503134119.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 隠岐 - こまあそび 20230503134114
+第33回世界コンピュータ将棋選手権,一次予選4回戦 隠岐 - こまあそび 20230503134114
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_40-900-5F+oki+komaasobi+20230503134114.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - あうあう将棋 20230503134050
+第33回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - あうあう将棋 20230503134050
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_36-900-5F+katsudon+auaushogi+20230503134050.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - なり金将棋 20230503134047
+第33回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - なり金将棋 20230503134047
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_28-900-5F+tenuki+narikin+20230503134047.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 臥龍 - いちびん 20230503134044
+第33回世界コンピュータ将棋選手権,一次予選4回戦 臥龍 - いちびん 20230503134044
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_26-900-5F+takada+ichibin+20230503134044.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 なのは - Ari Shogi 20230503134041
+第33回世界コンピュータ将棋選手権,一次予選4回戦 なのは - Ari Shogi 20230503134041
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_24-900-5F+Nanoha2023+ari+20230503134041.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 人生送りバント失敗 - 十六式いろは煌 20230503134037
+第33回世界コンピュータ将棋選手権,一次予選4回戦 人生送りバント失敗 - 十六式いろは煌 20230503134037
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_22-900-5F+gakkari+16-168+20230503134037.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 将スタ君 - baron 20230503134035
+第33回世界コンピュータ将棋選手権,一次予選4回戦 将スタ君 - baron 20230503134035
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_39-900-5F+ariga+baron+20230503134035.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 ponkotsu - HoneyWaffle 20230503134029
+第33回世界コンピュータ将棋選手権,一次予選4回戦 ponkotsu - HoneyWaffle 20230503134029
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_37-900-5F+ponkotsu+HoneyWaffle+20230503134029.csa
+第33回世界コンピュータ将棋選手権,一次予選4回戦 アストラ将棋 - CGP 20230503134019
+第33回世界コンピュータ将棋選手権,一次予選4回戦 アストラ将棋 - CGP 20230503134019
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L4_30-900-5F+masaSHO+CGP+20230503134019.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 ponkotsu - まったりゆうちゃん 20230503121228
+第33回世界コンピュータ将棋選手権,一次予選3回戦 ponkotsu - まったりゆうちゃん 20230503121228
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_37-900-5F+ponkotsu+MattariYuchan+20230503121228.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 HoneyWaffle - いちびん 20230503121143
+第33回世界コンピュータ将棋選手権,一次予選3回戦 HoneyWaffle - いちびん 20230503121143
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_26-900-5F+HoneyWaffle+ichibin+20230503121143.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 あうあう将棋 - 爆裂駒拾太郎 20230503121130
+第33回世界コンピュータ将棋選手権,一次予選3回戦 あうあう将棋 - 爆裂駒拾太郎 20230503121130
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_43-900-5F+auaushogi+bakuretsu+20230503121130.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 将スタ君 - 手抜き 20230503121112
+第33回世界コンピュータ将棋選手権,一次予選3回戦 将スタ君 - 手抜き 20230503121112
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_28-900-5F+ariga+tenuki+20230503121112.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 人生送りバント失敗 - 元気もりもりニンニクパワー 20230503120921
+第33回世界コンピュータ将棋選手権,一次予選3回戦 人生送りバント失敗 - 元気もりもりニンニクパワー 20230503120921
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_31-900-5F+gakkari+Ninniku+20230503120921.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 技巧 20230503120429
+第33回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 技巧 20230503120429
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_33-900-5F+yamadashogi+gikou-2023+20230503120429.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 Ari Shogi - ねね将棋 20230503120238
+第33回世界コンピュータ将棋選手権,一次予選3回戦 Ari Shogi - ねね将棋 20230503120238
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_27-900-5F+ari+nene+20230503120238.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - きのあ将棋 20230503120018
+第33回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - きのあ将棋 20230503120018
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_29-900-5F+katsudon+qinoa+20230503120018.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 baron - CGP 20230503115447
+第33回世界コンピュータ将棋選手権,一次予選3回戦 baron - CGP 20230503115447
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_30-900-5F+baron+CGP+20230503115447.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 アストラ将棋 - なのは 20230503115410
+第33回世界コンピュータ将棋選手権,一次予選3回戦 アストラ将棋 - なのは 20230503115410
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_24-900-5F+masaSHO+Nanoha2023+20230503115410.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 きふわらべ - 重力場計算法 20230503115201
+第33回世界コンピュータ将棋選手権,一次予選3回戦 きふわらべ - 重力場計算法 20230503115201
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_45-900-5F+kifuwarabe+jyuuryoku+20230503115201.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 なり金将棋 - こまあそび 20230503115149
+第33回世界コンピュータ将棋選手権,一次予選3回戦 なり金将棋 - こまあそび 20230503115149
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_46-900-5F+narikin+komaasobi+20230503115149.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 臥龍 - 隠岐 20230503115141
+第33回世界コンピュータ将棋選手権,一次予選3回戦 臥龍 - 隠岐 20230503115141
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_40-900-5F+takada+oki+20230503115141.csa
+第33回世界コンピュータ将棋選手権,一次予選3回戦 JHBR - 十六式いろは煌 20230503115123
+第33回世界コンピュータ将棋選手権,一次予選3回戦 JHBR - 十六式いろは煌 20230503115123
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L3_22-900-5F+eii1+16-168+20230503115123.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 人生送りバント失敗 20230503112719
+第33回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 人生送りバント失敗 20230503112719
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_28-900-5F+tenuki+gakkari+20230503112719.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 なのは - まったりゆうちゃん 20230503112714
+第33回世界コンピュータ将棋選手権,一次予選2回戦 なのは - まったりゆうちゃん 20230503112714
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_24-900-5F+Nanoha2023+MattariYuchan+20230503112714.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 重力場計算法 - 技巧 20230503112353
+第33回世界コンピュータ将棋選手権,一次予選2回戦 重力場計算法 - 技巧 20230503112353
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_45-900-5F+jyuuryoku+gikou-2023+20230503112353.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 いちびん - ponkotsu 20230503112328
+第33回世界コンピュータ将棋選手権,一次予選2回戦 いちびん - ponkotsu 20230503112328
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_26-900-5F+ichibin+ponkotsu+20230503112328.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - カツ丼将棋 20230503112251
+第33回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - カツ丼将棋 20230503112251
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_27-900-5F+nene+katsudon+20230503112251.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 アストラ将棋 - 隠岐 20230503112225
+第33回世界コンピュータ将棋選手権,一次予選2回戦 アストラ将棋 - 隠岐 20230503112225
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_40-900-5F+masaSHO+oki+20230503112225.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 爆裂駒拾太郎 - 将スタ君 20230503112145
+第33回世界コンピュータ将棋選手権,一次予選2回戦 爆裂駒拾太郎 - 将スタ君 20230503112145
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_44-900-5F+bakuretsu+ariga+20230503112145.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 Ari Shogi - きふわらべ 20230503112016
+第33回世界コンピュータ将棋選手権,一次予選2回戦 Ari Shogi - きふわらべ 20230503112016
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_47-900-5F+ari+kifuwarabe+20230503112016.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - JHBR 20230503111935
+第33回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - JHBR 20230503111935
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_43-900-5F+auaushogi+eii1+20230503111935.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - 山田将棋 20230503111716
+第33回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - 山田将棋 20230503111716
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_29-900-5F+qinoa+yamadashogi+20230503111716.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 baron - 十六式いろは煌 20230503111617
+第33回世界コンピュータ将棋選手権,一次予選2回戦 baron - 十六式いろは煌 20230503111617
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_22-900-5F+baron+16-168+20230503111617.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - HoneyWaffle 20230503111533
+第33回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - HoneyWaffle 20230503111533
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_46-900-5F+komaasobi+HoneyWaffle+20230503111533.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 なり金将棋 - 臥龍 20230503110929
+第33回世界コンピュータ将棋選手権,一次予選2回戦 なり金将棋 - 臥龍 20230503110929
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_49-900-5F+narikin+takada+20230503110929.csa
+第33回世界コンピュータ将棋選手権,一次予選2回戦 CGP - 元気もりもりニンニクパワー 20230503110713
+第33回世界コンピュータ将棋選手権,一次予選2回戦 CGP - 元気もりもりニンニクパワー 20230503110713
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L2_30-900-5F+CGP+Ninniku+20230503110713.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 JHBR - なのは 20230503104933
+第33回世界コンピュータ将棋選手権,一次予選1回戦 JHBR - なのは 20230503104933
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_24-900-5F+eii1+Nanoha2023+20230503104933.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 まったりゆうちゃん - あうあう将棋 20230503104744
+第33回世界コンピュータ将棋選手権,一次予選1回戦 まったりゆうちゃん - あうあう将棋 20230503104744
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_38-900-5F+MattariYuchan+auaushogi+20230503104744.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 きふわらべ - きのあ将棋 20230503104658
+第33回世界コンピュータ将棋選手権,一次予選1回戦 きふわらべ - きのあ将棋 20230503104658
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_29-900-5F+kifuwarabe+qinoa+20230503104658.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 隠岐 - baron 20230503104116
+第33回世界コンピュータ将棋選手権,一次予選1回戦 隠岐 - baron 20230503104116
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_39-900-5F+oki+baron+20230503104116.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 ponkotsu - 爆裂駒拾太郎 20230503104112
+第33回世界コンピュータ将棋選手権,一次予選1回戦 ponkotsu - 爆裂駒拾太郎 20230503104112
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_37-900-5F+ponkotsu+bakuretsu+20230503104112.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 カツ丼将棋 - 重力場計算法 20230503104109
+第33回世界コンピュータ将棋選手権,一次予選1回戦 カツ丼将棋 - 重力場計算法 20230503104109
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_36-900-5F+katsudon+jyuuryoku+20230503104109.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - 人生送りバント失敗 20230503104106
+第33回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - 人生送りバント失敗 20230503104106
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_35-900-5F+komaasobi+gakkari+20230503104106.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 山田将棋 - Ari Shogi 20230503104058
+第33回世界コンピュータ将棋選手権,一次予選1回戦 山田将棋 - Ari Shogi 20230503104058
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_33-900-5F+yamadashogi+ari+20230503104058.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 元気もりもりニンニクパワー - なり金将棋 20230503104054
+第33回世界コンピュータ将棋選手権,一次予選1回戦 元気もりもりニンニクパワー - なり金将棋 20230503104054
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_31-900-5F+Ninniku+narikin+20230503104054.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 CGP - 臥龍 20230503104051
+第33回世界コンピュータ将棋選手権,一次予選1回戦 CGP - 臥龍 20230503104051
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_30-900-5F+CGP+takada+20230503104051.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 HoneyWaffle - 手抜き 20230503104030
+第33回世界コンピュータ将棋選手権,一次予選1回戦 HoneyWaffle - 手抜き 20230503104030
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_28-900-5F+HoneyWaffle+tenuki+20230503104030.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 技巧 - ねね将棋 20230503104026
+第33回世界コンピュータ将棋選手権,一次予選1回戦 技巧 - ねね将棋 20230503104026
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_27-900-5F+gikou-2023+nene+20230503104026.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 いちびん - 将スタ君 20230503104020
+第33回世界コンピュータ将棋選手権,一次予選1回戦 いちびん - 将スタ君 20230503104020
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_26-900-5F+ichibin+ariga+20230503104020.csa
+第33回世界コンピュータ将棋選手権,一次予選1回戦 十六式いろは煌 - アストラ将棋 20230503104016
+第33回世界コンピュータ将棋選手権,一次予選1回戦 十六式いろは煌 - アストラ将棋 20230503104016
+http://live4.computer-shogi.org/wcsc33/kifu/WCSC33+L1_22-900-5F+16-168+masaSHO+20230503104016.csa

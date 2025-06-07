@@ -1,0 +1,656 @@
+V1
+#sub:第25回世界コンピュータ将棋選手権
+第25回世界コンピュータ将棋選手権,決勝 7回戦 ponanza - AWAKE
+第25回世界コンピュータ将棋選手権,決勝 7回戦 ponanza - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F7_PON_AWK.csa
+第25回世界コンピュータ将棋選手権,決勝 7回戦 Selene - YSS
+第25回世界コンピュータ将棋選手権,決勝 7回戦 Selene - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F7_SLN_YSS.csa
+第25回世界コンピュータ将棋選手権,決勝 7回戦 NineDayFever - Apery
+第25回世界コンピュータ将棋選手権,決勝 7回戦 NineDayFever - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F7_NDF_APR.csa
+第25回世界コンピュータ将棋選手権,決勝 7回戦 GPS将棋 - 激指
+第25回世界コンピュータ将棋選手権,決勝 7回戦 GPS将棋 - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F7_GPS_GEK.csa
+第25回世界コンピュータ将棋選手権,決勝 6回戦 AWAKE - NineDayFever
+第25回世界コンピュータ将棋選手権,決勝 6回戦 AWAKE - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F6_AWK_NDF.csa
+第25回世界コンピュータ将棋選手権,決勝 6回戦 激指 - Selene
+第25回世界コンピュータ将棋選手権,決勝 6回戦 激指 - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F6_GEK_SLN.csa
+第25回世界コンピュータ将棋選手権,決勝 6回戦 GPS将棋 - YSS
+第25回世界コンピュータ将棋選手権,決勝 6回戦 GPS将棋 - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F6_GPS_YSS.csa
+第25回世界コンピュータ将棋選手権,決勝 6回戦 ponanza - Apery
+第25回世界コンピュータ将棋選手権,決勝 6回戦 ponanza - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F6_PON_APR.csa
+第25回世界コンピュータ将棋選手権,決勝 5回戦 Apery - Selene
+第25回世界コンピュータ将棋選手権,決勝 5回戦 Apery - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F5_APR_SLN.csa
+第25回世界コンピュータ将棋選手権,決勝 5回戦 AWAKE - GPS将棋
+第25回世界コンピュータ将棋選手権,決勝 5回戦 AWAKE - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F5_AWK_GPS.csa
+第25回世界コンピュータ将棋選手権,決勝 5回戦 NineDayFever - ponanza
+第25回世界コンピュータ将棋選手権,決勝 5回戦 NineDayFever - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F5_NDF_PON.csa
+第25回世界コンピュータ将棋選手権,決勝 5回戦 YSS - 激指
+第25回世界コンピュータ将棋選手権,決勝 5回戦 YSS - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F5_YSS_GEK.csa
+第25回世界コンピュータ将棋選手権,決勝 4回戦 Selene - GPS将棋
+第25回世界コンピュータ将棋選手権,決勝 4回戦 Selene - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F4_SLN_GPS.csa
+第25回世界コンピュータ将棋選手権,決勝 4回戦 Apery - AWAKE
+第25回世界コンピュータ将棋選手権,決勝 4回戦 Apery - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F4_APR_AWK.csa
+第25回世界コンピュータ将棋選手権,決勝 4回戦 NineDayFever - 激指
+第25回世界コンピュータ将棋選手権,決勝 4回戦 NineDayFever - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F4_NDF_GEK.csa
+第25回世界コンピュータ将棋選手権,決勝 4回戦 ponanza - YSS
+第25回世界コンピュータ将棋選手権,決勝 4回戦 ponanza - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F4_PON_YSS.csa
+第25回世界コンピュータ将棋選手権,決勝 3回戦 Apery - GPS将棋
+第25回世界コンピュータ将棋選手権,決勝 3回戦 Apery - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F3_APR_GPS.csa
+第25回世界コンピュータ将棋選手権,決勝 3回戦 NineDayFever - YSS
+第25回世界コンピュータ将棋選手権,決勝 3回戦 NineDayFever - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F3_NDF_YSS.csa
+第25回世界コンピュータ将棋選手権,決勝 3回戦 激指 - AWAKE
+第25回世界コンピュータ将棋選手権,決勝 3回戦 激指 - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F3_GEK_AWK.csa
+第25回世界コンピュータ将棋選手権,決勝 3回戦 Selene - ponanza
+第25回世界コンピュータ将棋選手権,決勝 3回戦 Selene - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F3_SLN_PON.csa
+第25回世界コンピュータ将棋選手権,決勝 2回戦 YSS - Apery
+第25回世界コンピュータ将棋選手権,決勝 2回戦 YSS - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F2_YSS_APR.csa
+第25回世界コンピュータ将棋選手権,決勝 2回戦 AWAKE - Selene
+第25回世界コンピュータ将棋選手権,決勝 2回戦 AWAKE - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F2_AWK_SLN.csa
+第25回世界コンピュータ将棋選手権,決勝 2回戦 ponanza - 激指
+第25回世界コンピュータ将棋選手権,決勝 2回戦 ponanza - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F2_PON_GEK.csa
+第25回世界コンピュータ将棋選手権,決勝 2回戦 GPS将棋 - NineDayFever
+第25回世界コンピュータ将棋選手権,決勝 2回戦 GPS将棋 - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F2_GPS_NDF.csa
+第25回世界コンピュータ将棋選手権,決勝 1回戦 GPS将棋 - ponanza
+第25回世界コンピュータ将棋選手権,決勝 1回戦 GPS将棋 - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F1_GPS_PON.csa
+第25回世界コンピュータ将棋選手権,決勝 1回戦 YSS - AWAKE
+第25回世界コンピュータ将棋選手権,決勝 1回戦 YSS - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F1_YSS_AWK.csa
+第25回世界コンピュータ将棋選手権,決勝 1回戦 激指 - Apery
+第25回世界コンピュータ将棋選手権,決勝 1回戦 激指 - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F1_GEK_APR.csa
+第25回世界コンピュータ将棋選手権,決勝 1回戦 Selene - NineDayFever
+第25回世界コンピュータ将棋選手権,決勝 1回戦 Selene - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_F1_SLN_NDF.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 さわにゃん - 竜の卵
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 さわにゃん - 竜の卵
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_SWN_RYT.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 Selene - GPS将棋
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 Selene - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_SLN_GPS.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 激指 - YSS
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 激指 - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_GEK_YSS.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 GA将!!!!!!!! - nozomi
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 GA将!!!!!!!! - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_GAS_NZM.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 無明6 - N4S
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 無明6 - N4S
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_MMY_N4S.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 ponanza - ひまわり
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 ponanza - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_PON_HIM.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 Sunfish - なのは
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 Sunfish - なのは
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_SNF_NAN.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - Apery
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_NDF_APR.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 柿木将棋 - AWAKE
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 柿木将棋 - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_KAK_AWK.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - 芝浦将棋Jr.
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_OKR_SSJ.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 きのあ将棋 - 山田将棋
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 きのあ将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_KIN_YAM.csa
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 shogi686 - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,二次予選 9回戦 shogi686 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U9_686_DGK.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 N4S - YSS
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 N4S - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_N4S_YSS.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Jr. - 無明6
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Jr. - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_SSJ_MMY.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 GPS将棋 - AWAKE
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 GPS将棋 - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_GPS_AWK.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - さわにゃん
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - さわにゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_DGK_SWN.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 Selene - Apery
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 Selene - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_SLN_APR.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 竜の卵 - NineDayFever
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 竜の卵 - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_RYT_NDF.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 ひまわり - なのは
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 ひまわり - なのは
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_HIM_NAN.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 nozomi - おから饅頭
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 nozomi - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_NZM_OKR.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 激指 - ponanza
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 激指 - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_GEK_PON.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 きのあ将棋 - 柿木将棋
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 きのあ将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_KIN_KAK.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 shogi686 - 山田将棋
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 shogi686 - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_686_YAM.csa
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 GA将!!!!!!!! - Sunfish
+第25回世界コンピュータ将棋選手権,二次予選 8回戦 GA将!!!!!!!! - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U8_GAS_SNF.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 おから饅頭 - きのあ将棋
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 おから饅頭 - きのあ将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_OKR_KIN.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 ひまわり - Selene
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 ひまわり - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_HIM_SLN.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 YSS - AWAKE
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 YSS - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_YSS_AWK.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - N4S
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - N4S
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_APR_N4S.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - 芝浦将棋Jr.
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_DGK_SSJ.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 さわにゃん - なのは
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 さわにゃん - なのは
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_SWN_NAN.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - 竜の卵
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - 竜の卵
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_KAK_RYT.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 NineDayFever - ponanza
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 NineDayFever - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_NDF_PON.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 GPS将棋 - shogi686
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 GPS将棋 - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_GPS_686.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 山田将棋 - 無明6
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 山田将棋 - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_YAM_MMY.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 激指 - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 激指 - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_GEK_GAS.csa
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - Sunfish
+第25回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U7_NZM_SNF.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 GA将!!!!!!!! - きのあ将棋
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 GA将!!!!!!!! - きのあ将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_GAS_KIN.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 無明6 - おから饅頭
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 無明6 - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_MMY_OKR.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 山田将棋 - nozomi
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 山田将棋 - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_YAM_NZM.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 竜の卵 - ひまわり
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 竜の卵 - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_RYT_HIM.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 N4S - NineDayFever
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 N4S - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_N4S_NDF.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 さわにゃん - 激指
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 さわにゃん - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_SWN_GEK.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 YSS - GPS将棋
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 YSS - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_YSS_GPS.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 Selene - ponanza
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 Selene - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_SLN_PON.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - shogi686
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_NAN_686.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 AWAKE - Apery
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 AWAKE - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_AWK_APR.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 芝浦将棋Jr. - 柿木将棋
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 芝浦将棋Jr. - 柿木将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_SSJ_KAK.csa
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 Sunfish - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,二次予選 6回戦 Sunfish - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U6_SNF_DGK.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - 芝浦将棋Jr.
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_NZM_SSJ.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 shogi686 - おから饅頭
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 shogi686 - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_686_OKR.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 N4S - 激指
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 N4S - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_N4S_GEK.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - きのあ将棋
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - きのあ将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_GPS_KIN.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 無明6 - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 無明6 - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_MMY_GAS.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - 柿木将棋
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - 柿木将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_APR_KAK.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 ponanza - AWAKE
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 ponanza - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_PON_AWK.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 YSS - なのは
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 YSS - なのは
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_YSS_NAN.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 竜の卵 - Sunfish
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 竜の卵 - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_RYT_SNF.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 Selene - さわにゃん
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 Selene - さわにゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_SLN_SWN.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 大合神クジラちゃん - 山田将棋
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 大合神クジラちゃん - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_DGK_YAM_2.csa
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 NineDayFever - ひまわり
+第25回世界コンピュータ将棋選手権,二次予選 5回戦 NineDayFever - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U5_NDF_HIM.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 ponanza - Apery
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 ponanza - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_PON_APR.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 AWAKE - NineDayFever
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 AWAKE - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_AWK_NDF.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 ひまわり - YSS
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 ひまわり - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_HIM_YSS.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - おから饅頭
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_GPS_OKR.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - 激指
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_KAK_GEK.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 shogi686 - nozomi
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 shogi686 - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_686_NZM.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 さわにゃん - きのあ将棋
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 さわにゃん - きのあ将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_SWN_KIN.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 GA将!!!!!!!! - 山田将棋
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 GA将!!!!!!!! - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_GAS_YAM.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 芝浦将棋Jr. - 竜の卵
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 芝浦将棋Jr. - 竜の卵
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_SSJ_RYT.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 なのは - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 なのは - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_NAN_DGK.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 Sunfish - N4S
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 Sunfish - N4S
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_SNF_N4S.csa
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 Selene - 無明6
+第25回世界コンピュータ将棋選手権,二次予選 4回戦 Selene - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U4_SLN_MMY.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 激指 - 竜の卵
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 激指 - 竜の卵
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_GEK_RYT.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 ponanza - YSS
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 ponanza - YSS
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_PON_YSS.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 山田将棋 - 芝浦将棋Jr.
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 山田将棋 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_YAM_SSJ.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 無明6 - nozomi
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 無明6 - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_MMY_NZM.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 N4S - GPS将棋
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 N4S - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_N4S_GPS.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 AWAKE - Selene
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 AWAKE - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_AWK_SLN.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 きのあ将棋 - shogi686
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 きのあ将棋 - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_KIN_686.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - Sunfish
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_OKR_SNF.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 柿木将棋 - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 柿木将棋 - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_KAK_GAS.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - さわにゃん
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - さわにゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_APR_SWN.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 大合神クジラちゃん - ひまわり
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 大合神クジラちゃん - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_DGK_HIM.csa
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - なのは
+第25回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - なのは
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U3_NDF_NAN.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 きのあ将棋 - 無明6
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 きのあ将棋 - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_KIN_MMY.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 激指 - AWAKE
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 激指 - AWAKE
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_GEK_AWK.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 Sunfish - shogi686
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 Sunfish - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_SNF_686.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 Selene - N4S
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 Selene - N4S
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_SLN_N4S.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - NineDayFever
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - NineDayFever
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_GPS_NDF.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 YSS - 竜の卵
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 YSS - 竜の卵
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_YSS_RYT.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - Apery
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - Apery
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_NAN_APR.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 さわにゃん - nozomi
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 さわにゃん - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_SWN_NZM.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 GA将!!!!!!!! - ひまわり
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 GA将!!!!!!!! - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_GAS_HIM.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 山田将棋 - 柿木将棋
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 山田将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_YAM_KAK.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 ponanza - 芝浦将棋Jr.
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 ponanza - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_PON_SSJ.csa
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 大合神クジラちゃん - おから饅頭
+第25回世界コンピュータ将棋選手権,二次予選 2回戦 大合神クジラちゃん - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U2_DGK_OKR.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 おから饅頭 - Selene
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 おから饅頭 - Selene
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_OKR_SLN.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 芝浦将棋Jr. - さわにゃん
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 芝浦将棋Jr. - さわにゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_SSJ_SWN.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 なのは - 柿木将棋
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 なのは - 柿木将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_NAN_KAK.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 YSS - 無明6
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 YSS - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_YSS_MMY.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 AWAKE - Sunfish
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 AWAKE - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_AWK_SNF.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - GPS将棋
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - GPS将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_HIM_GPS.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 shogi686 - 激指
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 shogi686 - 激指
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_686_GEK.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - ponanza
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - ponanza
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_NZM_PON.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 山田将棋
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_APR_YAM.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 竜の卵 - きのあ将棋
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 竜の卵 - きのあ将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_RYT_KIN.csa
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_U1_NDF_GAS.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 nozomi - 無明6
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 nozomi - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_NZM_MMY.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - JPBR-0
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - JPBR-0
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_GAR_JPB.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - 白砂将棋
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - 白砂将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_NRK_HAK.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - まったりゆうちゃん
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_OKI_YUU.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 shogi686 - 山田将棋
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 shogi686 - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_686_YAM.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - コオロギ
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - コオロギ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_LBS_KRG.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 Sunfish - おから饅頭
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 Sunfish - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_SNF_OKR.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 Labyrinthus - カツ丼将棋
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 Labyrinthus - カツ丼将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_LBR_KTD_2.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 うさぴょん - scherzo
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 うさぴょん - scherzo
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_USA_SCH.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 ひまわり - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 ひまわり - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_HIM_DGK.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 メカ女子将棋 - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 メカ女子将棋 - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_MCJ_GAS.csa
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - こまあそび
+第25回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - こまあそび
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L7_KFW_KMA.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 libshogi - メカ女子将棋
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 libshogi - メカ女子将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_LBS_MCJ.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 白砂将棋 - まったりゆうちゃん
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 白砂将棋 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_HAK_YUU.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - nozomi
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_GAR_NZM.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 おから饅頭 - うさぴょん
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 おから饅頭 - うさぴょん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_OKR_USA.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - Labyrinthus
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - Labyrinthus
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_NRK_LBR.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 大合神クジラちゃん - 山田将棋
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 大合神クジラちゃん - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_DGK_YAM.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 JPBR-0 - shogi686
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 JPBR-0 - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_JPB_686.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - Sunfish
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_HIM_SNF.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 無明6 - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 無明6 - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_MMY_GAS.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - scherzo
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - scherzo
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_KMA_SCH.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 コオロギ - 隠岐
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 コオロギ - 隠岐
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_KRG_OKI.csa
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - きふわらべ
+第25回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L6_KTD_KFW.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 nozomi - おから饅頭
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 nozomi - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_NZM_OKR.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 まったりゆうちゃん - メカ女子将棋
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 まったりゆうちゃん - メカ女子将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_YUU_MCJ.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - Labyrinthus
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - Labyrinthus
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_OKI_LBR.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 GA将!!!!!!!! - Sunfish
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 GA将!!!!!!!! - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_GAS_SNF.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 白砂将棋 - 臥龍
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 白砂将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_HAK_GAR.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 うさぴょん - コオロギ
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 うさぴょん - コオロギ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_USA_KRG.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - scherzo
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - scherzo
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_KTD_SCH.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - ひまわり
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_YAM_HIM.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - JPBR-0
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - JPBR-0
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_DGK_JPB.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - 無明6
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_LBS_MMY.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - shogi686
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_KMA_686.csa
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - なり金将棋
+第25回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - なり金将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L5_KFW_NRK.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 Labyrinthus - コオロギ
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 Labyrinthus - コオロギ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_LBR_KRG.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - 臥龍
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - 臥龍
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_YUU_GAR.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん - 隠岐
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん - 隠岐
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_USA_OKI.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - shogi686
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - shogi686
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_SCH_686.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 おから饅頭 - libshogi
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 おから饅頭 - libshogi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_OKR_LBS.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - Sunfish
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_NZM_SNF.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_HIM_GAS.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 JPBR-0 - 無明6
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 JPBR-0 - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_JPB_MMY.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - なり金将棋
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - なり金将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_MCJ_NRK.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 山田将棋
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_KMA_YAM.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - 白砂将棋
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - 白砂将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_KFW_HAK.csa
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 カツ丼将棋 - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,一次予選 4回戦 カツ丼将棋 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L4_KTD_DGK.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 scherzo - Labyrinthus
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 scherzo - Labyrinthus
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_SCH_LBR.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - こまあそび
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - こまあそび
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_OKI_KMA_4.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 GA将!!!!!!!! - うさぴょん
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 GA将!!!!!!!! - うさぴょん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_GAS_USA.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 nozomi - まったりゆうちゃん
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 nozomi - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_NZM_YUU.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - メカ女子将棋
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - メカ女子将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_KTD_MCJ.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 ひまわり - おから饅頭
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 ひまわり - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_HIM_OKR.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - 無明6
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - 無明6
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_NRK_MMY.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 コオロギ - 白砂将棋
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 コオロギ - 白砂将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_KRG_HAK.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 shogi686 - 大合神クジラちゃん
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 shogi686 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_686_DGK.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - libshogi
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - libshogi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_YAM_LBS.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 Sunfish - JPBR-0
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 Sunfish - JPBR-0
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_SNF_JPB.csa
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - きふわらべ
+第25回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - きふわらべ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L3_GAR_KFW.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 大合神クジラちゃん - こまあそび
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 大合神クジラちゃん - こまあそび
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_DGK_KMA_3.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 Labyrinthus - うさぴょん
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 Labyrinthus - うさぴょん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_LBR_USA.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 メカ女子将棋 - nozomi
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 メカ女子将棋 - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_MCJ_NZM.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ひまわり
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_YUU_HIM.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 JPBR-0 - 白砂将棋
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 JPBR-0 - 白砂将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_JPB_HAK.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - 山田将棋
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - 山田将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_GAR_YAM.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 おから饅頭 - カツ丼将棋
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 おから饅頭 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_OKR_KTD.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 Sunfish - コオロギ
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 Sunfish - コオロギ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_SNF_KRG.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 無明6 - 隠岐
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 無明6 - 隠岐
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_MMY_OKI.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 shogi686 - なり金将棋
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 shogi686 - なり金将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_686_NRK.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - libshogi
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - libshogi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_KFW_LBS.csa
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - GA将!!!!!!!!
+第25回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - GA将!!!!!!!!
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L2_SCH_GAS.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 大合神クジラちゃん - nozomi
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 大合神クジラちゃん - nozomi
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_DGK_NZM.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 うさぴょん - 臥龍
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 うさぴょん - 臥龍
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_USA_GAR.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 無明6 - おから饅頭
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 無明6 - おから饅頭
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_MMY_OKR.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 shogi686 - まったりゆうちゃん
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 shogi686 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_686_YUU.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - メカ女子将棋
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - メカ女子将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_KMA_MCJ.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 コオロギ - JPBR-0
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 コオロギ - JPBR-0
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_KRG_JPB.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 白砂将棋 - Sunfish
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 白砂将棋 - Sunfish
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_HAK_SNF.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - Labyrinthus
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - Labyrinthus
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_YAM_LBR.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 GA将!!!!!!!! - きふわらべ
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 GA将!!!!!!!! - きふわらべ
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_GAS_KFW.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - ひまわり
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_NRK_HIM_2.csa
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 隠岐 - カツ丼将棋
+第25回世界コンピュータ将棋選手権,一次予選 1回戦 隠岐 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc25/kifu/WCSC25_L1_OKI_KTD.csa

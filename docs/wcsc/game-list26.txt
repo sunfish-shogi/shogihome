@@ -1,0 +1,782 @@
+V1
+#sub:第26回世界コンピュータ将棋選手権
+第26回世界コンピュータ将棋選手権,決勝 7回戦 Apery - 大将軍
+第26回世界コンピュータ将棋選手権,決勝 7回戦 Apery - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F7_APR_N4S.csa
+第26回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん - NineDayFever
+第26回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F7_DGK_NDF.csa
+第26回世界コンピュータ将棋選手権,決勝 7回戦 ponanza - 技巧
+第26回世界コンピュータ将棋選手権,決勝 7回戦 ponanza - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F7_PON_GIK.csa
+第26回世界コンピュータ将棋選手権,決勝 7回戦 読み太 - うさぴょん2
+第26回世界コンピュータ将棋選手権,決勝 7回戦 読み太 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F7_YMT_USA.csa
+第26回世界コンピュータ将棋選手権,決勝 6回戦 読み太 - 大将軍
+第26回世界コンピュータ将棋選手権,決勝 6回戦 読み太 - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F6_YMT_N4S.csa
+第26回世界コンピュータ将棋選手権,決勝 6回戦 大合神クジラちゃん - 技巧
+第26回世界コンピュータ将棋選手権,決勝 6回戦 大合神クジラちゃん - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F6_DGK_GIK.csa
+第26回世界コンピュータ将棋選手権,決勝 6回戦 うさぴょん2 - Apery
+第26回世界コンピュータ将棋選手権,決勝 6回戦 うさぴょん2 - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F6_USA_APR.csa
+第26回世界コンピュータ将棋選手権,決勝 6回戦 NineDayFever - ponanza
+第26回世界コンピュータ将棋選手権,決勝 6回戦 NineDayFever - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F6_NDF_PON.csa
+第26回世界コンピュータ将棋選手権,決勝 5回戦 技巧 - NineDayFever
+第26回世界コンピュータ将棋選手権,決勝 5回戦 技巧 - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F5_GIK_NDF.csa
+第26回世界コンピュータ将棋選手権,決勝 5回戦 大将軍 - ponanza
+第26回世界コンピュータ将棋選手権,決勝 5回戦 大将軍 - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F5_N4S_PON.csa
+第26回世界コンピュータ将棋選手権,決勝 5回戦 うさぴょん2 - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,決勝 5回戦 うさぴょん2 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F5_USA_DGK.csa
+第26回世界コンピュータ将棋選手権,決勝 5回戦 Apery - 読み太
+第26回世界コンピュータ将棋選手権,決勝 5回戦 Apery - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F5_APR_YMT.csa
+第26回世界コンピュータ将棋選手権,決勝 4回戦 Apery - NineDayFever
+第26回世界コンピュータ将棋選手権,決勝 4回戦 Apery - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F4_APR_NDF.csa
+第26回世界コンピュータ将棋選手権,決勝 4回戦 読み太 - 技巧
+第26回世界コンピュータ将棋選手権,決勝 4回戦 読み太 - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F4_YMT_GIK.csa
+第26回世界コンピュータ将棋選手権,決勝 4回戦 大将軍 - うさぴょん2
+第26回世界コンピュータ将棋選手権,決勝 4回戦 大将軍 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F4_N4S_USA.csa
+第26回世界コンピュータ将棋選手権,決勝 4回戦 ponanza - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,決勝 4回戦 ponanza - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F4_PON_DGK.csa
+第26回世界コンピュータ将棋選手権,決勝 3回戦 大将軍 - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,決勝 3回戦 大将軍 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F3_N4S_DGK.csa
+第26回世界コンピュータ将棋選手権,決勝 3回戦 技巧 - うさぴょん2
+第26回世界コンピュータ将棋選手権,決勝 3回戦 技巧 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F3_GIK_USA.csa
+第26回世界コンピュータ将棋選手権,決勝 3回戦 ponanza - Apery
+第26回世界コンピュータ将棋選手権,決勝 3回戦 ponanza - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F3_PON_APR.csa
+第26回世界コンピュータ将棋選手権,決勝 3回戦 読み太 - NineDayFever
+第26回世界コンピュータ将棋選手権,決勝 3回戦 読み太 - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F3_YMT_NDF.csa
+第26回世界コンピュータ将棋選手権,決勝 2回戦 大合神クジラちゃん - 読み太
+第26回世界コンピュータ将棋選手権,決勝 2回戦 大合神クジラちゃん - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F2_DGK_YMT.csa
+第26回世界コンピュータ将棋選手権,決勝 2回戦 Apery - 技巧
+第26回世界コンピュータ将棋選手権,決勝 2回戦 Apery - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F2_APR_GIK.csa
+第26回世界コンピュータ将棋選手権,決勝 2回戦 NineDayFever - 大将軍
+第26回世界コンピュータ将棋選手権,決勝 2回戦 NineDayFever - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F2_NDF_N4S.csa
+第26回世界コンピュータ将棋選手権,決勝 2回戦 うさぴょん2 - ponanza
+第26回世界コンピュータ将棋選手権,決勝 2回戦 うさぴょん2 - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F2_USA_PON.csa
+第26回世界コンピュータ将棋選手権,決勝 1回戦 ponanza - 読み太
+第26回世界コンピュータ将棋選手権,決勝 1回戦 ponanza - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F1_PON_YMT.csa
+第26回世界コンピュータ将棋選手権,決勝 1回戦 NineDayFever - うさぴょん2
+第26回世界コンピュータ将棋選手権,決勝 1回戦 NineDayFever - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F1_NDF_USA.csa
+第26回世界コンピュータ将棋選手権,決勝 1回戦 技巧 - 大将軍
+第26回世界コンピュータ将棋選手権,決勝 1回戦 技巧 - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F1_GIK_N4S.csa
+第26回世界コンピュータ将棋選手権,決勝 1回戦 大合神クジラちゃん - Apery
+第26回世界コンピュータ将棋選手権,決勝 1回戦 大合神クジラちゃん - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_F1_DGK_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - うさぴょん2
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_N4S_USA.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 GPS将棋 - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 GPS将棋 - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_GPS_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 YSS - ponanza
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 YSS - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_YSS_PON.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 技巧 - Apery
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 技巧 - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_GIK_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 激指 - NineDayFever
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 激指 - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_GEK_NDF.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 Qhapaq - たぬきのもり
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 Qhapaq - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_QHA_TNK.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 きのあ将棋 - なのは
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 きのあ将棋 - なのは
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_KIN_NAN.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 たこっと - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 たこっと - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_TKT_DGK.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 AWAKE - 柿木将棋
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 AWAKE - 柿木将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_AWK_KAK.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 無明7 - 習甦
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 無明7 - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_MMY_SHS.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - 芝浦将棋Jr.
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_MCB_SSJ.csa
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - ひまわり
+第26回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - ひまわり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U9_OKR_HIM.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_APR_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Jr. - きのあ将棋
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Jr. - きのあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_SSJ_KIN.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 Qhapaq - YSS
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 Qhapaq - YSS
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_QHA_YSS.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 たぬきのもり - 柿木将棋
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 たぬきのもり - 柿木将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_TNK_KAK.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 おから饅頭 - たこっと
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 おから饅頭 - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_OKR_TKT.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - 習甦
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_NAN_SHS.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 NineDayFever - GPS将棋
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 NineDayFever - GPS将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_NDF_GPS.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - 技巧
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_DGK_GIK.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 ponanza - うさぴょん2
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 ponanza - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_PON_USA.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 AWAKE - 激指
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 AWAKE - 激指
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_AWK_GEK.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - 大将軍
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_MCB_N4S.csa
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 無明7 - ひまわり
+第26回世界コンピュータ将棋選手権,二次予選 8回戦 無明7 - ひまわり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U8_MMY_HIM.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 YSS - AWAKE
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 YSS - AWAKE
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_YSS_AWK.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 うさぴょん2 - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 うさぴょん2 - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_USA_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 技巧 - NineDayFever
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 技巧 - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_GIK_NDF.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - 芝浦将棋Jr.
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_NAN_SSJ.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 たぬきのもり - GPS将棋
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 たぬきのもり - GPS将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_TNK_GPS.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - 大将軍
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_DGK_N4S.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - ひまわり
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - ひまわり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_SHS_HIM.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq - ponanza
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_QHA_PON.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - たこっと
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_APR_TKT.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 きのあ将棋 - 名人コブラ
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 きのあ将棋 - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_KIN_MCB.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 激指 - おから饅頭
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 激指 - おから饅頭
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_GEK_OKR.csa
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - 無明7
+第26回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - 無明7
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U7_KAK_MMY.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - YSS
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - YSS
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_SHS_YSS.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq - 激指
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq - 激指
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_QHA_GEK.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 ひまわり - たぬきのもり
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 ひまわり - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_HIM_TNK.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 技巧 - うさぴょん2
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 技巧 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_GIK_USA.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 NineDayFever - Apery
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 NineDayFever - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_NDF_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 大合神クジラちゃん - GPS将棋
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 大合神クジラちゃん - GPS将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_DGK_GPS.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 名人コブラ - たこっと
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 名人コブラ - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_MCB_TKT.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 ponanza - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 ponanza - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_PON_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - 大将軍
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_OKR_N4S.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 AWAKE - きのあ将棋
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 AWAKE - きのあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_AWK_KIN.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 無明7 - 芝浦将棋Jr.
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 無明7 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_MMY_SSJ.csa
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - 柿木将棋
+第26回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - 柿木将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U6_NAN_KAK.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 たぬきのもり - 大将軍
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 たぬきのもり - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_TNK_N4S.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 技巧 - ponanza
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 技巧 - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_GIK_PON.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 たこっと - Qhapaq
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 たこっと - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_TKT_QHA.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 YSS - なのは
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 YSS - なのは
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_YSS_NAN.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - AWAKE
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - AWAKE
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_GPS_AWK.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 読み太 - 激指
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 読み太 - 激指
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_YMT_GEK.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 柿木将棋 - 習甦
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 柿木将棋 - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_KAK_SHS.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 NineDayFever - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 NineDayFever - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_NDF_DGK.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 芝浦将棋Jr. - ひまわり
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 芝浦将棋Jr. - ひまわり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_SSJ_HIM.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 うさぴょん2 - Apery
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 うさぴょん2 - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_USA_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 きのあ将棋 - 無明7
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 きのあ将棋 - 無明7
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_KIN_MMY.csa
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 おから饅頭 - 名人コブラ
+第26回世界コンピュータ将棋選手権,二次予選 5回戦 おから饅頭 - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U5_OKR_MCB.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - 激指
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - 激指
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_N4S_GEK.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - たこっと
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_SHS_TKT.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - なのは
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - なのは
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_MCB_NAN_2.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 読み太 - 技巧
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 読み太 - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_YMT_GIK.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - 芝浦将棋Jr.
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_GPS_SSJ.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 AWAKE - Apery
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 AWAKE - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_AWK_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 うさぴょん2 - おから饅頭
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 うさぴょん2 - おから饅頭
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_USA_OKR.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - Qhapaq
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_KAK_QHA.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 YSS - NineDayFever
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 YSS - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_YSS_NDF.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 無明7 - たぬきのもり
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 無明7 - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_MMY_TNK.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 ひまわり - きのあ将棋
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 ひまわり - きのあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_HIM_KIN.csa
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - ponanza
+第26回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U4_DGK_PON.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 ponanza - NineDayFever
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 ponanza - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_PON_NDF.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 きのあ将棋 - 柿木将棋
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 きのあ将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_KIN_KAK_2.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 Qhapaq - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 Qhapaq - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_QHA_DGK.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - うさぴょん2
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_SHS_USA.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 たぬきのもり - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 たぬきのもり - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_TNK_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 たこっと - 大将軍
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 たこっと - 大将軍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_TKT_N4S.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 ひまわり - YSS
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 ひまわり - YSS
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_HIM_YSS.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 激指 - GPS将棋
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 激指 - GPS将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_GEK_GPS_2.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - なのは
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - なのは
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_APR_NAN.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 芝浦将棋Jr. - おから饅頭
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 芝浦将棋Jr. - おから饅頭
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_SSJ_OKR.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 無明7 - 名人コブラ
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 無明7 - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_MMY_MCB.csa
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 技巧 - AWAKE
+第26回世界コンピュータ将棋選手権,二次予選 3回戦 技巧 - AWAKE
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U3_GIK_AWK.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 柿木将棋
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 柿木将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_NDF_KAK.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - Qhapaq
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_YMT_QHA.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 おから饅頭 - ponanza
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 おから饅頭 - ponanza
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_OKR_PON.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 芝浦将棋Jr. - うさぴょん2
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 芝浦将棋Jr. - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_SSJ_USA.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 大合神クジラちゃん - たぬきのもり
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 大合神クジラちゃん - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_DGK_TNK.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - 無明7
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - 無明7
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_TKT_MMY.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 YSS - 激指
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 YSS - 激指
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_YSS_GEK.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - Apery
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - Apery
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_N4S_APR.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - ひまわり
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_GPS_HIM.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - AWAKE
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - AWAKE
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_NAN_AWK.csa
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - 技巧
+第26回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U2_MCB_GIK.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 うさぴょん2 - NineDayFever
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 うさぴょん2 - NineDayFever
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_USA_NDF.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 AWAKE - たこっと
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 AWAKE - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_AWK_TKT.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 ponanza - 習甦
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 ponanza - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_PON_SHS.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 Qhapaq - GPS将棋
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 Qhapaq - GPS将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_QHA_GPS_2.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 たぬきのもり - YSS
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 たぬきのもり - YSS
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_TNK_YSS_2.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 柿木将棋 - 芝浦将棋Jr.
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 柿木将棋 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_KAK_SSJ.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - 読み太
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_HIM_YMT.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - 技巧
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_N4S_GIK.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 名人コブラ
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_APR_MCB.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 なのは - 無明7
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 なのは - 無明7
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_NAN_MMY.csa
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 激指 - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,二次予選 1回戦 激指 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_U1_GEK_DGK.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 nozomi - 名人コブラ
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 nozomi - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_NZM_MCB.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 President_X - メカ女子将棋
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 President_X - メカ女子将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_PRX_MCJ.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 習甦 - うさぴょん2
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 習甦 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_SHS_USA.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 Claire - 白砂将棋
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 Claire - 白砂将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_CLR_HAK.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 大合神クジラちゃん - たぬきのもり
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 大合神クジラちゃん - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_DGK_TNK_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - Qhapaq
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_KFW_QHA.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - broaden
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - broaden
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_LBS_BRO.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 こあ将棋 - 臥龍
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 こあ将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_KOA_GAR.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 悲劇的 with Zero - CGP
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 悲劇的 with Zero - CGP
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_HWZ_CGP.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 たこっと - 技巧
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 たこっと - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_TKT_GIK.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 読み太 - elmo
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 読み太 - elmo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_YMT_ELM.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 山田将棋 - TMOQ
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 山田将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_YAM_TMO.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - まったりゆうちゃん
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_NRK_YUU.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - shogi686
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - shogi686
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_OKI_686.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - こまあそび
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_KTD_KMA.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 SilverBullet - 人生送りバント失敗
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 SilverBullet - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_SLB_JOS.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 HoneyWaffle - March
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 HoneyWaffle - March
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_HNW_MRC.csa
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 Novice - scherzo
+第26回世界コンピュータ将棋選手権,一次予選 7回戦 Novice - scherzo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L7_NVC_SCH.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 Qhapaq - たこっと
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 Qhapaq - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_QHA_TKT.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 白砂将棋 - きふわらべ
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 白砂将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_HAK_KFW.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 技巧 - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 技巧 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_GIK_DGK.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - 読み太
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_CGP_YMT.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 うさぴょん2 - たぬきのもり
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 うさぴょん2 - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_USA_TNK.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 HoneyWaffle - こあ将棋
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 HoneyWaffle - こあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_HNW_KOA.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 shogi686 - 悲劇的 with Zero
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 shogi686 - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_686_HWZ.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - 臥龍
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - 臥龍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_SCH_GAR.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - 名人コブラ
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_TMO_MCB.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 elmo - Novice
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 elmo - Novice
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_ELM_NVC.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - カツ丼将棋
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_NRK_KTD.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 山田将棋 - 習甦
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 山田将棋 - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_YAM_SHS.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 nozomi - 人生送りバント失敗
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 nozomi - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_NZM_JOS.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 SilverBullet - libshogi
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 SilverBullet - libshogi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_SLB_LBS.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - 隠岐
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - 隠岐
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_KMA_OKI.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - メカ女子将棋
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - メカ女子将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_YUU_MCJ.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 Claire - President_X
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 Claire - President_X
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_CLR_PRX.csa
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 March - broaden
+第26回世界コンピュータ将棋選手権,一次予選 6回戦 March - broaden
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L6_MRC_BRO.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 うさぴょん2 - nozomi
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 うさぴょん2 - nozomi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_USA_NZM.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 読み太 - 技巧
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 読み太 - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_YMT_GIK.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 白砂将棋 - shogi686
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 白砂将棋 - shogi686
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_HAK_686.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - CGP
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - CGP
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_DGK_CGP.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 メカ女子将棋 - なり金将棋
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 メカ女子将棋 - なり金将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_MCJ_NRK.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 こあ将棋 - March
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 こあ将棋 - March
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_KOA_MRC.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - HoneyWaffle
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - HoneyWaffle
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_LBS_HNW.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 President_X - 山田将棋
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 President_X - 山田将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_PRX_YAM.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - Claire
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - Claire
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_KFW_CLR.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - 臥龍
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - 臥龍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_OKI_GAR.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 Qhapaq - elmo
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 Qhapaq - elmo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_QHA_ELM.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 たこっと - Novice
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 たこっと - Novice
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_TKT_NVC.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - 習甦
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_SLB_SHS.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - まったりゆうちゃん
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_JOS_YUU.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 たぬきのもり - TMOQ
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 たぬきのもり - TMOQ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_TNK_TMO.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - scherzo
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - scherzo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_MCB_SCH.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 悲劇的 with Zero - カツ丼将棋
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 悲劇的 with Zero - カツ丼将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_HWZ_KTD.csa
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 broaden - こまあそび
+第26回世界コンピュータ将棋選手権,一次予選 5回戦 broaden - こまあそび
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L5_BRO_KMA.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - 読み太
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_NZM_YMT.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん2 - きふわらべ
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん2 - きふわらべ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_USA_KFW.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 たぬきのもり - 技巧
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 たぬきのもり - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_TNK_GIK.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 山田将棋 - CGP
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 山田将棋 - CGP
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_YAM_CGP.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - Novice
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - Novice
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_YUU_NVC.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 大合神クジラちゃん - Qhapaq
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 大合神クジラちゃん - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_DGK_QHA.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 臥龍 - 習甦
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 臥龍 - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_GAR_SHS.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - Claire
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - Claire
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_TMO_CLR.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 broaden - SilverBullet
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 broaden - SilverBullet
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_BRO_SLB.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 HoneyWaffle - こまあそび
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 HoneyWaffle - こまあそび
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_HNW_KMA_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - 白砂将棋
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - 白砂将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_MCJ_HAK.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - libshogi
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - libshogi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_SCH_LBS.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 悲劇的 with Zero - 名人コブラ
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 悲劇的 with Zero - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_HWZ_MCB.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 President_X - elmo
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 President_X - elmo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_PRX_ELM.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - たこっと
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_JOS_TKT.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 カツ丼将棋 - shogi686
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 カツ丼将棋 - shogi686
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_KTD_686.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 March - なり金将棋
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 March - なり金将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_MRC_NRK.csa
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 隠岐 - こあ将棋
+第26回世界コンピュータ将棋選手権,一次予選 4回戦 隠岐 - こあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L4_OKI_KOA.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - shogi686
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - shogi686
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_CGP_686.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 たぬきのもり - 習甦
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 たぬきのもり - 習甦
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_TNK_SHS_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 scherzo - まったりゆうちゃん
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 scherzo - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_SCH_YUU.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 elmo - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 elmo - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_ELM_DGK.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 読み太 - うさぴょん2
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 読み太 - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_YMT_USA.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - 隠岐
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - 隠岐
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_JOS_OKI.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 悲劇的 with Zero - 白砂将棋
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 悲劇的 with Zero - 白砂将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_HWZ_HAK.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - きふわらべ
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_NRK_KFW.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 名人コブラ - Qhapaq
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 名人コブラ - Qhapaq
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_MCB_QHA.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 TMOQ - nozomi
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 TMOQ - nozomi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_TMO_NZM.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - Novice
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - Novice
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_CLR_NVC.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 たこっと - President_X
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 たこっと - President_X
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_TKT_PRX.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 SilverBullet - メカ女子将棋
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 SilverBullet - メカ女子将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_SLB_MCJ.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - 山田将棋
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - 山田将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_KMA_YAM.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 技巧 - broaden
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 技巧 - broaden
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_GIK_BRO.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - こあ将棋
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - こあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_KTD_KOA.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - HoneyWaffle
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_GAR_HNW.csa
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 March - libshogi
+第26回世界コンピュータ将棋選手権,一次予選 3回戦 March - libshogi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L3_MRC_LBS.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 shogi686 - きふわらべ
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 shogi686 - きふわらべ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_686_KFW.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 習甦 - 大合神クジラちゃん
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 習甦 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_SHS_DGK.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 nozomi - 白砂将棋
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 nozomi - 白砂将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_NZM_HAK.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 うさぴょん2 - 臥龍
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 うさぴょん2 - 臥龍
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_USA_GAR.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 libshogi - まったりゆうちゃん
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 libshogi - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_LBS_YUU.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 たこっと - broaden
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 たこっと - broaden
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_TKT_BRO.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 HoneyWaffle - 悲劇的 with Zero
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 HoneyWaffle - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_HNW_HWZ_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - 人生送りバント失敗
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_KTD_JOS.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 Qhapaq - President_X
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 Qhapaq - President_X
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_QHA_PRX.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 技巧 - SilverBullet
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 技巧 - SilverBullet
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_GIK_SLB.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 名人コブラ - 読み太
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 名人コブラ - 読み太
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_MCB_YMT.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 メカ女子将棋 - 隠岐
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 メカ女子将棋 - 隠岐
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_MCJ_OKI.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - 山田将棋
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_NRK_YAM.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 Novice - TMOQ
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 Novice - TMOQ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_NVC_TMO_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - scherzo
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - scherzo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_KMA_SCH.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 たぬきのもり - こあ将棋
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 たぬきのもり - こあ将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_TNK_KOA.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 elmo - March
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 elmo - March
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_ELM_MRC.csa
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 CGP - Claire
+第26回世界コンピュータ将棋選手権,一次予選 2回戦 CGP - Claire
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L2_CGP_CLR.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 習甦 - 悲劇的 with Zero
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 習甦 - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_SHS_HWZ_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 白砂将棋 - たぬきのもり
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 白砂将棋 - たぬきのもり
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_HAK_TNK.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 臥龍 - elmo
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 臥龍 - elmo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_GAR_ELM.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - 技巧
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - 技巧
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_KFW_GIK.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Claire - 隠岐
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Claire - 隠岐
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_CLR_OKI.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 President_X - こまあそび
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 President_X - こまあそび
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_PRX_KMA.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - メカ女子将棋
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - メカ女子将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_CGP_MCJ.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - たこっと
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - たこっと
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_YAM_TKT.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Qhapaq - scherzo
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Qhapaq - scherzo
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_QHA_SCH_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - 人生送りバント失敗
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_NVC_JOS.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 shogi686 - SilverBullet
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 shogi686 - SilverBullet
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_686_SLB.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 こあ将棋 - nozomi
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 こあ将棋 - nozomi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_KOA_NZM.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 大合神クジラちゃん - HoneyWaffle
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 大合神クジラちゃん - HoneyWaffle
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_DGK_HNW_2.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 broaden - なり金将棋
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 broaden - なり金将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_BRO_NRK.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - カツ丼将棋
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - カツ丼将棋
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_TMO_KTD.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - 名人コブラ
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - 名人コブラ
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_YUU_MCB.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 March - うさぴょん2
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 March - うさぴょん2
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_MRC_USA.csa
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 読み太 - libshogi
+第26回世界コンピュータ将棋選手権,一次予選 1回戦 読み太 - libshogi
+http://live4.computer-shogi.org/wcsc26/kifu/WCSC26_L1_YMT_LBS.csa

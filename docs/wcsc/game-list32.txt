@@ -1,0 +1,839 @@
+V1
+#sub:第32回世界コンピュータ将棋選手権
+第32回世界コンピュータ将棋選手権,決勝 7回戦 やねうら王 - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,決勝 7回戦 やねうら王 - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F7_YAN_TNK_1.csa
+第32回世界コンピュータ将棋選手権,決勝 7回戦 二番絞り - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,決勝 7回戦 二番絞り - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F7_NBS_DLS.csa
+第32回世界コンピュータ将棋選手権,決勝 7回戦 S.Lightweight-EF - W@nderER
+第32回世界コンピュータ将棋選手権,決勝 7回戦 S.Lightweight-EF - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F7_SLW_WND.csa
+第32回世界コンピュータ将棋選手権,決勝 7回戦 名人コブラ - Qha
+第32回世界コンピュータ将棋選手権,決勝 7回戦 名人コブラ - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F7_MCB_QHA.csa
+第32回世界コンピュータ将棋選手権,決勝 6回戦 dlshogi with HEROZ - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,決勝 6回戦 dlshogi with HEROZ - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F6_DLS_TNK.csa
+第32回世界コンピュータ将棋選手権,決勝 6回戦 Qha - W@nderER
+第32回世界コンピュータ将棋選手権,決勝 6回戦 Qha - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F6_QHA_WND.csa
+第32回世界コンピュータ将棋選手権,決勝 6回戦 二番絞り - やねうら王
+第32回世界コンピュータ将棋選手権,決勝 6回戦 二番絞り - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F6_NBS_YAN.csa
+第32回世界コンピュータ将棋選手権,決勝 6回戦 名人コブラ - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,決勝 6回戦 名人コブラ - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F6_MCB_SLW.csa
+第32回世界コンピュータ将棋選手権,決勝 5回戦 dlshogi with HEROZ - やねうら王
+第32回世界コンピュータ将棋選手権,決勝 5回戦 dlshogi with HEROZ - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F5_DLS_YAN.csa
+第32回世界コンピュータ将棋選手権,決勝 5回戦 W@nderER - 名人コブラ
+第32回世界コンピュータ将棋選手権,決勝 5回戦 W@nderER - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F5_WND_MCB.csa
+第32回世界コンピュータ将棋選手権,決勝 5回戦 マメット・ブンブク - 二番絞り
+第32回世界コンピュータ将棋選手権,決勝 5回戦 マメット・ブンブク - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F5_TNK_NBS.csa
+第32回世界コンピュータ将棋選手権,決勝 5回戦 Qha - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,決勝 5回戦 Qha - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F5_QHA_SLW.csa
+第32回世界コンピュータ将棋選手権,決勝 4回戦 W@nderER - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,決勝 4回戦 W@nderER - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F4_WND_DLS.csa
+第32回世界コンピュータ将棋選手権,決勝 4回戦 S.Lightweight-EF - 二番絞り
+第32回世界コンピュータ将棋選手権,決勝 4回戦 S.Lightweight-EF - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F4_SLW_NBS.csa
+第32回世界コンピュータ将棋選手権,決勝 4回戦 マメット・ブンブク - Qha
+第32回世界コンピュータ将棋選手権,決勝 4回戦 マメット・ブンブク - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F4_TNK_QHA_1.csa
+第32回世界コンピュータ将棋選手権,決勝 4回戦 やねうら王 - 名人コブラ
+第32回世界コンピュータ将棋選手権,決勝 4回戦 やねうら王 - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F4_YAN_MCB.csa
+第32回世界コンピュータ将棋選手権,決勝 3回戦 二番絞り - W@nderER
+第32回世界コンピュータ将棋選手権,決勝 3回戦 二番絞り - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F3_NBS_WND.csa
+第32回世界コンピュータ将棋選手権,決勝 3回戦 S.Lightweight-EF - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,決勝 3回戦 S.Lightweight-EF - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F3_SLW_DLS.csa
+第32回世界コンピュータ将棋選手権,決勝 3回戦 名人コブラ - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,決勝 3回戦 名人コブラ - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F3_MCB_TNK.csa
+第32回世界コンピュータ将棋選手権,決勝 3回戦 やねうら王 - Qha
+第32回世界コンピュータ将棋選手権,決勝 3回戦 やねうら王 - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F3_YAN_QHA.csa
+第32回世界コンピュータ将棋選手権,決勝 2回戦 dlshogi with HEROZ - Qha
+第32回世界コンピュータ将棋選手権,決勝 2回戦 dlshogi with HEROZ - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F2_DLS_QHA.csa
+第32回世界コンピュータ将棋選手権,決勝 2回戦 二番絞り - 名人コブラ
+第32回世界コンピュータ将棋選手権,決勝 2回戦 二番絞り - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F2_NBS_MCB.csa
+第32回世界コンピュータ将棋選手権,決勝 2回戦 マメット・ブンブク - W@nderER
+第32回世界コンピュータ将棋選手権,決勝 2回戦 マメット・ブンブク - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F2_TNK_WND.csa
+第32回世界コンピュータ将棋選手権,決勝 2回戦 やねうら王 - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,決勝 2回戦 やねうら王 - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F2_YAN_SLW.csa
+第32回世界コンピュータ将棋選手権,決勝 1回戦 マメット・ブンブク - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,決勝 1回戦 マメット・ブンブク - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F1_TNK_SLW.csa
+第32回世界コンピュータ将棋選手権,決勝 1回戦 dlshogi with HEROZ - 名人コブラ
+第32回世界コンピュータ将棋選手権,決勝 1回戦 dlshogi with HEROZ - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F1_DLS_MCB.csa
+第32回世界コンピュータ将棋選手権,決勝 1回戦 W@nderER - やねうら王
+第32回世界コンピュータ将棋選手権,決勝 1回戦 W@nderER - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F1_WND_YAN.csa
+第32回世界コンピュータ将棋選手権,決勝 1回戦 Qha - 二番絞り
+第32回世界コンピュータ将棋選手権,決勝 1回戦 Qha - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_F1_QHA_NBS.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - AobaZero
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_APR_ABZ.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 二番絞り - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 二番絞り - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_NBS_TNK.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_MCB_DLS.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_NVC_SLW.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 いちびん - TMOQ
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 いちびん - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_ICB_TMO.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 W@nderER - やねうら王
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 W@nderER - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_WND_YAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 手抜き - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 手抜き - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_TEN_JIK.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 東横将棋 - 水匠
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 東横将棋 - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_TYS_SUS.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 あやめ - 習甦
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 あやめ - 習甦
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_AYM_SHS.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 ねね将棋 - なのは
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 ねね将棋 - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_NNS_NAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - Miacis
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - Miacis
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_TSG_MIA.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Sin-Daigorilla - Qha
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 Sin-Daigorilla - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_DGR_QHA.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 koron - prelude
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 koron - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_KRN_PRL.csa
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 白ビール - Ryfamate
+第32回世界コンピュータ将棋選手権,二次予選 9回戦 白ビール - Ryfamate
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U9_HFW_RYF.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 やねうら王 - 二番絞り
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 やねうら王 - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_YAN_NBS.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Qha - Novice
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Qha - Novice
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_QHA_NVC.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 AobaZero - 習甦
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 AobaZero - 習甦
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_ABZ_SHS.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 水匠 - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 水匠 - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_SUS_DLS.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 いちびん - Miacis
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 いちびん - Miacis
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_ICB_MIA.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - prelude
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_NAN_PRL.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Ryfamate - 大将軍
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Ryfamate - 大将軍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_RYF_TSG.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - TMOQ
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_APR_TMO.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 W@nderER - Sin-Daigorilla
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 W@nderER - Sin-Daigorilla
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_WND_DGR.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 白ビール - 名人コブラ
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 白ビール - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_HFW_MCB.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 手抜き - あやめ
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 手抜き - あやめ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_TEN_AYM.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 東横将棋 - koron
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 東横将棋 - koron
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_TYS_KRN.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 マメット・ブンブク - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 マメット・ブンブク - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_TNK_SLW.csa
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 十六式いろは煌 - ねね将棋
+第32回世界コンピュータ将棋選手権,二次予選 8回戦 十六式いろは煌 - ねね将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U8_JIK_NNS.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - Novice
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - Novice
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_APR_NVC.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi with HEROZ - 二番絞り
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi with HEROZ - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_DLS_NBS.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 東横将棋 - 白ビール
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 東横将棋 - 白ビール
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_TYS_HFW.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 AobaZero - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 AobaZero - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_ABZ_JIK.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Sin-Daigorilla - Ryfamate
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Sin-Daigorilla - Ryfamate
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_DGR_RYF.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 S.Lightweight-EF - 水匠
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 S.Lightweight-EF - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_SLW_SUS.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 手抜き - なのは
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 手抜き - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_TEN_NAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 マメット・ブンブク - W@nderER
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 マメット・ブンブク - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_TNK_WND.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 やねうら王 - Qha
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 やねうら王 - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_YAN_QHA.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 prelude - 大将軍
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 prelude - 大将軍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_PRL_TSG_1.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Miacis - koron
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 Miacis - koron
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_MIA_KRN.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 TMOQ - あやめ
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 TMOQ - あやめ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_TMO_AYM.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - 名人コブラ
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_SHS_MCB.csa
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 いちびん - ねね将棋
+第32回世界コンピュータ将棋選手権,二次予選 7回戦 いちびん - ねね将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U7_ICB_NNS.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 名人コブラ - やねうら王
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 名人コブラ - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_MCB_YAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 二番絞り - W@nderER
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 二番絞り - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_NBS_WND.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - TMOQ
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_NAN_TMO.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 S.Lightweight-EF - 東横将棋
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 S.Lightweight-EF - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_SLW_TYS.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 dlshogi with HEROZ - Ryfamate
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 dlshogi with HEROZ - Ryfamate
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_DLS_RYF.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - Sin-Daigorilla
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - Sin-Daigorilla
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_TSG_DGR.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 Miacis - prelude
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 Miacis - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_MIA_PRL.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 いちびん - 手抜き
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 いちびん - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_ICB_TEN.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 水匠 - 習甦
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 水匠 - 習甦
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_SUS_SHS.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 白ビール - あやめ
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 白ビール - あやめ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_HFW_AYM.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 Novice - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 Novice - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_NVC_TNK.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 十六式いろは煌 - Apery
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 十六式いろは煌 - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_JIK_APR.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 ねね将棋 - AobaZero
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 ねね将棋 - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_NNS_ABZ.csa
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 koron - Qha
+第32回世界コンピュータ将棋選手権,二次予選 6回戦 koron - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U6_KRN_QHA.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_YAN_DLS.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - prelude
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_NVC_PRL.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 二番絞り - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 二番絞り - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_NBS_SLW.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 koron - AobaZero
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 koron - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_KRN_ABZ.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Qha - 東横将棋
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Qha - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_QHA_TYS.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 あやめ - なのは
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 あやめ - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_AYM_NAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 名人コブラ - 大将軍
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 名人コブラ - 大将軍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_MCB_TSG.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Ryfamate - W@nderER
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Ryfamate - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_RYF_WND.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - いちびん
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - いちびん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_APR_ICB.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 水匠 - 白ビール
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 水匠 - 白ビール
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_SUS_HFW.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - Miacis
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - Miacis
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_SHS_MIA.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Sin-Daigorilla - ねね将棋
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 Sin-Daigorilla - ねね将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_DGR_NNS.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 TMOQ - 手抜き
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 TMOQ - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_TMO_TEN.csa
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 マメット・ブンブク - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,二次予選 5回戦 マメット・ブンブク - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U5_TNK_JIK.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi with HEROZ - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi with HEROZ - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_DLS_TNK_1.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - あやめ
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - あやめ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_NVC_AYM.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 W@nderER - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 W@nderER - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_WND_SLW_1.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 白ビール - 二番絞り
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 白ビール - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_HFW_NBS.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 AobaZero - いちびん
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 AobaZero - いちびん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_ABZ_ICB_1.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - Apery
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_MCB_APR.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 prelude - Ryfamate
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 prelude - Ryfamate
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_PRL_RYF.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - なのは
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_TSG_NAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 やねうら王 - Miacis
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 やねうら王 - Miacis
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_YAN_MIA.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - 東横将棋
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_SHS_TYS.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 TMOQ - koron
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 TMOQ - koron
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_TMO_KRN.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Sin-Daigorilla - 手抜き
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Sin-Daigorilla - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_DGR_TEN.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Qha - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 Qha - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_QHA_JIK.csa
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 水匠 - ねね将棋
+第32回世界コンピュータ将棋選手権,二次予選 4回戦 水匠 - ねね将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U4_SUS_NNS.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 水匠 - Novice
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 水匠 - Novice
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_SUS_NVC.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 二番絞り - 東横将棋
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 二番絞り - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_NBS_TYS.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Ryfamate - 名人コブラ
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Ryfamate - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_RYF_MCB.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 prelude - いちびん
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 prelude - いちびん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_PRL_ICB.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Sin-Daigorilla - Apery
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Sin-Daigorilla - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_DGR_APR.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 手抜き - ねね将棋
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 手抜き - ねね将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_TEN_NNS.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - Qha
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_AYM_QHA.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 S.Lightweight-EF - やねうら王
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 S.Lightweight-EF - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_SLW_YAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 dlshogi with HEROZ - AobaZero
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 dlshogi with HEROZ - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_DLS_ABZ.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Miacis - マメット・ブンブク
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 Miacis - マメット・ブンブク
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_MIA_TNK.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - 白ビール
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - 白ビール
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_TSG_HFW.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - koron
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - koron
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_NAN_KRN.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 W@nderER - 習甦
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 W@nderER - 習甦
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_WND_SHS.csa
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 十六式いろは煌 - TMOQ
+第32回世界コンピュータ将棋選手権,二次予選 3回戦 十六式いろは煌 - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U3_JIK_TMO.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Qha - 二番絞り
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Qha - 二番絞り
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_QHA_NBS.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 マメット・ブンブク - やねうら王
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 マメット・ブンブク - やねうら王
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_TNK_YAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 W@nderER - Novice
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 W@nderER - Novice
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_WND_NVC.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 AobaZero - prelude
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 AobaZero - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_ABZ_PRL.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_TSG_DLS.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Miacis - 手抜き
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Miacis - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_MIA_TEN.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 習甦 - Sin-Daigorilla
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 習甦 - Sin-Daigorilla
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_SHS_DGR.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 あやめ - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 あやめ - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_AYM_JIK.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - 水匠
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_APR_SUS.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 白ビール - いちびん
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 白ビール - いちびん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_HFW_ICB.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 ねね将棋 - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 ねね将棋 - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_NNS_SLW.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 東横将棋 - TMOQ
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 東横将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_TYS_TMO.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 koron - Ryfamate
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 koron - Ryfamate
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_KRN_RYF.csa
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - 名人コブラ
+第32回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - 名人コブラ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U2_NAN_MCB.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 S.Lightweight-EF - Sin-Daigorilla
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 S.Lightweight-EF - Sin-Daigorilla
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_SLW_DGR.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 二番絞り - AobaZero
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 二番絞り - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_NBS_ABZ.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 Novice - Miacis
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 Novice - Miacis
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_NVC_MIA.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 やねうら王 - Apery
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 やねうら王 - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_YAN_APR.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 いちびん - あやめ
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 いちびん - あやめ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_ICB_AYM_3.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 Ryfamate - なのは
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 Ryfamate - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_RYF_NAN.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 マメット・ブンブク - 水匠
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 マメット・ブンブク - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_TNK_SUS.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 東横将棋 - dlshogi with HEROZ
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 東横将棋 - dlshogi with HEROZ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_TYS_DLS.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 prelude - Qha
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 prelude - Qha
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_PRL_QHA.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 TMOQ - 大将軍
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 TMOQ - 大将軍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_TMO_TSG.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 十六式いろは煌 - 白ビール
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 十六式いろは煌 - 白ビール
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_JIK_HFW.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 手抜き - W@nderER
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 手抜き - W@nderER
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_TEN_WND.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - koron
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - koron
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_MCB_KRN.csa
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 ねね将棋 - 習甦
+第32回世界コンピュータ将棋選手権,二次予選 1回戦 ねね将棋 - 習甦
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_U1_NNS_SHS.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 AobaZero - 手抜き
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 AobaZero - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_ABZ_TEN_R.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 Argo - TMOQ
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 Argo - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_ARG_TMO_R.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 元気もりもりニンニクパワー - 山田将棋
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 元気もりもりニンニクパワー - 山田将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_SLB_YAM_R.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 たこウインナー - きのあ将棋
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 たこウインナー - きのあ将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_TCW_KIN_R.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 Apery - 水匠
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 Apery - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_APR_SUS.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 芝浦将棋Softmax - CGP
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 芝浦将棋Softmax - CGP
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_SSS_CGP.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 カツ丼将棋 - なのは
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 カツ丼将棋 - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_KTD_NAN.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 wizodds 2022 - ponkotsu
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 wizodds 2022 - ponkotsu
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_WOD_PNK.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 隠岐 - shiny-dl
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 隠岐 - shiny-dl
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_OKI_SDL.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 prelude - 東横将棋
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 prelude - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_PRL_TYS.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 A.I. Ari shogi - まったりゆうちゃん
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 A.I. Ari shogi - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_ANS_YUU.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 S.Lightweight-EF - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 S.Lightweight-EF - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_SLW_JIK.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 あうあう将棋 - 人生送りバント失敗
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 あうあう将棋 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_AUA_JOS.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - こまあそび
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_NRK_KMA.csa
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 きふわらべ - 重力場計算法
+第32回世界コンピュータ将棋選手権,一次予選 8回戦 きふわらべ - 重力場計算法
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L8_KFW_JRB.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 ponkotsu - なのは
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 ponkotsu - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_PNK_NAN_2.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - 手抜き
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_SSS_TEN.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 AobaZero - 元気もりもりニンニクパワー
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 AobaZero - 元気もりもりニンニクパワー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_ABZ_SLB_2.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - Apery
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_KIN_APR_2.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 S.Lightweight-EF - 人生送りバント失敗
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 S.Lightweight-EF - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_SLW_JOS.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 prelude - Argo
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 prelude - Argo
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_PRL_ARG_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 水匠 - TMOQ
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 水匠 - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_SUS_TMO.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - カツ丼将棋
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - カツ丼将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_YUU_KTD.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 十六式いろは煌 - 東横将棋
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 十六式いろは煌 - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_JIK_TYS.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - 重力場計算法
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - 重力場計算法
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_CGP_JRB.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - 山田将棋
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - 山田将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_OKI_YAM.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 たこウインナー - なり金将棋
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 たこウインナー - なり金将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_TCW_NRK.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - shiny-dl
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - shiny-dl
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_KFW_SDL.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - A.I. Ari shogi
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - A.I. Ari shogi
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_GAR_ANS.csa
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 爆裂駒捨太郎R - あうあう将棋
+第32回世界コンピュータ将棋選手権,一次予選 7回戦 爆裂駒捨太郎R - あうあう将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L7_BKT_AUA.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 なのは - 元気もりもりニンニクパワー
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 なのは - 元気もりもりニンニクパワー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_NAN_SLB_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - Apery
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_TMO_APR.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 shiny-dl - 人生送りバント失敗
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 shiny-dl - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_SDL_JOS_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - 山田将棋
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_KIN_YAM_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - 芝浦将棋Softmax
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_YUU_SSS.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 東横将棋 - 水匠
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 東横将棋 - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_TYS_SUS.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 Argo - ponkotsu
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 Argo - ponkotsu
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_ARG_PNK.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 prelude - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 prelude - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_PRL_SLW.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 重力場計算法 - A.I. Ari shogi
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 重力場計算法 - A.I. Ari shogi
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_JRB_ANS.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 十六式いろは煌 - AobaZero
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 十六式いろは煌 - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_JIK_ABZ.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 たこウインナー - CGP
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 たこウインナー - CGP
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_TCW_CGP.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 隠岐 - wizodds 2022
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 隠岐 - wizodds 2022
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_OKI_WOD.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 手抜き - なり金将棋
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 手抜き - なり金将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_TEN_NRK.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - あうあう将棋
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - あうあう将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_KMA_AUA.csa
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - 爆裂駒捨太郎R
+第32回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - 爆裂駒捨太郎R
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L6_GAR_BKT.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 元気もりもりニンニクパワー - CGP
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 元気もりもりニンニクパワー - CGP
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_SLB_CGP.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 ponkotsu - prelude
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 ponkotsu - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_PNK_PRL.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 AobaZero - なのは
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 AobaZero - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_ABZ_NAN.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - shiny-dl
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - shiny-dl
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_KIN_SDL.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Argo - 水匠
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Argo - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_ARG_SUS.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 A.I. Ari shogi - 人生送りバント失敗
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 A.I. Ari shogi - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_ANS_JOS.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 手抜き - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 手抜き - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_TEN_JIK_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 S.Lightweight-EF - 隠岐
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 S.Lightweight-EF - 隠岐
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_SLW_OKI.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 東横将棋 - TMOQ
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 東横将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_TYS_TMO.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - wizodds 2022
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - wizodds 2022
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_KMA_WOD.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Apery - 芝浦将棋Softmax
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Apery - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_APR_SSS.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - 爆裂駒捨太郎R
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - 爆裂駒捨太郎R
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_NRK_BKT.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 あうあう将棋 - きふわらべ
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 あうあう将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_AUA_KFW.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - カツ丼将棋
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_YAM_KTD.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Easy Shogi - まったりゆうちゃん
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 Easy Shogi - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_EZS_YUU.csa
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - たこウインナー
+第32回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - たこウインナー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L5_GAR_TCW.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 A.I. Ari shogi - あうあう将棋
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 A.I. Ari shogi - あうあう将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_ANS_AUA.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - なのは
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_TMO_NAN.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - こまあそび
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - こまあそび
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_YUU_KMA_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 prelude - 隠岐
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 prelude - 隠岐
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_PRL_OKI.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - 山田将棋
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - 山田将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_JOS_YAM.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 水匠 - 手抜き
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 水匠 - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_SUS_TEN.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 東横将棋 - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 東横将棋 - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_TYS_SLW.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは煌 - CGP
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは煌 - CGP
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_JIK_CGP.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 shiny-dl - Argo
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 shiny-dl - Argo
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_SDL_ARG.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 AobaZero - カツ丼将棋
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 AobaZero - カツ丼将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_ABZ_KTD.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 爆裂駒捨太郎R - きのあ将棋
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 爆裂駒捨太郎R - きのあ将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_BKT_KIN.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 元気もりもりニンニクパワー - Apery
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 元気もりもりニンニクパワー - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_SLB_APR.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 Easy Shogi - ponkotsu
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 Easy Shogi - ponkotsu
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_EZS_PNK.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 重力場計算法 - wizodds 2022
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 重力場計算法 - wizodds 2022
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_JRB_WOD.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - 臥龍
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - 臥龍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_SSS_GAR.csa
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - たこウインナー
+第32回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - たこウインナー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L4_KFW_TCW.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - prelude
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_JOS_PRL_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - 手抜き
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_YAM_TEN.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 shiny-dl - たこウインナー
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 shiny-dl - たこウインナー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_SDL_TCW.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 ponkotsu - こまあそび
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 ponkotsu - こまあそび
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_PNK_KMA_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Apery - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Apery - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_APR_JIK.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - 芝浦将棋Softmax
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_NAN_SSS.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 水匠 - まったりゆうちゃん
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 水匠 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_SUS_YUU.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - 東横将棋
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_CGP_TYS.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 あうあう将棋 - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 あうあう将棋 - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_AUA_SLW.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Easy Shogi - TMOQ
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Easy Shogi - TMOQ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_EZS_TMO.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 wizodds 2022 - AobaZero
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 wizodds 2022 - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_WOD_ABZ.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - カツ丼将棋
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_NRK_KTD.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 A.I. Ari shogi - きのあ将棋
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 A.I. Ari shogi - きのあ将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_ANS_KIN.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Argo - 爆裂駒捨太郎R
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 Argo - 爆裂駒捨太郎R
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_ARG_BKT.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 重力場計算法 - 隠岐
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 重力場計算法 - 隠岐
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_JRB_OKI.csa
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - 臥龍
+第32回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - 臥龍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L3_KFW_GAR.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 wizodds 2022 - 元気もりもりニンニクパワー
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 wizodds 2022 - 元気もりもりニンニクパワー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_WOD_SLB_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 Argo - 山田将棋
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 Argo - 山田将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_ARG_YAM.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 重力場計算法 - S.Lightweight-EF
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 重力場計算法 - S.Lightweight-EF
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_JRB_SLW.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 A.I. Ari shogi - shiny-dl
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 A.I. Ari shogi - shiny-dl
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_ANS_SDL.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 水匠 - prelude
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 水匠 - prelude
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_SUS_PRL.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 AobaZero - きのあ将棋
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 AobaZero - きのあ将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_ABZ_KIN.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - まったりゆうちゃん
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_TEN_YUU.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 人生送りバント失敗 - CGP
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 人生送りバント失敗 - CGP
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_JOS_CGP.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 東横将棋 - Apery
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 東横将棋 - Apery
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_TYS_APR.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - ponkotsu
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - ponkotsu
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_TMO_PNK.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 隠岐 - なり金将棋
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 隠岐 - なり金将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_OKI_NRK.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 十六式いろは煌 - たこウインナー
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 十六式いろは煌 - たこウインナー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_JIK_TCW.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - 芝浦将棋Softmax
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_KMA_SSS.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 なのは - あうあう将棋
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 なのは - あうあう将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_NAN_AUA.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - 臥龍
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_KTD_GAR.csa
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 爆裂駒捨太郎R - きふわらべ
+第32回世界コンピュータ将棋選手権,一次予選 2回戦 爆裂駒捨太郎R - きふわらべ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L2_BKT_KFW.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 S.Lightweight-EF - Argo
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 S.Lightweight-EF - Argo
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_SLW_ARG.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 prelude - AobaZero
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 prelude - AobaZero
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_PRL_ABZ.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 芝浦将棋Softmax - shiny-dl
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 芝浦将棋Softmax - shiny-dl
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_SSS_SDL.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - wizodds 2022
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - wizodds 2022
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_YUU_WOD.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - 元気もりもりニンニクパワー
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - 元気もりもりニンニクパワー
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_TEN_SLB_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - 人生送りバント失敗
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_NRK_JOS_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 たこウインナー - なのは
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 たこウインナー - なのは
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_TCW_NAN.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 きのあ将棋 - 水匠
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 きのあ将棋 - 水匠
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_KIN_SUS.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - A.I. Ari shogi
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - A.I. Ari shogi
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_KMA_ANS.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - 隠岐
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - 隠岐
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_CGP_OKI.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 あうあう将棋 - 十六式いろは煌
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 あうあう将棋 - 十六式いろは煌
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_AUA_JIK_2.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - 重力場計算法
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - 重力場計算法
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_YAM_JRB_1.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - 東横将棋
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - 東横将棋
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_KTD_TYS.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 ponkotsu - きふわらべ
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 ponkotsu - きふわらべ
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_PNK_KFW.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - 爆裂駒捨太郎R
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - 爆裂駒捨太郎R
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_TMO_BKT.csa
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 臥龍 - Easy Shogi
+第32回世界コンピュータ将棋選手権,一次予選 1回戦 臥龍 - Easy Shogi
+http://live4.computer-shogi.org/wcsc32/kifu/WCSC32_L1_GAR_EZS.csa

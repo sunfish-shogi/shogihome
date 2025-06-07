@@ -1,0 +1,869 @@
+V1
+#sub:第35回世界コンピュータ将棋選手権
+第35回世界コンピュータ将棋選手権,決勝7回戦 AobaZero - Kanade 20250505161048
+第35回世界コンピュータ将棋選手権,決勝7回戦 AobaZero - Kanade 20250505161048
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F7_7-900-5F+AobaZero+Kanade+20250505161048.csa
+第35回世界コンピュータ将棋選手権,決勝7回戦 dlshogi with HEROZ - Serenade 20250505161046
+第35回世界コンピュータ将棋選手権,決勝7回戦 dlshogi with HEROZ - Serenade 20250505161046
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F7_1-900-5F+dlshogi+partita+20250505161046.csa
+第35回世界コンピュータ将棋選手権,決勝7回戦 INUGAMI - Ryfamate 20250505161044
+第35回世界コンピュータ将棋選手権,決勝7回戦 INUGAMI - Ryfamate 20250505161044
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F7_3-900-5F+tanuki+Ryfamate+20250505161044.csa
+第35回世界コンピュータ将棋選手権,決勝7回戦 水匠 - やねうら王 20250505161042
+第35回世界コンピュータ将棋選手権,決勝7回戦 水匠 - やねうら王 20250505161042
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F7_5-900-5F+suisho+yaneuraou+20250505161042.csa
+第35回世界コンピュータ将棋選手権,決勝6回戦 Kanade - やねうら王 20250505150525
+第35回世界コンピュータ将棋選手権,決勝6回戦 Kanade - やねうら王 20250505150525
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F6_6-900-5F+Kanade+yaneuraou+20250505150525.csa
+第35回世界コンピュータ将棋選手権,決勝6回戦 Serenade - Ryfamate 20250505150523
+第35回世界コンピュータ将棋選手権,決勝6回戦 Serenade - Ryfamate 20250505150523
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F6_2-900-5F+partita+Ryfamate+20250505150523.csa
+第35回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - INUGAMI 20250505150521
+第35回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - INUGAMI 20250505150521
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F6_1-900-5F+dlshogi+tanuki+20250505150521.csa
+第35回世界コンピュータ将棋選手権,決勝6回戦 AobaZero - 水匠 20250505150519
+第35回世界コンピュータ将棋選手権,決勝6回戦 AobaZero - 水匠 20250505150519
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F6_5-900-5F+AobaZero+suisho+20250505150519.csa
+第35回世界コンピュータ将棋選手権,決勝5回戦 やねうら王 - AobaZero 20250505140031
+第35回世界コンピュータ将棋選手権,決勝5回戦 やねうら王 - AobaZero 20250505140031
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F5_6-900-5F+yaneuraou+AobaZero+20250505140031.csa
+第35回世界コンピュータ将棋選手権,決勝5回戦 Ryfamate - dlshogi with HEROZ 20250505140029
+第35回世界コンピュータ将棋選手権,決勝5回戦 Ryfamate - dlshogi with HEROZ 20250505140029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F5_1-900-5F+Ryfamate+dlshogi+20250505140029.csa
+第35回世界コンピュータ将棋選手権,決勝5回戦 Serenade - INUGAMI 20250505140027
+第35回世界コンピュータ将棋選手権,決勝5回戦 Serenade - INUGAMI 20250505140027
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F5_2-900-5F+partita+tanuki+20250505140027.csa
+第35回世界コンピュータ将棋選手権,決勝5回戦 Kanade - 水匠 20250505140025
+第35回世界コンピュータ将棋選手権,決勝5回戦 Kanade - 水匠 20250505140025
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F5_5-900-5F+Kanade+suisho+20250505140025.csa
+第35回世界コンピュータ将棋選手権,決勝4回戦 水匠 - dlshogi with HEROZ 20250505125537
+第35回世界コンピュータ将棋選手権,決勝4回戦 水匠 - dlshogi with HEROZ 20250505125537
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F4_1-900-5F+suisho+dlshogi+20250505125537.csa
+第35回世界コンピュータ将棋選手権,決勝4回戦 INUGAMI - AobaZero 20250505125535
+第35回世界コンピュータ将棋選手権,決勝4回戦 INUGAMI - AobaZero 20250505125535
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F4_3-900-5F+tanuki+AobaZero+20250505125535.csa
+第35回世界コンピュータ将棋選手権,決勝4回戦 Ryfamate - Kanade 20250505125532
+第35回世界コンピュータ将棋選手権,決勝4回戦 Ryfamate - Kanade 20250505125532
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F4_4-900-5F+Ryfamate+Kanade+20250505125532.csa
+第35回世界コンピュータ将棋選手権,決勝4回戦 やねうら王 - Serenade 20250505125529
+第35回世界コンピュータ将棋選手権,決勝4回戦 やねうら王 - Serenade 20250505125529
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F4_2-900-5F+yaneuraou+partita+20250505125529.csa
+第35回世界コンピュータ将棋選手権,決勝3回戦 AobaZero - Ryfamate 20250505115017
+第35回世界コンピュータ将棋選手権,決勝3回戦 AobaZero - Ryfamate 20250505115017
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F3_4-900-5F+AobaZero+Ryfamate+20250505115017.csa
+第35回世界コンピュータ将棋選手権,決勝3回戦 INUGAMI - Kanade 20250505115015
+第35回世界コンピュータ将棋選手権,決勝3回戦 INUGAMI - Kanade 20250505115015
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F3_3-900-5F+tanuki+Kanade+20250505115015.csa
+第35回世界コンピュータ将棋選手権,決勝3回戦 dlshogi with HEROZ - やねうら王 20250505115013
+第35回世界コンピュータ将棋選手権,決勝3回戦 dlshogi with HEROZ - やねうら王 20250505115013
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F3_1-900-5F+dlshogi+yaneuraou+20250505115013.csa
+第35回世界コンピュータ将棋選手権,決勝3回戦 水匠 - Serenade 20250505115012
+第35回世界コンピュータ将棋選手権,決勝3回戦 水匠 - Serenade 20250505115012
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F3_2-900-5F+suisho+partita+20250505115012.csa
+第35回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - やねうら王 20250505103538
+第35回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - やねうら王 20250505103538
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F2_4-900-5F+Ryfamate+yaneuraou+20250505103538.csa
+第35回世界コンピュータ将棋選手権,決勝2回戦 INUGAMI - 水匠 20250505103536
+第35回世界コンピュータ将棋選手権,決勝2回戦 INUGAMI - 水匠 20250505103536
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F2_3-900-5F+tanuki+suisho+20250505103536.csa
+第35回世界コンピュータ将棋選手権,決勝2回戦 Serenade - Kanade 20250505103535
+第35回世界コンピュータ将棋選手権,決勝2回戦 Serenade - Kanade 20250505103535
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F2_2-900-5F+partita+Kanade+20250505103535.csa
+第35回世界コンピュータ将棋選手権,決勝2回戦 dlshogi with HEROZ - AobaZero 20250505103533
+第35回世界コンピュータ将棋選手権,決勝2回戦 dlshogi with HEROZ - AobaZero 20250505103533
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F2_1-900-5F+dlshogi+AobaZero+20250505103533.csa
+第35回世界コンピュータ将棋選手権,決勝1回戦 Ryfamate - 水匠 20250505093956
+第35回世界コンピュータ将棋選手権,決勝1回戦 Ryfamate - 水匠 20250505093956
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F1_4-900-5F+Ryfamate+suisho+20250505093956.csa
+第35回世界コンピュータ将棋選手権,決勝1回戦 Kanade - dlshogi with HEROZ 20250505093058
+第35回世界コンピュータ将棋選手権,決勝1回戦 Kanade - dlshogi with HEROZ 20250505093058
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F1_1-900-5F+Kanade+dlshogi+20250505093058.csa
+第35回世界コンピュータ将棋選手権,決勝1回戦 やねうら王 - INUGAMI 20250505093029
+第35回世界コンピュータ将棋選手権,決勝1回戦 やねうら王 - INUGAMI 20250505093029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F1_3-900-5F+yaneuraou+tanuki+20250505093029.csa
+第35回世界コンピュータ将棋選手権,決勝1回戦 Serenade - AobaZero 20250505093027
+第35回世界コンピュータ将棋選手権,決勝1回戦 Serenade - AobaZero 20250505093027
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+F1_2-900-5F+partita+AobaZero+20250505093027.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 なのは - Phonanza 20250504185638
+第35回世界コンピュータ将棋選手権,二次予選9回戦 なのは - Phonanza 20250504185638
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_23-900-5F+Nanoha2025+phonanza+20250504185638.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 もふ将棋 - 芽生将棋 20250504185550
+第35回世界コンピュータ将棋選手権,二次予選9回戦 もふ将棋 - 芽生将棋 20250504185550
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_26-900-5F+mofu+ms3bftaikai+20250504185550.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 いちびん - 257 20250504185548
+第35回世界コンピュータ将棋選手権,二次予選9回戦 いちびん - 257 20250504185548
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_16-900-5F+ichibin+nigonana+20250504185548.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 のんびり中飛車 - W@nderER 20250504185546
+第35回世界コンピュータ将棋選手権,二次予選9回戦 のんびり中飛車 - W@nderER 20250504185546
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_22-900-5F+nonbiri+wanderer+20250504185546.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - タンゴ 20250504185544
+第35回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - タンゴ 20250504185544
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_17-900-5F+Shueso+Tango+20250504185544.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 東横将棋 - ponkotsu 20250504185542
+第35回世界コンピュータ将棋選手権,二次予選9回戦 東横将棋 - ponkotsu 20250504185542
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_3-900-5F+Toyoko+ponkotsu+20250504185542.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 HoneyWaffle - 二番絞り 20250504185540
+第35回世界コンピュータ将棋選手権,二次予選9回戦 HoneyWaffle - 二番絞り 20250504185540
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_12-900-5F+HoneyWaffle+nibanshibori+20250504185540.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - nshogi 20250504185538
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - nshogi 20250504185538
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_13-900-5F+arishogi+nshogi+20250504185538.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Godflygoooon! - 中富線56号 20250504185536
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Godflygoooon! - 中富線56号 20250504185536
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_8-900-5F+Godflygooon+Nakatomi+20250504185536.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 あすとら将棋 - 名人コブラ 20250504185534
+第35回世界コンピュータ将棋選手権,二次予選9回戦 あすとら将棋 - 名人コブラ 20250504185534
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_6-900-5F+Astra+cobra+20250504185534.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 INUGAMI - やねうら王 20250504185532
+第35回世界コンピュータ将棋選手権,二次予選9回戦 INUGAMI - やねうら王 20250504185532
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_1-900-5F+tanuki+yaneuraou+20250504185532.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - AobaZero 20250504185530
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - AobaZero 20250504185530
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_4-900-5F+Ryfamate+AobaZero+20250504185530.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Kanade - Serenade 20250504185528
+第35回世界コンピュータ将棋選手権,二次予選9回戦 Kanade - Serenade 20250504185528
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_5-900-5F+Kanade+partita+20250504185528.csa
+第35回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - 水匠 20250504185526
+第35回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - 水匠 20250504185526
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U9_2-900-5F+dlshogi+suisho+20250504185526.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 ponkotsu - AobaZero 20250504174257
+第35回世界コンピュータ将棋選手権,二次予選8回戦 ponkotsu - AobaZero 20250504174257
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_9-900-5F+ponkotsu+AobaZero+20250504174257.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Godflygoooon! - いちびん 20250504174140
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Godflygoooon! - いちびん 20250504174140
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_8-900-5F+Godflygooon+ichibin+20250504174140.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 タンゴ - 芽生将棋 20250504174057
+第35回世界コンピュータ将棋選手権,二次予選8回戦 タンゴ - 芽生将棋 20250504174057
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_17-900-5F+Tango+ms3bftaikai+20250504174057.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 もふ将棋 - のんびり中飛車 20250504174055
+第35回世界コンピュータ将棋選手権,二次予選8回戦 もふ将棋 - のんびり中飛車 20250504174055
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_24-900-5F+mofu+nonbiri+20250504174055.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Phonanza - Ari Shogi and フレンズ 20250504174053
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Phonanza - Ari Shogi and フレンズ 20250504174053
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_15-900-5F+phonanza+arishogi+20250504174053.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 東横将棋 - 257 20250504174051
+第35回世界コンピュータ将棋選手権,二次予選8回戦 東横将棋 - 257 20250504174051
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_3-900-5F+Toyoko+nigonana+20250504174051.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - なのは 20250504174048
+第35回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - なのは 20250504174048
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_14-900-5F+HoneyWaffle+Nanoha2025+20250504174048.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 中富線56号 - 習甦 20250504174046
+第35回世界コンピュータ将棋選手権,二次予選8回戦 中富線56号 - 習甦 20250504174046
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_18-900-5F+Nakatomi+Shueso+20250504174046.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 名人コブラ - W@nderER 20250504174044
+第35回世界コンピュータ将棋選手権,二次予選8回戦 名人コブラ - W@nderER 20250504174044
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_11-900-5F+cobra+wanderer+20250504174044.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Kanade - nshogi 20250504174041
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Kanade - nshogi 20250504174041
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_13-900-5F+Kanade+nshogi+20250504174041.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - やねうら王 20250504174039
+第35回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - やねうら王 20250504174039
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_12-900-5F+nibanshibori+yaneuraou+20250504174039.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 水匠 - あすとら将棋 20250504174037
+第35回世界コンピュータ将棋選手権,二次予選8回戦 水匠 - あすとら将棋 20250504174037
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_6-900-5F+suisho+Astra+20250504174037.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 INUGAMI - Ryfamate 20250504174035
+第35回世界コンピュータ将棋選手権,二次予選8回戦 INUGAMI - Ryfamate 20250504174035
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_1-900-5F+tanuki+Ryfamate+20250504174035.csa
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Serenade - dlshogi with HEROZ 20250504174032
+第35回世界コンピュータ将棋選手権,二次予選8回戦 Serenade - dlshogi with HEROZ 20250504174032
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U8_2-900-5F+partita+dlshogi+20250504174032.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 257 - なのは 20250504163125
+第35回世界コンピュータ将棋選手権,二次予選7回戦 257 - なのは 20250504163125
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_25-900-5F+nigonana+Nanoha2025+20250504163125.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 W@nderER - もふ将棋 20250504163123
+第35回世界コンピュータ将棋選手権,二次予選7回戦 W@nderER - もふ将棋 20250504163123
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_22-900-5F+wanderer+mofu+20250504163123.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 のんびり中飛車 - いちびん 20250504163121
+第35回世界コンピュータ将棋選手権,二次予選7回戦 のんびり中飛車 - いちびん 20250504163121
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_16-900-5F+nonbiri+ichibin+20250504163121.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 Ari Shogi and フレンズ - タンゴ 20250504163119
+第35回世界コンピュータ将棋選手権,二次予選7回戦 Ari Shogi and フレンズ - タンゴ 20250504163119
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_15-900-5F+arishogi+Tango+20250504163119.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 Phonanza - 芽生将棋 20250504163117
+第35回世界コンピュータ将棋選手権,二次予選7回戦 Phonanza - 芽生将棋 20250504163117
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_23-900-5F+phonanza+ms3bftaikai+20250504163117.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - Godflygoooon! 20250504163116
+第35回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - Godflygoooon! 20250504163116
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_8-900-5F+nibanshibori+Godflygooon+20250504163116.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 東横将棋 20250504163114
+第35回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 東横将棋 20250504163114
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_3-900-5F+nshogi+Toyoko+20250504163114.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - 中富線56号 20250504163112
+第35回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - 中富線56号 20250504163112
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_11-900-5F+cobra+Nakatomi+20250504163112.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 あすとら将棋 - HoneyWaffle 20250504163110
+第35回世界コンピュータ将棋選手権,二次予選7回戦 あすとら将棋 - HoneyWaffle 20250504163110
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_6-900-5F+Astra+HoneyWaffle+20250504163110.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 INUGAMI - Kanade 20250504163108
+第35回世界コンピュータ将棋選手権,二次予選7回戦 INUGAMI - Kanade 20250504163108
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_1-900-5F+tanuki+Kanade+20250504163108.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 習甦 - 水匠 20250504163106
+第35回世界コンピュータ将棋選手権,二次予選7回戦 習甦 - 水匠 20250504163106
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_7-900-5F+Shueso+suisho+20250504163106.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - Ryfamate 20250504163104
+第35回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - Ryfamate 20250504163104
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_4-900-5F+ponkotsu+Ryfamate+20250504163104.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 AobaZero - Serenade 20250504163102
+第35回世界コンピュータ将棋選手権,二次予選7回戦 AobaZero - Serenade 20250504163102
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_5-900-5F+AobaZero+partita+20250504163102.csa
+第35回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi with HEROZ - やねうら王 20250504163100
+第35回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi with HEROZ - やねうら王 20250504163100
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U7_2-900-5F+dlshogi+yaneuraou+20250504163100.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 タンゴ - 257 20250504152034
+第35回世界コンピュータ将棋選手権,二次予選6回戦 タンゴ - 257 20250504152034
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_17-900-5F+Tango+nigonana+20250504152034.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 なのは - もふ将棋 20250504152033
+第35回世界コンピュータ将棋選手権,二次予選6回戦 なのは - もふ将棋 20250504152033
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_25-900-5F+Nanoha2025+mofu+20250504152033.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 芽生将棋 - W@nderER 20250504152031
+第35回世界コンピュータ将棋選手権,二次予選6回戦 芽生将棋 - W@nderER 20250504152031
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_22-900-5F+ms3bftaikai+wanderer+20250504152031.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 東横将棋 - のんびり中飛車 20250504152029
+第35回世界コンピュータ将棋選手権,二次予選6回戦 東横将棋 - のんびり中飛車 20250504152029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_3-900-5F+Toyoko+nonbiri+20250504152029.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi and フレンズ - 二番絞り 20250504152028
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi and フレンズ - 二番絞り 20250504152028
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_12-900-5F+arishogi+nibanshibori+20250504152028.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Godflygoooon! - Phonanza 20250504152026
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Godflygoooon! - Phonanza 20250504152026
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_8-900-5F+Godflygooon+phonanza+20250504152026.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 HoneyWaffle - 名人コブラ 20250504152024
+第35回世界コンピュータ将棋選手権,二次予選6回戦 HoneyWaffle - 名人コブラ 20250504152024
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_11-900-5F+HoneyWaffle+cobra+20250504152024.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 習甦 - いちびん 20250504152022
+第35回世界コンピュータ将棋選手権,二次予選6回戦 習甦 - いちびん 20250504152022
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_16-900-5F+Shueso+ichibin+20250504152022.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 nshogi - ponkotsu 20250504152020
+第35回世界コンピュータ将棋選手権,二次予選6回戦 nshogi - ponkotsu 20250504152020
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_10-900-5F+nshogi+ponkotsu+20250504152020.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 中富線56号 - INUGAMI 20250504152019
+第35回世界コンピュータ将棋選手権,二次予選6回戦 中富線56号 - INUGAMI 20250504152019
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_1-900-5F+Nakatomi+tanuki+20250504152019.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - Kanade 20250504152016
+第35回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - Kanade 20250504152016
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_9-900-5F+AobaZero+Kanade+20250504152016.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 やねうら王 - あすとら将棋 20250504152014
+第35回世界コンピュータ将棋選手権,二次予選6回戦 やねうら王 - あすとら将棋 20250504152014
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_6-900-5F+yaneuraou+Astra+20250504152014.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Serenade - 水匠 20250504152012
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Serenade - 水匠 20250504152012
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_5-900-5F+partita+suisho+20250504152012.csa
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Ryfamate - dlshogi with HEROZ 20250504152010
+第35回世界コンピュータ将棋選手権,二次予選6回戦 Ryfamate - dlshogi with HEROZ 20250504152010
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U6_2-900-5F+Ryfamate+dlshogi+20250504152010.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 タンゴ - Godflygoooon! 20250504141221
+第35回世界コンピュータ将棋選手権,二次予選5回戦 タンゴ - Godflygoooon! 20250504141221
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_8-900-5F+Tango+Godflygooon+20250504141221.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 257 - 芽生将棋 20250504141039
+第35回世界コンピュータ将棋選手権,二次予選5回戦 257 - 芽生将棋 20250504141039
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_27-900-5F+nigonana+ms3bftaikai+20250504141039.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 のんびり中飛車 - なのは 20250504141037
+第35回世界コンピュータ将棋選手権,二次予選5回戦 のんびり中飛車 - なのは 20250504141037
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_24-900-5F+nonbiri+Nanoha2025+20250504141037.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 いちびん - W@nderER 20250504141035
+第35回世界コンピュータ将棋選手権,二次予選5回戦 いちびん - W@nderER 20250504141035
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_16-900-5F+ichibin+wanderer+20250504141035.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 もふ将棋 - HoneyWaffle 20250504141033
+第35回世界コンピュータ将棋選手権,二次予選5回戦 もふ将棋 - HoneyWaffle 20250504141033
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_14-900-5F+mofu+HoneyWaffle+20250504141033.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 二番絞り - nshogi 20250504141031
+第35回世界コンピュータ将棋選手権,二次予選5回戦 二番絞り - nshogi 20250504141031
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_12-900-5F+nibanshibori+nshogi+20250504141031.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Phonanza - ponkotsu 20250504141029
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Phonanza - ponkotsu 20250504141029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_10-900-5F+phonanza+ponkotsu+20250504141029.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 習甦 - 東横将棋 20250504141027
+第35回世界コンピュータ将棋選手権,二次予選5回戦 習甦 - 東横将棋 20250504141027
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_3-900-5F+Shueso+Toyoko+20250504141027.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - AobaZero 20250504141026
+第35回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - AobaZero 20250504141026
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_9-900-5F+cobra+AobaZero+20250504141026.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - Ari Shogi and フレンズ 20250504141024
+第35回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - Ari Shogi and フレンズ 20250504141024
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_6-900-5F+Astra+arishogi+20250504141024.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Serenade - 中富線56号 20250504141022
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Serenade - 中富線56号 20250504141022
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_5-900-5F+partita+Nakatomi+20250504141022.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 - Kanade 20250504141020
+第35回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 - Kanade 20250504141020
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_20-900-5F+yaneuraou+Kanade+20250504141020.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi with HEROZ - INUGAMI 20250504141017
+第35回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi with HEROZ - INUGAMI 20250504141017
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_1-900-5F+dlshogi+tanuki+20250504141017.csa
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Ryfamate - 水匠 20250504141015
+第35回世界コンピュータ将棋選手権,二次予選5回戦 Ryfamate - 水匠 20250504141015
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U5_4-900-5F+Ryfamate+suisho+20250504141015.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 芽生将棋 - なのは 20250504130619
+第35回世界コンピュータ将棋選手権,二次予選4回戦 芽生将棋 - なのは 20250504130619
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_25-900-5F+ms3bftaikai+Nanoha2025+20250504130619.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 257 - もふ将棋 20250504130105
+第35回世界コンピュータ将棋選手権,二次予選4回戦 257 - もふ将棋 20250504130105
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_26-900-5F+nigonana+mofu+20250504130105.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Godflygoooon! - ponkotsu 20250504130102
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Godflygoooon! - ponkotsu 20250504130102
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_8-900-5F+Godflygooon+ponkotsu+20250504130102.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 のんびり中飛車 - nshogi 20250504130100
+第35回世界コンピュータ将棋選手権,二次予選4回戦 のんびり中飛車 - nshogi 20250504130100
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_13-900-5F+nonbiri+nshogi+20250504130100.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 いちびん - 二番絞り 20250504130058
+第35回世界コンピュータ将棋選手権,二次予選4回戦 いちびん - 二番絞り 20250504130058
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_12-900-5F+ichibin+nibanshibori+20250504130058.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Phonanza - タンゴ 20250504130055
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Phonanza - タンゴ 20250504130055
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_17-900-5F+phonanza+Tango+20250504130055.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 W@nderER - HoneyWaffle 20250504130053
+第35回世界コンピュータ将棋選手権,二次予選4回戦 W@nderER - HoneyWaffle 20250504130053
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_14-900-5F+wanderer+HoneyWaffle+20250504130053.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 AobaZero - 習甦 20250504130051
+第35回世界コンピュータ将棋選手権,二次予選4回戦 AobaZero - 習甦 20250504130051
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_9-900-5F+AobaZero+Shueso+20250504130051.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 中富線56号 20250504130049
+第35回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 中富線56号 20250504130049
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_3-900-5F+Toyoko+Nakatomi+20250504130049.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 INUGAMI - 名人コブラ 20250504130047
+第35回世界コンピュータ将棋選手権,二次予選4回戦 INUGAMI - 名人コブラ 20250504130047
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_1-900-5F+tanuki+cobra+20250504130047.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 dlshogi with HEROZ - あすとら将棋 20250504130046
+第35回世界コンピュータ将棋選手権,二次予選4回戦 dlshogi with HEROZ - あすとら将棋 20250504130046
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_2-900-5F+dlshogi+Astra+20250504130046.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Kanade - Ari Shogi and フレンズ 20250504130043
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Kanade - Ari Shogi and フレンズ 20250504130043
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_15-900-5F+Kanade+arishogi+20250504130043.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - Serenade 20250504130041
+第35回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - Serenade 20250504130041
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_4-900-5F+Ryfamate+partita+20250504130041.csa
+第35回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - やねうら王 20250504130039
+第35回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - やねうら王 20250504130039
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U4_7-900-5F+suisho+yaneuraou+20250504130039.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 HoneyWaffle - 習甦 20250504114730
+第35回世界コンピュータ将棋選手権,二次予選3回戦 HoneyWaffle - 習甦 20250504114730
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_14-900-5F+HoneyWaffle+Shueso+20250504114730.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 もふ将棋 - AobaZero 20250504114723
+第35回世界コンピュータ将棋選手権,二次予選3回戦 もふ将棋 - AobaZero 20250504114723
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_9-900-5F+mofu+AobaZero+20250504114723.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 のんびり中飛車 - 257 20250504114716
+第35回世界コンピュータ将棋選手権,二次予選3回戦 のんびり中飛車 - 257 20250504114716
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_24-900-5F+nonbiri+nigonana+20250504114716.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 なのは - ponkotsu 20250504114709
+第35回世界コンピュータ将棋選手権,二次予選3回戦 なのは - ponkotsu 20250504114709
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_10-900-5F+Nanoha2025+ponkotsu+20250504114709.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 INUGAMI - Serenade 20250504114700
+第35回世界コンピュータ将棋選手権,二次予選3回戦 INUGAMI - Serenade 20250504114700
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_1-900-5F+tanuki+partita+20250504114700.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 nshogi - あすとら将棋 20250504114655
+第35回世界コンピュータ将棋選手権,二次予選3回戦 nshogi - あすとら将棋 20250504114655
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_6-900-5F+nshogi+Astra+20250504114655.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - Ari Shogi and フレンズ 20250504114639
+第35回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - Ari Shogi and フレンズ 20250504114639
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_11-900-5F+cobra+arishogi+20250504114639.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 中富線56号 - Ryfamate 20250504114147
+第35回世界コンピュータ将棋選手権,二次予選3回戦 中富線56号 - Ryfamate 20250504114147
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_4-900-5F+Nakatomi+Ryfamate+20250504114147.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 水匠 - 二番絞り 20250504114006
+第35回世界コンピュータ将棋選手権,二次予選3回戦 水匠 - 二番絞り 20250504114006
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_7-900-5F+suisho+nibanshibori+20250504114006.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 芽生将棋 - Godflygoooon! 20250504113954
+第35回世界コンピュータ将棋選手権,二次予選3回戦 芽生将棋 - Godflygoooon! 20250504113954
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_8-900-5F+ms3bftaikai+Godflygooon+20250504113954.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 Phonanza - いちびん 20250504113102
+第35回世界コンピュータ将棋選手権,二次予選3回戦 Phonanza - いちびん 20250504113102
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_16-900-5F+phonanza+ichibin+20250504113102.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 - 東横将棋 20250504113048
+第35回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 - 東横将棋 20250504113048
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_3-900-5F+yaneuraou+Toyoko+20250504113048.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 W@nderER - タンゴ 20250504112915
+第35回世界コンピュータ将棋選手権,二次予選3回戦 W@nderER - タンゴ 20250504112915
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_17-900-5F+wanderer+Tango+20250504112915.csa
+第35回世界コンピュータ将棋選手権,二次予選3回戦 Kanade - dlshogi with HEROZ 20250504112909
+第35回世界コンピュータ将棋選手権,二次予選3回戦 Kanade - dlshogi with HEROZ 20250504112909
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U3_2-900-5F+Kanade+dlshogi+20250504112909.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Kanade - W@nderER 20250504105425
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Kanade - W@nderER 20250504105425
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_21-900-5F+Kanade+wanderer+20250504105425.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 やねうら王 - Phonanza 20250504105416
+第35回世界コンピュータ将棋選手権,二次予選2回戦 やねうら王 - Phonanza 20250504105416
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_20-900-5F+yaneuraou+phonanza+20250504105416.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - なのは 20250504105402
+第35回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - なのは 20250504105402
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_18-900-5F+Shueso+Nanoha2025+20250504105402.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 タンゴ - もふ将棋 20250504105355
+第35回世界コンピュータ将棋選手権,二次予選2回戦 タンゴ - もふ将棋 20250504105355
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_17-900-5F+Tango+mofu+20250504105355.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Ari Shogi and フレンズ - 257 20250504105347
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Ari Shogi and フレンズ - 257 20250504105347
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_15-900-5F+arishogi+nigonana+20250504105347.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - Godflygoooon! 20250504105339
+第35回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - Godflygoooon! 20250504105339
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_7-900-5F+suisho+Godflygooon+20250504105339.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Ryfamate - 名人コブラ 20250504105319
+第35回世界コンピュータ将棋選手権,二次予選2回戦 Ryfamate - 名人コブラ 20250504105319
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_4-900-5F+Ryfamate+cobra+20250504105319.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - 二番絞り 20250504105313
+第35回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - 二番絞り 20250504105313
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_3-900-5F+Toyoko+nibanshibori+20250504105313.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - INUGAMI 20250504105307
+第35回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - INUGAMI 20250504105307
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_1-900-5F+HoneyWaffle+tanuki+20250504105307.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 dlshogi with HEROZ - nshogi 20250504105256
+第35回世界コンピュータ将棋選手権,二次予選2回戦 dlshogi with HEROZ - nshogi 20250504105256
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_2-900-5F+dlshogi+nshogi+20250504105256.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 いちびん - 芽生将棋 20250504104840
+第35回世界コンピュータ将棋選手権,二次予選2回戦 いちびん - 芽生将棋 20250504104840
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_16-900-5F+ichibin+ms3bftaikai+20250504104840.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 ponkotsu - Serenade 20250504104327
+第35回世界コンピュータ将棋選手権,二次予選2回戦 ponkotsu - Serenade 20250504104327
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_5-900-5F+ponkotsu+partita+20250504104327.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - AobaZero 20250504104150
+第35回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - AobaZero 20250504104150
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_6-900-5F+Astra+AobaZero+20250504104150.csa
+第35回世界コンピュータ将棋選手権,二次予選2回戦 中富線56号 - のんびり中飛車 20250504103447
+第35回世界コンピュータ将棋選手権,二次予選2回戦 中富線56号 - のんびり中飛車 20250504103447
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U2_19-900-5F+Nakatomi+nonbiri+20250504103447.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Ari Shogi and フレンズ - HoneyWaffle 20250504100143
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Ari Shogi and フレンズ - HoneyWaffle 20250504100143
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_14-900-5F+arishogi+HoneyWaffle+20250504100143.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 nshogi - いちびん 20250504100141
+第35回世界コンピュータ将棋選手権,二次予選1回戦 nshogi - いちびん 20250504100141
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_13-900-5F+nshogi+ichibin+20250504100141.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 二番絞り - タンゴ 20250504100139
+第35回世界コンピュータ将棋選手権,二次予選1回戦 二番絞り - タンゴ 20250504100139
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_12-900-5F+nibanshibori+Tango+20250504100139.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラ - 習甦 20250504100138
+第35回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラ - 習甦 20250504100138
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_11-900-5F+cobra+Shueso+20250504100138.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - 中富線56号 20250504100136
+第35回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - 中富線56号 20250504100136
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_10-900-5F+ponkotsu+Nakatomi+20250504100136.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - やねうら王 20250504100134
+第35回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - やねうら王 20250504100134
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_9-900-5F+AobaZero+yaneuraou+20250504100134.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Godflygoooon! - Kanade 20250504100133
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Godflygoooon! - Kanade 20250504100133
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_8-900-5F+Godflygooon+Kanade+20250504100133.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 W@nderER - 水匠 20250504100131
+第35回世界コンピュータ将棋選手権,二次予選1回戦 W@nderER - 水匠 20250504100131
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_7-900-5F+wanderer+suisho+20250504100131.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 あすとら将棋 - Phonanza 20250504100129
+第35回世界コンピュータ将棋選手権,二次予選1回戦 あすとら将棋 - Phonanza 20250504100129
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_6-900-5F+Astra+phonanza+20250504100129.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Serenade - のんびり中飛車 20250504100127
+第35回世界コンピュータ将棋選手権,二次予選1回戦 Serenade - のんびり中飛車 20250504100127
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_5-900-5F+partita+nonbiri+20250504100127.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 なのは - Ryfamate 20250504100125
+第35回世界コンピュータ将棋選手権,二次予選1回戦 なのは - Ryfamate 20250504100125
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_4-900-5F+Nanoha2025+Ryfamate+20250504100125.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 もふ将棋 - 東横将棋 20250504100123
+第35回世界コンピュータ将棋選手権,二次予選1回戦 もふ将棋 - 東横将棋 20250504100123
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_3-900-5F+mofu+Toyoko+20250504100123.csa
+第35回世界コンピュータ将棋選手権,二次予選1回戦 257 - INUGAMI 20250504100121
+第35回世界コンピュータ将棋選手権,二次予選1回戦 257 - INUGAMI 20250504100121
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+U1_1-900-5F+nigonana+tanuki+20250504100121.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 etude - JHBR 20250503175942
+第35回世界コンピュータ将棋選手権,一次予選8回戦 etude - JHBR 20250503175942
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_30-900-5F+etude+jhbr+20250503175942.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - 山田将棋 20250503174941
+第35回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - 山田将棋 20250503174941
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_28_2-900-5F+auaushogi+yamadashogi+20250503174941.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 重力場計算法 - KifuuuuuuWarabe Beginning 20250503174202
+第35回世界コンピュータ将棋選手権,一次予選8回戦 重力場計算法 - KifuuuuuuWarabe Beginning 20250503174202
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_36-900-5F+jyuuryoku+kifuwarabe+20250503174202.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 komadokun - 十六式いろは煌 20250503174158
+第35回世界コンピュータ将棋選手権,一次予選8回戦 komadokun - 十六式いろは煌 20250503174158
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_48-900-5F+komadokun+16-168+20250503174158.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 TMOQ - かりんとう 20250503174154
+第35回世界コンピュータ将棋選手権,一次予選8回戦 TMOQ - かりんとう 20250503174154
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_44-900-5F+TMOQ+karinto_taikai+20250503174154.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 人生送りバント失敗 - 隠岐 20250503174151
+第35回世界コンピュータ将棋選手権,一次予選8回戦 人生送りバント失敗 - 隠岐 20250503174151
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_25-900-5F+gakkari+oki+20250503174151.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 チョコバナナ - こまあそび 20250503174149
+第35回世界コンピュータ将棋選手権,一次予選8回戦 チョコバナナ - こまあそび 20250503174149
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_34-900-5F+choba+komaasobi+20250503174149.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 はるか - カツ丼将棋 20250503174145
+第35回世界コンピュータ将棋選手権,一次予選8回戦 はるか - カツ丼将棋 20250503174145
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_27-900-5F+Haruka+katsudon+20250503174145.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 爆裂駒拾太郎 - なり金将棋 20250503174143
+第35回世界コンピュータ将棋選手権,一次予選8回戦 爆裂駒拾太郎 - なり金将棋 20250503174143
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_31-900-5F+bakuretsu+narikin+20250503174143.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 なのは - 手抜き 20250503174141
+第35回世界コンピュータ将棋選手権,一次予選8回戦 なのは - 手抜き 20250503174141
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_22-900-5F+Nanoha2025+tenuki+20250503174141.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 芽生将棋 - 257 20250503174137
+第35回世界コンピュータ将棋選手権,一次予選8回戦 芽生将棋 - 257 20250503174137
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_47-900-5F+ms3bftaikai+nigonana+20250503174137.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 Gokaku - ザ・グレート・ウシジマ 20250503174134
+第35回世界コンピュータ将棋選手権,一次予選8回戦 Gokaku - ザ・グレート・ウシジマ 20250503174134
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_40-900-5F+Gokaku+Usizima+20250503174134.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - Phonanza 20250503174132
+第35回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - Phonanza 20250503174132
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_19-900-5F+qinoa+phonanza+20250503174132.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 Argo - W@nderER 20250503174130
+第35回世界コンピュータ将棋選手権,一次予選8回戦 Argo - W@nderER 20250503174130
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_20-900-5F+argo+wanderer+20250503174130.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 中富線56号 - もふ将棋 20250503174128
+第35回世界コンピュータ将棋選手権,一次予選8回戦 中富線56号 - もふ将棋 20250503174128
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_50-900-5F+Nakatomi+mofu+20250503174128.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 のんびり中飛車 - 習甦 20250503174126
+第35回世界コンピュータ将棋選手権,一次予選8回戦 のんびり中飛車 - 習甦 20250503174126
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_21-900-5F+nonbiri+Shueso+20250503174126.csa
+第35回世界コンピュータ将棋選手権,一次予選8回戦 やねうら王 - Kanade 20250503174124
+第35回世界コンピュータ将棋選手権,一次予選8回戦 やねうら王 - Kanade 20250503174124
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L8_38-900-5F+yaneuraou+Kanade+20250503174124.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 かりんとう - etude 20250503163047
+第35回世界コンピュータ将棋選手権,一次予選7回戦 かりんとう - etude 20250503163047
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_30-900-5F+karinto_taikai+etude+20250503163047.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 十六式いろは煌 - 重力場計算法 20250503163045
+第35回世界コンピュータ将棋選手権,一次予選7回戦 十六式いろは煌 - 重力場計算法 20250503163045
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_36-900-5F+16-168+jyuuryoku+20250503163045.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - komadokun 20250503163043
+第35回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - komadokun 20250503163043
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_31-900-5F+bakuretsu+komadokun+20250503163043.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 JHBR - あうあう将棋 20250503163041
+第35回世界コンピュータ将棋選手権,一次予選7回戦 JHBR - あうあう将棋 20250503163041
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_29-900-5F+jhbr+auaushogi+20250503163041.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - TMOQ 20250503163040
+第35回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - TMOQ 20250503163040
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_34-900-5F+komaasobi+TMOQ+20250503163040.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 人生送りバント失敗 - KifuuuuuuWarabe Beginning 20250503163038
+第35回世界コンピュータ将棋選手権,一次予選7回戦 人生送りバント失敗 - KifuuuuuuWarabe Beginning 20250503163038
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_25-900-5F+gakkari+kifuwarabe+20250503163038.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Gokaku - チョコバナナ 20250503163037
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Gokaku - チョコバナナ 20250503163037
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_51-900-5F+Gokaku+choba+20250503163037.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 山田将棋 - きのあ将棋 20250503163035
+第35回世界コンピュータ将棋選手権,一次予選7回戦 山田将棋 - きのあ将棋 20250503163035
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_26-900-5F+yamadashogi+qinoa+20250503163035.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 手抜き 20250503163034
+第35回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 手抜き 20250503163034
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_24-900-5F+katsudon+tenuki+20250503163034.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 なり金将棋 - はるか 20250503163032
+第35回世界コンピュータ将棋選手権,一次予選7回戦 なり金将棋 - はるか 20250503163032
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_32-900-5F+narikin+Haruka+20250503163032.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 隠岐 - ザ・グレート・ウシジマ 20250503163031
+第35回世界コンピュータ将棋選手権,一次予選7回戦 隠岐 - ザ・グレート・ウシジマ 20250503163031
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_40-900-5F+oki+Usizima+20250503163031.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 なのは - W@nderER 20250503163029
+第35回世界コンピュータ将棋選手権,一次予選7回戦 なのは - W@nderER 20250503163029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_20-900-5F+Nanoha2025+wanderer+20250503163029.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 もふ将棋 - 257 20250503163028
+第35回世界コンピュータ将棋選手権,一次予選7回戦 もふ将棋 - 257 20250503163028
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_47-900-5F+mofu+nigonana+20250503163028.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 芽生将棋 - Argo 20250503163026
+第35回世界コンピュータ将棋選手権,一次予選7回戦 芽生将棋 - Argo 20250503163026
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_23-900-5F+ms3bftaikai+argo+20250503163026.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Phonanza - 中富線56号 20250503163024
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Phonanza - 中富線56号 20250503163024
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_19-900-5F+phonanza+Nakatomi+20250503163024.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 やねうら王 - のんびり中飛車 20250503163022
+第35回世界コンピュータ将棋選手権,一次予選7回戦 やねうら王 - のんびり中飛車 20250503163022
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_38-900-5F+yaneuraou+nonbiri+20250503163022.csa
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Kanade - 習甦 20250503163018
+第35回世界コンピュータ将棋選手権,一次予選7回戦 Kanade - 習甦 20250503163018
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L7_21-900-5F+Kanade+Shueso+20250503163018.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 重力場計算法 - etude 20250503153545
+第35回世界コンピュータ将棋選手権,一次予選6回戦 重力場計算法 - etude 20250503153545
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_30-900-5F+jyuuryoku+etude+20250503153545.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 かりんとう - あうあう将棋 20250503153543
+第35回世界コンピュータ将棋選手権,一次予選6回戦 かりんとう - あうあう将棋 20250503153543
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_29-900-5F+karinto_taikai+auaushogi+20250503153543.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 TMOQ - 十六式いろは煌 20250503153540
+第35回世界コンピュータ将棋選手権,一次予選6回戦 TMOQ - 十六式いろは煌 20250503153540
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_44-900-5F+TMOQ+16-168+20250503153540.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - 手抜き 20250503153535
+第35回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - 手抜き 20250503153535
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_24-900-5F+gakkari+tenuki+20250503153535.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 はるか - こまあそび 20250503153533
+第35回世界コンピュータ将棋選手権,一次予選6回戦 はるか - こまあそび 20250503153533
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_32-900-5F+Haruka+komaasobi+20250503153533.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 JHBR - 隠岐 20250503153531
+第35回世界コンピュータ将棋選手権,一次予選6回戦 JHBR - 隠岐 20250503153531
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_35-900-5F+jhbr+oki+20250503153531.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 チョコバナナ - komadokun 20250503153529
+第35回世界コンピュータ将棋選手権,一次予選6回戦 チョコバナナ - komadokun 20250503153529
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_48-900-5F+choba+komadokun+20250503153529.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 KifuuuuuuWarabe Beginning - きのあ将棋 20250503153528
+第35回世界コンピュータ将棋選手権,一次予選6回戦 KifuuuuuuWarabe Beginning - きのあ将棋 20250503153528
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_26-900-5F+kifuwarabe+qinoa+20250503153528.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 芽生将棋 - 山田将棋 20250503153526
+第35回世界コンピュータ将棋選手権,一次予選6回戦 芽生将棋 - 山田将棋 20250503153526
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_28-900-5F+ms3bftaikai+yamadashogi+20250503153526.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 カツ丼将棋 - もふ将棋 20250503153524
+第35回世界コンピュータ将棋選手権,一次予選6回戦 カツ丼将棋 - もふ将棋 20250503153524
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_27-900-5F+katsudon+mofu+20250503153524.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 なり金将棋 - Argo 20250503153523
+第35回世界コンピュータ将棋選手権,一次予選6回戦 なり金将棋 - Argo 20250503153523
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_23-900-5F+narikin+argo+20250503153523.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 257 - 爆裂駒拾太郎 20250503153521
+第35回世界コンピュータ将棋選手権,一次予選6回戦 257 - 爆裂駒拾太郎 20250503153521
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_31-900-5F+nigonana+bakuretsu+20250503153521.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 ザ・グレート・ウシジマ - やねうら王 20250503153519
+第35回世界コンピュータ将棋選手権,一次予選6回戦 ザ・グレート・ウシジマ - やねうら王 20250503153519
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_38-900-5F+Usizima+yaneuraou+20250503153519.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 中富線56号 - Gokaku 20250503153517
+第35回世界コンピュータ将棋選手権,一次予選6回戦 中富線56号 - Gokaku 20250503153517
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_52-900-5F+Nakatomi+Gokaku+20250503153517.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 のんびり中飛車 - なのは 20250503153515
+第35回世界コンピュータ将棋選手権,一次予選6回戦 のんびり中飛車 - なのは 20250503153515
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_22-900-5F+nonbiri+Nanoha2025+20250503153515.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 習甦 - W@nderER 20250503153514
+第35回世界コンピュータ将棋選手権,一次予選6回戦 習甦 - W@nderER 20250503153514
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_20-900-5F+Shueso+wanderer+20250503153514.csa
+第35回世界コンピュータ将棋選手権,一次予選6回戦 Kanade - Phonanza 20250503153512
+第35回世界コンピュータ将棋選手権,一次予選6回戦 Kanade - Phonanza 20250503153512
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L6_19-900-5F+Kanade+phonanza+20250503153512.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 komadokun - かりんとう 20250503143944
+第35回世界コンピュータ将棋選手権,一次予選5回戦 komadokun - かりんとう 20250503143944
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_48-900-5F+komadokun+karinto_taikai+20250503143944.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 はるか - 重力場計算法 20250503143806
+第35回世界コンピュータ将棋選手権,一次予選5回戦 はるか - 重力場計算法 20250503143806
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_32-900-5F+Haruka+jyuuryoku+20250503143806.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 あうあう将棋 - 爆裂駒拾太郎 20250503143633
+第35回世界コンピュータ将棋選手権,一次予選5回戦 あうあう将棋 - 爆裂駒拾太郎 20250503143633
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_29-900-5F+auaushogi+bakuretsu+20250503143633.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 KifuuuuuuWarabe Beginning - etude 20250503143607
+第35回世界コンピュータ将棋選手権,一次予選5回戦 KifuuuuuuWarabe Beginning - etude 20250503143607
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_30-900-5F+kifuwarabe+etude+20250503143607.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 隠岐 - 十六式いろは煌 20250503143600
+第35回世界コンピュータ将棋選手権,一次予選5回戦 隠岐 - 十六式いろは煌 20250503143600
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_42-900-5F+oki+16-168+20250503143600.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - カツ丼将棋 20250503143553
+第35回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - カツ丼将棋 20250503143553
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_27-900-5F+jhbr+katsudon+20250503143553.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 もふ将棋 - チョコバナナ 20250503143550
+第35回世界コンピュータ将棋選手権,一次予選5回戦 もふ将棋 - チョコバナナ 20250503143550
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_50-900-5F+mofu+choba+20250503143550.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - Gokaku 20250503143548
+第35回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - Gokaku 20250503143548
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_26-900-5F+qinoa+Gokaku+20250503143548.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - 山田将棋 20250503143546
+第35回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - 山田将棋 20250503143546
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_28-900-5F+komaasobi+yamadashogi+20250503143546.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 257 - 手抜き 20250503143543
+第35回世界コンピュータ将棋選手権,一次予選5回戦 257 - 手抜き 20250503143543
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_24-900-5F+nigonana+tenuki+20250503143543.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 なり金将棋 - TMOQ 20250503143542
+第35回世界コンピュータ将棋選手権,一次予選5回戦 なり金将棋 - TMOQ 20250503143542
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_33-900-5F+narikin+TMOQ+20250503143542.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 やねうら王 - 人生送りバント失敗 20250503143540
+第35回世界コンピュータ将棋選手権,一次予選5回戦 やねうら王 - 人生送りバント失敗 20250503143540
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_25-900-5F+yaneuraou+gakkari+20250503143540.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 習甦 - Argo 20250503143538
+第35回世界コンピュータ将棋選手権,一次予選5回戦 習甦 - Argo 20250503143538
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_21-900-5F+Shueso+argo+20250503143538.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 W@nderER - 芽生将棋 20250503143536
+第35回世界コンピュータ将棋選手権,一次予選5回戦 W@nderER - 芽生将棋 20250503143536
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_20-900-5F+wanderer+ms3bftaikai+20250503143536.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 ザ・グレート・ウシジマ - なのは 20250503143533
+第35回世界コンピュータ将棋選手権,一次予選5回戦 ザ・グレート・ウシジマ - なのは 20250503143533
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_22-900-5F+Usizima+Nanoha2025+20250503143533.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 Phonanza - のんびり中飛車 20250503143528
+第35回世界コンピュータ将棋選手権,一次予選5回戦 Phonanza - のんびり中飛車 20250503143528
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_19-900-5F+phonanza+nonbiri+20250503143528.csa
+第35回世界コンピュータ将棋選手権,一次予選5回戦 Kanade - 中富線56号 20250503143526
+第35回世界コンピュータ将棋選手権,一次予選5回戦 Kanade - 中富線56号 20250503143526
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L5_45-900-5F+Kanade+Nakatomi+20250503143526.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 etude - TMOQ 20250503134052
+第35回世界コンピュータ将棋選手権,一次予選4回戦 etude - TMOQ 20250503134052
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_30-900-5F+etude+TMOQ+20250503134052.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 爆裂駒拾太郎 - 重力場計算法 20250503134051
+第35回世界コンピュータ将棋選手権,一次予選4回戦 爆裂駒拾太郎 - 重力場計算法 20250503134051
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_31-900-5F+bakuretsu+jyuuryoku+20250503134051.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 かりんとう - こまあそび 20250503134049
+第35回世界コンピュータ将棋選手権,一次予選4回戦 かりんとう - こまあそび 20250503134049
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_34-900-5F+karinto_taikai+komaasobi+20250503134049.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 あうあう将棋 - Gokaku 20250503134047
+第35回世界コンピュータ将棋選手権,一次予選4回戦 あうあう将棋 - Gokaku 20250503134047
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_29-900-5F+auaushogi+Gokaku+20250503134047.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 チョコバナナ - 隠岐 20250503134045
+第35回世界コンピュータ将棋選手権,一次予選4回戦 チョコバナナ - 隠岐 20250503134045
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_42-900-5F+choba+oki+20250503134045.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 十六式いろは煌 - JHBR 20250503134043
+第35回世界コンピュータ将棋選手権,一次予選4回戦 十六式いろは煌 - JHBR 20250503134043
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_35-900-5F+16-168+jhbr+20250503134043.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - komadokun 20250503134041
+第35回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - komadokun 20250503134041
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_28-900-5F+yamadashogi+komadokun+20250503134041.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 人生送りバント失敗 - はるか 20250503134039
+第35回世界コンピュータ将棋選手権,一次予選4回戦 人生送りバント失敗 - はるか 20250503134039
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_25-900-5F+gakkari+Haruka+20250503134039.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 KifuuuuuuWarabe Beginning - もふ将棋 20250503134037
+第35回世界コンピュータ将棋選手権,一次予選4回戦 KifuuuuuuWarabe Beginning - もふ将棋 20250503134037
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_37-900-5F+kifuwarabe+mofu+20250503134037.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 芽生将棋 - なり金将棋 20250503134035
+第35回世界コンピュータ将棋選手権,一次予選4回戦 芽生将棋 - なり金将棋 20250503134035
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_33-900-5F+ms3bftaikai+narikin+20250503134035.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 習甦 - きのあ将棋 20250503134033
+第35回世界コンピュータ将棋選手権,一次予選4回戦 習甦 - きのあ将棋 20250503134033
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_21-900-5F+Shueso+qinoa+20250503134033.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 なのは - カツ丼将棋 20250503134031
+第35回世界コンピュータ将棋選手権,一次予選4回戦 なのは - カツ丼将棋 20250503134031
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_22-900-5F+Nanoha2025+katsudon+20250503134031.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 257 - やねうら王 20250503134029
+第35回世界コンピュータ将棋選手権,一次予選4回戦 257 - やねうら王 20250503134029
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_38-900-5F+nigonana+yaneuraou+20250503134029.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - 中富線56号 20250503134027
+第35回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - 中富線56号 20250503134027
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_24-900-5F+tenuki+Nakatomi+20250503134027.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 W@nderER - Phonanza 20250503134024
+第35回世界コンピュータ将棋選手権,一次予選4回戦 W@nderER - Phonanza 20250503134024
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_19-900-5F+wanderer+phonanza+20250503134024.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 Kanade - Argo 20250503134022
+第35回世界コンピュータ将棋選手権,一次予選4回戦 Kanade - Argo 20250503134022
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_23-900-5F+Kanade+argo+20250503134022.csa
+第35回世界コンピュータ将棋選手権,一次予選4回戦 のんびり中飛車 - ザ・グレート・ウシジマ 20250503134020
+第35回世界コンピュータ将棋選手権,一次予選4回戦 のんびり中飛車 - ザ・グレート・ウシジマ 20250503134020
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L4_39-900-5F+nonbiri+Usizima+20250503134020.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 人生送りバント失敗 20250503122833
+第35回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 人生送りバント失敗 20250503122833
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_25-900-5F+yamadashogi+gakkari+20250503122833.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 もふ将棋 - Kanade 20250503122819
+第35回世界コンピュータ将棋選手権,一次予選3回戦 もふ将棋 - Kanade 20250503122819
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_45-900-5F+mofu+Kanade+20250503122819.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 中富線56号 - 習甦 20250503122409
+第35回世界コンピュータ将棋選手権,一次予選3回戦 中富線56号 - 習甦 20250503122409
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_21-900-5F+Nakatomi+Shueso+20250503122409.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 TMOQ - やねうら王 20250503122400
+第35回世界コンピュータ将棋選手権,一次予選3回戦 TMOQ - やねうら王 20250503122400
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_38-900-5F+TMOQ+yaneuraou+20250503122400.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - カツ丼将棋 20250503121711
+第35回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - カツ丼将棋 20250503121711
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_27-900-5F+bakuretsu+katsudon+20250503121711.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 etude - 手抜き 20250503121557
+第35回世界コンピュータ将棋選手権,一次予選3回戦 etude - 手抜き 20250503121557
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_24-900-5F+etude+tenuki+20250503121557.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 隠岐 - 257 20250503121053
+第35回世界コンピュータ将棋選手権,一次予選3回戦 隠岐 - 257 20250503121053
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_42-900-5F+oki+nigonana+20250503121053.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 ザ・グレート・ウシジマ - 芽生将棋 20250503120846
+第35回世界コンピュータ将棋選手権,一次予選3回戦 ザ・グレート・ウシジマ - 芽生将棋 20250503120846
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_40-900-5F+Usizima+ms3bftaikai+20250503120846.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 きのあ将棋 - のんびり中飛車 20250503120556
+第35回世界コンピュータ将棋選手権,一次予選3回戦 きのあ将棋 - のんびり中飛車 20250503120556
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_26-900-5F+qinoa+nonbiri+20250503120556.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 重力場計算法 - Gokaku 20250503120337
+第35回世界コンピュータ将棋選手権,一次予選3回戦 重力場計算法 - Gokaku 20250503120337
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_36-900-5F+jyuuryoku+Gokaku+20250503120337.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 チョコバナナ - KifuuuuuuWarabe Beginning 20250503120333
+第35回世界コンピュータ将棋選手権,一次予選3回戦 チョコバナナ - KifuuuuuuWarabe Beginning 20250503120333
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_37-900-5F+choba+kifuwarabe+20250503120333.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 komadokun - はるか 20250503120312
+第35回世界コンピュータ将棋選手権,一次予選3回戦 komadokun - はるか 20250503120312
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_32-900-5F+komadokun+Haruka+20250503120312.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 十六式いろは煌 - なのは 20250503120303
+第35回世界コンピュータ将棋選手権,一次予選3回戦 十六式いろは煌 - なのは 20250503120303
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_22-900-5F+16-168+Nanoha2025+20250503120303.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 Phonanza - JHBR 20250503120244
+第35回世界コンピュータ将棋選手権,一次予選3回戦 Phonanza - JHBR 20250503120244
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_19-900-5F+phonanza+jhbr+20250503120244.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 Argo - こまあそび 20250503120238
+第35回世界コンピュータ将棋選手権,一次予選3回戦 Argo - こまあそび 20250503120238
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_23-900-5F+argo+komaasobi+20250503120238.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 なり金将棋 - あうあう将棋 20250503120232
+第35回世界コンピュータ将棋選手権,一次予選3回戦 なり金将棋 - あうあう将棋 20250503120232
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_29-900-5F+narikin+auaushogi+20250503120232.csa
+第35回世界コンピュータ将棋選手権,一次予選3回戦 W@nderER - かりんとう 20250503120153
+第35回世界コンピュータ将棋選手権,一次予選3回戦 W@nderER - かりんとう 20250503120153
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L3_20-900-5F+wanderer+karinto_taikai+20250503120153.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 257 - Kanade 20250503113118
+第35回世界コンピュータ将棋選手権,一次予選2回戦 257 - Kanade 20250503113118
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_45_2-900-5F+nigonana+Kanade+20250503113118.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 なのは - なり金将棋 20250503112547
+第35回世界コンピュータ将棋選手権,一次予選2回戦 なのは - なり金将棋 20250503112547
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_22-900-5F+Nanoha2025+narikin+20250503112547.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 爆裂駒拾太郎 20250503112524
+第35回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 爆裂駒拾太郎 20250503112524
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_24-900-5F+tenuki+bakuretsu+20250503112524.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 komadokun - TMOQ 20250503112156
+第35回世界コンピュータ将棋選手権,一次予選2回戦 komadokun - TMOQ 20250503112156
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_44-900-5F+komadokun+TMOQ+20250503112156.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 隠岐 - 芽生将棋 20250503112148
+第35回世界コンピュータ将棋選手権,一次予選2回戦 隠岐 - 芽生将棋 20250503112148
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_42-900-5F+oki+ms3bftaikai+20250503112148.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 もふ将棋 - ザ・グレート・ウシジマ 20250503112133
+第35回世界コンピュータ将棋選手権,一次予選2回戦 もふ将棋 - ザ・グレート・ウシジマ 20250503112133
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_40-900-5F+mofu+Usizima+20250503112133.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 のんびり中飛車 - チョコバナナ 20250503112126
+第35回世界コンピュータ将棋選手権,一次予選2回戦 のんびり中飛車 - チョコバナナ 20250503112126
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_39-900-5F+nonbiri+choba+20250503112126.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 やねうら王 - 中富線56号 20250503112118
+第35回世界コンピュータ将棋選手権,一次予選2回戦 やねうら王 - 中富線56号 20250503112118
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_38-900-5F+yaneuraou+Nakatomi+20250503112118.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 かりんとう - 重力場計算法 20250503112101
+第35回世界コンピュータ将棋選手権,一次予選2回戦 かりんとう - 重力場計算法 20250503112101
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_36-900-5F+karinto_taikai+jyuuryoku+20250503112101.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 山田将棋 - カツ丼将棋 20250503112055
+第35回世界コンピュータ将棋選手権,一次予選2回戦 山田将棋 - カツ丼将棋 20250503112055
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_27-900-5F+yamadashogi+katsudon+20250503112055.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 人生送りバント失敗 - etude 20250503112046
+第35回世界コンピュータ将棋選手権,一次予選2回戦 人生送りバント失敗 - etude 20250503112046
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_25-900-5F+gakkari+etude+20250503112046.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 KifuuuuuuWarabe Beginning - 十六式いろは煌 20250503111740
+第35回世界コンピュータ将棋選手権,一次予選2回戦 KifuuuuuuWarabe Beginning - 十六式いろは煌 20250503111740
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_37-900-5F+kifuwarabe+16-168+20250503111740.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - きのあ将棋 20250503111715
+第35回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - きのあ将棋 20250503111715
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_26-900-5F+auaushogi+qinoa+20250503111715.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 Argo - はるか 20250503111641
+第35回世界コンピュータ将棋選手権,一次予選2回戦 Argo - はるか 20250503111641
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_23-900-5F+argo+Haruka+20250503111641.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - 習甦 20250503111628
+第35回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - 習甦 20250503111628
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_21-900-5F+komaasobi+Shueso+20250503111628.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 JHBR - W@nderER 20250503111622
+第35回世界コンピュータ将棋選手権,一次予選2回戦 JHBR - W@nderER 20250503111622
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_20-900-5F+jhbr+wanderer+20250503111622.csa
+第35回世界コンピュータ将棋選手権,一次予選2回戦 Gokaku - Phonanza 20250503111615
+第35回世界コンピュータ将棋選手権,一次予選2回戦 Gokaku - Phonanza 20250503111615
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L2_19-900-5F+Gokaku+phonanza+20250503111615.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Phonanza - かりんとう 20250503104806
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Phonanza - かりんとう 20250503104806
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_19_1-900-5F+phonanza+karinto_taikai+20250503104806.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 重力場計算法 - JHBR 20250503104116
+第35回世界コンピュータ将棋選手権,一次予選1回戦 重力場計算法 - JHBR 20250503104116
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_35-900-5F+jyuuryoku+jhbr+20250503104116.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - KifuuuuuuWarabe Beginning 20250503104114
+第35回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - KifuuuuuuWarabe Beginning 20250503104114
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_34-900-5F+komaasobi+kifuwarabe+20250503104114.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 やねうら王 - なり金将棋 20250503104112
+第35回世界コンピュータ将棋選手権,一次予選1回戦 やねうら王 - なり金将棋 20250503104112
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_33-900-5F+yaneuraou+narikin+20250503104112.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 はるか - のんびり中飛車 20250503104110
+第35回世界コンピュータ将棋選手権,一次予選1回戦 はるか - のんびり中飛車 20250503104110
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_32-900-5F+Haruka+nonbiri+20250503104110.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 爆裂駒拾太郎 - ザ・グレート・ウシジマ 20250503104108
+第35回世界コンピュータ将棋選手権,一次予選1回戦 爆裂駒拾太郎 - ザ・グレート・ウシジマ 20250503104108
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_31-900-5F+bakuretsu+Usizima+20250503104108.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 etude - 隠岐 20250503104107
+第35回世界コンピュータ将棋選手権,一次予選1回戦 etude - 隠岐 20250503104107
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_30-900-5F+etude+oki+20250503104107.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 TMOQ - あうあう将棋 20250503104104
+第35回世界コンピュータ将棋選手権,一次予選1回戦 TMOQ - あうあう将棋 20250503104104
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_29-900-5F+TMOQ+auaushogi+20250503104104.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Kanade - 山田将棋 20250503104103
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Kanade - 山田将棋 20250503104103
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_28-900-5F+Kanade+yamadashogi+20250503104103.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 カツ丼将棋 - 257 20250503104100
+第35回世界コンピュータ将棋選手権,一次予選1回戦 カツ丼将棋 - 257 20250503104100
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_27-900-5F+katsudon+nigonana+20250503104100.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 きのあ将棋 - komadokun 20250503104058
+第35回世界コンピュータ将棋選手権,一次予選1回戦 きのあ将棋 - komadokun 20250503104058
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_26-900-5F+qinoa+komadokun+20250503104058.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 芽生将棋 - 人生送りバント失敗 20250503104056
+第35回世界コンピュータ将棋選手権,一次予選1回戦 芽生将棋 - 人生送りバント失敗 20250503104056
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_25-900-5F+ms3bftaikai+gakkari+20250503104056.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 手抜き - もふ将棋 20250503104055
+第35回世界コンピュータ将棋選手権,一次予選1回戦 手抜き - もふ将棋 20250503104055
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_24-900-5F+tenuki+mofu+20250503104055.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Argo - チョコバナナ 20250503104052
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Argo - チョコバナナ 20250503104052
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_23-900-5F+argo+choba+20250503104052.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 中富線56号 - なのは 20250503104050
+第35回世界コンピュータ将棋選手権,一次予選1回戦 中富線56号 - なのは 20250503104050
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_22-900-5F+Nakatomi+Nanoha2025+20250503104050.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 習甦 - 十六式いろは煌 20250503104048
+第35回世界コンピュータ将棋選手権,一次予選1回戦 習甦 - 十六式いろは煌 20250503104048
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_21-900-5F+Shueso+16-168+20250503104048.csa
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Gokaku - W@nderER 20250503104046
+第35回世界コンピュータ将棋選手権,一次予選1回戦 Gokaku - W@nderER 20250503104046
+http://live4.computer-shogi.org/wcsc35/kifu/WCSC35+L1_20-900-5F+Gokaku+wanderer+20250503104046.csa

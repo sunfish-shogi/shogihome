@@ -1,0 +1,890 @@
+V1
+#sub:第29回世界コンピュータ将棋選手権
+第29回世界コンピュータ将棋選手権,決勝 7回戦 elmo - PAL
+第29回世界コンピュータ将棋選手権,決勝 7回戦 elmo - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F7_ELM_PAL.csa
+第29回世界コンピュータ将棋選手権,決勝 7回戦 名人コブラ - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,決勝 7回戦 名人コブラ - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F7_MCB_QHA.csa
+第29回世界コンピュータ将棋選手権,決勝 7回戦 狸王 - 水匠
+第29回世界コンピュータ将棋選手権,決勝 7回戦 狸王 - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F7_TNK_SUS.csa
+第29回世界コンピュータ将棋選手権,決勝 7回戦 やねうら王 - Kristallweizen
+第29回世界コンピュータ将棋選手権,決勝 7回戦 やねうら王 - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F7_YAN_HFW.csa
+第29回世界コンピュータ将棋選手権,決勝 6回戦 狸王 - 名人コブラ
+第29回世界コンピュータ将棋選手権,決勝 6回戦 狸王 - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F6_TNK_MCB.csa
+第29回世界コンピュータ将棋選手権,決勝 6回戦 やねうら王 - elmo
+第29回世界コンピュータ将棋選手権,決勝 6回戦 やねうら王 - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F6_YAN_ELM.csa
+第29回世界コンピュータ将棋選手権,決勝 6回戦 Kristallweizen - PAL
+第29回世界コンピュータ将棋選手権,決勝 6回戦 Kristallweizen - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F6_HFW_PAL.csa
+第29回世界コンピュータ将棋選手権,決勝 6回戦 水匠 - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,決勝 6回戦 水匠 - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F6_SUS_QHA.csa
+第29回世界コンピュータ将棋選手権,決勝 5回戦 PAL - やねうら王
+第29回世界コンピュータ将棋選手権,決勝 5回戦 PAL - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F5_PAL_YAN.csa
+第29回世界コンピュータ将棋選手権,決勝 5回戦 名人コブラ - 水匠
+第29回世界コンピュータ将棋選手権,決勝 5回戦 名人コブラ - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F5_MCB_SUS.csa
+第29回世界コンピュータ将棋選手権,決勝 5回戦 Qhapaq di molto - 狸王
+第29回世界コンピュータ将棋選手権,決勝 5回戦 Qhapaq di molto - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F5_QHA_TNK.csa
+第29回世界コンピュータ将棋選手権,決勝 5回戦 elmo - Kristallweizen
+第29回世界コンピュータ将棋選手権,決勝 5回戦 elmo - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F5_ELM_HFW.csa
+第29回世界コンピュータ将棋選手権,決勝 4回戦 やねうら王 - 狸王
+第29回世界コンピュータ将棋選手権,決勝 4回戦 やねうら王 - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F4_YAN_TNK.csa
+第29回世界コンピュータ将棋選手権,決勝 4回戦 PAL - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,決勝 4回戦 PAL - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F4_PAL_QHA.csa
+第29回世界コンピュータ将棋選手権,決勝 4回戦 Kristallweizen - 水匠
+第29回世界コンピュータ将棋選手権,決勝 4回戦 Kristallweizen - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F4_HFW_SUS.csa
+第29回世界コンピュータ将棋選手権,決勝 4回戦 elmo - 名人コブラ
+第29回世界コンピュータ将棋選手権,決勝 4回戦 elmo - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F4_ELM_MCB.csa
+第29回世界コンピュータ将棋選手権,決勝 3回戦 Qhapaq di molto - elmo
+第29回世界コンピュータ将棋選手権,決勝 3回戦 Qhapaq di molto - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F3_QHA_ELM.csa
+第29回世界コンピュータ将棋選手権,決勝 3回戦 水匠 - やねうら王
+第29回世界コンピュータ将棋選手権,決勝 3回戦 水匠 - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F3_SUS_YAN.csa
+第29回世界コンピュータ将棋選手権,決勝 3回戦 狸王 - Kristallweizen
+第29回世界コンピュータ将棋選手権,決勝 3回戦 狸王 - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F3_TNK_HFW.csa
+第29回世界コンピュータ将棋選手権,決勝 3回戦 名人コブラ - PAL
+第29回世界コンピュータ将棋選手権,決勝 3回戦 名人コブラ - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F3_MCB_PAL.csa
+第29回世界コンピュータ将棋選手権,決勝 2回戦 elmo - 狸王
+第29回世界コンピュータ将棋選手権,決勝 2回戦 elmo - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F2_ELM_TNK.csa
+第29回世界コンピュータ将棋選手権,決勝 2回戦 Kristallweizen - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,決勝 2回戦 Kristallweizen - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F2_HFW_QHA.csa
+第29回世界コンピュータ将棋選手権,決勝 2回戦 やねうら王 - 名人コブラ
+第29回世界コンピュータ将棋選手権,決勝 2回戦 やねうら王 - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F2_YAN_MCB.csa
+第29回世界コンピュータ将棋選手権,決勝 2回戦 PAL - 水匠
+第29回世界コンピュータ将棋選手権,決勝 2回戦 PAL - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F2_PAL_SUS.csa
+第29回世界コンピュータ将棋選手権,決勝 1回戦 Qhapaq di molto - やねうら王
+第29回世界コンピュータ将棋選手権,決勝 1回戦 Qhapaq di molto - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F1_QHA_YAN.csa
+第29回世界コンピュータ将棋選手権,決勝 1回戦 狸王 - PAL
+第29回世界コンピュータ将棋選手権,決勝 1回戦 狸王 - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F1_TNK_PAL.csa
+第29回世界コンピュータ将棋選手権,決勝 1回戦 水匠 - elmo
+第29回世界コンピュータ将棋選手権,決勝 1回戦 水匠 - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F1_SUS_ELM.csa
+第29回世界コンピュータ将棋選手権,決勝 1回戦 名人コブラ - Kristallweizen
+第29回世界コンピュータ将棋選手権,決勝 1回戦 名人コブラ - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_F1_MCB_HFW.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - Apery
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - Apery
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_HNW_APR.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 あやめ - たこっと
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 あやめ - たこっと
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_OKR_TKT_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - PAL
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_ELM_PAL.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 習甦 - nozomi
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 習甦 - nozomi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_SHS_NZM.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 水匠 - やねうら王
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 水匠 - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_SUS_YAN.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Daigorilla - Argo
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Daigorilla - Argo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_DGR_ACI.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Kristallweizen - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Kristallweizen - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_HFW_QHA_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - CGP
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_TSG_CGP_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - 狸王
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_NDF_TNK.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 W@ndre - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 W@ndre - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_WND_DAI.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - 名人コブラ
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_NVC_MCB.csa
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 dlshogi - 大合神クジラちゃん
+第29回世界コンピュータ将棋選手権,二次予選 9回戦 dlshogi - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U9_DLS_DGK.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 HoneyWaffle - 大将軍
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 HoneyWaffle - 大将軍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_HNW_TSG.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - W@ndre
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - W@ndre
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_SHS_WND.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - たこっと
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - たこっと
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_DGK_TKT.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - elmo
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_MCB_ELM.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_PAL_QHA.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - 水匠
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_APR_SUS.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 CGP - Argo
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 CGP - Argo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_CGP_ACI.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 狸王 - nozomi
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 狸王 - nozomi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_TNK_NZM.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - やねうら王
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_NVC_YAN.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 dainomaruDNNc - dlshogi
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 dainomaruDNNc - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_DAI_DLS.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Kristallweizen - NineDayFever
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 Kristallweizen - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_HFW_NDF_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 あやめ - Daigorilla
+第29回世界コンピュータ将棋選手権,二次予選 8回戦 あやめ - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U8_OKR_DGR.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi - Apery
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi - Apery
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_DLS_APR.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - 大将軍
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - 大将軍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_NZM_TSG.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 名人コブラ - Kristallweizen
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 名人コブラ - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_MCB_HFW_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - Novice
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - Novice
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_HNW_NVC.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 水匠 - NineDayFever
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 水匠 - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_SUS_NDF.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 PAL - 狸王
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 PAL - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_PAL_TNK.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 たこっと - CGP
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 たこっと - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_TKT_CGP.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 W@ndre - Argo
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 W@ndre - Argo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_WND_ACI.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - elmo
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_DGK_ELM.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 dainomaruDNNc - Daigorilla
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 dainomaruDNNc - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_DAI_DGR.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 あやめ - 習甦
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 あやめ - 習甦
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_OKR_SHS.csa
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq di molto - やねうら王
+第29回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq di molto - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U7_QHA_YAN.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - HoneyWaffle
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_SHS_HNW.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - dlshogi
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_TKT_DLS_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - W@ndre
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - W@ndre
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_TSG_WND_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 NineDayFever - 大合神クジラちゃん
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 NineDayFever - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_NDF_DGK.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 水匠 - nozomi
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 水匠 - nozomi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_SUS_NZM.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Argo - Novice
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Argo - Novice
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_ACI_NVC.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Apery - 狸王
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Apery - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_APR_TNK.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 やねうら王 - elmo
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 やねうら王 - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_YAN_ELM.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Kristallweizen - PAL
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Kristallweizen - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_HFW_PAL.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 CGP - Daigorilla
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 CGP - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_CGP_DGR.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 dainomaruDNNc - あやめ
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 dainomaruDNNc - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_DAI_OKR.csa
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq di molto - 名人コブラ
+第29回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq di molto - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U6_QHA_MCB.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - Kristallweizen
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_YAN_HFW_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 習甦
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 習甦
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_ELM_SHS.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Daigorilla - 大将軍
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Daigorilla - 大将軍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_DGR_TSG.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 狸王 - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 狸王 - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_TNK_QHA.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - Apery
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - Apery
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_PAL_APR.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 W@ndre - NineDayFever
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 W@ndre - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_WND_NDF.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 水匠 - 名人コブラ
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 水匠 - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_SUS_MCB.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 HoneyWaffle - たこっと
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 HoneyWaffle - たこっと
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_HNW_TKT.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 dainomaruDNNc - CGP
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 dainomaruDNNc - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_DAI_CGP.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - あやめ
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_NVC_OKR.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Argo - 大合神クジラちゃん
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 Argo - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_ACI_DGK.csa
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - dlshogi
+第29回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U5_NZM_DLS.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - 水匠
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_DGK_SUS.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 elmo - HoneyWaffle
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 elmo - HoneyWaffle
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_ELM_HNW.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 やねうら王 - PAL
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 やねうら王 - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_YAN_PAL.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 W@ndre - Kristallweizen
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 W@ndre - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_WND_HFW_2.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_TKT_DAI.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - Novice
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - Novice
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_TSG_NVC_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 CGP - あやめ
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 CGP - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_CGP_OKR.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 NineDayFever - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 NineDayFever - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_NDF_QHA.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - Daigorilla
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 習甦 - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_SHS_DGR.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi - 狸王
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_DLS_TNK.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - Argo
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - Argo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_MCB_ACI_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - Apery
+第29回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - Apery
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U4_NZM_APR.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Daigorilla - HoneyWaffle
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Daigorilla - HoneyWaffle
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_DGR_HNW.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Novice - PAL
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Novice - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_NVC_PAL.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 nozomi - W@ndre
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 nozomi - W@ndre
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_NZM_WND_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - Qhapaq di molto
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - Qhapaq di molto
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_SHS_QHA.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Argo - たこっと
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Argo - たこっと
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_ACI_TKT_1.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - 名人コブラ
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_APR_MCB.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 やねうら王 - 大合神クジラちゃん
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 やねうら王 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_YAN_DGK.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 CGP - dlshogi
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 CGP - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_CGP_DLS.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Kristallweizen - 狸王
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 Kristallweizen - 狸王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_HFW_TNK.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 水匠 - 大将軍
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 水匠 - 大将軍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_SUS_TSG.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - NineDayFever
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_OKR_NDF.csa
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U3_ELM_DAI.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - たこっと
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - たこっと
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_APR_TKT.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Qhapaq di molto - 大合神クジラちゃん
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Qhapaq di molto - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_QHA_DGK.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - 名人コブラ
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - 名人コブラ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_TSG_MCB.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 習甦
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 習甦
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_NDF_SHS.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Kristallweizen - elmo
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Kristallweizen - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_HFW_ELM.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 W@ndre - あやめ
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 W@ndre - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_WND_OKR.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 PAL - nozomi
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 PAL - nozomi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_PAL_NZM.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 狸王 - HoneyWaffle
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 狸王 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_TNK_HNW.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Daigorilla - 水匠
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Daigorilla - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_DGR_SUS.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 dlshogi - Novice
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 dlshogi - Novice
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_DLS_NVC.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Argo - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 Argo - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_ACI_DAI.csa
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 CGP - やねうら王
+第29回世界コンピュータ将棋選手権,二次予選 2回戦 CGP - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U2_CGP_YAN.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 たこっと - W@ndre
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 たこっと - W@ndre
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_TKT_WND.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 Qhapaq di molto - 水匠
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 Qhapaq di molto - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_QHA_SUS.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - やねうら王
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_HNW_YAN.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - Argo
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - Argo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_NZM_ACI.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 あやめ - Apery
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 あやめ - Apery
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_OKR_APR.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - NineDayFever
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_MCB_NDF.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん - Daigorilla
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_DGK_DGR.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - 習甦
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - 習甦
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_TSG_SHS.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 dlshogi - Kristallweizen
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 dlshogi - Kristallweizen
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_DLS_HFW.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 狸王 - CGP
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 狸王 - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_TNK_CGP.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 dainomaruDNNc - PAL
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 dainomaruDNNc - PAL
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_DAI_PAL.csa
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 Novice - elmo
+第29回世界コンピュータ将棋選手権,二次予選 1回戦 Novice - elmo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_U1_NVC_ELM.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 うさぴょん外伝 - scherzo
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 うさぴょん外伝 - scherzo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_USA_SCH.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Crazy Shogi - ひまわり
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Crazy Shogi - ひまわり
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_CRZ_HIM.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - NineDayFever
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_YAM_NDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Miacis - 芝浦将棋Softmax
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Miacis - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_KAT_SSS.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 なのは - きのあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 なのは - きのあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_NAN_KIN.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Aoba Zero - 手抜き
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Aoba Zero - 手抜き
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_ABZ_TEN.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 臥龍 - 人生送りバント失敗
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 臥龍 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_GAR_JOS.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - にこあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - にこあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_NRK_NKA.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 柿木将棋 - カツ丼将棋
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 柿木将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_KAK_KTD.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 TMOQ - まったりゆうちゃん
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 TMOQ - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_TMO_YUU.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 GCT - Claire
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 GCT - Claire
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_GCT_CLR.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 水匠 - Daigorilla
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 水匠 - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_SUS_DGR.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - やねうら王
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_NNS_YAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 CGP - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 CGP - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_CGP_DAI.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Windfall - だるま将棋
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 Windfall - だるま将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_WDF_DRM.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 st34 - きふわらべ
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 st34 - きふわらべ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_ST3_KFW.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 あやめ - dlshogi
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 あやめ - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_OKR_DLS.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 ichibinichi - オッズの魔法使い Season 2
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 ichibinichi - オッズの魔法使い Season 2
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_ICB_WOD.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 FTS3 - 十六式いろは改
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 FTS3 - 十六式いろは改
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_FTS_JIK.csa
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 SMS将棋 - こまあそび
+第29回世界コンピュータ将棋選手権,一次予選 8回戦 SMS将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L8_SMS_KMA.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 なのは - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 なのは - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_NAN_DAI.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - TMOQ
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_KAK_TMO.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 人生送りバント失敗 - ひまわり
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 人生送りバント失敗 - ひまわり
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_JOS_HIM.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - やねうら王
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_CGP_YAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 GCT - Aoba Zero
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 GCT - Aoba Zero
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_GCT_ABZ.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - うさぴょん外伝
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - うさぴょん外伝
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_NRK_USA.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 Daigorilla - NineDayFever
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 Daigorilla - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_DGR_NDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - dlshogi
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_TEN_DLS.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - ichibinichi
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - ichibinichi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_SSS_ICB.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 オッズの魔法使い Season 2 - にこあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 オッズの魔法使い Season 2 - にこあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_WOD_NKA.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 水匠 - Miacis
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 水匠 - Miacis
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_SUS_KAT.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 Claire - 山田将棋
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 Claire - 山田将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_CLR_YAM.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 あやめ - カツ丼将棋
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 あやめ - カツ丼将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_OKR_KTD.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - Crazy Shogi
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - Crazy Shogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_NNS_CRZ.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 FTS3 - Windfall
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 FTS3 - Windfall
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_FTS_WDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - SMS将棋
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - SMS将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_KIN_SMS.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 st34 - 臥龍
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 st34 - 臥龍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_ST3_GAR.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - だるま将棋
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - だるま将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_YUU_DRM.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - scherzo
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - scherzo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_KFW_SCH.csa
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 こまあそび - 十六式いろは改
+第29回世界コンピュータ将棋選手権,一次予選 7回戦 こまあそび - 十六式いろは改
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L7_KMA_JIK.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - Crazy Shogi
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - Crazy Shogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_CGP_CRZ_1.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - GCT
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - GCT
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_YUU_GCT.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - Aoba Zero
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - Aoba Zero
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_DAI_ABZ.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 手抜き - きのあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 手抜き - きのあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_TEN_KIN.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 水匠 - やねうら王
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 水匠 - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_SUS_YAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - TMOQ
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - TMOQ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_GAR_TMO.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 うさぴょん外伝 - ichibinichi
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 うさぴょん外伝 - ichibinichi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_USA_ICB_2.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - なのは
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - なのは
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_HIM_NAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Daigorilla - dlshogi
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Daigorilla - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_DGR_DLS.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - Claire
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - Claire
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_SCH_CLR.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Miacis - 人生送りバント失敗
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Miacis - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_KAT_JOS.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 にこあ将棋 - st34
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 にこあ将棋 - st34
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_NKA_ST3.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 NineDayFever - あやめ
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 NineDayFever - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_NDF_OKR.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 だるま将棋 - 山田将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 だるま将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_DRM_YAM.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - SMS将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - SMS将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_KTD_SMS.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 オッズの魔法使い Season 2 - 柿木将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 オッズの魔法使い Season 2 - 柿木将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_WOD_KAK.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Windfall - なり金将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 Windfall - なり金将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_WDF_NRK.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 芝浦将棋Softmax - ねね将棋
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 芝浦将棋Softmax - ねね将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_SSS_NNS.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - FTS3
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - FTS3
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_KMA_FTS.csa
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 十六式いろは改 - きふわらべ
+第29回世界コンピュータ将棋選手権,一次予選 6回戦 十六式いろは改 - きふわらべ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L6_JIK_KFW.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 やねうら王 - Daigorilla
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 やねうら王 - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_YAN_DGR.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - ひまわり
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - ひまわり
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_GAR_HIM.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Aoba Zero - SMS将棋
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Aoba Zero - SMS将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_ABZ_SMS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - 手抜き
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_YAM_TEN.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Claire - 芝浦将棋Softmax
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Claire - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_CLR_SSS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 なのは - まったりゆうちゃん
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 なのは - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_NAN_YUU.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - NineDayFever
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_KIN_NDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 あやめ - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 あやめ - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_OKR_DAI.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 dlshogi - ねね将棋
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 dlshogi - ねね将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_DLS_NNS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - CGP
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_KTD_CGP.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - GCT
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - GCT
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_NRK_GCT.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Crazy Shogi - 水匠
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 Crazy Shogi - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_CRZ_SUS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 st34 - FTS3
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 st34 - FTS3
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_ST3_FTS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 にこあ将棋 - うさぴょん外伝
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 にこあ将棋 - うさぴょん外伝
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_NKA_USA.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 柿木将棋 - Miacis
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 柿木将棋 - Miacis
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_KAK_KAT.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 TMOQ - こまあそび
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 TMOQ - こまあそび
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_TMO_KMA.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 ichibinichi - Windfall
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 ichibinichi - Windfall
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_ICB_WDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 scherzo - 人生送りバント失敗
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 scherzo - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_SCH_JOS.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - オッズの魔法使い Season 2
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - オッズの魔法使い Season 2
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_KFW_WOD.csa
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 だるま将棋 - 十六式いろは改
+第29回世界コンピュータ将棋選手権,一次予選 5回戦 だるま将棋 - 十六式いろは改
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L5_DRM_JIK.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Daigorilla - ねね将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Daigorilla - ねね将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_DGR_NNS_2.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 オッズの魔法使い Season 2 - まったりゆうちゃん
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 オッズの魔法使い Season 2 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_WOD_YUU.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 なのは - CGP
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 なのは - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_NAN_CGP.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - Crazy Shogi
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - Crazy Shogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_SCH_CRZ_2.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - カツ丼将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - カツ丼将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_HIM_KTD.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Aoba Zero - TMOQ
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Aoba Zero - TMOQ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_ABZ_TMO.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - きのあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - きのあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_JOS_KIN.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - NineDayFever
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_SSS_NDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 手抜き - GCT
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 手抜き - GCT
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_TEN_GCT.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 水匠 - dainomaruDNNc
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 水匠 - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_SUS_DAI.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん外伝 - こまあそび
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 うさぴょん外伝 - こまあそび
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_USA_KMA.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 やねうら王 - あやめ
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 やねうら王 - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_YAN_OKR.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Windfall - st34
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Windfall - st34
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_WDF_ST3.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 にこあ将棋 - 臥龍
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 にこあ将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_NKA_GAR.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 なり金将棋 - 山田将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 なり金将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_NRK_YAM.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Miacis - dlshogi
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 Miacis - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_KAT_DLS.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改 - Claire
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改 - Claire
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_JIK_CLR.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 ichibinichi - 柿木将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 ichibinichi - 柿木将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_ICB_KAK.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 FTS3 - だるま将棋
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 FTS3 - だるま将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_FTS_DRM.csa
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 SMS将棋 - きふわらべ
+第29回世界コンピュータ将棋選手権,一次予選 4回戦 SMS将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L4_SMS_KFW.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Crazy Shogi - Miacis
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Crazy Shogi - Miacis
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_CRZ_KAT.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 ねね将棋 - 手抜き
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 ねね将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_NNS_TEN.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - やねうら王
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_NAN_YAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - ichibinichi
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - ichibinichi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_KIN_ICB.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 dlshogi - 水匠
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 dlshogi - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_DLS_SUS.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Daigorilla - ひまわり
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Daigorilla - ひまわり
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_DGR_HIM.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 だるま将棋 - scherzo
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 だるま将棋 - scherzo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_DRM_SCH.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 NineDayFever - Aoba Zero
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 NineDayFever - Aoba Zero
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_NDF_ABZ.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 SMS将棋 - なり金将棋
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 SMS将棋 - なり金将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_SMS_NRK.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - あやめ
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_YAM_OKR.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 GCT - 臥龍
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 GCT - 臥龍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_GCT_GAR.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - 芝浦将棋Softmax
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_KTD_SSS.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 st34 - オッズの魔法使い Season 2
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 st34 - オッズの魔法使い Season 2
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_ST3_WOD.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - にこあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - にこあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_CLR_NKA.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 dainomaruDNNc - TMOQ
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 dainomaruDNNc - TMOQ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_DAI_TMO.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - うさぴょん外伝
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - うさぴょん外伝
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_CGP_USA.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - まったりゆうちゃん
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_JOS_YUU.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 十六式いろは改 - Windfall
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 十六式いろは改 - Windfall
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_JIK_WDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - こまあそび
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - こまあそび
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_KFW_KMA.csa
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 FTS3 - 柿木将棋
+第29回世界コンピュータ将棋選手権,一次予選 3回戦 FTS3 - 柿木将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L3_FTS_KAK.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - CGP
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - CGP
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_TEN_CGP.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 ichibinichi - なのは
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 ichibinichi - なのは
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_ICB_NAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 dlshogi - 人生送りバント失敗
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 dlshogi - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_DLS_JOS.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - Crazy Shogi
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - Crazy Shogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_KIN_CRZ_1.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 芝浦将棋Softmax - 山田将棋
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 芝浦将棋Softmax - 山田将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_SSS_YAM.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - あやめ
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - あやめ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_GAR_OKR.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 dainomaruDNNc - 柿木将棋
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 dainomaruDNNc - 柿木将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_DAI_KAK.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - ねね将棋
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - ねね将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_TMO_NNS.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ひまわり
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ひまわり
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_YUU_HIM.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - st34
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - st34
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_SCH_ST3.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 オッズの魔法使い Season 2 - やねうら王
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 オッズの魔法使い Season 2 - やねうら王
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_WOD_YAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 うさぴょん外伝 - SMS将棋
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 うさぴょん外伝 - SMS将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_USA_SMS.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 NineDayFever - カツ丼将棋
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 NineDayFever - カツ丼将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_NDF_KTD.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 にこあ将棋 - 十六式いろは改
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 にこあ将棋 - 十六式いろは改
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_NKA_JIK.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 Claire - Daigorilla
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 Claire - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_CLR_DGR.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - FTS3
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - FTS3
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_NRK_FTS.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - Aoba Zero
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 こまあそび - Aoba Zero
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_KMA_ABZ.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 GCT - きふわらべ
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 GCT - きふわらべ
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_GCT_KFW.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 水匠 - Windfall
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 水匠 - Windfall
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_SUS_WDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 だるま将棋 - Miacis
+第29回世界コンピュータ将棋選手権,一次予選 2回戦 だるま将棋 - Miacis
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L2_DRM_KAT.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - 人生送りバント失敗
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_SMS_JOS.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 うさぴょん外伝 - dlshogi
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 うさぴょん外伝 - dlshogi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_USA_DLS_1.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Aoba Zero - なのは
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Aoba Zero - なのは
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_ABZ_NAN.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 やねうら王 - NineDayFever
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 やねうら王 - NineDayFever
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_YAN_NDF.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 dainomaruDNNc - Claire
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 dainomaruDNNc - Claire
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_DAI_CLR.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - 水匠
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - 水匠
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_CGP_SUS.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - オッズの魔法使い Season 2
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - オッズの魔法使い Season 2
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_KTD_WOD.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Miacis - 臥龍
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Miacis - 臥龍
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_KAT_GAR.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Crazy Shogi - GCT
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Crazy Shogi - GCT
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_CRZ_GCT.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 st34 - 芝浦将棋Softmax
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 st34 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_ST3_SSS.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - Daigorilla
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - Daigorilla
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_KAK_DGR.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 あやめ - だるま将棋
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 あやめ - だるま将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_OKR_DRM.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - なり金将棋
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 まったりゆうちゃん - なり金将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_YUU_NRK.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - にこあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - にこあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_TMO_NKA.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Windfall - 手抜き
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 Windfall - 手抜き
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_WDF_TEN.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - きのあ将棋
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - きのあ将棋
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_KFW_KIN.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - ichibinichi
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - ichibinichi
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_KMA_ICB.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 ねね将棋 - 十六式いろは改
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 ねね将棋 - 十六式いろは改
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_NNS_JIK.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 ひまわり - FTS3
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 ひまわり - FTS3
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_HIM_FTS.csa
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - scherzo
+第29回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - scherzo
+http://live4.computer-shogi.org/wcsc29/kifu/WCSC29_L1_YAM_SCH.csa

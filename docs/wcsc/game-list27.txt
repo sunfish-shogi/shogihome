@@ -1,0 +1,785 @@
+V1
+#sub:第27回世界コンピュータ将棋選手権
+第27回世界コンピュータ将棋選手権,決勝 7回戦 elmo - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,決勝 7回戦 elmo - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F7_ELM_PON.csa
+第27回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん - 読み太
+第27回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F7_DGK_YMT.csa
+第27回世界コンピュータ将棋選手権,決勝 7回戦 技巧 - HoneyWaffle
+第27回世界コンピュータ将棋選手権,決勝 7回戦 技巧 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F7_GIK_HNW.csa
+第27回世界コンピュータ将棋選手権,決勝 7回戦 NineDayFever - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,決勝 7回戦 NineDayFever - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F7_NDF_TNK.csa
+第27回世界コンピュータ将棋選手権,決勝 6回戦 蒼天幻想ナイツ・オブ・タヌキ - HoneyWaffle
+第27回世界コンピュータ将棋選手権,決勝 6回戦 蒼天幻想ナイツ・オブ・タヌキ - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F6_TNK_HNW.csa
+第27回世界コンピュータ将棋選手権,決勝 6回戦 読み太 - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,決勝 6回戦 読み太 - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F6_YMT_PON.csa
+第27回世界コンピュータ将棋選手権,決勝 6回戦 NineDayFever - 技巧
+第27回世界コンピュータ将棋選手権,決勝 6回戦 NineDayFever - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F6_NDF_GIK.csa
+第27回世界コンピュータ将棋選手権,決勝 6回戦 大合神クジラちゃん - elmo
+第27回世界コンピュータ将棋選手権,決勝 6回戦 大合神クジラちゃん - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F6_DGK_ELM.csa
+第27回世界コンピュータ将棋選手権,決勝 5回戦 elmo - 読み太
+第27回世界コンピュータ将棋選手権,決勝 5回戦 elmo - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F5_ELM_YMT.csa
+第27回世界コンピュータ将棋選手権,決勝 5回戦 HoneyWaffle - NineDayFever
+第27回世界コンピュータ将棋選手権,決勝 5回戦 HoneyWaffle - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F5_HNW_NDF.csa
+第27回世界コンピュータ将棋選手権,決勝 5回戦 技巧 - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,決勝 5回戦 技巧 - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F5_GIK_TNK.csa
+第27回世界コンピュータ将棋選手権,決勝 5回戦 Ponanza Chainer - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,決勝 5回戦 Ponanza Chainer - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F5_PON_DGK.csa
+第27回世界コンピュータ将棋選手権,決勝 4回戦 HoneyWaffle - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,決勝 4回戦 HoneyWaffle - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F4_HNW_PON.csa
+第27回世界コンピュータ将棋選手権,決勝 4回戦 技巧 - elmo
+第27回世界コンピュータ将棋選手権,決勝 4回戦 技巧 - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F4_GIK_ELM.csa
+第27回世界コンピュータ将棋選手権,決勝 4回戦 蒼天幻想ナイツ・オブ・タヌキ - 読み太
+第27回世界コンピュータ将棋選手権,決勝 4回戦 蒼天幻想ナイツ・オブ・タヌキ - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F4_TNK_YMT.csa
+第27回世界コンピュータ将棋選手権,決勝 4回戦 NineDayFever - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,決勝 4回戦 NineDayFever - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F4_NDF_DGK.csa
+第27回世界コンピュータ将棋選手権,決勝 3回戦 elmo - HoneyWaffle
+第27回世界コンピュータ将棋選手権,決勝 3回戦 elmo - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F3_ELM_HNW.csa
+第27回世界コンピュータ将棋選手権,決勝 3回戦 Ponanza Chainer - 技巧
+第27回世界コンピュータ将棋選手権,決勝 3回戦 Ponanza Chainer - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F3_PON_GIK.csa
+第27回世界コンピュータ将棋選手権,決勝 3回戦 大合神クジラちゃん - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,決勝 3回戦 大合神クジラちゃん - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F3_DGK_TNK.csa
+第27回世界コンピュータ将棋選手権,決勝 3回戦 読み太 - NineDayFever
+第27回世界コンピュータ将棋選手権,決勝 3回戦 読み太 - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F3_YMT_NDF.csa
+第27回世界コンピュータ将棋選手権,決勝 2回戦 HoneyWaffle - 読み太
+第27回世界コンピュータ将棋選手権,決勝 2回戦 HoneyWaffle - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F2_HNW_YMT.csa
+第27回世界コンピュータ将棋選手権,決勝 2回戦 蒼天幻想ナイツ・オブ・タヌキ - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,決勝 2回戦 蒼天幻想ナイツ・オブ・タヌキ - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F2_TNK_PON.csa
+第27回世界コンピュータ将棋選手権,決勝 2回戦 NineDayFever - elmo
+第27回世界コンピュータ将棋選手権,決勝 2回戦 NineDayFever - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F2_NDF_ELM.csa
+第27回世界コンピュータ将棋選手権,決勝 2回戦 技巧 - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,決勝 2回戦 技巧 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F2_GIK_DGK.csa
+第27回世界コンピュータ将棋選手権,決勝 1回戦 大合神クジラちゃん - HoneyWaffle
+第27回世界コンピュータ将棋選手権,決勝 1回戦 大合神クジラちゃん - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F1_DGK_HNW.csa
+第27回世界コンピュータ将棋選手権,決勝 1回戦 elmo - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,決勝 1回戦 elmo - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F1_ELM_TNK.csa
+第27回世界コンピュータ将棋選手権,決勝 1回戦 読み太 - 技巧
+第27回世界コンピュータ将棋選手権,決勝 1回戦 読み太 - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F1_YMT_GIK.csa
+第27回世界コンピュータ将棋選手権,決勝 1回戦 Ponanza Chainer - NineDayFever
+第27回世界コンピュータ将棋選手権,決勝 1回戦 Ponanza Chainer - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_F1_PON_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 うさぴょん2'TURBO - なのは
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 うさぴょん2'TURBO - なのは
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_USA_NAN.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Qhapaq - elmo
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Qhapaq - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_QHA_ELM_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_HNW_TNK.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - 習甦
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - 習甦
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_APR_SHS.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_TSG_PON.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 柿木将棋 - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 柿木将棋 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_KAK_SSS.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 CGP - GPS将棋
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 CGP - GPS将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_CGP_GPS.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 nozomi - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 nozomi - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_NZM_DGK.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 まったりゆうちゃん - おから饅頭
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 まったりゆうちゃん - おから饅頭
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_YUU_OKR.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 読み太 - 技巧
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 読み太 - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_YMT_GIK.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 ひまわり - NineDayFever
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 ひまわり - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_HIM_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Squirrel - たこっと
+第27回世界コンピュータ将棋選手権,二次予選 9回戦 Squirrel - たこっと
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U9_SQU_TKT.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 技巧 - 大将軍
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 技巧 - 大将軍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_GIK_TSG.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 大合神クジラちゃん - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_DGK_PON.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 CGP - 柿木将棋
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 CGP - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_CGP_KAK.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - GPS将棋
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 Apery - GPS将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_APR_GPS.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 蒼天幻想ナイツ・オブ・タヌキ - elmo
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 蒼天幻想ナイツ・オブ・タヌキ - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_TNK_ELM_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 読み太 - なのは
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 読み太 - なのは
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_YMT_NAN.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - Qhapaq
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - Qhapaq
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_SHS_QHA.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 NineDayFever - HoneyWaffle
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 NineDayFever - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_NDF_HNW.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 おから饅頭 - うさぴょん2'TURBO
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 おから饅頭 - うさぴょん2'TURBO
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_OKR_USA.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 nozomi - ひまわり
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 nozomi - ひまわり
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_NZM_HIM.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 たこっと - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 たこっと - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_TKT_YUU.csa
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Softmax - Squirrel
+第27回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Softmax - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U8_SSS_SQU.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - 技巧
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_HNW_GIK.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - nozomi
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_SHS_NZM.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - たこっと
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - たこっと
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_NAN_TKT.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 読み太 - 大将軍
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 読み太 - 大将軍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_YMT_TSG.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 蒼天幻想ナイツ・オブ・タヌキ - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 蒼天幻想ナイツ・オブ・タヌキ - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_TNK_PON.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 elmo - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 elmo - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_ELM_DGK_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 NineDayFever - Apery
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 NineDayFever - Apery
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_NDF_APR.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 GPS将棋 - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 GPS将棋 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_GPS_SSS_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - ひまわり
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 柿木将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_KAK_HIM.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 まったりゆうちゃん - CGP
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 まったりゆうちゃん - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_YUU_CGP.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 Squirrel - うさぴょん2'TURBO
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 Squirrel - うさぴょん2'TURBO
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_SQU_USA.csa
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq - おから饅頭
+第27回世界コンピュータ将棋選手権,二次予選 7回戦 Qhapaq - おから饅頭
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U7_QHA_OKR.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 HoneyWaffle - nozomi
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 HoneyWaffle - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_HNW_NZM.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - Squirrel
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_OKR_SQU.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - なのは
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - なのは
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_TSG_NAN.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 Ponanza Chainer - elmo
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 Ponanza Chainer - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_PON_ELM.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 蒼天幻想ナイツ・オブ・タヌキ - 読み太
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 蒼天幻想ナイツ・オブ・タヌキ - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_TNK_YMT.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 技巧 - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 技巧 - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_GIK_DGK.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - Apery
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - Apery
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_TKT_APR.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 うさぴょん2'TURBO - CGP
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 うさぴょん2'TURBO - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_USA_CGP.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 まったりゆうちゃん - 柿木将棋
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 まったりゆうちゃん - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_YUU_KAK.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - NineDayFever
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_SHS_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq - GPS将棋
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 Qhapaq - GPS将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_QHA_GPS.csa
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 芝浦将棋Softmax - ひまわり
+第27回世界コンピュータ将棋選手権,二次予選 6回戦 芝浦将棋Softmax - ひまわり
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U6_SSS_HIM.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - Qhapaq
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - Qhapaq
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_NAN_QHA.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 Ponanza Chainer - 技巧
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 Ponanza Chainer - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_PON_GIK.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 大将軍
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 大将軍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_ELM_TSG.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 まったりゆうちゃん - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 まったりゆうちゃん - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_YUU_SSS.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - 習甦
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - 習甦
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_GPS_SHS_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 CGP - おから饅頭
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 CGP - おから饅頭
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_CGP_OKR.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 nozomi - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_NZM_TNK.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 ひまわり - Apery
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 ひまわり - Apery
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_HIM_APR.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 柿木将棋 - Squirrel
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 柿木将棋 - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_KAK_SQU.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 うさぴょん2'TURBO - NineDayFever
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 うさぴょん2'TURBO - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_USA_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 大合神クジラちゃん - 読み太
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 大合神クジラちゃん - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_DGK_YMT.csa
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 たこっと - HoneyWaffle
+第27回世界コンピュータ将棋選手権,二次予選 5回戦 たこっと - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U5_TKT_HNW.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 技巧 - elmo
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 技巧 - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_GIK_ELM.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 Apery - HoneyWaffle
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 Apery - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_APR_HNW.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - Qhapaq
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - Qhapaq
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_NZM_QHA.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - うさぴょん2'TURBO
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - うさぴょん2'TURBO
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_TKT_USA.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 読み太 - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 読み太 - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_YMT_PON.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - GPS将棋
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 柿木将棋 - GPS将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_KAK_GPS_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - 習甦
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 大合神クジラちゃん - 習甦
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_DGK_SHS.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - NineDayFever
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_TSG_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 CGP - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 CGP - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_CGP_SSS.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 おから饅頭 - なのは
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 おから饅頭 - なのは
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_OKR_NAN.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 Squirrel - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 Squirrel - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_SQU_YUU.csa
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 蒼天幻想ナイツ・オブ・タヌキ - ひまわり
+第27回世界コンピュータ将棋選手権,二次予選 4回戦 蒼天幻想ナイツ・オブ・タヌキ - ひまわり
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U4_TNK_HIM.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 技巧 - nozomi
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 技巧 - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_GIK_NZM.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_TSG_TNK.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 うさぴょん2'TURBO - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 うさぴょん2'TURBO - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_USA_SSS.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - CGP
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_APR_CGP.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Qhapaq - Squirrel
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Qhapaq - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_QHA_SQU.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - HoneyWaffle
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 習甦 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_SHS_HNW.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - たこっと
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - たこっと
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_ELM_TKT.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - 読み太
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_OKR_YMT.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_NDF_DGK.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_NAN_YUU.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Ponanza Chainer - 柿木将棋
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 Ponanza Chainer - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_PON_KAK.csa
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 GPS将棋 - ひまわり
+第27回世界コンピュータ将棋選手権,二次予選 3回戦 GPS将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U3_GPS_HIM.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - うさぴょん2'TURBO
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - うさぴょん2'TURBO
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_YMT_USA.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Squirrel - nozomi
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Squirrel - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_SQU_NZM.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Qhapaq - Apery
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Qhapaq - Apery
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_QHA_APR.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 蒼天幻想ナイツ・オブ・タヌキ - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 蒼天幻想ナイツ・オブ・タヌキ - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_TNK_DGK.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - 技巧
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_TKT_GIK.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - 大将軍
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 GPS将棋 - 大将軍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_GPS_TSG.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - NineDayFever
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - NineDayFever
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_NAN_NDF.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 HoneyWaffle - 柿木将棋
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 HoneyWaffle - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_HNW_KAK.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 芝浦将棋Softmax - 習甦
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 芝浦将棋Softmax - 習甦
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_SSS_SHS.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 CGP - elmo
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 CGP - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_CGP_ELM.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Ponanza Chainer - おから饅頭
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 Ponanza Chainer - おから饅頭
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_PON_OKR.csa
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 ひまわり - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,二次予選 2回戦 ひまわり - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U2_HIM_YUU.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - なのは
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - なのは
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_NZM_NAN_1.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - 読み太
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - 読み太
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_HNW_YMT.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - CGP
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_TSG_CGP.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 Apery - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_APR_TNK.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん - Qhapaq
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん - Qhapaq
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_DGK_QHA.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - おから饅頭
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - おから饅頭
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_SHS_OKR.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - GPS将棋
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - GPS将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_ELM_GPS.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - Squirrel
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_NDF_SQU.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - たこっと
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 ひまわり - たこっと
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_HIM_TKT.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 まったりゆうちゃん - 技巧
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 まったりゆうちゃん - 技巧
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_YUU_GIK.csa
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 芝浦将棋Softmax - Ponanza Chainer
+第27回世界コンピュータ将棋選手権,二次予選 1回戦 芝浦将棋Softmax - Ponanza Chainer
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_U1_SSS_PON.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 山田将棋 - カツ丼将棋
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 山田将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_YAM_KTD_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 HoneyWaffle - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 HoneyWaffle - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_HNW_DGK.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - nozomi
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_KAK_NZM.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 Squirrel - 芝浦将棋Jr.
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 Squirrel - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_SQU_SSJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - CGP
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_SSS_CGP.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 elmo - SilverBullet
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 elmo - SilverBullet
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_ELM_SLB.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - 海底
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - 海底
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_YUU_KAT.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 GAN将棋 - Claire
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 GAN将棋 - Claire
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_GAN_CLR.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 にこあ将棋 - dainomaruDNNc
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 にこあ将棋 - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_NKA_DAI.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Novice
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Novice
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_GAR_NVC.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 Anicca - President_X
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 Anicca - President_X
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_ANC_PRX.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 tenuki - Mirage
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 tenuki - Mirage
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_TEN_MIR.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - なり金将棋
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 隠岐 - なり金将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_OKI_NRK.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 名人コブラ - こまあそび
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 名人コブラ - こまあそび
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_MCB_KMA.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_KIN_TNK.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - 無明8
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 libshogi - 無明8
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_LBS_MMY.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - scherzo
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - scherzo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_KFW_SCH.csa
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 十六式いろは改 - メカ女子将棋
+第27回世界コンピュータ将棋選手権,一次予選 7回戦 十六式いろは改 - メカ女子将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L7_JIK_MCJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - きのあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - きのあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_KTD_KIN.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 HoneyWaffle - elmo
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 HoneyWaffle - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_HNW_ELM.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 Squirrel - 柿木将棋
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 Squirrel - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_SQU_KAK.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 大合神クジラちゃん - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 大合神クジラちゃん - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_DGK_TNK.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 nozomi - 名人コブラ
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 nozomi - 名人コブラ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_NZM_MCB.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 SilverBullet - Novice
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 SilverBullet - Novice
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_SLB_NVC.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_DAI_YUU.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 きふわらべ - 十六式いろは改
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 きふわらべ - 十六式いろは改
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_KFW_JIK_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - 芝浦将棋Jr.
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 臥龍 - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_GAR_SSJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - tenuki
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 scherzo - tenuki
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_SCH_TEN.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 GAN将棋 - CGP
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 GAN将棋 - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_GAN_CGP.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 President_X - Mirage
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 President_X - Mirage
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_PRX_MIR.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 Claire - 隠岐
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 Claire - 隠岐
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_CLR_OKI.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 にこあ将棋 - Anicca
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 にこあ将棋 - Anicca
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_NKA_ANC.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 海底 - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 海底 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_KAT_SSS.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - なり金将棋
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - なり金将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_KMA_NRK.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 libshogi - 山田将棋
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 libshogi - 山田将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_LBS_YAM.csa
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 無明8 - メカ女子将棋
+第27回世界コンピュータ将棋選手権,一次予選 6回戦 無明8 - メカ女子将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L6_MMY_MCJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 elmo - nozomi
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 elmo - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_ELM_NZM.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - HoneyWaffle
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_MCB_HNW.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - 柿木将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 カツ丼将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_KTD_KAK.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - Squirrel
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_GAR_SQU.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 無明8 - 山田将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 無明8 - 山田将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_MMY_YAM.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 President_X - にこあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 President_X - にこあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_PRX_NKA.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Jr. - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Jr. - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_SSJ_TNK.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - 海底
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 libshogi - 海底
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_LBS_KAT.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - Novice
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - Novice
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_NRK_NVC.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - GAN将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - GAN将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_OKI_GAN.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Mirage - きふわらべ
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Mirage - きふわらべ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_MIR_KFW.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Claire - きのあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Claire - きのあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_CLR_KIN.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 大合神クジラちゃん - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_DGK_SSS.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - こまあそび
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - こまあそび
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_SLB_KMA.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 dainomaruDNNc - メカ女子将棋
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 dainomaruDNNc - メカ女子将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_DAI_MCJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 CGP - tenuki
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 CGP - tenuki
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_CGP_TEN.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 十六式いろは改 - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 十六式いろは改 - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_JIK_YUU.csa
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Anicca - scherzo
+第27回世界コンピュータ将棋選手権,一次予選 5回戦 Anicca - scherzo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L5_ANC_SCH.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Squirrel - 名人コブラ
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Squirrel - 名人コブラ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_SQU_MCB.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - CGP
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 まったりゆうちゃん - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_YUU_CGP.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 きのあ将棋 - 柿木将棋
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 きのあ将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_KIN_KAK_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 臥龍 - SilverBullet
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 臥龍 - SilverBullet
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_GAR_SLB.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - 隠岐
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 メカ女子将棋 - 隠岐
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_MCJ_OKI.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 無明8 - President_X
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 無明8 - President_X
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_MMY_PRX.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Novice - にこあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Novice - にこあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_NVC_NKA.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 GAN将棋 - 山田将棋
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 GAN将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_GAN_YAM.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 蒼天幻想ナイツ・オブ・タヌキ - elmo
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 蒼天幻想ナイツ・オブ・タヌキ - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_TNK_ELM.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Jr. - なり金将棋
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Jr. - なり金将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_SSJ_NRK.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - libshogi
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 scherzo - libshogi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_SCH_LBS.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 nozomi - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_NZM_SSS.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 tenuki - こまあそび
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 tenuki - こまあそび
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_TEN_KMA.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 HoneyWaffle - カツ丼将棋
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 HoneyWaffle - カツ丼将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_HNW_KTD.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改 - Mirage
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改 - Mirage
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_JIK_MIR.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 dainomaruDNNc - きふわらべ
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 dainomaruDNNc - きふわらべ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_DAI_KFW.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Claire - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Claire - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_CLR_DGK.csa
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Anicca - 海底
+第27回世界コンピュータ将棋選手権,一次予選 4回戦 Anicca - 海底
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L4_ANC_KAT.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - Squirrel
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 CGP - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_CGP_SQU.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Novice - 蒼天幻想ナイツ・オブ・タヌキ
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Novice - 蒼天幻想ナイツ・オブ・タヌキ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_NVC_TNK.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 柿木将棋 - elmo
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 柿木将棋 - elmo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_KAK_ELM.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Jr. - HoneyWaffle
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Jr. - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_SSJ_HNW.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - nozomi
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Claire - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_CLR_NZM.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 President_X - SilverBullet
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 President_X - SilverBullet
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_PRX_SLB.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 まったりゆうちゃん - 名人コブラ
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 まったりゆうちゃん - 名人コブラ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_YUU_MCB.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 大合神クジラちゃん - dainomaruDNNc
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 大合神クジラちゃん - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_DGK_DAI.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - tenuki
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - tenuki
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_YAM_TEN.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - にこあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - にこあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_KIN_NKA.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 メカ女子将棋 - きふわらべ
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 メカ女子将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_MCJ_KFW.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Softmax - scherzo
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Softmax - scherzo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_SSS_SCH.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - 海底
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - 海底
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_KMA_KAT.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - カツ丼将棋
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_OKI_KTD.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Anicca - 臥龍
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Anicca - 臥龍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_ANC_GAR.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - 無明8
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 なり金将棋 - 無明8
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_NRK_MMY.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Mirage - libshogi
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 Mirage - libshogi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_MIR_LBS.csa
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 GAN将棋 - 十六式いろは改
+第27回世界コンピュータ将棋選手権,一次予選 3回戦 GAN将棋 - 十六式いろは改
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L3_GAN_JIK.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 nozomi - CGP
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 nozomi - CGP
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_NZM_CGP.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 柿木将棋 - 山田将棋
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 柿木将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_KAK_YAM.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 HoneyWaffle - dainomaruDNNc
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 HoneyWaffle - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_HNW_DAI.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - President_X
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - President_X
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_KIN_PRX.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 名人コブラ - 臥龍
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 名人コブラ - 臥龍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_MCB_GAR.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 elmo - Novice
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 elmo - Novice
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_ELM_NVC.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - SilverBullet
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - SilverBullet
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_KFW_SLB.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 蒼天幻想ナイツ・オブ・タヌキ - libshogi
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 蒼天幻想ナイツ・オブ・タヌキ - libshogi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_TNK_LBS.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - 無明8
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - 無明8
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_YUU_MMY.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 にこあ将棋 - tenuki
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 にこあ将棋 - tenuki
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_NKA_TEN.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - 芝浦将棋Jr.
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 scherzo - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_SCH_SSJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - Mirage
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 なり金将棋 - Mirage
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_NRK_MIR.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 海底 - メカ女子将棋
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 海底 - メカ女子将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_KAT_MCJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 十六式いろは改 - Claire
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 十六式いろは改 - Claire
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_JIK_CLR.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 Squirrel - こまあそび
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 Squirrel - こまあそび
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_SQU_KMA.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 隠岐 - 芝浦将棋Softmax
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 隠岐 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_OKI_SSS.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 大合神クジラちゃん - GAN将棋
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 大合神クジラちゃん - GAN将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_DGK_GAN.csa
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - Anicca
+第27回世界コンピュータ将棋選手権,一次予選 2回戦 カツ丼将棋 - Anicca
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L2_KTD_ANC.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - HoneyWaffle
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 山田将棋 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_YAM_HNW_2.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 libshogi - Claire
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 libshogi - Claire
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_LBS_CLR_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 elmo - 大合神クジラちゃん
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 elmo - 大合神クジラちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_ELM_DGK.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 メカ女子将棋 - 臥龍
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 メカ女子将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_MCJ_GAR_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 芝浦将棋Softmax - きのあ将棋
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 芝浦将棋Softmax - きのあ将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_SSS_KIN.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 dainomaruDNNc - 柿木将棋
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 dainomaruDNNc - 柿木将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_DAI_KAK.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 無明8 - Squirrel
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 無明8 - Squirrel
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_MMY_SQU.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 にこあ将棋 - scherzo
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 にこあ将棋 - scherzo
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_NKA_SCH_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - GAN将棋
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - GAN将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_NVC_GAN.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - なり金将棋
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - なり金将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_CGP_NRK.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - Anicca
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 きふわらべ - Anicca
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_KFW_ANC.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 海底 - 名人コブラ
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 海底 - 名人コブラ
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_KAT_MCB.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - まったりゆうちゃん
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_KMA_YUU_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 Mirage - nozomi
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 Mirage - nozomi
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_MIR_NZM.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 SilverBullet - カツ丼将棋
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 SilverBullet - カツ丼将棋
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_SLB_KTD.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 tenuki - 芝浦将棋Jr.
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 tenuki - 芝浦将棋Jr.
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_TEN_SSJ.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 President_X - 隠岐
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 President_X - 隠岐
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_PRX_OKI_1.csa
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 蒼天幻想ナイツ・オブ・タヌキ - 十六式いろは改
+第27回世界コンピュータ将棋選手権,一次予選 1回戦 蒼天幻想ナイツ・オブ・タヌキ - 十六式いろは改
+http://live4.computer-shogi.org/wcsc27/kifu/WCSC27_L1_TNK_JIK.csa

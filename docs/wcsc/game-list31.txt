@@ -1,0 +1,896 @@
+V1
+#sub:第31回世界コンピュータ将棋選手権
+第31回世界コンピュータ将棋選手権,決勝 7回戦 DaigorillaEX - 白ビール
+第31回世界コンピュータ将棋選手権,決勝 7回戦 DaigorillaEX - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F7_DGR_HFW.csa
+第31回世界コンピュータ将棋選手権,決勝 7回戦 elmo - W@nderER
+第31回世界コンピュータ将棋選手権,決勝 7回戦 elmo - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F7_ELM_WND.csa
+第31回世界コンピュータ将棋選手権,決勝 7回戦 Qugiy - 大将軍
+第31回世界コンピュータ将棋選手権,決勝 7回戦 Qugiy - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F7_QUG_TSG.csa
+第31回世界コンピュータ将棋選手権,決勝 7回戦 Ryfamate - PAL
+第31回世界コンピュータ将棋選手権,決勝 7回戦 Ryfamate - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F7_RYF_PAL.csa
+第31回世界コンピュータ将棋選手権,決勝 6回戦 白ビール - W@nderER
+第31回世界コンピュータ将棋選手権,決勝 6回戦 白ビール - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F6_HFW_WND.csa
+第31回世界コンピュータ将棋選手権,決勝 6回戦 PAL - 大将軍
+第31回世界コンピュータ将棋選手権,決勝 6回戦 PAL - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F6_PAL_TSG.csa
+第31回世界コンピュータ将棋選手権,決勝 6回戦 DaigorillaEX - elmo
+第31回世界コンピュータ将棋選手権,決勝 6回戦 DaigorillaEX - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F6_DGR_ELM.csa
+第31回世界コンピュータ将棋選手権,決勝 6回戦 Ryfamate - Qugiy
+第31回世界コンピュータ将棋選手権,決勝 6回戦 Ryfamate - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F6_RYF_QUG.csa
+第31回世界コンピュータ将棋選手権,決勝 5回戦 W@nderER - DaigorillaEX
+第31回世界コンピュータ将棋選手権,決勝 5回戦 W@nderER - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F5_WND_DGR.csa
+第31回世界コンピュータ将棋選手権,決勝 5回戦 大将軍 - Ryfamate
+第31回世界コンピュータ将棋選手権,決勝 5回戦 大将軍 - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F5_TSG_RYF.csa
+第31回世界コンピュータ将棋選手権,決勝 5回戦 Qugiy - PAL
+第31回世界コンピュータ将棋選手権,決勝 5回戦 Qugiy - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F5_QUG_PAL.csa
+第31回世界コンピュータ将棋選手権,決勝 5回戦 elmo - 白ビール
+第31回世界コンピュータ将棋選手権,決勝 5回戦 elmo - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F5_ELM_HFW.csa
+第31回世界コンピュータ将棋選手権,決勝 4回戦 DaigorillaEX - Ryfamate
+第31回世界コンピュータ将棋選手権,決勝 4回戦 DaigorillaEX - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F4_DGR_RYF.csa
+第31回世界コンピュータ将棋選手権,決勝 4回戦 白ビール - PAL
+第31回世界コンピュータ将棋選手権,決勝 4回戦 白ビール - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F4_HFW_PAL.csa
+第31回世界コンピュータ将棋選手権,決勝 4回戦 W@nderER - 大将軍
+第31回世界コンピュータ将棋選手権,決勝 4回戦 W@nderER - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F4_WND_TSG.csa
+第31回世界コンピュータ将棋選手権,決勝 4回戦 elmo - Qugiy
+第31回世界コンピュータ将棋選手権,決勝 4回戦 elmo - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F4_ELM_QUG.csa
+第31回世界コンピュータ将棋選手権,決勝 3回戦 Qugiy - W@nderER
+第31回世界コンピュータ将棋選手権,決勝 3回戦 Qugiy - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F3_QUG_WND.csa
+第31回世界コンピュータ将棋選手権,決勝 3回戦 PAL - DaigorillaEX
+第31回世界コンピュータ将棋選手権,決勝 3回戦 PAL - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F3_PAL_DGR.csa
+第31回世界コンピュータ将棋選手権,決勝 3回戦 大将軍 - elmo
+第31回世界コンピュータ将棋選手権,決勝 3回戦 大将軍 - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F3_TSG_ELM.csa
+第31回世界コンピュータ将棋選手権,決勝 3回戦 Ryfamate - 白ビール
+第31回世界コンピュータ将棋選手権,決勝 3回戦 Ryfamate - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F3_RYF_HFW.csa
+第31回世界コンピュータ将棋選手権,決勝 2回戦 W@nderER - PAL
+第31回世界コンピュータ将棋選手権,決勝 2回戦 W@nderER - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F2_WND_PAL_1.csa
+第31回世界コンピュータ将棋選手権,決勝 2回戦 DaigorillaEX - Qugiy
+第31回世界コンピュータ将棋選手権,決勝 2回戦 DaigorillaEX - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F2_DGR_QUG.csa
+第31回世界コンピュータ将棋選手権,決勝 2回戦 白ビール - 大将軍
+第31回世界コンピュータ将棋選手権,決勝 2回戦 白ビール - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F2_HFW_TSG.csa
+第31回世界コンピュータ将棋選手権,決勝 2回戦 elmo - Ryfamate
+第31回世界コンピュータ将棋選手権,決勝 2回戦 elmo - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F2_ELM_RYF.csa
+第31回世界コンピュータ将棋選手権,決勝 1回戦 Ryfamate - W@nderER
+第31回世界コンピュータ将棋選手権,決勝 1回戦 Ryfamate - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F1_RYF_WND.csa
+第31回世界コンピュータ将棋選手権,決勝 1回戦 大将軍 - DaigorillaEX
+第31回世界コンピュータ将棋選手権,決勝 1回戦 大将軍 - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F1_TSG_DGR.csa
+第31回世界コンピュータ将棋選手権,決勝 1回戦 PAL - elmo
+第31回世界コンピュータ将棋選手権,決勝 1回戦 PAL - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F1_PAL_ELM.csa
+第31回世界コンピュータ将棋選手権,決勝 1回戦 Qugiy - 白ビール
+第31回世界コンピュータ将棋選手権,決勝 1回戦 Qugiy - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_F1_QUG_HFW.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - dlshogi with GCT
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Novice - dlshogi with GCT
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_NVC_DLS.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 やねうら王 - ichibin
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 やねうら王 - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_YAN_ICB.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Qugiy - DaigorillaEX
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Qugiy - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_QUG_DGR.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 TMOQ - なのは
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 TMOQ - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_TMO_NAN_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Miacis - Argo
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 Miacis - Argo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_MIA_ARG_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 ねね将棋 - 習甦
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 ねね将棋 - 習甦
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_NNS_SHS.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - 二番絞り
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_TSG_NBS.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 koron - たこっと
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 koron - たこっと
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_KRN_TKT.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 たぬきち - HoneyWaffle
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 たぬきち - HoneyWaffle
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_TNK_HNW.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - Ryfamate
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 名人コブラ - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_MCB_RYF.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 芝浦将棋Softmax - Apery
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 芝浦将棋Softmax - Apery
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_SSS_APR.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 白ビール - PAL
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 白ビール - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_HFW_PAL_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - モﾉﾚ力ー(MolQha-)
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - モﾉﾚ力ー(MolQha-)
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_ELM_QHA.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 カツ丼将棋 - あやめ
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 カツ丼将棋 - あやめ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_KTD_AYM.csa
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 sakura - W@nderER
+第31回世界コンピュータ将棋選手権,二次予選 9回戦 sakura - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U9_SKR_WND.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - Miacis
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_MCB_MIA.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 sakura - HoneyWaffle
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 sakura - HoneyWaffle
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_SKR_HNW.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 二番絞り - たぬきち
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 二番絞り - たぬきち
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_NBS_TNK.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 ねね将棋 - Argo
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 ねね将棋 - Argo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_NNS_ARG.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - Apery
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - Apery
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_NVC_APR.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 dlshogi with GCT - 大将軍
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 dlshogi with GCT - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_DLS_TSG.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 たこっと - なのは
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 たこっと - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_TKT_NAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Softmax - あやめ
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 芝浦将棋Softmax - あやめ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_SSS_AYM.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - elmo
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_PAL_ELM.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Qugiy - W@nderER
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Qugiy - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_QUG_WND.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - TMOQ
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 習甦 - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_SHS_TMO.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Ryfamate - 白ビール
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 Ryfamate - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_RYF_HFW.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 DaigorillaEX - やねうら王
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 DaigorillaEX - やねうら王
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_DGR_YAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 ichibin - カツ丼将棋
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 ichibin - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_ICB_KTD.csa
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 koron - モﾉﾚ力ー(MolQha-)
+第31回世界コンピュータ将棋選手権,二次予選 8回戦 koron - モﾉﾚ力ー(MolQha-)
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U8_KRN_QHA.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - ねね将棋
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_APR_NNS.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 白ビール - Qugiy
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 白ビール - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_HFW_QUG.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 koron - sakura
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 koron - sakura
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_KRN_SKR.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 Argo - たこっと
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 Argo - たこっと
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_ARG_TKT_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - 二番絞り
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_SHS_NBS.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 TMOQ - 名人コブラ
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 TMOQ - 名人コブラ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_TMO_MCB.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 モﾉﾚ力ー(MolQha-) - PAL
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 モﾉﾚ力ー(MolQha-) - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_QHA_PAL.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 DaigorillaEX - dlshogi with GCT
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 DaigorillaEX - dlshogi with GCT
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_DGR_DLS.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 たぬきち - Novice
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 たぬきち - Novice
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_TNK_NVC.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 あやめ - ichibin
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 あやめ - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_AYM_ICB_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 大将軍 - Miacis
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 大将軍 - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_TSG_MIA.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 なのは - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_NAN_SSS_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - カツ丼将棋
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 HoneyWaffle - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_HNW_KTD.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 やねうら王 - Ryfamate
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 やねうら王 - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_YAN_RYF.csa
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 W@nderER - elmo
+第31回世界コンピュータ将棋選手権,二次予選 7回戦 W@nderER - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U7_WND_ELM.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 sakura - 習甦
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 sakura - 習甦
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_SKR_SHS.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - Novice
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - Novice
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_NAN_NVC.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Argo - あやめ
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Argo - あやめ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_ARG_AYM_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - DaigorillaEX
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_TSG_DGR.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 elmo - 白ビール
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 elmo - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_ELM_HFW.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Miacis - Ryfamate
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Miacis - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_MIA_RYF.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - Apery
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 たこっと - Apery
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_TKT_APR.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 HoneyWaffle - モﾉﾚ力ー(MolQha-)
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 HoneyWaffle - モﾉﾚ力ー(MolQha-)
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_HNW_QHA.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 W@nderER - やねうら王
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 W@nderER - やねうら王
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_WND_YAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 ねね将棋 - たぬきち
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 ねね将棋 - たぬきち
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_NNS_TNK.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 dlshogi with GCT - 二番絞り
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 dlshogi with GCT - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_DLS_NBS.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 ichibin - koron
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 ichibin - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_ICB_KRN.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 TMOQ - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 TMOQ - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_TMO_SSS.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Qugiy - PAL
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 Qugiy - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_QUG_PAL.csa
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 カツ丼将棋 - 名人コブラ
+第31回世界コンピュータ将棋選手権,二次予選 6回戦 カツ丼将棋 - 名人コブラ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U6_KTD_MCB.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 あやめ - ねね将棋
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 あやめ - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_AYM_NNS_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 koron - dlshogi with GCT
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 koron - dlshogi with GCT
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_KRN_DLS.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - HoneyWaffle
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - HoneyWaffle
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_PAL_HNW.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - 白ビール
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 やねうら王 - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_YAN_HFW.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Argo - TMOQ
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Argo - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_ARG_TMO_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 モﾉﾚ力ー(MolQha-) - Qugiy
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 モﾉﾚ力ー(MolQha-) - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_QHA_QUG.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 芝浦将棋Softmax - たこっと
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 芝浦将棋Softmax - たこっと
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_SSS_TKT.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - sakura
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - sakura
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_NVC_SKR.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - 名人コブラ
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - 名人コブラ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_NAN_MCB.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Miacis - ichibin
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Miacis - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_MIA_ICB.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 二番絞り - W@nderER
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 二番絞り - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_NBS_WND.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Ryfamate - elmo
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Ryfamate - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_RYF_ELM.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 たぬきち - 大将軍
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 たぬきち - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_TNK_TSG.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - DaigorillaEX
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_SHS_DGR.csa
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - カツ丼将棋
+第31回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U5_APR_KTD.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 PAL - やねうら王
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 PAL - やねうら王
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_PAL_YAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 HoneyWaffle - dlshogi with GCT
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 HoneyWaffle - dlshogi with GCT
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_HNW_DLS.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Miacis - なのは
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Miacis - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_MIA_NAN_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Apery - Argo
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Apery - Argo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_APR_ARG.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - Qugiy
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_NVC_QUG.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 白ビール - DaigorillaEX
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 白ビール - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_HFW_DGR.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 ねね将棋 - TMOQ
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 ねね将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_NNS_TMO.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 ichibin - Ryfamate
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 ichibin - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_ICB_RYF.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 sakura - モﾉﾚ力ー(MolQha-)
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 sakura - モﾉﾚ力ー(MolQha-)
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_SKR_QHA.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - たこっと
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 大将軍 - たこっと
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_TSG_TKT.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - 習甦
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - 習甦
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_MCB_SHS.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 W@nderER - あやめ
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 W@nderER - あやめ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_WND_AYM.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 カツ丼将棋 - たぬきち
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 カツ丼将棋 - たぬきち
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_KTD_TNK.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 elmo - 二番絞り
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 elmo - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_ELM_NBS.csa
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 芝浦将棋Softmax - koron
+第31回世界コンピュータ将棋選手権,二次予選 4回戦 芝浦将棋Softmax - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U4_SSS_KRN.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 TMOQ - HoneyWaffle
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 TMOQ - HoneyWaffle
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_TMO_HNW_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 Novice - 習甦
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 Novice - 習甦
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_NVC_SHS.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 モﾉﾚ力ー(MolQha-) - 二番絞り
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 モﾉﾚ力ー(MolQha-) - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_QHA_NBS.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 Ryfamate - たぬきち
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 Ryfamate - たぬきち
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_RYF_TNK.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 PAL - 大将軍
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 PAL - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_PAL_TSG.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 DaigorillaEX - sakura
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 DaigorillaEX - sakura
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_DGR_SKR.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - W@nderER
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 なのは - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_NAN_WND.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 白ビール - 名人コブラ
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 白ビール - 名人コブラ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_HFW_MCB.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 芝浦将棋Softmax - Argo
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 芝浦将棋Softmax - Argo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_SSS_ARG.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 ichibin - Apery
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 ichibin - Apery
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_ICB_APR.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - Qugiy
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 elmo - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_ELM_QUG.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - Miacis
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 あやめ - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_AYM_MIA.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 koron - ねね将棋
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 koron - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_KRN_NNS.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 dlshogi with GCT - やねうら王
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 dlshogi with GCT - やねうら王
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_DLS_YAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 たこっと - カツ丼将棋
+第31回世界コンピュータ将棋選手権,二次予選 3回戦 たこっと - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U3_TKT_KTD.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 W@nderER - 白ビール
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 W@nderER - 白ビール
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_WND_HFW_2.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - sakura
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - sakura
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_MCB_SKR.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 HoneyWaffle - Novice
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 HoneyWaffle - Novice
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_HNW_NVC.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Ryfamate - koron
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Ryfamate - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_RYF_KRN.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - PAL
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_APR_PAL.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 たぬきち - dlshogi with GCT
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 たぬきち - dlshogi with GCT
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_TNK_DLS.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Argo - なのは
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Argo - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_ARG_NAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 TMOQ - あやめ
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 TMOQ - あやめ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_TMO_AYM.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 二番絞り - Miacis
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 二番絞り - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_NBS_MIA.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - ichibin
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_TKT_ICB.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - elmo
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 大将軍 - elmo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_TSG_ELM.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 やねうら王 - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 やねうら王 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_YAN_SSS.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Qugiy - カツ丼将棋
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 Qugiy - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_QUG_KTD.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 習甦 - モﾉﾚ力ー(MolQha-)
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 習甦 - モﾉﾚ力ー(MolQha-)
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_SHS_QHA.csa
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 ねね将棋 - DaigorillaEX
+第31回世界コンピュータ将棋選手権,二次予選 2回戦 ねね将棋 - DaigorillaEX
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U2_NNS_DGR.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 Qugiy - HoneyWaffle
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 Qugiy - HoneyWaffle
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_QUG_HNW.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 sakura - Ryfamate
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 sakura - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_SKR_RYF_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 二番絞り - Apery
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 二番絞り - Apery
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_NBS_APR.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - TMOQ
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_ELM_TMO_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 Miacis - PAL
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 Miacis - PAL
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_MIA_PAL.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 dlshogi with GCT - Argo
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 dlshogi with GCT - Argo
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_DLS_ARG.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - たこっと
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - たこっと
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_SHS_TKT.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 たぬきち - なのは
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 たぬきち - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_TNK_NAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 あやめ - 大将軍
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 あやめ - 大将軍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_AYM_TSG.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 ねね将棋 - やねうら王
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 ねね将棋 - やねうら王
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_NNS_YAN.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 カツ丼将棋 - Novice
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 カツ丼将棋 - Novice
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_KTD_NVC.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 DaigorillaEX - W@nderER
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 DaigorillaEX - W@nderER
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_DGR_WND_1.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 白ビール - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 白ビール - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_HFW_SSS.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 モﾉﾚ力ー(MolQha-) - ichibin
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 モﾉﾚ力ー(MolQha-) - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_QHA_ICB.csa
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - koron
+第31回世界コンピュータ将棋選手権,二次予選 1回戦 名人コブラ - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_U1_MCB_KRN.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Qugiy - koron
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Qugiy - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_QUG_KRN_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 すいしょう - 人生送りバント失敗
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 すいしょう - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_SUS_JOS_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 A.I. AN shogi ver.1 - きふわらべ
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 A.I. AN shogi ver.1 - きふわらべ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_ANS_KFW_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 手抜き - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 手抜き - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_TEN_SSS.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - 柿木将棋
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - 柿木将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_NNS_KAK.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 TMOQ - 二番絞り
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 TMOQ - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_TMO_NBS.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Fluke - CGP
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Fluke - CGP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_FLK_CGP.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 あうあう将棋 - Aoba Zero
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 あうあう将棋 - Aoba Zero
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_AUA_ABZ.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 BFP - 重力場計算法
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 BFP - 重力場計算法
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_BFP_JRB.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Miacis - Ryfamate
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 Miacis - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_MIA_RYF.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 ichibin - きのあ将棋
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 ichibin - きのあ将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_ICB_KIN.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 こまあそび - 762alpha
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 こまあそび - 762alpha
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_KMA_762.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 なのは - カツ丼将棋
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 なのは - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_NAN_KTD.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 まったりゆうちゃん - SMS将棋
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 まったりゆうちゃん - SMS将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_YUU_SMS.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - ponkotsu
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - ponkotsu
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_YAM_PNK.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 十六式いろは改三 - SENGAKU
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 十六式いろは改三 - SENGAKU
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_JIK_SNG.csa
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 EasyShogi - 臥龍
+第31回世界コンピュータ将棋選手権,一次予選 8回戦 EasyShogi - 臥龍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L8_EZS_GAR.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 Ryfamate - ichibin
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 Ryfamate - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_RYF_ICB_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 Miacis - 二番絞り
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 Miacis - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_MIA_NBS.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - 人生送りバント失敗
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 きのあ将棋 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_KIN_JOS_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - なのは
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 まったりゆうちゃん - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_YUU_NAN.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 TMOQ - Aoba Zero
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 TMOQ - Aoba Zero
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_TMO_ABZ.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 762alpha - 十六式いろは改三
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 762alpha - 十六式いろは改三
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_762_JIK.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - 山田将棋
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_KAK_YAM.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - koron
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 CGP - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_CGP_KRN.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - Qugiy
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_TEN_QUG.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - SMS将棋
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - SMS将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_NNS_SMS.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 ponkotsu - A.I. AN shogi ver.1
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 ponkotsu - A.I. AN shogi ver.1
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_PNK_ANS.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_KTD_SSS.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 SENGAKU - こまあそび
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 SENGAKU - こまあそび
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_SNG_KMA.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 あうあう将棋 - BFP
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 あうあう将棋 - BFP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_AUA_BFP.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 EasyShogi - すいしょう
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 EasyShogi - すいしょう
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_EZS_SUS.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - 重力場計算法
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 きふわらべ - 重力場計算法
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_KFW_JRB.csa
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Fluke
+第31回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Fluke
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L7_GAR_FLK.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 人生送りバント失敗 - Aoba Zero
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 人生送りバント失敗 - Aoba Zero
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_JOS_ABZ.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 二番絞り - koron
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 二番絞り - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_NBS_KRN.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 Miacis - なのは
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 Miacis - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_MIA_NAN.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 山田将棋 - 手抜き
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 山田将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_YAM_TEN.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - Ryfamate
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 TMOQ - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_TMO_RYF.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 762alpha - まったりゆうちゃん
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 762alpha - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_762_YUU.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - ichibin
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_CGP_ICB.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 重力場計算法 - EasyShogi
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 重力場計算法 - EasyShogi
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_JRB_EZS.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - ねね将棋
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_KTD_NNS.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 Fluke - Qugiy
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 Fluke - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_FLK_QUG.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 すいしょう - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 すいしょう - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_SUS_SSS.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - SENGAKU
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - SENGAKU
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_KIN_SNG.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 A.I. AN shogi ver.1 - 十六式いろは改三
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 A.I. AN shogi ver.1 - 十六式いろは改三
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_ANS_JIK.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 SMS将棋 - あうあう将棋
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 SMS将棋 - あうあう将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_SMS_AUA.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 柿木将棋 - こまあそび
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 柿木将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_KAK_KMA.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 BFP - ponkotsu
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 BFP - ponkotsu
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_BFP_PNK.csa
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 きふわらべ - 臥龍
+第31回世界コンピュータ将棋選手権,一次予選 6回戦 きふわらべ - 臥龍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L6_KFW_GAR.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Aoba Zero - きのあ将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Aoba Zero - きのあ将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_ABZ_KIN.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - TMOQ
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_YAM_TMO.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Ryfamate - Qugiy
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Ryfamate - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_RYF_QUG.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - あうあう将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - あうあう将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_JOS_AUA_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 なのは - 二番絞り
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 なのは - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_NAN_NBS.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Miacis - ねね将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 Miacis - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_MIA_NNS.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Softmax - 762alpha
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Softmax - 762alpha
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_SSS_762.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 まったりゆうちゃん - Fluke
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 まったりゆうちゃん - Fluke
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_YUU_FLK.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 CGP - 手抜き
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 CGP - 手抜き
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_CGP_TEN.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 すいしょう - BFP
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 すいしょう - BFP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_SUS_BFP.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 koron - ichibin
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 koron - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_KRN_ICB.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 十六式いろは改三 - 重力場計算法
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 十六式いろは改三 - 重力場計算法
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_JIK_JRB.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 A.I. AN shogi ver.1 - SENGAKU
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 A.I. AN shogi ver.1 - SENGAKU
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_ANS_SNG.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - SMS将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 臥龍 - SMS将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_GAR_SMS.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 ponkotsu - EasyShogi
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 ponkotsu - EasyShogi
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_PNK_EZS.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - 柿木将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - 柿木将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_KFW_KAK.csa
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - カツ丼将棋
+第31回世界コンピュータ将棋選手権,一次予選 5回戦 こまあそび - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L5_KMA_KTD.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 二番絞り - Ryfamate
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 二番絞り - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_NBS_RYF.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - SMS将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - SMS将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_JOS_SMS_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 重力場計算法 - A.I. AN shogi ver.1
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 重力場計算法 - A.I. AN shogi ver.1
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_JRB_ANS_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 なのは - TMOQ
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 なのは - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_NAN_TMO.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 Qugiy - Aoba Zero
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 Qugiy - Aoba Zero
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_QUG_ABZ.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 762alpha - Miacis
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 762alpha - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_762_MIA.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 Fluke - 柿木将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 Fluke - 柿木将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_FLK_KAK.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 すいしょう - まったりゆうちゃん
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 すいしょう - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_SUS_YUU.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 ichibin - 手抜き
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 ichibin - 手抜き
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_ICB_TEN_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 あうあう将棋 - CGP
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 あうあう将棋 - CGP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_AUA_CGP.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 koron - ねね将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 koron - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_KRN_NNS.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 山田将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 山田将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_KMA_YAM.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - SENGAKU
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 芝浦将棋Softmax - SENGAKU
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_SSS_SNG.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 BFP - きのあ将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 BFP - きのあ将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_BFP_KIN.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 ponkotsu - きふわらべ
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 ponkotsu - きふわらべ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_PNK_KFW_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改三 - 臥龍
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 十六式いろは改三 - 臥龍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_JIK_GAR.csa
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 EasyShogi - カツ丼将棋
+第31回世界コンピュータ将棋選手権,一次予選 4回戦 EasyShogi - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L4_EZS_KTD.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - CGP
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 なのは - CGP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_NAN_CGP.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Ryfamate - 柿木将棋
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Ryfamate - 柿木将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_RYF_KAK.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 koron - Miacis
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 koron - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_KRN_MIA.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 ねね将棋 - すいしょう
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 ねね将棋 - すいしょう
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_NNS_SUS.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - TMOQ
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 人生送りバント失敗 - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_JOS_TMO_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 手抜き - まったりゆうちゃん
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 手抜き - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_TEN_YUU.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Aoba Zero - ponkotsu
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Aoba Zero - ponkotsu
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_ABZ_PNK.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - あうあう将棋
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 山田将棋 - あうあう将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_YAM_AUA.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - 二番絞り
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - 二番絞り
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_KTD_NBS.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Qugiy - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 Qugiy - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_QUG_SSS.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 ichibin - SMS将棋
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 ichibin - SMS将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_ICB_SMS.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - 762alpha
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - 762alpha
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_GAR_762.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - 重力場計算法
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - 重力場計算法
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_KIN_JRB.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 SENGAKU - EasyShogi
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 SENGAKU - EasyShogi
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_SNG_EZS.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 十六式いろは改三 - Fluke
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 十六式いろは改三 - Fluke
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_JIK_FLK.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - BFP
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 きふわらべ - BFP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_KFW_BFP.csa
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 A.I. AN shogi ver.1 - こまあそび
+第31回世界コンピュータ将棋選手権,一次予選 3回戦 A.I. AN shogi ver.1 - こまあそび
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L3_ANS_KMA.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 CGP - SENGAKU
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 CGP - SENGAKU
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_CGP_SNG_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Miacis - 山田将棋
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Miacis - 山田将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_MIA_YAM.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 芝浦将棋Softmax - 人生送りバント失敗
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 芝浦将棋Softmax - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_SSS_JOS.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - 手抜き
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 きのあ将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_KIN_TEN.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 柿木将棋 - TMOQ
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 柿木将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_KAK_TMO.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ねね将棋
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - ねね将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_YUU_NNS.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - なのは
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 臥龍 - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_GAR_NAN_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Qugiy - BFP
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Qugiy - BFP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_QUG_BFP.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 SMS将棋 - Aoba Zero
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 SMS将棋 - Aoba Zero
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_SMS_ABZ.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 A.I. AN shogi ver.1 - koron
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 A.I. AN shogi ver.1 - koron
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_ANS_KRN_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 二番絞り - Fluke
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 二番絞り - Fluke
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_NBS_FLK.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 ichibin - カツ丼将棋
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 ichibin - カツ丼将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_ICB_KTD.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Ryfamate - きふわらべ
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 Ryfamate - きふわらべ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_RYF_KFW_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 EasyShogi - あうあう将棋
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 EasyShogi - あうあう将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_EZS_AUA.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 すいしょう - 十六式いろは改三
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 すいしょう - 十六式いろは改三
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_SUS_JIK.csa
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 ponkotsu - こまあそび
+第31回世界コンピュータ将棋選手権,一次予選 2回戦 ponkotsu - こまあそび
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L2_PNK_KMA.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 ねね将棋 - ponkotsu
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 ねね将棋 - ponkotsu
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_NNS_PNK.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 Fluke - 人生送りバント失敗
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 Fluke - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_FLK_JOS_5.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 重力場計算法 - Miacis
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 重力場計算法 - Miacis
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_JRB_MIA_1.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - 十六式いろは改三
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 TMOQ - 十六式いろは改三
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_TMO_JIK_2.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - まったりゆうちゃん
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 こまあそび - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_KMA_YUU.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 Aoba Zero - Ryfamate
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 Aoba Zero - Ryfamate
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_ABZ_RYF.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 762alpha - 山田将棋
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 762alpha - 山田将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_762_YAM.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - Qugiy
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - Qugiy
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_KTD_QUG.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 BFP - ichibin
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 BFP - ichibin
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_BFP_ICB.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 koron - きのあ将棋
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 koron - きのあ将棋
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_KRN_KIN.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 二番絞り - 芝浦将棋Softmax
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 二番絞り - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_NBS_SSS.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 SENGAKU - なのは
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 SENGAKU - なのは
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_SNG_NAN.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 EasyShogi - CGP
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 EasyShogi - CGP
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_EZS_CGP.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - すいしょう
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - すいしょう
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_KAK_SUS.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - A.I. AN shogi ver.1
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - A.I. AN shogi ver.1
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_TEN_ANS.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 あうあう将棋 - 臥龍
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 あうあう将棋 - 臥龍
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_AUA_GAR.csa
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - きふわらべ
+第31回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc31/kifu/WCSC31_L1_SMS_KFW.csa

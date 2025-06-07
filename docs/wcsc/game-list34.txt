@@ -1,0 +1,827 @@
+V1
+#sub:第34回世界コンピュータ将棋選手権
+第34回世界コンピュータ将棋選手権,決勝7回戦 十六式いろは煌 - Polonaise 20240505161025
+第34回世界コンピュータ将棋選手権,決勝7回戦 十六式いろは煌 - Polonaise 20240505161025
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F7_3-900-5F+16-168+polonaise+20240505161025.csa
+第34回世界コンピュータ将棋選手権,決勝7回戦 koron - 技巧 20240505161024
+第34回世界コンピュータ将棋選手権,決勝7回戦 koron - 技巧 20240505161024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F7_5-900-5F+koron+gikou-2024+20240505161024.csa
+第34回世界コンピュータ将棋選手権,決勝7回戦 お前、 CSA 会員にならねーか？ - 東横将棋 20240505161022
+第34回世界コンピュータ将棋選手権,決勝7回戦 お前、 CSA 会員にならねーか？ - 東横将棋 20240505161022
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F7_1-900-5F+tanuki+Toyoko+20240505161022.csa
+第34回世界コンピュータ将棋選手権,決勝7回戦 やねうら王 featuring Ryfamate - dlshogi with HEROZ 20240505161020
+第34回世界コンピュータ将棋選手権,決勝7回戦 やねうら王 featuring Ryfamate - dlshogi with HEROZ 20240505161020
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F7_7-900-5F+yaneuraou+dlshogi+20240505161020.csa
+第34回世界コンピュータ将棋選手権,決勝6回戦 やねうら王 featuring Ryfamate - koron 20240505150518
+第34回世界コンピュータ将棋選手権,決勝6回戦 やねうら王 featuring Ryfamate - koron 20240505150518
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F6_5-900-5F+yaneuraou+koron+20240505150518.csa
+第34回世界コンピュータ将棋選手権,決勝6回戦 お前、 CSA 会員にならねーか？ - 十六式いろは煌 20240505150516
+第34回世界コンピュータ将棋選手権,決勝6回戦 お前、 CSA 会員にならねーか？ - 十六式いろは煌 20240505150516
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F6_1-900-5F+tanuki+16-168+20240505150516.csa
+第34回世界コンピュータ将棋選手権,決勝6回戦 東横将棋 - Polonaise 20240505150514
+第34回世界コンピュータ将棋選手権,決勝6回戦 東横将棋 - Polonaise 20240505150514
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F6_2-900-5F+Toyoko+polonaise+20240505150514.csa
+第34回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - 技巧 20240505150512
+第34回世界コンピュータ将棋選手権,決勝6回戦 dlshogi with HEROZ - 技巧 20240505150512
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F6_6-900-5F+dlshogi+gikou-2024+20240505150512.csa
+第34回世界コンピュータ将棋選手権,決勝5回戦 東横将棋 - 十六式いろは煌 20240505140013
+第34回世界コンピュータ将棋選手権,決勝5回戦 東横将棋 - 十六式いろは煌 20240505140013
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F5_2-900-5F+Toyoko+16-168+20240505140013.csa
+第34回世界コンピュータ将棋選手権,決勝5回戦 技巧 - やねうら王 featuring Ryfamate 20240505140012
+第34回世界コンピュータ将棋選手権,決勝5回戦 技巧 - やねうら王 featuring Ryfamate 20240505140012
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F5_6-900-5F+gikou-2024+yaneuraou+20240505140012.csa
+第34回世界コンピュータ将棋選手権,決勝5回戦 Polonaise - お前、 CSA 会員にならねーか？ 20240505140010
+第34回世界コンピュータ将棋選手権,決勝5回戦 Polonaise - お前、 CSA 会員にならねーか？ 20240505140010
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F5_1-900-5F+polonaise+tanuki+20240505140010.csa
+第34回世界コンピュータ将棋選手権,決勝5回戦 dlshogi with HEROZ - koron 20240505140008
+第34回世界コンピュータ将棋選手権,決勝5回戦 dlshogi with HEROZ - koron 20240505140008
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F5_5-900-5F+dlshogi+koron+20240505140008.csa
+第34回世界コンピュータ将棋選手権,決勝4回戦 koron - お前、 CSA 会員にならねーか？ 20240505125817
+第34回世界コンピュータ将棋選手権,決勝4回戦 koron - お前、 CSA 会員にならねーか？ 20240505125817
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F4_1-900-5F+koron+tanuki+20240505125817.csa
+第34回世界コンピュータ将棋選手権,決勝4回戦 十六式いろは煌 - やねうら王 featuring Ryfamate 20240505125520
+第34回世界コンピュータ将棋選手権,決勝4回戦 十六式いろは煌 - やねうら王 featuring Ryfamate 20240505125520
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F4_3-900-5F+16-168+yaneuraou+20240505125520.csa
+第34回世界コンピュータ将棋選手権,決勝4回戦 Polonaise - dlshogi with HEROZ 20240505125519
+第34回世界コンピュータ将棋選手権,決勝4回戦 Polonaise - dlshogi with HEROZ 20240505125519
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F4_4-900-5F+polonaise+dlshogi+20240505125519.csa
+第34回世界コンピュータ将棋選手権,決勝4回戦 技巧 - 東横将棋 20240505125518
+第34回世界コンピュータ将棋選手権,決勝4回戦 技巧 - 東横将棋 20240505125518
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F4_2-900-5F+gikou-2024+Toyoko+20240505125518.csa
+第34回世界コンピュータ将棋選手権,決勝3回戦 やねうら王 featuring Ryfamate - Polonaise 20240505115026
+第34回世界コンピュータ将棋選手権,決勝3回戦 やねうら王 featuring Ryfamate - Polonaise 20240505115026
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F3_4-900-5F+yaneuraou+polonaise+20240505115026.csa
+第34回世界コンピュータ将棋選手権,決勝3回戦 十六式いろは煌 - dlshogi with HEROZ 20240505115023
+第34回世界コンピュータ将棋選手権,決勝3回戦 十六式いろは煌 - dlshogi with HEROZ 20240505115023
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F3_3-900-5F+16-168+dlshogi+20240505115023.csa
+第34回世界コンピュータ将棋選手権,決勝3回戦 お前、 CSA 会員にならねーか？ - 技巧 20240505115021
+第34回世界コンピュータ将棋選手権,決勝3回戦 お前、 CSA 会員にならねーか？ - 技巧 20240505115021
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F3_1-900-5F+tanuki+gikou-2024+20240505115021.csa
+第34回世界コンピュータ将棋選手権,決勝3回戦 koron - 東横将棋 20240505115019
+第34回世界コンピュータ将棋選手権,決勝3回戦 koron - 東横将棋 20240505115019
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F3_2-900-5F+koron+Toyoko+20240505115019.csa
+第34回世界コンピュータ将棋選手権,決勝2回戦 お前、 CSA 会員にならねーか？ - やねうら王 featuring Ryfamate 20240505103513
+第34回世界コンピュータ将棋選手権,決勝2回戦 お前、 CSA 会員にならねーか？ - やねうら王 featuring Ryfamate 20240505103513
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F2_1-900-5F+tanuki+yaneuraou+20240505103513.csa
+第34回世界コンピュータ将棋選手権,決勝2回戦 東横将棋 - dlshogi with HEROZ 20240505103511
+第34回世界コンピュータ将棋選手権,決勝2回戦 東横将棋 - dlshogi with HEROZ 20240505103511
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F2_2-900-5F+Toyoko+dlshogi+20240505103511.csa
+第34回世界コンピュータ将棋選手権,決勝2回戦 Polonaise - 技巧 20240505103510
+第34回世界コンピュータ将棋選手権,決勝2回戦 Polonaise - 技巧 20240505103510
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F2_4-900-5F+polonaise+gikou-2024+20240505103510.csa
+第34回世界コンピュータ将棋選手権,決勝2回戦 十六式いろは煌 - koron 20240505103509
+第34回世界コンピュータ将棋選手権,決勝2回戦 十六式いろは煌 - koron 20240505103509
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F2_3-900-5F+16-168+koron+20240505103509.csa
+第34回世界コンピュータ将棋選手権,決勝1回戦 Polonaise - koron 20240505093024
+第34回世界コンピュータ将棋選手権,決勝1回戦 Polonaise - koron 20240505093024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F1_4-900-5F+polonaise+koron+20240505093024.csa
+第34回世界コンピュータ将棋選手権,決勝1回戦 技巧 - 十六式いろは煌 20240505093023
+第34回世界コンピュータ将棋選手権,決勝1回戦 技巧 - 十六式いろは煌 20240505093023
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F1_3-900-5F+gikou-2024+16-168+20240505093023.csa
+第34回世界コンピュータ将棋選手権,決勝1回戦 東横将棋 - やねうら王 featuring Ryfamate 20240505093021
+第34回世界コンピュータ将棋選手権,決勝1回戦 東横将棋 - やねうら王 featuring Ryfamate 20240505093021
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F1_2-900-5F+Toyoko+yaneuraou+20240505093021.csa
+第34回世界コンピュータ将棋選手権,決勝1回戦 dlshogi with HEROZ - お前、 CSA 会員にならねーか？ 20240505093019
+第34回世界コンピュータ将棋選手権,決勝1回戦 dlshogi with HEROZ - お前、 CSA 会員にならねーか？ 20240505093019
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+F1_1-900-5F+dlshogi+tanuki+20240505093019.csa
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075400
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075400
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+polonaise+polonaise-test+20240505075400.csa
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075214
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075214
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+polonaise+polonaise-test+20240505075214.csa
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075154
+第34回世界コンピュータ将棋選手権,テスト Polonaise - Polonaise 20240505075154
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+polonaise+polonaise-test+20240505075154.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505014844
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505014844
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogitest+dlshogi+20240505014844.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505014049
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505014049
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogi+dlshogitest+20240505014049.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505013252
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505013252
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogi+dlshogitest+20240505013252.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505012407
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505012407
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogi+dlshogitest+20240505012407.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505011752
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505011752
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogi+dlshogitest+20240505011752.csa
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505011437
+第34回世界コンピュータ将棋選手権,テスト dlshogi with HEROZ - dlshogi with HEROZ 20240505011437
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+test000000-900-5F+dlshogitest+dlshogi+20240505011437.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 恭祐 - Argo 20240504185555
+第34回世界コンピュータ将棋選手権,二次予選9回戦 恭祐 - Argo 20240504185555
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_26_2-900-5F+kyousuke+argo+20240504185555.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 なのは - タンゴ 20240504185109
+第34回世界コンピュータ将棋選手権,二次予選9回戦 なのは - タンゴ 20240504185109
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_25-900-5F+Nanoha2024+Tango+20240504185109.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - W@ndre7 20240504185107
+第34回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - W@ndre7 20240504185107
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_3-900-5F+Shueso+wandre7+20240504185107.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - HoneyWaffle 20240504185104
+第34回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - HoneyWaffle 20240504185104
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_20-900-5F+arishogi+HoneyWaffle+20240504185104.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 ねね将棋 - Daigorilla 20240504185101
+第34回世界コンピュータ将棋選手権,二次予選9回戦 ねね将棋 - Daigorilla 20240504185101
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_12-900-5F+nene+Daigorilla+20240504185101.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 TMOQ - ponkotsu 20240504185059
+第34回世界コンピュータ将棋選手権,二次予選9回戦 TMOQ - ponkotsu 20240504185059
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_8-900-5F+TMOQ+ponkotsu+20240504185059.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - やねうら王 featuring Ryfamate 20240504185057
+第34回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - やねうら王 featuring Ryfamate 20240504185057
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_2-900-5F+nibanshibori+yaneuraou+20240504185057.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラ - あすとら将棋 20240504185053
+第34回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラ - あすとら将棋 20240504185053
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_6-900-5F+cobra+astra3+20240504185053.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 koron - nshogi 20240504185052
+第34回世界コンピュータ将棋選手権,二次予選9回戦 koron - nshogi 20240504185052
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_14-900-5F+koron+nshogi+20240504185052.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 Polonaise - AobaZero 20240504185048
+第34回世界コンピュータ将棋選手権,二次予選9回戦 Polonaise - AobaZero 20240504185048
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_11-900-5F+polonaise+AobaZero+20240504185048.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 十六式いろは煌 - 技巧 20240504185045
+第34回世界コンピュータ将棋選手権,二次予選9回戦 十六式いろは煌 - 技巧 20240504185045
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_17-900-5F+16-168+gikou-2024+20240504185045.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 水匠 - 東横将棋 20240504185037
+第34回世界コンピュータ将棋選手権,二次予選9回戦 水匠 - 東横将棋 20240504185037
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_5-900-5F+suisho+Toyoko+20240504185037.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 ichibin - Novice 20240504185034
+第34回世界コンピュータ将棋選手権,二次予選9回戦 ichibin - Novice 20240504185034
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_10-900-5F+ichibin+Novice+20240504185034.csa
+第34回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - お前、 CSA 会員にならねーか？ 20240504185027
+第34回世界コンピュータ将棋選手権,二次予選9回戦 dlshogi with HEROZ - お前、 CSA 会員にならねーか？ 20240504185027
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U9_1-900-5F+dlshogi+tanuki+20240504185027.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 W@ndre7 - なのは 20240504173409
+第34回世界コンピュータ将棋選手権,二次予選8回戦 W@ndre7 - なのは 20240504173409
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_3-900-5F+wandre7+Nanoha2024+20240504173409.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 TMOQ - ichibin 20240504173314
+第34回世界コンピュータ将棋選手権,二次予選8回戦 TMOQ - ichibin 20240504173314
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_10-900-5F+TMOQ+ichibin+20240504173314.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 技巧 - やねうら王 featuring Ryfamate 20240504173224
+第34回世界コンピュータ将棋選手権,二次予選8回戦 技巧 - やねうら王 featuring Ryfamate 20240504173224
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_2-900-5F+gikou-2024+yaneuraou+20240504173224.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 水匠 - AobaZero 20240504173159
+第34回世界コンピュータ将棋選手権,二次予選8回戦 水匠 - AobaZero 20240504173159
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_16-900-5F+suisho+AobaZero+20240504173159.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 習甦 - タンゴ 20240504173145
+第34回世界コンピュータ将棋選手権,二次予選8回戦 習甦 - タンゴ 20240504173145
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_23-900-5F+Shueso+Tango+20240504173145.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Ari Shogi and フレンズ - Argo 20240504173141
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Ari Shogi and フレンズ - Argo 20240504173141
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_20-900-5F+arishogi+argo+20240504173141.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 ねね将棋 - 恭祐 20240504173137
+第34回世界コンピュータ将棋選手権,二次予選8回戦 ねね将棋 - 恭祐 20240504173137
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_22-900-5F+nene+kyousuke+20240504173137.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Daigorilla - ponkotsu 20240504173132
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Daigorilla - ponkotsu 20240504173132
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_8-900-5F+Daigorilla+ponkotsu+20240504173132.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - nshogi 20240504173128
+第34回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - nshogi 20240504173128
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_21-900-5F+HoneyWaffle+nshogi+20240504173128.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - 名人コブラ 20240504173125
+第34回世界コンピュータ将棋選手権,二次予選8回戦 二番絞り - 名人コブラ 20240504173125
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_4-900-5F+nibanshibori+cobra+20240504173125.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Polonaise - koron 20240504173114
+第34回世界コンピュータ将棋選手権,二次予選8回戦 Polonaise - koron 20240504173114
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_11-900-5F+polonaise+koron+20240504173114.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 dlshogi with HEROZ - 十六式いろは煌 20240504173110
+第34回世界コンピュータ将棋選手権,二次予選8回戦 dlshogi with HEROZ - 十六式いろは煌 20240504173110
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_1-900-5F+dlshogi+16-168+20240504173110.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 お前、 CSA 会員にならねーか？ - 東横将棋 20240504173107
+第34回世界コンピュータ将棋選手権,二次予選8回戦 お前、 CSA 会員にならねーか？ - 東横将棋 20240504173107
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_5-900-5F+tanuki+Toyoko+20240504173107.csa
+第34回世界コンピュータ将棋選手権,二次予選8回戦 あすとら将棋 - Novice 20240504173049
+第34回世界コンピュータ将棋選手権,二次予選8回戦 あすとら将棋 - Novice 20240504173049
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U8_6-900-5F+astra3+Novice+20240504173049.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 Novice - W@ndre7 20240504162303
+第34回世界コンピュータ将棋選手権,二次予選7回戦 Novice - W@ndre7 20240504162303
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_3_2-900-5F+Novice+wandre7+20240504162303.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 なのは - ねね将棋 20240504162220
+第34回世界コンピュータ将棋選手権,二次予選7回戦 なのは - ねね将棋 20240504162220
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_22-900-5F+Nanoha2024+nene+20240504162220.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 Argo - 習甦 20240504162057
+第34回世界コンピュータ将棋選手権,二次予選7回戦 Argo - 習甦 20240504162057
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_23-900-5F+argo+Shueso+20240504162057.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 恭祐 - TMOQ 20240504162055
+第34回世界コンピュータ将棋選手権,二次予選7回戦 恭祐 - TMOQ 20240504162055
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_15-900-5F+kyousuke+TMOQ+20240504162055.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 タンゴ - ichibin 20240504162053
+第34回世界コンピュータ将棋選手権,二次予選7回戦 タンゴ - ichibin 20240504162053
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_10-900-5F+Tango+ichibin+20240504162053.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - Daigorilla 20240504162051
+第34回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - Daigorilla 20240504162051
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_12-900-5F+HoneyWaffle+Daigorilla+20240504162051.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - Ari Shogi and フレンズ 20240504162049
+第34回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - Ari Shogi and フレンズ 20240504162049
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_4-900-5F+nibanshibori+arishogi+20240504162049.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi with HEROZ - あすとら将棋 20240504162047
+第34回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi with HEROZ - あすとら将棋 20240504162047
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_1-900-5F+dlshogi+astra3+20240504162047.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 やねうら王 featuring Ryfamate - ponkotsu 20240504162045
+第34回世界コンピュータ将棋選手権,二次予選7回戦 やねうら王 featuring Ryfamate - ponkotsu 20240504162045
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_2-900-5F+yaneuraou+ponkotsu+20240504162045.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - Polonaise 20240504162043
+第34回世界コンピュータ将棋選手権,二次予選7回戦 名人コブラ - Polonaise 20240504162043
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_7-900-5F+cobra+polonaise+20240504162043.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 水匠 20240504162041
+第34回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 水匠 20240504162041
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_18-900-5F+nshogi+suisho+20240504162041.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 AobaZero - 技巧 20240504162040
+第34回世界コンピュータ将棋選手権,二次予選7回戦 AobaZero - 技巧 20240504162040
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_16-900-5F+AobaZero+gikou-2024+20240504162040.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 お前、 CSA 会員にならねーか？ - koron 20240504162038
+第34回世界コンピュータ将棋選手権,二次予選7回戦 お前、 CSA 会員にならねーか？ - koron 20240504162038
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_9-900-5F+tanuki+koron+20240504162038.csa
+第34回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 十六式いろは煌 20240504162035
+第34回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 十六式いろは煌 20240504162035
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U7_5-900-5F+Toyoko+16-168+20240504162035.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 お前、 CSA 会員にならねーか？ - 名人コブラ 20240504151430
+第34回世界コンピュータ将棋選手権,二次予選6回戦 お前、 CSA 会員にならねーか？ - 名人コブラ 20240504151430
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_7_2-900-5F+tanuki+cobra+20240504151430.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - Ari Shogi and フレンズ 20240504151105
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - Ari Shogi and フレンズ 20240504151105
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_20-900-5F+nene+arishogi+20240504151105.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 恭祐 - なのは 20240504151048
+第34回世界コンピュータ将棋選手権,二次予選6回戦 恭祐 - なのは 20240504151048
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_26-900-5F+kyousuke+Nanoha2024+20240504151048.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ichibin - Argo 20240504151047
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ichibin - Argo 20240504151047
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_10-900-5F+ichibin+argo+20240504151047.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 習甦 - TMOQ 20240504151045
+第34回世界コンピュータ将棋選手権,二次予選6回戦 習甦 - TMOQ 20240504151045
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_15-900-5F+Shueso+TMOQ+20240504151045.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 タンゴ - Daigorilla 20240504151042
+第34回世界コンピュータ将棋選手権,二次予選6回戦 タンゴ - Daigorilla 20240504151042
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_12-900-5F+Tango+Daigorilla+20240504151042.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ponkotsu - W@ndre7 20240504151041
+第34回世界コンピュータ将棋選手権,二次予選6回戦 ponkotsu - W@ndre7 20240504151041
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_3-900-5F+ponkotsu+wandre7+20240504151041.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - HoneyWaffle 20240504151037
+第34回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - HoneyWaffle 20240504151037
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_16-900-5F+AobaZero+HoneyWaffle+20240504151037.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 やねうら王 featuring Ryfamate - あすとら将棋 20240504151035
+第34回世界コンピュータ将棋選手権,二次予選6回戦 やねうら王 featuring Ryfamate - あすとら将棋 20240504151035
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_2-900-5F+yaneuraou+astra3+20240504151035.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 nshogi - 二番絞り 20240504151033
+第34回世界コンピュータ将棋選手権,二次予選6回戦 nshogi - 二番絞り 20240504151033
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_4-900-5F+nshogi+nibanshibori+20240504151033.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 Polonaise - 技巧 20240504151031
+第34回世界コンピュータ将棋選手権,二次予選6回戦 Polonaise - 技巧 20240504151031
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_11-900-5F+polonaise+gikou-2024+20240504151031.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 十六式いろは煌 - 水匠 20240504151029
+第34回世界コンピュータ将棋選手権,二次予選6回戦 十六式いろは煌 - 水匠 20240504151029
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_17-900-5F+16-168+suisho+20240504151029.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 東横将棋 - koron 20240504151024
+第34回世界コンピュータ将棋選手権,二次予選6回戦 東横将棋 - koron 20240504151024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_5-900-5F+Toyoko+koron+20240504151024.csa
+第34回世界コンピュータ将棋選手権,二次予選6回戦 Novice - dlshogi with HEROZ 20240504151016
+第34回世界コンピュータ将棋選手権,二次予選6回戦 Novice - dlshogi with HEROZ 20240504151016
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U6_1-900-5F+Novice+dlshogi+20240504151016.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 koron - AobaZero 20240504141047
+第34回世界コンピュータ将棋選手権,二次予選5回戦 koron - AobaZero 20240504141047
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_14-900-5F+koron+AobaZero+20240504141047.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 なのは - 習甦 20240504141042
+第34回世界コンピュータ将棋選手権,二次予選5回戦 なのは - 習甦 20240504141042
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_23-900-5F+Nanoha2024+Shueso+20240504141042.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Argo - Novice 20240504141041
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Argo - Novice 20240504141041
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_13-900-5F+argo+Novice+20240504141041.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 TMOQ - タンゴ 20240504141039
+第34回世界コンピュータ将棋選手権,二次予選5回戦 TMOQ - タンゴ 20240504141039
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_15-900-5F+TMOQ+Tango+20240504141039.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 恭祐 - ichibin 20240504141037
+第34回世界コンピュータ将棋選手権,二次予選5回戦 恭祐 - ichibin 20240504141037
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_10-900-5F+kyousuke+ichibin+20240504141037.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Ari Shogi and フレンズ - nshogi 20240504141035
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Ari Shogi and フレンズ - nshogi 20240504141035
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_20-900-5F+arishogi+nshogi+20240504141035.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Polonaise - ねね将棋 20240504141034
+第34回世界コンピュータ将棋選手権,二次予選5回戦 Polonaise - ねね将棋 20240504141034
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_11-900-5F+polonaise+nene+20240504141034.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 W@ndre7 - HoneyWaffle 20240504141032
+第34回世界コンピュータ将棋選手権,二次予選5回戦 W@ndre7 - HoneyWaffle 20240504141032
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_3-900-5F+wandre7+HoneyWaffle+20240504141032.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - Daigorilla 20240504141030
+第34回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - Daigorilla 20240504141030
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_6-900-5F+astra3+Daigorilla+20240504141030.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 水匠 - ponkotsu 20240504141028
+第34回世界コンピュータ将棋選手権,二次予選5回戦 水匠 - ponkotsu 20240504141028
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_8-900-5F+suisho+ponkotsu+20240504141028.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - dlshogi with HEROZ 20240504141026
+第34回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラ - dlshogi with HEROZ 20240504141026
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_1-900-5F+cobra+dlshogi+20240504141026.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 featuring Ryfamate - お前、 CSA 会員にならねーか？ 20240504141024
+第34回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 featuring Ryfamate - お前、 CSA 会員にならねーか？ 20240504141024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_2-900-5F+yaneuraou+tanuki+20240504141024.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 十六式いろは煌 - 二番絞り 20240504141022
+第34回世界コンピュータ将棋選手権,二次予選5回戦 十六式いろは煌 - 二番絞り 20240504141022
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_4-900-5F+16-168+nibanshibori+20240504141022.csa
+第34回世界コンピュータ将棋選手権,二次予選5回戦 東横将棋 - 技巧 20240504141020
+第34回世界コンピュータ将棋選手権,二次予選5回戦 東横将棋 - 技巧 20240504141020
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U5_5-900-5F+Toyoko+gikou-2024+20240504141020.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Ari Shogi and フレンズ - あすとら将棋 20240504131703
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Ari Shogi and フレンズ - あすとら将棋 20240504131703
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_6_2-900-5F+arishogi+astra3+20240504131703.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 nshogi - 習甦 20240504130756
+第34回世界コンピュータ将棋選手権,二次予選4回戦 nshogi - 習甦 20240504130756
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_21-900-5F+nshogi+Shueso+20240504130756.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 HoneyWaffle - タンゴ 20240504130654
+第34回世界コンピュータ将棋選手権,二次予選4回戦 HoneyWaffle - タンゴ 20240504130654
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_24-900-5F+HoneyWaffle+Tango+20240504130654.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 技巧 - 名人コブラ 20240504130637
+第34回世界コンピュータ将棋選手権,二次予選4回戦 技巧 - 名人コブラ 20240504130637
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_7-900-5F+gikou-2024+cobra+20240504130637.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Argo - なのは 20240504130617
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Argo - なのは 20240504130617
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_27-900-5F+argo+Nanoha2024+20240504130617.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Novice - 恭祐 20240504130615
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Novice - 恭祐 20240504130615
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_13-900-5F+Novice+kyousuke+20240504130615.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ichibin - W@ndre7 20240504130602
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ichibin - W@ndre7 20240504130602
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_3-900-5F+ichibin+wandre7+20240504130602.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 TMOQ - Polonaise 20240504130558
+第34回世界コンピュータ将棋選手権,二次予選4回戦 TMOQ - Polonaise 20240504130558
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_11-900-5F+TMOQ+polonaise+20240504130558.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - やねうら王 featuring Ryfamate 20240504130553
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - やねうら王 featuring Ryfamate 20240504130553
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_2-900-5F+nene+yaneuraou+20240504130553.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ponkotsu - dlshogi with HEROZ 20240504130550
+第34回世界コンピュータ将棋選手権,二次予選4回戦 ponkotsu - dlshogi with HEROZ 20240504130550
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_1-900-5F+ponkotsu+dlshogi+20240504130550.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Daigorilla - AobaZero 20240504130543
+第34回世界コンピュータ将棋選手権,二次予選4回戦 Daigorilla - AobaZero 20240504130543
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_12-900-5F+Daigorilla+AobaZero+20240504130543.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 十六式いろは煌 - お前、 CSA 会員にならねーか？ 20240504130539
+第34回世界コンピュータ将棋選手権,二次予選4回戦 十六式いろは煌 - お前、 CSA 会員にならねーか？ 20240504130539
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_9-900-5F+16-168+tanuki+20240504130539.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - koron 20240504130535
+第34回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - koron 20240504130535
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_14-900-5F+suisho+koron+20240504130535.csa
+第34回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 二番絞り 20240504130531
+第34回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 二番絞り 20240504130531
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U4_4-900-5F+Toyoko+nibanshibori+20240504130531.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 dlshogi with HEROZ - nshogi 20240504115358
+第34回世界コンピュータ将棋選手権,二次予選3回戦 dlshogi with HEROZ - nshogi 20240504115358
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_1-900-5F+dlshogi+nshogi+20240504115358.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Argo - ponkotsu 20240504115256
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Argo - ponkotsu 20240504115256
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_8-900-5F+argo+ponkotsu+20240504115256.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - AobaZero 20240504115011
+第34回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラ - AobaZero 20240504115011
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_7-900-5F+cobra+AobaZero+20240504115011.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 ねね将棋 - Novice 20240504114918
+第34回世界コンピュータ将棋選手権,二次予選3回戦 ねね将棋 - Novice 20240504114918
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_13-900-5F+nene+Novice+20240504114918.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 技巧 - あすとら将棋 20240504114630
+第34回世界コンピュータ将棋選手権,二次予選3回戦 技巧 - あすとら将棋 20240504114630
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_6-900-5F+gikou-2024+astra3+20240504114630.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 なのは - HoneyWaffle 20240504113854
+第34回世界コンピュータ将棋選手権,二次予選3回戦 なのは - HoneyWaffle 20240504113854
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_24-900-5F+Nanoha2024+HoneyWaffle+20240504113854.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 お前、 CSA 会員にならねーか？ - 水匠 20240504112945
+第34回世界コンピュータ将棋選手権,二次予選3回戦 お前、 CSA 会員にならねーか？ - 水匠 20240504112945
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_9-900-5F+tanuki+suisho+20240504112945.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 featuring Ryfamate - 東横将棋 20240504112818
+第34回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 featuring Ryfamate - 東横将棋 20240504112818
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_2-900-5F+yaneuraou+Toyoko+20240504112818.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Daigorilla - TMOQ 20240504112809
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Daigorilla - TMOQ 20240504112809
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_12-900-5F+Daigorilla+TMOQ+20240504112809.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 習甦 - ichibin 20240504112709
+第34回世界コンピュータ将棋選手権,二次予選3回戦 習甦 - ichibin 20240504112709
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_10-900-5F+Shueso+ichibin+20240504112709.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Ari Shogi and フレンズ - Polonaise 20240504112243
+第34回世界コンピュータ将棋選手権,二次予選3回戦 Ari Shogi and フレンズ - Polonaise 20240504112243
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_11-900-5F+arishogi+polonaise+20240504112243.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 二番絞り - W@ndre7 20240504112203
+第34回世界コンピュータ将棋選手権,二次予選3回戦 二番絞り - W@ndre7 20240504112203
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_3-900-5F+nibanshibori+wandre7+20240504112203.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 タンゴ - 恭祐 20240504112106
+第34回世界コンピュータ将棋選手権,二次予選3回戦 タンゴ - 恭祐 20240504112106
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_25-900-5F+Tango+kyousuke+20240504112106.csa
+第34回世界コンピュータ将棋選手権,二次予選3回戦 十六式いろは煌 - koron 20240504112059
+第34回世界コンピュータ将棋選手権,二次予選3回戦 十六式いろは煌 - koron 20240504112059
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U3_14-900-5F+16-168+koron+20240504112059.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 AobaZero - なのは 20240504105242
+第34回世界コンピュータ将棋選手権,二次予選2回戦 AobaZero - なのは 20240504105242
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_16-900-5F+AobaZero+Nanoha2024+20240504105242.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 Novice - やねうら王 featuring Ryfamate 20240504105239
+第34回世界コンピュータ将棋選手権,二次予選2回戦 Novice - やねうら王 featuring Ryfamate 20240504105239
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_2-900-5F+Novice+yaneuraou+20240504105239.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - お前、 CSA 会員にならねーか？ 20240504104643
+第34回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - お前、 CSA 会員にならねーか？ 20240504104643
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_6-900-5F+astra3+tanuki+20240504104643.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 技巧 - HoneyWaffle 20240504104353
+第34回世界コンピュータ将棋選手権,二次予選2回戦 技巧 - HoneyWaffle 20240504104353
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_19-900-5F+gikou-2024+HoneyWaffle+20240504104353.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 nshogi - ねね将棋 20240504104217
+第34回世界コンピュータ将棋選手権,二次予選2回戦 nshogi - ねね将棋 20240504104217
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_21-900-5F+nshogi+nene+20240504104217.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - Ari Shogi and フレンズ 20240504104207
+第34回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - Ari Shogi and フレンズ 20240504104207
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_20-900-5F+Shueso+arishogi+20240504104207.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - タンゴ 20240504104150
+第34回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - タンゴ 20240504104150
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_18-900-5F+suisho+Tango+20240504104150.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 恭祐 - 十六式いろは煌 20240504104145
+第34回世界コンピュータ将棋選手権,二次予選2回戦 恭祐 - 十六式いろは煌 20240504104145
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_17-900-5F+kyousuke+16-168+20240504104145.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 TMOQ - Argo 20240504104130
+第34回世界コンピュータ将棋選手権,二次予選2回戦 TMOQ - Argo 20240504104130
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_15-900-5F+TMOQ+argo+20240504104130.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 ponkotsu - 名人コブラ 20240504104123
+第34回世界コンピュータ将棋選手権,二次予選2回戦 ponkotsu - 名人コブラ 20240504104123
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_7-900-5F+ponkotsu+cobra+20240504104123.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - ichibin 20240504104112
+第34回世界コンピュータ将棋選手権,二次予選2回戦 東横将棋 - ichibin 20240504104112
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_5-900-5F+Toyoko+ichibin+20240504104112.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 二番絞り - Polonaise 20240504104056
+第34回世界コンピュータ将棋選手権,二次予選2回戦 二番絞り - Polonaise 20240504104056
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_4-900-5F+nibanshibori+polonaise+20240504104056.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 W@ndre7 - Daigorilla 20240504104044
+第34回世界コンピュータ将棋選手権,二次予選2回戦 W@ndre7 - Daigorilla 20240504104044
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_3-900-5F+wandre7+Daigorilla+20240504104044.csa
+第34回世界コンピュータ将棋選手権,二次予選2回戦 koron - dlshogi with HEROZ 20240504104030
+第34回世界コンピュータ将棋選手権,二次予選2回戦 koron - dlshogi with HEROZ 20240504104030
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U2_1-900-5F+koron+dlshogi+20240504104030.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - Novice 20240504100444
+第34回世界コンピュータ将棋選手権,二次予選1回戦 AobaZero - Novice 20240504100444
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_13_2-900-5F+AobaZero+Novice+20240504100444.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - nshogi 20240504100121
+第34回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - nshogi 20240504100121
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_8-900-5F+ponkotsu+nshogi+20240504100121.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 koron - TMOQ 20240504100112
+第34回世界コンピュータ将棋選手権,二次予選1回戦 koron - TMOQ 20240504100112
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_14-900-5F+koron+TMOQ+20240504100112.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 Daigorilla - 十六式いろは煌 20240504100108
+第34回世界コンピュータ将棋選手権,二次予選1回戦 Daigorilla - 十六式いろは煌 20240504100108
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_12-900-5F+Daigorilla+16-168+20240504100108.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 Polonaise - 水匠 20240504100107
+第34回世界コンピュータ将棋選手権,二次予選1回戦 Polonaise - 水匠 20240504100107
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_11-900-5F+polonaise+suisho+20240504100107.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 ichibin - 技巧 20240504100105
+第34回世界コンピュータ将棋選手権,二次予選1回戦 ichibin - 技巧 20240504100105
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_10-900-5F+ichibin+gikou-2024+20240504100105.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 お前、 CSA 会員にならねーか？ - Ari Shogi and フレンズ 20240504100103
+第34回世界コンピュータ将棋選手権,二次予選1回戦 お前、 CSA 会員にならねーか？ - Ari Shogi and フレンズ 20240504100103
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_9-900-5F+tanuki+arishogi+20240504100103.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラ - ねね将棋 20240504100100
+第34回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラ - ねね将棋 20240504100100
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_7-900-5F+cobra+nene+20240504100100.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 あすとら将棋 - 習甦 20240504100058
+第34回世界コンピュータ将棋選手権,二次予選1回戦 あすとら将棋 - 習甦 20240504100058
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_6-900-5F+astra3+Shueso+20240504100058.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 HoneyWaffle - 東横将棋 20240504100056
+第34回世界コンピュータ将棋選手権,二次予選1回戦 HoneyWaffle - 東横将棋 20240504100056
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_5-900-5F+HoneyWaffle+Toyoko+20240504100056.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 タンゴ - 二番絞り 20240504100053
+第34回世界コンピュータ将棋選手権,二次予選1回戦 タンゴ - 二番絞り 20240504100053
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_4-900-5F+Tango+nibanshibori+20240504100053.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 W@ndre7 - 恭祐 20240504100051
+第34回世界コンピュータ将棋選手権,二次予選1回戦 W@ndre7 - 恭祐 20240504100051
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_3-900-5F+wandre7+kyousuke+20240504100051.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 なのは - やねうら王 featuring Ryfamate 20240504100045
+第34回世界コンピュータ将棋選手権,二次予選1回戦 なのは - やねうら王 featuring Ryfamate 20240504100045
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_2-900-5F+Nanoha2024+yaneuraou+20240504100045.csa
+第34回世界コンピュータ将棋選手権,二次予選1回戦 dlshogi with HEROZ - Argo 20240504100040
+第34回世界コンピュータ将棋選手権,二次予選1回戦 dlshogi with HEROZ - Argo 20240504100040
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+U1_1-900-5F+dlshogi+argo+20240504100040.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 技巧 - HoneyWaffle 20240503173918
+第34回世界コンピュータ将棋選手権,一次予選8回戦 技巧 - HoneyWaffle 20240503173918
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_22_2-900-5F+gikou-2024+HoneyWaffle+20240503173918.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 wizodds 2024 - きのあ将棋 20240503173801
+第34回世界コンピュータ将棋選手権,一次予選8回戦 wizodds 2024 - きのあ将棋 20240503173801
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_29-900-5F+wizodds+qinoa+20240503173801.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 なり金将棋 - 重力場計算法 20240503173549
+第34回世界コンピュータ将棋選手権,一次予選8回戦 なり金将棋 - 重力場計算法 20240503173549
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_44-900-5F+narikin+jyuuryoku+20240503173549.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 JHBR - はるか 20240503173547
+第34回世界コンピュータ将棋選手権,一次予選8回戦 JHBR - はるか 20240503173547
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_42-900-5F+jhbr2000+Haruka+20240503173547.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 きふわらべ using cshogi - こまあそび 20240503173545
+第34回世界コンピュータ将棋選手権,一次予選8回戦 きふわらべ using cshogi - こまあそび 20240503173545
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_39-900-5F+kifuwarabe+komaasobi+20240503173545.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 翡翠5号 - あうあう将棋 20240503173542
+第34回世界コンピュータ将棋選手権,一次予選8回戦 翡翠5号 - あうあう将棋 20240503173542
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_41-900-5F+hisui5+auaushogi+20240503173542.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 人生送りバント失敗 - 爆裂駒拾太郎 20240503173541
+第34回世界コンピュータ将棋選手権,一次予選8回戦 人生送りバント失敗 - 爆裂駒拾太郎 20240503173541
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_33-900-5F+gakkari+bakuretsu+20240503173541.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 カツ丼将棋 - 山田将棋 20240503173538
+第34回世界コンピュータ将棋選手権,一次予選8回戦 カツ丼将棋 - 山田将棋 20240503173538
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_35-900-5F+katsudon+yamadashogi+20240503173538.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 なのは - 手抜き 20240503173537
+第34回世界コンピュータ将棋選手権,一次予選8回戦 なのは - 手抜き 20240503173537
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_27-900-5F+Nanoha2024+tenuki+20240503173537.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 CGP - 恭祐 20240503173535
+第34回世界コンピュータ将棋選手権,一次予選8回戦 CGP - 恭祐 20240503173535
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_32-900-5F+CGP+kyousuke+20240503173535.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 Argo - タンゴ 20240503173533
+第34回世界コンピュータ将棋選手権,一次予選8回戦 Argo - タンゴ 20240503173533
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_24-900-5F+argo+Tango+20240503173533.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 元気もりもりニンニクパワー - ねね将棋 20240503173531
+第34回世界コンピュータ将棋選手権,一次予選8回戦 元気もりもりニンニクパワー - ねね将棋 20240503173531
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_23-900-5F+Ninniku+nene+20240503173531.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 Ari Shogi and フレンズ - 習甦 20240503173529
+第34回世界コンピュータ将棋選手権,一次予選8回戦 Ari Shogi and フレンズ - 習甦 20240503173529
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_26-900-5F+arishogi+Shueso+20240503173529.csa
+第34回世界コンピュータ将棋選手権,一次予選8回戦 nshogi - 水匠 20240503173520
+第34回世界コンピュータ将棋選手権,一次予選8回戦 nshogi - 水匠 20240503173520
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L8_110-900-5F+nshogi+suisho+20240503173520.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 なり金将棋 - きふわらべ using cshogi 20240503162602
+第34回世界コンピュータ将棋選手権,一次予選7回戦 なり金将棋 - きふわらべ using cshogi 20240503162602
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_43-900-5F+narikin+kifuwarabe+20240503162602.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - はるか 20240503162601
+第34回世界コンピュータ将棋選手権,一次予選7回戦 爆裂駒拾太郎 - はるか 20240503162601
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_40-900-5F+bakuretsu+Haruka+20240503162601.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - こまあそび 20240503162559
+第34回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - こまあそび 20240503162559
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_39-900-5F+auaushogi+komaasobi+20240503162559.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 wizodds 2024 - JHBR 20240503162557
+第34回世界コンピュータ将棋選手権,一次予選7回戦 wizodds 2024 - JHBR 20240503162557
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_42-900-5F+wizodds+jhbr2000+20240503162557.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 重力場計算法 - 翡翠5号 20240503162556
+第34回世界コンピュータ将棋選手権,一次予選7回戦 重力場計算法 - 翡翠5号 20240503162556
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_45-900-5F+jyuuryoku+hisui5+20240503162556.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 手抜き 20240503162554
+第34回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 手抜き 20240503162554
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_30-900-5F+katsudon+tenuki+20240503162554.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 人生送りバント失敗 - タンゴ 20240503162552
+第34回世界コンピュータ将棋選手権,一次予選7回戦 人生送りバント失敗 - タンゴ 20240503162552
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_24-900-5F+gakkari+Tango+20240503162552.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 山田将棋 - 元気もりもりニンニクパワー 20240503162550
+第34回世界コンピュータ将棋選手権,一次予選7回戦 山田将棋 - 元気もりもりニンニクパワー 20240503162550
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_37-900-5F+yamadashogi+Ninniku+20240503162550.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 恭祐 - きのあ将棋 20240503162549
+第34回世界コンピュータ将棋選手権,一次予選7回戦 恭祐 - きのあ将棋 20240503162549
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_29-900-5F+kyousuke+qinoa+20240503162549.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 HoneyWaffle - Argo 20240503162547
+第34回世界コンピュータ将棋選手権,一次予選7回戦 HoneyWaffle - Argo 20240503162547
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_22-900-5F+HoneyWaffle+argo+20240503162547.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 nshogi - CGP 20240503162545
+第34回世界コンピュータ将棋選手権,一次予選7回戦 nshogi - CGP 20240503162545
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_32-900-5F+nshogi+CGP+20240503162545.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 習甦 - なのは 20240503162543
+第34回世界コンピュータ将棋選手権,一次予選7回戦 習甦 - なのは 20240503162543
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_27-900-5F+Shueso+Nanoha2024+20240503162543.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 ねね将棋 - 技巧 20240503162538
+第34回世界コンピュータ将棋選手権,一次予選7回戦 ねね将棋 - 技巧 20240503162538
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_23-900-5F+nene+gikou-2024+20240503162538.csa
+第34回世界コンピュータ将棋選手権,一次予選7回戦 水匠 - Ari Shogi and フレンズ 20240503162529
+第34回世界コンピュータ将棋選手権,一次予選7回戦 水匠 - Ari Shogi and フレンズ 20240503162529
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L7_26-900-5F+suisho+arishogi+20240503162529.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 なり金将棋 - あうあう将棋 20240503153158
+第34回世界コンピュータ将棋選手権,一次予選6回戦 なり金将棋 - あうあう将棋 20240503153158
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_41-900-5F+narikin+auaushogi+20240503153158.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 山田将棋 - CGP 20240503153151
+第34回世界コンピュータ将棋選手権,一次予選6回戦 山田将棋 - CGP 20240503153151
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_32-900-5F+yamadashogi+CGP+20240503153151.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 Ari Shogi and フレンズ - ねね将棋 20240503153140
+第34回世界コンピュータ将棋選手権,一次予選6回戦 Ari Shogi and フレンズ - ねね将棋 20240503153140
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_23-900-5F+arishogi+nene+20240503153140.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 Argo - 水匠 20240503153133
+第34回世界コンピュータ将棋選手権,一次予選6回戦 Argo - 水匠 20240503153133
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_110-900-5F+argo+suisho+20240503153133.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 JHBR - 重力場計算法 20240503153116
+第34回世界コンピュータ将棋選手権,一次予選6回戦 JHBR - 重力場計算法 20240503153116
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_42-900-5F+jhbr2000+jyuuryoku+20240503153116.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 はるか - きふわらべ using cshogi 20240503153113
+第34回世界コンピュータ将棋選手権,一次予選6回戦 はるか - きふわらべ using cshogi 20240503153113
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_43-900-5F+Haruka+kifuwarabe+20240503153113.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 爆裂駒拾太郎 - 手抜き 20240503153110
+第34回世界コンピュータ将棋選手権,一次予選6回戦 爆裂駒拾太郎 - 手抜き 20240503153110
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_30-900-5F+bakuretsu+tenuki+20240503153110.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 翡翠5号 - きのあ将棋 20240503153107
+第34回世界コンピュータ将棋選手権,一次予選6回戦 翡翠5号 - きのあ将棋 20240503153107
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_29-900-5F+hisui5+qinoa+20240503153107.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - wizodds 2024 20240503153105
+第34回世界コンピュータ将棋選手権,一次予選6回戦 人生送りバント失敗 - wizodds 2024 20240503153105
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_33-900-5F+gakkari+wizodds+20240503153105.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 元気もりもりニンニクパワー - こまあそび 20240503153102
+第34回世界コンピュータ将棋選手権,一次予選6回戦 元気もりもりニンニクパワー - こまあそび 20240503153102
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_37-900-5F+Ninniku+komaasobi+20240503153102.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 なのは - 恭祐 20240503153058
+第34回世界コンピュータ将棋選手権,一次予選6回戦 なのは - 恭祐 20240503153058
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_27-900-5F+Nanoha2024+kyousuke+20240503153058.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 タンゴ - 習甦 20240503153055
+第34回世界コンピュータ将棋選手権,一次予選6回戦 タンゴ - 習甦 20240503153055
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_24-900-5F+Tango+Shueso+20240503153055.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 HoneyWaffle - カツ丼将棋 20240503153049
+第34回世界コンピュータ将棋選手権,一次予選6回戦 HoneyWaffle - カツ丼将棋 20240503153049
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_22-900-5F+HoneyWaffle+katsudon+20240503153049.csa
+第34回世界コンピュータ将棋選手権,一次予選6回戦 技巧 - nshogi 20240503153038
+第34回世界コンピュータ将棋選手権,一次予選6回戦 技巧 - nshogi 20240503153038
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L6_31-900-5F+gikou-2024+nshogi+20240503153038.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 きふわらべ using cshogi - JHBR 20240503144200
+第34回世界コンピュータ将棋選手権,一次予選5回戦 きふわらべ using cshogi - JHBR 20240503144200
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_42-900-5F+kifuwarabe+jhbr2000+20240503144200.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 CGP - Argo 20240503143101
+第34回世界コンピュータ将棋選手権,一次予選5回戦 CGP - Argo 20240503143101
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_32-900-5F+CGP+argo+20240503143101.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 重力場計算法 - 爆裂駒拾太郎 20240503143052
+第34回世界コンピュータ将棋選手権,一次予選5回戦 重力場計算法 - 爆裂駒拾太郎 20240503143052
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_40-900-5F+jyuuryoku+bakuretsu+20240503143052.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - あうあう将棋 20240503143050
+第34回世界コンピュータ将棋選手権,一次予選5回戦 きのあ将棋 - あうあう将棋 20240503143050
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_29-900-5F+qinoa+auaushogi+20240503143050.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 翡翠5号 - なり金将棋 20240503143047
+第34回世界コンピュータ将棋選手権,一次予選5回戦 翡翠5号 - なり金将棋 20240503143047
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_44-900-5F+hisui5+narikin+20240503143047.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - はるか 20240503143044
+第34回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - はるか 20240503143044
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_39-900-5F+komaasobi+Haruka+20240503143044.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 山田将棋 - wizodds 2024 20240503143041
+第34回世界コンピュータ将棋選手権,一次予選5回戦 山田将棋 - wizodds 2024 20240503143041
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_38-900-5F+yamadashogi+wizodds+20240503143041.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 元気もりもりニンニクパワー - カツ丼将棋 20240503143036
+第34回世界コンピュータ将棋選手権,一次予選5回戦 元気もりもりニンニクパワー - カツ丼将棋 20240503143036
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_35-900-5F+Ninniku+katsudon+20240503143036.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 手抜き - 恭祐 20240503143033
+第34回世界コンピュータ将棋選手権,一次予選5回戦 手抜き - 恭祐 20240503143033
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_30-900-5F+tenuki+kyousuke+20240503143033.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 習甦 - 人生送りバント失敗 20240503143030
+第34回世界コンピュータ将棋選手権,一次予選5回戦 習甦 - 人生送りバント失敗 20240503143030
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_33-900-5F+Shueso+gakkari+20240503143030.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 nshogi - HoneyWaffle 20240503143027
+第34回世界コンピュータ将棋選手権,一次予選5回戦 nshogi - HoneyWaffle 20240503143027
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_22-900-5F+nshogi+HoneyWaffle+20240503143027.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 タンゴ - なのは 20240503143024
+第34回世界コンピュータ将棋選手権,一次予選5回戦 タンゴ - なのは 20240503143024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_24-900-5F+Tango+Nanoha2024+20240503143024.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 ねね将棋 - 水匠 20240503143021
+第34回世界コンピュータ将棋選手権,一次予選5回戦 ねね将棋 - 水匠 20240503143021
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_23-900-5F+nene+suisho+20240503143021.csa
+第34回世界コンピュータ将棋選手権,一次予選5回戦 技巧 - Ari Shogi and フレンズ 20240503143016
+第34回世界コンピュータ将棋選手権,一次予選5回戦 技巧 - Ari Shogi and フレンズ 20240503143016
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L5_26-900-5F+gikou-2024+arishogi+20240503143016.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 Argo - wizodds 2024 20240503133439
+第34回世界コンピュータ将棋選手権,一次予選4回戦 Argo - wizodds 2024 20240503133439
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_132-900-5F+argo+wizodds+20240503133439.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 なり金将棋 - 技巧 20240503133227
+第34回世界コンピュータ将棋選手権,一次予選4回戦 なり金将棋 - 技巧 20240503133227
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_31-900-5F+narikin+gikou-2024+20240503133227.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 タンゴ - 翡翠5号 20240503133116
+第34回世界コンピュータ将棋選手権,一次予選4回戦 タンゴ - 翡翠5号 20240503133116
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_24-900-5F+Tango+hisui5+20240503133116.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 こまあそび - JHBR 20240503133104
+第34回世界コンピュータ将棋選手権,一次予選4回戦 こまあそび - JHBR 20240503133104
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_39-900-5F+komaasobi+jhbr2000+20240503133104.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - きふわらべ using cshogi 20240503133102
+第34回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - きふわらべ using cshogi 20240503133102
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_29-900-5F+qinoa+kifuwarabe+20240503133102.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 はるか - 手抜き 20240503133059
+第34回世界コンピュータ将棋選手権,一次予選4回戦 はるか - 手抜き 20240503133059
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_30-900-5F+Haruka+tenuki+20240503133059.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - 重力場計算法 20240503133055
+第34回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - 重力場計算法 20240503133055
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_35-900-5F+katsudon+jyuuryoku+20240503133055.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 爆裂駒拾太郎 - 山田将棋 20240503133053
+第34回世界コンピュータ将棋選手権,一次予選4回戦 爆裂駒拾太郎 - 山田将棋 20240503133053
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_38-900-5F+bakuretsu+yamadashogi+20240503133053.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 あうあう将棋 - 人生送りバント失敗 20240503133050
+第34回世界コンピュータ将棋選手権,一次予選4回戦 あうあう将棋 - 人生送りバント失敗 20240503133050
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_33-900-5F+auaushogi+gakkari+20240503133050.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 恭祐 - HoneyWaffle 20240503133042
+第34回世界コンピュータ将棋選手権,一次予選4回戦 恭祐 - HoneyWaffle 20240503133042
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_22-900-5F+kyousuke+HoneyWaffle+20240503133042.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 習甦 - nshogi 20240503133039
+第34回世界コンピュータ将棋選手権,一次予選4回戦 習甦 - nshogi 20240503133039
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_125-900-5F+Shueso+nshogi+20240503133039.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 なのは - ねね将棋 20240503133034
+第34回世界コンピュータ将棋選手権,一次予選4回戦 なのは - ねね将棋 20240503133034
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_23-900-5F+Nanoha2024+nene+20240503133034.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 Ari Shogi and フレンズ - CGP 20240503133031
+第34回世界コンピュータ将棋選手権,一次予選4回戦 Ari Shogi and フレンズ - CGP 20240503133031
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_26-900-5F+arishogi+CGP+20240503133031.csa
+第34回世界コンピュータ将棋選手権,一次予選4回戦 元気もりもりニンニクパワー - 水匠 20240503133024
+第34回世界コンピュータ将棋選手権,一次予選4回戦 元気もりもりニンニクパワー - 水匠 20240503133024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L4_37-900-5F+Ninniku+suisho+20240503133024.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 きのあ将棋 - nshogi 20240503122311
+第34回世界コンピュータ将棋選手権,一次予選3回戦 きのあ将棋 - nshogi 20240503122311
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_29_2-900-5F+qinoa+nshogi+20240503122311.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 水匠 - HoneyWaffle 20240503121911
+第34回世界コンピュータ将棋選手権,一次予選3回戦 水匠 - HoneyWaffle 20240503121911
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_22_22_2-900-5F+suisho+HoneyWaffle+20240503121911.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 技巧 - 翡翠5号 20240503121330
+第34回世界コンピュータ将棋選手権,一次予選3回戦 技巧 - 翡翠5号 20240503121330
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_31-900-5F+gikou-2024+hisui5+20240503121330.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - なのは 20240503120930
+第34回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - なのは 20240503120930
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_27-900-5F+bakuretsu+Nanoha2024+20240503120930.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - CGP 20240503120825
+第34回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - CGP 20240503120825
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_32-900-5F+katsudon+CGP+20240503120825.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 習甦 20240503120748
+第34回世界コンピュータ将棋選手権,一次予選3回戦 山田将棋 - 習甦 20240503120748
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_38-900-5F+yamadashogi+Shueso+20240503120748.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 人生送りバント失敗 - 元気もりもりニンニクパワー 20240503120513
+第34回世界コンピュータ将棋選手権,一次予選3回戦 人生送りバント失敗 - 元気もりもりニンニクパワー 20240503120513
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_33-900-5F+gakkari+Ninniku+20240503120513.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 はるか - タンゴ 20240503120139
+第34回世界コンピュータ将棋選手権,一次予選3回戦 はるか - タンゴ 20240503120139
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_24-900-5F+Haruka+Tango+20240503120139.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 重力場計算法 - きふわらべ using cshogi 20240503115204
+第34回世界コンピュータ将棋選手権,一次予選3回戦 重力場計算法 - きふわらべ using cshogi 20240503115204
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_43-900-5F+jyuuryoku+kifuwarabe+20240503115204.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 手抜き - あうあう将棋 20240503115156
+第34回世界コンピュータ将棋選手権,一次予選3回戦 手抜き - あうあう将棋 20240503115156
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_30-900-5F+tenuki+auaushogi+20240503115156.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 JHBR - なり金将棋 20240503115135
+第34回世界コンピュータ将棋選手権,一次予選3回戦 JHBR - なり金将棋 20240503115135
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_42-900-5F+jhbr2000+narikin+20240503115135.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 wizodds 2024 - こまあそび 20240503115115
+第34回世界コンピュータ将棋選手権,一次予選3回戦 wizodds 2024 - こまあそび 20240503115115
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_39-900-5F+wizodds+komaasobi+20240503115115.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 Ari Shogi and フレンズ - Argo 20240503115037
+第34回世界コンピュータ将棋選手権,一次予選3回戦 Ari Shogi and フレンズ - Argo 20240503115037
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_26-900-5F+arishogi+argo+20240503115037.csa
+第34回世界コンピュータ将棋選手権,一次予選3回戦 ねね将棋 - 恭祐 20240503115030
+第34回世界コンピュータ将棋選手権,一次予選3回戦 ねね将棋 - 恭祐 20240503115030
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L3_23-900-5F+nene+kyousuke+20240503115030.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 水匠 - 習甦 20240503112727
+第34回世界コンピュータ将棋選手権,一次予選2回戦 水匠 - 習甦 20240503112727
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_110-900-5F+suisho+Shueso+20240503112727.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 きふわらべ using cshogi - nshogi 20240503112648
+第34回世界コンピュータ将棋選手権,一次予選2回戦 きふわらべ using cshogi - nshogi 20240503112648
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_43-900-5F+kifuwarabe+nshogi+20240503112648.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 技巧 20240503112522
+第34回世界コンピュータ将棋選手権,一次予選2回戦 手抜き - 技巧 20240503112522
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_30-900-5F+tenuki+gikou-2024+20240503112522.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 カツ丼将棋 - Ari Shogi and フレンズ 20240503112414
+第34回世界コンピュータ将棋選手権,一次予選2回戦 カツ丼将棋 - Ari Shogi and フレンズ 20240503112414
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_26-900-5F+katsudon+arishogi+20240503112414.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 タンゴ - 元気もりもりニンニクパワー 20240503112316
+第34回世界コンピュータ将棋選手権,一次予選2回戦 タンゴ - 元気もりもりニンニクパワー 20240503112316
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_24-900-5F+Tango+Ninniku+20240503112316.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 JHBR - 恭祐 20240503112140
+第34回世界コンピュータ将棋選手権,一次予選2回戦 JHBR - 恭祐 20240503112140
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_42-900-5F+jhbr2000+kyousuke+20240503112140.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 翡翠5号 - 爆裂駒拾太郎 20240503112051
+第34回世界コンピュータ将棋選手権,一次予選2回戦 翡翠5号 - 爆裂駒拾太郎 20240503112051
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_40-900-5F+hisui5+bakuretsu+20240503112051.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - CGP 20240503111952
+第34回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - CGP 20240503111952
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_29-900-5F+qinoa+CGP+20240503111952.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 重力場計算法 - Argo 20240503111007
+第34回世界コンピュータ将棋選手権,一次予選2回戦 重力場計算法 - Argo 20240503111007
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_45-900-5F+jyuuryoku+argo+20240503111007.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 wizodds 2024 - なり金将棋 20240503110958
+第34回世界コンピュータ将棋選手権,一次予選2回戦 wizodds 2024 - なり金将棋 20240503110958
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_44-900-5F+wizodds+narikin+20240503110958.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - はるか 20240503110940
+第34回世界コンピュータ将棋選手権,一次予選2回戦 あうあう将棋 - はるか 20240503110940
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_41-900-5F+auaushogi+Haruka+20240503110940.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 人生送りバント失敗 - なのは 20240503110833
+第34回世界コンピュータ将棋選手権,一次予選2回戦 人生送りバント失敗 - なのは 20240503110833
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_27-900-5F+gakkari+Nanoha2024+20240503110833.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - 山田将棋 20240503110817
+第34回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - 山田将棋 20240503110817
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_23-900-5F+nene+yamadashogi+20240503110817.csa
+第34回世界コンピュータ将棋選手権,一次予選2回戦 HoneyWaffle - こまあそび 20240503110811
+第34回世界コンピュータ将棋選手権,一次予選2回戦 HoneyWaffle - こまあそび 20240503110811
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L2_22-900-5F+HoneyWaffle+komaasobi+20240503110811.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 HoneyWaffle - 翡翠5号 20240503104109
+第34回世界コンピュータ将棋選手権,一次予選1回戦 HoneyWaffle - 翡翠5号 20240503104109
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_22-900-5F+HoneyWaffle+hisui5+20240503104109.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 はるか - ねね将棋 20240503104108
+第34回世界コンピュータ将棋選手権,一次予選1回戦 はるか - ねね将棋 20240503104108
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_23-900-5F+Haruka+nene+20240503104108.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 恭祐 - タンゴ 20240503104106
+第34回世界コンピュータ将棋選手権,一次予選1回戦 恭祐 - タンゴ 20240503104106
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_24-900-5F+kyousuke+Tango+20240503104106.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - 爆裂駒拾太郎 20240503104045
+第34回世界コンピュータ将棋選手権,一次予選1回戦 こまあそび - 爆裂駒拾太郎 20240503104045
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_39-900-5F+komaasobi+bakuretsu+20240503104045.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 あうあう将棋 - 山田将棋 20240503104043
+第34回世界コンピュータ将棋選手権,一次予選1回戦 あうあう将棋 - 山田将棋 20240503104043
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_38-900-5F+auaushogi+yamadashogi+20240503104043.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 元気もりもりニンニクパワー - JHBR 20240503104041
+第34回世界コンピュータ将棋選手権,一次予選1回戦 元気もりもりニンニクパワー - JHBR 20240503104041
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_37-900-5F+Ninniku+jhbr2000+20240503104041.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 きふわらべ using cshogi - カツ丼将棋 20240503104039
+第34回世界コンピュータ将棋選手権,一次予選1回戦 きふわらべ using cshogi - カツ丼将棋 20240503104039
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_35-900-5F+kifuwarabe+katsudon+20240503104039.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 なり金将棋 - 人生送りバント失敗 20240503104037
+第34回世界コンピュータ将棋選手権,一次予選1回戦 なり金将棋 - 人生送りバント失敗 20240503104037
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_33-900-5F+narikin+gakkari+20240503104037.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 CGP - 重力場計算法 20240503104035
+第34回世界コンピュータ将棋選手権,一次予選1回戦 CGP - 重力場計算法 20240503104035
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_32-900-5F+CGP+jyuuryoku+20240503104035.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 水匠 - 技巧 20240503104033
+第34回世界コンピュータ将棋選手権,一次予選1回戦 水匠 - 技巧 20240503104033
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_31-900-5F+suisho+gikou-2024+20240503104033.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 習甦 - 手抜き 20240503104031
+第34回世界コンピュータ将棋選手権,一次予選1回戦 習甦 - 手抜き 20240503104031
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_30-900-5F+Shueso+tenuki+20240503104031.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 Argo - きのあ将棋 20240503104029
+第34回世界コンピュータ将棋選手権,一次予選1回戦 Argo - きのあ将棋 20240503104029
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_29-900-5F+argo+qinoa+20240503104029.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 なのは - wizodds 2024 20240503104027
+第34回世界コンピュータ将棋選手権,一次予選1回戦 なのは - wizodds 2024 20240503104027
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_27-900-5F+Nanoha2024+wizodds+20240503104027.csa
+第34回世界コンピュータ将棋選手権,一次予選1回戦 nshogi - Ari Shogi and フレンズ 20240503104024
+第34回世界コンピュータ将棋選手権,一次予選1回戦 nshogi - Ari Shogi and フレンズ 20240503104024
+http://live4.computer-shogi.org/wcsc34/kifu/WCSC34+L1_26-900-5F+nshogi+arishogi+20240503104024.csa

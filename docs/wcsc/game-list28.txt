@@ -1,0 +1,872 @@
+V1
+#sub:第28回世界コンピュータ将棋選手権
+第28回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん2 - 名人コブラ
+第28回世界コンピュータ将棋選手権,決勝 7回戦 大合神クジラちゃん2 - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F7_DGK_MCB.csa
+第28回世界コンピュータ将棋選手権,決勝 7回戦 Apery - PAL
+第28回世界コンピュータ将棋選手権,決勝 7回戦 Apery - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F7_APR_PAL.csa
+第28回世界コンピュータ将棋選手権,決勝 7回戦 the end of genesis T.N.K.evolution turbo type D - Hefeweizen
+第28回世界コンピュータ将棋選手権,決勝 7回戦 the end of genesis T.N.K.evolution turbo type D - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F7_TNK_HFW.csa
+第28回世界コンピュータ将棋選手権,決勝 7回戦 妖怪惑星Qhapaq - HoneyWaffle
+第28回世界コンピュータ将棋選手権,決勝 7回戦 妖怪惑星Qhapaq - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F7_QHA_HNW.csa
+第28回世界コンピュータ将棋選手権,決勝 6回戦 PAL - Hefeweizen
+第28回世界コンピュータ将棋選手権,決勝 6回戦 PAL - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F6_PAL_HFW.csa
+第28回世界コンピュータ将棋選手権,決勝 6回戦 Apery - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,決勝 6回戦 Apery - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F6_APR_TNK.csa
+第28回世界コンピュータ将棋選手権,決勝 6回戦 HoneyWaffle - 名人コブラ
+第28回世界コンピュータ将棋選手権,決勝 6回戦 HoneyWaffle - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F6_HNW_MCB.csa
+第28回世界コンピュータ将棋選手権,決勝 6回戦 妖怪惑星Qhapaq - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,決勝 6回戦 妖怪惑星Qhapaq - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F6_QHA_DGK.csa
+第28回世界コンピュータ将棋選手権,決勝 5回戦 the end of genesis T.N.K.evolution turbo type D - PAL
+第28回世界コンピュータ将棋選手権,決勝 5回戦 the end of genesis T.N.K.evolution turbo type D - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F5_TNK_PAL.csa
+第28回世界コンピュータ将棋選手権,決勝 5回戦 名人コブラ - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,決勝 5回戦 名人コブラ - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F5_MCB_QHA.csa
+第28回世界コンピュータ将棋選手権,決勝 5回戦 大合神クジラちゃん2 - HoneyWaffle
+第28回世界コンピュータ将棋選手権,決勝 5回戦 大合神クジラちゃん2 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F5_DGK_HNW.csa
+第28回世界コンピュータ将棋選手権,決勝 5回戦 Hefeweizen - Apery
+第28回世界コンピュータ将棋選手権,決勝 5回戦 Hefeweizen - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F5_HFW_APR.csa
+第28回世界コンピュータ将棋選手権,決勝 4回戦 大合神クジラちゃん2 - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,決勝 4回戦 大合神クジラちゃん2 - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F4_DGK_TNK.csa
+第28回世界コンピュータ将棋選手権,決勝 4回戦 HoneyWaffle - PAL
+第28回世界コンピュータ将棋選手権,決勝 4回戦 HoneyWaffle - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F4_HNW_PAL.csa
+第28回世界コンピュータ将棋選手権,決勝 4回戦 名人コブラ - Hefeweizen
+第28回世界コンピュータ将棋選手権,決勝 4回戦 名人コブラ - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F4_MCB_HFW.csa
+第28回世界コンピュータ将棋選手権,決勝 4回戦 妖怪惑星Qhapaq - Apery
+第28回世界コンピュータ将棋選手権,決勝 4回戦 妖怪惑星Qhapaq - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_F4_QHA_APR.csa
+第28回世界コンピュータ将棋選手権,決勝 3回戦 Apery - HoneyWaffle
+第28回世界コンピュータ将棋選手権,決勝 3回戦 Apery - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F3_APR_HNW.csa
+第28回世界コンピュータ将棋選手権,決勝 3回戦 the end of genesis T.N.K.evolution turbo type D - 名人コブラ
+第28回世界コンピュータ将棋選手権,決勝 3回戦 the end of genesis T.N.K.evolution turbo type D - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F3_TNK_MCB_2.csa
+第28回世界コンピュータ将棋選手権,決勝 3回戦 PAL - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,決勝 3回戦 PAL - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F3_PAL_QHA.csa
+第28回世界コンピュータ将棋選手権,決勝 3回戦 Hefeweizen - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,決勝 3回戦 Hefeweizen - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F3_HFW_DGK.csa
+第28回世界コンピュータ将棋選手権,決勝 2回戦 妖怪惑星Qhapaq - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,決勝 2回戦 妖怪惑星Qhapaq - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F2_QHA_TNK.csa
+第28回世界コンピュータ将棋選手権,決勝 2回戦 HoneyWaffle - Hefeweizen
+第28回世界コンピュータ将棋選手権,決勝 2回戦 HoneyWaffle - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F2_HNW_HFW.csa
+第28回世界コンピュータ将棋選手権,決勝 2回戦 大合神クジラちゃん2 - Apery
+第28回世界コンピュータ将棋選手権,決勝 2回戦 大合神クジラちゃん2 - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F2_DGK_APR.csa
+第28回世界コンピュータ将棋選手権,決勝 2回戦 名人コブラ - PAL
+第28回世界コンピュータ将棋選手権,決勝 2回戦 名人コブラ - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F2_MCB_PAL.csa
+第28回世界コンピュータ将棋選手権,決勝 1回戦 Hefeweizen - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,決勝 1回戦 Hefeweizen - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F1_HFW_QHA.csa
+第28回世界コンピュータ将棋選手権,決勝 1回戦 Apery - 名人コブラ
+第28回世界コンピュータ将棋選手権,決勝 1回戦 Apery - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F1_APR_MCB.csa
+第28回世界コンピュータ将棋選手権,決勝 1回戦 the end of genesis T.N.K.evolution turbo type D - HoneyWaffle
+第28回世界コンピュータ将棋選手権,決勝 1回戦 the end of genesis T.N.K.evolution turbo type D - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F1_TNK_HNW.csa
+第28回世界コンピュータ将棋選手権,決勝 1回戦 PAL - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,決勝 1回戦 PAL - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC_F1_PAL_DGK.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - 名人コブラ
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 Apery - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_APR_MCB.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 たこっと - Novice
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 たこっと - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_TKT_NVC.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - 習甦
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 NineDayFever - 習甦
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_NDF_SHS.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 GPS将棋 - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 GPS将棋 - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_GPS_ACI.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - S.S.E.
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 おから饅頭 - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_OKR_SSE.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 Hefeweizen - PAL
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 Hefeweizen - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_HFW_PAL.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 読み太 - スーパーうさぴょん2
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 読み太 - スーパーうさぴょん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_YMT_USA.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 HoneyWaffle - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_HNW_TNK.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - なのは
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 elmo - なのは
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_ELM_NAN.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 大合神クジラちゃん2 - nozomi
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 大合神クジラちゃん2 - nozomi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_DGK_NZM.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 大将軍 - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_TSG_QHA.csa
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 dlshogi - W@ndre
+第28回世界コンピュータ将棋選手権,二次予選 9回戦 dlshogi - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U9_DLS_WND.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 HoneyWaffle - elmo
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 HoneyWaffle - elmo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_HNW_ELM_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - Hefeweizen
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 名人コブラ - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_MCB_HFW.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - NineDayFever
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 なのは - NineDayFever
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_NAN_NDF.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - Apery
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 Novice - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_NVC_APR.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 S.S.E. - 大将軍
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 S.S.E. - 大将軍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_SSE_TSG.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 W@ndre - たこっと
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 W@ndre - たこっと
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_WND_TKT.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 妖怪惑星Qhapaq - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 妖怪惑星Qhapaq - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_QHA_TNK.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 スーパーうさぴょん2 - nozomi
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 スーパーうさぴょん2 - nozomi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_USA_NZM.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 PAL - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_PAL_DGK.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 GPS将棋 - 読み太
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 GPS将棋 - 読み太
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_GPS_YMT.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 ArgoCorse_IcSyo - おから饅頭
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 ArgoCorse_IcSyo - おから饅頭
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_ACI_OKR.csa
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 dlshogi - 習甦
+第28回世界コンピュータ将棋選手権,二次予選 8回戦 dlshogi - 習甦
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U8_DLS_SHS.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Hefeweizen - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Hefeweizen - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_HFW_TNK.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Novice - なのは
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Novice - なのは
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_NVC_NAN.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん2 - 大将軍
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 大合神クジラちゃん2 - 大将軍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_DGK_TSG.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 PAL - スーパーうさぴょん2
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 PAL - スーパーうさぴょん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_PAL_USA.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - NineDayFever
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 Apery - NineDayFever
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_APR_NDF.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 たこっと - HoneyWaffle
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 たこっと - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_TKT_HNW.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - S.S.E.
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 習甦 - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_SHS_SSE.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 おから饅頭 - W@ndre
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 おから饅頭 - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_OKR_WND.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 読み太 - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 読み太 - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_YMT_ACI.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi - GPS将棋
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 dlshogi - GPS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_DLS_GPS.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - elmo
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 nozomi - elmo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_NZM_ELM_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 妖怪惑星Qhapaq - 名人コブラ
+第28回世界コンピュータ将棋選手権,二次予選 7回戦 妖怪惑星Qhapaq - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U7_QHA_MCB.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 大合神クジラちゃん2 - 名人コブラ
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 大合神クジラちゃん2 - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_DGK_MCB.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 elmo - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 elmo - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_ELM_QHA_3.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 スーパーうさぴょん2 - たこっと
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 スーパーうさぴょん2 - たこっと
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_USA_TKT_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - 読み太
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 おから饅頭 - 読み太
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_OKR_YMT.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 W@ndre - NineDayFever
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 W@ndre - NineDayFever
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_WND_NDF.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 Novice - S.S.E.
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 Novice - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_NVC_SSE.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - Apery
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 大将軍 - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_TSG_APR.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 the end of genesis T.N.K.evolution turbo type D - PAL
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 the end of genesis T.N.K.evolution turbo type D - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_TNK_PAL.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 Hefeweizen - nozomi
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 Hefeweizen - nozomi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_HFW_NZM.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - GPS将棋
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 習甦 - GPS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_SHS_GPS.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 ArgoCorse_IcSyo - HoneyWaffle
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 ArgoCorse_IcSyo - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_ACI_HNW.csa
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - dlshogi
+第28回世界コンピュータ将棋選手権,二次予選 6回戦 なのは - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U6_NAN_DLS.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - W@ndre
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 習甦 - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_SHS_WND.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 elmo - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_ELM_DGK_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 大将軍 - HoneyWaffle
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 大将軍 - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_TSG_HNW.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - nozomi
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 PAL - nozomi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_PAL_NZM.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - NineDayFever
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 GPS将棋 - NineDayFever
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_GPS_NDF.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - スーパーうさぴょん2
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 Apery - スーパーうさぴょん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_APR_USA.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 ArgoCorse_IcSyo - Hefeweizen
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 ArgoCorse_IcSyo - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_ACI_HFW_3.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 読み太 - たこっと
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 読み太 - たこっと
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_YMT_TKT.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 the end of genesis T.N.K.evolution turbo type D - 名人コブラ
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 the end of genesis T.N.K.evolution turbo type D - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_TNK_MCB.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 Novice - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_NVC_QHA.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - おから饅頭
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 なのは - おから饅頭
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_NAN_OKR_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 S.S.E. - dlshogi
+第28回世界コンピュータ将棋選手権,二次予選 5回戦 S.S.E. - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U5_SSE_DLS.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 Hefeweizen - Apery
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 Hefeweizen - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_HFW_APR.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - 大将軍
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 nozomi - 大将軍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_NZM_TSG.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 S.S.E. - なのは
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 S.S.E. - なのは
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_SSE_NAN.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 HoneyWaffle - NineDayFever
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 HoneyWaffle - NineDayFever
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_HNW_NDF.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 the end of genesis T.N.K.evolution turbo type D - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 the end of genesis T.N.K.evolution turbo type D - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_TNK_DGK.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - スーパーうさぴょん2
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 名人コブラ - スーパーうさぴょん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_MCB_USA.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 PAL - 読み太
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 PAL - 読み太
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_PAL_YMT.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - 習甦
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 Novice - 習甦
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_NVC_SHS.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 W@ndre - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 W@ndre - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_WND_ACI.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi - おから饅頭
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 dlshogi - おから饅頭
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_DLS_OKR.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 GPS将棋 - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_GPS_QHA.csa
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - elmo
+第28回世界コンピュータ将棋選手権,二次予選 4回戦 たこっと - elmo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U4_TKT_ELM.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 名人コブラ - elmo
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 名人コブラ - elmo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_MCB_ELM_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - PAL
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 大将軍 - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_TSG_PAL.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 スーパーうさぴょん2 - S.S.E.
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 スーパーうさぴょん2 - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_USA_SSE.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 読み太 - なのは
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 読み太 - なのは
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_YMT_NAN.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 HoneyWaffle - W@ndre
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 HoneyWaffle - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_HNW_WND.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 妖怪惑星Qhapaq - Hefeweizen
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 妖怪惑星Qhapaq - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_QHA_HFW.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 NineDayFever - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_NDF_ACI.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 大合神クジラちゃん2 - たこっと
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 大合神クジラちゃん2 - たこっと
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_DGK_TKT.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - GPS将棋
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 Apery - GPS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_APR_GPS.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - 習甦
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 おから饅頭 - 習甦
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_OKR_SHS.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 nozomi - dlshogi
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 nozomi - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_NZM_DLS.csa
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 the end of genesis T.N.K.evolution turbo type D - Novice
+第28回世界コンピュータ将棋選手権,二次予選 3回戦 the end of genesis T.N.K.evolution turbo type D - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U3_TNK_NVC.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - PAL
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 名人コブラ - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_MCB_PAL.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 妖怪惑星Qhapaq - HoneyWaffle
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 妖怪惑星Qhapaq - HoneyWaffle
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_QHA_HNW.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 大将軍
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 NineDayFever - 大将軍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_NDF_TSG.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 ArgoCorse_IcSyo - 習甦
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 ArgoCorse_IcSyo - 習甦
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_ACI_SHS.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - nozomi
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 読み太 - nozomi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_YMT_NZM.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - S.S.E.
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 たこっと - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_TKT_SSE.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 Hefeweizen - Novice
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 Hefeweizen - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_HFW_NVC.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - 大合神クジラちゃん2
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 なのは - 大合神クジラちゃん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_NAN_DGK.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 Apery - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_APR_TNK.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 W@ndre - GPS将棋
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 W@ndre - GPS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_WND_GPS_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 dlshogi - スーパーうさぴょん2
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 dlshogi - スーパーうさぴょん2
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_DLS_USA.csa
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 おから饅頭 - elmo
+第28回世界コンピュータ将棋選手権,二次予選 2回戦 おから饅頭 - elmo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U2_OKR_ELM_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - Hefeweizen
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 大将軍 - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_TSG_HFW.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - 名人コブラ
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 HoneyWaffle - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_HNW_MCB.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - たこっと
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 nozomi - たこっと
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_NZM_TKT.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - Apery
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 習甦 - Apery
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_SHS_APR.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - W@ndre
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 elmo - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_ELM_WND_2.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 PAL - 妖怪惑星Qhapaq
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 PAL - 妖怪惑星Qhapaq
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_PAL_QHA.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 スーパーうさぴょん2 - なのは
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 スーパーうさぴょん2 - なのは
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_USA_NAN.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - Novice
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 NineDayFever - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_NDF_NVC.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 ArgoCorse_IcSyo - the end of genesis T.N.K.evolution turbo type D
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 ArgoCorse_IcSyo - the end of genesis T.N.K.evolution turbo type D
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_ACI_TNK.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 GPS将棋 - おから饅頭
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 GPS将棋 - おから饅頭
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_GPS_OKR.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 S.S.E. - 読み太
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 S.S.E. - 読み太
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_SSE_YMT.csa
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん2 - dlshogi
+第28回世界コンピュータ将棋選手権,二次予選 1回戦 大合神クジラちゃん2 - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_U1_DGK_DLS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 Novice - ツツカナ
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 Novice - ツツカナ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_NVC_TTK.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 悲劇的 with Zero - 芝浦将棋Softmax
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 悲劇的 with Zero - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_HWZ_SSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 S.S.E. - W@ndre
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 S.S.E. - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_SSE_WND.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 オッズの魔法使い - まったりゆうちゃん
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 オッズの魔法使い - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_WOD_YUU.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 臥龍 - broaden
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 臥龍 - broaden
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_GAR_BRO.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ArgoCorse_IcSyo - dlshogi
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ArgoCorse_IcSyo - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_ACI_DLS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 CGP - TMOQ
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 CGP - TMOQ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_CGP_TMO.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 カツ丼将棋 - 手抜き
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 カツ丼将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_KTD_TEN.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 きのあ将棋 - Crazy Shogi
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 きのあ将棋 - Crazy Shogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_KIN_CRZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 名人コブラ - Hefeweizen
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 名人コブラ - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_MCB_HFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - dainomaruDNNc
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ねね将棋 - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_NNS_DAI.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 PAL - ひまわり
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 PAL - ひまわり
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_PAL_HIM.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ichibinichi - 人生送りバント失敗
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 ichibinichi - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_ICB_JOS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 柿木将棋 - GA将!!!!!!!!!
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 柿木将棋 - GA将!!!!!!!!!
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_KAK_GAS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - こまあそび
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 山田将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_YAM_KMA.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 762alpha - 隠岐
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 762alpha - 隠岐
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_762_OKI.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 Girigiri - SMS将棋
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 Girigiri - SMS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_GIR_SMS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 きふわらべ - YSS Zero
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 きふわらべ - YSS Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_KFW_YSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 海底 - Windfall
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 海底 - Windfall
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_KAT_WDF.csa
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - SilverBullet
+第28回世界コンピュータ将棋選手権,一次予選 8回戦 なり金将棋 - SilverBullet
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L8_NRK_SLB.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Novice - PAL
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Novice - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_NVC_PAL.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - 山田将棋
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 芝浦将棋Softmax - 山田将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_SSS_YAM.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 オッズの魔法使い - 海底
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 オッズの魔法使い - 海底
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_WOD_KAT.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 GA将!!!!!!!!! - broaden
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 GA将!!!!!!!!! - broaden
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_GAS_BRO.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 人生送りバント失敗 - CGP
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 人生送りバント失敗 - CGP
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_JOS_CGP.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 dlshogi - きのあ将棋
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 dlshogi - きのあ将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_DLS_KIN.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 TMOQ - ひまわり
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 TMOQ - ひまわり
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_TMO_HIM.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - 762alpha
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 手抜き - 762alpha
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_TEN_762.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 ツツカナ - 悲劇的 with Zero
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 ツツカナ - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_TTK_HWZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Crazy Shogi - まったりゆうちゃん
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Crazy Shogi - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_CRZ_YUU.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 W@ndre - 名人コブラ
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 W@ndre - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_WND_MCB.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 柿木将棋 - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_KAK_ACI.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Hefeweizen - S.S.E.
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 Hefeweizen - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_HFW_SSE.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 SMS将棋 - こまあそび
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 SMS将棋 - こまあそび
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_SMS_KMA.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - YSS Zero
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 カツ丼将棋 - YSS Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_KTD_YSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - ichibinichi
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 ねね将棋 - ichibinichi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_NNS_ICB.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 dainomaruDNNc - 隠岐
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 dainomaruDNNc - 隠岐
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_DAI_OKI.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Girigiri
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 臥龍 - Girigiri
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_GAR_GIR.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - きふわらべ
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 なり金将棋 - きふわらべ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_NRK_KFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 SilverBullet - Windfall
+第28回世界コンピュータ将棋選手権,一次予選 7回戦 SilverBullet - Windfall
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L7_SLB_WDF.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 名人コブラ - PAL
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 名人コブラ - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_MCB_PAL.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - Novice
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 CGP - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_CGP_NVC.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - Crazy Shogi
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 カツ丼将棋 - Crazy Shogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_KTD_CRZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - 山田将棋
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 きのあ将棋 - 山田将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_KIN_YAM_2.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - 臥龍
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 まったりゆうちゃん - 臥龍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_YUU_GAR.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - 人生送りバント失敗
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ひまわり - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_HIM_JOS.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 broaden - 柿木将棋
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 broaden - 柿木将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_BRO_KAK.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 悲劇的 with Zero - S.S.E.
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 悲劇的 with Zero - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_HWZ_SSE.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 W@ndre - TMOQ
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 W@ndre - TMOQ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_WND_TMO.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ねね将棋 - オッズの魔法使い
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ねね将棋 - オッズの魔法使い
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_NNS_WOD.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - 762alpha
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 dainomaruDNNc - 762alpha
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_DAI_762.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 海底 - ichibinichi
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 海底 - ichibinichi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_KAT_ICB.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ArgoCorse_IcSyo - 手抜き
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ArgoCorse_IcSyo - 手抜き
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_ACI_TEN.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ツツカナ - GA将!!!!!!!!!
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 ツツカナ - GA将!!!!!!!!!
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_TTK_GAS.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 dlshogi - Hefeweizen
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 dlshogi - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_DLS_HFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - 芝浦将棋Softmax
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 こまあそび - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_KMA_SSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 SMS将棋 - SilverBullet
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 SMS将棋 - SilverBullet
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_SMS_SLB.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 Girigiri - きふわらべ
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 Girigiri - きふわらべ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_GIR_KFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 YSS Zero - Windfall
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 YSS Zero - Windfall
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_YSS_WDF.csa
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - 隠岐
+第28回世界コンピュータ将棋選手権,一次予選 6回戦 なり金将棋 - 隠岐
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L6_NRK_OKI.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 柿木将棋 - 悲劇的 with Zero
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 柿木将棋 - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_KAK_HWZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - Novice
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 名人コブラ - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_MCB_NVC.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 W@ndre - PAL
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 W@ndre - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_WND_PAL.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 GA将!!!!!!!!! - まったりゆうちゃん
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 GA将!!!!!!!!! - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_GAS_YUU.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Crazy Shogi - ツツカナ
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Crazy Shogi - ツツカナ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_CRZ_TTK_2.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 dlshogi - ひまわり
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 dlshogi - ひまわり
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_DLS_HIM.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Softmax - CGP
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 芝浦将棋Softmax - CGP
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_SSS_CGP.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 broaden - ichibinichi
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 broaden - ichibinichi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_BRO_ICB.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - dainomaruDNNc
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 きのあ将棋 - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_KIN_DAI.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - 海底
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 なり金将棋 - 海底
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_NRK_KAT_2.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - オッズの魔法使い
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 山田将棋 - オッズの魔法使い
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_YAM_WOD.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Hefeweizen - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Hefeweizen - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_HFW_ACI.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - TMOQ
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 人生送りバント失敗 - TMOQ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_JOS_TMO.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - ねね将棋
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 隠岐 - ねね将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_OKI_NNS.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 S.S.E. - 臥龍
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 S.S.E. - 臥龍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_SSE_GAR.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 手抜き - SMS将棋
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 手抜き - SMS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_TEN_SMS.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Windfall - Girigiri
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 Windfall - Girigiri
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_WDF_GIR.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 YSS Zero - こまあそび
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 YSS Zero - こまあそび
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_YSS_KMA.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - 762alpha
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 SilverBullet - 762alpha
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_SLB_762.csa
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - カツ丼将棋
+第28回世界コンピュータ将棋選手権,一次予選 5回戦 きふわらべ - カツ丼将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L5_KFW_KTD.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 山田将棋 - 手抜き
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 山田将棋 - 手抜き
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_YAM_TEN.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 762alpha - オッズの魔法使い
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 762alpha - オッズの魔法使い
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_762_WOD.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ツツカナ - ねね将棋
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ツツカナ - ねね将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_TTK_NNS.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 S.S.E. - 名人コブラ
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 S.S.E. - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_SSE_MCB.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 dlshogi - 芝浦将棋Softmax
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 dlshogi - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_DLS_SSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Novice - broaden
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Novice - broaden
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_NVC_BRO.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 GA将!!!!!!!!! - YSS Zero
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 GA将!!!!!!!!! - YSS Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_GAS_YSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - まったりゆうちゃん
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 TMOQ - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_TMO_YUU.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 きのあ将棋 - カツ丼将棋
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 きのあ将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_KIN_KTD.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ArgoCorse_IcSyo - Crazy Shogi
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ArgoCorse_IcSyo - Crazy Shogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_ACI_CRZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - dainomaruDNNc
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ひまわり - dainomaruDNNc
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_HIM_DAI.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 PAL - Hefeweizen
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 PAL - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_PAL_HFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 臥龍
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 こまあそび - 臥龍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_KMA_GAR.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 CGP - 隠岐
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 CGP - 隠岐
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_CGP_OKI.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - W@ndre
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 人生送りバント失敗 - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_JOS_WND.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ichibinichi - 悲劇的 with Zero
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 ichibinichi - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_ICB_HWZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 柿木将棋 - SilverBullet
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 柿木将棋 - SilverBullet
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_KAK_SLB.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Girigiri - なり金将棋
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Girigiri - なり金将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_GIR_NRK.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - 海底
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 きふわらべ - 海底
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_KFW_KAT.csa
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Windfall - SMS将棋
+第28回世界コンピュータ将棋選手権,一次予選 4回戦 Windfall - SMS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L4_WDF_SMS.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 Crazy Shogi - CGP
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 Crazy Shogi - CGP
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_CRZ_CGP.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 ArgoCorse_IcSyo - Novice
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 ArgoCorse_IcSyo - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_ACI_NVC.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - 手抜き
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 臥龍 - 手抜き
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_GAR_TEN.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - dlshogi
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 カツ丼将棋 - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_KTD_DLS.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 TMOQ - 悲劇的 with Zero
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 TMOQ - 悲劇的 with Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_TMO_HWZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 PAL - 柿木将棋
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 PAL - 柿木将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_PAL_KAK.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Softmax - S.S.E.
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 芝浦将棋Softmax - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_SSS_SSE.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 名人コブラ - ねね将棋
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 名人コブラ - ねね将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_MCB_NNS.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 762alpha - 人生送りバント失敗
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 762alpha - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_762_JOS.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 dainomaruDNNc - broaden
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 dainomaruDNNc - broaden
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_DAI_BRO.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 まったりゆうちゃん - W@ndre
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 まったりゆうちゃん - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_YUU_WND.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 オッズの魔法使い - なり金将棋
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 オッズの魔法使い - なり金将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_WOD_NRK.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 海底 - ツツカナ
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 海底 - ツツカナ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_KAT_TTK.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 SMS将棋 - ひまわり
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 SMS将棋 - ひまわり
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_SMS_HIM.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - Windfall
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 きのあ将棋 - Windfall
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_KIN_WDF.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 YSS Zero - ichibinichi
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 YSS Zero - ichibinichi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_YSS_ICB.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 Hefeweizen - 山田将棋
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 Hefeweizen - 山田将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_HFW_YAM.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 SilverBullet - Girigiri
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 SilverBullet - Girigiri
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_SLB_GIR.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - GA将!!!!!!!!!
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 こまあそび - GA将!!!!!!!!!
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_KMA_GAS.csa
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - きふわらべ
+第28回世界コンピュータ将棋選手権,一次予選 3回戦 隠岐 - きふわらべ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L3_OKI_KFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 Crazy Shogi - YSS Zero
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 Crazy Shogi - YSS Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_CRZ_YSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - S.S.E.
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 TMOQ - S.S.E.
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_TMO_SSE.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 オッズの魔法使い - 芝浦将棋Softmax
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 オッズの魔法使い - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_WOD_SSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ArgoCorse_IcSyo - GA将!!!!!!!!!
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ArgoCorse_IcSyo - GA将!!!!!!!!!
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_ACI_GAS.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - 柿木将棋
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 手抜き - 柿木将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_TEN_KAK.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ひまわり - なり金将棋
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ひまわり - なり金将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_HIM_NRK.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 dainomaruDNNc - Novice
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 dainomaruDNNc - Novice
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_DAI_NVC.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 海底 - 名人コブラ
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 海底 - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_KAT_MCB.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - 隠岐
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 まったりゆうちゃん - 隠岐
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_YUU_OKI.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 山田将棋 - カツ丼将棋
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 山田将棋 - カツ丼将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_YAM_KTD.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ichibinichi - W@ndre
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ichibinichi - W@ndre
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_ICB_WND.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 PAL - 762alpha
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 PAL - 762alpha
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_PAL_762.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - CGP
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 きふわらべ - CGP
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_KFW_CGP.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ねね将棋 - Hefeweizen
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 ねね将棋 - Hefeweizen
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_NNS_HFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 人生送りバント失敗 - Windfall
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 人生送りバント失敗 - Windfall
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_JOS_WDF.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 broaden - Girigiri
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 broaden - Girigiri
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_BRO_GIR.csa
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 悲劇的 with Zero - SMS将棋
+第28回世界コンピュータ将棋選手権,一次予選 2回戦 悲劇的 with Zero - SMS将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L2_HWZ_SMS.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 broaden - 海底
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 broaden - 海底
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_BRO_KAT_2.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - PAL
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 CGP - PAL
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_CGP_PAL.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - YSS Zero
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 手抜き - YSS Zero
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_TEN_YSS_3.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - ArgoCorse_IcSyo
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 カツ丼将棋 - ArgoCorse_IcSyo
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_KTD_ACI.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - dlshogi
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Novice - dlshogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_NVC_DLS_1.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 S.S.E. - ひまわり
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 S.S.E. - ひまわり
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_SSE_HIM.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 ichibinichi - 臥龍
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 ichibinichi - 臥龍
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_ICB_GAR.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - 芝浦将棋Softmax
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 SMS将棋 - 芝浦将棋Softmax
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_SMS_SSS.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 GA将!!!!!!!!! - 山田将棋
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 GA将!!!!!!!!! - 山田将棋
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_GAS_YAM.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 隠岐 - 人生送りバント失敗
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 隠岐 - 人生送りバント失敗
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_OKI_JOS.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - Crazy Shogi
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 柿木将棋 - Crazy Shogi
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_KAK_CRZ.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Windfall - まったりゆうちゃん
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Windfall - まったりゆうちゃん
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_WDF_YUU.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 悲劇的 with Zero - オッズの魔法使い
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 悲劇的 with Zero - オッズの魔法使い
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_HWZ_WOD.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - TMOQ
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 なり金将棋 - TMOQ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_NRK_TMO.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 762alpha - きふわらべ
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 762alpha - きふわらべ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_762_KFW.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Girigiri - 名人コブラ
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Girigiri - 名人コブラ
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_GIR_MCB.csa
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Hefeweizen - こまあそび
+第28回世界コンピュータ将棋選手権,一次予選 1回戦 Hefeweizen - こまあそび
+http://live4.computer-shogi.org/wcsc28/kifu/WCSC28_L1_HFW_KMA.csa
