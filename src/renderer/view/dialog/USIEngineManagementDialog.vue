@@ -2,13 +2,21 @@
   <DialogFrame @cancel="cancel">
     <div class="title">{{ t.engineManagement }}</div>
     <div class="form-group">
-      <div class="engine-filter">
+      <div class="row engine-filter">
         <input
           ref="filter"
           class="filter"
           :placeholder="t.filterByEngineName"
           @input="updateFilter"
         />
+        <tag
+          v-for="tag in tags"
+          :key="tag.name"
+          class="tag"
+          :style="{ backgroundColor: tag.color }"
+        >
+          {{ tag.name }}
+        </tag>
       </div>
       <div ref="list" class="column engine-list">
         <div v-if="usiEngines.engineList.length === 0" class="engine">
@@ -159,6 +167,8 @@ const engines = computed(() =>
   }),
 );
 
+const tags = computed(() => usiEngines.value.tagList);
+
 const updateFilter = () => {
   filterWords.value = String(filter.value.value)
     .trim()
@@ -274,9 +284,10 @@ const mergeCancel = () => {
 }
 .engine-filter {
   margin: 0px 5px 5px 5px;
+  text-align: left;
 }
 .filter {
-  width: 100%;
+  width: 200px;
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;
