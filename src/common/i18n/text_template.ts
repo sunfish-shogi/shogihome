@@ -193,6 +193,7 @@ export type Texts = {
   portrait: string;
   piece: string;
   singleKanjiPiece: string;
+  singleKanjiWoodPiece: string;
   singleKanjiGothicPiece: string;
   singleKanjiDarkPiece: string;
   singleKanjiGothicDarkPiece: string;
@@ -200,8 +201,9 @@ export type Texts = {
   backgroundImage: string;
   board: string;
   pieceStand: string;
-  lightWoodyTexture: string;
-  warmWoodTexture: string;
+  woodTexture: string;
+  lightWoodyTexture: (n: number) => string;
+  warmWoodTexture: (n: number) => string;
   resin: string;
   transparent: string;
   boardOpacity: string;

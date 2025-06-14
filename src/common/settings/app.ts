@@ -23,6 +23,7 @@ export enum BackgroundImageType {
 
 export enum PieceImageType {
   HITOMOJI = "hitomoji",
+  HITOMOJI_WOOD = "hitomojiWood",
   HITOMOJI_DARK = "hitomojiDark",
   HITOMOJI_GOTHIC = "hitomojiGothic",
   HITOMOJI_GOTHIC_DARK = "hitomojiGothicDark",
@@ -36,7 +37,10 @@ export enum KingPieceType {
 
 export enum BoardImageType {
   LIGHT = "light",
+  LIGHT2 = "light2",
+  LIGHT3 = "light3",
   WARM = "warm",
+  WARM2 = "warm2",
   RESIN = "resin",
   RESIN2 = "resin2",
   RESIN3 = "resin3",
@@ -51,6 +55,7 @@ export enum BoardImageType {
 
 export enum PieceStandImageType {
   STANDARD = "standard",
+  DARK_WOOD = "dark-wood",
   GREEN = "green",
   CHERRY_BLOSSOM = "cherry-blossom",
   AUTUMN = "autumn",
@@ -317,12 +322,12 @@ export function defaultAppSettings(opt?: {
     thema: Thema.STANDARD,
     backgroundImageType: BackgroundImageType.NONE,
     boardLayoutType: BoardLayoutType.STANDARD,
-    pieceImage: PieceImageType.HITOMOJI,
+    pieceImage: PieceImageType.HITOMOJI_WOOD,
     kingPieceType: KingPieceType.GYOKU_AND_OSHO,
     deletePieceImageMargin: false,
-    boardImage: BoardImageType.RESIN2,
+    boardImage: BoardImageType.LIGHT2,
     boardGridColor: null,
-    pieceStandImage: PieceStandImageType.STANDARD,
+    pieceStandImage: PieceStandImageType.DARK_WOOD,
     promotionSelectorStyle: PromotionSelectorStyle.HORIZONTAL,
     enableTransparent: false,
     boardOpacity: 1.0,
@@ -502,6 +507,8 @@ export function validateAppSettings(settings: AppSettings): Error | undefined {
 
 export function getPieceImageURLTemplate(settings: AppSettings): string {
   switch (settings.pieceImage) {
+    case PieceImageType.HITOMOJI_WOOD:
+      return "./piece/hitomoji_wood/${piece}.png";
     case PieceImageType.HITOMOJI_DARK:
       return "./piece/hitomoji_dark/${piece}.png";
     case PieceImageType.HITOMOJI_GOTHIC:

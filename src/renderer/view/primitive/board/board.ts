@@ -14,7 +14,10 @@ import { Point } from "@/common/assets/geometry.js";
 
 const boardBackgroundColorMap = {
   [BoardImageType.LIGHT]: "rgba(0, 0, 0, 0)",
+  [BoardImageType.LIGHT2]: "rgba(0, 0, 0, 0)",
+  [BoardImageType.LIGHT3]: "rgba(0, 0, 0, 0)",
   [BoardImageType.WARM]: "rgba(0, 0, 0, 0)",
+  [BoardImageType.WARM2]: "rgba(0, 0, 0, 0)",
   [BoardImageType.RESIN]: "#d69b00",
   [BoardImageType.RESIN2]: "#efbf63",
   [BoardImageType.RESIN3]: "#ad7624",
