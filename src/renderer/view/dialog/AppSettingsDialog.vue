@@ -95,6 +95,7 @@
             :items="
               [
                 { label: t.singleKanjiPiece, value: PieceImageType.HITOMOJI },
+                { label: t.singleKanjiWoodPiece, value: PieceImageType.HITOMOJI_WOOD },
                 { label: t.singleKanjiGothicPiece, value: PieceImageType.HITOMOJI_GOTHIC },
                 { label: t.singleKanjiDarkPiece, value: PieceImageType.HITOMOJI_DARK },
                 {
@@ -133,8 +134,11 @@
             class="selector"
             :items="
               [
-                { label: t.lightWoodyTexture, value: BoardImageType.LIGHT },
-                { label: t.warmWoodTexture, value: BoardImageType.WARM },
+                { label: t.lightWoodyTexture(1), value: BoardImageType.LIGHT },
+                { label: t.lightWoodyTexture(2), value: BoardImageType.LIGHT2 },
+                { label: t.lightWoodyTexture(3), value: BoardImageType.LIGHT3 },
+                { label: t.warmWoodTexture(1), value: BoardImageType.WARM },
+                { label: t.warmWoodTexture(2), value: BoardImageType.WARM2 },
                 { label: t.resin, value: BoardImageType.RESIN },
                 { label: t.resin + '2', value: BoardImageType.RESIN2 },
                 { label: t.resin + '3', value: BoardImageType.RESIN3 },
@@ -182,6 +186,7 @@
             :items="
               [
                 { label: t.standard, value: PieceStandImageType.STANDARD },
+                { label: t.woodTexture, value: PieceStandImageType.DARK_WOOD },
                 { label: t.green, value: PieceStandImageType.GREEN },
                 { label: t.cherryBlossom, value: PieceStandImageType.CHERRY_BLOSSOM },
                 { label: t.autumn, value: PieceStandImageType.AUTUMN },

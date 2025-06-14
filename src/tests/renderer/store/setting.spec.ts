@@ -53,7 +53,7 @@ describe("store/index", () => {
 
     const store = createAppSettings();
     expect(store.thema).toBe(Thema.STANDARD);
-    expect(store.pieceImage).toBe(PieceImageType.HITOMOJI);
+    expect(store.pieceImage).toBe(PieceImageType.HITOMOJI_WOOD);
 
     const ret = store.setTemporaryUpdate({
       thema: Thema.DARK,
@@ -74,7 +74,7 @@ describe("store/index", () => {
     expect(mockAPI.cropPieceImage).toBeCalledWith("file:///test", false);
 
     store.clearTemporaryUpdate();
-    expect(store.pieceImage).toBe(PieceImageType.HITOMOJI);
+    expect(store.pieceImage).toBe(PieceImageType.HITOMOJI_WOOD);
     expect(store.pieceImageFileURL).toBeUndefined();
     expect(store.croppedPieceImageBaseURL).toBeUndefined();
   });

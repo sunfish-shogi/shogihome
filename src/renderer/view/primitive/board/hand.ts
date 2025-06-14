@@ -15,6 +15,7 @@ import { Point } from "@/common/assets/geometry.js";
 
 const pieceStandBackgroundColorMap = {
   [PieceStandImageType.STANDARD]: "#8b4513",
+  [PieceStandImageType.DARK_WOOD]: "rgba(0, 0, 0, 0)",
   [PieceStandImageType.GREEN]: "#527a52",
   [PieceStandImageType.CHERRY_BLOSSOM]: "#e8a9a9",
   [PieceStandImageType.AUTUMN]: "#792509",

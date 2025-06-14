@@ -18,6 +18,7 @@ const config = {
     "dist/icon",
     "dist/piece",
     "dist/sound",
+    "dist/stand",
     "dist/index.html",
     "dist/prompt.html",
     "dist/monitor.html",
