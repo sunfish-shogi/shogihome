@@ -8,7 +8,15 @@ import App from "@/renderer/App.vue";
 import api, { appInfo, isMobileWebApp } from "@/renderer/ipc/api.js";
 import { setup as setupIPC } from "@/renderer/ipc/setup.js";
 import { useStore } from "@/renderer/store/index.js";
-import { Chart, registerables } from "chart.js";
+import {
+  CategoryScale,
+  Chart,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  ScatterController,
+} from "chart.js";
 import { LogLevel } from "@/common/log.js";
 import { useAppSettings } from "./store/settings.js";
 import { setLanguage, t } from "@/common/i18n/index.js";
@@ -29,7 +37,7 @@ import("dayjs/locale/en");
 import("dayjs/locale/ja");
 import("dayjs/locale/zh-tw");
 dayjs.extend(relativeTime);
-Chart.register(...registerables);
+Chart.register(ScatterController, LineElement, LinearScale, PointElement, CategoryScale, Legend);
 
 setupIPC();
 
