@@ -6,7 +6,7 @@
         <div v-if="board.background.textureImagePath" :style="board.background.style">
           <img class="full" :src="board.background.textureImagePath" />
         </div>
-        <div :style="board.background.style">
+        <div class="board-background" :style="board.background.style">
           <BoardGrid class="full" :color="boardGridColor || board.background.gridColor" />
         </div>
         <div v-for="square in board.squares" :key="square.id" :style="square.backgroundStyle"></div>
@@ -20,7 +20,7 @@
 
       <!-- 先手の駒台 -->
       <div class="hand" :style="main.blackHandStyle">
-        <div :style="blackHand.backgroundStyle">
+        <div class="hand-background" :style="blackHand.backgroundStyle">
           <img v-if="blackHand.textureImagePath" class="full" :src="blackHand.textureImagePath" />
         </div>
         <div
@@ -38,7 +38,7 @@
 
       <!-- 後手の駒台 -->
       <div class="hand" :style="main.whiteHandStyle">
-        <div :style="whiteHand.backgroundStyle">
+        <div class="hand-background" :style="whiteHand.backgroundStyle">
           <img v-if="whiteHand.textureImagePath" class="full" :src="whiteHand.textureImagePath" />
         </div>
         <div
@@ -635,8 +635,14 @@ const whitePlayerTimeSeverity = computed(() => {
 .board > * {
   position: absolute;
 }
+.board-background {
+  box-shadow: 3px 3px 6px var(--shadow-color);
+}
 .hand > * {
   position: absolute;
+}
+.hand-background {
+  box-shadow: 3px 3px 6px var(--shadow-color);
 }
 .player-name {
   background-color: var(--text-bg-color);
