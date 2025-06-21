@@ -511,6 +511,20 @@ export const vi: Texts = {
   edit: "Sửa",
   addMoves: "Thêm nước đi",
   flippedBook: "反転も検索", // TODO: Translate
+  addBookMoves: "定跡手追加", // TODO: Translate
+  fromCurrentRecord: "現在の棋譜から", // TODO: Translate
+  fromFile: "ファイルから", // TODO: Translate
+  fromDirectory: "フォルダから", // TODO: Translate
+  noMoves: "指し手がありません。", // TODO: Translate
+  register: "登録", // TODO: Translate
+  update: "更新", // TODO: Translate
+  currentMove: "現在の手", // TODO: Translate
+  branchFrom: (n: number) => `${n}手目から分岐`, // TODO: Translate
+  allPlayers: "全ての対局者", // TODO: Translate
+  blackPlayerOnly: "先手のみ", // TODO: Translate
+  whitePlayerOnly: "後手のみ", // TODO: Translate
+  filterByName: "名前でフィルタ", // TODO: Translate
+  enterPartOfPlayerNameHere: "ここに対局者名の一部を入力", // TODO: Translate
   freq: "Tần suất",
   frequency: "Tần suất xuất hiện",
   new: "Mới",
