@@ -4,8 +4,8 @@
     <div class="form-group scroll">
       <div v-if="!logEnabled" class="form-group warning">
         <div class="note">
-          {{ t.someLogsDisabled }}
-          {{ t.logsRecommendedForCSAProtocol }}
+          {{ t.someLogsDisabled }}<br />
+          {{ t.logsRecommendedForCSAProtocol }}<br />
           {{ t.pleaseEnableLogsAndRestart }}
         </div>
       </div>
@@ -114,7 +114,7 @@
         </div>
         <div v-if="!isEncryptionAvailable" class="form-group warning">
           <div class="note">
-            {{ t.passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable }}
+            {{ t.passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable }}<br />
             {{ t.pleaseUncheckSaveHistoryIfNotWantSave }}
           </div>
         </div>
