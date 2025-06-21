@@ -1,19 +1,19 @@
 <template>
   <DialogFrame limited @cancel="onClose">
-    <div class="title">定跡手追加</div>
+    <div class="title">{{ t.addBookMoves }}</div>
     <div>
       <HorizontalSelector
         v-model:value="settings.sourceType"
         :items="[
-          { value: SourceType.MEMORY, label: '現在の棋譜から' },
-          { value: SourceType.FILE, label: 'ファイルから' },
-          { value: SourceType.DIRECTORY, label: 'フォルダから' },
+          { value: SourceType.MEMORY, label: t.fromCurrentRecord },
+          { value: SourceType.FILE, label: t.fromFile },
+          { value: SourceType.DIRECTORY, label: t.fromDirectory },
         ]"
       />
     </div>
     <div class="form-group scroll">
       <div v-show="settings.sourceType === 'memory' && !inMemoryList.length">
-        指し手がありません。
+        {{ t.noMoves }}
       </div>
       <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
         <tbody>
@@ -24,14 +24,18 @@
               <span v-if="move.score !== undefined">{{ t.score }} {{ move.score }}</span>
             </td>
             <td v-if="move.type === 'move'">
-              <button v-if="!move.exists" class="thin" @click="registerMove(move)">登録</button>
+              <button v-if="!move.exists" class="thin" @click="registerMove(move)">
+                {{ t.register }}
+              </button>
               <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
-                更新
+                {{ t.update }}
               </button>
             </td>
-            <td v-if="move.type === 'move'"><span v-if="move.last">(現在の手)</span></td>
+            <td v-if="move.type === 'move'">
+              <span v-if="move.last">({{ t.currentMove }})</span>
+            </td>
             <td v-if="move.type === 'branch'" class="branch" colspan="5">
-              {{ move.ply }}手目から分岐:
+              {{ t.branchFrom(move.ply) }}:
             </td>
           </tr>
         </tbody>
@@ -88,10 +92,10 @@
         <HorizontalSelector
           v-model:value="settings.playerCriteria"
           :items="[
-            { value: PlayerCriteria.ALL, label: '全ての対局者' },
-            { value: PlayerCriteria.BLACK, label: '先手のみ' },
-            { value: PlayerCriteria.WHITE, label: '後手のみ' },
-            { value: PlayerCriteria.FILTER_BY_NAME, label: '名前でフィルタ' },
+            { value: PlayerCriteria.ALL, label: t.allPlayers },
+            { value: PlayerCriteria.BLACK, label: t.blackPlayerOnly },
+            { value: PlayerCriteria.WHITE, label: t.whitePlayerOnly },
+            { value: PlayerCriteria.FILTER_BY_NAME, label: t.filterByName },
           ]"
         />
       </div>
@@ -104,12 +108,12 @@
           v-model="settings.playerName"
           class="grow"
           type="text"
-          placeholder="ここに対局者名の一部を入力"
+          :placeholder="t.enterPartOfPlayerNameHere"
         />
       </div>
     </div>
     <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
-      <button class="import" @click="importMoves">取り込む</button>
+      <button class="import" @click="importMoves">{{ t.import }}</button>
     </div>
     <div class="main-buttons">
       <button autofocus data-hotkey="Escape" @click="onClose">
