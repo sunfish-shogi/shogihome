@@ -2,13 +2,19 @@
   <DialogFrame @cancel="cancel">
     <div class="title">{{ t.engineManagement }}</div>
     <div class="form-group">
-      <div class="engine-filter">
-        <input
-          ref="filter"
-          class="filter"
-          :placeholder="t.filterByEngineName"
-          @input="updateFilter"
-        />
+      <div class="row engine-filter">
+        <input v-model.trim="filter" class="filter-words" :placeholder="t.filterByEngineName" />
+        <div class="row filter-tags">
+          <div
+            v-for="tag in tags"
+            :key="tag.name"
+            class="filter-tag"
+            :style="tag.style"
+            @click="onClickTag(tag.name)"
+          >
+            {{ tag.name }}
+          </div>
+        </div>
       </div>
       <div ref="list" class="column engine-list">
         <div v-if="usiEngines.engineList.length === 0" class="engine">
@@ -86,7 +92,7 @@ import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import { duplicateEngine, USIEngine, USIEngines, ImmutableUSIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { ref, onMounted, computed, onBeforeUnmount } from "vue";
+import { ref, onMounted, computed, onBeforeUnmount, reactive } from "vue";
 import USIEngineOptionsDialog from "@/renderer/view/dialog/USIEngineOptionsDialog.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useErrorStore } from "@/renderer/store/error";
@@ -101,12 +107,12 @@ const list = ref();
 const optionDialog = ref(null as USIEngine | null);
 const mergeDialog = ref(false);
 const usiEngines = ref(new USIEngines());
-const filter = ref();
-const filterWords = ref([] as string[]);
+const filter = ref("");
 const lastAdded = ref("");
 const addTagDialog = ref(false);
 const addTagTarget = ref("");
 const tagCandidates = ref([] as string[]);
+const selectedTags = reactive(new Set<string>([]));
 let observer: MutationObserver | null = null;
 let scrollTo = "";
 
@@ -140,31 +146,54 @@ onBeforeUnmount(() => {
   observer?.disconnect();
 });
 
-const engines = computed(() =>
-  usiEngines.value.engineList.map((engine) => {
+const engines = computed(() => {
+  const filterWords = filter.value.split(/ +/).filter((s) => s);
+  const filterTags = [...selectedTags.values()].filter((tag) =>
+    tags.value.some((t) => t.name === tag),
+  );
+  return usiEngines.value.engineList.map((engine) => {
+    const tags = engine.tags?.map((tag) => {
+      return {
+        name: tag,
+        color: usiEngines.value.getTagColor(tag),
+      };
+    });
+    const wordMatch =
+      !filterWords.length ||
+      filterString(engine.name, filterWords) ||
+      filterString(engine.defaultName, filterWords);
+    const tagMatch = !filterTags.length || filterTags.every((tag) => engine.tags?.includes(tag));
     return {
       uri: engine.uri,
       name: engine.name,
-      tags: engine.tags?.map((tag) => {
-        return {
-          name: tag,
-          color: usiEngines.value.getTagColor(tag),
-        };
-      }),
-      visible:
-        filterWords.value.length == 0 ||
-        filterString(engine.name, filterWords.value) ||
-        filterString(engine.defaultName, filterWords.value),
+      tags,
+      visible: wordMatch && tagMatch,
     };
-  }),
-);
+  });
+});
 
-const updateFilter = () => {
-  filterWords.value = String(filter.value.value)
-    .trim()
-    .split(/ +/)
-    .filter((s) => s);
-};
+const tags = computed(() => {
+  return usiEngines.value.tagList.map((tag) => {
+    const selected = selectedTags.has(tag.name);
+    const backgroundColor = selected ? tag.color : "#eee";
+    return {
+      name: tag.name,
+      style: {
+        color: selected ? "white" : "black",
+        backgroundColor,
+        borderColor: backgroundColor,
+      },
+    };
+  });
+});
+
+function onClickTag(tag: string) {
+  if (selectedTags.has(tag)) {
+    selectedTags.delete(tag);
+  } else {
+    selectedTags.add(tag);
+  }
+}
 
 const add = async () => {
   try {
@@ -268,15 +297,33 @@ const mergeCancel = () => {
 <style scoped>
 .engine-list {
   width: 740px;
-  height: calc(100vh - 250px);
+  height: calc(100vh - 280px);
   max-height: 600px;
   overflow: auto;
 }
 .engine-filter {
   margin: 0px 5px 5px 5px;
+  text-align: left;
+  align-items: center;
 }
-.filter {
-  width: 100%;
+.filter-words {
+  width: 200px;
+}
+.filter-tags {
+  width: 540px;
+  flex-wrap: wrap;
+}
+.filter-tag {
+  font-size: 0.9em;
+  margin: 2px 2px 2px 2px;
+  padding: 0px 5px 0px 5px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: 2px solid;
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 3px 0 var(--control-shadow-color);
+  user-select: none;
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;
