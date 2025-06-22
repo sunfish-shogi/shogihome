@@ -4,6 +4,7 @@ import { Player, SearchInfo } from "@/renderer/players/player.js";
 import { defaultGameSettings, GameSettings, JishogiRule } from "@/common/settings/game.js";
 import {
   Color,
+  detectRecordFormat,
   formatMove,
   JishogiDeclarationResult,
   JishogiDeclarationRule,
@@ -135,6 +136,16 @@ export class StartPositionList {
     const maxPositions = Math.ceil(params.maxGames / (params.swapPlayers ? 2 : 1));
     if (usiList.length > maxPositions) {
       usiList.length = maxPositions;
+    }
+
+    // add "sfen " prefix to simple SFEN strings
+    for (let i = 0; i < usiList.length; i++) {
+      if (
+        !usiList[i].startsWith("sfen ") &&
+        detectRecordFormat(usiList[i]) === RecordFormatType.SFEN
+      ) {
+        usiList[i] = `sfen ${usiList[i]}`;
+      }
     }
 
     // validate USI
