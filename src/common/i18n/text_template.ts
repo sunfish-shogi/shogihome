@@ -254,6 +254,9 @@ export type Texts = {
   logLevel: string;
   manageEngines: string;
   flipBoard: string;
+  shortcutKeys: string;
+  useUpDownToMove1Ply: string;
+  useLeftRightToMove1Ply: string;
   file: string;
   recordFile: string;
   executableFile: string;

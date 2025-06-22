@@ -28,18 +28,18 @@
             </button>
           </div>
           <div class="row control-row">
-            <button class="control-item" data-hotkey="ArrowLeft" @click="goBegin">
+            <button class="control-item" :data-hotkey="shortcutKeys.Begin" @click="goBegin">
               <Icon :icon="IconType.FIRST" />
             </button>
-            <button class="control-item" data-hotkey="ArrowRight" @click="goEnd">
+            <button class="control-item" :data-hotkey="shortcutKeys.End" @click="goEnd">
               <Icon :icon="IconType.LAST" />
             </button>
           </div>
           <div class="row control-row">
-            <button class="control-item" data-hotkey="ArrowUp" @click="goBack">
+            <button class="control-item" :data-hotkey="shortcutKeys.Back" @click="goBack">
               <Icon :icon="IconType.BACK" />
             </button>
-            <button class="control-item" data-hotkey="ArrowDown" @click="goForward">
+            <button class="control-item" :data-hotkey="shortcutKeys.Forward" @click="goForward">
               <Icon :icon="IconType.NEXT" />
             </button>
           </div>
@@ -89,6 +89,7 @@ import { CommentBehavior } from "@/common/settings/comment";
 import { AppState } from "@/common/control/state";
 import { useMessageStore } from "@/renderer/store/message";
 import DialogFrame from "./DialogFrame.vue";
+import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
 
 const props = defineProps({
   position: {
@@ -258,6 +259,8 @@ const displayPV = computed(() => {
 const enableInsertion = computed(() => {
   return store.appState === AppState.NORMAL && store.record.position.sfen === props.position.sfen;
 });
+
+const shortcutKeys = computed(() => getRecordShortcutKeys(appSettings.recordShortcutKeys));
 
 const insertToRecord = () => {
   const n = store.appendMovesSilently(props.pv, {

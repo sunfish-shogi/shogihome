@@ -125,6 +125,11 @@ export enum ClockSoundTarget {
   ONLY_USER = "onlyUser",
 }
 
+export enum RecordShortcutKeys {
+  VERTICAL = "vertical",
+  HORIZONTAL = "horizontal",
+}
+
 export enum PositionImageStyle {
   BOOK = "book",
   GAME = "game",
@@ -183,6 +188,9 @@ export type AppSettings = {
   clockVolume: number;
   clockPitch: number;
   clockSoundTarget: ClockSoundTarget;
+
+  // Shortcut
+  recordShortcutKeys: RecordShortcutKeys;
 
   // Board View
   boardFlipping: boolean;
@@ -340,6 +348,7 @@ export function defaultAppSettings(opt?: {
     clockVolume: 30,
     clockPitch: 500,
     clockSoundTarget: ClockSoundTarget.ONLY_USER,
+    recordShortcutKeys: RecordShortcutKeys.VERTICAL,
     boardFlipping: false,
     tabPaneType: TabPaneType.DOUBLE_V2,
     tab: Tab.RECORD_INFO,

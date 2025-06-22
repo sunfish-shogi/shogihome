@@ -14,6 +14,7 @@
         :show-top-control="showTopControl"
         :show-bottom-control="showBottomControl"
         :show-branches="showBranches"
+        :shortcut-keys="getRecordShortcutKeys(appSettings.recordShortcutKeys)"
         @go-begin="store.changePly(0)"
         @go-back="store.goBack()"
         @go-forward="store.goForward()"
@@ -53,6 +54,7 @@ import {
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import BookPanel from "./BookPanel.vue";
+import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
 
 defineProps({
   showElapsedTime: {

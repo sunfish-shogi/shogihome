@@ -1,16 +1,16 @@
 <template>
   <div class="full column record-view" :class="{ limited: showTopControl }">
     <div v-show="showTopControl" class="row control">
-      <button :disabled="!operational" data-hotkey="ArrowLeft" @click="goBegin">
+      <button :disabled="!operational" :data-hotkey="shortcutKeys.Begin" @click="goBegin">
         <Icon :icon="IconType.FIRST" />
       </button>
-      <button :disabled="!operational" data-hotkey="ArrowUp" @click="goBack()">
+      <button :disabled="!operational" :data-hotkey="shortcutKeys.Back" @click="goBack()">
         <Icon :icon="IconType.BACK" />
       </button>
-      <button :disabled="!operational" data-hotkey="ArrowDown" @click="goForward">
+      <button :disabled="!operational" :data-hotkey="shortcutKeys.Forward" @click="goForward">
         <Icon :icon="IconType.NEXT" />
       </button>
-      <button :disabled="!operational" data-hotkey="ArrowRight" @click="goEnd">
+      <button :disabled="!operational" :data-hotkey="shortcutKeys.End" @click="goEnd">
         <Icon :icon="IconType.LAST" />
       </button>
     </div>
@@ -106,6 +106,7 @@ import { computed, ref, PropType, onUpdated } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import ToggleButton from "./ToggleButton.vue";
+import { RecordShortcutKeys } from "./board/shortcut";
 
 const props = defineProps({
   record: {
@@ -163,6 +164,10 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true,
+  },
+  shortcutKeys: {
+    type: Object as PropType<RecordShortcutKeys>,
+    required: true,
   },
 });
 
