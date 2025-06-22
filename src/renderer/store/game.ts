@@ -144,7 +144,7 @@ export class StartPositionList {
     for (let i = 0; i < usiList.length; i++) {
       const record = Record.newByUSI(usiList[i]);
       if (!(record instanceof Record)) {
-        throw new Error(`Invalid USI: ${record}: ${usiList[i]}`);
+        throw record;
       }
     }
 
