@@ -371,6 +371,23 @@
         </div>
       </div>
       <hr />
+      <!-- ショートカット -->
+      <div class="section">
+        <div class="section-title">{{ t.shortcutKeys }}</div>
+        <!-- 棋譜 -->
+        <div class="form-item">
+          <div class="form-item-label-wide">{{ t.record }}</div>
+          <HorizontalSelector
+            v-model:value="update.recordShortcutKeys"
+            class="selector"
+            :items="[
+              { label: t.useUpDownToMove1Ply, value: RecordShortcutKeys.VERTICAL },
+              { label: t.useLeftRightToMove1Ply, value: RecordShortcutKeys.HORIZONTAL },
+            ]"
+          />
+        </div>
+      </div>
+      <hr />
       <!-- ファイル -->
       <div class="section">
         <div class="section-title">{{ t.file }}</div>
@@ -741,6 +758,7 @@ import {
   ClockSoundTarget,
   AppSettingsUpdate,
   NodeCountFormat,
+  RecordShortcutKeys,
 } from "@/common/settings/app";
 import ImageSelector from "@/renderer/view/dialog/ImageSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -796,6 +814,7 @@ const update = ref({
   clockVolume: org.clockVolume,
   clockPitch: org.clockPitch,
   clockSoundTarget: org.clockSoundTarget,
+  recordShortcutKeys: org.recordShortcutKeys,
   defaultRecordFileFormat: org.defaultRecordFileFormat,
   textDecodingRule: org.textDecodingRule,
   returnCode: org.returnCode,

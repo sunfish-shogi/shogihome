@@ -259,6 +259,9 @@ export const vi: Texts = {
   logLevel: "Mức độ log",
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
+  shortcutKeys: "ショートカットキー", // TODO: Translate
+  useUpDownToMove1Ply: "↑/↓キーで1手移動", // TODO: Translate
+  useLeftRightToMove1Ply: "←/→キーで1手移動", // TODO: Translate
   file: "Tệp",
   recordFile: "Tệp kỳ phổ",
   executableFile: "Tệp phần mềm",

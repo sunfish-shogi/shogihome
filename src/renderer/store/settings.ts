@@ -16,6 +16,7 @@ import {
   PositionImageStyle,
   PositionImageTypeface,
   PromotionSelectorStyle,
+  RecordShortcutKeys,
   RightSideControlType,
   Tab,
   TabPaneType,
@@ -124,6 +125,9 @@ class AppSettingsStore {
   }
   get clockSoundTarget(): ClockSoundTarget {
     return this.merged.clockSoundTarget;
+  }
+  get recordShortcutKeys(): RecordShortcutKeys {
+    return this.merged.recordShortcutKeys;
   }
   get boardFlipping(): boolean {
     return this.merged.boardFlipping;
