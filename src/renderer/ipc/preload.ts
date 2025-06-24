@@ -101,8 +101,8 @@ const api: Bridge = {
   async fetchInitialRecordFileRequest(): Promise<string> {
     return await ipcRenderer.invoke(Background.FETCH_INITIAL_RECORD_FILE_REQUEST);
   },
-  async showOpenRecordDialog(): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_OPEN_RECORD_DIALOG);
+  async showOpenRecordDialog(formats: string[]): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_OPEN_RECORD_DIALOG, formats);
   },
   async showSaveRecordDialog(defaultPath: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SAVE_RECORD_DIALOG, defaultPath);

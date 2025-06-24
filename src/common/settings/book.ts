@@ -1,4 +1,4 @@
-import { detectRecordFileFormatByPath, RecordFileFormat } from "@/common/file/record.js";
+import { detectRecordFileFormatByPath } from "@/common/file/record.js";
 import { t } from "@/common/i18n/index.js";
 
 export enum SourceType {
@@ -43,9 +43,6 @@ export function validateBookImportSettings(settings: BookImportSettings): Error 
     const format = detectRecordFileFormatByPath(settings.sourceRecordFile);
     if (!format) {
       return new Error(t.unexpectedRecordFileExtension(settings.sourceRecordFile));
-    }
-    if (format === RecordFileFormat.SFEN) {
-      return new Error(t.sfenFileImportIsNotSupported);
     }
   } else if (settings.sourceType === SourceType.DIRECTORY) {
     if (!settings.sourceDirectory) {

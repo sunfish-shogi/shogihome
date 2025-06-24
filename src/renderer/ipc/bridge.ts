@@ -3,6 +3,7 @@ import { PromptTarget } from "@/common/advanced/prompt.js";
 import { BookLoadingMode } from "@/common/book.js";
 import { MenuEvent } from "@/common/control/menu.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
+import { RecordFileFormat } from "@/common/file/record";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa.js";
 import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
@@ -39,7 +40,7 @@ export interface Bridge {
 
   // Record File
   fetchInitialRecordFileRequest(): Promise<string>;
-  showOpenRecordDialog(): Promise<string>;
+  showOpenRecordDialog(formats: RecordFileFormat[]): Promise<string>;
   showSaveRecordDialog(defaultPath: string): Promise<string>;
   showSaveMergedRecordDialog(defaultPath: string): Promise<string>;
   openRecord(path: string): Promise<Uint8Array>;

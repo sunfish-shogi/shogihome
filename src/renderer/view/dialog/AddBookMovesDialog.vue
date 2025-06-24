@@ -144,6 +144,7 @@ import {
   validateBookImportSettings,
 } from "@/common/settings/book";
 import DialogFrame from "./DialogFrame.vue";
+import { RecordFileFormat, getStandardRecordFileFormats } from "@/common/file/record";
 
 type InMemoryMove = {
   type: "move";
@@ -268,7 +269,10 @@ const openDirectory = () => {
 const selectRecordFile = async () => {
   busyState.retain();
   try {
-    const path = await api.showOpenRecordDialog();
+    const path = await api.showOpenRecordDialog([
+      ...getStandardRecordFileFormats(),
+      RecordFileFormat.SFEN,
+    ]);
     if (path) {
       settings.value.sourceRecordFile = path;
     }

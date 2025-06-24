@@ -25,7 +25,15 @@ import {
 } from "@/common/file/record.js";
 import { TextDecodingRule } from "@/common/settings/app.js";
 import { loadAppSettings } from "@/background/settings.js";
-import { Color, getBlackPlayerName, getWhitePlayerName, Move } from "tsshogi";
+import {
+  Color,
+  getBlackPlayerName,
+  getWhitePlayerName,
+  ImmutablePosition,
+  Move,
+  Node,
+  Record,
+} from "tsshogi";
 import { t } from "@/common/i18n/index.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
 import { loadAperyBook, searchAperyBookMovesOnTheFly, storeAperyBook } from "./apery.js";
@@ -301,10 +309,10 @@ export async function importBookMoves(
 ): Promise<BookImportSummary> {
   getAppLogger().info("Importing book moves: %s", JSON.stringify(settings));
 
-  const bookRef = book;
-  if (bookRef.type === "on-the-fly") {
+  if (book.type === "on-the-fly") {
     throw new Error("Cannot import to on-the-fly book");
   }
+  const bookRef = book;
 
   const appSettings = await loadAppSettings();
 
@@ -338,18 +346,96 @@ export async function importBookMoves(
 
   let successFileCount = 0;
   let errorFileCount = 0;
+  let skippedFileCount = 0;
   let entryCount = 0;
   let duplicateCount = 0;
 
+  function importMove(node: Node, position: ImmutablePosition) {
+    if (!(node.move instanceof Move)) {
+      return;
+    }
+
+    // criteria
+    if (node.ply < settings.minPly || node.ply > settings.maxPly) {
+      return;
+    }
+
+    const sfen = position.sfen;
+    const usi = node.move.usi;
+    const bookMoves = retrieveEntry(bookRef, sfen)?.moves || [];
+    const moves = bookMoves.map(arrayMoveToCommonBookMove);
+    const existing = moves.find((move) => move.usi === usi);
+    if (existing) {
+      duplicateCount++;
+    } else {
+      entryCount++;
+    }
+    const bookMove = existing || { usi, comment: "" };
+    bookMove.count = (bookMove.count || 0) + 1;
+    updateBookMove(sfen, bookMove);
+    updateBookMoveOrderByCounts(sfen);
+  }
+
   for (const path of paths) {
     if (onProgress) {
-      const progress = (successFileCount + errorFileCount) / paths.length;
+      const progress = (successFileCount + errorFileCount + skippedFileCount) / paths.length;
       onProgress(progress);
+    }
+
+    const targetColorSet = {
+      [Color.BLACK]: true,
+      [Color.WHITE]: true,
+    };
+    switch (settings.playerCriteria) {
+      case PlayerCriteria.BLACK:
+        targetColorSet[Color.WHITE] = false;
+        break;
+      case PlayerCriteria.WHITE:
+        targetColorSet[Color.BLACK] = false;
+        break;
     }
 
     getAppLogger().debug("Importing book moves from: %s", path);
     const format = detectRecordFileFormatByPath(path) as RecordFileFormat;
     const sourceData = await fs.promises.readFile(path);
+
+    if (format === RecordFileFormat.SFEN) {
+      if (settings.playerCriteria === PlayerCriteria.FILTER_BY_NAME && settings.playerName) {
+        getAppLogger().debug("Ignoring SFEN file: %s", path);
+        skippedFileCount++;
+        continue; // skip SFEN files when filtering by player name
+      }
+      const lines = sourceData.toString("utf-8").split(/\r?\n/);
+      let hasValidLines = false;
+      let invalidLine = "";
+      lines.forEach((line) => {
+        const record = Record.newByUSI(line.trim());
+        if (record instanceof Error) {
+          invalidLine = line;
+          return;
+        }
+        hasValidLines = true;
+        record.forEach((node, position) => {
+          if (!targetColorSet[position.color]) {
+            return;
+          }
+          if (node.move instanceof Move) {
+            importMove(node, position);
+          }
+        });
+      });
+      if (hasValidLines) {
+        successFileCount++;
+      } else if (invalidLine) {
+        getAppLogger().debug("Invalid lines found in SFEN file: %s: [%s]", path, invalidLine);
+        errorFileCount++;
+      } else {
+        getAppLogger().debug("No valid lines found in SFEN file: %s", path);
+        skippedFileCount++;
+      }
+      continue;
+    }
+
     const record = importRecordFromBuffer(sourceData, format, {
       autoDetect: appSettings.textDecodingRule === TextDecodingRule.AUTO_DETECT,
     });
@@ -358,73 +444,34 @@ export async function importBookMoves(
       errorFileCount++;
       continue;
     }
-    successFileCount++;
 
-    const targetColorSet = {
-      [Color.BLACK]: true,
-      [Color.WHITE]: true,
-    };
-    const blackPlayerName = getBlackPlayerName(record.metadata)?.toLowerCase();
-    const whitePlayerName = getWhitePlayerName(record.metadata)?.toLowerCase();
-    switch (settings.playerCriteria) {
-      case PlayerCriteria.BLACK:
-        targetColorSet[Color.WHITE] = false;
-        break;
-      case PlayerCriteria.WHITE:
+    if (settings.playerCriteria === PlayerCriteria.FILTER_BY_NAME) {
+      const blackPlayerName = getBlackPlayerName(record.metadata)?.toLowerCase();
+      const whitePlayerName = getWhitePlayerName(record.metadata)?.toLowerCase();
+      if (!settings.playerName) {
+        throw new Error("player name is not set");
+      }
+      if (!blackPlayerName || blackPlayerName?.indexOf(settings.playerName.toLowerCase()) === -1) {
         targetColorSet[Color.BLACK] = false;
-        break;
-      case PlayerCriteria.FILTER_BY_NAME:
-        if (!settings.playerName) {
-          throw new Error("player name is not set");
-        }
-        if (
-          !blackPlayerName ||
-          blackPlayerName?.indexOf(settings.playerName.toLowerCase()) === -1
-        ) {
-          targetColorSet[Color.BLACK] = false;
-        }
-        if (
-          !whitePlayerName ||
-          whitePlayerName?.indexOf(settings.playerName.toLowerCase()) === -1
-        ) {
-          targetColorSet[Color.WHITE] = false;
-        }
-        break;
+      }
+      if (!whitePlayerName || whitePlayerName?.indexOf(settings.playerName.toLowerCase()) === -1) {
+        targetColorSet[Color.WHITE] = false;
+      }
     }
 
     record.forEach((node, position) => {
-      if (!(node.move instanceof Move)) {
-        return;
-      }
-
-      // criteria
-      if (node.ply < settings.minPly || node.ply > settings.maxPly) {
-        return;
-      }
       if (!targetColorSet[position.color]) {
         return;
       }
-
-      const sfen = position.sfen;
-      const usi = node.move.usi;
-      const bookMoves = retrieveEntry(bookRef, sfen)?.moves || [];
-      const moves = bookMoves.map(arrayMoveToCommonBookMove);
-      const existing = moves.find((move) => move.usi === usi);
-      if (existing) {
-        duplicateCount++;
-      } else {
-        entryCount++;
-      }
-      const bookMove = existing || { usi, comment: "" };
-      bookMove.count = (bookMove.count || 0) + 1;
-      updateBookMove(sfen, bookMove);
-      updateBookMoveOrderByCounts(sfen);
+      importMove(node, position);
     });
+    successFileCount++;
   }
 
   return {
     successFileCount,
     errorFileCount,
+    skippedFileCount,
     entryCount,
     duplicateCount,
   };

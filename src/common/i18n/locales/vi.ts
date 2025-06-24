@@ -708,7 +708,6 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.",
-  sfenFileImportIsNotSupported: "Không hỗ trợ định dạng .sfen.",
   sourceDirectoryNotSet: "Vui lòng chọn một tập tin.",
   minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.",
   playerNameNotSet: "Tên người chơi chưa được đặt.",

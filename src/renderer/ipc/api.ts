@@ -13,7 +13,7 @@ import { MateSearchSettings } from "@/common/settings/mate.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import { BatchConversionResult } from "@/common/file/conversion.js";
 import { RecordFileHistory } from "@/common/file/history.js";
-import { InitialRecordFileRequest } from "@/common/file/record.js";
+import { InitialRecordFileRequest, RecordFileFormat } from "@/common/file/record.js";
 import { VersionStatus } from "@/common/version.js";
 import { SessionStates } from "@/common/advanced/monitor.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -54,7 +54,7 @@ export interface API {
 
   // Record File
   fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest>;
-  showOpenRecordDialog(): Promise<string>;
+  showOpenRecordDialog(formats: RecordFileFormat[]): Promise<string>;
   showSaveRecordDialog(defaultPath: string): Promise<string>;
   showSaveMergedRecordDialog(defaultPath: string): Promise<string>;
   openRecord(path: string): Promise<Uint8Array>;

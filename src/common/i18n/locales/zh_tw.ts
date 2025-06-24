@@ -696,7 +696,6 @@ export const zh_tw: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   sourceRecordFileNotSet: "尚未指定棋譜檔案。",
-  sfenFileImportIsNotSupported: "尚未支援 .sfen 檔案。",
   sourceDirectoryNotSet: "請選擇目錄。",
   minPlyMustBeLessThanMaxPly: "最小手數應小於最大手數。",
   playerNameNotSet: "尚未設定對局者名稱。",
