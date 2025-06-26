@@ -22,6 +22,17 @@ export enum RecordFileFormat {
   JKF = ".jkf",
 }
 
+export function getStandardRecordFileFormats() {
+  return [
+    RecordFileFormat.KIF,
+    RecordFileFormat.KIFU,
+    RecordFileFormat.KI2,
+    RecordFileFormat.KI2U,
+    RecordFileFormat.CSA,
+    RecordFileFormat.JKF,
+  ];
+}
+
 export function detectRecordFileFormatByPath(path: string): RecordFileFormat | undefined {
   const lowerCase = path.toLowerCase();
   for (const ext of Object.values(RecordFileFormat)) {

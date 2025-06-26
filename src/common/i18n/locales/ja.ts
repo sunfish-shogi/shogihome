@@ -711,7 +711,6 @@ export const ja: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
-  sfenFileImportIsNotSupported: ".sfen はサポートされていません。",
   sourceDirectoryNotSet: "フォルダを選択してください。",
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",
   playerNameNotSet: "対局者名が設定されていません。",

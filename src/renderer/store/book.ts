@@ -207,6 +207,7 @@ export class BookStore {
                   children: [
                     `${t.success}: ${summary.successFileCount}`,
                     `${t.failed}: ${summary.errorFileCount}`,
+                    `${t.skipped}: ${summary.skippedFileCount}`,
                   ],
                 },
                 {

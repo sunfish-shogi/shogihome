@@ -340,10 +340,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           sourceDirectory: "src/tests/testdata/book/source",
         },
         summary: {
-          successFileCount: 4,
+          successFileCount: 5,
           errorFileCount: 0,
-          entryCount: 34,
-          duplicateCount: 2,
+          skippedFileCount: 0,
+          entryCount: 43,
+          duplicateCount: 4,
         },
         includedSFEN: [
           "ln1gk1snl/1rs3gb1/p1ppppppp/9/1p5P1/P8/1PPPPPP1P/1BG3SR1/LNS1KG1NL w - 1",
@@ -360,9 +361,10 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           maxPly: 5,
         },
         summary: {
-          successFileCount: 4,
+          successFileCount: 5,
           errorFileCount: 0,
-          entryCount: 15,
+          skippedFileCount: 0,
+          entryCount: 23,
           duplicateCount: 1,
         },
         includedSFEN: ["lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1"],
@@ -382,6 +384,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         summary: {
           successFileCount: 4,
           errorFileCount: 0,
+          skippedFileCount: 1, // .sfen file is skipped
           entryCount: 10,
           duplicateCount: 0,
         },
@@ -400,6 +403,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         summary: {
           successFileCount: 1,
           errorFileCount: 0,
+          skippedFileCount: 0,
           entryCount: 10,
           duplicateCount: 0,
         },
@@ -416,6 +420,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         summary: {
           successFileCount: 1,
           errorFileCount: 0,
+          skippedFileCount: 0,
           entryCount: 5,
           duplicateCount: 0,
         },
@@ -432,6 +437,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         summary: {
           successFileCount: 1,
           errorFileCount: 0,
+          skippedFileCount: 0,
           entryCount: 5,
           duplicateCount: 0,
         },

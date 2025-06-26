@@ -56,7 +56,11 @@ import { useAppSettings } from "./settings.js";
 import { t } from "@/common/i18n/index.js";
 import { MateSearchManager } from "./mate.js";
 import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record.js";
-import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record.js";
+import {
+  RecordFileFormat,
+  detectRecordFileFormatByPath,
+  getStandardRecordFileFormats,
+} from "@/common/file/record.js";
 import { setOnStartSearchHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi.js";
 import { useErrorStore } from "./error.js";
 import { useBusyState } from "./busy.js";
@@ -1190,7 +1194,7 @@ class Store {
     useBusyState().retain();
     Promise.resolve()
       .then(() => {
-        return path || api.showOpenRecordDialog();
+        return path || api.showOpenRecordDialog(getStandardRecordFileFormats());
       })
       .then((path) => {
         if (!path) {

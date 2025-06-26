@@ -682,7 +682,6 @@ export type Texts = {
   bookMovesWereImported: string;
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   sourceRecordFileNotSet: string;
-  sfenFileImportIsNotSupported: string;
   sourceDirectoryNotSet: string;
   minPlyMustBeLessThanMaxPly: string;
   playerNameNotSet: string;

@@ -710,7 +710,6 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   sourceRecordFileNotSet: "Source record file is not set.",
-  sfenFileImportIsNotSupported: "SFEN file import is not supported.",
   sourceDirectoryNotSet: "Source directory is not set.",
   minPlyMustBeLessThanMaxPly: "Min ply must be less than max ply.",
   playerNameNotSet: "Player name is not set.",

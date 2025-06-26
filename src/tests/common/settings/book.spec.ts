@@ -82,7 +82,7 @@ describe("settings/book", () => {
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
       }),
-    ).toBeInstanceOf(Error);
+    ).toBeUndefined();
     expect(
       validateBookImportSettings({
         sourceType: SourceType.FILE,

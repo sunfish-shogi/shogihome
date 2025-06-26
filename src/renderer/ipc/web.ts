@@ -167,10 +167,10 @@ export const webAPI: Bridge = {
   async fetchInitialRecordFileRequest(): Promise<string> {
     return "null";
   },
-  async showOpenRecordDialog(): Promise<string> {
+  async showOpenRecordDialog(formats: string[]): Promise<string> {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
-    input.setAttribute("accept", ".kif,.ki2,.kifu,.ki2u,.csa,.jkf");
+    input.setAttribute("accept", formats.join(","));
     return new Promise<string>((resolve, reject) => {
       input.click();
       input.onchange = () => {

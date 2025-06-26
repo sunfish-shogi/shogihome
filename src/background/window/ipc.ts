@@ -123,6 +123,7 @@ import {
 } from "@/background/book/index.js";
 import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
 import { Message } from "@/common/message.js";
+import { RecordFileFormat } from "@/common/file/record.js";
 
 const isWindows = process.platform === "win32";
 
@@ -191,21 +192,24 @@ ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
   shell.openExternal(url);
 });
 
-ipcMain.handle(Background.SHOW_OPEN_RECORD_DIALOG, async (event): Promise<string> => {
-  validateIPCSender(event.senderFrame);
-  const appSettings = await loadAppSettings();
-  getAppLogger().debug("show open-record dialog");
-  const ret = await showOpenDialog(["openFile"], appSettings.lastRecordFilePath, [
-    {
-      name: t.recordFile,
-      extensions: ["kif", "kifu", "ki2", "ki2u", "csa", "jkf"],
-    },
-  ]);
-  if (ret) {
-    updateAppSettings({ lastRecordFilePath: ret });
-  }
-  return ret;
-});
+ipcMain.handle(
+  Background.SHOW_OPEN_RECORD_DIALOG,
+  async (event, formats: RecordFileFormat[]): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    const appSettings = await loadAppSettings();
+    getAppLogger().debug("show open-record dialog");
+    const ret = await showOpenDialog(["openFile"], appSettings.lastRecordFilePath, [
+      {
+        name: t.recordFile,
+        extensions: formats.map((format) => format.slice(1)),
+      },
+    ]);
+    if (ret) {
+      updateAppSettings({ lastRecordFilePath: ret });
+    }
+    return ret;
+  },
+);
 
 ipcMain.handle(Background.OPEN_RECORD, async (event, path: string) => {
   validateIPCSender(event.senderFrame);
