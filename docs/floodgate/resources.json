@@ -1,0 +1,5 @@
+{
+  "playingGameList": "http://wdoor.c.u-tokyo.ac.jp/shogi/LATEST/playing.txt",
+  "gameHistory": "http://wdoor.c.u-tokyo.ac.jp/shogi/LATEST/floodgate_history_300_10F.yaml",
+  "players": "http://wdoor.c.u-tokyo.ac.jp/shogi/LATEST/floodgate-players.txt"
+}
