@@ -25,6 +25,7 @@ export const maxPVLengthSettingWikiPageURL = `${wikiPageBaseURL}${maxPVLengthTit
 export const disableHWASettingWikiPageURL = `${wikiPageBaseURL}${disableHWASettingTitle}`;
 export const licenseURL = `https://${ghDomain}/${ghAccount}/${ghRepository}/blob/main/LICENSE`;
 export const wcscGameListsURL = `https://${ghioDomain}/${ghRepository}/wcsc/game-lists.json`;
+export const floodgateResourcesURL = `https://${ghioDomain}/${ghRepository}/floodgate/resources.json`;
 
 const webAppBaseURL = `https://${ghioDomain}/${ghRepository}/webapp/index.html`;
 
