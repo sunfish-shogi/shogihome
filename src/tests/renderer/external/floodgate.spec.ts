@@ -8,6 +8,7 @@ vi.mock("@/renderer/ipc/api.js");
 
 const mockAPI = api as Mocked<API>;
 
+const floodgateResources = fs.readFileSync("docs/floodgate/resources.json", "utf-8");
 const samplePlayingGameList = fs.readFileSync("src/tests/testdata/floodgate/playing.txt", "utf-8");
 const sampleGameHistory = fs.readFileSync(
   "src/tests/testdata/floodgate/floodgate_history_300_10F.yaml",
@@ -16,6 +17,10 @@ const sampleGameHistory = fs.readFileSync(
 const samplePlayerList = fs.readFileSync("src/tests/testdata/floodgate/players.txt", "utf-8");
 
 describe("Floodgate", () => {
+  beforeAll(() => {
+    mockAPI.loadRemoteTextFile.mockResolvedValueOnce(floodgateResources);
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
   });

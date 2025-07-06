@@ -15,6 +15,10 @@ fetch(apiURL)
     releases = releases.sort((a, b) => semver.rcompare(a.tag_name, b.tag_name));
     for (const release of releases) {
       const tag = release.tag_name;
+      if (tag.match(/-/)) {
+        // Skip pre-releases (e.g., "v1.0.0-beta")
+        continue;
+      }
       const published = release.published_at;
       const m = Object.fromEntries(
         release.assets.map((asset) => {
