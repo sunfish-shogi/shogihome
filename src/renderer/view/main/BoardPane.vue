@@ -28,6 +28,7 @@
       :white-player-time="clock?.white.time"
       :white-player-byoyomi="clock?.white.byoyomi"
       :next-move-label="t.nextTurn"
+      :drop-shadows="!isMobileWebApp()"
       @resize="onResize"
       @move="onMove"
       @edit="onEdit"
@@ -68,6 +69,7 @@ import {
   getPieceImageURLTemplate,
 } from "@/common/settings/app";
 import { BoardLayoutType } from "@/common/settings/layout";
+import { isMobileWebApp } from "@/renderer/ipc/api";
 
 defineProps({
   maxSize: {
