@@ -6,7 +6,11 @@
         <div v-if="board.background.textureImagePath" :style="board.background.style">
           <img class="full" :src="board.background.textureImagePath" />
         </div>
-        <div class="board-background" :style="board.background.style">
+        <div
+          class="board-background"
+          :class="{ 'drop-shadows': dropShadows }"
+          :style="board.background.style"
+        >
           <BoardGrid class="full" :color="boardGridColor || board.background.gridColor" />
         </div>
         <div v-for="square in board.squares" :key="square.id" :style="square.backgroundStyle"></div>
@@ -20,7 +24,11 @@
 
       <!-- 先手の駒台 -->
       <div class="hand" :style="main.blackHandStyle">
-        <div class="hand-background" :style="blackHand.backgroundStyle">
+        <div
+          class="hand-background"
+          :class="{ 'drop-shadows': dropShadows }"
+          :style="blackHand.backgroundStyle"
+        >
           <img v-if="blackHand.textureImagePath" class="full" :src="blackHand.textureImagePath" />
         </div>
         <div
@@ -38,7 +46,11 @@
 
       <!-- 後手の駒台 -->
       <div class="hand" :style="main.whiteHandStyle">
-        <div class="hand-background" :style="whiteHand.backgroundStyle">
+        <div
+          class="hand-background"
+          :class="{ 'drop-shadows': dropShadows }"
+          :style="whiteHand.backgroundStyle"
+        >
           <img v-if="whiteHand.textureImagePath" class="full" :src="whiteHand.textureImagePath" />
         </div>
         <div
@@ -329,6 +341,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: "手番",
+  },
+  dropShadows: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 
@@ -635,13 +652,13 @@ const whitePlayerTimeSeverity = computed(() => {
 .board > * {
   position: absolute;
 }
-.board-background {
+.board-background.drop-shadows {
   box-shadow: 3px 3px 6px var(--shadow-color);
 }
 .hand > * {
   position: absolute;
 }
-.hand-background {
+.hand-background.drop-shadows {
   box-shadow: 3px 3px 6px var(--shadow-color);
 }
 .player-name {
