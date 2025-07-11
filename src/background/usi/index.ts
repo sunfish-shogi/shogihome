@@ -21,7 +21,7 @@ interface Handlers {
   sendPromptCommand(sessionID: number, command: Command): void;
 }
 
-let h: Handlers;
+let h: Handlers | undefined;
 
 export function setHandlers(handlers: Handlers): void {
   if (h) {
@@ -69,7 +69,7 @@ export function getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<
         process.quit();
       })
       .on("command", (command) => {
-        h.sendPromptCommand(sessionID, command);
+        h?.sendPromptCommand(sessionID, command);
       });
     process.launch();
   });
@@ -102,7 +102,7 @@ export function sendOptionButtonSignal(
         process.quit();
       })
       .on("command", (command) => {
-        h.sendPromptCommand(sessionID, command);
+        h?.sendPromptCommand(sessionID, command);
       });
     process.launch();
   });
@@ -160,22 +160,22 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
         reject(newUnexpectedError(err.message, lastReceived));
       })
       .on("timeout", () => reject(newTimeoutError(timeoutSeconds)))
-      .on("bestmove", (usi, usiMove, ponder) => h.onUSIBestMove(sessionID, usi, usiMove, ponder))
+      .on("bestmove", (usi, usiMove, ponder) => h?.onUSIBestMove(sessionID, usi, usiMove, ponder))
       .on("checkmate", (position, moves) => {
-        h.onUSICheckmate(sessionID, position, moves);
+        h?.onUSICheckmate(sessionID, position, moves);
       })
       .on("checkmateNotImplemented", () => {
-        h.onUSICheckmateNotImplemented(sessionID);
+        h?.onUSICheckmateNotImplemented(sessionID);
       })
       .on("checkmateTimeout", (position) => {
-        h.onUSICheckmateTimeout(sessionID, position);
+        h?.onUSICheckmateTimeout(sessionID, position);
       })
       .on("noMate", (position) => {
-        h.onUSINoMate(sessionID, position);
+        h?.onUSINoMate(sessionID, position);
       })
       .on("usiok", () => resolve(sessionID))
       .on("command", (command) => {
-        h.sendPromptCommand(sessionID, command);
+        h?.sendPromptCommand(sessionID, command);
       });
     process.launch();
   });
@@ -226,26 +226,26 @@ export function go(sessionID: number, usi: string, timeStates: TimeStates): void
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(usi);
   session.process.go(usi, buildTimeState(nextColor, timeStates));
-  session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
+  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
 }
 
 export function goPonder(sessionID: number, usi: string, timeStates: TimeStates): void {
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(usi);
   session.process.goPonder(usi, buildTimeState(nextColor, timeStates));
-  session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
+  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
 }
 
 export function goInfinite(sessionID: number, usi: string): void {
   const session = getSession(sessionID);
   session.process.go(usi);
-  session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
+  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
 }
 
 export function goMate(sessionID: number, usi: string, maxSeconds?: number): void {
   const session = getSession(sessionID);
   session.process.goMate(usi, maxSeconds);
-  session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
+  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
 }
 
 export function ponderHit(sessionID: number, timeStates: TimeStates): void {
