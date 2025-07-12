@@ -299,6 +299,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  mobile: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   allowEdit: {
     type: Boolean,
     required: false,
@@ -456,6 +461,11 @@ const clickHand = (color: Color, type: PieceType) => {
 };
 
 const clickSquareR = (file: number, rank: number) => {
+  // モバイルの端末では異なるマスを素早く連続でタップするとダブルタップ判定されてしまうので、
+  // 成・不成選択のUIがキャンセルされないようにイベントを無視する。
+  if (props.mobile && !props.allowEdit) {
+    return;
+  }
   resetState();
   const square = new Square(file, rank);
   if (props.allowEdit && props.position.board.at(square)) {
