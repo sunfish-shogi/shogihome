@@ -1,6 +1,28 @@
 <template>
   <div>
     <div class="frame" :style="main.frame.style" @click="clickFrame()">
+      <!-- 後手の駒台 -->
+      <div class="hand" :style="main.whiteHandStyle">
+        <div
+          class="hand-background"
+          :class="{ 'drop-shadows': dropShadows }"
+          :style="whiteHand.backgroundStyle"
+        >
+          <img v-if="whiteHand.textureImagePath" class="full" :src="whiteHand.textureImagePath" />
+        </div>
+        <div
+          v-for="pointer in whiteHand.pointers"
+          :key="pointer.id"
+          :style="pointer.backgroundStyle"
+        ></div>
+        <div v-for="piece in whiteHand.pieces" :key="piece.id" :style="piece.style">
+          <img class="piece-image" :src="piece.imagePath" />
+        </div>
+        <div v-for="number in whiteHand.numbers" :key="number.id" :style="number.style">
+          {{ number.character }}
+        </div>
+      </div>
+
       <!-- 盤面 -->
       <div class="board" :style="main.boardStyle">
         <div v-if="board.background.textureImagePath" :style="board.background.style">
@@ -40,28 +62,6 @@
           <img class="piece-image" :src="piece.imagePath" />
         </div>
         <div v-for="number in blackHand.numbers" :key="number.id" :style="number.style">
-          {{ number.character }}
-        </div>
-      </div>
-
-      <!-- 後手の駒台 -->
-      <div class="hand" :style="main.whiteHandStyle">
-        <div
-          class="hand-background"
-          :class="{ 'drop-shadows': dropShadows }"
-          :style="whiteHand.backgroundStyle"
-        >
-          <img v-if="whiteHand.textureImagePath" class="full" :src="whiteHand.textureImagePath" />
-        </div>
-        <div
-          v-for="pointer in whiteHand.pointers"
-          :key="pointer.id"
-          :style="pointer.backgroundStyle"
-        ></div>
-        <div v-for="piece in whiteHand.pieces" :key="piece.id" :style="piece.style">
-          <img class="piece-image" :src="piece.imagePath" />
-        </div>
-        <div v-for="number in whiteHand.numbers" :key="number.id" :style="number.style">
           {{ number.character }}
         </div>
       </div>
