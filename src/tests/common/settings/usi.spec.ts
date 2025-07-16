@@ -79,7 +79,7 @@ describe("settings/usi", () => {
         default: "<empty>",
       }),
     ).toBe("");
-    expect(getUSIEngineOptionCurrentValue(null)).toBeUndefined();
+    expect(getUSIEngineOptionCurrentValue(undefined)).toBeUndefined();
   });
 
   it("getUSIEnginePonder", () => {
@@ -633,6 +633,10 @@ describe("settings/usi", () => {
         StringA: { name: "StringA", type: "string", order: 4, value: "foo" },
         StringB: { name: "StringB", type: "string", order: 5, value: "bar" },
         Depth: { name: "Depth", type: "spin", order: 6, default: 1, value: 2 }, // only lhs
+        NumberA: { name: "NumberA", type: "spin", order: 7, default: 1, value: 2 },
+        NumberB: { name: "NumberB", type: "spin", order: 8, default: 1 }, // default value
+        NumberC: { name: "NumberC", type: "spin", order: 9, default: 1, value: 2 },
+        NumberD: { name: "NumberD", type: "spin", order: 10, default: 1 }, // default value
       },
     };
     const rhs: USIEngine = {
@@ -646,16 +650,22 @@ describe("settings/usi", () => {
         StringA: { name: "StringA", type: "string", order: 4, value: "foo" }, // equal
         StringB: { name: "StringB", type: "string", order: 5, value: "baz" }, // different value
         ResignValue: { name: "ResignValue", type: "spin", order: 6, default: 1, value: -3000 }, // only rhs
+        NumberA: { name: "NumberA", type: "spin", order: 7, default: 1 }, // default value
+        NumberB: { name: "NumberB", type: "spin", order: 8, default: 1, value: 2 },
+        NumberC: { name: "NumberC", type: "spin", order: 9, default: 2 }, // default value
+        NumberD: { name: "NumberD", type: "spin", order: 10, default: 2, value: 1 },
       },
     };
     const result = compareUSIEngineOptions(lhs, rhs);
     expect(result).toStrictEqual([
       { name: "USI_Hash", leftValue: 64, rightValue: 32, mergeable: true },
-      { name: "Log", leftValue: undefined, rightValue: "true", mergeable: false },
+      { name: "Log", rightValue: "true", mergeable: false },
       { name: "Book", leftValue: "book.db", rightValue: "standard.db", mergeable: false },
       { name: "StringB", leftValue: "bar", rightValue: "baz", mergeable: true },
-      { name: "Depth", leftValue: 2, rightValue: undefined, mergeable: false },
-      { name: "ResignValue", leftValue: undefined, rightValue: -3000, mergeable: false },
+      { name: "Depth", leftValue: 2, mergeable: false },
+      { name: "NumberA", leftValue: 2, rightValue: 1, mergeable: true },
+      { name: "NumberB", leftValue: 1, rightValue: 2, mergeable: true },
+      { name: "ResignValue", rightValue: -3000, mergeable: false },
     ]);
   });
 
