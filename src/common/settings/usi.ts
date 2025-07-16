@@ -58,7 +58,7 @@ export type USIEngineOption = {
 );
 
 export function getUSIEngineOptionCurrentValue(
-  option: USIEngineOption | null | undefined,
+  option: USIEngineOption | undefined,
 ): string | number | undefined {
   if (!option || option.type === "button") {
     return;
@@ -282,8 +282,8 @@ function isValidOptionValue(option: USIEngineOption): boolean {
 
 export type USIEngineOptionDiff = {
   name: string;
-  leftValue: string | number | undefined;
-  rightValue: string | number | undefined;
+  leftValue?: string | number;
+  rightValue?: string | number;
   mergeable: boolean;
 };
 
@@ -292,25 +292,25 @@ export function compareUSIEngineOptions(left: USIEngine, right: USIEngine): USIE
   function append(leftOption?: USIEngineOption, rightOption?: USIEngineOption) {
     const leftHasValue = leftOption && leftOption.type !== "button";
     const rightHasValue = rightOption && rightOption.type !== "button";
-    if (leftHasValue && rightHasValue && leftOption.value !== rightOption.value) {
+    const leftValue = getUSIEngineOptionCurrentValue(leftOption);
+    const rightValue = getUSIEngineOptionCurrentValue(rightOption);
+    if (leftHasValue && rightHasValue && leftValue !== rightValue) {
       result.push({
         name: leftOption.name,
-        leftValue: getUSIEngineOptionCurrentValue(leftOption),
-        rightValue: getUSIEngineOptionCurrentValue(rightOption),
+        leftValue,
+        rightValue,
         mergeable: leftOption.type === rightOption.type,
       });
     } else if (leftHasValue && !rightHasValue) {
       result.push({
         name: leftOption.name,
-        leftValue: getUSIEngineOptionCurrentValue(leftOption),
-        rightValue: undefined,
+        leftValue,
         mergeable: false,
       });
     } else if (!leftHasValue && rightHasValue) {
       result.push({
         name: rightOption.name,
-        leftValue: undefined,
-        rightValue: getUSIEngineOptionCurrentValue(rightOption),
+        rightValue,
         mergeable: false,
       });
     }
