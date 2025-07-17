@@ -36,6 +36,9 @@ const bridge: Bridge = {
   updateAppState(): void {
     // DO NOTHING
   },
+  async fetchProcessArgs(): Promise<string> {
+    return "null";
+  },
   onClosable(): void {
     // Do Nothing
   },
@@ -112,9 +115,6 @@ const bridge: Bridge = {
   },
 
   // Record File
-  async fetchInitialRecordFileRequest(): Promise<string> {
-    return "null";
-  },
   async showOpenRecordDialog(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
@@ -335,7 +335,7 @@ const bridge: Bridge = {
   updateLayoutProfileList(): void {
     // Do Nothing
   },
-  onUpdateLayoutProfileList(): void {
+  onUpdateLayoutProfile(): void {
     // Do Nothing
   },
 

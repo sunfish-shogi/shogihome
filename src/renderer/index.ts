@@ -85,14 +85,18 @@ Promise.allSettled([
     .catch((e) => {
       useErrorStore().add(new Error("アプリ設定の読み込み中にエラーが発生しました: " + e));
     }),
-  // 起動時パラメータで指定された棋譜の読み込み
+  // 起動時パラメータの取得
   api
-    .fetchInitialRecordFileRequest()
-    .then((request) => {
-      if (request) {
-        store.openRecord(request.path, {
-          ply: request.ply,
-        });
+    .fetchProcessArgs()
+    .then((args) => {
+      api.log(LogLevel.DEBUG, `args: ${JSON.stringify(args)}`);
+      // 棋譜の読み込み
+      if (args?.path) {
+        store.openRecord(args.path, { ply: args.ply });
+      }
+      // レイアウトの設定
+      if (args?.layoutProfile) {
+        store.updateLayoutProfile(args.layoutProfile);
       }
     })
     .catch((e) => {

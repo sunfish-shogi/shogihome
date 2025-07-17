@@ -98,7 +98,6 @@ import {
   saveBackup,
 } from "@/background/file/history.js";
 import { getAppPath } from "@/background/proc/path-electron.js";
-import { fetchInitialRecordFileRequest } from "@/background/proc/args.js";
 import { isSupportedRecordFilePath } from "@/background/file/extensions.js";
 import { readStatus as readVersionStatus } from "@/background/version.js";
 import { sendTestNotification } from "./debug.js";
@@ -124,6 +123,8 @@ import {
 import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
 import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
+import { LayoutProfileList } from "@/common/settings/layout.js";
+import { ProcessArgs } from "@/common/ipc/process.js";
 
 const isWindows = process.platform === "win32";
 
@@ -143,9 +144,19 @@ export function isClosable(): boolean {
   return closable;
 }
 
-ipcMain.handle(Background.FETCH_INITIAL_RECORD_FILE_REQUEST, (event) => {
+let processArgs: ProcessArgs = {};
+let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
+
+export function setProcessArgs(args: ProcessArgs) {
+  processArgs = args;
+  if (args.layoutProfile) {
+    layoutURI = args.layoutProfile.uri;
+  }
+}
+
+ipcMain.handle(Background.FETCH_PROCESS_ARGS, (event) => {
   validateIPCSender(event.senderFrame);
-  return JSON.stringify(fetchInitialRecordFileRequest());
+  return JSON.stringify(processArgs);
 });
 
 const onUpdateAppStateHandlers: ((
@@ -636,8 +647,6 @@ ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promis
   return JSON.stringify(await importBookMoves(JSON.parse(json), sendProgress));
 });
 
-let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
-
 ipcMain.handle(Background.LOAD_LAYOUT_PROFILE_LIST, async (event): Promise<[string, string]> => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("load layout config");
@@ -649,7 +658,9 @@ ipcMain.on(Background.UPDATE_LAYOUT_PROFILE_LIST, (event, uri: string, json: str
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("update layout: %s", uri);
   layoutURI = uri;
-  mainWindow.webContents.send(Renderer.UPDATE_LAYOUT_PROFILE_LIST, uri, json);
+  const layoutList = JSON.parse(json) as LayoutProfileList;
+  const layout = layoutList.profiles.find((p) => p.uri === uri) || null;
+  mainWindow.webContents.send(Renderer.UPDATE_LAYOUT_PROFILE, layout && JSON.stringify(layout));
   saveLayoutProfileList(JSON.parse(json)).catch((e) => {
     sendError(new Error(`failed to save layout config: ${e}`));
   });

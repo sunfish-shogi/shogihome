@@ -11,6 +11,7 @@ import { LogLevel, LogType } from "@/common/log.js";
 export interface Bridge {
   // Core
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void;
+  fetchProcessArgs(): Promise<string>;
   onClosable(): void;
   onClose(callback: (confirmations: string[]) => void): void;
   onSendError(callback: (e: string) => void): void;
@@ -39,7 +40,6 @@ export interface Bridge {
   onUpdateAppSettings(callback: (json: string) => void): void;
 
   // Record File
-  fetchInitialRecordFileRequest(): Promise<string>;
   showOpenRecordDialog(formats: RecordFileFormat[]): Promise<string>;
   showSaveRecordDialog(defaultPath: string): Promise<string>;
   showSaveMergedRecordDialog(defaultPath: string): Promise<string>;
@@ -130,7 +130,7 @@ export interface Bridge {
   // Layout
   loadLayoutProfileList(): Promise<[string, string]>;
   updateLayoutProfileList(uri: string, profileList: string): void;
-  onUpdateLayoutProfileList(callback: (uri: string, json: string) => void): void;
+  onUpdateLayoutProfile(callback: (json: string | null) => void): void;
 
   // Log
   openLogFile(logType: LogType): void;
