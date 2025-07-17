@@ -106,6 +106,6 @@ export enum Renderer {
   CSA_GAME_RESULT = "csaGameResult",
   CSA_CLOSE = "csaClose",
   PROMPT_COMMAND = "promptCommand",
-  UPDATE_LAYOUT_PROFILE_LIST = "updateLayoutProfileList",
+  UPDATE_LAYOUT_PROFILE = "updateLayoutProfile",
   PROGRESS = "progress",
 }

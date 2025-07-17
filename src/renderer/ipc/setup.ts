@@ -308,8 +308,8 @@ export function setup(): void {
   bridge.onCSAClose(onCSAClose);
 
   // Layout
-  bridge.onUpdateLayoutProfileList((uri, json) => {
-    store.updateLayoutProfileList(uri, JSON.parse(json));
+  bridge.onUpdateLayoutProfile((json) => {
+    store.updateLayoutProfile(json && JSON.parse(json));
   });
 
   // MISC

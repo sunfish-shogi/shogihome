@@ -130,7 +130,7 @@ export interface Bridge {
   // Layout
   loadLayoutProfileList(): Promise<[string, string]>;
   updateLayoutProfileList(uri: string, profileList: string): void;
-  onUpdateLayoutProfileList(callback: (uri: string, json: string) => void): void;
+  onUpdateLayoutProfile(callback: (json: string | null) => void): void;
 
   // Log
   openLogFile(logType: LogType): void;

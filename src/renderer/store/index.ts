@@ -315,8 +315,8 @@ class Store {
     return this._customLayout;
   }
 
-  updateLayoutProfileList(uri: string, profileList: LayoutProfileList): void {
-    this._customLayout = profileList.profiles.find((p) => p.uri === uri) || null;
+  updateLayoutProfile(layout: LayoutProfile | null): void {
+    this._customLayout = layout;
   }
 
   get pvPreview(): PVPreview | undefined {

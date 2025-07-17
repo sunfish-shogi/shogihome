@@ -335,7 +335,7 @@ const bridge: Bridge = {
   updateLayoutProfileList(): void {
     // Do Nothing
   },
-  onUpdateLayoutProfileList(): void {
+  onUpdateLayoutProfile(): void {
     // Do Nothing
   },
 

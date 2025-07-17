@@ -359,9 +359,9 @@ const api: Bridge = {
   updateLayoutProfileList(uri: string, profileList: string): void {
     ipcRenderer.send(Background.UPDATE_LAYOUT_PROFILE_LIST, uri, profileList);
   },
-  onUpdateLayoutProfileList(callback: (uri: string, json: string) => void): void {
-    ipcRenderer.on(Renderer.UPDATE_LAYOUT_PROFILE_LIST, (_, uri, json) => {
-      callback(uri, json);
+  onUpdateLayoutProfile(callback: (json: string | null) => void): void {
+    ipcRenderer.on(Renderer.UPDATE_LAYOUT_PROFILE, (_, json) => {
+      callback(json);
     });
   },
 
