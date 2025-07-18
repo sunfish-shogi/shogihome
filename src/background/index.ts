@@ -19,7 +19,7 @@ import { isLogEnabled } from "@/common/settings/app.js";
 import { createWindow } from "./window/main.js";
 import { spawn } from "child_process";
 import { invoke as invokeHeadless } from "./headless/invoke.js";
-import { setInitialRecordFileRequest } from "./window/ipc.js";
+import { setProcessArgs } from "./window/ipc.js";
 
 const args = parseProcessArgs(process.argv);
 if (args instanceof Error) {
@@ -30,7 +30,7 @@ if (args instanceof Error) {
 switch (args.type) {
   case "gui":
     if (args.path) {
-      setInitialRecordFileRequest({ path: args.path, ply: args.ply });
+      setProcessArgs({ path: args.path, ply: args.ply });
     }
     break;
   case "headless":
@@ -91,7 +91,7 @@ app.once("will-finish-launching", () => {
   app.once("open-file", (event, path) => {
     getAppLogger().info("on open-file: %s", path);
     event.preventDefault();
-    setInitialRecordFileRequest({ path });
+    setProcessArgs({ path });
   });
 });
 

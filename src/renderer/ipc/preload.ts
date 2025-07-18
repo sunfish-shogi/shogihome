@@ -15,6 +15,9 @@ const api: Bridge = {
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void {
     ipcRenderer.send(Background.UPDATE_APP_STATE, appState, researchState, busy);
   },
+  async fetchProcessArgs(): Promise<string> {
+    return await ipcRenderer.invoke(Background.FETCH_PROCESS_ARGS);
+  },
   onClosable(): void {
     ipcRenderer.send(Background.ON_CLOSABLE);
   },
@@ -98,9 +101,6 @@ const api: Bridge = {
   },
 
   // Record File
-  async fetchInitialRecordFileRequest(): Promise<string> {
-    return await ipcRenderer.invoke(Background.FETCH_INITIAL_RECORD_FILE_REQUEST);
-  },
   async showOpenRecordDialog(formats: string[]): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_RECORD_DIALOG, formats);
   },

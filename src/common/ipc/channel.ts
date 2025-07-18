@@ -1,5 +1,5 @@
 export enum Background {
-  FETCH_INITIAL_RECORD_FILE_REQUEST = "fetchInitialRecordFileRequest",
+  FETCH_PROCESS_ARGS = "fetchProcessArgs",
   UPDATE_APP_STATE = "updateAppState",
   OPEN_EXPLORER = "openExplorer",
   OPEN_WEB_BROWSER = "openWebBrowser",

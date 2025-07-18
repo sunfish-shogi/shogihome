@@ -122,8 +122,9 @@ import {
 } from "@/background/book/index.js";
 import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
 import { Message } from "@/common/message.js";
-import { InitialRecordFileRequest, RecordFileFormat } from "@/common/file/record.js";
+import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
+import { ProcessArgs } from "@/common/ipc/process.js";
 
 const isWindows = process.platform === "win32";
 
@@ -143,15 +144,19 @@ export function isClosable(): boolean {
   return closable;
 }
 
-let initialRecordFileRequest: InitialRecordFileRequest | null = null;
+let processArgs: ProcessArgs = {};
+let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
 
-export function setInitialRecordFileRequest(request: InitialRecordFileRequest) {
-  initialRecordFileRequest = request;
+export function setProcessArgs(args: ProcessArgs) {
+  processArgs = args;
+  if (args.layoutProfile) {
+    layoutURI = args.layoutProfile.uri;
+  }
 }
 
-ipcMain.handle(Background.FETCH_INITIAL_RECORD_FILE_REQUEST, (event) => {
+ipcMain.handle(Background.FETCH_PROCESS_ARGS, (event) => {
   validateIPCSender(event.senderFrame);
-  return JSON.stringify(initialRecordFileRequest);
+  return JSON.stringify(processArgs);
 });
 
 const onUpdateAppStateHandlers: ((
@@ -641,10 +646,6 @@ ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promis
   validateIPCSender(event.senderFrame);
   return JSON.stringify(await importBookMoves(JSON.parse(json), sendProgress));
 });
-
-let layoutURI = uri.ES_STANDARD_LAYOUT_PROFILE;
-
-// TODO: 起動時に指定されたレイアウトを反映する
 
 ipcMain.handle(Background.LOAD_LAYOUT_PROFILE_LIST, async (event): Promise<[string, string]> => {
   validateIPCSender(event.senderFrame);

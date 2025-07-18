@@ -260,6 +260,13 @@ export async function loadLayoutProfileList(): Promise<LayoutProfileList> {
   return JSON.parse(await fs.promises.readFile(layoutProfileListPath, "utf8"));
 }
 
+export function loadLayoutProfileListSync(): LayoutProfileList {
+  if (!fs.existsSync(layoutProfileListPath)) {
+    return emptyLayoutProfileList();
+  }
+  return JSON.parse(fs.readFileSync(layoutProfileListPath, "utf8"));
+}
+
 const bookImportSettingsPath = path.join(rootDir, "book_import.json");
 
 export async function saveBookImportSettings(settings: BookImportSettings): Promise<void> {

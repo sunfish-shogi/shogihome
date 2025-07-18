@@ -65,7 +65,7 @@ import { setOnStartSearchHandler, setOnUpdateUSIInfoHandler } from "@/renderer/p
 import { useErrorStore } from "./error.js";
 import { useBusyState } from "./busy.js";
 import { Confirmation, useConfirmationStore } from "./confirm.js";
-import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout.js";
+import { LayoutProfile } from "@/common/settings/layout.js";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp.js";
 import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";

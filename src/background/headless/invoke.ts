@@ -1,10 +1,10 @@
 import path from "node:path";
 import { loadUSIEngines, saveUSIEngines } from "@/background/settings.js";
 import { getAppLogger } from "@/background/log.js";
-import { Headless } from "./command.js";
+import { HeadlessModeOperation } from "./command.js";
 import { getUSIEngineInfo } from "@/background/usi/index.js";
 
-export async function invoke(headless: Headless) {
+export async function invoke(headless: HeadlessModeOperation) {
   switch (headless.operation) {
     case "addEngine":
       await addEngine(headless.path, headless.name, headless.timeout);

@@ -1,9 +1,10 @@
 import { isSupportedRecordFilePath } from "@/background/file/extensions.js";
-import { Headless } from "@/background/headless/command.js";
+import { HeadlessModeOperation } from "@/background/headless/command.js";
+import { ProcessArgs as GUIArgs } from "@/common/ipc/process.js";
+import { LayoutProfile } from "@/common/settings/layout.js";
+import { loadLayoutProfileListSync } from "@/background/settings.js";
 
-type ProcessArgs =
-  | ({ type: "headless" } & Headless)
-  | { type: "gui"; path?: string; ply?: number; layoutProfile?: string };
+type ProcessArgs = ({ type: "headless" } & HeadlessModeOperation) | ({ type: "gui" } & GUIArgs);
 
 export function parseProcessArgs(args: string[]): ProcessArgs | Error {
   // GUI mode option:
@@ -25,10 +26,10 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
   //
   let path;
   let ply;
-  let layoutProfile;
+  let layoutProfile: LayoutProfile | undefined;
   for (let i = 0; i < args.length; i++) {
-    const arg = process.argv[i];
-    const nextArg = process.argv[i + 1];
+    const arg = args[i];
+    const nextArg = args[i + 1];
     if (isSupportedRecordFilePath(arg)) {
       path = arg;
     } else if (arg === "-n" && !isNaN(Number(nextArg))) {
@@ -37,21 +38,22 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
     } else if (/^\+\d+$/.test(arg)) {
       ply = Number(arg.substring(1));
     } else if (arg === "--layout-profile" && nextArg) {
-      layoutProfile = nextArg;
-    } else if (arg === "--add-engine" && nextArg) {
+      const layoutProfileList = loadLayoutProfileListSync();
+      layoutProfile = layoutProfileList.profiles.find((profile) => profile.uri === nextArg);
+    } else if (arg === "--add-engine") {
       const usage = "Usage: --add-engine <path> <name> <timeout>";
-      if (process.argv.length < i + 4) {
+      if (args.length < i + 4) {
         return new Error(usage);
       }
-      const path = process.argv[++i];
+      const path = args[++i];
       if (!path) {
         return new Error("Empty engine path");
       }
-      const name = process.argv[++i];
+      const name = args[++i];
       if (!name) {
         return new Error("Empty engine name");
       }
-      const timeout = Number(process.argv[++i]);
+      const timeout = Number(args[++i]);
       if (isNaN(timeout) || timeout < 0) {
         return new Error("Invalid timeout value");
       }

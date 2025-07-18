@@ -29,12 +29,18 @@
         </div>
       </div>
       <div v-if="customProfile" class="custom-profile column grow scroll">
-        <div class="row">
+        <div>
           <input
             class="profile-name"
             :value="customProfile.name"
             @input="(e) => updateCustomProfileProp('name', inputEventToString(e))"
           />
+        </div>
+        <div class="uri row">
+          <span>{{ customProfile.uri }}</span>
+          <button @click="copyProfileURI">
+            <Icon :icon="IconType.COPY" />
+          </button>
         </div>
         <div class="row">
           <span class="key">{{ t.dialogPosition }}:</span>
@@ -361,6 +367,8 @@ import { useConfirmationStore } from "@/renderer/store/confirm";
 import InfoMessage from "@/renderer/view/dialog/InfoMessage.vue";
 import ErrorMessage from "@/renderer/view/dialog/ErrorMessage.vue";
 import ConfirmDialog from "@/renderer/view/dialog/ConfirmDialog.vue";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons.js";
 
 const appSettings = useAppSettings();
 const messageStore = useMessageStore();
@@ -419,6 +427,14 @@ const importProfile = async () => {
   } catch (e) {
     errorStore.add(new Error(t.failedToImportProfile));
   }
+};
+
+const copyProfileURI = () => {
+  const profile = getCurrentProfile();
+  if (!profile) {
+    return;
+  }
+  navigator.clipboard.writeText(profile.uri);
 };
 
 const updateCustomProfileProp = (key: string, value: unknown) => {
@@ -605,6 +621,15 @@ button {
 }
 .profile-name {
   width: 100%;
+}
+.uri {
+  font-size: 0.8em;
+}
+.uri .icon {
+  width: 16px;
+}
+.uri > *:not(:last-child) {
+  margin-right: 5px;
 }
 .component {
   border: 1px solid var(--dialog-border-color);
