@@ -9,7 +9,12 @@ import {
   shell,
 } from "electron";
 import { openAutoSaveDirectory, openSettingsDirectory } from "@/background/settings.js";
-import { getTailCommand, openLogFile, openLogsDirectory, tailLogFile } from "@/background/log.js";
+import {
+  getTailCommand,
+  getFilePath as getLogFilePath,
+  getRootDir as getRootLogDir,
+  tailLogFile,
+} from "@/background/log.js";
 import {
   onMenuEvent,
   onUpdateAppState,
@@ -405,7 +410,7 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.log,
           click: () => {
-            openLogsDirectory().catch(sendError);
+            openPath(getRootLogDir()).catch(sendError);
           },
         },
         {
@@ -444,19 +449,19 @@ function createMenuTemplate(window: BrowserWindow) {
             {
               label: t.openAppLog,
               click: () => {
-                openLogFile(LogType.APP).catch(sendError);
+                openPath(getLogFilePath(LogType.APP)).catch(sendError);
               },
             },
             {
               label: t.openUSILog,
               click: () => {
-                openLogFile(LogType.USI).catch(sendError);
+                openPath(getLogFilePath(LogType.USI)).catch(sendError);
               },
             },
             {
               label: t.openCSALog,
               click: () => {
-                openLogFile(LogType.CSA).catch(sendError);
+                openPath(getLogFilePath(LogType.CSA)).catch(sendError);
               },
             },
             {
