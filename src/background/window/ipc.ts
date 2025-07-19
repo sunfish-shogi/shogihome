@@ -58,7 +58,7 @@ import {
 } from "@/background/usi/index.js";
 import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
-import { getAppLogger, openLogFile } from "@/background/log.js";
+import { getAppLogger, getFilePath as getLogFilePath } from "@/background/log.js";
 import {
   login as csaLogin,
   logout as csaLogout,
@@ -926,7 +926,7 @@ ipcMain.on(Background.SEND_TEST_NOTIFICATION, (event) => {
 
 ipcMain.on(Background.OPEN_LOG_FILE, (event, logType: LogType) => {
   validateIPCSender(event.senderFrame);
-  openLogFile(logType);
+  openPath(getLogFilePath(logType));
 });
 
 ipcMain.on(Background.LOG, (event, level: LogLevel, message: string) => {

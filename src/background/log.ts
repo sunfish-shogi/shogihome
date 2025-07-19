@@ -4,13 +4,12 @@ import log4js from "log4js";
 import { getDateTimeString } from "@/common/helpers/datetime.js";
 import { isTest } from "./proc/env.js";
 import { LogLevel, LogType } from "@/common/log.js";
-import { openPath } from "./helpers/electron.js";
 import { getAppPath } from "./proc/path-electron.js";
 
 const rootDir = getAppPath("logs");
 
-export function openLogsDirectory(): Promise<void> {
-  return openPath(rootDir);
+export function getRootDir(): string {
+  return rootDir;
 }
 
 const datetime = getDateTimeString().replaceAll(" ", "_").replaceAll("/", "").replaceAll(":", "");
@@ -29,7 +28,7 @@ const config: log4js.Configuration = {
   },
 };
 
-function getFilePath(type: LogType): string {
+export function getFilePath(type: LogType): string {
   switch (type) {
     case LogType.APP:
       return appLogPath;
@@ -107,10 +106,6 @@ export function shutdownLoggers(): void {
     // eslint-disable-next-line no-console
     console.error("failed to shutdown loggers:", e);
   });
-}
-
-export function openLogFile(logType: LogType): Promise<void> {
-  return openPath(getFilePath(logType));
 }
 
 export function getTailCommand(logType: LogType): string {
