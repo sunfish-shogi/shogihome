@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as fs from "fs";
 import * as path from "path";
 import depcheck from "depcheck";
@@ -7,6 +8,7 @@ const name = process.argv[2];
 const packageJsonFileName = "package.json";
 const srcDir = path.join("src/command", name);
 const distDir = path.join("dist/command", name);
+const programFilePath = path.join(distDir, "index.js");
 const outputFilePath = path.join(distDir, packageJsonFileName);
 const readmeSrcFilePath = path.join(srcDir, "README.md");
 const readmeDistFilePath = path.join(distDir, "README.md");
@@ -43,3 +45,11 @@ depcheck(distDir, {
 
 fs.copyFileSync(readmeSrcFilePath, readmeDistFilePath);
 fs.copyFileSync(licenseSrcFilePath, licenseDistFilePath);
+
+// Check if 'electron' is found in the program file
+const program = fs.readFileSync(programFilePath, "utf-8");
+const electronPattern = /\belectron\b/;
+if (electronPattern.test(program)) {
+  console.error(`❌ 'electron' (as a word) is found in ${programFilePath}`);
+  process.exit(1);
+}
