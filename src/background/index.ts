@@ -29,9 +29,7 @@ if (args instanceof Error) {
 
 switch (args.type) {
   case "gui":
-    if (args.path) {
-      setProcessArgs({ path: args.path, ply: args.ply });
-    }
+    setProcessArgs(args);
     break;
   case "headless":
     getAppLogger().info("headless mode enabled");
@@ -91,7 +89,7 @@ app.once("will-finish-launching", () => {
   app.once("open-file", (event, path) => {
     getAppLogger().info("on open-file: %s", path);
     event.preventDefault();
-    setProcessArgs({ path });
+    setProcessArgs({ ...args, path });
   });
 });
 

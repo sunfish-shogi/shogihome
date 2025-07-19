@@ -89,6 +89,7 @@ Promise.allSettled([
   api
     .fetchProcessArgs()
     .then((args) => {
+      api.log(LogLevel.DEBUG, `args: ${JSON.stringify(args)}`);
       // 棋譜の読み込み
       if (args?.path) {
         store.openRecord(args.path, { ply: args.ply });
