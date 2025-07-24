@@ -15,6 +15,9 @@ const api: Bridge = {
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void {
     ipcRenderer.send(Background.UPDATE_APP_STATE, appState, researchState, busy);
   },
+  async fetchProcessArgs(): Promise<string> {
+    return await ipcRenderer.invoke(Background.FETCH_PROCESS_ARGS);
+  },
   onClosable(): void {
     ipcRenderer.send(Background.ON_CLOSABLE);
   },
@@ -98,9 +101,6 @@ const api: Bridge = {
   },
 
   // Record File
-  async fetchInitialRecordFileRequest(): Promise<string> {
-    return await ipcRenderer.invoke(Background.FETCH_INITIAL_RECORD_FILE_REQUEST);
-  },
   async showOpenRecordDialog(formats: string[]): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_RECORD_DIALOG, formats);
   },
@@ -359,9 +359,9 @@ const api: Bridge = {
   updateLayoutProfileList(uri: string, profileList: string): void {
     ipcRenderer.send(Background.UPDATE_LAYOUT_PROFILE_LIST, uri, profileList);
   },
-  onUpdateLayoutProfileList(callback: (uri: string, json: string) => void): void {
-    ipcRenderer.on(Renderer.UPDATE_LAYOUT_PROFILE_LIST, (_, uri, json) => {
-      callback(uri, json);
+  onUpdateLayoutProfile(callback: (json: string | null) => void): void {
+    ipcRenderer.on(Renderer.UPDATE_LAYOUT_PROFILE, (_, json) => {
+      callback(json);
     });
   },
 

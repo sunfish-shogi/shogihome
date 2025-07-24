@@ -1,52 +1,87 @@
-import {
-  fetchInitialRecordFileRequest,
-  parseHeadlessArgs,
-  setInitialFilePath,
-} from "@/background/proc/args.js";
+import { parseProcessArgs } from "@/background/proc/args.js";
+import { ProcessArgs } from "@/common/ipc/process.js";
+import * as settings from "@/background/settings.js";
+import { Mocked } from "vitest";
+
+vi.mock("@/background/settings.js");
+
+const mockSettings = settings as Mocked<typeof settings>;
 
 describe("args", () => {
   afterEach(() => {
-    setInitialFilePath("");
+    vi.clearAllMocks();
   });
 
   it("normal", () => {
-    process.argv = ["node", "/path/to/record.kif"];
-    const request = fetchInitialRecordFileRequest();
-    expect(request?.path).toEqual("/path/to/record.kif");
-    expect(request?.ply).toBeUndefined();
+    const args = parseProcessArgs(["node", "/path/to/record.kif"]);
+    expect(args).not.toBeInstanceOf(Error);
+    expect(args).toEqual({
+      type: "gui",
+      path: "/path/to/record.kif",
+      ply: undefined,
+      layoutProfile: undefined,
+    });
   });
 
   it("ShogiGUI-style", () => {
-    process.argv = ["node", "/path/to/record.kif", "-n", "123"];
-    const request = fetchInitialRecordFileRequest();
-    expect(request?.path).toEqual("/path/to/record.kif");
-    expect(request?.ply).toBe(123);
+    const args = parseProcessArgs(["node", "/path/to/record.kif", "-n", "123"]) as ProcessArgs;
+    expect(args.path).toEqual("/path/to/record.kif");
+    expect(args.ply).toBe(123);
   });
 
   it("KifuBase-style", () => {
-    process.argv = ["node", "/path/to/record.kif", "+123"];
-    const request = fetchInitialRecordFileRequest();
-    expect(request?.path).toEqual("/path/to/record.kif");
-    expect(request?.ply).toBe(123);
+    const args = parseProcessArgs(["node", "/path/to/record.kif", "+123"]) as ProcessArgs;
+    expect(args.path).toEqual("/path/to/record.kif");
+    expect(args.ply).toBe(123);
   });
 
-  it("mac", () => {
-    setInitialFilePath("/path/to/record.kif");
-    const request = fetchInitialRecordFileRequest();
-    expect(request?.path).toEqual("/path/to/record.kif");
-    expect(request?.ply).toBeUndefined();
-  });
+  it("custom-layout-profile", () => {
+    mockSettings.loadLayoutProfileListSync.mockReturnValue({
+      profiles: [
+        {
+          uri: "es://layout-profile/test",
+          name: "Test Layout Profile",
+          components: [],
+        },
+      ],
+    });
+    const args = parseProcessArgs([
+      "node",
+      "/path/to/record.kif",
+      "--layout-profile",
+      "es://layout-profile/test",
+    ]) as ProcessArgs;
+    expect(args).not.toBeInstanceOf(Error);
+    expect(args).toEqual({
+      type: "gui",
+      path: "/path/to/record.kif",
+      ply: undefined,
+      layoutProfile: {
+        uri: "es://layout-profile/test",
+        name: "Test Layout Profile",
+        components: [],
+      },
+    });
 
-  it("headless/no-op", () => {
-    process.argv = ["node", "/path/to/record.kif"];
-    const result = parseHeadlessArgs();
-    expect(result).toBeNull();
+    const error = parseProcessArgs([
+      "node",
+      "/path/to/record.kif",
+      "--layout-profile",
+      "es://layout-profile/invalid",
+    ]);
+    expect(error).toBeInstanceOf(Error);
   });
 
   it("headless/add-engine", () => {
-    process.argv = ["node", "--add-engine", "/path/to/engine", "EngineName", "30"];
-    const result = parseHeadlessArgs();
-    expect(result).toEqual({
+    const args = parseProcessArgs([
+      "node",
+      "--add-engine",
+      "/path/to/engine",
+      "EngineName",
+      "30",
+    ]) as ProcessArgs;
+    expect(args).toEqual({
+      type: "headless",
       operation: "addEngine",
       path: "/path/to/engine",
       name: "EngineName",
@@ -55,26 +90,28 @@ describe("args", () => {
   });
 
   it("headless/add-engine/few-args", () => {
-    process.argv = ["node", "--add-engine", "/path/to/engine"];
-    const result = parseHeadlessArgs();
-    expect(result).toBeInstanceOf(Error);
+    const args = parseProcessArgs(["node", "--add-engine", "/path/to/engine"]);
+    expect(args).toBeInstanceOf(Error);
   });
 
   it("headless/add-engine/empty-engine-path", () => {
-    process.argv = ["node", "--add-engine", "", "EngineName", "30"];
-    const result = parseHeadlessArgs();
-    expect(result).toBeInstanceOf(Error);
+    const args = parseProcessArgs(["node", "--add-engine", "", "EngineName", "30"]);
+    expect(args).toBeInstanceOf(Error);
   });
 
   it("headless/add-engine/empty-engine-name", () => {
-    process.argv = ["node", "--add-engine", "/path/to/engine", "", "30"];
-    const result = parseHeadlessArgs();
-    expect(result).toBeInstanceOf(Error);
+    const args = parseProcessArgs(["node", "--add-engine", "/path/to/engine", "", "30"]);
+    expect(args).toBeInstanceOf(Error);
   });
 
   it("headless/add-engine/invalid-timeout", () => {
-    process.argv = ["node", "--add-engine", "/path/to/engine", "EngineName", "invalid"];
-    const result = parseHeadlessArgs();
-    expect(result).toBeInstanceOf(Error);
+    const args = parseProcessArgs([
+      "node",
+      "--add-engine",
+      "/path/to/engine",
+      "EngineName",
+      "invalid",
+    ]);
+    expect(args).toBeInstanceOf(Error);
   });
 });
