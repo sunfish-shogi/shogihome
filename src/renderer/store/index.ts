@@ -751,10 +751,15 @@ class Store {
     if (appSettings.clockSoundTarget === ClockSoundTarget.ONLY_USER && !this.isMovableByUser) {
       return;
     }
-    beepShort({
-      frequency: appSettings.clockPitch,
-      volume: appSettings.clockVolume,
-    });
+    // An exception may be thrown if the audio API is not supported.
+    try {
+      beepShort({
+        frequency: appSettings.clockPitch,
+        volume: appSettings.clockVolume,
+      });
+    } catch (e) {
+      useErrorStore().add(e);
+    }
   }
 
   private onBeepUnlimited(): void {
@@ -762,10 +767,15 @@ class Store {
     if (appSettings.clockSoundTarget === ClockSoundTarget.ONLY_USER && !this.isMovableByUser) {
       return;
     }
-    beepUnlimited({
-      frequency: appSettings.clockPitch,
-      volume: appSettings.clockVolume,
-    });
+    // An exception may be thrown if the audio API is not supported.
+    try {
+      beepUnlimited({
+        frequency: appSettings.clockPitch,
+        volume: appSettings.clockVolume,
+      });
+    } catch (e) {
+      useErrorStore().add(e);
+    }
   }
 
   doMove(move: Move): void {
@@ -776,7 +786,12 @@ class Store {
       return;
     }
     const appSettings = useAppSettings();
-    playPieceBeat(appSettings.pieceVolume);
+    // An exception may be thrown if the audio API is not supported.
+    try {
+      playPieceBeat(appSettings.pieceVolume);
+    } catch (e) {
+      useErrorStore().add(e);
+    }
   }
 
   private onFinish(): void {
