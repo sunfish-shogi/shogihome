@@ -9,6 +9,9 @@ function getAudioContext(): AudioContext {
 }
 
 function beep(params: { frequency: number; volume: number; time?: number }): void {
+  if (params.volume <= 0) {
+    return;
+  }
   if (lastLongBeep) {
     return;
   }
@@ -58,6 +61,9 @@ export function stopBeep(): void {
 let lastPieceBeatTime: number;
 
 export function playPieceBeat(volume: number): void {
+  if (volume <= 0) {
+    return;
+  }
   const time = Date.now();
   if (lastPieceBeatTime && time < lastPieceBeatTime + 200) {
     return;
