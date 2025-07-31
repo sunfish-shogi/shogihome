@@ -1,5 +1,5 @@
 export enum Background {
-  FETCH_INITIAL_RECORD_FILE_REQUEST = "fetchInitialRecordFileRequest",
+  FETCH_PROCESS_ARGS = "fetchProcessArgs",
   UPDATE_APP_STATE = "updateAppState",
   OPEN_EXPLORER = "openExplorer",
   OPEN_WEB_BROWSER = "openWebBrowser",
@@ -106,6 +106,6 @@ export enum Renderer {
   CSA_GAME_RESULT = "csaGameResult",
   CSA_CLOSE = "csaClose",
   PROMPT_COMMAND = "promptCommand",
-  UPDATE_LAYOUT_PROFILE_LIST = "updateLayoutProfileList",
+  UPDATE_LAYOUT_PROFILE = "updateLayoutProfile",
   PROGRESS = "progress",
 }

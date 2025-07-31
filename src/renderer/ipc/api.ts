@@ -13,7 +13,7 @@ import { MateSearchSettings } from "@/common/settings/mate.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import { BatchConversionResult } from "@/common/file/conversion.js";
 import { RecordFileHistory } from "@/common/file/history.js";
-import { InitialRecordFileRequest, RecordFileFormat } from "@/common/file/record.js";
+import { RecordFileFormat } from "@/common/file/record.js";
 import { VersionStatus } from "@/common/version.js";
 import { SessionStates } from "@/common/advanced/monitor.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -23,6 +23,7 @@ import { TimeStates } from "@/common/game/time.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
 import { BookImportSummary, BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
 import { BookImportSettings } from "@/common/settings/book.js";
+import { ProcessArgs } from "@/common/ipc/process.js";
 
 type AppInfo = {
   appVersion?: string;
@@ -31,6 +32,7 @@ type AppInfo = {
 export interface API {
   // Core
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void;
+  fetchProcessArgs(): Promise<ProcessArgs>;
 
   // Settings
   loadAppSettings(): Promise<AppSettings>;
@@ -53,7 +55,6 @@ export interface API {
   saveBookImportSettings(settings: BookImportSettings): Promise<void>;
 
   // Record File
-  fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest>;
   showOpenRecordDialog(formats: RecordFileFormat[]): Promise<string>;
   showSaveRecordDialog(defaultPath: string): Promise<string>;
   showSaveMergedRecordDialog(defaultPath: string): Promise<string>;
@@ -158,6 +159,11 @@ export const bridge: Bridge = getWindowObject().electronShogiAPI || webAPI;
 const api: API = {
   ...bridge,
 
+  // Core
+  async fetchProcessArgs(): Promise<ProcessArgs> {
+    return JSON.parse(await bridge.fetchProcessArgs());
+  },
+
   // Settings
   async loadAppSettings(): Promise<AppSettings> {
     return JSON.parse(await bridge.loadAppSettings());
@@ -218,9 +224,6 @@ const api: API = {
   },
 
   // Record File
-  async fetchInitialRecordFileRequest(): Promise<InitialRecordFileRequest> {
-    return JSON.parse(await bridge.fetchInitialRecordFileRequest());
-  },
   async convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult> {
     return JSON.parse(await bridge.convertRecordFiles(JSON.stringify(settings)));
   },

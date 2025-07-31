@@ -17,6 +17,7 @@ import { SessionStates } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
+import { ProcessArgs } from "@/common/ipc/process";
 
 enum STORAGE_KEY {
   APP_SETTINGS = "appSetting",
@@ -35,6 +36,9 @@ export const webAPI: Bridge = {
   // Core
   updateAppState(): void {
     // DO NOTHING
+  },
+  async fetchProcessArgs(): Promise<string> {
+    return JSON.stringify({} as ProcessArgs);
   },
   onClosable(): void {
     // Do Nothing
@@ -164,9 +168,6 @@ export const webAPI: Bridge = {
   },
 
   // Record File
-  async fetchInitialRecordFileRequest(): Promise<string> {
-    return "null";
-  },
   async showOpenRecordDialog(formats: string[]): Promise<string> {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -425,7 +426,7 @@ export const webAPI: Bridge = {
   updateLayoutProfileList(): void {
     // Do Nothing
   },
-  onUpdateLayoutProfileList(): void {
+  onUpdateLayoutProfile(): void {
     // Do Nothing
   },
 

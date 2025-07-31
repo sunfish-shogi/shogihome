@@ -12,12 +12,38 @@ import { isActiveSessionExists, quitAll as usiQuitAll } from "@/background/usi/i
 import { validateHTTPRequest } from "./window/security.js";
 import { getPortableExeDir, isDevelopment, isPortable, isTest } from "@/background/proc/env.js";
 import { setLanguage, t } from "@/common/i18n/index.js";
-import { setInitialFilePath } from "./proc/args.js";
+import { parseProcessArgs } from "./proc/args.js";
 import contextMenu from "electron-context-menu";
 import { LogType } from "@/common/log.js";
 import { isLogEnabled } from "@/common/settings/app.js";
 import { createWindow } from "./window/main.js";
 import { spawn } from "child_process";
+import { invoke as invokeHeadless } from "./headless/invoke.js";
+import { setProcessArgs } from "./window/ipc.js";
+
+const args = parseProcessArgs(process.argv);
+if (args instanceof Error) {
+  getAppLogger().error(`Failed to parse headless args: ${args.message}`);
+  process.exit(1);
+}
+
+switch (args.type) {
+  case "gui":
+    setProcessArgs(args);
+    break;
+  case "headless":
+    getAppLogger().info("headless mode enabled");
+    invokeHeadless(args)
+      .then(() => {
+        getAppLogger().info("headless operation completed");
+        process.exit(0);
+      })
+      .catch((e) => {
+        getAppLogger().error(`Headless operation failed: ${e.message}`);
+        process.exit(1);
+      });
+    break;
+}
 
 const appSettings = loadAppSettingsOnce();
 for (const type of Object.values(LogType)) {
@@ -63,7 +89,7 @@ app.once("will-finish-launching", () => {
   app.once("open-file", (event, path) => {
     getAppLogger().info("on open-file: %s", path);
     event.preventDefault();
-    setInitialFilePath(path);
+    setProcessArgs({ ...args, path });
   });
 });
 
@@ -101,6 +127,10 @@ function onMainWindowClosed() {
 }
 
 app.on("activate", () => {
+  // Do not create a window in headless mode.
+  if (args.type === "headless") {
+    return;
+  }
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
@@ -159,6 +189,11 @@ app.on("ready", () => {
     validateHTTPRequest(details.method, details.url);
     callback({});
   });
+
+  // Do not create a window in headless mode.
+  if (args.type === "headless") {
+    return;
+  }
   createWindow(onMainWindowClosed);
 });
 

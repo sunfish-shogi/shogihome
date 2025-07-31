@@ -19,6 +19,7 @@
       :candidates="store.candidates"
       :flip="appSettings.boardFlipping"
       :hide-clock="store.appState !== AppState.GAME && store.appState !== AppState.CSA_GAME"
+      :mobile="isMobileWebApp()"
       :allow-move="store.isMovableByUser"
       :allow-edit="store.appState === AppState.POSITION_EDITING"
       :black-player-name="blackPlayerName"
