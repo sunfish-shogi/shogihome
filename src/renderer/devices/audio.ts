@@ -1,52 +1,53 @@
 let lastLongBeep: OscillatorNode | undefined;
+let context: AudioContext | undefined;
 
-function beep(options?: {
-  type?: OscillatorType;
-  frequency?: number;
-  time?: number;
-  volume?: number;
-}): void {
+function getAudioContext(): AudioContext {
+  if (!context || context.state === "closed") {
+    context = new AudioContext();
+  }
+  return context;
+}
+
+function beep(params: { frequency: number; volume: number; time?: number }): void {
+  if (params.volume <= 0) {
+    return;
+  }
   if (lastLongBeep) {
     return;
   }
-  const type = options?.type || "sine";
-  const frequency = options?.frequency || 440;
-  const volume = options?.volume || 2;
-  const context = new AudioContext();
+  const context = getAudioContext();
   const oscillator = context.createOscillator();
   const gain = context.createGain();
   oscillator.connect(gain);
   gain.connect(context.destination);
-  oscillator.type = type;
-  oscillator.frequency.value = frequency;
-  gain.gain.value = volume * 0.005;
+  oscillator.type = "sine";
+  oscillator.frequency.value = params.frequency;
+  gain.gain.value = params.volume * 0.005;
   oscillator.onended = () => {
     gain.disconnect(context.destination);
     oscillator.disconnect(gain);
   };
   oscillator.start(context.currentTime);
-  if (options?.time) {
-    oscillator.stop(context.currentTime + options.time);
+  if (params?.time) {
+    oscillator.stop(context.currentTime + params.time);
   }
-  if (!options?.time) {
+  if (!params?.time) {
     lastLongBeep = oscillator;
   }
 }
 
-export function beepShort(options: { frequency?: number; volume?: number }): void {
+export function beepShort(params: { frequency: number; volume: number }): void {
   beep({
-    type: "sine",
-    frequency: options.frequency,
+    frequency: params.frequency,
     time: 0.1,
-    volume: options.volume,
+    volume: params.volume,
   });
 }
 
-export function beepUnlimited(options: { frequency?: number; volume?: number }): void {
+export function beepUnlimited(params: { frequency: number; volume: number }): void {
   beep({
-    type: "sine",
-    frequency: options.frequency,
-    volume: options.volume,
+    frequency: params.frequency,
+    volume: params.volume,
   });
 }
 
@@ -60,6 +61,9 @@ export function stopBeep(): void {
 let lastPieceBeatTime: number;
 
 export function playPieceBeat(volume: number): void {
+  if (volume <= 0) {
+    return;
+  }
   const time = Date.now();
   if (lastPieceBeatTime && time < lastPieceBeatTime + 200) {
     return;
