@@ -31,9 +31,11 @@ export const vi: Texts = {
   cut: "Cắt",
   paste: "Dán",
   copyRecord: "Sao chép kỳ phổ",
+  copyRecordFromCurrentPosition: "Sao chép kỳ phổ (現在の局面から)", // TODO: Translate
   asKIF: "dưới dạng KIF",
   asKI2: "dưới dạng KI2",
   asCSA: "dưới dạng CSA",
+  asUSI: "dưới dạng USI",
   asUSIUntilCurrentMove: "dưới dạng USI (cho tới nước hiện tại)",
   asUSIAll: "dưới dạng USI (toàn bộ)",
   asJSONKifuFormat: "dưới dạng kỳ phổ JSON",

@@ -136,6 +136,17 @@ function createMenuTemplate(window: BrowserWindow) {
           ],
         },
         {
+          label: t.copyRecordFromCurrentPosition,
+          submenu: [
+            menuItem(t.asKIF, MenuEvent.COPY_RECORD_FROM_CURRENT_POSITION, null),
+            menuItem(t.asKI2, MenuEvent.COPY_RECORD_KI2_FROM_CURRENT_POSITION, null),
+            menuItem(t.asCSA, MenuEvent.COPY_RECORD_CSA_FROM_CURRENT_POSITION, null),
+            menuItem(t.asUSI, MenuEvent.COPY_RECORD_USI_FROM_CURRENT_POSITION, null),
+            menuItem(t.asJSONKifuFormat, MenuEvent.COPY_RECORD_JKF_FROM_CURRENT_POSITION, null),
+            menuItem(t.asUSEN, MenuEvent.COPY_RECORD_USEN_FROM_CURRENT_POSITION, null),
+          ],
+        },
+        {
           label: t.copyPosition,
           submenu: [
             menuItem(t.asSFEN, MenuEvent.COPY_BOARD_SFEN, null),

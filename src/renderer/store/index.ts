@@ -1126,48 +1126,66 @@ class Store {
     return false;
   }
 
-  copyRecordKIF(): void {
+  copyRecordKIF(options?: { fromCurrentPosition?: boolean }): void {
     const appSettings = useAppSettings();
-    const str = exportKIF(this.recordManager.record, {
+    const record = options?.fromCurrentPosition
+      ? this.recordManager.record.getSubtree()
+      : this.recordManager.record;
+    const str = exportKIF(record, {
       returnCode: appSettings.returnCode,
     });
     navigator.clipboard.writeText(str);
   }
 
-  copyRecordKI2(): void {
+  copyRecordKI2(options?: { fromCurrentPosition?: boolean }): void {
     const appSettings = useAppSettings();
-    const str = exportKI2(this.recordManager.record, {
+    const record = options?.fromCurrentPosition
+      ? this.recordManager.record.getSubtree()
+      : this.recordManager.record;
+    const str = exportKI2(record, {
       returnCode: appSettings.returnCode,
     });
     navigator.clipboard.writeText(str);
   }
 
-  copyRecordCSA(): void {
+  copyRecordCSA(options?: { fromCurrentPosition?: boolean }): void {
     const appSettings = useAppSettings();
-    const str = exportCSA(this.recordManager.record, {
+    const record = options?.fromCurrentPosition
+      ? this.recordManager.record.getSubtree()
+      : this.recordManager.record;
+    const str = exportCSA(record, {
       returnCode: appSettings.returnCode,
       v3: appSettings.useCSAV3 ? { milliseconds: true } : undefined,
     });
     navigator.clipboard.writeText(str);
   }
 
-  copyRecordUSIBefore(): void {
+  copyRecordUSI(target: "all" | "before" | "after"): void {
     const appSettings = useAppSettings();
-    const str = this.recordManager.record.getUSI({
+    const record =
+      target === "after" ? this.recordManager.record.getSubtree() : this.recordManager.record;
+    const str = record.getUSI({
       startpos: appSettings.enableUSIFileStartpos,
       resign: appSettings.enableUSIFileResign,
+      allMoves: target !== "before",
     });
     navigator.clipboard.writeText(str);
   }
 
-  copyRecordUSIAll(): void {
-    const appSettings = useAppSettings();
-    const str = this.recordManager.record.getUSI({
-      startpos: appSettings.enableUSIFileStartpos,
-      resign: appSettings.enableUSIFileResign,
-      allMoves: true,
-    });
+  copyRecordJKF(options?: { fromCurrentPosition?: boolean }): void {
+    const record = options?.fromCurrentPosition
+      ? this.recordManager.record.getSubtree()
+      : this.recordManager.record;
+    const str = exportJKFString(record);
     navigator.clipboard.writeText(str);
+  }
+
+  copyRecordUSEN(options?: { fromCurrentPosition?: boolean }): void {
+    const record = options?.fromCurrentPosition
+      ? this.recordManager.record.getSubtree()
+      : this.recordManager.record;
+    const [usen] = record.usen;
+    navigator.clipboard.writeText(usen);
   }
 
   copyBoardSFEN(): void {
@@ -1178,16 +1196,6 @@ class Store {
   copyBoardBOD(): void {
     const str = exportBOD(this.recordManager.record);
     navigator.clipboard.writeText(str);
-  }
-
-  copyRecordJKF(): void {
-    const str = exportJKFString(this.recordManager.record);
-    navigator.clipboard.writeText(str);
-  }
-
-  copyRecordUSEN(): void {
-    const [usen] = this.recordManager.record.usen;
-    navigator.clipboard.writeText(usen);
   }
 
   pasteRecord(data: string): void {

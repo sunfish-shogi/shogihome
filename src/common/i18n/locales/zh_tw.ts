@@ -31,9 +31,11 @@ export const zh_tw: Texts = {
   cut: "剪下",
   paste: "貼上",
   copyRecord: "複製棋譜",
+  copyRecordFromCurrentPosition: "複製棋譜 (現在の局面から)", // TODO: Translate
   asKIF: "KIF形式",
   asKI2: "KI2形式",
   asCSA: "CSA形式",
+  asUSI: "USI形式",
   asUSIUntilCurrentMove: "USI形式(到目前手數為止)",
   asUSIAll: "USI形式(全部)",
   asJSONKifuFormat: "JSON Kifu Format",

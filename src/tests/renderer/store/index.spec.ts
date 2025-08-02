@@ -566,7 +566,7 @@ describe("store/index", () => {
     expect(store.record.moves.length).toBe(6);
   });
 
-  it("copyRecordKIF", () => {
+  it("copyRecord", async () => {
     const writeText = vi.fn();
     vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
       Object.assign(navigator, {
@@ -576,60 +576,113 @@ describe("store/index", () => {
       }),
     );
     const store = createStore();
+    store.pasteRecord("position startpos moves 2g2f 3c3d 7g7f 4a3b");
+    store.changePly(2);
+
     store.copyRecordKIF();
-    expect(writeText).toBeCalledTimes(1);
-    expect(writeText.mock.calls[0][0]).toBe(
-      "手合割：平手\r\n" + "手数----指手---------消費時間--\r\n",
+    expect(writeText).lastCalledWith(
+      "手合割：平手\r\n" +
+        "手数----指手---------消費時間--\r\n" +
+        "   1 ２六歩(27)   ( 0:00/00:00:00)\r\n" +
+        "   2 ３四歩(33)   ( 0:00/00:00:00)\r\n" +
+        "   3 ７六歩(77)   ( 0:00/00:00:00)\r\n" +
+        "   4 ３二金(41)   ( 0:00/00:00:00)\r\n",
     );
-  });
 
-  it("copyRecordCSA", () => {
-    const writeText = vi.fn();
-    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
-      Object.assign(navigator, {
-        clipboard: {
-          writeText,
-        },
-      }),
+    store.copyRecordKIF({ fromCurrentPosition: true });
+    expect(writeText).lastCalledWith(
+      "後手の持駒：なし\r\n" +
+        "  ９ ８ ７ ６ ５ ４ ３ ２ １\r\n" +
+        "+---------------------------+\r\n" +
+        "|v香v桂v銀v金v玉v金v銀v桂v香|一\r\n" +
+        "| ・v飛 ・ ・ ・ ・ ・v角 ・|二\r\n" +
+        "|v歩v歩v歩v歩v歩v歩 ・v歩v歩|三\r\n" +
+        "| ・ ・ ・ ・ ・ ・v歩 ・ ・|四\r\n" +
+        "| ・ ・ ・ ・ ・ ・ ・ ・ ・|五\r\n" +
+        "| ・ ・ ・ ・ ・ ・ ・ 歩 ・|六\r\n" +
+        "| 歩 歩 歩 歩 歩 歩 歩 ・ 歩|七\r\n" +
+        "| ・ 角 ・ ・ ・ ・ ・ 飛 ・|八\r\n" +
+        "| 香 桂 銀 金 玉 金 銀 桂 香|九\r\n" +
+        "+---------------------------+\r\n" +
+        "先手の持駒：なし\r\n" +
+        "先手番\r\n" +
+        "手数----指手---------消費時間--\r\n" +
+        "   1 ７六歩(77)   ( 0:00/00:00:00)\r\n" +
+        "   2 ３二金(41)   ( 0:00/00:00:00)\r\n",
     );
-    const store = createStore();
+
+    store.copyRecordKI2();
+    expect(writeText).lastCalledWith("手合割：平手\r\n▲２六歩    △３四歩    ▲７六歩    △３二金");
+
+    store.copyRecordKI2({ fromCurrentPosition: true });
+    expect(writeText).lastCalledWith(
+      "後手の持駒：なし\r\n" +
+        "  ９ ８ ７ ６ ５ ４ ３ ２ １\r\n" +
+        "+---------------------------+\r\n" +
+        "|v香v桂v銀v金v玉v金v銀v桂v香|一\r\n" +
+        "| ・v飛 ・ ・ ・ ・ ・v角 ・|二\r\n" +
+        "|v歩v歩v歩v歩v歩v歩 ・v歩v歩|三\r\n" +
+        "| ・ ・ ・ ・ ・ ・v歩 ・ ・|四\r\n" +
+        "| ・ ・ ・ ・ ・ ・ ・ ・ ・|五\r\n" +
+        "| ・ ・ ・ ・ ・ ・ ・ 歩 ・|六\r\n" +
+        "| 歩 歩 歩 歩 歩 歩 歩 ・ 歩|七\r\n" +
+        "| ・ 角 ・ ・ ・ ・ ・ 飛 ・|八\r\n" +
+        "| 香 桂 銀 金 玉 金 銀 桂 香|九\r\n" +
+        "+---------------------------+\r\n" +
+        "先手の持駒：なし\r\n" +
+        "先手番\r\n" +
+        "▲７六歩    △３二金",
+    );
+
     store.copyRecordCSA();
-    expect(writeText).toBeCalledTimes(1);
-    expect(writeText.mock.calls[0][0]).toBe("V2.2\r\nPI\r\n+\r\n");
-  });
-
-  it("copyRecordCSA/v3", async () => {
-    const writeText = vi.fn();
-    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
-      Object.assign(navigator, {
-        clipboard: {
-          writeText,
-        },
-      }),
+    expect(writeText).lastCalledWith(
+      "V2.2\r\nPI\r\n+\r\n+2726FU\r\nT0\r\n-3334FU\r\nT0\r\n+7776FU\r\nT0\r\n-4132KI\r\nT0\r\n",
     );
+
+    store.copyRecordCSA({ fromCurrentPosition: true });
+    expect(writeText).lastCalledWith(
+      "V2.2\r\n" +
+        "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\r\n" +
+        "P2 * -HI *  *  *  *  * -KA * \r\n" +
+        "P3-FU-FU-FU-FU-FU-FU * -FU-FU\r\n" +
+        "P4 *  *  *  *  *  * -FU *  * \r\n" +
+        "P5 *  *  *  *  *  *  *  *  * \r\n" +
+        "P6 *  *  *  *  *  *  * +FU * \r\n" +
+        "P7+FU+FU+FU+FU+FU+FU+FU * +FU\r\n" +
+        "P8 * +KA *  *  *  *  * +HI * \r\n" +
+        "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\r\n" +
+        "P+\r\n" +
+        "P-\r\n" +
+        "+\r\n+7776FU\r\nT0\r\n-4132KI\r\nT0\r\n",
+    );
+
     await useAppSettings().updateAppSettings({ useCSAV3: true });
-    const store = createStore();
     store.copyRecordCSA();
-    expect(writeText).toBeCalledTimes(1);
-    expect(writeText.mock.calls[0][0]).toBe("'CSA encoding=UTF-8\r\nV3.0\r\nPI\r\n+\r\n");
-  });
-
-  it("copyRecordUSEN", () => {
-    const writeText = vi.fn();
-    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
-      Object.assign(navigator, {
-        clipboard: {
-          writeText,
-        },
-      }),
+    expect(writeText).lastCalledWith(
+      "'CSA encoding=UTF-8\r\nV3.0\r\nPI\r\n+\r\n+2726FU\r\nT0\r\n-3334FU\r\nT0\r\n+7776FU\r\nT0\r\n-4132KI\r\nT0\r\n",
     );
-    const store = createStore();
+
+    store.copyRecordUSI("all");
+    expect(writeText).lastCalledWith("position startpos moves 2g2f 3c3d 7g7f 4a3b");
+
+    store.copyRecordUSI("before");
+    expect(writeText).lastCalledWith("position startpos moves 2g2f 3c3d");
+
+    store.copyRecordUSI("after");
+    expect(writeText).lastCalledWith(
+      "position sfen lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1 moves 7g7f 4a3b",
+    );
+
+    store.copyRecordJKF();
+    expect(writeText).lastCalledWith(
+      '{"header":{},"initial":{"preset":"HIRATE"},"moves":[{},{"time":{"now":{"m":0,"s":0},"total":{"h":0,"m":0,"s":0}},"move":{"color":0,"piece":"FU","to":{"x":2,"y":6},"from":{"x":2,"y":7}}},{"time":{"now":{"m":0,"s":0},"total":{"h":0,"m":0,"s":0}},"move":{"color":1,"piece":"FU","to":{"x":3,"y":4},"from":{"x":3,"y":3}}},{"time":{"now":{"m":0,"s":0},"total":{"h":0,"m":0,"s":0}},"move":{"color":0,"piece":"FU","to":{"x":7,"y":6},"from":{"x":7,"y":7}}},{"time":{"now":{"m":0,"s":0},"total":{"h":0,"m":0,"s":0}},"move":{"color":1,"piece":"KI","to":{"x":3,"y":2},"from":{"x":4,"y":1}}}]}',
+    );
+
     store.copyRecordUSEN();
-    expect(writeText).toBeCalledTimes(1);
-    expect(writeText.mock.calls[0][0]).toBe("~0..");
+    expect(writeText).lastCalledWith("~0.6y22jm7ku0e4.");
   });
 
-  it("copyBoardBOD", () => {
+  it("copyBoard", () => {
     const writeText = vi.fn();
     vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
       Object.assign(navigator, {
@@ -640,9 +693,14 @@ describe("store/index", () => {
     );
     const store = createStore();
     store.pasteRecord(sampleKIF);
+
+    store.copyBoardSFEN();
+    expect(writeText).lastCalledWith(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+    );
+
     store.copyBoardBOD();
-    expect(writeText).toBeCalledTimes(1);
-    expect(writeText.mock.calls[0][0]).toBe(`後手の持駒：なし
+    expect(writeText).lastCalledWith(`後手の持駒：なし
   ９ ８ ７ ６ ５ ４ ３ ２ １
 +---------------------------+
 |v香v桂v銀v金v玉v金v銀v桂v香|一

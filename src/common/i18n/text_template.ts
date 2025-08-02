@@ -29,9 +29,11 @@ export type Texts = {
   cut: string;
   paste: string;
   copyRecord: string;
+  copyRecordFromCurrentPosition: string;
   asKIF: string;
   asKI2: string;
   asCSA: string;
+  asUSI: string;
   asUSIUntilCurrentMove: string;
   asUSIAll: string;
   asJSONKifuFormat: string;
