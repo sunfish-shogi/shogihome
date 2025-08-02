@@ -159,6 +159,17 @@ function createMenuTemplate(window: BrowserWindow) {
           [AppState.NORMAL],
           isMac ? undefined : "CmdOrCtrl+V",
         ),
+        {
+          label: "棋譜貼り付け(マージ)",
+          submenu: [
+            menuItem("棋譜の先頭へ", MenuEvent.PASTE_RECORD_MERGE_INTO_ROOT_POSITION, [
+              AppState.NORMAL,
+            ]),
+            menuItem("現在の位置へ", MenuEvent.PASTE_RECORD_MERGE_INTO_CURRENT_POSITION, [
+              AppState.NORMAL,
+            ]),
+          ],
+        },
         { type: "separator" },
         {
           label: t.addSpecialMove,

@@ -80,6 +80,7 @@ type replaceRecordOption = {
 
 export type ImportRecordOption = {
   type?: RecordFormatType;
+  mode?: "standard" | "mergeIntoRoot" | "mergeIntoCurrent";
   markAsSaved?: boolean;
 };
 
@@ -498,8 +499,17 @@ export class RecordManager {
     if (recordOrError instanceof Error) {
       return recordOrError;
     }
-    this.replaceRecord(recordOrError, option);
-    return;
+    switch (option?.mode || "standard") {
+      case "standard":
+        this.replaceRecord(recordOrError, option);
+        break;
+      case "mergeIntoRoot":
+        this.mergeRecord(recordOrError);
+        break;
+      case "mergeIntoCurrent":
+        this.mergeRecordIntoCurrent(recordOrError);
+        break;
+    }
   }
 
   importRecordFromBuffer(
@@ -850,6 +860,13 @@ export class RecordManager {
 
   mergeRecord(record: ImmutableRecord): void {
     this._record.merge(record);
+    this._unsaved = true;
+    restoreCustomData(this._record);
+    this.onUpdateTree();
+  }
+
+  mergeRecordIntoCurrent(record: ImmutableRecord): void {
+    this._record.mergeIntoCurrentPosition(record);
     this._unsaved = true;
     restoreCustomData(this._record);
     this.onUpdateTree();
