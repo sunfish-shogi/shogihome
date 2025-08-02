@@ -711,4 +711,5 @@ export type Texts = {
   unexpectedRecordFileExtension: (path: string) => string;
   fileNotFound: (path: string) => string;
   directoryNotFound: (path: string) => string;
+  youCanExitFullScreenByPressing: (key: string) => string;
 };

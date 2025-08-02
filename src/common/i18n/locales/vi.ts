@@ -760,4 +760,7 @@ export const vi: Texts = {
   directoryNotFound(path: string) {
     return `Không tìm thấy tập tin. [${path}]`;
   },
+  youCanExitFullScreenByPressing(key: string) {
+    return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+  },
 };

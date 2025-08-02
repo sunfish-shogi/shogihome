@@ -764,4 +764,7 @@ export const en: Texts = {
   directoryNotFound(path: string) {
     return `Directory not found. [${path}]`;
   },
+  youCanExitFullScreenByPressing(key: string) {
+    return `You can exit full screen by pressing ${key} key.`;
+  },
 };

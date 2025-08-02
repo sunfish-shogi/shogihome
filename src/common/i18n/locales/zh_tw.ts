@@ -747,4 +747,7 @@ export const zh_tw: Texts = {
   directoryNotFound(path: string) {
     return `無法找到該目錄。 [${path}]`;
   },
+  youCanExitFullScreenByPressing(key: string) {
+    return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+  },
 };
