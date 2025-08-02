@@ -44,6 +44,9 @@ export const vi: Texts = {
   asSFEN: "dưới dạng SFEN",
   asBOD: "dưới dạng BOD",
   pasteRecordOrPosition: "Dán kỳ phổ/thế cờ",
+  pasteRecordMerge: "棋譜貼り付け(マージ)", // TODO: Translate
+  toRootPosition: "棋譜の先頭へ", // TODO: Translate
+  toCurrentPosition: "現在の位置へ", // TODO: Translate
   addSpecialMove: "Chèn nước đi đặc biệt",
   deleteMoves: "Xóa từ nước hiện tại trở đi",
   view: "Hiển thị",
@@ -586,6 +589,12 @@ export const vi: Texts = {
   pleaseSpecifyPlainTextURL: "*Vui lòng nhập URL thô.",
   redirectNotSupported: "*Không hỗ trợ chuyển hướng.",
   desktopVersionPastesAutomatically: "*Bản máy tính sẽ tự động dán.",
+  asNewFile: "新規ファイル", // TODO: Translate
+  mergeToRootPosition: "棋譜の先頭へマージ", // TODO: Translate
+  mergeToCurrentPosition: "現在の位置へマージ", // TODO: Translate
+  failedToMergeRecordWithDifferentInitialPosition:
+    "初期局面が異なるため棋譜をマージできませんでした。", // TODO: Translate
+  failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。", // TODO: Translate
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Tính năng tính nhanh gửi lệnh "ponderhit" với các tùy chọn riêng củaYaneuraOu.',
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -764,5 +773,8 @@ export const vi: Texts = {
   },
   youCanExitFullScreenByPressing(key: string) {
     return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+  },
+  skippedMovesInMerge(skipped: number, total: number): string {
+    return `${total}手中、${skipped}手がマージできませんでした。`; // TODO: Translate
   },
 };

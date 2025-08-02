@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import api, { API } from "@/renderer/ipc/api.js";
-import { ImmutablePosition, Move, Position } from "tsshogi";
+import { exportKI2, ImmutablePosition, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store/index.js";
 import { RecordCustomData } from "@/renderer/store/record.js";
 import * as audio from "@/renderer/devices/audio.js";
@@ -60,6 +60,14 @@ const sampleKIF = `
    8 ３四歩(33)   ( 0:00/00:00:00)
    9 ７八金(69)   ( 0:00/00:00:00)
   10 ４二銀(31)   ( 0:00/00:00:00)
+`;
+
+const sampleKIF2 = `
+手合割：平手
+手数----指手---------消費時間--
+   1 １六歩(17)   ( 0:00/00:00:00)
+   2 １四歩(13)   ( 0:00/00:00:00)
+   3 ３八銀(39)   ( 0:00/00:00:00)
 `;
 
 const sampleCSA = `V2.2
@@ -731,6 +739,35 @@ describe("store/index", () => {
     expect(customData.researchInfo?.score).toBe(108);
     expect(useErrorStore().hasError).toBeFalsy();
     expect(store.isRecordFileUnsaved).toBeTruthy();
+
+    store.changePly(6);
+
+    store.pasteRecord(sampleKIF2, "mergeIntoRoot");
+    expect(exportKI2(store.record)).toBe(`手合割：平手
+▲２六歩
+*通常コメント
+△８四歩
+*#評価値=108
+▲７六歩    △８五歩    ▲７七角    △３二金    ▲６八銀    △３四歩
+▲７八金    △４二銀
+
+変化：1手
+▲１六歩    △１四歩    ▲３八銀`);
+
+    store.pasteRecord(sampleKIF2, "mergeIntoCurrent");
+    expect(exportKI2(store.record)).toBe(`手合割：平手
+▲２六歩
+*通常コメント
+△８四歩
+*#評価値=108
+▲７六歩    △８五歩    ▲７七角    △３二金    ▲６八銀    △３四歩
+▲７八金    △４二銀
+
+変化：7手
+▲１六歩    △１四歩    ▲３八銀
+
+変化：1手
+▲１六歩    △１四歩    ▲３八銀`);
   });
 
   it("pasteRecord/csa/success", () => {

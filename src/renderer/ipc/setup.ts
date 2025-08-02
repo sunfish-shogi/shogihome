@@ -152,6 +152,12 @@ export function setup(): void {
       case MenuEvent.PASTE_RECORD:
         store.showPasteDialog();
         break;
+      case MenuEvent.PASTE_RECORD_MERGE_INTO_ROOT_POSITION:
+        store.showPasteDialog("mergeIntoRoot");
+        break;
+      case MenuEvent.PASTE_RECORD_MERGE_INTO_CURRENT_POSITION:
+        store.showPasteDialog("mergeIntoCurrent");
+        break;
       case MenuEvent.INSERT_INTERRUPT:
         store.insertSpecialMove(SpecialMoveType.INTERRUPT);
         break;

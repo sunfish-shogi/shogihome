@@ -42,6 +42,9 @@ export type Texts = {
   asSFEN: string;
   asBOD: string;
   pasteRecordOrPosition: string;
+  pasteRecordMerge: string;
+  toRootPosition: string;
+  toCurrentPosition: string;
   addSpecialMove: string;
   deleteMoves: string;
   view: string;
@@ -579,6 +582,11 @@ export type Texts = {
   pleaseSpecifyPlainTextURL: string;
   redirectNotSupported: string;
   desktopVersionPastesAutomatically: string;
+  asNewFile: string;
+  mergeToRootPosition: string;
+  mergeToCurrentPosition: string;
+  failedToMergeRecordWithDifferentInitialPosition: string;
+  failedToMergeRecordWithDifferentTurn: string;
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions: string;
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior: string;
   someLogsDisabled: string;
@@ -714,4 +722,5 @@ export type Texts = {
   fileNotFound: (path: string) => string;
   directoryNotFound: (path: string) => string;
   youCanExitFullScreenByPressing: (key: string) => string;
+  skippedMovesInMerge(skipped: number, total: number): string;
 };

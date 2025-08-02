@@ -80,6 +80,7 @@ type replaceRecordOption = {
 
 export type ImportRecordOption = {
   type?: RecordFormatType;
+  mode?: "standard" | "mergeIntoRoot" | "mergeIntoCurrent";
   markAsSaved?: boolean;
 };
 
@@ -498,8 +499,15 @@ export class RecordManager {
     if (recordOrError instanceof Error) {
       return recordOrError;
     }
-    this.replaceRecord(recordOrError, option);
-    return;
+    switch (option?.mode || "standard") {
+      case "standard":
+        this.replaceRecord(recordOrError, option);
+        break;
+      case "mergeIntoRoot":
+        return this.mergeRecord(recordOrError);
+      case "mergeIntoCurrent":
+        return this.mergeRecordIntoCurrent(recordOrError);
+    }
   }
 
   importRecordFromBuffer(
@@ -520,23 +528,25 @@ export class RecordManager {
   }
 
   async importRecordFromRemoteURL(url?: string): Promise<void> {
-    const mergeMode = !url;
+    const replaceMode = !!url;
     url = url || this._sourceURL;
     if (!url) {
-      api.log(LogLevel.ERROR, "RecordManager#importRecordFromRemoteURL: source URL is not set");
-      return;
+      throw new Error("RecordManager#importRecordFromRemoteURL: source URL is not set");
     }
     const data = await api.loadRemoteTextFile(url);
     const recordOrError = this.parseRecordData(data);
     if (recordOrError instanceof Error) {
       throw recordOrError;
     }
-    if (mergeMode) {
-      this.mergeRecord(recordOrError);
-    } else {
+    if (replaceMode) {
       this.replaceRecord(recordOrError);
+      this._sourceURL = url;
+      return;
     }
-    this._sourceURL = url;
+    const error = this.mergeRecord(recordOrError);
+    if (error) {
+      throw error;
+    }
   }
 
   exportRecordAsBuffer(path: string, opt: ExportOptions): ExportResult | Error {
@@ -848,11 +858,27 @@ export class RecordManager {
     }
   }
 
-  mergeRecord(record: ImmutableRecord): void {
+  mergeRecord(record: ImmutableRecord): Error | undefined {
+    if (this._record.initialPosition.sfen !== record.initialPosition.sfen) {
+      return new Error(t.failedToMergeRecordWithDifferentInitialPosition);
+    }
     this._record.merge(record);
     this._unsaved = true;
     restoreCustomData(this._record);
     this.onUpdateTree();
+  }
+
+  mergeRecordIntoCurrent(record: ImmutableRecord): Error | undefined {
+    if (this._record.position.color !== record.initialPosition.color) {
+      return new Error(t.failedToMergeRecordWithDifferentTurn);
+    }
+    const { successCount, skipCount } = this._record.mergeIntoCurrentPosition(record);
+    this._unsaved = true;
+    restoreCustomData(this._record);
+    this.onUpdateTree();
+    if (skipCount > 0) {
+      return new Error(t.skippedMovesInMerge(skipCount, successCount + skipCount));
+    }
   }
 
   updateStandardMetadata(update: { key: RecordMetadataKey; value: string }): void {

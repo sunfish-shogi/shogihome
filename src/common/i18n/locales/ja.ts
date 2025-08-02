@@ -44,6 +44,9 @@ export const ja: Texts = {
   asSFEN: "SFEN形式",
   asBOD: "BOD形式",
   pasteRecordOrPosition: "棋譜・局面貼り付け",
+  pasteRecordMerge: "棋譜貼り付け(マージ)",
+  toRootPosition: "棋譜の先頭へ",
+  toCurrentPosition: "現在の位置へ",
   addSpecialMove: "特殊な指し手",
   deleteMoves: "現在の位置から棋譜を削除",
   view: "表示",
@@ -587,6 +590,12 @@ export const ja: Texts = {
   pleaseSpecifyPlainTextURL: "※プレーンテキストのURLを指定してください。",
   redirectNotSupported: "※リダイレクトはサポートされていません。",
   desktopVersionPastesAutomatically: "※インストールアプリ版では自動的に貼り付けられます。",
+  asNewFile: "新規ファイル",
+  mergeToRootPosition: "棋譜の先頭へマージ",
+  mergeToCurrentPosition: "現在の位置へマージ",
+  failedToMergeRecordWithDifferentInitialPosition:
+    "初期局面が異なるため棋譜をマージできませんでした。",
+  failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期Ponder機能は、やねうら王の独自オプションでponderhitコマンドを送信します。",
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -767,5 +776,8 @@ export const ja: Texts = {
   },
   youCanExitFullScreenByPressing(key: string) {
     return `全画面表示を終了するには ${key} キーを押してください。`;
+  },
+  skippedMovesInMerge(skipped: number, total: number): string {
+    return `${total}手中、${skipped}手がマージできませんでした。`;
   },
 };

@@ -24,6 +24,8 @@ export enum MenuEvent {
   COPY_BOARD_SFEN = "copyRecordSfen",
   COPY_BOARD_BOD = "copyRecordBod",
   PASTE_RECORD = "pasteRecord",
+  PASTE_RECORD_MERGE_INTO_ROOT_POSITION = "pasteRecordMergeIntoRootPosition",
+  PASTE_RECORD_MERGE_INTO_CURRENT_POSITION = "pasteRecordMergeIntoCurrentPosition",
   INSERT_INTERRUPT = "insertInterrupt",
   INSERT_RESIGN = "insertResign",
   INSERT_DRAW = "insertDraw",

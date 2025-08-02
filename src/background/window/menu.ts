@@ -159,6 +159,17 @@ function createMenuTemplate(window: BrowserWindow) {
           [AppState.NORMAL],
           isMac ? undefined : "CmdOrCtrl+V",
         ),
+        {
+          label: t.pasteRecordMerge,
+          submenu: [
+            menuItem(t.toRootPosition, MenuEvent.PASTE_RECORD_MERGE_INTO_ROOT_POSITION, [
+              AppState.NORMAL,
+            ]),
+            menuItem(t.toCurrentPosition, MenuEvent.PASTE_RECORD_MERGE_INTO_CURRENT_POSITION, [
+              AppState.NORMAL,
+            ]),
+          ],
+        },
         { type: "separator" },
         {
           label: t.addSpecialMove,

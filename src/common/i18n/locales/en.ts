@@ -45,6 +45,9 @@ export const en: Texts = {
   asSFEN: "SFEN",
   asBOD: "BOD",
   pasteRecordOrPosition: "Paste Record/Position",
+  pasteRecordMerge: "Paste Record (Merge)",
+  toRootPosition: "to Root Position",
+  toCurrentPosition: "to Current Position",
   addSpecialMove: "Add Special Move",
   deleteMoves: "Delete Moves from Current Position",
   view: "View",
@@ -587,6 +590,12 @@ export const en: Texts = {
   redirectNotSupported: "*Redirect is not supported.",
   desktopVersionPastesAutomatically:
     "*In desktop version, it will paste automatically from clipboard.",
+  asNewFile: "as New File",
+  mergeToRootPosition: "Merge to Root Position",
+  mergeToCurrentPosition: "Merge to Current Position",
+  failedToMergeRecordWithDifferentInitialPosition:
+    "Failed to merge record with different initial position.",
+  failedToMergeRecordWithDifferentTurn: "Failed to merge record with different turn.",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Early ponder feature sends "ponderhit" command with YaneuraOu\'s non-standard options.',
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -768,5 +777,8 @@ export const en: Texts = {
   },
   youCanExitFullScreenByPressing(key: string) {
     return `You can exit full screen by pressing ${key} key.`;
+  },
+  skippedMovesInMerge(skipped: number, total: number): string {
+    return `${skipped} / ${total} moves were skipped in the merge.`;
   },
 };

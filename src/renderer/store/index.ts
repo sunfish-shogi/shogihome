@@ -331,16 +331,16 @@ class Store {
     this._pvPreview = undefined;
   }
 
-  showPasteDialog(): void {
+  showPasteDialog(mode: "standard" | "mergeIntoRoot" | "mergeIntoCurrent" = "standard"): void {
     if (this.appState !== AppState.NORMAL) {
       return;
     }
     const appSettings = useAppSettings();
-    if (appSettings.showPasteDialog || !isNative()) {
+    if ((mode === "standard" && appSettings.showPasteDialog) || !isNative()) {
       this._appState = AppState.PASTE_DIALOG;
     } else {
       navigator.clipboard.readText().then((text) => {
-        this.pasteRecord(text);
+        this.pasteRecord(text, mode);
       });
     }
   }
@@ -1198,11 +1198,14 @@ class Store {
     navigator.clipboard.writeText(str);
   }
 
-  pasteRecord(data: string): void {
+  pasteRecord(
+    data: string,
+    mode: "standard" | "mergeIntoRoot" | "mergeIntoCurrent" = "standard",
+  ): void {
     if (this.appState !== AppState.NORMAL) {
       return;
     }
-    const error = this.recordManager.importRecord(data.trim());
+    const error = this.recordManager.importRecord(data.trim(), { mode });
     if (error) {
       useErrorStore().add(error);
       return;
