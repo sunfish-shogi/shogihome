@@ -81,6 +81,8 @@ function menuItem(
   };
 }
 
+let fullScreenNotiSent = false;
+
 function createMenuTemplate(window: BrowserWindow) {
   const menuTemplate: Array<MenuItemConstructorOptions | MenuItem> = [
     {
@@ -349,10 +351,23 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           type: "separator",
         },
-        {
-          label: t.toggleFullScreen,
-          role: "togglefullscreen",
-        },
+        isMac
+          ? {
+              label: t.toggleFullScreen,
+              role: "togglefullscreen",
+            }
+          : {
+              label: t.toggleFullScreen,
+              click: () => {
+                const enable = !window.isFullScreen();
+                window.setFullScreen(enable);
+                if (enable && !fullScreenNotiSent) {
+                  sendMessage({ text: t.youCanExitFullScreenByPressing("F11") });
+                  fullScreenNotiSent = true;
+                }
+              },
+              accelerator: "F11",
+            },
         menuItem(t.flipBoard, MenuEvent.FLIP_BOARD, null, "CmdOrCtrl+T"),
         {
           label: t.defaultFontSize,

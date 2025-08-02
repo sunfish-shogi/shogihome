@@ -763,4 +763,7 @@ export const ja: Texts = {
   directoryNotFound(path: string) {
     return `フォルダが見つかりません。 [${path}]`;
   },
+  youCanExitFullScreenByPressing(key: string) {
+    return `全画面表示を終了するには ${key} キーを押してください。`;
+  },
 };
