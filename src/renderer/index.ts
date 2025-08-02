@@ -4,7 +4,7 @@ import "./css/basic.css";
 import "./css/control.css";
 import "./css/dialog.css";
 import { createApp, watch } from "vue";
-import App from "@/renderer/App.vue";
+import App from "@/renderer/view/App.vue";
 import api, { appInfo, isMobileWebApp } from "@/renderer/ipc/api.js";
 import { setup as setupIPC } from "@/renderer/ipc/setup.js";
 import { useStore } from "@/renderer/store/index.js";
