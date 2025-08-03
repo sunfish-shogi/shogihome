@@ -8,6 +8,7 @@ export const en: Texts = {
   openNewInstance: "Open New ShogiHome Instance",
   saveOverwrite: "Overwrite",
   newRecord: "New Record",
+  newRecordHirateSetup: "New Record (Hirate Setup)",
   openRecord: "Open Record",
   saveRecord: "Save Record",
   saveRecordAs: "Save Record As",

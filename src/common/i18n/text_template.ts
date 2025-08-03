@@ -5,6 +5,7 @@ export type Texts = {
   openNewInstance: string;
   saveOverwrite: string;
   newRecord: string;
+  newRecordHirateSetup: string;
   openRecord: string;
   saveRecord: string;
   saveRecordAs: string;

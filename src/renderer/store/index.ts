@@ -20,6 +20,7 @@ import {
   countJishogiPoint,
   Position,
   exportBOD,
+  InitialPositionType,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { GameSettings } from "@/common/settings/game.js";
@@ -977,14 +978,21 @@ class Store {
     this.researchManager?.updatePosition(this.recordManager.record);
   }
 
-  resetRecord(): void {
+  resetRecord(mode: "keepRootPosition" | "hirateSetup" = "keepRootPosition"): void {
     if (this.appState != AppState.NORMAL) {
       return;
     }
     this.showConfirmation({
       message: t.areYouSureWantToClearRecord,
       onOk: () => {
-        this.recordManager.reset();
+        switch (mode) {
+          case "keepRootPosition":
+            this.recordManager.reset();
+            break;
+          case "hirateSetup":
+            this.recordManager.resetByInitialPositionType(InitialPositionType.STANDARD);
+            break;
+        }
       },
     });
   }

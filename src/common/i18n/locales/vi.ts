@@ -7,6 +7,7 @@ export const vi: Texts = {
   openNewInstance: "Mở một cửa sổ ShogiHome mới",
   saveOverwrite: "Ghi đè",
   newRecord: "Kỳ phổ mới",
+  newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
   openRecord: "Mở kỳ phổ",
   saveRecord: "Lưu kỳ phổ",
   saveRecordAs: "Lưu kỳ phổ như",

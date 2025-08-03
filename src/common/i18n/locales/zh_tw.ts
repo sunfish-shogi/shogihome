@@ -7,6 +7,7 @@ export const zh_tw: Texts = {
   openNewInstance: "開啟新的 ShogiHome 視窗",
   saveOverwrite: "覆蓋檔案",
   newRecord: "新棋譜",
+  newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
   openRecord: "打開棋譜",
   saveRecord: "保存棋譜",
   saveRecordAs: "另存棋譜",
