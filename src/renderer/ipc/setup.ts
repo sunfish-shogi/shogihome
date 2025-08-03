@@ -80,6 +80,9 @@ export function setup(): void {
       case MenuEvent.NEW_RECORD:
         store.resetRecord();
         break;
+      case MenuEvent.NEW_RECORD_HIRATE_SETUP:
+        store.resetRecord("hirateSetup");
+        break;
       case MenuEvent.OPEN_RECORD:
         store.openRecord();
         break;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import api, { API } from "@/renderer/ipc/api.js";
-import { exportKI2, ImmutablePosition, Move, Position } from "tsshogi";
+import { exportKI2, ImmutablePosition, InitialPositionSFEN, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store/index.js";
 import { RecordCustomData } from "@/renderer/store/record.js";
 import * as audio from "@/renderer/devices/audio.js";
@@ -534,20 +534,33 @@ describe("store/index", () => {
   });
 
   it("resetRecord", async () => {
-    mockAPI.showOpenRecordDialog.mockResolvedValueOnce("/test/sample.kif");
+    mockAPI.showOpenRecordDialog.mockResolvedValueOnce("/test/sample.csa");
     mockAPI.openRecord.mockResolvedValueOnce(
-      new Uint8Array(convert(sampleKIF, { type: "arraybuffer", to: "SJIS" })),
+      new Uint8Array(convert(sampleCSA, { type: "arraybuffer", to: "SJIS" })),
     );
     const store = createStore();
     store.openRecord();
     await new Promise((resolve) => setTimeout(resolve));
+
+    store.resetRecord();
+    expect(useConfirmationStore().message).toBe("現在の棋譜は削除されます。よろしいですか？");
+    useConfirmationStore().cancel();
     expect(store.record.moves.length).not.toBe(1);
     expect(store.recordFilePath).not.toBeUndefined();
+
     store.resetRecord();
     expect(useConfirmationStore().message).toBe("現在の棋譜は削除されます。よろしいですか？");
     useConfirmationStore().ok();
     expect(store.record.moves.length).toBe(1);
     expect(store.recordFilePath).toBeUndefined();
+    expect(store.record.position.sfen).toBe("7n1/6gk1/6gpN/9/9/6b1P/9/9/9 b 2R2Gb4s2n4l16p 1");
+
+    store.resetRecord("hirateSetup");
+    expect(useConfirmationStore().message).toBe("現在の棋譜は削除されます。よろしいですか？");
+    useConfirmationStore().ok();
+    expect(store.record.moves.length).toBe(1);
+    expect(store.recordFilePath).toBeUndefined();
+    expect(store.record.position.sfen).toBe(InitialPositionSFEN.STANDARD);
   });
 
   it("removeCurrentMove", () => {

@@ -7,6 +7,7 @@ export const ja: Texts = {
   openNewInstance: "新しい ShogiHome ウィンドウを開く",
   saveOverwrite: "上書き保存",
   newRecord: "新規棋譜",
+  newRecordHirateSetup: "新規棋譜（平手初形）",
   openRecord: "棋譜を開く",
   saveRecord: "棋譜を上書き保存",
   saveRecordAs: "棋譜を名前を付けて保存",
