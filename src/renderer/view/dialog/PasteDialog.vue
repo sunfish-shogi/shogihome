@@ -10,7 +10,19 @@
         {{ t.desktopVersionPastesAutomatically }}
       </div>
       <textarea ref="textarea"></textarea>
-      <ToggleButton v-if="isNative()" v-model:value="doNotShowAgain" :label="t.doNotShowAgain" />
+      <HorizontalSelector
+        v-model:value="mode"
+        :items="[
+          { label: t.asNewFile, value: 'standard' },
+          { label: t.mergeToRootPosition, value: 'mergeIntoRoot' },
+          { label: t.mergeToCurrentPosition, value: 'mergeIntoCurrent' },
+        ]"
+      />
+      <ToggleButton
+        v-if="isNative() && mode === 'standard'"
+        v-model:value="doNotShowAgain"
+        :label="t.doNotShowAgain"
+      />
     </div>
     <div class="main-buttons">
       <button data-hotkey="Enter" autofocus @click="onOk">
@@ -33,12 +45,14 @@ import { useBusyState } from "@/renderer/store/busy";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import DialogFrame from "./DialogFrame.vue";
+import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 
 const store = useStore();
 const appSettings = useAppSettings();
 const busyState = useBusyState();
 const textarea = ref();
 const doNotShowAgain = ref(false);
+const mode = ref<"standard" | "mergeIntoRoot" | "mergeIntoCurrent">("standard");
 
 busyState.retain();
 onMounted(async () => {
@@ -58,8 +72,8 @@ const onOk = () => {
     return;
   }
   store.closeModalDialog();
-  store.pasteRecord(data);
-  if (doNotShowAgain.value) {
+  store.pasteRecord(data, mode.value);
+  if (doNotShowAgain.value && mode.value === "standard") {
     appSettings.updateAppSettings({ showPasteDialog: false });
   }
 };

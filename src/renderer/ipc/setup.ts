@@ -114,16 +114,34 @@ export function setup(): void {
         store.copyRecordCSA();
         break;
       case MenuEvent.COPY_RECORD_USI_BEFORE:
-        store.copyRecordUSIBefore();
+        store.copyRecordUSI("before");
         break;
       case MenuEvent.COPY_RECORD_USI_ALL:
-        store.copyRecordUSIAll();
+        store.copyRecordUSI("all");
         break;
       case MenuEvent.COPY_RECORD_JKF:
         store.copyRecordJKF();
         break;
       case MenuEvent.COPY_RECORD_USEN:
         store.copyRecordUSEN();
+        break;
+      case MenuEvent.COPY_RECORD_FROM_CURRENT_POSITION:
+        store.copyRecordKIF({ fromCurrentPosition: true });
+        break;
+      case MenuEvent.COPY_RECORD_KI2_FROM_CURRENT_POSITION:
+        store.copyRecordKI2({ fromCurrentPosition: true });
+        break;
+      case MenuEvent.COPY_RECORD_CSA_FROM_CURRENT_POSITION:
+        store.copyRecordCSA({ fromCurrentPosition: true });
+        break;
+      case MenuEvent.COPY_RECORD_USI_FROM_CURRENT_POSITION:
+        store.copyRecordUSI("after");
+        break;
+      case MenuEvent.COPY_RECORD_JKF_FROM_CURRENT_POSITION:
+        store.copyRecordJKF({ fromCurrentPosition: true });
+        break;
+      case MenuEvent.COPY_RECORD_USEN_FROM_CURRENT_POSITION:
+        store.copyRecordUSEN({ fromCurrentPosition: true });
         break;
       case MenuEvent.COPY_BOARD_SFEN:
         store.copyBoardSFEN();
@@ -133,6 +151,12 @@ export function setup(): void {
         break;
       case MenuEvent.PASTE_RECORD:
         store.showPasteDialog();
+        break;
+      case MenuEvent.PASTE_RECORD_MERGE_INTO_ROOT_POSITION:
+        store.showPasteDialog("mergeIntoRoot");
+        break;
+      case MenuEvent.PASTE_RECORD_MERGE_INTO_CURRENT_POSITION:
+        store.showPasteDialog("mergeIntoCurrent");
         break;
       case MenuEvent.INSERT_INTERRUPT:
         store.insertSpecialMove(SpecialMoveType.INTERRUPT);

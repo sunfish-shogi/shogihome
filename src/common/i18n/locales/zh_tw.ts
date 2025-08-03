@@ -31,9 +31,11 @@ export const zh_tw: Texts = {
   cut: "剪下",
   paste: "貼上",
   copyRecord: "複製棋譜",
+  copyRecordFromCurrentPosition: "複製棋譜 (現在の局面から)", // TODO: Translate
   asKIF: "KIF形式",
   asKI2: "KI2形式",
   asCSA: "CSA形式",
+  asUSI: "USI形式",
   asUSIUntilCurrentMove: "USI形式(到目前手數為止)",
   asUSIAll: "USI形式(全部)",
   asJSONKifuFormat: "JSON Kifu Format",
@@ -42,6 +44,9 @@ export const zh_tw: Texts = {
   asSFEN: "SFEN形式",
   asBOD: "BOD形式",
   pasteRecordOrPosition: "貼上棋譜、局面",
+  pasteRecordMerge: "棋譜貼り付け(マージ)", // TODO: Translate
+  toRootPosition: "棋譜の先頭へ", // TODO: Translate
+  toCurrentPosition: "現在の位置へ", // TODO: Translate
   addSpecialMove: "特殊手",
   deleteMoves: "刪除現在位置後的棋譜",
   view: "表示",
@@ -580,6 +585,12 @@ export const zh_tw: Texts = {
   pleaseSpecifyPlainTextURL: "※請輸入您要使用的URL。",
   redirectNotSupported: "※無法使用重新導向連結。",
   desktopVersionPastesAutomatically: "※安裝程式版將會自動貼上棋譜。",
+  asNewFile: "新規ファイル", // TODO: Translate
+  mergeToRootPosition: "棋譜の先頭へマージ", // TODO: Translate
+  mergeToCurrentPosition: "現在の位置へマージ", // TODO: Translate
+  failedToMergeRecordWithDifferentInitialPosition:
+    "初期局面が異なるため棋譜をマージできませんでした。", // TODO: Translate
+  failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。", // TODO: Translate
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期 Ponder 機能將會發送やねうら王自行定義之 ponderhit 指令。",
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -749,5 +760,8 @@ export const zh_tw: Texts = {
   },
   youCanExitFullScreenByPressing(key: string) {
     return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+  },
+  skippedMovesInMerge(skipped: number, total: number): string {
+    return `${total}手中、${skipped}手がマージできませんでした。`; // TODO: Translate
   },
 };

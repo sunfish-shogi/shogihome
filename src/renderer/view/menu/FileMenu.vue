@@ -248,7 +248,7 @@ const onCopyJKF = () => {
   emit("close");
 };
 const onCopyUSI = () => {
-  store.copyRecordUSIAll();
+  store.copyRecordUSI("all");
   emit("close");
 };
 const onCopyUSEN = () => {
