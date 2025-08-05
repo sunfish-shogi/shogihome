@@ -283,7 +283,7 @@ onUpdated(() => {
   user-select: none;
 }
 .record-view.limited {
-  max-width: 600px;
+  max-width: calc(max(100vh, 600px));
 }
 .control {
   width: 100%;
