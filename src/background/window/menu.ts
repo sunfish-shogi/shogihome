@@ -88,7 +88,12 @@ function createMenuTemplate(window: BrowserWindow) {
     {
       label: t.file,
       submenu: [
-        menuItem(t.newRecord, MenuEvent.NEW_RECORD, [AppState.NORMAL], "CmdOrCtrl+N"),
+        menuItem(
+          t.newRecordKeepInitialPosition,
+          MenuEvent.NEW_RECORD,
+          [AppState.NORMAL],
+          "CmdOrCtrl+N",
+        ),
         menuItem(
           t.newRecordHirateSetup,
           MenuEvent.NEW_RECORD_HIRATE_SETUP,
@@ -130,7 +135,7 @@ function createMenuTemplate(window: BrowserWindow) {
       label: t.editing,
       submenu: [
         {
-          label: t.copyRecord,
+          label: t.copyRecordAll,
           submenu: [
             menuItem(t.asKIF, MenuEvent.COPY_RECORD, null, isMac ? undefined : "CmdOrCtrl+C"),
             menuItem(t.asKI2, MenuEvent.COPY_RECORD_KI2, null),

@@ -5,6 +5,7 @@ export type Texts = {
   openNewInstance: string;
   saveOverwrite: string;
   newRecord: string;
+  newRecordKeepInitialPosition: string;
   newRecordHirateSetup: string;
   openRecord: string;
   saveRecord: string;
@@ -29,7 +30,7 @@ export type Texts = {
   copy: string;
   cut: string;
   paste: string;
-  copyRecord: string;
+  copyRecordAll: string;
   copyRecordFromCurrentPosition: string;
   asKIF: string;
   asKI2: string;

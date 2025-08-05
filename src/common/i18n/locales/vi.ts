@@ -7,6 +7,7 @@ export const vi: Texts = {
   openNewInstance: "Mở một cửa sổ ShogiHome mới",
   saveOverwrite: "Ghi đè",
   newRecord: "Kỳ phổ mới",
+  newRecordKeepInitialPosition: "Kỳ phổ mới (同じ初形)", // TODO: Translate
   newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
   openRecord: "Mở kỳ phổ",
   saveRecord: "Lưu kỳ phổ",
@@ -31,7 +32,7 @@ export const vi: Texts = {
   copy: "Sao chép",
   cut: "Cắt",
   paste: "Dán",
-  copyRecord: "Sao chép kỳ phổ",
+  copyRecordAll: "Sao chép kỳ phổ (初手から)", // TODO: Translate
   copyRecordFromCurrentPosition: "Sao chép kỳ phổ (現在の局面から)", // TODO: Translate
   asKIF: "dưới dạng KIF",
   asKI2: "dưới dạng KI2",

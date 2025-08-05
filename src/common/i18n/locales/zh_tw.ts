@@ -7,6 +7,7 @@ export const zh_tw: Texts = {
   openNewInstance: "開啟新的 ShogiHome 視窗",
   saveOverwrite: "覆蓋檔案",
   newRecord: "新棋譜",
+  newRecordKeepInitialPosition: "新棋譜 (同じ初形)", // TODO: Translate
   newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
   openRecord: "打開棋譜",
   saveRecord: "保存棋譜",
@@ -31,7 +32,7 @@ export const zh_tw: Texts = {
   copy: "拷貝",
   cut: "剪下",
   paste: "貼上",
-  copyRecord: "複製棋譜",
+  copyRecordAll: "複製棋譜 (初手から)", // TODO: Translate
   copyRecordFromCurrentPosition: "複製棋譜 (現在の局面から)", // TODO: Translate
   asKIF: "KIF形式",
   asKI2: "KI2形式",
