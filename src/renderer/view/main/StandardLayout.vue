@@ -243,9 +243,10 @@ const boardPaneStyle = computed(() => {
 const recordPaneStyle = computed(() => {
   const width =
     windowSize.width -
-    boardPaneSize.width -
-    margin * 3 -
-    (appSettings.boardLayoutType === BoardLayoutType.STANDARD ? 0 : boardPaneSize.height * 0.1);
+    (boardPaneSize.width +
+      margin * 3 +
+      // コンパクトとポータブルは左端に 1x10 のメニューボタンを配置するため高さの 1/10 を確保
+      (appSettings.boardLayoutType === BoardLayoutType.STANDARD ? 0 : boardPaneSize.height * 0.1));
   const height = boardPaneSize.height;
   return {
     margin: `${margin}px ${margin}px ${margin}px 0`,
