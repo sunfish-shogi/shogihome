@@ -25,15 +25,7 @@ import {
 } from "@/common/file/record.js";
 import { TextDecodingRule } from "@/common/settings/app.js";
 import { loadAppSettings } from "@/background/settings.js";
-import {
-  Color,
-  getBlackPlayerName,
-  getWhitePlayerName,
-  ImmutablePosition,
-  Move,
-  Node,
-  Record,
-} from "tsshogi";
+import { Color, getBlackPlayerName, getWhitePlayerName, Move, Node, Record } from "tsshogi";
 import { t } from "@/common/i18n/index.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
 import { loadAperyBook, searchAperyBookMovesOnTheFly, storeAperyBook } from "./apery.js";
@@ -350,7 +342,7 @@ export async function importBookMoves(
   let entryCount = 0;
   let duplicateCount = 0;
 
-  function importMove(node: Node, position: ImmutablePosition) {
+  function importMove(node: Node, sfen: string) {
     if (!(node.move instanceof Move)) {
       return;
     }
@@ -360,7 +352,6 @@ export async function importBookMoves(
       return;
     }
 
-    const sfen = position.sfen;
     const usi = node.move.usi;
     const bookMoves = retrieveEntry(bookRef, sfen)?.moves || [];
     const moves = bookMoves.map(arrayMoveToCommonBookMove);
@@ -415,12 +406,13 @@ export async function importBookMoves(
           return;
         }
         hasValidLines = true;
-        record.forEach((node, position) => {
-          if (!targetColorSet[position.color]) {
+        record.forEach((node) => {
+          const prev = node.prev;
+          if (!prev || !targetColorSet[prev.nextColor]) {
             return;
           }
           if (node.move instanceof Move) {
-            importMove(node, position);
+            importMove(node, prev.sfen);
           }
         });
       });
@@ -459,11 +451,12 @@ export async function importBookMoves(
       }
     }
 
-    record.forEach((node, position) => {
-      if (!targetColorSet[position.color]) {
+    record.forEach((node) => {
+      const prev = node.prev;
+      if (!prev || !targetColorSet[prev.nextColor]) {
         return;
       }
-      importMove(node, position);
+      importMove(node, prev.sfen);
     });
     successFileCount++;
   }

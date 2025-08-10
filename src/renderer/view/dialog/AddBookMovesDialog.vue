@@ -172,12 +172,13 @@ const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 
 const setupInMemoryList = async () => {
   const nodes: { node: ImmutableNode; sfen: string }[] = [];
-  store.record.forEach((node, position) => {
+  store.record.forEach((node) => {
+    const prev = node.prev;
     const move = node.move;
-    if (!(move instanceof Move)) {
+    if (!prev || !(move instanceof Move)) {
       return;
     }
-    nodes.push({ node, sfen: position.sfen });
+    nodes.push({ node, sfen: prev.sfen });
   });
   for (const { node, sfen } of nodes) {
     if (!node.isFirstBranch) {
