@@ -27,6 +27,7 @@ export enum MenuEvent {
   PASTE_RECORD = "pasteRecord",
   PASTE_RECORD_MERGE_INTO_ROOT_POSITION = "pasteRecordMergeIntoRootPosition",
   PASTE_RECORD_MERGE_INTO_CURRENT_POSITION = "pasteRecordMergeIntoCurrentPosition",
+  SEARCH_DUPLICATE_POSITIONS = "searchDuplicatePositions",
   INSERT_INTERRUPT = "insertInterrupt",
   INSERT_RESIGN = "insertResign",
   INSERT_DRAW = "insertDraw",

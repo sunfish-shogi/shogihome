@@ -161,6 +161,9 @@ export function setup(): void {
       case MenuEvent.PASTE_RECORD_MERGE_INTO_CURRENT_POSITION:
         store.showPasteDialog("mergeIntoCurrent");
         break;
+      case MenuEvent.SEARCH_DUPLICATE_POSITIONS:
+        store.showSearchDuplicatePositionsDialog();
+        break;
       case MenuEvent.INSERT_INTERRUPT:
         store.insertSpecialMove(SpecialMoveType.INTERRUPT);
         break;
