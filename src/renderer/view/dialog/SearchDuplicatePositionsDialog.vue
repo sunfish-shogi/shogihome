@@ -1,9 +1,9 @@
 <template>
   <DialogFrame limited @cancel="onCancel">
-    <div class="title">同一局面検索<!-- TODO: i18n --></div>
+    <div class="title">{{ t.duplicatePositionSearch }}</div>
     <div class="form-group scroll">
-      <div v-if="positions.length === 0">重複する局面はありません。<!-- TODO: i18n --></div>
-      <div v-else>{{ positions.length }}件の重複する局面が見つかりました。<!-- TODO: i18n --></div>
+      <div v-if="positions.length === 0">{{ t.noDuplicatePositions }}</div>
+      <div v-else>{{ t.nDuplicatePositionsFound(positions.length) }}</div>
       <div class="row wrap space-evenly">
         <div v-for="entry of positions" :key="entry.sfen" class="row entry">
           <SimpleBoardView
@@ -14,22 +14,19 @@
           <div class="column">
             <div>{{ entry.turn }}</div>
             <div v-if="entry.minPly === entry.maxPly">
-              {{ t.plyPrefix }}{{ entry.minPly }}{{ t.plySuffix
-              }}<!-- TODO: i18n -->
+              {{ t.plyPrefix }}{{ entry.minPly }}{{ t.plySuffix }}
             </div>
             <div v-else>
-              {{ t.plyPrefix }}{{ entry.minPly }}{{ t.plySuffix
-              }}<!-- TODO: i18n -->
-              から
-              {{ t.plyPrefix }}{{ entry.maxPly }}{{ t.plySuffix
-              }}<!-- TODO: i18n -->
+              {{ t.fromPrefix }}
+              {{ t.plyPrefix }}{{ entry.minPly }}{{ t.plySuffix }}
+              {{ t.fromSuffix }}
+              {{ t.toPrefix }}
+              {{ t.plyPrefix }}{{ entry.maxPly }}{{ t.plySuffix }}
+              {{ t.toSuffix }}
             </div>
+            <div>{{ t.appearanceCount }}: {{ entry.count }}</div>
             <div>
-              出現数: {{ entry.count
-              }}<!-- TODO: i18n -->
-            </div>
-            <div>
-              <button @click="showList(entry.sfen)">一覧を表示</button>
+              <button @click="showList(entry.sfen)">{{ t.showList }}</button>
             </div>
           </div>
         </div>

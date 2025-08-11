@@ -36,7 +36,7 @@
               class="duplicate"
               @click.stop="showDuplicatePositions(move.sfen)"
             >
-              同一局面<!-- TODO: i18n -->
+              {{ t.duplicatePos }}
             </button>
             <span v-if="move.bookmark" class="bookmark">{{ move.bookmark }}</span>
             {{ move.comment }}
@@ -66,7 +66,7 @@
                 class="duplicate"
                 @click.stop="showDuplicatePositions(branch.sfen)"
               >
-                同一局面<!-- TODO: i18n -->
+                {{ t.duplicatePos }}
               </button>
               <span v-if="branch.bookmark" class="bookmark">{{ branch.bookmark }}</span>
               {{ branch.comment }}
@@ -121,6 +121,7 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import ToggleButton from "./ToggleButton.vue";
 import { RecordShortcutKeys } from "./board/shortcut";
+import { t } from "@/common/i18n";
 
 const props = defineProps({
   record: {

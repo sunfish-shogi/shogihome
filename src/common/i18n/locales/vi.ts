@@ -183,6 +183,18 @@ export const vi: Texts = {
   analysis: "Phân tích",
   analyze: "Phân tích",
   stopAnalysis: "Dừng phân tích",
+  searchDuplicatePositions: "同一局面を検索", // TODO: Translate
+  duplicatePositionSearch: "同一局面検索", // TODO: Translate
+  duplicatePositions: "同一局面", // TODO: Translate
+  duplicatePos: "同一局面", // TODO: Translate
+  via: "経路", // TODO: Translate
+  lastMove: "直前の指し手", // TODO: Translate
+  nextMoves: "次の指し手", // TODO: Translate
+  goToThisPosition: "この局面へ移動", // TODO: Translate
+  noDuplicatePositions: "重複する局面はありません。", // TODO: Translate
+  nDuplicatePositionsFound: (n: number) => `${n} 件の重複する局面が見つかりました。`, // TODO: Translate
+  appearanceCount: "出現数", // TODO: Translate
+  showList: "一覧を表示", // TODO: Translate
   setupPosition: "Xếp thế cờ",
   startPositionSetup: "Bắt đầu xếp thế cờ",
   completePositionSetup: "Hoàn tất xếp thế cờ",

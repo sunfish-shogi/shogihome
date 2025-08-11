@@ -1,14 +1,14 @@
 <template>
   <DialogFrame limited @cancel="onCancel">
-    <div class="title">同一局面<!-- TODO: i18n --></div>
+    <div class="title">{{ t.duplicatePositions }}</div>
     <div class="frame form-group">
       <table>
         <thead>
           <tr>
             <th>No.</th>
-            <th>経路<!-- TODO: i18n --></th>
-            <th>直前の指し手<!-- TODO: i18n --></th>
-            <th>次の指し手<!-- TODO: i18n --></th>
+            <th>{{ t.via }}</th>
+            <th>{{ t.lastMove }}</th>
+            <th>{{ t.nextMoves }}</th>
             <th></th>
           </tr>
         </thead>
@@ -27,9 +27,9 @@
               </div>
             </td>
             <td>
-              <span v-if="position.active">現在の局面<!-- TODO: i18n --></span>
+              <span v-if="position.active">{{ t.currentPosition }}</span>
               <button v-else @click="emit('select', position.node)">
-                この局面へ移動<!-- TODO: i18n -->
+                {{ t.goToThisPosition }}
               </button>
             </td>
           </tr>
