@@ -7,8 +7,8 @@ export const zh_tw: Texts = {
   openNewInstance: "開啟新的 ShogiHome 視窗",
   saveOverwrite: "覆蓋檔案",
   newRecord: "新棋譜",
-  newRecordKeepInitialPosition: "新棋譜 (同じ初形)", // TODO: Translate
-  newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
+  newRecordKeepInitialPosition: "新棋譜（保留初手局面）",
+  newRecordHirateSetup: "新棋譜（平手初形）",
   openRecord: "打開棋譜",
   saveRecord: "保存棋譜",
   saveRecordAs: "另存棋譜",
@@ -19,7 +19,7 @@ export const zh_tw: Texts = {
   recordFileBatchConversion: "棋譜大量轉換",
   close: "關閉",
   quit: "離開",
-  reload: "再読み込み", // TODO: Translate
+  reload: "重新載入",
   editing: "編輯",
   copyAsKIF: "複製KIF棋譜",
   copyAsKI2: "複製KI2棋譜",
@@ -32,8 +32,8 @@ export const zh_tw: Texts = {
   copy: "拷貝",
   cut: "剪下",
   paste: "貼上",
-  copyRecordAll: "複製棋譜 (初手から)", // TODO: Translate
-  copyRecordFromCurrentPosition: "複製棋譜 (現在の局面から)", // TODO: Translate
+  copyRecordAll: "複製棋譜（自初手局面）",
+  copyRecordFromCurrentPosition: "複製棋譜（自目前局面）",
   asKIF: "KIF形式",
   asKI2: "KI2形式",
   asCSA: "CSA形式",
@@ -46,9 +46,9 @@ export const zh_tw: Texts = {
   asSFEN: "SFEN形式",
   asBOD: "BOD形式",
   pasteRecordOrPosition: "貼上棋譜、局面",
-  pasteRecordMerge: "棋譜貼り付け(マージ)", // TODO: Translate
-  toRootPosition: "棋譜の先頭へ", // TODO: Translate
-  toCurrentPosition: "現在の位置へ", // TODO: Translate
+  pasteRecordMerge: "棋譜貼上（合併）",
+  toRootPosition: "自棋譜開頭合併",
+  toCurrentPosition: "自目前局面合併",
   addSpecialMove: "特殊手",
   deleteMoves: "刪除現在位置後的棋譜",
   view: "表示",
@@ -118,8 +118,8 @@ export const zh_tw: Texts = {
   gameProgress: "對局過程",
   allGamesCompleted: "連續對局結束",
   wins: "勝利數目",
-  winsOnBlack: "勝ち数(先手)", // TODO: Translate
-  winsOnWhite: "勝ち数(後手)", // TODO: Translate
+  winsOnBlack: "勝場（先手）",
+  winsOnWhite: "勝場（後手）",
   draws: "平手數目",
   validGames: "有效對局數",
   invalidGames: "無效對局數",
@@ -155,16 +155,16 @@ export const zh_tw: Texts = {
   repetition: "千日手",
   mate: "詰死",
   noMate: "無詰",
-  blackWin: "先手勝ち", // TODO: Translate
-  whiteWin: "後手勝ち", // TODO: Translate
-  all: "全て", // TODO: Translate
-  others: "その他", // TODO: Translate
-  minRate: "最小レート", // TODO: Translate
+  blackWin: "先手勝利",
+  whiteWin: "後手勝利",
+  all: "全",
+  others: "其他",
+  minRate: "最低等級分",
   mateSearch: "詰搜尋",
   startMateSearch: "開始詰搜尋",
   stopMateSearch: "結束詰搜尋",
   noMateFound: "在目前的盤面中找不到詰。",
-  timePerPosition: "思考時間", // TODO: Translate
+  timePerPosition: "思考時間",
   timeout: "時間耗盡",
   foulWin: "反則勝利",
   foulLose: "反則敗北",
@@ -218,10 +218,10 @@ export const zh_tw: Texts = {
   boardOpacity: "盤面不透明度",
   pieceStandOpacity: "駒台不透明度",
   recordOpacity: "棋譜不透明度",
-  promotionSelector: "成・不成の表示", // TODO: Translate
-  centeredHorizontal: "水平・中央寄せ", // TODO: Translate
-  promoteFirstVertical: "垂直・成優先", // TODO: Translate
-  promoteFirstHorizontal: "水平・成優先", // TODO: Translate
+  promotionSelector: "成變、不成對話框顯示",
+  centeredHorizontal: "水平置中",
+  promoteFirstVertical: "垂直（成變優先）",
+  promoteFirstHorizontal: "水平（成變優先）",
   showFileAndRank: "顯示段・筋",
   showLeftControls: "顯示左側操作按鈕",
   showRightControls: "顯示右側操作按鈕",
@@ -263,9 +263,9 @@ export const zh_tw: Texts = {
   logLevel: "紀錄等級",
   manageEngines: "引擎設定",
   flipBoard: "盤面反轉",
-  shortcutKeys: "ショートカットキー", // TODO: Translate
-  useUpDownToMove1Ply: "↑/↓キーで1手移動", // TODO: Translate
-  useLeftRightToMove1Ply: "←/→キーで1手移動", // TODO: Translate
+  shortcutKeys: "快捷鍵",
+  useUpDownToMove1Ply: "使用↑/↓鍵移動1手",
+  useLeftRightToMove1Ply: "使用←/→鍵移動1手",
   file: "檔案",
   recordFile: "棋譜檔案",
   executableFile: "可執行檔案",
@@ -295,9 +295,9 @@ export const zh_tw: Texts = {
   signOfEvaluation: "評價值符號",
   maxArrows: "箭頭顯示數量",
   winRateCoefficient: "勝率換算係數",
-  nodeCountFormat: "ノード数表記", // TODO: Translate
-  plainNumber: "装飾無し", // TODO: Translate
-  commaSeparated: "カンマ区切り", // TODO: Translate
+  nodeCountFormat: "節點數顯示",
+  plainNumber: "純數字",
+  commaSeparated: "逗號分隔",
   monitor: "引擎監視",
   hideTabView: "最小化",
   expandTabView: "展開分頁",
@@ -344,7 +344,7 @@ export const zh_tw: Texts = {
   byoyomi: "讀秒",
   increments: "增秒",
   startEndCriteria: "開始・結束條件",
-  descending: "逆順", // TODO: Translate
+  descending: "倒序",
   endCriteria1Move: "局面結束條件",
   outputSettings: "輸出設定",
   noOutputs: "不輸出",
@@ -393,7 +393,7 @@ export const zh_tw: Texts = {
   automaticBackup: "自動備份",
   restore: "復原",
   loadRecordFromWeb: "從網際網路取得棋譜",
-  backToMainBranch: "本譜に戻る", // TODO: Translate
+  backToMainBranch: "回到本譜",
   fetchLatestData: "取得最新資料",
   sourceURL: "來源網址",
   ok: "OK",
@@ -479,10 +479,10 @@ export const zh_tw: Texts = {
   stable: "安定版",
   latest: "最新版",
   backgroundColor: "背景顏色",
-  dialogPosition: "ダイアログ表示位置", // TODO: Translate
-  alignLeft: "左", // TODO: Translate
-  alignRight: "右", // TODO: Translate
-  alignCenter: "中央", // TODO: Translate
+  dialogPosition: "對話窗顯示位置",
+  alignLeft: "左側",
+  alignRight: "右側",
+  alignCenter: "置中",
   dialogBackdrop: "對話窗背景",
   record: "棋譜",
   book: "定跡",
@@ -517,21 +517,21 @@ export const zh_tw: Texts = {
   play: "著手",
   edit: "編輯",
   addMoves: "新增該手",
-  flippedBook: "反転も検索", // TODO: Translate
-  addBookMoves: "定跡手追加", // TODO: Translate
-  fromCurrentRecord: "現在の棋譜から", // TODO: Translate
-  fromFile: "ファイルから", // TODO: Translate
-  fromDirectory: "フォルダから", // TODO: Translate
-  noMoves: "指し手がありません。", // TODO: Translate
-  register: "登録", // TODO: Translate
-  update: "更新", // TODO: Translate
-  currentMove: "現在の手", // TODO: Translate
-  branchFrom: (n: number) => `${n}手目から分岐`, // TODO: Translate
-  allPlayers: "全ての対局者", // TODO: Translate
-  blackPlayerOnly: "先手のみ", // TODO: Translate
-  whitePlayerOnly: "後手のみ", // TODO: Translate
-  filterByName: "名前でフィルタ", // TODO: Translate
-  enterPartOfPlayerNameHere: "ここに対局者名の一部を入力", // TODO: Translate
+  flippedBook: "亦檢索先後逆局面",
+  addBookMoves: "增加定跡手",
+  fromCurrentRecord: "從現在棋譜",
+  fromFile: "從檔案",
+  fromDirectory: "從檔案目錄",
+  noMoves: "沒有棋步。",
+  register: "登錄",
+  update: "更新",
+  currentMove: "目前棋步",
+  branchFrom: (n: number) => `自${n}手目分岐`,
+  allPlayers: "所有對局者",
+  blackPlayerOnly: "僅先手",
+  whitePlayerOnly: "僅後手",
+  filterByName: "使用名稱過濾",
+  enterPartOfPlayerNameHere: "輸入對局者名稱",
   freq: "出現次數",
   frequency: "出現次數",
   new: "新增",
@@ -579,7 +579,7 @@ export const zh_tw: Texts = {
   shouldRestartToApplyLogSettings: "※您需要重新啟動本程式以使用變更後的紀錄設定。",
   canOpenLogDirectoryFromMenu: "※紀錄的輸出檔案可以在「偵錯」-「開啟紀錄檔案資料夾」開啟。",
   hasNoOldLogCleanUpFeature: "※現在並沒有舊紀錄的自動刪除機制。",
-  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
+  shouldRestartToApplyLowLevelSettings: "※您需要重新啟動本應用程式以反映底層設定。",
   processingPleaseWait: "現在處理中。請稍待一會。",
   importingFollowingRecordOrPosition: "將匯入以下棋譜（局面）。",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "※支援KIF/KI2/CSA/USI/SFEN/JKF/USEN形式。",
@@ -587,12 +587,12 @@ export const zh_tw: Texts = {
   pleaseSpecifyPlainTextURL: "※請輸入您要使用的URL。",
   redirectNotSupported: "※無法使用重新導向連結。",
   desktopVersionPastesAutomatically: "※安裝程式版將會自動貼上棋譜。",
-  asNewFile: "新規ファイル", // TODO: Translate
-  mergeToRootPosition: "棋譜の先頭へマージ", // TODO: Translate
-  mergeToCurrentPosition: "現在の位置へマージ", // TODO: Translate
+  asNewFile: "視為新檔案",
+  mergeToRootPosition: "自棋譜開頭合併",
+  mergeToCurrentPosition: "自目前局面合併",
   failedToMergeRecordWithDifferentInitialPosition:
-    "初期局面が異なるため棋譜をマージできませんでした。", // TODO: Translate
-  failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。", // TODO: Translate
+    "無法合併初始盤面不同之棋譜。",
+  failedToMergeRecordWithDifferentTurn: "無法合併手番不同之棋譜。",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期 Ponder 機能將會發送やねうら王自行定義之 ponderhit 指令。",
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -605,10 +605,10 @@ export const zh_tw: Texts = {
     "由於無法使用系統的加密機能，輸入的密碼將會以明文保存。",
   pleaseUncheckSaveHistoryIfNotWantSave: "若不想保存密碼，請不要將「保存紀錄」勾選。",
   floodgatePasswordShouldStartWithGameName:
-    "Floodgateのパスワードはゲーム名で始まる必要があります。", // TODO: Translate
-  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。", // TODO: Translate
+    "Floodgate密碼必須以對局名稱開頭。",
+  thisIsNotFloodgateOfficialGameName: "這不是Floodgate官方之對局名稱。",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
-    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？", // TODO: Translate
+    "密碼可能不符合Floodgate之要求。您仍要繼續嗎？",
   whenNewVersionIsAvailableItWillBeNotified: "將會在新版本發布時進行通知。",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     "上方按鈕會發送「這是測試用的通知。」的通知訊息。",
@@ -721,7 +721,7 @@ export const zh_tw: Texts = {
   tryToReloginToCSAServerNSecondsLater: (n) => `請在${n}秒後再次嘗試登入 CSA 伺服器。`,
   mateInNPlyDoYouWantToDisplay: (n) => `尋找到${n}手詰。要顯示結果嗎？`,
   insertedNMovesToRecord: (n: number) => `已加入${n}手到棋譜。`,
-  errorsOccurred: (n) => `發生 ${n} 種類的錯誤。`,
+  errorsOccurred: (n) => `發生 ${n} 個錯誤。`,
   between: (a, b) => `自 ${a} 到 ${b} `,
   addNthEngine: (n) => `追加第 ${n} 個引擎`,
   copyOf: (name) => `${name} 的拷貝`,
@@ -761,9 +761,9 @@ export const zh_tw: Texts = {
     return `無法找到該目錄。 [${path}]`;
   },
   youCanExitFullScreenByPressing(key: string) {
-    return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+    return `請按下${key}鍵以結束全螢幕顯示。`;
   },
   skippedMovesInMerge(skipped: number, total: number): string {
-    return `${total}手中、${skipped}手がマージできませんでした。`; // TODO: Translate
+    return `${total}手內之${skipped}手無法被合併。`;
   },
 };
