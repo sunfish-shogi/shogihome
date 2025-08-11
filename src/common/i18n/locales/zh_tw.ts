@@ -590,8 +590,7 @@ export const zh_tw: Texts = {
   asNewFile: "視為新檔案",
   mergeToRootPosition: "自棋譜開頭合併",
   mergeToCurrentPosition: "自目前局面合併",
-  failedToMergeRecordWithDifferentInitialPosition:
-    "無法合併初始盤面不同之棋譜。",
+  failedToMergeRecordWithDifferentInitialPosition: "無法合併初始盤面不同之棋譜。",
   failedToMergeRecordWithDifferentTurn: "無法合併手番不同之棋譜。",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期 Ponder 機能將會發送やねうら王自行定義之 ponderhit 指令。",
@@ -604,8 +603,7 @@ export const zh_tw: Texts = {
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "由於無法使用系統的加密機能，輸入的密碼將會以明文保存。",
   pleaseUncheckSaveHistoryIfNotWantSave: "若不想保存密碼，請不要將「保存紀錄」勾選。",
-  floodgatePasswordShouldStartWithGameName:
-    "Floodgate密碼必須以對局名稱開頭。",
+  floodgatePasswordShouldStartWithGameName: "Floodgate密碼必須以對局名稱開頭。",
   thisIsNotFloodgateOfficialGameName: "這不是Floodgate官方之對局名稱。",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "密碼可能不符合Floodgate之要求。您仍要繼續嗎？",
