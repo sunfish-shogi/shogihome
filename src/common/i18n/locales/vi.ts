@@ -1,4 +1,3 @@
-import { ordinal } from "@/common/helpers/string.js";
 import { Texts } from "@/common/i18n/text_template.js";
 
 export const vi: Texts = {
