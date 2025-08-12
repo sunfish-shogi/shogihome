@@ -1,3 +1,4 @@
+import { ordinal } from "@/common/helpers/string.js";
 import { Texts } from "@/common/i18n/text_template.js";
 
 export const vi: Texts = {
@@ -7,8 +8,8 @@ export const vi: Texts = {
   openNewInstance: "Mở một cửa sổ ShogiHome mới",
   saveOverwrite: "Ghi đè",
   newRecord: "Kỳ phổ mới",
-  newRecordKeepInitialPosition: "Kỳ phổ mới (同じ初形)", // TODO: Translate
-  newRecordHirateSetup: "新規棋譜（平手初形）", // TODO: Translate
+  newRecordKeepInitialPosition: "Kỳ phổ mới (giữ thế trận hiện tại)", 
+  newRecordHirateSetup: "Kỳ phổ mới (thế cờ ban đầu)", 
   openRecord: "Mở kỳ phổ",
   saveRecord: "Lưu kỳ phổ",
   saveRecordAs: "Lưu kỳ phổ như",
@@ -19,7 +20,7 @@ export const vi: Texts = {
   recordFileBatchConversion: "Chuyển đổi kỳ phổ số lượng lớn",
   close: "Đóng",
   quit: "Thoát",
-  reload: "再読み込み", // TODO: Translate
+  reload: "Tải lại", 
   editing: "Sửa",
   copyAsKIF: "Sao chép (KIF)",
   copyAsKI2: "Sao chép (KI2)",
@@ -32,8 +33,8 @@ export const vi: Texts = {
   copy: "Sao chép",
   cut: "Cắt",
   paste: "Dán",
-  copyRecordAll: "Sao chép kỳ phổ (初手から)", // TODO: Translate
-  copyRecordFromCurrentPosition: "Sao chép kỳ phổ (現在の局面から)", // TODO: Translate
+  copyRecordAll: "Sao chép kỳ phổ (từ nước đầu tiên)",
+  copyRecordFromCurrentPosition: "Sao chép kỳ phổ (từ thế cờ hiện tại)",
   asKIF: "dưới dạng KIF",
   asKI2: "dưới dạng KI2",
   asCSA: "dưới dạng CSA",
@@ -46,9 +47,9 @@ export const vi: Texts = {
   asSFEN: "dưới dạng SFEN",
   asBOD: "dưới dạng BOD",
   pasteRecordOrPosition: "Dán kỳ phổ/thế cờ",
-  pasteRecordMerge: "棋譜貼り付け(マージ)", // TODO: Translate
-  toRootPosition: "棋譜の先頭へ", // TODO: Translate
-  toCurrentPosition: "現在の位置へ", // TODO: Translate
+  pasteRecordMerge: "Dán kỳ phổ (sáp nhập)", 
+  toRootPosition: "Về thế cờ ban đầu",
+  toCurrentPosition: "Đến thế trận hiện tại", 
   addSpecialMove: "Chèn nước đi đặc biệt",
   deleteMoves: "Xóa từ nước hiện tại trở đi",
   view: "Hiển thị",
@@ -80,8 +81,7 @@ export const vi: Texts = {
     "Trong chế độ nâng cao, bạn phải tự nhập lệnh tại ô nhắc lệnh.",
   setoptionAndPrecedingCommandsAreSentAutomatically:
     '"setoption" và các lệnh trước đó sẽ được gửi tự động',
-  serverMustSupportShogiServerX1ModeLogIn:
-    "Máy chủ phải hỗ trợ phương thức đăng nhập x1-mode của shogi-server.",
+  serverMustSupportShogiServerX1ModeLogIn: "Máy chủ phải hỗ trợ phương thức đăng nhập x1-mode của shogi-server.",
   folders: "Thư mục",
   notification: "Thông báo",
   notificationTest: "Thử thông báo",
@@ -91,7 +91,7 @@ export const vi: Texts = {
   cache: "Bộ nhớ đệm",
   help: "Trợ giúp",
   openWebsite: "Mở trang web",
-  openUserGuide: "Hướng dẫn sử dụng",
+  openUserGuide: "Mở hướng dẫn sử dụng",
   openLatestReleasePage: "Mở trang của bản mới nhất",
   openStableReleasePage: "Mở trang của bản ổn định",
   license: "Giấy phép",
@@ -121,8 +121,8 @@ export const vi: Texts = {
   gameProgress: "Tiến triển ván đấu",
   allGamesCompleted: "Tất cả các ván đã kết thúc",
   wins: "Thắng",
-  winsOnBlack: "勝ち数(先手)", // TODO: Translate
-  winsOnWhite: "勝ち数(後手)", // TODO: Translate
+  winsOnBlack: "Số ván thắng (Tiên)",
+  winsOnWhite: "Số ván thắng (Hậu)",
   draws: "Hòa",
   validGames: "Ván hợp lệ",
   invalidGames: "Ván không hợp lệ",
@@ -158,16 +158,16 @@ export const vi: Texts = {
   repetition: "Hòa do lặp nước",
   mate: "Chiếu hết",
   noMate: "Không chiếu hết",
-  blackWin: "先手勝ち", // TODO: Translate
-  whiteWin: "後手勝ち", // TODO: Translate
-  all: "全て", // TODO: Translate
-  others: "その他", // TODO: Translate
-  minRate: "最小レート", // TODO: Translate
+  blackWin: "Tiên thắng", 
+  whiteWin: "Hậu thắng",
+  all: "Tất cả",
+  others: "Khác",
+  minRate: "Elo thấp nhất",
   mateSearch: "Tìm chiếu hết",
   startMateSearch: "Bắt đầu tìm chiếu hết",
   stopMateSearch: "Dừng tìm chiếu hết",
   noMateFound: "Không có chiếu hết.",
-  timePerPosition: "思考時間", // TODO: Translate
+  timePerPosition: "Thời gian suy nghĩ",
   timeout: "Hết giờ",
   foulWin: "Thắng do nước đi phạm luật",
   foulLose: "Thua do nước đi phạm luật",
@@ -221,10 +221,10 @@ export const vi: Texts = {
   boardOpacity: "Độ đục bàn cờ",
   pieceStandOpacity: "Độ đục komadai",
   recordOpacity: "Độ đục kỳ phổ",
-  promotionSelector: "成・不成の表示", // TODO: Translate
-  centeredHorizontal: "水平・中央寄せ", // TODO: Translate
-  promoteFirstVertical: "垂直・成優先", // TODO: Translate
-  promoteFirstHorizontal: "水平・成優先", // TODO: Translate
+  promotionSelector: "Chọn phong cấp",
+  centeredHorizontal: "Ngang, căn giữa",
+  promoteFirstVertical: "Dọc, ưu tiên phong cấp",
+  promoteFirstHorizontal: "Ngang, ưu tiên phong cấp",
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",
@@ -266,9 +266,9 @@ export const vi: Texts = {
   logLevel: "Mức độ log",
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
-  shortcutKeys: "ショートカットキー", // TODO: Translate
-  useUpDownToMove1Ply: "↑/↓キーで1手移動", // TODO: Translate
-  useLeftRightToMove1Ply: "←/→キーで1手移動", // TODO: Translate
+  shortcutKeys: "Phím tắt", 
+  useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
+  useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→", 
   file: "Tệp",
   recordFile: "Tệp kỳ phổ",
   executableFile: "Tệp phần mềm",
@@ -298,9 +298,9 @@ export const vi: Texts = {
   signOfEvaluation: "Dấu giá trị đánh giá",
   maxArrows: "Số mũi tên hiển thị",
   winRateCoefficient: "Hệ số tỷ lệ thắng",
-  nodeCountFormat: "ノード数表記", // TODO: Translate
-  plainNumber: "装飾無し", // TODO: Translate
-  commaSeparated: "カンマ区切り", // TODO: Translate
+  nodeCountFormat: "Hiển thị số node",
+  plainNumber: "Số thường",
+  commaSeparated: "Chia bằng dấu phẩy",
   monitor: "Theo dõi",
   hideTabView: "Ẩn",
   expandTabView: "Mở hiển thị thẻ",
@@ -347,7 +347,7 @@ export const vi: Texts = {
   byoyomi: "Byoyomi",
   increments: "Cộng thời gian",
   startEndCriteria: "Điều kiện bắt đầu/kết thúc",
-  descending: "逆順", // TODO: Translate
+  descending: "Đảo thứ tự",
   endCriteria1Move: "Điều kiện kết thúc cho mỗi nước đi",
   outputSettings: "Tùy chọn xuất",
   noOutputs: "Không xuất",
@@ -396,7 +396,7 @@ export const vi: Texts = {
   automaticBackup: "Sao lưu tự động",
   restore: "Khôi phục",
   loadRecordFromWeb: "Tải kỳ phổ từ mạng",
-  backToMainBranch: "本譜に戻る", // TODO: Translate
+  backToMainBranch: "Trở về biến chính",
   fetchLatestData: "Lấy dữ liệu mới nhất",
   sourceURL: "URL nguồn",
   ok: "OK",
@@ -482,10 +482,10 @@ export const vi: Texts = {
   stable: "Ổn định",
   latest: "Mới nhất",
   backgroundColor: "Màu nền",
-  dialogPosition: "ダイアログ表示位置", // TODO: Translate
-  alignLeft: "左", // TODO: Translate
-  alignRight: "右", // TODO: Translate
-  alignCenter: "中央", // TODO: Translate
+  dialogPosition: "Vị trí hộp thoại", 
+  alignLeft: "Trái", 
+  alignRight: "Phải", 
+  alignCenter: "Giữa", 
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
   book: "Định thức",
@@ -520,21 +520,21 @@ export const vi: Texts = {
   play: "Chơi",
   edit: "Sửa",
   addMoves: "Thêm nước đi",
-  flippedBook: "反転も検索", // TODO: Translate
-  addBookMoves: "定跡手追加", // TODO: Translate
-  fromCurrentRecord: "現在の棋譜から", // TODO: Translate
-  fromFile: "ファイルから", // TODO: Translate
-  fromDirectory: "フォルダから", // TODO: Translate
-  noMoves: "指し手がありません。", // TODO: Translate
-  register: "登録", // TODO: Translate
-  update: "更新", // TODO: Translate
-  currentMove: "現在の手", // TODO: Translate
-  branchFrom: (n: number) => `${n}手目から分岐`, // TODO: Translate
-  allPlayers: "全ての対局者", // TODO: Translate
-  blackPlayerOnly: "先手のみ", // TODO: Translate
-  whitePlayerOnly: "後手のみ", // TODO: Translate
-  filterByName: "名前でフィルタ", // TODO: Translate
-  enterPartOfPlayerNameHere: "ここに対局者名の一部を入力", // TODO: Translate
+  flippedBook: "Sử dụng book lật ngược",
+  addBookMoves: "Thêm định thức", 
+  fromCurrentRecord: "Từ kỳ phổ này",
+  fromFile: "Từ tệp",
+  fromDirectory: "Từ thư mục",
+  noMoves: "Không tìm thấy nước đi.", 
+  register: "Đăng ký",
+  update: "Cập nhật", 
+  currentMove: "Nước hiện tại", 
+  branchFrom: (n: number) => `Phân nhánh từ nước thứ ${n}`, 
+  allPlayers: "Tất cả kỳ thủ",
+  blackPlayerOnly: "Chỉ Tiên",
+  whitePlayerOnly: "Chỉ Hậu",
+  filterByName: "Lọc bằng tên",
+  enterPartOfPlayerNameHere: "Nhập một phần tên kỳ thủ",
   freq: "Tần suất",
   frequency: "Tần suất xuất hiện",
   new: "Mới",
@@ -583,7 +583,7 @@ export const vi: Texts = {
   canOpenLogDirectoryFromMenu:
     '*Bạn có thể mở đường dẫn log qua menu "Gỡ lỗi" - "Mở đường dẫn log".',
   hasNoOldLogCleanUpFeature: "*Ứng dụng này không có tính năng dọn dẹp. Vui lòng tự xóa log cũ.",
-  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
+  shouldRestartToApplyLowLevelSettings: "※ Vui lòng khởi động lại ứng dụng để cập nhật cài đặt mức độ thấp hơn.",
   processingPleaseWait: "Đang tải, vui lòng chờ.",
   importingFollowingRecordOrPosition: "Đang nhập kỳ phổ (hoặc thế cờ) dưới đây.",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Hỗ trợ KIF, KI2, CSA, USI, SFEN, JKF, và USEN.",
@@ -591,12 +591,12 @@ export const vi: Texts = {
   pleaseSpecifyPlainTextURL: "*Vui lòng nhập URL thô.",
   redirectNotSupported: "*Không hỗ trợ chuyển hướng.",
   desktopVersionPastesAutomatically: "*Bản máy tính sẽ tự động dán.",
-  asNewFile: "新規ファイル", // TODO: Translate
-  mergeToRootPosition: "棋譜の先頭へマージ", // TODO: Translate
-  mergeToCurrentPosition: "現在の位置へマージ", // TODO: Translate
+  asNewFile: "Tệp mới",
+  mergeToRootPosition: "Sáp nhập vào thế cờ ban đầu",
+  mergeToCurrentPosition: "Sáp nhập vào thế cờ hiện tại",
   failedToMergeRecordWithDifferentInitialPosition:
-    "初期局面が異なるため棋譜をマージできませんでした。", // TODO: Translate
-  failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。", // TODO: Translate
+    "Sáp nhập thất bại do thế cờ bắt đầu khác nhau.",
+  failedToMergeRecordWithDifferentTurn: "Sáp nhập thất bại do lượt đi khác nhau.",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Tính năng tính nhanh gửi lệnh "ponderhit" với các tùy chọn riêng củaYaneuraOu.',
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
@@ -609,10 +609,10 @@ export const vi: Texts = {
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Vui lòng bỏ chọn lưu lịch sử nếu không muốn lưu.",
   floodgatePasswordShouldStartWithGameName:
-    "Floodgateのパスワードはゲーム名で始まる必要があります。", // TODO: Translate
-  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。", // TODO: Translate
+    "Mật khẩu Floodgate phải bắt đầu bằng tên ván đấu. ",
+  thisIsNotFloodgateOfficialGameName: "Đây không phải tên một ván đấu Floodgate chính thức.",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
-    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？", // TODO: Translate
+    "Mật khẩu của bạn không đạt điều kiện của Floodgate. Bạn vẫn muốn tiếp tục chứ?",
   whenNewVersionIsAvailableItWillBeNotified: "Sẽ có thông báo khi có phiên bản mới.",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     'Vui lòng thử tin nhắn "Đây là thông báo thử." bằng nút trên.',
@@ -774,9 +774,9 @@ export const vi: Texts = {
     return `Không tìm thấy tập tin. [${path}]`;
   },
   youCanExitFullScreenByPressing(key: string) {
-    return `全画面表示を終了するには ${key} キーを押してください。`; // TODO: Translate
+    return `Bạn có thể thoát chế độ toàn màn hình bằng cách nhấn phím ${key}.`; 
   },
   skippedMovesInMerge(skipped: number, total: number): string {
-    return `${total}手中、${skipped}手がマージできませんでした。`; // TODO: Translate
+    return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`; 
   },
 };
