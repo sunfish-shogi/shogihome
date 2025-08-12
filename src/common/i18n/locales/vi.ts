@@ -7,8 +7,8 @@ export const vi: Texts = {
   openNewInstance: "Mở một cửa sổ ShogiHome mới",
   saveOverwrite: "Ghi đè",
   newRecord: "Kỳ phổ mới",
-  newRecordKeepInitialPosition: "Kỳ phổ mới (giữ thế trận hiện tại)", 
-  newRecordHirateSetup: "Kỳ phổ mới (thế cờ ban đầu)", 
+  newRecordKeepInitialPosition: "Kỳ phổ mới (giữ thế trận hiện tại)",
+  newRecordHirateSetup: "Kỳ phổ mới (thế cờ ban đầu)",
   openRecord: "Mở kỳ phổ",
   saveRecord: "Lưu kỳ phổ",
   saveRecordAs: "Lưu kỳ phổ như",
@@ -19,7 +19,7 @@ export const vi: Texts = {
   recordFileBatchConversion: "Chuyển đổi kỳ phổ số lượng lớn",
   close: "Đóng",
   quit: "Thoát",
-  reload: "Tải lại", 
+  reload: "Tải lại",
   editing: "Sửa",
   copyAsKIF: "Sao chép (KIF)",
   copyAsKI2: "Sao chép (KI2)",
@@ -46,9 +46,9 @@ export const vi: Texts = {
   asSFEN: "dưới dạng SFEN",
   asBOD: "dưới dạng BOD",
   pasteRecordOrPosition: "Dán kỳ phổ/thế cờ",
-  pasteRecordMerge: "Dán kỳ phổ (sáp nhập)", 
+  pasteRecordMerge: "Dán kỳ phổ (sáp nhập)",
   toRootPosition: "Về thế cờ ban đầu",
-  toCurrentPosition: "Đến thế trận hiện tại", 
+  toCurrentPosition: "Đến thế trận hiện tại",
   addSpecialMove: "Chèn nước đi đặc biệt",
   deleteMoves: "Xóa từ nước hiện tại trở đi",
   view: "Hiển thị",
@@ -80,7 +80,8 @@ export const vi: Texts = {
     "Trong chế độ nâng cao, bạn phải tự nhập lệnh tại ô nhắc lệnh.",
   setoptionAndPrecedingCommandsAreSentAutomatically:
     '"setoption" và các lệnh trước đó sẽ được gửi tự động',
-  serverMustSupportShogiServerX1ModeLogIn: "Máy chủ phải hỗ trợ phương thức đăng nhập x1-mode của shogi-server.",
+  serverMustSupportShogiServerX1ModeLogIn:
+    "Máy chủ phải hỗ trợ phương thức đăng nhập x1-mode của shogi-server.",
   folders: "Thư mục",
   notification: "Thông báo",
   notificationTest: "Thử thông báo",
@@ -157,7 +158,7 @@ export const vi: Texts = {
   repetition: "Hòa do lặp nước",
   mate: "Chiếu hết",
   noMate: "Không chiếu hết",
-  blackWin: "Tiên thắng", 
+  blackWin: "Tiên thắng",
   whiteWin: "Hậu thắng",
   all: "Tất cả",
   others: "Khác",
@@ -265,9 +266,9 @@ export const vi: Texts = {
   logLevel: "Mức độ log",
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
-  shortcutKeys: "Phím tắt", 
+  shortcutKeys: "Phím tắt",
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
-  useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→", 
+  useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",
   recordFile: "Tệp kỳ phổ",
   executableFile: "Tệp phần mềm",
@@ -481,10 +482,10 @@ export const vi: Texts = {
   stable: "Ổn định",
   latest: "Mới nhất",
   backgroundColor: "Màu nền",
-  dialogPosition: "Vị trí hộp thoại", 
-  alignLeft: "Trái", 
-  alignRight: "Phải", 
-  alignCenter: "Giữa", 
+  dialogPosition: "Vị trí hộp thoại",
+  alignLeft: "Trái",
+  alignRight: "Phải",
+  alignCenter: "Giữa",
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
   book: "Định thức",
@@ -520,15 +521,15 @@ export const vi: Texts = {
   edit: "Sửa",
   addMoves: "Thêm nước đi",
   flippedBook: "Sử dụng book lật ngược",
-  addBookMoves: "Thêm định thức", 
+  addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
   fromFile: "Từ tệp",
   fromDirectory: "Từ thư mục",
-  noMoves: "Không tìm thấy nước đi.", 
+  noMoves: "Không tìm thấy nước đi.",
   register: "Đăng ký",
-  update: "Cập nhật", 
-  currentMove: "Nước hiện tại", 
-  branchFrom: (n: number) => `Phân nhánh từ nước thứ ${n}`, 
+  update: "Cập nhật",
+  currentMove: "Nước hiện tại",
+  branchFrom: (n: number) => `Phân nhánh từ nước thứ ${n}`,
   allPlayers: "Tất cả kỳ thủ",
   blackPlayerOnly: "Chỉ Tiên",
   whitePlayerOnly: "Chỉ Hậu",
@@ -582,7 +583,8 @@ export const vi: Texts = {
   canOpenLogDirectoryFromMenu:
     '*Bạn có thể mở đường dẫn log qua menu "Gỡ lỗi" - "Mở đường dẫn log".',
   hasNoOldLogCleanUpFeature: "*Ứng dụng này không có tính năng dọn dẹp. Vui lòng tự xóa log cũ.",
-  shouldRestartToApplyLowLevelSettings: "※ Vui lòng khởi động lại ứng dụng để cập nhật cài đặt mức độ thấp hơn.",
+  shouldRestartToApplyLowLevelSettings:
+    "※ Vui lòng khởi động lại ứng dụng để cập nhật cài đặt mức độ thấp hơn.",
   processingPleaseWait: "Đang tải, vui lòng chờ.",
   importingFollowingRecordOrPosition: "Đang nhập kỳ phổ (hoặc thế cờ) dưới đây.",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Hỗ trợ KIF, KI2, CSA, USI, SFEN, JKF, và USEN.",
@@ -593,8 +595,7 @@ export const vi: Texts = {
   asNewFile: "Tệp mới",
   mergeToRootPosition: "Sáp nhập vào thế cờ ban đầu",
   mergeToCurrentPosition: "Sáp nhập vào thế cờ hiện tại",
-  failedToMergeRecordWithDifferentInitialPosition:
-    "Sáp nhập thất bại do thế cờ bắt đầu khác nhau.",
+  failedToMergeRecordWithDifferentInitialPosition: "Sáp nhập thất bại do thế cờ bắt đầu khác nhau.",
   failedToMergeRecordWithDifferentTurn: "Sáp nhập thất bại do lượt đi khác nhau.",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Tính năng tính nhanh gửi lệnh "ponderhit" với các tùy chọn riêng củaYaneuraOu.',
@@ -607,8 +608,7 @@ export const vi: Texts = {
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Vui lòng bỏ chọn lưu lịch sử nếu không muốn lưu.",
-  floodgatePasswordShouldStartWithGameName:
-    "Mật khẩu Floodgate phải bắt đầu bằng tên ván đấu. ",
+  floodgatePasswordShouldStartWithGameName: "Mật khẩu Floodgate phải bắt đầu bằng tên ván đấu. ",
   thisIsNotFloodgateOfficialGameName: "Đây không phải tên một ván đấu Floodgate chính thức.",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "Mật khẩu của bạn không đạt điều kiện của Floodgate. Bạn vẫn muốn tiếp tục chứ?",
@@ -773,9 +773,9 @@ export const vi: Texts = {
     return `Không tìm thấy tập tin. [${path}]`;
   },
   youCanExitFullScreenByPressing(key: string) {
-    return `Bạn có thể thoát chế độ toàn màn hình bằng cách nhấn phím ${key}.`; 
+    return `Bạn có thể thoát chế độ toàn màn hình bằng cách nhấn phím ${key}.`;
   },
   skippedMovesInMerge(skipped: number, total: number): string {
-    return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`; 
+    return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`;
   },
 };
