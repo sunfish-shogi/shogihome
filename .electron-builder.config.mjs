@@ -71,6 +71,10 @@ const config = {
   },
   linux: {
     target: "AppImage",
+    desktop: {
+      Name: "ShogiHome",
+      StartupWMClass: "ShogiHome",
+    },
     fileAssociations: [
       { name: "KIF", ext: "kif" },
       { name: "KIFU", ext: "kifu" },
