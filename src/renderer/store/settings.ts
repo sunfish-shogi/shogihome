@@ -177,6 +177,9 @@ class AppSettingsStore {
   get showPasteDialog(): boolean {
     return this.merged.showPasteDialog;
   }
+  get liveDuplicatePositionDetection(): boolean {
+    return this.merged.liveDuplicatePositionDetection;
+  }
   get bookOnTheFlyThresholdMB(): number {
     return this.merged.bookOnTheFlyThresholdMB;
   }

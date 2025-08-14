@@ -207,6 +207,10 @@ function createMenuTemplate(window: BrowserWindow) {
           "CmdOrCtrl+D",
         ),
         { type: "separator" },
+        menuItem(t.searchDuplicatePositions, MenuEvent.SEARCH_DUPLICATE_POSITIONS, [
+          AppState.NORMAL,
+        ]),
+        { type: "separator" },
         menuItem(t.startPositionSetup, MenuEvent.START_POSITION_EDITING, [AppState.NORMAL]),
         menuItem(t.completePositionSetup, MenuEvent.END_POSITION_EDITING, [
           AppState.POSITION_EDITING,

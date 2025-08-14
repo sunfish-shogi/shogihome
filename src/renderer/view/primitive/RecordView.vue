@@ -31,6 +31,13 @@
           <div class="move-text">{{ move.displayText }}</div>
           <div v-if="showElapsedTime" class="move-time">{{ move.ply ? move.timeText : "" }}</div>
           <div v-if="showComment" class="move-comment">
+            <button
+              v-if="operational && (positionCounts.get(move.sfen) || 0) >= 2"
+              class="duplicate"
+              @click.stop="showDuplicatePositions(move.sfen)"
+            >
+              {{ t.duplicatePos }}
+            </button>
             <span v-if="move.bookmark" class="bookmark">{{ move.bookmark }}</span>
             {{ move.comment }}
           </div>
@@ -54,6 +61,13 @@
           >
             <div class="move-text">{{ branch.displayText }}</div>
             <div v-if="showComment" class="move-comment">
+              <button
+                v-if="operational && (positionCounts.get(branch.sfen) || 0) >= 2"
+                class="duplicate"
+                @click.stop="showDuplicatePositions(branch.sfen)"
+              >
+                {{ t.duplicatePos }}
+              </button>
               <span v-if="branch.bookmark" class="bookmark">{{ branch.bookmark }}</span>
               {{ branch.comment }}
             </div>
@@ -107,11 +121,16 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import ToggleButton from "./ToggleButton.vue";
 import { RecordShortcutKeys } from "./board/shortcut";
+import { t } from "@/common/i18n";
 
 const props = defineProps({
   record: {
     type: Object as PropType<ImmutableRecord>,
     required: true,
+  },
+  positionCounts: {
+    type: Object as PropType<ReadonlyMap<string, number>>,
+    default: () => new Map<string, number>(),
   },
   operational: {
     type: Boolean,
@@ -181,6 +200,7 @@ const emit = defineEmits<{
   backToMainBranch: [];
   swapWithPreviousBranch: [];
   swapWithNextBranch: [];
+  showDuplicatePositions: [sfen: string];
   toggleShowElapsedTime: [enabled: boolean];
   toggleShowComment: [enabled: boolean];
 }>();
@@ -234,6 +254,12 @@ const swapWithPreviousBranch = () => {
 const swapWithNextBranch = () => {
   if (props.operational) {
     emit("swapWithNextBranch");
+  }
+};
+
+const showDuplicatePositions = (sfen: string) => {
+  if (props.operational) {
+    emit("showDuplicatePositions", sfen);
   }
 };
 
@@ -414,6 +440,13 @@ onUpdated(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+button.duplicate {
+  display: inline-block;
+  height: 100%;
+  font-size: 0.85em;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 .bookmark {
   display: inline-block;

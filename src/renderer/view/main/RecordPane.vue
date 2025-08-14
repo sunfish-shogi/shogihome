@@ -3,6 +3,7 @@
     <div class="auto record">
       <RecordView
         :record="store.record"
+        :position-counts="positionCounts"
         :operational="isRecordOperational"
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
@@ -24,6 +25,7 @@
         @back-to-main-branch="store.backToMainBranch()"
         @swap-with-previous-branch="store.swapWithPreviousBranch()"
         @swap-with-next-branch="store.swapWithNextBranch()"
+        @show-duplicate-positions="showDuplicatePositions"
         @toggle-show-elapsed-time="onToggleElapsedTime"
         @toggle-show-comment="onToggleComment"
       >
@@ -35,6 +37,12 @@
     <div v-if="store.remoteRecordFileURL">
       <button class="wide" @click="store.loadRemoteRecordFile()">{{ t.fetchLatestData }}</button>
     </div>
+    <DuplicatePositionsDialog
+      v-if="store.appState === AppState.NORMAL && duplicatePositionsDialog"
+      :sfen="duplicatePositionsDialog"
+      @select="changeNode"
+      @close="duplicatePositionsDialog = ''"
+    />
   </div>
 </template>
 
@@ -55,6 +63,8 @@ import {
 import { useAppSettings } from "@/renderer/store/settings";
 import BookPanel from "./BookPanel.vue";
 import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
+import DuplicatePositionsDialog from "@/renderer/view/dialog/DuplicatePositionsDialog.vue";
+import { ImmutableNode } from "tsshogi";
 
 defineProps({
   showElapsedTime: {
@@ -85,6 +95,7 @@ defineProps({
 const store = useStore();
 const appSettings = useAppSettings();
 const root = ref();
+const duplicatePositionsDialog = ref("");
 
 onMounted(() => {
   installHotKeyForMainWindow(root.value);
@@ -94,7 +105,19 @@ onBeforeUnmount(() => {
   uninstallHotKeyForMainWindow(root.value);
 });
 
+const positionCounts = computed(() =>
+  appSettings.liveDuplicatePositionDetection ? store.positionCounts : undefined,
+);
 const isRecordOperational = computed(() => store.appState === AppState.NORMAL);
+
+const showDuplicatePositions = (sfen: string) => {
+  duplicatePositionsDialog.value = sfen;
+};
+
+const changeNode = (node: ImmutableNode) => {
+  store.changeNode(node);
+  duplicatePositionsDialog.value = "";
+};
 
 const onToggleElapsedTime = (enabled: boolean) => {
   appSettings.updateAppSettings({

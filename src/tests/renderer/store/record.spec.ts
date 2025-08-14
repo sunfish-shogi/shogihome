@@ -21,6 +21,8 @@ describe("store/record", () => {
     expect(recordManager.unsaved).toBeFalsy();
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.STANDARD);
     expect(recordManager.record.moves).toHaveLength(1);
+    expect(recordManager.positionCounts.size).toBe(1);
+    expect(recordManager.positionCounts.get(InitialPositionSFEN.STANDARD)).toBe(1);
   });
 
   it("reset", () => {
@@ -34,6 +36,8 @@ describe("store/record", () => {
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.HANDICAP_4PIECES);
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(1);
+    expect(recordManager.positionCounts.get(InitialPositionSFEN.HANDICAP_4PIECES)).toBe(1);
 
     // 1 手追加する。
     recordManager.appendMove({ move: specialMove(SpecialMoveType.RESIGN) });
@@ -45,6 +49,8 @@ describe("store/record", () => {
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.HANDICAP_ROOK);
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(1);
+    expect(recordManager.positionCounts.get(InitialPositionSFEN.HANDICAP_ROOK)).toBe(1);
 
     // 1 手追加する。
     recordManager.appendMove({
@@ -59,6 +65,8 @@ describe("store/record", () => {
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.HANDICAP_ROOK);
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(1);
+    expect(recordManager.positionCounts.get(InitialPositionSFEN.HANDICAP_ROOK)).toBe(1);
 
     // 1 手追加する。
     recordManager.appendMove({
@@ -75,6 +83,12 @@ describe("store/record", () => {
     );
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(1);
+    expect(
+      recordManager.positionCounts.get(
+        "lnsgkgsnl/7b1/pppppp1pp/6p2/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      ),
+    ).toBe(1);
   });
 
   it("changePieceSet/from_standard", () => {
@@ -404,6 +418,7 @@ describe("store/record", () => {
     expect(recordManager.record.current.ply).toBe(0);
     expect(recordManager.record.moves).toHaveLength(3);
     expect(recordManager.unsaved).toBeTruthy();
+    expect(recordManager.positionCounts.size).toBe(3);
   });
 
   it("importRecord", () => {
@@ -442,11 +457,13 @@ describe("store/record", () => {
       researchInfo: { mate: -8 },
     });
     expect(recordManager.unsaved).toBeTruthy();
+    expect(recordManager.positionCounts.size).toBe(5);
 
     expect(recordManager.importRecord(InitialPositionSFEN.TSUME_SHOGI)).toBeUndefined();
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.TSUME_SHOGI);
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.unsaved).toBeTruthy();
+    expect(recordManager.positionCounts.size).toBe(1);
 
     expect(
       recordManager.importRecord(
@@ -460,6 +477,7 @@ describe("store/record", () => {
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.STANDARD);
     expect(recordManager.record.moves).toHaveLength(4);
     expect(recordManager.unsaved).toBeTruthy();
+    expect(recordManager.positionCounts.size).toBe(4);
 
     expect(
       recordManager.importRecord(
@@ -471,9 +489,44 @@ describe("store/record", () => {
     expect(recordManager.record.position.sfen).toBe(InitialPositionSFEN.STANDARD);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(6);
 
     expect(
       recordManager.importRecord(`手合割：平手`, { type: RecordFormatType.SFEN }),
     ).toBeInstanceOf(Error);
+    expect(recordManager.record.moves).toHaveLength(6);
+    expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.positionCounts.size).toBe(6);
+  });
+
+  it("positionCounts", () => {
+    const recordManager = new RecordManager();
+    recordManager.importRecord(`手合割：平手
+▲２六歩 △３四歩 ▲７六歩 △４四歩 ▲４八銀
+変化：1手
+▲７六歩 △３四歩 ▲２六歩 △４四歩 ▲２五歩`);
+    expect(recordManager.positionCounts.size).toBe(9);
+    for (const [sfen, count] of [
+      [InitialPositionSFEN.STANDARD, 1],
+      ["lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1", 1],
+      ["lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1", 2],
+      ["lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 1", 2],
+      ["lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B3S1R1/LNSGKG1NL w - 1", 1],
+    ] as [string, unknown][]) {
+      expect(recordManager.positionCounts.get(sfen)).toBe(count);
+    }
+
+    recordManager.changePly(3);
+    recordManager.removeNextMove();
+    expect(recordManager.positionCounts.size).toBe(8);
+    for (const [sfen, count] of [
+      [InitialPositionSFEN.STANDARD, 1],
+      ["lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1", 1],
+      ["lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1", 2],
+      ["lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 1", 1],
+      ["lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B3S1R1/LNSGKG1NL w - 1", undefined],
+    ] as [string, unknown][]) {
+      expect(recordManager.positionCounts.get(sfen)).toBe(count);
+    }
   });
 });

@@ -180,6 +180,18 @@ export const zh_tw: Texts = {
   analysis: "解析",
   analyze: "解析開始",
   stopAnalysis: "中斷解析",
+  searchDuplicatePositions: "同一局面を検索", // TODO: Translate
+  duplicatePositionSearch: "同一局面検索", // TODO: Translate
+  duplicatePositions: "同一局面", // TODO: Translate
+  duplicatePos: "同一局面", // TODO: Translate
+  via: "経路", // TODO: Translate
+  lastMove: "直前の指し手", // TODO: Translate
+  nextMoves: "次の指し手", // TODO: Translate
+  goToThisPosition: "この局面へ移動", // TODO: Translate
+  noDuplicatePositions: "重複する局面はありません。", // TODO: Translate
+  nDuplicatePositionsFound: (n: number) => `${n} 件の重複する局面が見つかりました。`, // TODO: Translate
+  appearanceCount: "出現数", // TODO: Translate
+  showList: "一覧を表示", // TODO: Translate
   setupPosition: "編輯局面",
   startPositionSetup: "開始編輯局面",
   completePositionSetup: "結束編輯局面",
@@ -251,6 +263,7 @@ export const zh_tw: Texts = {
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
   pasteDialog: "貼上視窗",
+  liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
   readOnlyThreshold: "唯讀模式閾值",
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",

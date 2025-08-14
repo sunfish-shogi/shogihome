@@ -21,6 +21,7 @@ import {
   Position,
   exportBOD,
   InitialPositionType,
+  ImmutableNode,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { GameSettings } from "@/common/settings/game.js";
@@ -277,6 +278,10 @@ class Store {
     return this.recordManager.inCommentPVs;
   }
 
+  get positionCounts(): ReadonlyMap<string, number> {
+    return this.recordManager.positionCounts;
+  }
+
   updateStandardRecordMetadata(update: { key: RecordMetadataKey; value: string }): void {
     this.recordManager.updateStandardMetadata(update);
   }
@@ -424,6 +429,12 @@ class Store {
     }
   }
 
+  showSearchDuplicatePositionsDialog(): void {
+    if (this.appState === AppState.NORMAL) {
+      this._appState = AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG;
+    }
+  }
+
   destroyModalDialog(): void {
     if (
       this.appState === AppState.PASTE_DIALOG ||
@@ -439,7 +450,8 @@ class Store {
       this.appState === AppState.CONNECT_TO_CSA_SERVER_DIALOG ||
       this.appState === AppState.LOAD_REMOTE_FILE_DIALOG ||
       this.appState === AppState.SHARE_DIALOG ||
-      this.appState === AppState.ADD_BOOK_MOVES_DIALOG
+      this.appState === AppState.ADD_BOOK_MOVES_DIALOG ||
+      this.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG
     ) {
       this._appState = AppState.NORMAL;
     }
@@ -1094,6 +1106,12 @@ class Store {
   changeBranch(index: number): void {
     if (this.appState === AppState.NORMAL) {
       this.recordManager.changeBranch(index);
+    }
+  }
+
+  changeNode(node: ImmutableNode): void {
+    if (this.appState === AppState.NORMAL) {
+      this.recordManager.changeNode(node);
     }
   }
 

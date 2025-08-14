@@ -178,6 +178,18 @@ export type Texts = {
   analysis: string;
   analyze: string;
   stopAnalysis: string;
+  searchDuplicatePositions: string;
+  duplicatePositionSearch: string;
+  duplicatePositions: string;
+  duplicatePos: string;
+  via: string;
+  lastMove: string;
+  nextMoves: string;
+  goToThisPosition: string;
+  noDuplicatePositions: string;
+  nDuplicatePositionsFound: (n: number) => string;
+  appearanceCount: string;
+  showList: string;
   setupPosition: string;
   startPositionSetup: string;
   completePositionSetup: string;
@@ -249,6 +261,7 @@ export type Texts = {
   movesOfUSIOutput: string;
   onlySFEN: string;
   pasteDialog: string;
+  liveDuplicatePositionDetection: string;
   readOnlyThreshold: string;
   usiProtocol: string;
   translateOptionName: string;
