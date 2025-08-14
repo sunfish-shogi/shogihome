@@ -314,6 +314,9 @@ const reset = () => {
 const ok = () => {
   options.value.forEach((option) => {
     const engineOption = engine.value.options[option.name];
+    if (!engineOption) {
+      return;
+    }
     if (engineOption.type === "button") {
       return;
     }
