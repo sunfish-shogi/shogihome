@@ -213,6 +213,7 @@ export type AppSettings = {
   enableUSIFileStartpos: boolean;
   enableUSIFileResign: boolean;
   showPasteDialog: boolean;
+  liveDuplicatePositionDetection: boolean;
 
   // Opening Book
   bookOnTheFlyThresholdMB: number;
@@ -365,6 +366,7 @@ export function defaultAppSettings(opt?: {
     enableUSIFileStartpos: true,
     enableUSIFileResign: false,
     showPasteDialog: true,
+    liveDuplicatePositionDetection: true,
     bookOnTheFlyThresholdMB: 256,
     flippedBook: true,
     translateEngineOptionName: true,

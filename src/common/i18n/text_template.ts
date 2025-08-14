@@ -261,6 +261,7 @@ export type Texts = {
   movesOfUSIOutput: string;
   onlySFEN: string;
   pasteDialog: string;
+  liveDuplicatePositionDetection: string;
   readOnlyThreshold: string;
   usiProtocol: string;
   translateOptionName: string;

@@ -266,6 +266,7 @@ export const ja: Texts = {
   movesOfUSIOutput: "USI の指し手表記",
   onlySFEN: "SFEN のみ",
   pasteDialog: "貼り付けダイアログ",
+  liveDuplicatePositionDetection: "同一局面を常に検出",
   readOnlyThreshold: "読み専モード閾値",
   usiProtocol: "USIプロトコル",
   translateOptionName: "オプション名を翻訳",

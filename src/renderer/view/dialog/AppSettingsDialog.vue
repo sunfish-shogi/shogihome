@@ -388,9 +388,9 @@
         </div>
       </div>
       <hr />
-      <!-- ファイル -->
+      <!-- 棋譜 -->
       <div class="section">
-        <div class="section-title">{{ t.file }}</div>
+        <div class="section-title">{{ t.record }}</div>
         <!-- デフォルトの保存形式 -->
         <div v-if="!isMobileWebApp()" class="form-item">
           <div class="form-item-label-wide">
@@ -505,6 +505,11 @@
         <div v-if="isNative()" class="form-item">
           <div class="form-item-label-wide">{{ t.pasteDialog }}</div>
           <ToggleButton v-model:value="update.showPasteDialog" />
+        </div>
+        <!-- 同一局面を常に検出 -->
+        <div class="form-item">
+          <div class="form-item-label-wide">{{ t.liveDuplicatePositionDetection }}</div>
+          <ToggleButton v-model:value="update.liveDuplicatePositionDetection" />
         </div>
       </div>
       <hr v-if="!isMobileWebApp()" />
@@ -824,6 +829,7 @@ const update = ref({
   enableUSIFileStartpos: org.enableUSIFileStartpos,
   enableUSIFileResign: org.enableUSIFileResign,
   showPasteDialog: org.showPasteDialog,
+  liveDuplicatePositionDetection: org.liveDuplicatePositionDetection,
   bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,

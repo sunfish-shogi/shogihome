@@ -266,6 +266,7 @@ export const en: Texts = {
   movesOfUSIOutput: "Moves of USI Output",
   onlySFEN: "Only SFEN",
   pasteDialog: "Paste Dialog",
+  liveDuplicatePositionDetection: "Live Duplicate Position Detection",
   readOnlyThreshold: "Read-Only Threshold",
   usiProtocol: "USI Protocol",
   translateOptionName: "Translate Option Name",

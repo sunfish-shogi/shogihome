@@ -266,6 +266,7 @@ export const vi: Texts = {
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
   pasteDialog: "Hộp thoại dán",
+  liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
   readOnlyThreshold: "Ngưỡng mở dưới dạng chỉ đọc",
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",

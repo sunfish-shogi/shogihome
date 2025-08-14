@@ -263,6 +263,7 @@ export const zh_tw: Texts = {
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
   pasteDialog: "貼上視窗",
+  liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
   readOnlyThreshold: "唯讀模式閾值",
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",

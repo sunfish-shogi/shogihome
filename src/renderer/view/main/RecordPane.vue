@@ -3,7 +3,7 @@
     <div class="auto record">
       <RecordView
         :record="store.record"
-        :position-counts="store.positionCounts"
+        :position-counts="positionCounts"
         :operational="isRecordOperational"
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
@@ -105,6 +105,9 @@ onBeforeUnmount(() => {
   uninstallHotKeyForMainWindow(root.value);
 });
 
+const positionCounts = computed(() =>
+  appSettings.liveDuplicatePositionDetection ? store.positionCounts : undefined,
+);
 const isRecordOperational = computed(() => store.appState === AppState.NORMAL);
 
 const showDuplicatePositions = (sfen: string) => {
