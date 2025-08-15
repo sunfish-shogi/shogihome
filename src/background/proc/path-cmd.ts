@@ -1,6 +1,8 @@
 import path from "node:path";
 
-export function getAppPath(name: "userData" | "logs" | "exe" | "documents" | "pictures"): string {
+export function getAppPath(
+  name: "userData" | "desktop" | "logs" | "exe" | "documents" | "pictures",
+): string {
   switch (name) {
     case "logs":
       return path.join(process.cwd(), "logs");

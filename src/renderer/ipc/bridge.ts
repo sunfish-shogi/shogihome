@@ -131,6 +131,7 @@ export interface Bridge {
   loadLayoutProfileList(): Promise<[string, string]>;
   updateLayoutProfileList(uri: string, profileList: string): void;
   onUpdateLayoutProfile(callback: (json: string | null) => void): void;
+  createDesktopShortcutForLayoutProfile(uri: string, name: string): Promise<void>;
 
   // Log
   openLogFile(logType: LogType): void;

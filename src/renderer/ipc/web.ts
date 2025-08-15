@@ -429,6 +429,9 @@ export const webAPI: Bridge = {
   onUpdateLayoutProfile(): void {
     // Do Nothing
   },
+  createDesktopShortcutForLayoutProfile(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
 
   // Log
   openLogFile(): void {

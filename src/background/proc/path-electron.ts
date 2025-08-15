@@ -3,7 +3,9 @@ import fs from "node:fs";
 import { getTempPathForTesting, isTest } from "./env.js";
 import { app } from "electron";
 
-export function getAppPath(name: "userData" | "logs" | "exe" | "documents" | "pictures"): string {
+export function getAppPath(
+  name: "userData" | "desktop" | "logs" | "exe" | "documents" | "pictures",
+): string {
   if (isTest()) {
     const tempPath = path.join(getTempPathForTesting(), name);
     fs.mkdirSync(tempPath, { recursive: true });

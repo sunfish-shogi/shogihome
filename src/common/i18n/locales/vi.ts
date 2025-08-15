@@ -632,6 +632,8 @@ export const vi: Texts = {
     "Nếu nó không hoạt động, vui lòng cho phép thông báo trong tùy chọn hệ điều hành.",
   translationHelpNeeded: "Chúng tôi cần bạn giúp đỡ phiên dịch.",
   restartRequiredAfterLocaleChange: "Khởi động lại ứng dụng để áp dụng ngôn ngữ.",
+  createDesktopShortcut: "デスクトップにショートカットを作成", // TODO: Translate
+  desktopShortcutCreated: "デスクトップにショートカットを作成しました。", // TODO: Translate
   areYouSureWantToResign: "Bạn có thật sự muốn đầu hàng không?",
   areYouSureWantToDoDeclaration: "Bạn có thật sự muốn tuyên bố không?",
   areYouSureWantToQuitGames: "Bạn có thật sự muốn bỏ ván không?",
