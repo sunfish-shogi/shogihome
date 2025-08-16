@@ -1,9 +1,8 @@
 import os from "node:os";
 import { OSState } from "@/common/advanced/monitor";
-import { getSystemMemoryInfo, getSystemVersion } from "node:process";
 
 function getOSVersion() {
-  const osVersion = getSystemVersion();
+  const osVersion = process.getSystemVersion();
   switch (process.platform) {
     case "darwin":
       return `macOS ${osVersion}`;
@@ -30,7 +29,7 @@ export async function collectOSState(): Promise<OSState> {
       (prev, cpu) => prev + cpu.times.user + cpu.times.nice + cpu.times.sys + cpu.times.irq,
       0,
     );
-  const mem = getSystemMemoryInfo();
+  const mem = process.getSystemMemoryInfo();
   return {
     version: osVersion,
     arch: process.arch,
