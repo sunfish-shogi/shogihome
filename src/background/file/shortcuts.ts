@@ -3,6 +3,7 @@ import path from "node:path";
 import child_process from "node:child_process";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { shell } from "electron";
+import { escapePosixArg, escapeWinArg, escapeLinuxDesktopToken } from "./escape";
 
 export async function createDesktopShortcut(name: string, args: string[]) {
   const desktopPath = getAppPath("desktop");
@@ -24,7 +25,7 @@ export async function createDesktopShortcut(name: string, args: string[]) {
 
 async function createWindowsShortcut(dirname: string, name: string, args: string[]) {
   const shortcutPath = path.join(dirname, `${name}.lnk`);
-  const safeArgs = args.map(escapeShellArg).join(" ");
+  const safeArgs = args.map(escapeWinArg).join(" ");
   const ok = shell.writeShortcutLink(shortcutPath, {
     target: process.execPath,
     args: safeArgs,
@@ -38,7 +39,7 @@ async function createWindowsShortcut(dirname: string, name: string, args: string
 
 async function createAppleScript(dirname: string, name: string, args: string[]) {
   const scriptPath = path.join(dirname, `${name}.applescript`);
-  const safeArgs = args.map(escapeAppleScriptArg).join(" ");
+  const safeArgs = args.map((arg) => arg.replace(/\\/g, "\\\\").replace(/ /g, "\\ ")).join(" ");
   if (safeArgs.lastIndexOf('"') !== -1) {
     throw new Error("AppleScript does not support double quotes in arguments.");
   }
@@ -47,7 +48,7 @@ async function createAppleScript(dirname: string, name: string, args: string[]) 
   const compiledPath = path.join(dirname, `${name}.app`);
   await new Promise<void>((resolve, reject) => {
     child_process.exec(
-      `osacompile -o ${escapeShellArg(compiledPath)} ${escapeShellArg(scriptPath)}`,
+      `osacompile -o ${escapePosixArg(compiledPath)} ${escapePosixArg(scriptPath)}`,
       (error) => {
         if (error) {
           reject(error);
@@ -63,21 +64,13 @@ async function createAppleScript(dirname: string, name: string, args: string[]) 
 async function createLinuxDesktop(dirname: string, name: string, args: string[]) {
   const execPath = process.env.APPIMAGE || process.execPath;
   const desktopFilePath = path.join(dirname, `${name}.desktop`);
-  const safeArgs = args.map(escapeShellArg).join(" ");
+  const execTokens = [execPath, ...args].map(escapeLinuxDesktopToken).join(" ");
   const content = `[Desktop Entry]
 Type=Application
 Name=${name}
-Exec=${execPath} ${safeArgs}
+Exec=${execTokens}
 Terminal=false
 `;
   await fs.promises.writeFile(desktopFilePath, content, "utf8");
   await fs.promises.chmod(desktopFilePath, 0o755);
-}
-
-function escapeShellArg(arg: string): string {
-  return `"${arg.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
-}
-
-function escapeAppleScriptArg(arg: string): string {
-  return arg.replace(/\\/g, "\\\\").replace(/ /g, "\\ ");
 }
