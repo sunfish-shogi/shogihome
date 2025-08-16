@@ -13,7 +13,7 @@ import { defaultBatchConversionSettings } from "@/common/settings/conversion.js"
 import { getEmptyHistory } from "@/common/file/history.js";
 import { BookLoadingMode } from "@/common/book.js";
 import { VersionStatus } from "@/common/version.js";
-import { SessionStates } from "@/common/advanced/monitor.js";
+import { blankOSState, SessionStates } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
@@ -388,6 +388,7 @@ export const webAPI: Bridge = {
   // Sessions
   async collectSessionStates(): Promise<string> {
     return JSON.stringify({
+      os: blankOSState(),
       usiSessions: [],
       csaSessions: [],
     } as SessionStates);

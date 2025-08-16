@@ -494,6 +494,7 @@ function createMenuTemplate(window: BrowserWindow) {
           click: () => {
             createMonitorWindow(window);
           },
+          accelerator: "CmdOrCtrl+Shift+M",
         },
         {
           label: t.logFile,
