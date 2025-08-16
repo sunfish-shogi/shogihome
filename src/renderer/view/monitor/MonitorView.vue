@@ -9,7 +9,7 @@
           <div>{{ t.usiEngine }}: {{ states.usiSessions.length }}</div>
           <div>{{ t.csaServer }}: {{ states.csaSessions.length }}</div>
         </div>
-        <div v-if="updatedMs" class="main" :style="{ height: `${size.height - 20}px` }">
+        <div v-if="updatedMs" class="main" :style="{ height: `${size.height - 38}px` }">
           <div v-if="states.usiSessions.length === 0" class="entry">
             <div class="label">{{ t.noRunningUSIEngine }}</div>
           </div>
@@ -132,6 +132,11 @@
           </div>
         </div>
         <div v-else class="main">Collecting...</div>
+        <div class="footer">
+          <span>{{ states.os.version }}/{{ states.os.arch }}</span>
+          <span>CPU Usage: {{ cpuUsage.toFixed(1) }}%</span>
+          <span>Memory Free: {{ memoryFree.toFixed(2) }}GiB ({{ memoryUsage.toFixed(1) }}%)</span>
+        </div>
       </div>
     </div>
   </div>
@@ -140,10 +145,16 @@
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry";
 import { getDateTimeStringMs } from "@/common/helpers/datetime";
-import { CSASessionState, SessionStates, USISessionState } from "@/common/advanced/monitor";
+import {
+  blankOSState,
+  CSASessionState,
+  OSState,
+  SessionStates,
+  USISessionState,
+} from "@/common/advanced/monitor";
 import { PromptTarget } from "@/common/advanced/prompt";
 import api from "@/renderer/ipc/api";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { LogLevel } from "@/common/log";
 import { t } from "@/common/i18n";
 import { useErrorStore } from "@/renderer/store/error";
@@ -157,7 +168,9 @@ defineProps({
 });
 
 let timer: number | null = null;
+const prevOSState = ref<OSState>(blankOSState());
 const states = ref<SessionStates>({
+  os: blankOSState(),
   usiSessions: [],
   csaSessions: [],
 });
@@ -167,6 +180,7 @@ function update() {
   api
     .collectSessionStates()
     .then((s) => {
+      prevOSState.value = states.value.os;
       states.value = s;
       updatedMs.value = new Date().getTime();
     })
@@ -190,6 +204,16 @@ onBeforeUnmount(() => {
     window.clearInterval(timer);
     timer = null;
   }
+});
+
+const memoryFree = computed(() => states.value.os.memoryFree / 1024 ** 2);
+const memoryUsage = computed(
+  () => (states.value.os.memoryFree / states.value.os.memoryTotal) * 100,
+);
+const cpuUsage = computed(() => {
+  const totalTime = states.value.os.cpuTotalTime - prevOSState.value.cpuTotalTime;
+  const idleTime = states.value.os.cpuIdleTime - prevOSState.value.cpuIdleTime;
+  return totalTime ? (1 - idleTime / totalTime) * 100 : 0;
 });
 
 function openUSIPrompt(session: USISessionState) {
@@ -255,6 +279,17 @@ function closeCSA(session: CSASessionState) {
 }
 .headers > *:last-child {
   margin-right: auto;
+}
+.footer {
+  font-size: 12px;
+  height: 18px;
+  padding: 2px 10px;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.footer > span {
+  margin-right: 8px;
 }
 .main {
   color: var(--text-color);
