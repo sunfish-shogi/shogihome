@@ -1,6 +1,6 @@
 import { getBlackPlayerName, getWhitePlayerName, ImmutableRecord, Move } from "tsshogi";
 import { getDateString } from "@/common/helpers/datetime.js";
-import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
+import { defaultRecordFileNameTemplate, escapeFileName } from "@/common/file/path.js";
 import {
   getDateStringFromMetadata,
   getRecordTitleFromMetadata,
@@ -30,10 +30,6 @@ export function join(path: string, ...paths: string[]): string {
     result = trimEnd(result);
   }
   return result;
-}
-
-function escapePath(path: string): string {
-  return path.replaceAll(/[<>:"/\\|?*]/g, "_");
 }
 
 type RecordFileNameOptions = {
@@ -77,10 +73,10 @@ export function generateRecordFileName(
 
   // generate file name
   let ret = options.template || defaultRecordFileNameTemplate;
-  ret = escapePath(ret);
+  ret = escapeFileName(ret);
   for (const key in params) {
     const value = params[key];
-    ret = escapePath(ret.replaceAll("{" + key + "}", value));
+    ret = escapeFileName(ret.replaceAll("{" + key + "}", value));
   }
   ret = ret.trim();
   if (options.extension) {

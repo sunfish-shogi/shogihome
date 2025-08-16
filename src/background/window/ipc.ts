@@ -126,6 +126,7 @@ import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 import { createDesktopShortcut } from "@/background/file/shortcuts.js";
+import { escapeFileName } from "@/common/file/path.js";
 
 const isWindows = process.platform === "win32";
 
@@ -669,10 +670,15 @@ ipcMain.on(Background.UPDATE_LAYOUT_PROFILE_LIST, (event, uri: string, json: str
 
 ipcMain.handle(
   Background.CREATE_DESKTOP_SHORTCUT_FOR_LAYOUT_PROFILE,
-  (event, uri: string, name: string) => {
+  async (event, uri: string, name: string) => {
     validateIPCSender(event.senderFrame);
-    getAppLogger().debug("create desktop shortcut for layout profile: %s", uri);
-    createDesktopShortcut(`ShogiHome ${name}`, ["--layout-profile", uri]);
+    const fileName = escapeFileName(`ShogiHome ${name}`);
+    getAppLogger().debug(
+      "create desktop shortcut for layout profile: uri=[%s] file=[%s]",
+      uri,
+      fileName,
+    );
+    await createDesktopShortcut(fileName, ["--layout-profile", uri]);
   },
 );
 
