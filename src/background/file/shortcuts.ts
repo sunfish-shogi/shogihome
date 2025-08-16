@@ -3,7 +3,7 @@ import path from "node:path";
 import child_process from "node:child_process";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { shell } from "electron";
-import { escapePosixArg, escapeWinArg, escapeLinuxDesktopToken } from "./escape";
+import { escapePosixArg, escapeWinArg, escapeLinuxDesktopToken } from "./escape.js";
 
 export async function createDesktopShortcut(name: string, args: string[]) {
   const desktopPath = getAppPath("desktop");
