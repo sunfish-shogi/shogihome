@@ -20,5 +20,6 @@ describe("escape", () => {
     expect(escapeLinuxDesktopToken("foo bar")).toBe('"foo bar"');
     expect(escapeLinuxDesktopToken("foo%bar")).toBe('"foo%%bar"');
     expect(escapeLinuxDesktopToken('foo"bar')).toBe('"foo\\"bar"');
+    expect(escapeLinuxDesktopToken("foo\\bar")).toBe('"foo\\\\bar"');
   });
 });

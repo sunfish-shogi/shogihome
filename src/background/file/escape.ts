@@ -24,5 +24,11 @@ export function escapeWinArg(arg: string): string {
 }
 
 export function escapeLinuxDesktopToken(s: string): string {
-  return `"${s.replace(/%/g, "%%").replace(/"/g, '\\"')}"`;
+  return `"${s
+    .replace(/\\/g, "\\\\")
+    .replace(/%/g, "%%")
+    .replace(/"/g, '\\"')
+    .replace(/`/g, "\\`")
+    .replace(/\$/g, "\\$")
+    .replace(/[\r\n\t]/g, " ")}"`;
 }
