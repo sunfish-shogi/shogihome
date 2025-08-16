@@ -13,6 +13,11 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -69,6 +74,11 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -125,6 +135,11 @@
   --text-bg-color-selected: #bc8e7e;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -181,6 +196,11 @@
   --text-bg-color-selected: #a6eaff;
   --text-bg-color-warning: #ffff88;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gray;
   --text-dashed-separator-color: dimgray;
   --input-border-color: gray;
@@ -237,6 +257,11 @@
   --text-bg-color-selected: #4444b3;
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gainsboro;
   --text-dashed-separator-color: lightgray;
   --input-border-color: gray;
@@ -293,6 +318,11 @@
   --text-bg-color-selected: #4444b3;
   --text-bg-color-warning: #b08000;
   --text-bg-color-danger: red;
+  --hovered-text-bg-color: color-mix(
+    in hsl,
+    var(--text-bg-color) 70%,
+    var(--text-bg-color-disabled)
+  );
   --text-separator-color: gainsboro;
   --text-dashed-separator-color: lightgray;
   --input-border-color: gray;
