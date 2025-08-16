@@ -364,6 +364,9 @@ const api: Bridge = {
       callback(json);
     });
   },
+  async createDesktopShortcutForLayoutProfile(uri: string, name: string) {
+    await ipcRenderer.invoke(Background.CREATE_DESKTOP_SHORTCUT_FOR_LAYOUT_PROFILE, uri, name);
+  },
 
   // Log
   openLogFile(logType: LogType): void {

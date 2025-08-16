@@ -29,18 +29,22 @@
         </div>
       </div>
       <div v-if="customProfile" class="custom-profile column grow scroll">
-        <div>
+        <div class="column">
           <input
             class="profile-name"
             :value="customProfile.name"
             @input="(e) => updateCustomProfileProp('name', inputEventToString(e))"
           />
-        </div>
-        <div class="uri row">
-          <span>{{ customProfile.uri }}</span>
-          <button @click="copyProfileURI">
-            <Icon :icon="IconType.COPY" />
-          </button>
+          <div class="uri row">
+            <span>URI:</span>
+            <span>{{ customProfile.uri }}</span>
+            <button @click="copyProfileURI">
+              <Icon :icon="IconType.COPY" />
+            </button>
+          </div>
+          <div class="row">
+            <button @click="createDesktopShortcut">{{ t.createDesktopShortcut }}</button>
+          </div>
         </div>
         <div class="row">
           <span class="key">{{ t.dialogPosition }}:</span>
@@ -369,6 +373,7 @@ import ErrorMessage from "@/renderer/view/dialog/ErrorMessage.vue";
 import ConfirmDialog from "@/renderer/view/dialog/ConfirmDialog.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons.js";
+import api from "@/renderer/ipc/api";
 
 const appSettings = useAppSettings();
 const messageStore = useMessageStore();
@@ -435,6 +440,19 @@ const copyProfileURI = () => {
     return;
   }
   navigator.clipboard.writeText(profile.uri);
+};
+
+const createDesktopShortcut = async () => {
+  const profile = getCurrentProfile();
+  if (!profile) {
+    return;
+  }
+  try {
+    await api.createDesktopShortcutForLayoutProfile(profile.uri, profile.name);
+    messageStore.enqueue({ text: t.desktopShortcutCreated });
+  } catch (e) {
+    errorStore.add(e);
+  }
 };
 
 const updateCustomProfileProp = (key: string, value: unknown) => {

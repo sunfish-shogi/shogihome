@@ -627,6 +627,8 @@ export const zh_tw: Texts = {
     "若無法顯示，請在使用的作業系統中許可本程式的通知。",
   translationHelpNeeded: "我們正在招募翻譯人員。",
   restartRequiredAfterLocaleChange: "更改語言後，請重新啟動本程式。",
+  createDesktopShortcut: "デスクトップにショートカットを作成", // TODO: Translate
+  desktopShortcutCreated: "デスクトップにショートカットを作成しました。", // TODO: Translate
   areYouSureWantToResign: "確定要投了嗎？",
   areYouSureWantToDoDeclaration: "確定要進行勝利宣言嗎？",
   areYouSureWantToQuitGames: "要中斷連續對局嗎？",

@@ -125,6 +125,8 @@ import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
+import { createDesktopShortcut } from "@/background/file/shortcuts.js";
+import { escapeFileName } from "@/common/file/path.js";
 
 const isWindows = process.platform === "win32";
 
@@ -665,6 +667,20 @@ ipcMain.on(Background.UPDATE_LAYOUT_PROFILE_LIST, (event, uri: string, json: str
     sendError(new Error(`failed to save layout config: ${e}`));
   });
 });
+
+ipcMain.handle(
+  Background.CREATE_DESKTOP_SHORTCUT_FOR_LAYOUT_PROFILE,
+  async (event, uri: string, name: string) => {
+    validateIPCSender(event.senderFrame);
+    const fileName = escapeFileName(`ShogiHome ${name}`);
+    getAppLogger().debug(
+      "create desktop shortcut for layout profile: uri=[%s] file=[%s]",
+      uri,
+      fileName,
+    );
+    await createDesktopShortcut(fileName, ["--layout-profile", uri]);
+  },
+);
 
 ipcMain.handle(Background.LOAD_USI_ENGINES, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);

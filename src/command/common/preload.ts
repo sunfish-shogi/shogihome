@@ -338,6 +338,9 @@ const bridge: Bridge = {
   onUpdateLayoutProfile(): void {
     // Do Nothing
   },
+  createDesktopShortcutForLayoutProfile(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
 
   // Log
   openLogFile(): void {

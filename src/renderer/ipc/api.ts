@@ -127,6 +127,7 @@ export interface API {
   // Layout
   loadLayoutProfileList(): Promise<[string, LayoutProfileList]>;
   updateLayoutProfileList(uri: string, profileList: LayoutProfileList): void;
+  createDesktopShortcutForLayoutProfile(uri: string, name: string): Promise<void>;
 
   // Log
   openLogFile(logType: LogType): void;

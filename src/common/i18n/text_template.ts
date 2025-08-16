@@ -618,6 +618,8 @@ export type Texts = {
   ifNotWorkYouShouldAllowNotificationOnOSSetting: string;
   translationHelpNeeded: string;
   restartRequiredAfterLocaleChange: string;
+  createDesktopShortcut: string;
+  desktopShortcutCreated: string;
   areYouSureWantToResign: string;
   areYouSureWantToDoDeclaration: string;
   areYouSureWantToQuitGames: string;

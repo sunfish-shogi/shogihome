@@ -633,6 +633,8 @@ export const en: Texts = {
     "If it does not work, you should allow notification on OS setting.",
   translationHelpNeeded: "We'd like your help to translate.",
   restartRequiredAfterLocaleChange: "You should restart this app to change the language.",
+  createDesktopShortcut: "Create desktop shortcut",
+  desktopShortcutCreated: "Desktop shortcut created.",
   areYouSureWantToResign: "Are you sure you want to resign?",
   areYouSureWantToDoDeclaration: "Are you sure you want to do declaration?",
   areYouSureWantToQuitGames: "Are you sure you want to quit games?",

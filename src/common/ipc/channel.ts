@@ -49,6 +49,7 @@ export enum Background {
   IMPORT_BOOK_MOVES = "importBookMoves",
   LOAD_LAYOUT_PROFILE_LIST = "loadLayoutProfileList",
   UPDATE_LAYOUT_PROFILE_LIST = "updateLayoutProfileList",
+  CREATE_DESKTOP_SHORTCUT_FOR_LAYOUT_PROFILE = "createDesktopShortcutForLayoutProfile",
   LOAD_USI_ENGINES = "loadUSIEngines",
   SAVE_USI_ENGINES = "saveUSIEngines",
   LOAD_BOOK_IMPORT_SETTINGS = "loadBookImportSettings",
