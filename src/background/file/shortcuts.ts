@@ -39,11 +39,14 @@ async function createWindowsShortcut(dirname: string, name: string, args: string
 
 async function createAppleScript(dirname: string, name: string, args: string[]) {
   const scriptPath = path.join(dirname, `${name}.applescript`);
-  const safeArgs = args.map((arg) => arg.replace(/\\/g, "\\\\").replace(/ /g, "\\ ")).join(" ");
+  const execPath = process.execPath;
+  const safeArgs = [execPath, ...args]
+    .map((arg) => arg.replace(/\\/g, "\\\\").replace(/ /g, "\\ "))
+    .join(" ");
   if (safeArgs.lastIndexOf('"') !== -1) {
     throw new Error("AppleScript does not support double quotes in arguments.");
   }
-  const script = `do shell script "${process.execPath} ${safeArgs}"`;
+  const script = `do shell script "${safeArgs}"`;
   await fs.promises.writeFile(scriptPath, script, "utf8");
   const compiledPath = path.join(dirname, `${name}.app`);
   await new Promise<void>((resolve, reject) => {
