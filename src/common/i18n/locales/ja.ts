@@ -267,7 +267,7 @@ export const ja: Texts = {
   onlySFEN: "SFEN のみ",
   pasteDialog: "貼り付けダイアログ",
   liveDuplicatePositionDetection: "同一局面を常に検出",
-  readOnlyThreshold: "読み専モード閾値",
+  onTheFlyThreshold: "On-the-fly 閾値",
   usiProtocol: "USIプロトコル",
   translateOptionName: "オプション名を翻訳",
   functionalOnJapaneseOnly: "日本語選択時のみ有効",
@@ -731,13 +731,11 @@ export const ja: Texts = {
   destinationFileNotSpecified: "出力ファイルが指定されていません。",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "保存していない内容は失われます。定跡を初期化しますか？",
-  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
-    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。",
-  youCanChangeFileSizeThresholdFromPreferencesDialog:
-    "アプリ設定からファイルサイズの閾値を変更できます。",
   bookMovesWereImported: "定跡データをインポートしました。",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
+  cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
+  pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
   sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
   sourceDirectoryNotSet: "フォルダを選択してください。",
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",

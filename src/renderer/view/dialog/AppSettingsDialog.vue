@@ -516,11 +516,11 @@
       <!-- 定跡 -->
       <div v-if="!isMobileWebApp()" class="section">
         <div class="section-title">{{ t.book }}</div>
-        <!-- 読み専モード閾値 -->
+        <!-- On-the-fly 閾値 -->
         <div class="form-item">
-          <div class="form-item-label-wide">{{ t.readOnlyThreshold }}</div>
-          <input v-model.number="update.bookOnTheFlyThresholdMB" type="number" max="4096" min="0" />
-          <div class="form-item-small-label">MB ({{ t.between(0, 4096) }})</div>
+          <div class="form-item-label-wide">{{ t.onTheFlyThreshold }}</div>
+          <input v-model.number="update.bookOnTheFlyThresholdMB" type="number" max="512" min="0" />
+          <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
         </div>
       </div>
       <hr v-if="!isMobileWebApp()" />

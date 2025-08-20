@@ -367,7 +367,7 @@ export function defaultAppSettings(opt?: {
     enableUSIFileResign: false,
     showPasteDialog: true,
     liveDuplicatePositionDetection: true,
-    bookOnTheFlyThresholdMB: 256,
+    bookOnTheFlyThresholdMB: 64,
     flippedBook: true,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
@@ -456,6 +456,8 @@ export function normalizeAppSettings(
         break;
     }
   }
+  // 旧バージョンでは On-the-fly の最大値が 4096 だったが 512 に変更した。
+  result.bookOnTheFlyThresholdMB = Math.min(Math.max(result.bookOnTheFlyThresholdMB, 0), 512);
   return result;
 }
 

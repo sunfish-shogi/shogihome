@@ -4,22 +4,29 @@ export type BookFormatYane2016 = "yane2016";
 export type BookFormatApery = "apery";
 export type BookFormat = BookFormatYane2016 | BookFormatApery;
 
-type BookCommon = {
-  entryCount: number;
-  duplicateCount: number;
-};
-
-export type YaneBook = BookCommon & {
+export type YaneBook = {
   format: BookFormatYane2016;
   yaneEntries: { [sfen: string]: BookEntry };
 };
 
-export type AperyBook = BookCommon & {
+export type AperyBook = {
   format: BookFormatApery;
   aperyEntries: Map<bigint, BookEntry>;
 };
 
 export type Book = YaneBook | AperyBook;
+
+export type YaneBookPatch = {
+  format: BookFormatYane2016;
+  patch: { [sfen: string]: BookEntry };
+};
+
+export type AperyBookPatch = {
+  format: BookFormatApery;
+  patch: Map<bigint, BookEntry>;
+};
+
+export type BookPatch = YaneBookPatch | AperyBookPatch;
 
 export type BookEntry = {
   comment: string; // 局面に対するコメント

@@ -9,8 +9,8 @@
             <td class="order">No.</td>
             <td class="move">{{ t.bookMove }}</td>
             <td v-show="playable" class="menu">{{ t.play }}</td>
-            <td v-show="editable" class="menu">{{ t.edit }}</td>
-            <td v-show="editable" class="menu">{{ t.remove }}</td>
+            <td class="menu">{{ t.edit }}</td>
+            <td class="menu">{{ t.remove }}</td>
             <td class="number">{{ t.score }}</td>
             <td class="number">{{ t.depth }}</td>
             <td class="number">{{ t.freq }}</td>
@@ -22,7 +22,6 @@
           <tr v-for="(entry, index) of moveList" :key="entry.usi">
             <td class="order">
               <select
-                v-if="editable"
                 :value="index"
                 @change="
                   (elem) =>
@@ -33,7 +32,6 @@
                   {{ i }}
                 </option>
               </select>
-              <span v-else>{{ index + 1 }}.</span>
             </td>
             <td class="move">
               <span>{{ formatMove(position, entry.move) }}</span>
@@ -43,12 +41,12 @@
                 <Icon :icon="IconType.PLAY" />
               </button>
             </td>
-            <td v-show="editable" class="menu">
+            <td class="menu">
               <button @click="emit('edit', entry.move)">
                 <Icon :icon="IconType.EDIT" />
               </button>
             </td>
-            <td v-show="editable" class="menu">
+            <td class="menu">
               <button @click="emit('remove', entry.move)">
                 <Icon :icon="IconType.TRASH" />
               </button>
@@ -107,11 +105,6 @@ const props = defineProps({
     default: 1.0,
   },
   playable: {
-    type: Boolean,
-    required: false,
-    default: true,
-  },
-  editable: {
     type: Boolean,
     required: false,
     default: true,

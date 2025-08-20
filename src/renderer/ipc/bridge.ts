@@ -1,6 +1,5 @@
 import { CommandType } from "@/common/advanced/command.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
-import { BookLoadingMode } from "@/common/book.js";
 import { MenuEvent } from "@/common/control/menu.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import { RecordFileFormat } from "@/common/file/record";
@@ -59,7 +58,7 @@ export interface Bridge {
   // Book
   showOpenBookDialog(): Promise<string>;
   showSaveBookDialog(): Promise<string>;
-  openBook(path: string, json: string): Promise<BookLoadingMode>;
+  openBook(path: string, json: string): Promise<void>;
   saveBook(path: string): Promise<void>;
   clearBook(): Promise<void>;
   searchBookMoves(sfen: string): Promise<string>;

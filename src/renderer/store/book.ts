@@ -1,4 +1,4 @@
-import { BookLoadingMode, BookMove, BookMoveEx } from "@/common/book.js";
+import { BookMove, BookMoveEx } from "@/common/book.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
 import api from "@/renderer/ipc/api.js";
@@ -13,7 +13,6 @@ import { ImmutableRecord } from "tsshogi";
 import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 export class BookStore {
-  private _mode: BookLoadingMode = "in-memory";
   private _moves: BookMoveEx[] = [];
   private _reactive: UnwrapNestedRefs<BookStore>;
 
@@ -23,10 +22,6 @@ export class BookStore {
 
   get reactive(): UnwrapNestedRefs<BookStore> {
     return this._reactive;
-  }
-
-  get mode(): BookLoadingMode {
-    return this._mode;
   }
 
   get moves(): BookMoveEx[] {
@@ -71,7 +66,6 @@ export class BookStore {
         api
           .clearBook()
           .then(() => {
-            this._mode = "in-memory";
             return this.reloadBookMoves();
           })
           .catch((e) => {
@@ -92,15 +86,9 @@ export class BookStore {
         if (!path) {
           return;
         }
-        const mode = await api.openBook(path, {
+        await api.openBook(path, {
           onTheFlyThresholdMB: useAppSettings().bookOnTheFlyThresholdMB,
         });
-        if (mode === "on-the-fly") {
-          useMessageStore().enqueue({
-            text: `${t.bookDataOpendAsReadOnlyModeBecauseOfLargeFile} ${t.youCanChangeFileSizeThresholdFromPreferencesDialog}`,
-          });
-        }
-        this._mode = mode;
         await this.reloadBookMoves();
       })
       .catch((e) => {

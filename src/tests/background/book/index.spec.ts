@@ -98,6 +98,14 @@ describe("background/book", () => {
           });
         }
       }
+
+      it("invalid", async () => {
+        await expect(
+          openBook("src/tests/testdata/book/yaneuraou-invalid-header.db", {
+            onTheFlyThresholdMB: 1,
+          }),
+        ).rejects.toThrow("Unsupported book header: #YANEURAOU-DB2016 2.00");
+      });
     });
 
     describe("apery.bin", () => {
@@ -163,7 +171,7 @@ describe("background/book", () => {
 
   it("saveBook", async () => {
     const tempFilePath = path.join(tmpdir, "savetest.db");
-    updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1", {
+    await updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1", {
       usi: "2g2f",
       usi2: "8c8d",
       score: 42,
@@ -171,12 +179,12 @@ describe("background/book", () => {
       count: 123,
       comment: "ibisha\npopular",
     });
-    updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1", {
+    await updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1", {
       usi: "7g7f",
       usi2: "3c3d",
       comment: "",
     });
-    updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/2P7/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1", {
+    await updateBookMove("lnsgkgsnl/1r5b1/ppppppppp/9/9/2P7/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1", {
       usi: "3c3d",
       usi2: "6g6f",
       score: -31.5, // 小数点以下は四捨五入
@@ -198,7 +206,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
   describe("updateBookMove", () => {
     it("yaneuraou", async () => {
       const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
-      updateBookMove(sfen, {
+      await updateBookMove(sfen, {
         usi: "2f2e",
         usi2: "8d8e",
         score: 42,
@@ -206,7 +214,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         count: 123,
         comment: "yokofu",
       });
-      updateBookMove(sfen, {
+      await updateBookMove(sfen, {
         usi: "6i7h",
         usi2: "4a3b",
         score: -30,
@@ -237,14 +245,14 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     it("apery", async () => {
       await openBook("src/tests/testdata/book/apery.bin");
       const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
-      updateBookMove(sfen, {
+      await updateBookMove(sfen, {
         usi: "2f2e",
         score: 42,
         depth: 20,
         count: 123,
         comment: "",
       });
-      updateBookMove(sfen, {
+      await updateBookMove(sfen, {
         usi: "6i7h",
         score: -30,
         count: 21,
@@ -303,8 +311,8 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     await openBook("src/tests/testdata/book/yaneuraou.db");
     const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 
-    updateBookMoveOrder(sfen, "2g2f", 2);
-    updateBookMoveOrder(sfen, "3g3f", 0);
+    await updateBookMoveOrder(sfen, "2g2f", 2);
+    await updateBookMoveOrder(sfen, "3g3f", 0);
 
     const moves = await searchBookMoves(sfen);
     expect(moves).toHaveLength(5);
@@ -319,8 +327,8 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     await openBook("src/tests/testdata/book/yaneuraou.db");
     const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 
-    removeBookMove(sfen, "2g2f");
-    removeBookMove(sfen, "2h7h");
+    await removeBookMove(sfen, "2g2f");
+    await removeBookMove(sfen, "2h7h");
 
     const moves = await searchBookMoves(
       "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
@@ -460,5 +468,128 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         }
       });
     }
+  });
+
+  describe("merge", () => {
+    it("yaneuraou", async () => {
+      const mode = await openBook("src/tests/testdata/book/yaneuraou.db", {
+        onTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      // 先頭へ追加
+      await updateBookMove(
+        "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 1",
+        {
+          usi: "2f2e",
+          score: 20,
+          depth: 19,
+          count: 89,
+          comment: "patch-1",
+        },
+      );
+      // 途中へ追加
+      await updateBookMove("lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL w - 1", {
+        usi: "8b3b",
+        score: 10,
+        depth: 23,
+        count: 8,
+        comment: "patch-2",
+      });
+      // 末尾へ追加
+      await updateBookMove("lnsgkgsnl/6rb1/pppppp1pp/6p2/9/2PP5/PP2PPPPP/1BS4R1/LN1GKGSNL w - 1", {
+        usi: "3d3f",
+        score: 15,
+        depth: 21,
+        count: 7,
+        comment: "patch-3",
+      });
+      // 既存の指し手を更新
+      await updateBookMove("lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/3P5/PPP1PPPPP/1BS4R1/LN1GKGSNL w - 1", {
+        usi: "8b3b",
+        count: 2,
+        comment: "patch-4",
+      });
+      // 既存の指し手の順序を更新
+      await updateBookMoveOrder(
+        "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/3P5/PPP1PPPPP/1BS4R1/LN1GKGSNL w - 1",
+        "3a4b",
+        1,
+      );
+      // 指し手を削除
+      await removeBookMove(
+        "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+        "3c3d",
+      );
+
+      const mergeFilePath = path.join(tmpdir, "mverge.db");
+      await saveBook(mergeFilePath);
+      const output = fs.readFileSync(mergeFilePath, "utf-8");
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-merge.db", "utf-8");
+      expect(output).toBe(expected);
+
+      // 2回目の書き込みを検査する
+      const mergeFilePath2 = path.join(tmpdir, "mverge2.db");
+      await saveBook(mergeFilePath2);
+      const output2 = fs.readFileSync(mergeFilePath2, "utf-8");
+      expect(output2).toBe(expected);
+    });
+
+    it("apery", async () => {
+      const mode = await openBook("src/tests/testdata/book/apery.bin", {
+        onTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      // 指し手を追加
+      await updateBookMove("lnsgkgsnl/1r5b1/pppppp1pp/9/6pP1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1", {
+        usi: "8b3b",
+        score: -10,
+        count: 7,
+        comment: "",
+      });
+      // 末尾に指し手を追加
+      await updateBookMove(
+        "+B2g3nl/l1s2kgs1/p1nppp2p/2p3p2/2r6/P8/1PPPPPP1P/2GK2SR1/LNS2G1NL w b3p 1",
+        { usi: "B*8c", score: 0, count: 1, comment: "" },
+      );
+      // 既存の指し手を更新
+      await updateBookMove(
+        "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1",
+        { usi: "2c2d", score: -120, count: 10, comment: "" },
+      );
+      // 既存の指し手の順序を更新
+      await updateBookMoveOrder(
+        "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1",
+        "3d3e",
+        0,
+      );
+      // 指し手を削除
+      await removeBookMove(
+        "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bp 1",
+        "4a3b",
+      );
+
+      const mergeFilePath = path.join(tmpdir, "merge.bin");
+      await saveBook(mergeFilePath);
+      const output = fs.readFileSync(mergeFilePath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/apery-merge.bin", "hex");
+      expect(output).toBe(expected);
+
+      // 2回目の書き込みを検査する
+      const mergeFilePath2 = path.join(tmpdir, "merge2.bin");
+      await saveBook(mergeFilePath2);
+      const output2 = fs.readFileSync(mergeFilePath2, "hex");
+      expect(output2).toBe(expected);
+    });
+
+    it("forbidOverwrite", async () => {
+      const path = "src/tests/testdata/book/yaneuraou.db";
+      const mode = await openBook(path, { onTheFlyThresholdMB: 0.0001 });
+      expect(mode).toBe("on-the-fly");
+      await expect(saveBook(path)).rejects.toThrowError(
+        "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
+      );
+    });
   });
 });

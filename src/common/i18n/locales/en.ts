@@ -267,7 +267,7 @@ export const en: Texts = {
   onlySFEN: "Only SFEN",
   pasteDialog: "Paste Dialog",
   liveDuplicatePositionDetection: "Live Duplicate Position Detection",
-  readOnlyThreshold: "Read-Only Threshold",
+  onTheFlyThreshold: "On-the-fly Threshold",
   usiProtocol: "USI Protocol",
   translateOptionName: "Translate Option Name",
   functionalOnJapaneseOnly: "Functional on Japanese Only",
@@ -730,13 +730,11 @@ export const en: Texts = {
   destinationFileNotSpecified: "Destination file is not specified.",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "Any unsaved data will be lost. Do you really want to reset book data?",
-  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
-    "Book data opened as read-only mode because of large file.",
-  youCanChangeFileSizeThresholdFromPreferencesDialog:
-    "You can change file size threshold from Preferences dialog.",
   bookMovesWereImported: "Book moves were imported.",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
+  cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
+  pleaseSpecifyOtherFileName: "Please specify another file name.",
   sourceRecordFileNotSet: "Source record file is not set.",
   sourceDirectoryNotSet: "Source directory is not set.",
   minPlyMustBeLessThanMaxPly: "Min ply must be less than max ply.",

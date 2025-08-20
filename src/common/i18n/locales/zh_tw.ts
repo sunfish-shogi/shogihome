@@ -264,7 +264,7 @@ export const zh_tw: Texts = {
   onlySFEN: "只有 SFEN",
   pasteDialog: "貼上視窗",
   liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
-  readOnlyThreshold: "唯讀模式閾值",
+  onTheFlyThreshold: "On-the-fly 閾値", // TODO: Translate
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",
   functionalOnJapaneseOnly: "只有在日文選擇時有效",
@@ -716,11 +716,11 @@ export const zh_tw: Texts = {
   destinationFileNotSpecified: "輸出檔案尚未被指定。",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "未保存內容可能會丟失。您確認要重置定跡嗎？",
-  bookDataOpendAsReadOnlyModeBecauseOfLargeFile: "由於定跡檔案過大，將使用唯讀模式讀取。",
-  youCanChangeFileSizeThresholdFromPreferencesDialog: "您可以自程式設定調整檔案大小閾值。",
   bookMovesWereImported: "已完成匯入定跡。",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
+  cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。", // TODO: Translate
+  pleaseSpecifyOtherFileName: "別のファイル名を指定してください。", // TODO: Translate
   sourceRecordFileNotSet: "尚未指定棋譜檔案。",
   sourceDirectoryNotSet: "請選擇目錄。",
   minPlyMustBeLessThanMaxPly: "最小手數應小於最大手數。",

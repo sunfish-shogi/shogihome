@@ -6,12 +6,14 @@ import {
   Book,
   BookEntry,
   BookFormat,
+  BookPatch,
   commonBookMoveToArray,
   IDX_COUNT,
   IDX_USI,
 } from "./types.js";
 import {
   loadYaneuraOuBook,
+  mergeYaneuraOuBook,
   searchYaneuraOuBookMovesOnTheFly,
   storeYaneuraOuBook,
   validateBookPositionOrdering,
@@ -25,10 +27,22 @@ import {
 } from "@/common/file/record.js";
 import { TextDecodingRule } from "@/common/settings/app.js";
 import { loadAppSettings } from "@/background/settings.js";
-import { Color, getBlackPlayerName, getWhitePlayerName, Move, Node, Record } from "tsshogi";
+import {
+  Color,
+  getBlackPlayerName,
+  getWhitePlayerName,
+  ImmutableNode,
+  Move,
+  Record,
+} from "tsshogi";
 import { t } from "@/common/i18n/index.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
-import { loadAperyBook, searchAperyBookMovesOnTheFly, storeAperyBook } from "./apery.js";
+import {
+  loadAperyBook,
+  mergeAperyBook,
+  searchAperyBookMovesOnTheFly,
+  storeAperyBook,
+} from "./apery.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
@@ -37,20 +51,52 @@ type InMemoryBook = Book & {
   saved: boolean;
 };
 
-type OnTheFlyBook = {
+type OnTheFlyBook = BookPatch & {
   type: "on-the-fly";
-  format: BookFormat;
+  path: string;
   file: fs.promises.FileHandle;
   size: number;
+  saved: boolean;
 };
 
-function retrieveEntry(book: InMemoryBook, sfen: string): BookEntry | undefined {
+// 局面を検索する。 on-the-fly の場合は返されたエントリーを更新しても book に反映されない。
+async function retrieveEntryReadOnly(
+  book: BookHandle,
+  sfen: string,
+): Promise<BookEntry | undefined> {
   switch (book.format) {
     case "yane2016":
-      return book.yaneEntries[sfen];
+      if (book.type === "in-memory") {
+        return book.yaneEntries[sfen];
+      }
+      return (
+        book.patch[sfen] || (await searchYaneuraOuBookMovesOnTheFly(sfen, book.file, book.size))
+      );
     case "apery":
-      return book.aperyEntries.get(aperyHash(sfen));
+      if (book.type === "in-memory") {
+        return book.aperyEntries.get(aperyHash(sfen));
+      }
+      return (
+        book.patch.get(aperyHash(sfen)) ||
+        (await searchAperyBookMovesOnTheFly(sfen, book.file, book.size))
+      );
   }
+}
+
+// 局面を検索する。返されたエントリーを更新した場合に book に反映されることを保証する。
+async function retrieveEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
+  const entry = await retrieveEntryReadOnly(book, sfen);
+  if (entry && book.type === "on-the-fly") {
+    switch (book.format) {
+      case "yane2016":
+        book.patch[sfen] = entry;
+        break;
+      case "apery":
+        book.patch.set(aperyHash(sfen), entry);
+        break;
+    }
+  }
+  return entry;
 }
 
 function emptyBook(): BookHandle {
@@ -58,8 +104,6 @@ function emptyBook(): BookHandle {
     type: "in-memory",
     format: "yane2016",
     yaneEntries: {},
-    entryCount: 0,
-    duplicateCount: 0,
     saved: true,
   };
 }
@@ -93,12 +137,22 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
     await file.close();
     throw e;
   }
-  replaceBook({
-    type: "on-the-fly",
-    format,
-    file,
-    size,
-  });
+  const common = { path, file, size, saved: true };
+  if (format === "yane2016") {
+    replaceBook({
+      ...common,
+      type: "on-the-fly",
+      format: "yane2016",
+      patch: {},
+    });
+  } else {
+    replaceBook({
+      ...common,
+      type: "on-the-fly",
+      format: "apery",
+      patch: new Map<bigint, BookEntry>(),
+    });
+  }
 }
 
 async function openBookInMemory(path: string, size: number): Promise<void> {
@@ -136,7 +190,10 @@ export async function openBook(
   }
 
   const size = stat.size;
-  if (options && size > options.onTheFlyThresholdMB * 1024 * 1024) {
+  if (
+    options?.onTheFlyThresholdMB !== undefined &&
+    size > options.onTheFlyThresholdMB * 1024 * 1024
+  ) {
     await openBookOnTheFly(path, size);
     return "on-the-fly";
   } else {
@@ -148,39 +205,55 @@ export async function openBook(
 function replaceBook(newBook: BookHandle) {
   clearBook();
   book = newBook;
-  if (book.type === "in-memory") {
-    if (book.duplicateCount) {
-      getAppLogger().warn("Duplicated entries: %d", book.duplicateCount);
-    }
-    getAppLogger().info("Loaded book with %d entries", book.entryCount);
-  }
 }
 
 export async function saveBook(path: string) {
-  if (book.type === "on-the-fly") {
-    throw new Error("Cannot save on-the-fly book");
+  // on-the-fly の場合は上書きを禁止
+  if (book.type === "on-the-fly" && (await exists(path))) {
+    const inputRealPath = await fs.promises.realpath(book.path);
+    const outputRealPath = await fs.promises.realpath(path);
+    if (inputRealPath === outputRealPath) {
+      throw new Error(`${t.cannotOverwriteOnTheFlyBook} ${t.pleaseSpecifyOtherFileName}`);
+    }
   }
+
   const file = fs.createWriteStream(path, "utf-8");
   try {
-    book.saved = true;
     switch (book.format) {
       case "yane2016":
         if (!path.endsWith(".db")) {
           throw new Error("Invalid file extension: " + path);
         }
-        await storeYaneuraOuBook(book, file);
+        if (book.type === "in-memory") {
+          await storeYaneuraOuBook(book, file);
+        } else {
+          const input = book.file.createReadStream({
+            encoding: "utf-8",
+            autoClose: false,
+            start: 0,
+          });
+          await mergeYaneuraOuBook(input, book, file);
+        }
         break;
       case "apery":
         if (!path.endsWith(".bin")) {
           throw new Error("Invalid file extension: " + path);
         }
-        await storeAperyBook(book, file);
+        if (book.type === "in-memory") {
+          await storeAperyBook(book, file);
+        } else {
+          const input = book.file.createReadStream({
+            autoClose: false,
+            start: 0,
+            highWaterMark: 128 * 1024,
+          });
+          await mergeAperyBook(input, book, file);
+        }
         break;
     }
-  } catch (e) {
+    book.saved = true;
+  } finally {
     file.close();
-    book.saved = false;
-    throw e;
   }
 }
 
@@ -192,15 +265,11 @@ export function clearBook(): void {
 }
 
 export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
-  if (book.type === "in-memory") {
-    const moves = retrieveEntry(book, sfen)?.moves || [];
-    return moves.map(arrayMoveToCommonBookMove);
-  } else {
-    const searchFunc =
-      book.format === "yane2016" ? searchYaneuraOuBookMovesOnTheFly : searchAperyBookMovesOnTheFly;
-    const moves = await searchFunc(sfen, book.file, book.size);
-    return moves.map(arrayMoveToCommonBookMove);
+  const entry = await retrieveEntryReadOnly(book, sfen);
+  if (!entry) {
+    return [];
   }
+  return entry.moves.map(arrayMoveToCommonBookMove);
 }
 
 function updateBookEntry(entry: BookEntry, move: BookMove): void {
@@ -213,22 +282,19 @@ function updateBookEntry(entry: BookEntry, move: BookMove): void {
   entry.moves.push(commonBookMoveToArray(move));
 }
 
-export function updateBookMove(sfen: string, move: BookMove): void {
-  if (book.type === "on-the-fly") {
-    return;
-  }
+export async function updateBookMove(sfen: string, move: BookMove): Promise<void> {
   book.saved = false;
+  const entry = await retrieveEntry(book, sfen);
   if (book.format === "yane2016") {
-    const entry = book.yaneEntries[sfen];
+    const entries = book.type === "in-memory" ? book.yaneEntries : book.patch;
     if (entry) {
       updateBookEntry(entry, move);
     } else {
-      book.yaneEntries[sfen] = {
+      entries[sfen] = {
         comment: "",
         moves: [commonBookMoveToArray(move)],
         minPly: 0,
       };
-      book.entryCount++;
     }
   } else {
     const sanitizedMove = {
@@ -240,25 +306,21 @@ export function updateBookMove(sfen: string, move: BookMove): void {
     delete sanitizedMove.usi2; // not supported
     delete sanitizedMove.depth; // not supported
     const hash = aperyHash(sfen);
-    const entry = book.aperyEntries.get(hash);
+    const entries = book.type === "in-memory" ? book.aperyEntries : book.patch;
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
     } else {
-      book.aperyEntries.set(hash, {
+      entries.set(hash, {
         comment: "",
         moves: [commonBookMoveToArray(sanitizedMove)],
         minPly: 0,
       });
-      book.entryCount++;
     }
   }
 }
 
-export function removeBookMove(sfen: string, usi: string): void {
-  if (book.type === "on-the-fly") {
-    return;
-  }
-  const entry = retrieveEntry(book, sfen);
+export async function removeBookMove(sfen: string, usi: string) {
+  const entry = await retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -266,11 +328,8 @@ export function removeBookMove(sfen: string, usi: string): void {
   book.saved = false;
 }
 
-export function updateBookMoveOrder(sfen: string, usi: string, order: number): void {
-  if (book.type === "on-the-fly") {
-    return;
-  }
-  const entry = retrieveEntry(book, sfen);
+export async function updateBookMoveOrder(sfen: string, usi: string, order: number) {
+  const entry = await retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -283,11 +342,8 @@ export function updateBookMoveOrder(sfen: string, usi: string, order: number): v
   book.saved = false;
 }
 
-function updateBookMoveOrderByCounts(sfen: string): void {
-  if (book.type === "on-the-fly") {
-    return;
-  }
-  const entry = retrieveEntry(book, sfen);
+async function updateBookMoveOrderByCounts(sfen: string) {
+  const entry = await retrieveEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -301,9 +357,7 @@ export async function importBookMoves(
 ): Promise<BookImportSummary> {
   getAppLogger().info("Importing book moves: %s", JSON.stringify(settings));
 
-  if (book.type === "on-the-fly") {
-    throw new Error("Cannot import to on-the-fly book");
-  }
+  // 非同期処理のために参照を複製する
   const bookRef = book;
 
   const appSettings = await loadAppSettings();
@@ -342,7 +396,7 @@ export async function importBookMoves(
   let entryCount = 0;
   let duplicateCount = 0;
 
-  function importMove(node: Node, sfen: string) {
+  async function importMove(node: ImmutableNode, sfen: string) {
     if (!(node.move instanceof Move)) {
       return;
     }
@@ -353,7 +407,8 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const bookMoves = retrieveEntry(bookRef, sfen)?.moves || [];
+    const entry = await retrieveEntry(bookRef, sfen);
+    const bookMoves = entry?.moves || [];
     const moves = bookMoves.map(arrayMoveToCommonBookMove);
     const existing = moves.find((move) => move.usi === usi);
     if (existing) {
@@ -363,8 +418,8 @@ export async function importBookMoves(
     }
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
-    updateBookMove(sfen, bookMove);
-    updateBookMoveOrderByCounts(sfen);
+    await updateBookMove(sfen, bookMove);
+    await updateBookMoveOrderByCounts(sfen);
   }
 
   for (const path of paths) {
@@ -399,23 +454,24 @@ export async function importBookMoves(
       const lines = sourceData.toString("utf-8").split(/\r?\n/);
       let hasValidLines = false;
       let invalidLine = "";
-      lines.forEach((line) => {
+      for (const line of lines) {
         const record = Record.newByUSI(line.trim());
         if (record instanceof Error) {
           invalidLine = line;
-          return;
+          continue;
         }
         hasValidLines = true;
+        const nodes = [] as ImmutableNode[];
         record.forEach((node) => {
-          const prev = node.prev;
-          if (!prev || !targetColorSet[prev.nextColor]) {
-            return;
-          }
-          if (node.move instanceof Move) {
-            importMove(node, prev.sfen);
-          }
+          nodes.push(node);
         });
-      });
+        for (const node of nodes) {
+          const prev = node.prev;
+          if (prev && targetColorSet[prev.nextColor]) {
+            await importMove(node, prev.sfen);
+          }
+        }
+      }
       if (hasValidLines) {
         successFileCount++;
       } else if (invalidLine) {
@@ -451,13 +507,16 @@ export async function importBookMoves(
       }
     }
 
+    const nodes = [] as ImmutableNode[];
     record.forEach((node) => {
-      const prev = node.prev;
-      if (!prev || !targetColorSet[prev.nextColor]) {
-        return;
-      }
-      importMove(node, prev.sfen);
+      nodes.push(node);
     });
+    for (const node of nodes) {
+      const prev = node.prev;
+      if (prev && targetColorSet[prev.nextColor]) {
+        await importMove(node, prev.sfen);
+      }
+    }
     successFileCount++;
   }
 
