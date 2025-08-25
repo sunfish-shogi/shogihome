@@ -267,7 +267,7 @@ export const vi: Texts = {
   onlySFEN: "Chỉ SFEN",
   pasteDialog: "Hộp thoại dán",
   liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
-  readOnlyThreshold: "Ngưỡng mở dưới dạng chỉ đọc",
+  onTheFlyThreshold: "On-the-fly 閾値", // TODO: Translate
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",
   functionalOnJapaneseOnly: "Chỉ dùng cho bản tiếng Nhật",
@@ -727,13 +727,11 @@ export const vi: Texts = {
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "Tất cả dữ liệu chưa lưu sẽ bị mất. Bạn có muốn đặt lại dữ liệu định thức?",
-  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
-    "Do kích cỡ tệp quá lớn, dữ liệu định thức được mở dưới dạng chỉ đọc.",
-  youCanChangeFileSizeThresholdFromPreferencesDialog:
-    "Bạn có thể chỉnh giới hạn kích cỡ tệp từ cài đặt.",
   bookMovesWereImported: "Dữ liệu định thức đã được nhập thành công.",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
+  cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。", // TODO: Translate
+  pleaseSpecifyOtherFileName: "別のファイル名を指定してください。", // TODO: Translate
   sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.",
   sourceDirectoryNotSet: "Vui lòng chọn một tập tin.",
   minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.",

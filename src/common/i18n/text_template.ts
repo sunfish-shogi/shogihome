@@ -262,7 +262,7 @@ export type Texts = {
   onlySFEN: string;
   pasteDialog: string;
   liveDuplicatePositionDetection: string;
-  readOnlyThreshold: string;
+  onTheFlyThreshold: string;
   usiProtocol: string;
   translateOptionName: string;
   functionalOnJapaneseOnly: string;
@@ -704,10 +704,10 @@ export type Texts = {
   destinationDirectoryNotSpecified: string;
   destinationFileNotSpecified: string;
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData: string;
-  bookDataOpendAsReadOnlyModeBecauseOfLargeFile: string;
-  youCanChangeFileSizeThresholdFromPreferencesDialog: string;
   bookMovesWereImported: string;
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
+  cannotOverwriteOnTheFlyBook: string;
+  pleaseSpecifyOtherFileName: string;
   sourceRecordFileNotSet: string;
   sourceDirectoryNotSet: string;
   minPlyMustBeLessThanMaxPly: string;

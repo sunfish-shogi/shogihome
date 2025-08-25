@@ -11,7 +11,6 @@ import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
 import { defaultMateSearchSettings } from "@/common/settings/mate.js";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
 import { getEmptyHistory } from "@/common/file/history.js";
-import { BookLoadingMode } from "@/common/book.js";
 import { VersionStatus } from "@/common/version.js";
 import { blankOSState, SessionStates } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
@@ -260,7 +259,7 @@ export const webAPI: Bridge = {
   async clearBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
-  async openBook(): Promise<BookLoadingMode> {
+  async openBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async saveBook(): Promise<void> {

@@ -45,7 +45,11 @@ describe("headless", () => {
       timeout: 30,
     });
 
-    expect(mockUSI.getUSIEngineInfo).toHaveBeenCalledWith("/path/to/engine2", 30);
+    expect(mockUSI.getUSIEngineInfo).toBeCalledTimes(1);
+    expect(mockUSI.getUSIEngineInfo.mock.calls[0][0]).toMatch(
+      /^(\/path\/to\/engine2|[A-Z]:\\path\\to\\engine2)$/,
+    );
+    expect(mockUSI.getUSIEngineInfo.mock.calls[0][1]).toBe(30);
     expect(mockSettings.saveUSIEngines).toHaveBeenCalledTimes(1);
     const result = mockSettings.saveUSIEngines.mock.calls[0][0].engineList;
     expect(result).toHaveLength(2);

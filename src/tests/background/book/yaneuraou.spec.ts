@@ -16,8 +16,6 @@ describe("background/book/yaneuraou", () => {
         "9f9e 8g7g 0 32 1\n",
       ]);
       const book = await loadYaneuraOuBook(input);
-      expect(book.entryCount).toBe(3);
-      expect(book.duplicateCount).toBe(0);
       expect(book.yaneEntries).toEqual({
         "+P1kg3nl/1ps2b3/+P3p3p/2pgsr1p1/s2p1pP2/2P1P1pR1/1SNG1P2P/1KG6/7NL w N2LPb2p 1": {
           comment: "",

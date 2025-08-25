@@ -120,7 +120,7 @@ import {
   updateBookMove,
   updateBookMoveOrder,
 } from "@/background/book/index.js";
-import { BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
+import { BookLoadingOptions, BookMove } from "@/common/book.js";
 import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
@@ -594,15 +594,12 @@ ipcMain.handle(Background.CLEAR_BOOK, (event) => {
   clearBook();
 });
 
-ipcMain.handle(
-  Background.OPEN_BOOK,
-  async (event, path: string, json: string): Promise<BookLoadingMode> => {
-    validateIPCSender(event.senderFrame);
-    getAppLogger().debug(`open book: ${path}`);
-    const options = JSON.parse(json) as BookLoadingOptions;
-    return await openBook(path, options);
-  },
-);
+ipcMain.handle(Background.OPEN_BOOK, async (event, path: string, json: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug(`open book: ${path}`);
+  const options = JSON.parse(json) as BookLoadingOptions;
+  await openBook(path, options);
+});
 
 ipcMain.handle(Background.SAVE_BOOK, async (event, path: string): Promise<void> => {
   validateIPCSender(event.senderFrame);
@@ -615,21 +612,21 @@ ipcMain.handle(Background.SEARCH_BOOK_MOVES, async (event, sfen: string): Promis
   return JSON.stringify(await searchBookMoves(sfen));
 });
 
-ipcMain.handle(Background.UPDATE_BOOK_MOVE, (event, sfen: string, json: string): void => {
+ipcMain.handle(Background.UPDATE_BOOK_MOVE, async (event, sfen: string, json: string) => {
   validateIPCSender(event.senderFrame);
-  updateBookMove(sfen, JSON.parse(json) as BookMove);
+  await updateBookMove(sfen, JSON.parse(json) as BookMove);
 });
 
-ipcMain.handle(Background.REMOVE_BOOK_MOVE, (event, sfen: string, usi: string): void => {
+ipcMain.handle(Background.REMOVE_BOOK_MOVE, async (event, sfen: string, usi: string) => {
   validateIPCSender(event.senderFrame);
-  removeBookMove(sfen, usi);
+  await removeBookMove(sfen, usi);
 });
 
 ipcMain.handle(
   Background.UPDATE_BOOK_MOVE_ORDER,
-  (event, sfen: string, usi: string, order: number) => {
+  async (event, sfen: string, usi: string, order: number) => {
     validateIPCSender(event.senderFrame);
-    updateBookMoveOrder(sfen, usi, order);
+    await updateBookMoveOrder(sfen, usi, order);
   },
 );
 

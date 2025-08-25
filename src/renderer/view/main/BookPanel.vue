@@ -6,7 +6,6 @@
         :position="store.record.position"
         :moves="bookStore.moves"
         :playable="store.isMovableByUser"
-        :editable="bookEditable"
         @play="playBookMove"
         @edit="editBookMove"
         @remove="removeBookMove"
@@ -57,10 +56,7 @@ const store = useStore();
 const bookStore = useBookStore();
 const appSettings = useAppSettings();
 
-const isBookOperational = computed(
-  () => store.appState === AppState.NORMAL && bookStore.mode === "in-memory",
-);
-const bookEditable = computed(() => bookStore.mode === "in-memory");
+const isBookOperational = computed(() => store.appState === AppState.NORMAL);
 const editingData = ref<
   BookMove & {
     sfen: string;
@@ -132,6 +128,7 @@ const onEditBookMove = async (data: EditResult) => {
   try {
     await bookStore.updateMove(editingData.value.sfen, {
       usi: editingData.value.usi,
+      usi2: editingData.value.usi2,
       ...data,
     });
     editingData.value = undefined;

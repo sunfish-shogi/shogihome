@@ -12,6 +12,7 @@ import {
   IDX_SCORE,
   IDX_USI,
   IDX_USI2,
+  YaneBookPatch,
 } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
 
@@ -112,133 +113,192 @@ function appendCommentLine(base: string, next: string): string {
   return base + "\n" + next;
 }
 
-export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
+async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry) => Promise<void>) {
   const reader = readline.createInterface({ input, crlfDelay: Infinity });
-
-  const entries: { [sfen: string]: BookEntry } = {};
-  let current: [sfen: string, entry: BookEntry];
-  let lineNo = 0;
-  let entryCount = 0;
-  let duplicateCount = 0;
-  reader.on("line", (line) => {
-    if (lineNo === 0) {
-      line = line.replace(/^\uFEFF/, "");
-    }
-    const parsed = parseLine(line);
-    switch (parsed.type) {
-      case "comment":
-        if (lineNo === 0 && line !== YANEURAOU_BOOK_HEADER_V100) {
-          reader.emit("error", new Error("Unsupported book header: " + line));
-          return;
-        }
-        if (current) {
-          if (current[1].moves.length === 0) {
-            const bookEntry = current[1];
-            bookEntry.comment = appendCommentLine(bookEntry.comment, parsed.comment);
+  try {
+    let current: [sfen: string, entry: BookEntry] | undefined;
+    let lineNo = 0;
+    for await (let line of reader) {
+      if (lineNo === 0) {
+        line = line.replace(/^\uFEFF/, "");
+      }
+      const parsed = parseLine(line);
+      switch (parsed.type) {
+        case "comment":
+          if (lineNo === 0 && line !== YANEURAOU_BOOK_HEADER_V100) {
+            throw new Error("Unsupported book header: " + line);
+          }
+          if (current) {
+            if (current[1].moves.length === 0) {
+              const bookEntry = current[1];
+              bookEntry.comment = appendCommentLine(bookEntry.comment, parsed.comment);
+            } else {
+              const moves = current[1].moves;
+              const move = moves[moves.length - 1];
+              move[IDX_COMMENTS] = appendCommentLine(move[IDX_COMMENTS], parsed.comment);
+            }
+          }
+          break;
+        case "position":
+          if (current) {
+            await nextEntry(current[0], current[1]);
+          }
+          current = [parsed.sfen, { comment: "", moves: [], minPly: parsed.ply }];
+          break;
+        case "move":
+          if (current) {
+            current[1].moves.push(parsed.move);
           } else {
-            const moves = current[1].moves;
-            const move = moves[moves.length - 1];
-            move[IDX_COMMENTS] = appendCommentLine(move[IDX_COMMENTS], parsed.comment);
+            getAppLogger().warn("Move line without position line: line=%d", lineNo);
           }
-        }
-        break;
-      case "position":
-        current = [parsed.sfen, { comment: "", moves: [], minPly: parsed.ply }];
-        if (entries[current[0]]) {
-          duplicateCount++;
-          if (current[1].minPly < entries[current[0]].minPly) {
-            entries[current[0]] = current[1];
-          }
-        } else {
-          entries[current[0]] = current[1];
-          entryCount++;
-        }
-        break;
-      case "move":
-        if (current) {
-          current[1].moves.push(parsed.move);
-        } else {
-          getAppLogger().warn("Move line without position line: line=%d", lineNo);
-        }
-        break;
+          break;
+      }
+      lineNo++;
     }
-    lineNo++;
-  });
-
-  await events.once(reader, "close");
-  return { format: "yane2016", yaneEntries: entries, entryCount, duplicateCount };
+    if (current) {
+      await nextEntry(current[0], current[1]);
+    }
+  } finally {
+    reader.close();
+  }
 }
 
-export function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
+export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
+  const entries: { [sfen: string]: BookEntry } = {};
+  await load(input, async (sfen, entry) => {
+    if (entries[sfen]) {
+      if (entry.minPly < entries[sfen].minPly) {
+        entries[sfen] = entry;
+      }
+    } else {
+      entries[sfen] = entry;
+    }
+  });
+  return { format: "yane2016", yaneEntries: entries };
+}
+
+async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
+  if (!output.write(SFENMarker + sfen + "\n")) {
+    await events.once(output, "drain");
+  }
+  if (entry.comment) {
+    for (const commentLine of entry.comment.split("\n")) {
+      if (!output.write(CommentMarker1 + commentLine + "\n")) {
+        await events.once(output, "drain");
+      }
+    }
+  }
+  for (const move of entry.moves) {
+    const line =
+      move[IDX_USI] +
+      " " +
+      (move[IDX_USI2] || MOVE_NONE) +
+      " " +
+      // やねうら王や BookConv は連続するスペースをまとめて読み込むので、
+      // 値の省略時には空文字列ではなく 1 文字以上の出力が必要である。
+      // やねうら王のブログではその場合の書き方を言及していないが、
+      // 数値として解析できない文字列であれば実装上は問題ないことがわかっている。
+      (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : SCORE_NONE) +
+      " " +
+      (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : DEPTH_NONE) +
+      " " +
+      (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
+      "\n";
+    if (!output.write(line)) {
+      await events.once(output, "drain");
+    }
+    if (move[IDX_COMMENTS]) {
+      for (const commentLine of move[IDX_COMMENTS].split("\n")) {
+        if (!output.write(CommentMarker1 + commentLine + "\n")) {
+          await events.once(output, "drain");
+        }
+      }
+    }
+  }
+}
+
+export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
   if (book.format !== "yane2016") {
     return Promise.reject(new Error(`Expected book format "yane2016" but got "${book.format}"`));
   }
-  return new Promise((resolve, reject) => {
+  const end = new Promise((resolve, reject) => {
     output.on("finish", resolve);
     output.on("error", reject);
+  });
+  output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
+  for (const sfen of Object.keys(book.yaneEntries).sort()) {
+    const entry = book.yaneEntries[sfen];
+    await writeEntry(output, sfen, entry);
+  }
+  output.end();
+  await end;
+}
 
-    output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-    for (const sfen of Object.keys(book.yaneEntries).sort()) {
-      const entry = book.yaneEntries[sfen];
-      output.write(SFENMarker + sfen + "\n");
-      if (entry.comment) {
-        for (const commentLine of entry.comment.split("\n")) {
-          output.write(CommentMarker1 + commentLine + "\n");
+export async function mergeYaneuraOuBook(
+  input: Readable,
+  bookPatch: YaneBookPatch,
+  output: Writable,
+): Promise<void> {
+  if (bookPatch.format !== "yane2016") {
+    return Promise.reject(
+      new Error(`Expected book format "yane2016" but got "${bookPatch.format}"`),
+    );
+  }
+  const end = new Promise((resolve, reject) => {
+    output.on("finish", resolve);
+    output.on("error", reject);
+  });
+  output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
+  const patchKeys = Object.keys(bookPatch.patch).sort();
+  let patchIndex = 0;
+  let lastPatchKey = "";
+  try {
+    await load(input, async (sfen, entry) => {
+      for (; patchIndex < patchKeys.length; patchIndex++) {
+        const patchKey = patchKeys[patchIndex];
+        if (patchKey > sfen) {
+          break;
         }
+        await writeEntry(output, patchKey, bookPatch.patch[patchKey]);
+        lastPatchKey = patchKey;
       }
-      for (const move of entry.moves) {
-        output.write(
-          move[IDX_USI] +
-            " " +
-            (move[IDX_USI2] || MOVE_NONE) +
-            " " +
-            // やねうら王や BookConv は連続するスペースをまとめて読み込むので、
-            // 値の省略時には空文字列ではなく 1 文字以上の出力が必要である。
-            // やねうら王のブログではその場合の書き方を言及していないが、
-            // 数値として解析できない文字列であれば実装上は問題ないことがわかっている。
-            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : SCORE_NONE) +
-            " " +
-            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : DEPTH_NONE) +
-            " " +
-            (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
-            "\n",
-        );
-        if (move[IDX_COMMENTS]) {
-          for (const commentLine of move[IDX_COMMENTS].split("\n")) {
-            output.write(CommentMarker1 + commentLine + "\n");
-          }
-        }
+      if (sfen !== lastPatchKey) {
+        await writeEntry(output, sfen, entry);
       }
+    });
+    for (; patchIndex < patchKeys.length; patchIndex++) {
+      const patchKey = patchKeys[patchIndex];
+      await writeEntry(output, patchKey, bookPatch.patch[patchKey]);
     }
     output.end();
-  });
+  } catch (error) {
+    output.destroy(new Error(`Failed to merge YaneuraOu book: ${error}`));
+  }
+  await end;
 }
 
 export async function validateBookPositionOrdering(input: Readable): Promise<boolean> {
   const reader = readline.createInterface({ input, crlfDelay: Infinity });
-
-  let prev: string | undefined;
-  let count = 0;
-  let ordered = true;
-  reader.on("line", (line) => {
-    if (!line.startsWith(SFENMarker)) {
-      return;
+  try {
+    let prev: string | undefined;
+    let count = 0;
+    for await (const line of reader) {
+      if (!line.startsWith(SFENMarker)) {
+        continue;
+      }
+      if (prev && prev >= line) {
+        return false;
+      }
+      count++;
+      if (count >= 10000) {
+        break;
+      }
+      prev = line;
     }
-    if (prev && prev >= line) {
-      ordered = false;
-      reader.emit("close");
-      return;
-    }
-    count++;
-    if (count >= 10000) {
-      reader.emit("close");
-      return;
-    }
-    prev = line;
-  });
-
-  await events.once(reader, "close");
-  return ordered;
+    return true;
+  } finally {
+    reader.close();
+  }
 }
 
 function checkSFENMarker(offset: number, buffer: Buffer): boolean {
@@ -284,7 +344,7 @@ async function binarySearch(
   sfen: string,
   file: fs.promises.FileHandle,
   size: number,
-): Promise<number> {
+): Promise<[number, number]> {
   const bufferSize = 1024;
   const buffer = Buffer.alloc(bufferSize);
   let begin = 0;
@@ -309,15 +369,15 @@ async function binarySearch(
       head += bufferSize - (SFENMarker.length + 1);
     }
     if (sfenOffset < 0) {
-      return -1;
+      return [-1, 0];
     }
 
     // SFEN を読み込む
     const read = await file.read(buffer, 0, bufferSize, sfenOffset);
     const sfenLine = readLineFromBuffer(buffer, read.bytesRead);
-    const [currentSFEN] = normalizeSFEN(sfenLine);
+    const [currentSFEN, ply] = normalizeSFEN(sfenLine);
     if (sfen === currentSFEN) {
-      return sfenOffset + sfenLine.length + 1;
+      return [sfenOffset + sfenLine.length + 1, ply];
     }
 
     if (sfen < currentSFEN) {
@@ -326,25 +386,26 @@ async function binarySearch(
       begin = sfenOffset + sfenLine.length + 1;
     }
   }
-  return -1;
+  return [-1, 0];
 }
 
 export async function searchYaneuraOuBookMovesOnTheFly(
   sfen: string,
   file: fs.promises.FileHandle,
   size: number,
-): Promise<BookMove[]> {
-  const offset = await binarySearch(sfen, file, size);
+): Promise<BookEntry | undefined> {
+  const [offset, ply] = await binarySearch(sfen, file, size);
   if (offset < 0) {
-    return [];
+    return;
   }
 
   const bufferSize = 8 * 1024;
   const buffer = Buffer.alloc(bufferSize);
   const read = await file.read(buffer, 0, bufferSize, offset);
   if (read.bytesRead === 0) {
-    return [];
+    return;
   }
+  let comment: string = "";
   const moves: BookMove[] = [];
   let i = 0;
   // eslint-disable-next-line no-constant-condition
@@ -356,7 +417,7 @@ export async function searchYaneuraOuBookMovesOnTheFly(
     }
     const parsed = parseLine(moveLine);
     if (parsed.type === "comment") {
-      // On-the-fly ではコメント行を無視する。
+      comment = appendCommentLine(comment, parsed.comment);
       continue;
     } else if (parsed.type === "move") {
       moves.push(parsed.move);
@@ -364,5 +425,5 @@ export async function searchYaneuraOuBookMovesOnTheFly(
       break;
     }
   }
-  return moves;
+  return { comment, moves, minPly: ply };
 }

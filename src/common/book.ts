@@ -10,7 +10,7 @@ export type BookMove = {
 };
 
 export type BookLoadingOptions = {
-  onTheFlyThresholdMB: number; // On-the-fly に切り替える閾値(MebiBytes)
+  onTheFlyThresholdMB?: number; // On-the-fly に切り替える閾値(MebiBytes)
 };
 
 export type BookImportSummary = {

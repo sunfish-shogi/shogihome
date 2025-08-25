@@ -28,7 +28,6 @@ import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
 import { USIEngine } from "@/common/settings/usi.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
-import { BookLoadingMode } from "@/common/book.js";
 import { Language, setLanguage } from "@/common/i18n/index.js";
 
 const bridge: Bridge = {
@@ -171,7 +170,7 @@ const bridge: Bridge = {
   async clearBook(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
-  async openBook(): Promise<BookLoadingMode> {
+  async openBook(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
   async saveBook(): Promise<void> {
