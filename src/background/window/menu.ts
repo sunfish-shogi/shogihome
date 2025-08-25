@@ -3,6 +3,7 @@ import {
   app,
   BrowserWindow,
   clipboard,
+  dialog,
   Menu,
   MenuItem,
   MenuItemConstructorOptions,
@@ -609,6 +610,22 @@ function createMenuTemplate(window: BrowserWindow) {
                 attachments: [{ type: "list", items: createListItems(gpuInfo) }],
               });
             });
+          },
+        },
+        { type: "separator" },
+        {
+          label: "Forced Shutdown",
+          click: () => {
+            dialog
+              .showMessageBox({
+                message: "Are you sure you want to force shutdown?",
+                buttons: ["Yes", "No"],
+              })
+              .then((result) => {
+                if (result.response === 0) {
+                  app.exit(1);
+                }
+              });
           },
         },
       ],
