@@ -1054,6 +1054,7 @@ describe("store/index", () => {
           ],
         },
       ],
+      withCopyButton: true,
     });
   });
 });

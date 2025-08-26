@@ -276,6 +276,7 @@ const convert = async () => {
           ],
         },
       ],
+      withCopyButton: true,
     });
   } catch (e) {
     useErrorStore().add(e);

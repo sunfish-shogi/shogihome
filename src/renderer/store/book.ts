@@ -208,6 +208,7 @@ export class BookStore {
               ],
             },
           ],
+          withCopyButton: true,
         });
         return this.reloadBookMoves();
       })

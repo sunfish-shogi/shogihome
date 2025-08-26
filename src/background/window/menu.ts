@@ -594,6 +594,7 @@ function createMenuTemplate(window: BrowserWindow) {
             sendMessage({
               text: "GPU Feature Status",
               attachments: [{ type: "list", items: createListItems(status) }],
+              withCopyButton: true,
             });
           },
         },
@@ -608,6 +609,7 @@ function createMenuTemplate(window: BrowserWindow) {
               sendMessage({
                 text: "GPU Information",
                 attachments: [{ type: "list", items: createListItems(gpuInfo) }],
+                withCopyButton: true,
               });
             });
           },
