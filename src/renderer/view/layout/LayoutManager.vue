@@ -92,6 +92,7 @@
             <option value="RecordInfo">{{ t.recordProperties }}</option>
             <option value="ControlGroup1">{{ t.controlGroup }}1</option>
             <option value="ControlGroup2">{{ t.controlGroup }}2</option>
+            <option value="SimpleBoard">{{ t.bookStyleDiagram }}</option>
           </select>
           <button class="thin" @click="insertCustomProfileComponent">{{ t.insert }}</button>
         </div>
@@ -106,6 +107,7 @@
             <span v-if="component.type === 'RecordInfo'">{{ t.recordProperties }}</span>
             <span v-if="component.type === 'ControlGroup1'">{{ t.controlGroup }}1</span>
             <span v-if="component.type === 'ControlGroup2'">{{ t.controlGroup }}2</span>
+            <span v-if="component.type === 'SimpleBoard'">{{ t.bookStyleDiagram }}</span>
           </div>
           <div>
             <span class="property">
@@ -321,6 +323,54 @@
               />
             </span>
           </div>
+          <div v-if="component.type === 'SimpleBoard'">
+            <span class="property">
+              <span class="key">{{ t.weight }}:</span>
+              <HorizontalSelector
+                :value="component.fontWeight || '400'"
+                :items="[
+                  { label: t.thin, value: PositionImageFontWeight.W400 },
+                  { label: t.bold, value: PositionImageFontWeight.W400X },
+                  { label: t.extraBold, value: PositionImageFontWeight.W700X },
+                ]"
+                @update:value="(value) => updateCustomProfileComponent(index, 'fontWeight', value)"
+              />
+            </span>
+            <span class="property">
+              <span class="key">{{ t.size }}:</span>
+              <input
+                class="value"
+                type="number"
+                min="0"
+                max="200"
+                :value="component.fontScale || 100"
+                @input="
+                  (e) => updateCustomProfileComponent(index, 'fontScale', inputEventToNumber(e))
+                "
+              />
+              <span>%</span>
+            </span>
+            <span class="property">
+              <span class="key">{{ t.vertical }}:</span>
+              <input
+                class="value"
+                type="number"
+                min="-100"
+                max="100"
+                :value="component.characterY || 0"
+                @input="
+                  (e) => updateCustomProfileComponent(index, 'characterY', inputEventToNumber(e))
+                "
+              />
+            </span>
+            <span class="property">
+              <ToggleButton
+                :value="!!component.bookmark"
+                :label="t.bookmark"
+                @update:value="(value) => updateCustomProfileComponent(index, 'bookmark', value)"
+              />
+            </span>
+          </div>
           <div>
             <button
               v-if="index !== 0"
@@ -363,6 +413,7 @@ import {
   EvaluationChartType,
   serializeLayoutProfile,
   DialogPosition,
+  PositionImageFontWeight,
 } from "@/common/settings/layout";
 import { t } from "@/common/i18n";
 import { useMessageStore } from "@/renderer/store/message";
@@ -594,6 +645,15 @@ const insertCustomProfileComponent = () => {
         top: 0,
         width: 150,
         height: 200,
+      });
+      break;
+    case "SimpleBoard":
+      components.unshift({
+        type,
+        left: 0,
+        top: 0,
+        width: 400,
+        height: 300,
       });
       break;
   }

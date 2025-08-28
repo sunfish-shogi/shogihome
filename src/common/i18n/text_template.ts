@@ -458,6 +458,7 @@ export type Texts = {
   filterByOptionName: string;
   filterByEngineName: string;
   bookStyle: string;
+  bookStyleDiagram: string;
   gameStyle: string;
   thin: string;
   bold: string;

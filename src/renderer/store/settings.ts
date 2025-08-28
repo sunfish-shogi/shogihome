@@ -11,7 +11,6 @@ import {
   NodeCountFormat,
   PieceImageType,
   PieceStandImageType,
-  PositionImageFontWeight,
   PositionImageHandLabelType,
   PositionImageStyle,
   PositionImageTypeface,
@@ -31,7 +30,7 @@ import api from "@/renderer/ipc/api.js";
 import { LogLevel } from "@/common/log.js";
 import { Language } from "@/common/i18n/index.js";
 import { RecordFileFormat } from "@/common/file/record.js";
-import { BoardLayoutType } from "@/common/settings/layout.js";
+import { BoardLayoutType, PositionImageFontWeight } from "@/common/settings/layout.js";
 import { SearchCommentFormat } from "@/common/settings/comment.js";
 
 class AppSettingsStore {

@@ -14,6 +14,12 @@ export enum BoardLayoutType {
   PORTRAIT = "portrait",
 }
 
+export enum PositionImageFontWeight {
+  W400 = "400",
+  W400X = "400+",
+  W700X = "700+",
+}
+
 type Board = {
   type: "Board";
   rightControlBox?: boolean;
@@ -74,6 +80,14 @@ type ControlGroup2 = {
   type: "ControlGroup2";
 };
 
+type SimpleBoard = {
+  type: "SimpleBoard";
+  fontWeight?: PositionImageFontWeight;
+  fontScale?: number;
+  characterY?: number;
+  bookmark?: boolean;
+};
+
 export type UIComponent = UIComponentCommon &
   (
     | Board
@@ -85,6 +99,7 @@ export type UIComponent = UIComponentCommon &
     | RecordInfo
     | ControlGroup1
     | ControlGroup2
+    | SimpleBoard
   );
 
 export enum DialogPosition {

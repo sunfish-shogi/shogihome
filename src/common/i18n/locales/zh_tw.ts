@@ -460,6 +460,7 @@ export const zh_tw: Texts = {
   filterByOptionName: "搜尋設定名稱",
   filterByEngineName: "搜尋引擎名稱",
   bookStyle: "書籍風",
+  bookStyleDiagram: "書籍風局面図", // TODO: Translate
   gameStyle: "對局畫面風",
   thin: "細",
   bold: "粗",
