@@ -463,6 +463,7 @@ export const en: Texts = {
   filterByOptionName: "Filter by Option Name",
   filterByEngineName: "Filter by Engine Name",
   bookStyle: "Book Style",
+  bookStyleDiagram: "Book Style Diagram",
   gameStyle: "Game Style",
   thin: "Thin",
   bold: "Bold",

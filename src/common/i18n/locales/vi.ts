@@ -463,6 +463,7 @@ export const vi: Texts = {
   filterByOptionName: "Lọc theo tên tùy chọn",
   filterByEngineName: "Lọc theo tên phần mềm",
   bookStyle: "Kiểu sách",
+  bookStyleDiagram: "書籍風局面図", // TODO: Translate
   gameStyle: "Kiểu bàn cờ",
   thin: "Mảnh",
   bold: "Đậm",

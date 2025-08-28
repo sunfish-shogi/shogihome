@@ -2,7 +2,7 @@ import { Language, t } from "@/common/i18n/index.js";
 import { LogLevel, LogType } from "@/common/log.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
-import { BoardLayoutType } from "./layout.js";
+import { BoardLayoutType, PositionImageFontWeight } from "./layout.js";
 import { SearchCommentFormat } from "./comment.js";
 
 export enum Thema {
@@ -146,12 +146,6 @@ export enum PositionImageHandLabelType {
   MOCHIGOMA = "mochigoma",
   TSUME_SHOGI = "tsumeShogi",
   NONE = "none",
-}
-
-export enum PositionImageFontWeight {
-  W400 = "400",
-  W400X = "400+",
-  W700X = "700+",
 }
 
 export type AppSettings = {

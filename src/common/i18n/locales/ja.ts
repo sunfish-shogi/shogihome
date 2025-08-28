@@ -463,6 +463,7 @@ export const ja: Texts = {
   filterByOptionName: "オプション名で検索",
   filterByEngineName: "エンジン名で検索",
   bookStyle: "書籍風",
+  bookStyleDiagram: "書籍風局面図",
   gameStyle: "対局画面風",
   thin: "細",
   bold: "太",

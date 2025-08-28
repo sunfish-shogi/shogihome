@@ -186,7 +186,6 @@ import {
   PositionImageHandLabelType,
   PositionImageStyle,
   PositionImageTypeface,
-  PositionImageFontWeight,
   getPieceImageURLTemplate,
 } from "@/common/settings/app";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
@@ -194,6 +193,7 @@ import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useErrorStore } from "@/renderer/store/error";
 import DialogFrame from "./DialogFrame.vue";
+import { PositionImageFontWeight } from "@/common/settings/layout";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;
