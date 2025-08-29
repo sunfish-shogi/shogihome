@@ -1,0 +1,9 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EXPECTED="$DIR/record.kifu"
+ACTUAL=records/usi-csa-bridge-_test+test-30-5F+Enemy+usi-csa-bridge+20250830012151_Enemy_usi-csa-bridge.kifu
+
+diff <(grep -v '^対局日：' "$EXPECTED" | grep -v '^開始日時：') \
+     <(grep -v '^対局日：' "$ACTUAL" | grep -v '^開始日時：')

@@ -1,0 +1,47 @@
+usi:
+  name: USI Replay Engine
+  path: usi-replay-engine
+  options:
+    UseBook:
+      type: check
+      value: true
+    Snappy:
+      type: check
+      value: true
+    MarginMs:
+      type: spin
+      value: 500
+    Threads:
+      type: spin
+      value: 1
+    MaxDepth:
+      type: spin
+      value: 5
+    MultiPV:
+      type: spin
+      value: 1
+    USI_Hash:
+      type: spin
+      value: 32
+    USI_Ponder:
+      type: check
+      value: true
+  enableEarlyPonder: false
+server:
+  protocolVersion: v121_floodgate
+  host: 127.0.0.1
+  port: 4081
+  id: usi-csa-bridge
+  password: test
+  tcpKeepalive:
+    initialDelay: 10
+  blankLinePing:
+    initialDelay: 30
+    interval: 30
+saveRecordFile: true
+enableComment: true
+recordFileNameTemplate: "usi-csa-bridge-{_title}{_sente}{_gote}"
+recordFileFormat: .kifu
+repeat: 1
+autoRelogin: true
+restartPlayerEveryGame: false

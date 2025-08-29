@@ -166,3 +166,12 @@ echo -n <Base64> | base64 -d | gzip -c -d
 ## 棋譜の保存について
 
 棋譜を保存する場合、デフォルトではカレントディレクトリに records というサブディレクトリが作られます。 出力先を変更する場合はコマンドオプションを使用します。
+
+## E2E テスト
+
+ShogiHome のプロジェクトルートディレクトリで以下の要領でコマンドを実行します。
+
+```
+npm run usi-csa-bridge:build
+./src/tests/e2e/usi-csa-bridge/run 1
+```
