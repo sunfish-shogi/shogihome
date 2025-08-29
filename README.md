@@ -3,6 +3,8 @@
 # ShogiHome
 
 [![Test](https://github.com/sunfish-shogi/shogihome/actions/workflows/test.yml/badge.svg?branch=main&event=push)](https://github.com/sunfish-shogi/shogihome/actions/workflows/test.yml)
+[![Test/CLI](https://github.com/sunfish-shogi/shogihome/actions/workflows/test-cli.yml/badge.svg?branch=main&event=push)](https://github.com/sunfish-shogi/shogihome/actions/workflows/test-cli.yml)
+[![Audit](https://github.com/sunfish-shogi/shogihome/actions/workflows/audit.yml/badge.svg)](https://github.com/sunfish-shogi/shogihome/actions/workflows/audit.yml)
 [![codecov](https://codecov.io/gh/sunfish-shogi/shogihome/branch/main/graph/badge.svg?token=TLSQXAIJFY)](https://codecov.io/gh/sunfish-shogi/shogihome)
 
 [English](./README.en.md)
