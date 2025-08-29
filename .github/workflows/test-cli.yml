@@ -1,0 +1,24 @@
+name: Test for CLI tools
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, "support-*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "npm"
+      - run: npm version
+      - run: npm ci --no-audit --no-fund
+      - run: npm run usi-csa-bridge:build
+      - name: Scenario-1
+        timeout-minutes: 1
+        run: ./src/tests/e2e/usi-csa-bridge/run 1
