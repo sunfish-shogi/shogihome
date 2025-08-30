@@ -89,6 +89,25 @@ describe("args", () => {
     });
   });
 
+  it("headless/add-engine/with-options", () => {
+    const args = parseProcessArgs([
+      "node",
+      "--add-engine",
+      "/path/to/engine",
+      "EngineName",
+      "30",
+      "test-base64-options",
+    ]) as ProcessArgs;
+    expect(args).toEqual({
+      type: "headless",
+      operation: "addEngine",
+      path: "/path/to/engine",
+      name: "EngineName",
+      timeout: 30,
+      engineOptionsBase64: "test-base64-options",
+    });
+  });
+
   it("headless/add-engine/few-args", () => {
     const args = parseProcessArgs(["node", "--add-engine", "/path/to/engine"]);
     expect(args).toBeInstanceOf(Error);

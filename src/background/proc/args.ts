@@ -21,7 +21,7 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
   //     layout profile
   //
   // Headless mode option:
-  //   --add-engine <path> <name> <timeout>
+  //   --add-engine <path> <name> <timeout> [<engine_options_base64>]
   //     add USI engine
   //
   let path;
@@ -50,7 +50,7 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
       i++;
     } else if (arg === "--add-engine") {
       // エンジン追加
-      const usage = "Usage: --add-engine <path> <name> <timeout>";
+      const usage = "Usage: --add-engine <path> <name> <timeout> [<engine_options_base64>]";
       if (args.length < i + 4) {
         return new Error(usage);
       }
@@ -66,12 +66,14 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
       if (isNaN(timeout) || timeout < 0) {
         return new Error("Invalid timeout value");
       }
+      const engineOptionsBase64 = args[++i] as string | undefined;
       return {
         type: "headless",
         operation: "addEngine",
         path,
         name,
         timeout,
+        engineOptionsBase64,
       };
     }
   }
