@@ -3,4 +3,5 @@ export type HeadlessModeOperation = {
   path: string;
   name: string;
   timeout: number;
+  engineOptionsBase64?: string;
 };
