@@ -650,6 +650,8 @@ export const en: Texts = {
   yamlFormatSettingsCopiedToClipboard: "YAML format settings copied to clipboard.",
   jsonFormatSettingsCopiedToClipboard: "JSON format settings copied to clipboard.",
   usiCsaBridgeCommandCopiedToClipboard: "usi-csa-bridge command copied to clipboard.",
+  copiedToClipboard: "Copied to clipboard.",
+  pastedFromClipboard: "Pasted from clipboard.",
   youCanNotCloseAppWhileCSAOnlineGame: "You cannot close app while CSA online game.",
   fileExtensionNotSupported: "File extension is not supported.",
   errorOccuredWhileDisconnectingFromCSAServer:

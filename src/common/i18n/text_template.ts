@@ -633,6 +633,8 @@ export type Texts = {
   yamlFormatSettingsCopiedToClipboard: string;
   jsonFormatSettingsCopiedToClipboard: string;
   usiCsaBridgeCommandCopiedToClipboard: string;
+  copiedToClipboard: string;
+  pastedFromClipboard: string;
   youCanNotCloseAppWhileCSAOnlineGame: string;
   fileExtensionNotSupported: string;
   errorOccuredWhileDisconnectingFromCSAServer: string;

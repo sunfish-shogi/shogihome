@@ -1,6 +1,8 @@
 import { issueEngineURI } from "@/common/uri.js";
 import * as uri from "@/common/uri.js";
 import { t } from "@/common/i18n/index.js";
+import ejpn from "encoding-japanese";
+const [base64Decode, base64Encode] = [ejpn.base64Decode, ejpn.base64Encode];
 
 // reserved option names
 export const USIPonder = "USI_Ponder";
@@ -592,4 +594,33 @@ export function importUSIEnginesForCLI(engine: USIEngineForCLI, uri?: string): U
     enableEarlyPonder: engine.enableEarlyPonder,
     labels: {},
   };
+}
+
+export type USIEngineOptionsClipboardData = {
+  schema: "es://usi-engine-options-clipboard-data";
+  options: { [name: string]: USIEngineOption };
+  enableEarlyPonder: boolean;
+};
+
+export async function compressUSIEngineOptionsClipboardData(
+  settings: USIEngineOptionsClipboardData,
+): Promise<string> {
+  const json = JSON.stringify(settings);
+  const cs = new CompressionStream("gzip");
+  new Blob([json]).stream().pipeThrough(cs);
+  const bin = await new Response(cs.readable).arrayBuffer();
+  return base64Encode(new Uint8Array(bin));
+}
+
+export async function decompressUSIEngineOptionsClipboardData(
+  compressed: string,
+): Promise<USIEngineOptionsClipboardData> {
+  const bin = new Uint8Array(base64Decode(compressed));
+  const cs = new DecompressionStream("gzip");
+  new Blob([bin]).stream().pipeThrough(cs);
+  const data = JSON.parse(await new Response(cs.readable).text());
+  if (data.schema !== "es://usi-engine-options-clipboard-data") {
+    throw new Error("Invalid schema");
+  }
+  return data;
 }
