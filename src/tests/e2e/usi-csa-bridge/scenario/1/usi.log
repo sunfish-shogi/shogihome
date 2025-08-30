@@ -1,0 +1,1404 @@
+recv:usi
+send:id name Sunfish4
+send:id author Kubo Ryosuke
+send:option name UseBook type check default true
+send:option name Snappy type check default true
+send:option name MarginMs type spin default 500 min 0 max 2000
+send:option name Threads type spin default 1 min 1 max 32
+send:option name MaxDepth type spin default 64 min 1 max 64
+send:option name MultiPV type spin default 1 min 1 max 10
+send:usiok
+recv:setoption name UseBook value true
+recv:setoption name Snappy value true
+recv:setoption name MarginMs value 500
+recv:setoption name Threads value 1
+recv:setoption name MaxDepth value 5
+recv:setoption name MultiPV value 1
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2g2f
+recv:go btime 33000 wtime 30000 binc 5000 winc 5000
+send:info string -8384FU(55.7%) -3334FU(36.4%) -4132KI(4.73%) -1314FU(0.895%) -7172GI(0.475%) -7162GI(0.36%) -5152OU(0.187%) -5142OU(0.187%) -9394FU(0.169%) -3132GI(0.169%) -7374FU(0.151%) -6152KI(0.133%) -8252HI(0.126%) -3142GI(0.0719%) -1112KY(0.0467%) -4344FU(0.0467%) -6172KI(0.0395%) -8272HI(0.0324%) -5354FU(0.0144%) -8242HI(0.0036%) -5162OU(0.0036%) -8232HI(0.0036%) -8262HI(0.0036%) 
+send:bestmove 8c8d
+recv:position startpos moves 2g2f 8c8d 7g7f
+recv:go btime 36000 wtime 35000 binc 5000 winc 5000
+send:info string -8485FU(55.8%) -4132KI(23.1%) -3334FU(20%) -7172GI(0.407%) -6152KI(0.235%) -5142OU(0.235%) -7162GI(0.204%) -3132GI(0.0157%) -3142GI(0.00783%) 
+send:bestmove 8d8e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g
+recv:go btime 40000 wtime 40000 binc 5000 winc 5000
+send:info string -3334FU(97.2%) -4132KI(1.63%) -5142OU(0.641%) -8284HI(0.147%) -7162GI(0.11%) -3142GI(0.0916%) -7172GI(0.055%) -1314FU(0.0367%) -6152KI(0.0367%) -5354FU(0.0367%) -8586FU(0.0183%) 
+send:bestmove 3c3d
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h
+recv:go btime 44000 wtime 45000 binc 5000 winc 5000
+send:info string -4344FU(79.3%) -4132KI(13.5%) -2277UM(6.98%) -5142OU(0.0918%) -5354FU(0.0918%) 
+send:bestmove 4c4d
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e
+recv:go btime 48000 wtime 50000 binc 5000 winc 5000
+send:info string -2233KA(77.4%) -3132GI(22.6%) 
+send:bestmove 2b3c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h
+recv:go btime 52000 wtime 55000 binc 5000 winc 5000
+send:info time 3 depth 1 seldepth 1 nodes 40 nps 13333 currmove 3a3b score cp -23 multipv 1 hashfull 0 pv 3a3b
+send:info string fail-low
+send:info time 3 depth 2 seldepth 2 nodes 91 nps 30333 currmove 3a3b score cp -93 multipv 1 hashfull 0 pv 3a3b 9g9f
+send:info string fail-low
+send:info time 3 depth 2 seldepth 2 nodes 148 nps 49333 currmove 3a3b score cp -163 multipv 1 hashfull 0 pv 3a3b 6g6f
+send:info time 4 depth 2 seldepth 2 nodes 210 nps 52499 currmove 3a3b score cp -206 multipv 1 hashfull 0 pv 3a3b 5g5f
+send:info string fail-high
+send:info time 4 depth 3 seldepth 2 nodes 244 nps 60999 currmove 3a3b score cp -136 multipv 1 hashfull 0 pv 3a3b 5g5f
+send:info string fail-high
+send:info time 5 depth 3 seldepth 2 nodes 288 nps 57599 currmove 3a3b score cp -66 multipv 1 hashfull 0 pv 3a3b 5g5f
+send:info time 5 depth 3 seldepth 3 nodes 382 nps 76399 currmove 3a3b score cp 1 multipv 1 hashfull 0 pv 3a3b 5g5f 3b4c
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 450 nps 75000 currmove 3a3b score cp -69 multipv 1 hashfull 0 pv 3a3b
+send:info time 6 depth 4 seldepth 4 nodes 595 nps 99166 currmove 3a3b score cp -128 multipv 1 hashfull 0 pv 3a3b 5g5f 3b4c 6i7h
+send:info string fail-high
+send:info time 7 depth 5 seldepth 4 nodes 682 nps 97428 currmove 3a3b score cp -58 multipv 1 hashfull 0 pv 3a3b 5g5f 3b4c 6i7h
+send:info time 7 depth 5 seldepth 5 nodes 885 nps 126428 currmove 3a3b score cp -8 multipv 1 hashfull 0 pv 3a3b 5g5f 3b4c 6i7h 4a3b
+send:bestmove 3a3b ponder 5g5f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 5g5f
+recv:go ponder btime 52000 wtime 60000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h
+recv:go btime 54000 wtime 60000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 35 nps 4294967295 currmove 3b4c score cp 62 multipv 1 hashfull 0 pv 3b4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 75 nps 75000 currmove 3b4c score cp -8 multipv 1 hashfull 0 pv 3b4c
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 117 nps 58499 currmove 3b4c score cp -78 multipv 1 hashfull 0 pv 3b4c
+send:info time 2 depth 2 seldepth 2 nodes 162 nps 81000 currmove 3b4c score cp -128 multipv 1 hashfull 0 pv 3b4c 5g5f
+send:info string fail-high
+send:info time 3 depth 3 seldepth 2 nodes 178 nps 59333 currmove 3b4c score cp -58 multipv 1 hashfull 0 pv 3b4c 5g5f
+send:info time 5 depth 3 seldepth 3 nodes 275 nps 54999 currmove 3b4c score cp -8 multipv 1 hashfull 0 pv 3b4c 5g5f 4a3b
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 353 nps 58833 currmove 3b4c score cp -78 multipv 1 hashfull 0 pv 3b4c
+send:info time 7 depth 4 seldepth 4 nodes 482 nps 68857 currmove 3b4c score cp -112 multipv 1 hashfull 0 pv 3b4c 5g5f 4a3b 6g6f
+send:info string fail-high
+send:info time 7 depth 5 seldepth 4 nodes 561 nps 80142 currmove 3b4c score cp -42 multipv 1 hashfull 0 pv 3b4c 5g5f 4a3b 6g6f
+send:info time 8 depth 5 seldepth 5 nodes 775 nps 96874 currmove 3b4c score cp 12 multipv 1 hashfull 0 pv 3b4c 5g5f 4a3b 6g6f 7a6b
+send:bestmove 3b4c ponder 5g5f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 5g5f
+recv:go ponder btime 54000 wtime 65000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f
+recv:go btime 57000 wtime 65000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 43 nps 4294967295 currmove 8b4b score cp 103 multipv 1 hashfull 0 pv 8b4b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 90 nps 4294967295 currmove 8b4b score cp 33 multipv 1 hashfull 0 pv 8b4b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 141 nps 141000 currmove 8b4b score cp -37 multipv 1 hashfull 0 pv 8b4b
+send:info time 1 depth 2 seldepth 2 nodes 200 nps 199999 currmove 4a3b score cp -112 multipv 1 hashfull 0 pv 4a3b 5g5f
+send:info string fail-high
+send:info time 2 depth 3 seldepth 2 nodes 215 nps 107499 currmove 4a3b score cp -42 multipv 1 hashfull 0 pv 4a3b 5g5f
+send:info time 2 depth 3 seldepth 3 nodes 319 nps 159500 currmove 4a3b score cp 0 multipv 1 hashfull 0 pv 4a3b 5g5f 6a5b
+send:info string fail-low
+send:info time 3 depth 4 seldepth 1 nodes 410 nps 136666 currmove 4a3b score cp -70 multipv 1 hashfull 0 pv 4a3b
+send:info time 4 depth 4 seldepth 4 nodes 829 nps 207249 currmove 4a3b score cp -112 multipv 1 hashfull 0 pv 4a3b 6h6g 6a5b 4i5h
+send:info string fail-high
+send:info time 5 depth 5 seldepth 4 nodes 916 nps 183199 currmove 4a3b score cp -42 multipv 1 hashfull 0 pv 4a3b 6h6g 6a5b 4i5h
+send:info time 6 depth 5 seldepth 5 nodes 1146 nps 191000 currmove 4a3b score cp 0 multipv 1 hashfull 0 pv 4a3b 6h6g 6a5b 4i5h 7a6b
+send:bestmove 4a3b ponder 6h6g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g
+recv:go ponder btime 57000 wtime 70000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 37 nps 4294967295 currmove 6a5b score cp -36 multipv 1 hashfull 0 pv 6a5b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 80 nps 4294967295 currmove 6a5b score cp -106 multipv 1 hashfull 0 pv 6a5b
+send:info time 1 depth 2 seldepth 2 nodes 154 nps 154000 currmove 6a5b score cp -112 multipv 1 hashfull 0 pv 6a5b 4i5h
+send:info string fail-high
+send:info time 1 depth 3 seldepth 2 nodes 180 nps 179999 currmove 6a5b score cp -42 multipv 1 hashfull 0 pv 6a5b 4i5h
+send:info time 1 depth 3 seldepth 3 nodes 283 nps 283000 currmove 6a5b score cp 0 multipv 1 hashfull 0 pv 6a5b 4i5h 7a6b
+send:info string fail-low
+send:info time 1 depth 4 seldepth 1 nodes 346 nps 345999 currmove 6a5b score cp -70 multipv 1 hashfull 0 pv 6a5b
+send:info time 2 depth 4 seldepth 4 nodes 462 nps 230999 currmove 6a5b score cp -78 multipv 1 hashfull 0 pv 6a5b 4i5h 7a6b 5g5f
+send:info string fail-high
+send:info time 3 depth 5 seldepth 4 nodes 597 nps 199000 currmove 6a5b score cp -8 multipv 1 hashfull 0 pv 6a5b 4i5h 7a6b 5g5f
+send:info time 4 depth 5 seldepth 5 nodes 790 nps 197499 currmove 6a5b score cp 0 multipv 1 hashfull 0 pv 6a5b 4i5h 7a6b 5g5f 5c5d
+send:bestmove 6a5b ponder 4i5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4i5h
+recv:go ponder btime 61000 wtime 75000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f
+recv:go btime 64000 wtime 75000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 33 nps 4294967295 currmove 7a6b score cp 114 multipv 1 hashfull 0 pv 7a6b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 2 nodes 74 nps 4294967295 currmove 7a6b score cp 44 multipv 1 hashfull 0 pv 7a6b 5g5f
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 127 nps 126999 currmove 7a6b score cp -26 multipv 1 hashfull 0 pv 7a6b 4i5h
+send:info time 1 depth 2 seldepth 2 nodes 175 nps 174999 currmove 7a6b score cp -105 multipv 1 hashfull 0 pv 7a6b 4h4g
+send:info string fail-high
+send:info time 2 depth 3 seldepth 2 nodes 190 nps 94999 currmove 7a6b score cp -35 multipv 1 hashfull 0 pv 7a6b 4h4g
+send:info time 2 depth 3 seldepth 3 nodes 278 nps 139000 currmove 7a6b score cp -25 multipv 1 hashfull 0 pv 7a6b 4h4g 5c5d
+send:info string fail-low
+send:info time 4 depth 4 seldepth 1 nodes 441 nps 110249 currmove 7a6b score cp -95 multipv 1 hashfull 0 pv 7a6b
+send:info time 5 depth 4 seldepth 4 nodes 681 nps 136199 currmove 7a6b score cp -164 multipv 1 hashfull 0 pv 7a6b 4h4g 5c5d 4i5h
+send:info string fail-high
+send:info time 6 depth 5 seldepth 4 nodes 744 nps 124000 currmove 7a6b score cp -94 multipv 1 hashfull 0 pv 7a6b 4h4g 5c5d 4i5h
+send:info time 7 depth 5 seldepth 5 nodes 932 nps 133142 currmove 7a6b score cp -29 multipv 1 hashfull 0 pv 7a6b 4h4g 5c5d 4i5h 6b5c
+send:bestmove 7a6b ponder 4h4g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 4h4g
+recv:go ponder btime 64000 wtime 80000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f
+recv:go btime 68000 wtime 80000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 32 nps 4294967295 currmove 5c5d score cp 116 multipv 1 hashfull 0 pv 5c5d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 69 nps 69000 currmove 5c5d score cp 46 multipv 1 hashfull 0 pv 5c5d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 112 nps 111999 currmove 5c5d score cp -24 multipv 1 hashfull 0 pv 5c5d
+send:info time 1 depth 2 seldepth 2 nodes 156 nps 156000 currmove 5c5d score cp -61 multipv 1 hashfull 0 pv 5c5d 4h4g
+send:info string fail-high
+send:info time 2 depth 3 seldepth 2 nodes 179 nps 89499 currmove 5c5d score cp 9 multipv 1 hashfull 0 pv 5c5d 4h4g
+send:info time 2 depth 3 seldepth 3 nodes 276 nps 138000 currmove 5c5d score cp 64 multipv 1 hashfull 0 pv 5c5d 4h4g 3c4b
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 366 nps 73199 currmove 5c5d score cp -6 multipv 1 hashfull 0 pv 5c5d
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 751 nps 125166 currmove 5c5d score cp -76 multipv 1 hashfull 0 pv 5c5d
+send:info time 7 depth 4 seldepth 4 nodes 1046 nps 149428 currmove 6c6d score cp -80 multipv 1 hashfull 0 pv 6c6d 4h4g 6b6c 2i3g
+send:info time 8 depth 5 seldepth 5 nodes 1377 nps 172124 currmove 6c6d score cp -28 multipv 1 hashfull 0 pv 6c6d 4h4g 6b6c 2i3g 6c5d
+send:bestmove 6c6d ponder 4h4g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 4h4g
+recv:go ponder btime 68000 wtime 85000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g
+recv:go btime 71000 wtime 85000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 31 nps 4294967295 currmove 6b6c score cp 108 multipv 1 hashfull 0 pv 6b6c
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 70 nps 4294967295 currmove 6b6c score cp 38 multipv 1 hashfull 0 pv 6b6c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 107 nps 106999 currmove 6b6c score cp -32 multipv 1 hashfull 0 pv 6b6c
+send:info time 1 depth 2 seldepth 2 nodes 142 nps 142000 currmove 6b6c score cp -80 multipv 1 hashfull 0 pv 6b6c 4h4g
+send:info time 1 depth 3 seldepth 3 nodes 232 nps 231999 currmove 6b6c score cp -41 multipv 1 hashfull 0 pv 6b6c 4h4g 7c7d
+send:info string fail-low
+send:info time 2 depth 4 seldepth 1 nodes 321 nps 160500 currmove 6b6c score cp -111 multipv 1 hashfull 0 pv 6b6c
+send:info time 3 depth 4 seldepth 4 nodes 459 nps 153000 currmove 6b6c score cp -129 multipv 1 hashfull 0 pv 6b6c 4h4g 7c7d 4i5h
+send:info string fail-high
+send:info time 4 depth 5 seldepth 4 nodes 589 nps 147250 currmove 6b6c score cp -59 multipv 1 hashfull 0 pv 6b6c 4h4g 7c7d 4i5h
+send:info time 6 depth 5 seldepth 5 nodes 808 nps 134666 currmove 6b6c score cp 0 multipv 1 hashfull 0 pv 6b6c 4h4g 7c7d 4i5h 8a7c
+send:bestmove 6b6c ponder 4h4g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g
+recv:go ponder btime 71000 wtime 90000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 36 nps 4294967295 currmove 6c5d score cp -28 multipv 1 hashfull 0 pv 6c5d
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 78 nps 4294967295 currmove 6c5d score cp -98 multipv 1 hashfull 0 pv 6c5d
+send:info time 0 depth 2 seldepth 2 nodes 201 nps 4294967295 currmove 7c7d score cp -129 multipv 1 hashfull 0 pv 7c7d 4i5h
+send:info string fail-high
+send:info time 1 depth 3 seldepth 2 nodes 227 nps 226999 currmove 7c7d score cp -59 multipv 1 hashfull 0 pv 7c7d 4i5h
+send:info time 1 depth 3 seldepth 3 nodes 326 nps 326000 currmove 7c7d score cp 0 multipv 1 hashfull 0 pv 7c7d 4i5h 8a7c
+send:info time 2 depth 4 seldepth 4 nodes 503 nps 251499 currmove 7c7d score cp -1 multipv 1 hashfull 0 pv 7c7d 4i5h 8a7c 2h2i
+send:info time 5 depth 5 seldepth 5 nodes 764 nps 152799 currmove 7c7d score cp 0 multipv 1 hashfull 0 pv 7c7d 4i5h 8a7c 2h2i 8b8a
+send:bestmove 7c7d ponder 4i5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h
+recv:go ponder btime 75000 wtime 95000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 34 nps 4294967295 currmove 8a7c score cp 0 multipv 1 hashfull 0 pv 8a7c
+send:info time 0 depth 2 seldepth 2 nodes 103 nps 4294967295 currmove 8a7c score cp -1 multipv 1 hashfull 0 pv 8a7c 2h2i
+send:info string fail-low
+send:info time 1 depth 3 seldepth 1 nodes 179 nps 178999 currmove 8a7c score cp -71 multipv 1 hashfull 0 pv 8a7c
+send:info time 1 depth 3 seldepth 5 nodes 264 nps 264000 currmove 8a7c score cp -92 multipv 1 hashfull 0 pv 8a7c 2h2i 6d6e 6f6e 7c6e
+send:info time 1 depth 4 seldepth 5 nodes 410 nps 409999 currmove 8a7c score cp -92 multipv 1 hashfull 0 pv 8a7c 2h2i 6d6e 6f6e 7c6e
+send:info string fail-high
+send:info time 3 depth 5 seldepth 5 nodes 727 nps 242333 currmove 8a7c score cp -22 multipv 1 hashfull 0 pv 8a7c 2h2i 6d6e 6f6e 7c6e
+send:info time 4 depth 5 seldepth 5 nodes 935 nps 233749 currmove 8a7c score cp 0 multipv 1 hashfull 0 pv 8a7c 2h2i 8b8a 5i4h 5a6b
+send:bestmove 8a7c ponder 2h2i
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i
+recv:go ponder btime 79000 wtime 100000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 38 nps 4294967295 currmove 4c5d score cp -35 multipv 1 hashfull 0 pv 4c5d
+send:info time 0 depth 2 seldepth 3 nodes 113 nps 4294967295 currmove 6d6e score cp -92 multipv 1 hashfull 0 pv 6d6e 6f6e 7c6e
+send:info time 2 depth 3 seldepth 4 nodes 402 nps 200999 currmove 5a4b score cp -58 multipv 1 hashfull 0 pv 5a4b 4f4e 4d4e 3g4e
+send:info time 5 depth 4 seldepth 4 nodes 1074 nps 214799 currmove 8b8a score cp -103 multipv 1 hashfull 0 pv 8b8a 5i4h 5a6b 4h3h
+send:info string fail-high
+send:info time 6 depth 5 seldepth 4 nodes 1231 nps 205166 currmove 8b8a score cp -33 multipv 1 hashfull 0 pv 8b8a 5i4h 5a6b 4h3h
+send:info time 7 depth 5 seldepth 5 nodes 1511 nps 215857 currmove 8b8a score cp 0 multipv 1 hashfull 0 pv 8b8a 5i4h 5a6b 4h3h 6b7b
+send:bestmove 8b8a ponder 5i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 5i4h
+recv:go ponder btime 83000 wtime 105000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f
+recv:go btime 87000 wtime 105000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 36 nps 4294967295 currmove 5a6b score cp 139 multipv 1 hashfull 0 pv 5a6b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 76 nps 4294967295 currmove 5a6b score cp 69 multipv 1 hashfull 0 pv 5a6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 127 nps 126999 currmove 5a6b score cp -1 multipv 1 hashfull 0 pv 5a6b
+send:info time 2 depth 2 seldepth 3 nodes 263 nps 131500 currmove 6d6e score cp -9 multipv 1 hashfull 0 pv 6d6e 6f6e 7c6e
+send:info string fail-high
+send:info time 4 depth 3 seldepth 4 nodes 448 nps 111999 currmove 6d6e score cp 61 multipv 1 hashfull 0 pv 6d6e 6f6e 7c6e 7g6h
+send:info time 5 depth 3 seldepth 3 nodes 554 nps 110799 currmove 5a6b score cp 70 multipv 1 hashfull 0 pv 5a6b 5i4h 6b7b
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 648 nps 92571 currmove 5a6b score cp 0 multipv 1 hashfull 0 pv 5a6b
+send:info time 8 depth 4 seldepth 5 nodes 1010 nps 126249 currmove 6d6e score cp 24 multipv 1 hashfull 0 pv 6d6e 6f6e 7c6e 7g9e 5b6b
+send:info time 10 depth 5 seldepth 5 nodes 1330 nps 132999 currmove 5a6b score cp 0 multipv 1 hashfull 0 pv 5a6b 5i4h 6b7b 4h3h 9c9d
+send:bestmove 5a6b ponder 5i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 5i4h
+recv:go ponder btime 87000 wtime 110000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f
+recv:go btime 90000 wtime 110000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 43 nps 4294967295 currmove 6b7b score cp 268 multipv 1 hashfull 0 pv 6b7b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 85 nps 4294967295 currmove 6b7b score cp 198 multipv 1 hashfull 0 pv 6b7b
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 134 nps 67000 currmove 6b7b score cp 128 multipv 1 hashfull 0 pv 6b7b
+send:info time 3 depth 2 seldepth 2 nodes 190 nps 63333 currmove 6b7b score cp 50 multipv 1 hashfull 0 pv 6b7b 5i4h
+send:info time 4 depth 3 seldepth 3 nodes 334 nps 83499 currmove 6b7b score cp 94 multipv 1 hashfull 0 pv 6b7b 5i4h 5c5d
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 658 nps 109666 currmove 6b7b score cp 24 multipv 1 hashfull 0 pv 6b7b
+send:info time 7 depth 4 seldepth 4 nodes 1189 nps 169857 currmove 6b7b score cp -45 multipv 1 hashfull 0 pv 6b7b 5i4h 9c9d 4h3h
+send:info time 9 depth 5 seldepth 5 nodes 1547 nps 171888 currmove 6b7b score cp 0 multipv 1 hashfull 0 pv 6b7b 5i4h 9c9d 4h3h 1c1d
+send:bestmove 6b7b ponder 5i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 5i4h
+recv:go ponder btime 90000 wtime 115000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e
+recv:go btime 91000 wtime 115000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 43 nps 42999 currmove 5b6b score cp 235 multipv 1 hashfull 0 pv 5b6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 95 nps 94999 currmove 5b6b score cp 165 multipv 1 hashfull 0 pv 5b6b
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 157 nps 78500 currmove 5b6b score cp 95 multipv 1 hashfull 0 pv 5b6b
+send:info time 3 depth 2 seldepth 3 nodes 261 nps 87000 currmove 6d6e score cp 90 multipv 1 hashfull 0 pv 6d6e 6f6e 7c6e
+send:info string fail-low
+send:info time 4 depth 3 seldepth 1 nodes 539 nps 134750 currmove 6d6e score cp 20 multipv 1 hashfull 1 pv 6d6e
+send:info time 5 depth 3 seldepth 3 nodes 818 nps 163599 currmove 5b6b score cp 12 multipv 1 hashfull 1 pv 5b6b 5i4h 1c1d
+send:info string fail-high
+send:info time 7 depth 4 seldepth 1 nodes 1081 nps 154428 currmove 5b6b score cp 82 multipv 1 hashfull 1 pv 5b6b
+send:info string fail-high
+send:info time 7 depth 4 seldepth 1 nodes 1200 nps 171428 currmove 5b6b score cp 152 multipv 1 hashfull 1 pv 5b6b
+send:info time 9 depth 4 seldepth 5 nodes 1508 nps 167555 currmove 6d6e score cp 162 multipv 1 hashfull 1 pv 6d6e 6f6e 7c6e 7g6f P*6d
+send:info string fail-low
+send:info time 10 depth 5 seldepth 1 nodes 1739 nps 173899 currmove 6d6e score cp 92 multipv 1 hashfull 1 pv 6d6e
+send:info string fail-low
+send:info time 11 depth 5 seldepth 7 nodes 2176 nps 197818 currmove 6d6e score cp 22 multipv 1 hashfull 1 pv 6d6e 6f6e 7c6e 7g6f 8e8f 8g8f 8a8f
+send:info time 14 depth 5 seldepth 5 nodes 3157 nps 225500 currmove 5c5d score cp -27 multipv 1 hashfull 1 pv 5c5d 5i4h 3c4b 4h3h 2a3c
+send:bestmove 5c5d ponder 5i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i4h
+recv:go ponder btime 91000 wtime 120000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h
+recv:go btime 94000 wtime 120000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 46 nps 4294967295 currmove 1c1d score cp 262 multipv 1 hashfull 1 pv 1c1d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 126 nps 125999 currmove 1c1d score cp 192 multipv 1 hashfull 1 pv 1c1d 4g5f
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 197 nps 196999 currmove 1c1d score cp 122 multipv 1 hashfull 1 pv 1c1d
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 280 nps 140000 currmove 1c1d score cp 38 multipv 1 hashfull 1 pv 1c1d
+send:info time 2 depth 2 seldepth 2 nodes 372 nps 185999 currmove 6d6e score cp 22 multipv 1 hashfull 1 pv 6d6e 6h7i
+send:info string fail-high
+send:info time 3 depth 3 seldepth 4 nodes 446 nps 148666 currmove 6d6e score cp 92 multipv 1 hashfull 1 pv 6d6e 6f6e 7c6e 7g6f
+send:info time 4 depth 3 seldepth 3 nodes 581 nps 145250 currmove 1c1d score cp 27 multipv 1 hashfull 1 pv 1c1d 6h7i 5b6b
+send:info time 7 depth 4 seldepth 5 nodes 1172 nps 167428 currmove 6d6e score cp 60 multipv 1 hashfull 1 pv 6d6e 6f6e 7c6e 7g6f P*6d
+send:info time 8 depth 5 seldepth 7 nodes 1652 nps 206499 currmove 6d6e score cp 41 multipv 1 hashfull 1 pv 6d6e 6f6e 7c6e 7g6f 8e8f 8g8f 8a8f
+send:bestmove 6d6e ponder 6f6e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e
+recv:go ponder btime 94000 wtime 125000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 38 nps 4294967295 currmove 7c6e score cp 147 multipv 1 hashfull 1 pv 7c6e
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 80 nps 4294967295 currmove 7c6e score cp 77 multipv 1 hashfull 1 pv 7c6e
+send:info time 1 depth 2 seldepth 2 nodes 165 nps 164999 currmove 7c6e score cp 9 multipv 1 hashfull 1 pv 7c6e 7g6f
+send:info time 1 depth 3 seldepth 5 nodes 266 nps 266000 currmove 7c6e score cp 41 multipv 1 hashfull 1 pv 7c6e 7g6f 8e8f 8g8f 8a8f
+send:info time 5 depth 4 seldepth 5 nodes 370 nps 73999 currmove 7c6e score cp 41 multipv 1 hashfull 1 pv 7c6e 7g6f 8e8f 8g8f 8a8f
+send:info string fail-low
+send:info time 6 depth 5 seldepth 1 nodes 590 nps 98333 currmove 7c6e score cp -29 multipv 1 hashfull 1 pv 7c6e
+send:info string fail-low
+send:info time 8 depth 5 seldepth 1 nodes 996 nps 124499 currmove 7c6e score cp -99 multipv 1 hashfull 1 pv 7c6e
+send:info time 10 depth 5 seldepth 7 nodes 1566 nps 156599 currmove 7c6e score cp -52 multipv 1 hashfull 1 pv 7c6e 7g6f 7d7e 7f7e 8e8f 8g8f 8a8f
+send:bestmove 7c6e ponder 7g6f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g6f
+recv:go ponder btime 98000 wtime 130000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h
+recv:go btime 102000 wtime 130000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 59 nps 4294967295 currmove P*6d score cp 222 multipv 1 hashfull 1 pv P*6d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 127 nps 126999 currmove P*6d score cp 152 multipv 1 hashfull 1 pv P*6d
+send:info time 1 depth 2 seldepth 3 nodes 196 nps 195999 currmove 8e8f score cp 139 multipv 1 hashfull 1 pv 8e8f 8g8f 8a8f
+send:info string fail-low
+send:info time 2 depth 3 seldepth 1 nodes 438 nps 218999 currmove 8e8f score cp 69 multipv 1 hashfull 1 pv 8e8f
+send:info time 3 depth 3 seldepth 4 nodes 726 nps 242000 currmove 8e8f score cp 41 multipv 1 hashfull 1 pv 8e8f 8g8f 8a8f 8h6f
+send:info time 6 depth 4 seldepth 5 nodes 1240 nps 206666 currmove 8e8f score cp -16 multipv 1 hashfull 1 pv 8e8f 8g8f 8a8f 6h7i 8f8a
+send:info string fail-low
+send:info time 12 depth 5 seldepth 1 nodes 2940 nps 245000 currmove 8e8f score cp -86 multipv 1 hashfull 2 pv 8e8f
+send:info time 15 depth 5 seldepth 6 nodes 4251 nps 283400 currmove 8e8f score cp -90 multipv 1 hashfull 2 pv 8e8f 8g8f 8a8f 6h7i 8f8a 4g5f
+send:bestmove 8e8f ponder 8g8f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f
+recv:go ponder btime 102000 wtime 135000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 52 nps 4294967295 currmove 8a8f score cp 139 multipv 1 hashfull 2 pv 8a8f
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 109 nps 4294967295 currmove 8a8f score cp 69 multipv 1 hashfull 2 pv 8a8f
+send:info time 1 depth 2 seldepth 2 nodes 218 nps 217999 currmove 8a8f score cp 41 multipv 1 hashfull 2 pv 8a8f 8h6f
+send:info time 1 depth 3 seldepth 3 nodes 390 nps 389999 currmove 8a8f score cp 105 multipv 1 hashfull 2 pv 8a8f 6h7i P*8g
+send:info string fail-low
+send:info time 2 depth 4 seldepth 1 nodes 533 nps 266500 currmove 8a8f score cp 35 multipv 1 hashfull 2 pv 8a8f
+send:info string fail-low
+send:info time 3 depth 4 seldepth 1 nodes 757 nps 252333 currmove 8a8f score cp -35 multipv 1 hashfull 2 pv 8a8f
+send:info time 5 depth 4 seldepth 4 nodes 1039 nps 207799 currmove 8a8f score cp -68 multipv 1 hashfull 2 pv 8a8f 8h6f 8f8a 6h7i
+send:info string fail-high
+send:info time 6 depth 5 seldepth 4 nodes 1216 nps 202666 currmove 8a8f score cp 2 multipv 1 hashfull 2 pv 8a8f 8h6f 8f8a 6h7i
+send:info time 9 depth 5 seldepth 5 nodes 1796 nps 199555 currmove 8a8f score cp 66 multipv 1 hashfull 2 pv 8a8f 8h6f 8f8a 6h7i P*8g
+send:bestmove 8a8f ponder 8h6f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f 8h6f
+recv:go ponder btime 106000 wtime 140000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g
+recv:go btime 110000 wtime 140000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 67 nps 67000 currmove 8f8a score cp 236 multipv 1 hashfull 2 pv 8f8a
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 146 nps 146000 currmove 8f8a score cp 166 multipv 1 hashfull 2 pv 8f8a
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 226 nps 112999 currmove 8f8a score cp 96 multipv 1 hashfull 2 pv 8f8a
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 326 nps 108666 currmove 8f8a score cp 12 multipv 1 hashfull 2 pv 8f8a
+send:info time 4 depth 2 seldepth 2 nodes 438 nps 109499 currmove 8f8a score cp -80 multipv 1 hashfull 2 pv 8f8a 6h7i
+send:info time 5 depth 3 seldepth 3 nodes 610 nps 121999 currmove 8f8a score cp -21 multipv 1 hashfull 2 pv 8f8a 6h7i 5b6b
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 887 nps 126714 currmove 8f8a score cp -91 multipv 1 hashfull 2 pv 8f8a
+send:info time 8 depth 4 seldepth 4 nodes 1306 nps 163250 currmove 8f8a score cp -125 multipv 1 hashfull 2 pv 8f8a 6h7i P*6d P*6f
+send:info string fail-high
+send:info time 9 depth 5 seldepth 4 nodes 1480 nps 164444 currmove 8f8a score cp -55 multipv 1 hashfull 2 pv 8f8a 6h7i P*6d P*6f
+send:info time 11 depth 5 seldepth 5 nodes 1984 nps 180363 currmove 8f8a score cp -30 multipv 1 hashfull 2 pv 8f8a 6h7i P*6d 8h6f 7b6b
+send:bestmove 8f8a ponder 6h7i
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a 6h7i
+recv:go ponder btime 110000 wtime 145000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f
+recv:go btime 114000 wtime 145000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 103 nps 102999 currmove P*8f score cp -169 multipv 1 hashfull 2 pv P*8f 8g8f
+send:info string fail-high
+send:info time 1 depth 2 seldepth 2 nodes 107 nps 106999 currmove P*8f score cp -99 multipv 1 hashfull 2 pv P*8f 8g8f
+send:info time 2 depth 2 seldepth 2 nodes 229 nps 114499 currmove P*8f score cp -169 multipv 1 hashfull 2 pv P*8f 8g8f
+send:info string fail-low
+send:info time 2 depth 3 seldepth 1 nodes 432 nps 215999 currmove P*8f score cp -239 multipv 1 hashfull 2 pv P*8f
+send:info string fail-low
+send:info time 3 depth 3 seldepth 1 nodes 721 nps 240333 currmove P*8f score cp -309 multipv 1 hashfull 2 pv P*8f
+send:info time 4 depth 3 seldepth 3 nodes 1045 nps 261249 currmove 9c9d score cp -324 multipv 1 hashfull 2 pv 9c9d 6f6e 9d9e
+send:info time 6 depth 4 seldepth 5 nodes 1516 nps 252666 currmove 6e5g+ score cp -271 multipv 1 hashfull 2 pv 6e5g+ 5h5g P*6d 6h5h 3c4b
+send:info time 8 depth 5 seldepth 6 nodes 2219 nps 277375 currmove 6e5g+ score cp -332 multipv 1 hashfull 2 pv 6e5g+ 5h5g P*6d 6h5h 3c4b 8i7g
+send:bestmove 6e5g+ ponder 5h5g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g
+recv:go ponder btime 114000 wtime 150000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 49 nps 4294967295 currmove P*6d score cp -229 multipv 1 hashfull 2 pv P*6d
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 102 nps 4294967295 currmove P*6d score cp -299 multipv 1 hashfull 2 pv P*6d
+send:info time 1 depth 2 seldepth 2 nodes 251 nps 250999 currmove P*6d score cp -347 multipv 1 hashfull 2 pv P*6d 6h5h
+send:info string fail-high
+send:info time 1 depth 3 seldepth 2 nodes 271 nps 271000 currmove P*6d score cp -277 multipv 1 hashfull 2 pv P*6d 6h5h
+send:info time 2 depth 3 seldepth 3 nodes 386 nps 192999 currmove P*6d score cp -271 multipv 1 hashfull 2 pv P*6d 6h5h 3c4b
+send:info time 2 depth 4 seldepth 4 nodes 629 nps 314500 currmove P*6d score cp -332 multipv 1 hashfull 2 pv P*6d 6h5h 3c4b 8i7g
+send:info time 5 depth 5 seldepth 5 nodes 957 nps 191399 currmove P*6d score cp -266 multipv 1 hashfull 2 pv P*6d 6h5h 3c4b 8i7g 2a3c
+send:bestmove P*6d ponder 6h5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 6h5h
+recv:go ponder btime 118000 wtime 155000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f
+recv:go btime 118000 wtime 155000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 54 nps 4294967295 currmove 5b6b score cp -203 multipv 1 hashfull 2 pv 5b6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 4 nodes 131 nps 130999 currmove 5b6b score cp -273 multipv 1 hashfull 2 pv 5b6b 6f6e 6d6e 5f6e
+send:info time 2 depth 2 seldepth 3 nodes 286 nps 143000 currmove P*8f score cp -299 multipv 1 hashfull 2 pv P*8f 8g8f 8a8f
+send:info time 3 depth 3 seldepth 3 nodes 599 nps 199666 currmove 8a8e score cp -287 multipv 1 hashfull 2 pv 8a8e 8h7g 5d5e
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 967 nps 193399 currmove 8a8e score cp -357 multipv 1 hashfull 2 pv 8a8e
+send:info time 9 depth 4 seldepth 5 nodes 1928 nps 214222 currmove 3d3e score cp -261 multipv 1 hashfull 3 pv 3d3e 2e2d 3c2d 3f3e 2d3e
+send:info string fail-high
+send:info time 10 depth 5 seldepth 5 nodes 2197 nps 219699 currmove 3d3e score cp -191 multipv 1 hashfull 3 pv 3d3e 2e2d 3c2d 3f3e 2d3e
+send:info time 11 depth 5 seldepth 7 nodes 2682 nps 243818 currmove 3d3e score cp -247 multipv 1 hashfull 3 pv 3d3e 5f4g 3e3f 4g3f P*8f 8g8f 8a8f
+send:bestmove 3d3e ponder 5f4g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g
+recv:go ponder btime 118000 wtime 160000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 47 nps 4294967295 currmove 3e3f score cp -190 multipv 1 hashfull 3 pv 3e3f 4g3f
+send:info time 0 depth 2 seldepth 3 nodes 148 nps 4294967295 currmove 3e3f score cp -219 multipv 1 hashfull 3 pv 3e3f 4g3f P*8e
+send:info time 1 depth 3 seldepth 5 nodes 235 nps 234999 currmove 3e3f score cp -247 multipv 1 hashfull 3 pv 3e3f 4g3f P*8f 8g8f 8a8f
+send:info time 2 depth 4 seldepth 5 nodes 374 nps 186999 currmove 3e3f score cp -247 multipv 1 hashfull 3 pv 3e3f 4g3f P*8f 8g8f 8a8f
+send:info time 5 depth 5 seldepth 6 nodes 1600 nps 319999 currmove 3e3f score cp -304 multipv 1 hashfull 3 pv 3e3f 4g3f P*3h 6h5h 3h3i+ 2i3i
+send:bestmove 3e3f ponder 4g3f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f
+recv:go ponder btime 120000 wtime 165000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 50 nps 4294967295 currmove P*8e score cp -219 multipv 1 hashfull 3 pv P*8e
+send:info time 0 depth 2 seldepth 3 nodes 112 nps 4294967295 currmove P*8f score cp -247 multipv 1 hashfull 3 pv P*8f 8g8f 8a8f
+send:info time 2 depth 3 seldepth 4 nodes 415 nps 207499 currmove P*3h score cp -304 multipv 1 hashfull 3 pv P*3h 6h5h 3h3i+ 2i3i
+send:info string fail-high
+send:info time 2 depth 4 seldepth 4 nodes 505 nps 252499 currmove P*3h score cp -234 multipv 1 hashfull 3 pv P*3h 6h5h 3h3i+ 2i3i
+send:info time 3 depth 4 seldepth 5 nodes 664 nps 221333 currmove P*3h score cp -231 multipv 1 hashfull 3 pv P*3h 6h5h 3h3i+ 2i3i 3c4b
+send:info string fail-low
+send:info time 4 depth 5 seldepth 1 nodes 960 nps 239999 currmove P*3h score cp -301 multipv 1 hashfull 3 pv P*3h
+send:info time 8 depth 5 seldepth 5 nodes 2153 nps 269125 currmove P*3d score cp -305 multipv 1 hashfull 3 pv P*3d 6h5h 3c4b 5g4g 2a3c
+send:bestmove P*3d ponder 6h5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h5h
+recv:go ponder btime 124000 wtime 170000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i
+recv:go btime 126000 wtime 170000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 53 nps 4294967295 currmove 5b6b score cp -195 multipv 1 hashfull 3 pv 5b6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 119 nps 118999 currmove 5b6b score cp -265 multipv 1 hashfull 4 pv 5b6b
+send:info time 4 depth 2 seldepth 2 nodes 272 nps 68000 currmove 7b6b score cp -322 multipv 1 hashfull 4 pv 7b6b 5g5h
+send:info time 5 depth 3 seldepth 3 nodes 576 nps 115199 currmove 7b6b score cp -297 multipv 1 hashfull 4 pv 7b6b 8h7g 6b5c
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 869 nps 144833 currmove 7b6b score cp -367 multipv 1 hashfull 4 pv 7b6b
+send:info time 9 depth 4 seldepth 4 nodes 1576 nps 175111 currmove 7b6b score cp -410 multipv 1 hashfull 4 pv 7b6b 8h7g 5d5e 5g5h
+send:info string fail-high
+send:info time 10 depth 5 seldepth 4 nodes 1677 nps 167699 currmove 7b6b score cp -340 multipv 1 hashfull 4 pv 7b6b 8h7g 5d5e 5g5h
+send:info time 11 depth 5 seldepth 6 nodes 2204 nps 200363 currmove 7b6b score cp -333 multipv 1 hashfull 4 pv 7b6b 8h7g 5d5e 6f6e 6d6e 7g5e
+send:bestmove 7b6b ponder 8h7g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g
+recv:go ponder btime 126000 wtime 175000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 46 nps 4294967295 currmove 3c4b score cp -341 multipv 1 hashfull 4 pv 3c4b
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 97 nps 4294967295 currmove 3c4b score cp -411 multipv 1 hashfull 4 pv 3c4b
+send:info time 1 depth 2 seldepth 2 nodes 236 nps 235999 currmove P*8h score cp -431 multipv 1 hashfull 4 pv P*8h 7g8h
+send:info time 2 depth 3 seldepth 4 nodes 508 nps 253999 currmove 3c4b score cp -439 multipv 1 hashfull 4 pv 3c4b 4f4e 4d4e 3g4e
+send:info time 3 depth 4 seldepth 4 nodes 767 nps 255666 currmove 3c4b score cp -470 multipv 1 hashfull 4 pv 3c4b 5g5h 6b5a 4f4e
+send:info time 13 depth 5 seldepth 6 nodes 3792 nps 291692 currmove 1c1d score cp -478 multipv 1 hashfull 4 pv 1c1d 5g5h 5d5e 4f4e 4d4e 3g4e
+send:bestmove 1c1d ponder 5g5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 5g5h
+recv:go ponder btime 130000 wtime 180000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h
+recv:go btime 133000 wtime 180000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 63 nps 62999 currmove 5d5e score cp -311 multipv 1 hashfull 4 pv 5d5e
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 128 nps 127999 currmove 5d5e score cp -381 multipv 1 hashfull 4 pv 5d5e
+send:info time 3 depth 2 seldepth 2 nodes 278 nps 92666 currmove 5d5e score cp -410 multipv 1 hashfull 4 pv 5d5e 5g5h
+send:info time 4 depth 3 seldepth 3 nodes 471 nps 117749 currmove 5d5e score cp -367 multipv 1 hashfull 4 pv 5d5e 5g5h 6b5c
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 791 nps 158199 currmove 5d5e score cp -437 multipv 1 hashfull 4 pv 5d5e
+send:info time 7 depth 4 seldepth 6 nodes 1403 nps 200428 currmove 5d5e score cp -461 multipv 1 hashfull 4 pv 5d5e 5g5h 4c5d 4f4e 4d4e 3f4e
+send:info time 11 depth 5 seldepth 6 nodes 2336 nps 212363 currmove 5d5e score cp -461 multipv 1 hashfull 4 pv 5d5e 5g5h 4c5d 4f4e 4d4e 3f4e
+send:bestmove 5d5e ponder 5g5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e 5g5h
+recv:go ponder btime 133000 wtime 185000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f
+recv:go btime 132000 wtime 185000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 114 nps 113999 currmove 5e5f score cp -411 multipv 1 hashfull 5 pv 5e5f 5g5f
+send:info string fail-high
+send:info time 1 depth 2 seldepth 2 nodes 118 nps 117999 currmove 5e5f score cp -341 multipv 1 hashfull 5 pv 5e5f 5g5f
+send:info time 2 depth 2 seldepth 3 nodes 311 nps 155500 currmove 5e5f score cp -296 multipv 1 hashfull 5 pv 5e5f 6g5f P*5d
+send:info string fail-low
+send:info time 3 depth 3 seldepth 1 nodes 419 nps 139666 currmove 5e5f score cp -366 multipv 1 hashfull 5 pv 5e5f
+send:info time 3 depth 3 seldepth 3 nodes 637 nps 212333 currmove 5e5f score cp -389 multipv 1 hashfull 5 pv 5e5f 5g5f P*5d
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 1584 nps 226285 currmove 5e5f score cp -459 multipv 1 hashfull 5 pv 5e5f
+send:info time 10 depth 4 seldepth 6 nodes 2562 nps 256199 currmove 5e5f score cp -463 multipv 1 hashfull 5 pv 5e5f 5g5f P*5c 4f4e 4d4e 3g4e
+send:info time 12 depth 5 seldepth 6 nodes 3161 nps 263416 currmove 5e5f score cp -463 multipv 1 hashfull 5 pv 5e5f 5g5f P*5c 4f4e 4d4e 3g4e
+send:bestmove 5e5f ponder 5g5f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f
+recv:go ponder btime 132000 wtime 190000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 55 nps 4294967295 currmove P*5d score cp -389 multipv 1 hashfull 5 pv P*5d
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 118 nps 4294967295 currmove P*5d score cp -459 multipv 1 hashfull 5 pv P*5d
+send:info time 1 depth 2 seldepth 4 nodes 373 nps 372999 currmove 4c5d score cp -497 multipv 1 hashfull 5 pv 4c5d 4f4e 4d4e 3g4e
+send:info time 3 depth 3 seldepth 3 nodes 801 nps 267000 currmove 4c5d score cp -477 multipv 1 hashfull 5 pv 4c5d N*5e 6c7b
+send:info time 3 depth 4 seldepth 5 nodes 1113 nps 371000 currmove P*5d score cp -465 multipv 1 hashfull 5 pv P*5d 4f4e 4d4e 3g4e 3c4d
+send:info string fail-low
+send:info time 6 depth 5 seldepth 1 nodes 2189 nps 364833 currmove P*5d score cp -535 multipv 1 hashfull 5 pv P*5d
+send:info time 9 depth 5 seldepth 5 nodes 3388 nps 376444 currmove P*5e score cp -536 multipv 1 hashfull 5 pv P*5e 5f5e P*5d 5e5f 6b5c
+send:bestmove P*5e ponder 5f5e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e
+recv:go ponder btime 137000 wtime 195000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 57 nps 4294967295 currmove P*5d score cp -511 multipv 1 hashfull 5 pv P*5d
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 113 nps 4294967295 currmove P*5d score cp -581 multipv 1 hashfull 5 pv P*5d
+send:info time 1 depth 2 seldepth 2 nodes 252 nps 251999 currmove P*5d score cp -604 multipv 1 hashfull 5 pv P*5d 5e5f
+send:info time 4 depth 3 seldepth 3 nodes 382 nps 95499 currmove P*5d score cp -536 multipv 1 hashfull 5 pv P*5d 5e5f 6b5c
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 508 nps 84666 currmove P*5d score cp -606 multipv 1 hashfull 5 pv P*5d
+send:info time 7 depth 4 seldepth 8 nodes 921 nps 131571 currmove 4c5d score cp -633 multipv 1 hashfull 5 pv 4c5d 5e5d 6c5d 4f4e 4d4e 3f4e 5d4e 3g4e
+send:info time 11 depth 5 seldepth 8 nodes 1636 nps 148727 currmove 4c5d score cp -633 multipv 1 hashfull 5 pv 4c5d 5e5d 6c5d 4f4e 4d4e 3f4e 5d4e 3g4e
+send:bestmove 4c5d ponder 5e5d
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5d
+recv:go ponder btime 141000 wtime 200000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f
+recv:go btime 143000 wtime 200000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 60 nps 59999 currmove P*5e score cp -474 multipv 1 hashfull 6 pv P*5e
+send:info time 2 depth 2 seldepth 2 nodes 235 nps 117499 currmove P*5e score cp -514 multipv 1 hashfull 6 pv P*5e 5f5g
+send:info string fail-high
+send:info time 3 depth 3 seldepth 2 nodes 279 nps 93000 currmove P*5e score cp -444 multipv 1 hashfull 6 pv P*5e 5f5g
+send:info time 4 depth 3 seldepth 3 nodes 484 nps 120999 currmove P*5e score cp -421 multipv 1 hashfull 6 pv P*5e 5f5g 6b5c
+send:info string fail-low
+send:info time 5 depth 4 seldepth 2 nodes 649 nps 129799 currmove P*5e score cp -491 multipv 1 hashfull 6 pv P*5e 5f5e
+send:info string fail-low
+send:info time 5 depth 4 seldepth 2 nodes 838 nps 167599 currmove P*5e score cp -561 multipv 1 hashfull 6 pv P*5e 5f5e
+send:info time 7 depth 4 seldepth 5 nodes 1187 nps 169571 currmove P*5e score cp -578 multipv 1 hashfull 6 pv P*5e 5f5g 6d6e 6f6e 5d6e
+send:info time 10 depth 5 seldepth 6 nodes 2175 nps 217499 currmove P*5e score cp -521 multipv 1 hashfull 6 pv P*5e 5f5g 3b4c 4f4e 4d4e 3f4e
+send:bestmove P*5e ponder 5f5g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g
+recv:go ponder btime 143000 wtime 205000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 3 nodes 54 nps 4294967295 currmove 6d6e score cp -578 multipv 1 hashfull 6 pv 6d6e 6f6e 5d6e
+send:info time 0 depth 2 seldepth 3 nodes 109 nps 4294967295 currmove 6d6e score cp -578 multipv 1 hashfull 6 pv 6d6e 6f6e 5d6e
+send:info time 2 depth 3 seldepth 4 nodes 415 nps 207499 currmove 3c4b score cp -595 multipv 1 hashfull 6 pv 3c4b 4f4e 4d4e 3g4e
+send:info time 6 depth 4 seldepth 5 nodes 946 nps 157666 currmove 6d6e score cp -572 multipv 1 hashfull 6 pv 6d6e 6f6e 5d6e 5g5h 5e5f
+send:info time 11 depth 5 seldepth 5 nodes 2410 nps 219090 currmove 3d3e score cp -548 multipv 1 hashfull 6 pv 3d3e 3f3e P*3f P*5c 5b5c
+send:bestmove 3d3e ponder 3f3e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f3e
+recv:go ponder btime 147000 wtime 210000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g
+recv:go btime 151000 wtime 210000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 64 nps 4294967295 currmove 3b4c score cp -497 multipv 1 hashfull 6 pv 3b4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 143 nps 143000 currmove 3b4c score cp -567 multipv 1 hashfull 6 pv 3b4c
+send:info time 1 depth 2 seldepth 3 nodes 230 nps 229999 currmove 6d6e score cp -588 multipv 1 hashfull 6 pv 6d6e 6f6e 5d6e
+send:info time 2 depth 3 seldepth 3 nodes 441 nps 220499 currmove 3b4c score cp -553 multipv 1 hashfull 6 pv 3b4c 5g5h 6b5c
+send:info string fail-low
+send:info time 4 depth 4 seldepth 1 nodes 854 nps 213499 currmove 3b4c score cp -623 multipv 1 hashfull 6 pv 3b4c
+send:info string fail-low
+send:info time 8 depth 4 seldepth 1 nodes 1793 nps 224124 currmove 3b4c score cp -693 multipv 1 hashfull 6 pv 3b4c
+send:info time 10 depth 4 seldepth 4 nodes 2670 nps 266999 currmove 6b5c score cp -699 multipv 1 hashfull 6 pv 6b5c 5g5h 3e3f 4g3f
+send:info time 12 depth 5 seldepth 5 nodes 3452 nps 287666 currmove 6b5c score cp -656 multipv 1 hashfull 6 pv 6b5c 5g5h 3e3f 4g3f 3b4c
+send:bestmove 6b5c ponder 5g5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 5g5h
+recv:go ponder btime 151000 wtime 215000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f
+recv:go btime 154000 wtime 215000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 65 nps 4294967295 currmove 5c6b score cp -526 multipv 1 hashfull 6 pv 5c6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 139 nps 139000 currmove 5c6b score cp -596 multipv 1 hashfull 6 pv 5c6b
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 282 nps 141000 currmove 5c6b score cp -666 multipv 1 hashfull 6 pv 5c6b
+send:info time 3 depth 2 seldepth 2 nodes 501 nps 167000 currmove 3b4c score cp -668 multipv 1 hashfull 6 pv 3b4c 5g5h
+send:info time 5 depth 3 seldepth 3 nodes 853 nps 170599 currmove 3c4b score cp -633 multipv 1 hashfull 6 pv 3c4b 5g5h 5c4c
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 1437 nps 205285 currmove 3c4b score cp -703 multipv 1 hashfull 6 pv 3c4b
+send:info time 10 depth 4 seldepth 4 nodes 2502 nps 250199 currmove 3b4c score cp -724 multipv 1 hashfull 6 pv 3b4c 5g5h 5c6b 8g8f
+send:info time 14 depth 5 seldepth 5 nodes 3640 nps 259999 currmove 3b4c score cp -669 multipv 1 hashfull 6 pv 3b4c 5g5h 5c6b 8g8f 6b5c
+send:bestmove 3b4c ponder 5g5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 5g5h
+recv:go ponder btime 154000 wtime 220000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g
+recv:go btime 155000 wtime 220000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 59 nps 58999 currmove 5c6b score cp -480 multipv 1 hashfull 6 pv 5c6b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 125 nps 124999 currmove 5c6b score cp -550 multipv 1 hashfull 6 pv 5c6b
+send:info time 3 depth 2 seldepth 2 nodes 344 nps 114666 currmove 9c9d score cp -571 multipv 1 hashfull 6 pv 9c9d 9e9d
+send:info time 4 depth 3 seldepth 4 nodes 584 nps 146000 currmove 9c9d score cp -567 multipv 1 hashfull 7 pv 9c9d 9e9d P*9g 9i9g
+send:info time 5 depth 4 seldepth 5 nodes 1017 nps 203399 currmove 9c9d score cp -601 multipv 1 hashfull 7 pv 9c9d 9e9d P*9g 7i6i 9a9d
+send:info string fail-low
+send:info time 15 depth 5 seldepth 1 nodes 3958 nps 263866 currmove 9c9d score cp -671 multipv 1 hashfull 7 pv 9c9d
+send:info time 23 depth 5 seldepth 5 nodes 7948 nps 345565 currmove 3c4b score cp -677 multipv 1 hashfull 7 pv 3c4b 5g5h 5c6b 7i8h 4b5c
+send:bestmove 3c4b ponder 5g5h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h
+recv:go ponder btime 155000 wtime 225000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 44 nps 4294967295 currmove 2a3c score cp -642 multipv 1 hashfull 7 pv 2a3c
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 90 nps 4294967295 currmove 2a3c score cp -712 multipv 1 hashfull 7 pv 2a3c
+send:info time 1 depth 2 seldepth 2 nodes 224 nps 223999 currmove 2a3c score cp -740 multipv 1 hashfull 7 pv 2a3c 7i8h
+send:info time 4 depth 3 seldepth 6 nodes 510 nps 127499 currmove 2a3c score cp -760 multipv 1 hashfull 7 pv 2a3c 7i8h P*8f 8g8f 8a8f P*8g
+send:info time 6 depth 4 seldepth 6 nodes 760 nps 126666 currmove 2a3c score cp -760 multipv 1 hashfull 7 pv 2a3c 7i8h P*8f 8g8f 8a8f P*8g
+send:info time 9 depth 5 seldepth 5 nodes 1543 nps 171444 currmove 4c3d score cp -751 multipv 1 hashfull 7 pv 4c3d P*5f 5e5f 4g5f 5c6b
+send:bestmove 4c3d ponder P*5f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d P*5f
+recv:go ponder btime 159000 wtime 230000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e
+recv:go btime 160000 wtime 230000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 49 nps 4294967295 currmove 4d4e score cp -433 multipv 1 hashfull 8 pv 4d4e
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 110 nps 109999 currmove 4d4e score cp -503 multipv 1 hashfull 8 pv 4d4e 7g6e
+send:info string fail-low
+send:info time 2 depth 2 seldepth 2 nodes 164 nps 82000 currmove 4d4e score cp -573 multipv 1 hashfull 8 pv 4d4e 7g6e
+send:info time 3 depth 2 seldepth 2 nodes 239 nps 79666 currmove 4d4e score cp -629 multipv 1 hashfull 8 pv 4d4e 7i8h
+send:info string fail-high
+send:info time 3 depth 3 seldepth 2 nodes 289 nps 96333 currmove 4d4e score cp -559 multipv 1 hashfull 8 pv 4d4e 7i8h
+send:info time 4 depth 3 seldepth 5 nodes 574 nps 143500 currmove 4d4e score cp -530 multipv 1 hashfull 8 pv 4d4e P*5f 5c4c 5f5e 5d5e
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 760 nps 151999 currmove 4d4e score cp -600 multipv 1 hashfull 8 pv 4d4e
+send:info time 7 depth 4 seldepth 5 nodes 1025 nps 146428 currmove 4d4e score cp -530 multipv 1 hashfull 8 pv 4d4e P*5f 5c4c 5f5e 5d5e
+send:info string fail-low
+send:info time 11 depth 5 seldepth 3 nodes 1754 nps 159454 currmove 4d4e score cp -600 multipv 1 hashfull 8 pv 4d4e P*5f 5c4c
+send:info string fail-low
+send:info time 15 depth 5 seldepth 1 nodes 2810 nps 187333 currmove 4d4e score cp -670 multipv 1 hashfull 8 pv 4d4e
+send:info time 17 depth 5 seldepth 5 nodes 3516 nps 206823 currmove 4d4e score cp -677 multipv 1 hashfull 8 pv 4d4e P*4f 5c6b 4f4e 4b5c
+send:bestmove 4d4e ponder P*4f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*4f
+recv:go ponder btime 160000 wtime 235000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f
+recv:go btime 164000 wtime 235000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 86 nps 4294967295 currmove 5c4d score cp -444 multipv 1 hashfull 8 pv 5c4d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 220 nps 219999 currmove 5c4d score cp -514 multipv 1 hashfull 8 pv 5c4d
+send:info time 2 depth 2 seldepth 2 nodes 300 nps 150000 currmove 3e3f score cp -504 multipv 1 hashfull 8 pv 3e3f 4g3f
+send:info time 3 depth 3 seldepth 4 nodes 591 nps 197000 currmove 3e3f score cp -516 multipv 1 hashfull 8 pv 3e3f 4g3f 4b3c 7i8h
+send:info string fail-high
+send:info time 4 depth 4 seldepth 4 nodes 813 nps 203249 currmove 3e3f score cp -446 multipv 1 hashfull 8 pv 3e3f 4g3f 4b3c 7i8h
+send:info time 6 depth 4 seldepth 7 nodes 1383 nps 230500 currmove 3e3f score cp -439 multipv 1 hashfull 8 pv 3e3f 2f3f P*3e 3f3e 3d3e 6h3e 5c4c
+send:info time 8 depth 5 seldepth 7 nodes 1987 nps 248374 currmove 3e3f score cp -439 multipv 1 hashfull 8 pv 3e3f 2f3f P*3e 3f3e 3d3e 6h3e 5c4c
+send:bestmove 3e3f ponder 2f3f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 2f3f
+recv:go ponder btime 164000 wtime 240000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f
+recv:go btime 168000 wtime 240000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 54 nps 4294967295 currmove 4b3c score cp -410 multipv 1 hashfull 9 pv 4b3c
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 109 nps 4294967295 currmove 4b3c score cp -480 multipv 1 hashfull 9 pv 4b3c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 164 nps 164000 currmove 4b3c score cp -550 multipv 1 hashfull 9 pv 4b3c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 226 nps 225999 currmove 4b3c score cp -634 multipv 1 hashfull 9 pv 4b3c
+send:info time 1 depth 2 seldepth 2 nodes 301 nps 301000 currmove 4b3c score cp -635 multipv 1 hashfull 9 pv 4b3c 3f3e
+send:info time 2 depth 3 seldepth 7 nodes 443 nps 221499 currmove 4b3c score cp -644 multipv 1 hashfull 9 pv 4b3c 3f3e 3d3e 6h3e 3c4d 3e4d 5c4d
+send:info time 2 depth 4 seldepth 7 nodes 609 nps 304500 currmove 4b3c score cp -644 multipv 1 hashfull 9 pv 4b3c 3f3e 3d3e 6h3e 3c4d 3e4d 5c4d
+send:info time 7 depth 5 seldepth 6 nodes 2129 nps 304142 currmove 4b3c score cp -602 multipv 1 hashfull 9 pv 4b3c 3f3e 3d3e 6h3e S*4d 3e5g
+send:bestmove 4b3c ponder 3f3e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c 3f3e
+recv:go ponder btime 168000 wtime 245000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e
+recv:go btime 170000 wtime 245000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 71 nps 71000 currmove 3d4d score cp -410 multipv 1 hashfull 9 pv 3d4d
+send:info time 2 depth 2 seldepth 2 nodes 274 nps 137000 currmove 3c4d score cp -442 multipv 1 hashfull 9 pv 3c4d 7i8h
+send:info time 5 depth 3 seldepth 3 nodes 721 nps 144199 currmove 3c4d score cp -478 multipv 1 hashfull 9 pv 3c4d 7i8h 2a3c
+send:info string fail-low
+send:info time 8 depth 4 seldepth 1 nodes 1311 nps 163875 currmove 3c4d score cp -548 multipv 1 hashfull 9 pv 3c4d
+send:info time 11 depth 4 seldepth 4 nodes 2001 nps 181909 currmove 3c4d score cp -560 multipv 1 hashfull 9 pv 3c4d 7i8h 2a3c 2f2h
+send:info time 19 depth 5 seldepth 5 nodes 4434 nps 233368 currmove 3d4d score cp -525 multipv 1 hashfull 10 pv 3d4d 7i8h 5c6b 6h5g 6b5c
+send:bestmove 3d4d ponder 7i8h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 7i8h
+recv:go ponder btime 170000 wtime 250000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d
+recv:go btime 173000 wtime 250000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 52 nps 4294967295 currmove 2c2d score cp -309 multipv 1 hashfull 10 pv 2c2d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 143 nps 143000 currmove 2c2d score cp -379 multipv 1 hashfull 10 pv 2c2d N*6e
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 234 nps 233999 currmove 2c2d score cp -449 multipv 1 hashfull 10 pv 2c2d N*6e
+send:info time 2 depth 2 seldepth 2 nodes 416 nps 207999 currmove 2c2d score cp -457 multipv 1 hashfull 10 pv 2c2d 7i8h
+send:info time 3 depth 3 seldepth 3 nodes 840 nps 280000 currmove 2c2d score cp -426 multipv 1 hashfull 10 pv 2c2d 7i8h 5c6b
+send:info string fail-low
+send:info time 5 depth 4 seldepth 2 nodes 1317 nps 263399 currmove 2c2d score cp -496 multipv 1 hashfull 10 pv 2c2d N*6e
+send:info time 6 depth 4 seldepth 4 nodes 1812 nps 302000 currmove 2c2d score cp -477 multipv 1 hashfull 10 pv 2c2d 7i8h P*3d 6h5g
+send:info time 17 depth 5 seldepth 8 nodes 5331 nps 313588 currmove 2c2d score cp -523 multipv 1 hashfull 11 pv 2c2d N*5g 2d2e 5g4e 5d4e 3g4e 4d4e 3f2e
+send:bestmove 2c2d ponder N*5g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d N*5g
+recv:go ponder btime 173000 wtime 255000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b
+recv:go btime 176000 wtime 255000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 69 nps 4294967295 currmove 2a1c score cp -287 multipv 1 hashfull 11 pv 2a1c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 156 nps 156000 currmove 2a1c score cp -357 multipv 1 hashfull 11 pv 2a1c
+send:info time 1 depth 2 seldepth 2 nodes 333 nps 332999 currmove 2a1c score cp -403 multipv 1 hashfull 11 pv 2a1c 7i8h
+send:info time 3 depth 3 seldepth 3 nodes 834 nps 278000 currmove 2a1c score cp -352 multipv 1 hashfull 11 pv 2a1c 2b2a+ 2d2e
+send:info time 6 depth 4 seldepth 4 nodes 1498 nps 249666 currmove 2a1c score cp -370 multipv 1 hashfull 11 pv 2a1c 7i8h 2d2e 2f2i
+send:info string fail-high
+send:info time 12 depth 5 seldepth 4 nodes 3122 nps 260166 currmove 2a1c score cp -300 multipv 1 hashfull 11 pv 2a1c 7i8h 2d2e 2f2i
+send:info time 15 depth 5 seldepth 6 nodes 4389 nps 292600 currmove 2a1c score cp -295 multipv 1 hashfull 11 pv 2a1c 7i8h 1c2e 3g2e 2d2e 2f2e
+send:bestmove 2a1c ponder 7i8h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 7i8h
+recv:go ponder btime 176000 wtime 260000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e
+recv:go btime 179000 wtime 260000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 93 nps 4294967295 currmove 2d2e score cp -166 multipv 1 hashfull 12 pv 2d2e 3g2e
+send:info time 2 depth 2 seldepth 2 nodes 332 nps 165999 currmove 2d2e score cp -166 multipv 1 hashfull 12 pv 2d2e 3g2e
+send:info time 4 depth 3 seldepth 4 nodes 836 nps 208999 currmove 2d2e score cp -178 multipv 1 hashfull 12 pv 2d2e 3g2e 1c2e 2f2e
+send:info string fail-high
+send:info time 6 depth 4 seldepth 4 nodes 1264 nps 210666 currmove 2d2e score cp -108 multipv 1 hashfull 12 pv 2d2e 3g2e 1c2e 2f2e
+send:info time 7 depth 4 seldepth 5 nodes 1764 nps 252000 currmove 2d2e score cp -82 multipv 1 hashfull 12 pv 2d2e 3g2e 1c2e 3f2e N*5f
+send:info string fail-low
+send:info time 8 depth 5 seldepth 1 nodes 2227 nps 278375 currmove 2d2e score cp -152 multipv 1 hashfull 12 pv 2d2e
+send:info time 15 depth 5 seldepth 7 nodes 4563 nps 304200 currmove 2d2e score cp -203 multipv 1 hashfull 12 pv 2d2e 3g2e 1c2e 3f2e N*5f 6h5g 1d1e
+send:bestmove 2d2e ponder 3g2e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 3g2e
+recv:go ponder btime 179000 wtime 265000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i
+recv:go btime 181000 wtime 265000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 4 nodes 61 nps 60999 currmove 1d1e score cp -37 multipv 1 hashfull 12 pv 1d1e 3g2e 1c2e 2i2e
+send:info string fail-low
+send:info time 2 depth 2 seldepth 4 nodes 197 nps 98499 currmove 1d1e score cp -107 multipv 1 hashfull 12 pv 1d1e 3g2e 1c2e 2i2e
+send:info string fail-low
+send:info time 3 depth 2 seldepth 4 nodes 336 nps 112000 currmove 1d1e score cp -177 multipv 1 hashfull 12 pv 1d1e 3g2e 1c2e 2i2e
+send:info time 3 depth 2 seldepth 2 nodes 494 nps 164666 currmove 1d1e score cp -216 multipv 1 hashfull 12 pv 1d1e 7i8h
+send:info time 5 depth 3 seldepth 6 nodes 955 nps 190999 currmove 1d1e score cp -235 multipv 1 hashfull 12 pv 1d1e 7i8h 3c2d 3g2e 1c2e 2i2e
+send:info time 7 depth 4 seldepth 6 nodes 1708 nps 244000 currmove 1d1e score cp -255 multipv 1 hashfull 12 pv 1d1e 7i8h P*8f 8g8f 8a8f P*8g
+send:info time 12 depth 5 seldepth 6 nodes 2677 nps 223083 currmove 1d1e score cp -255 multipv 1 hashfull 12 pv 1d1e 7i8h P*8f 8g8f 8a8f P*8g
+send:bestmove 1d1e ponder 7i8h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 7i8h
+recv:go ponder btime 181000 wtime 270000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i
+recv:go btime 179000 wtime 270000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 368 nps 367999 currmove 8a4a score cp -99 multipv 1 hashfull 13 pv 8a4a
+send:info string fail-low
+send:info time 2 depth 2 seldepth 4 nodes 526 nps 263000 currmove 8a4a score cp -169 multipv 1 hashfull 13 pv 8a4a 3g2e 1c2e 3f2e
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 670 nps 223333 currmove 8a4a score cp -239 multipv 1 hashfull 13 pv 8a4a
+send:info time 3 depth 2 seldepth 4 nodes 1001 nps 333666 currmove 5c6b score cp -300 multipv 1 hashfull 13 pv 5c6b 3f4e 5d4e 3g4e
+send:info time 5 depth 3 seldepth 3 nodes 1596 nps 319199 currmove 8a4a score cp -282 multipv 1 hashfull 13 pv 8a4a 7i8h 3c2d
+send:info string fail-low
+send:info time 11 depth 4 seldepth 1 nodes 3019 nps 274454 currmove 8a4a score cp -352 multipv 1 hashfull 13 pv 8a4a
+send:info time 20 depth 4 seldepth 6 nodes 5782 nps 289099 currmove 5c6b score cp -409 multipv 1 hashfull 13 pv 5c6b 2b2a+ 8a2a 3f4e 5d4e 3g4e
+send:info time 24 depth 5 seldepth 6 nodes 7171 nps 298791 currmove 5c6b score cp -409 multipv 1 hashfull 14 pv 5c6b 2b2a+ 8a2a 3f4e 5d4e 3g4e
+send:bestmove 5c6b ponder 2b2a+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 2b2a+
+recv:go ponder btime 179000 wtime 275000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e
+recv:go btime 180000 wtime 275000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 1 nodes 73 nps 4294967295 currmove 3c2d score cp -324 multipv 1 hashfull 14 pv 3c2d
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 139 nps 4294967295 currmove 3c2d score cp -394 multipv 1 hashfull 14 pv 3c2d
+send:info time 1 depth 2 seldepth 2 nodes 267 nps 267000 currmove P*4h score cp -449 multipv 1 hashfull 14 pv P*4h 4i4h
+send:info time 2 depth 3 seldepth 3 nodes 467 nps 233499 currmove P*4h score cp -400 multipv 1 hashfull 14 pv P*4h 4i4h 3c4b
+send:info string fail-low
+send:info time 3 depth 4 seldepth 1 nodes 773 nps 257666 currmove P*4h score cp -470 multipv 1 hashfull 14 pv P*4h
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 1297 nps 259399 currmove P*4h score cp -540 multipv 1 hashfull 14 pv P*4h
+send:info time 7 depth 4 seldepth 5 nodes 1941 nps 277285 currmove 5d4e score cp -541 multipv 1 hashfull 14 pv 5d4e 3f4e 4d4e 4i4e P*4c
+send:info time 11 depth 5 seldepth 5 nodes 3134 nps 284909 currmove P*4h score cp -524 multipv 1 hashfull 14 pv P*4h 4i4h P*4g 4h4g 3c4b
+send:bestmove P*4h ponder 4i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h
+recv:go ponder btime 180000 wtime 280000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 63 nps 4294967295 currmove 3c2b score cp -623 multipv 1 hashfull 14 pv 3c2b 1i1e
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 126 nps 4294967295 currmove 3c2b score cp -693 multipv 1 hashfull 14 pv 3c2b
+send:info time 1 depth 2 seldepth 2 nodes 245 nps 244999 currmove P*4g score cp -574 multipv 1 hashfull 14 pv P*4g 4h4g
+send:info time 1 depth 3 seldepth 3 nodes 382 nps 381999 currmove P*4g score cp -524 multipv 1 hashfull 14 pv P*4g 4h4g 3c4b
+send:info string fail-low
+send:info time 2 depth 4 seldepth 1 nodes 519 nps 259499 currmove P*4g score cp -594 multipv 1 hashfull 14 pv P*4g
+send:info string fail-low
+send:info time 2 depth 4 seldepth 1 nodes 692 nps 345999 currmove P*4g score cp -664 multipv 1 hashfull 14 pv P*4g
+send:info time 3 depth 4 seldepth 5 nodes 1075 nps 358333 currmove 5d4e score cp -728 multipv 1 hashfull 14 pv 5d4e 3f4e 4d4e 4h4e S*5d
+send:info time 10 depth 5 seldepth 5 nodes 3078 nps 307799 currmove P*4g score cp -784 multipv 1 hashfull 15 pv P*4g 4h4g 3c4b P*5c 5b4c
+send:bestmove P*4g ponder 4h4g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g
+recv:go ponder btime 184000 wtime 285000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 70 nps 4294967295 currmove 4d4e score cp -903 multipv 1 hashfull 15 pv 4d4e 3f4e
+send:info string fail-high
+send:info time 2 depth 2 seldepth 3 nodes 222 nps 110999 currmove 4d4e score cp -833 multipv 1 hashfull 15 pv 4d4e 3f4e 5d4c
+send:info time 2 depth 2 seldepth 3 nodes 292 nps 146000 currmove 5d4e score cp -778 multipv 1 hashfull 15 pv 5d4e 3f4e 4d4c
+send:info string fail-low
+send:info time 2 depth 3 seldepth 1 nodes 382 nps 190999 currmove 5d4e score cp -848 multipv 1 hashfull 15 pv 5d4e
+send:info time 3 depth 3 seldepth 5 nodes 465 nps 155000 currmove 5d4e score cp -861 multipv 1 hashfull 15 pv 5d4e 3f4e 4d4c 2b2a+ 8a2a
+send:info time 4 depth 4 seldepth 5 nodes 589 nps 147250 currmove 5d4e score cp -861 multipv 1 hashfull 15 pv 5d4e 3f4e 4d4c 2b2a+ 8a2a
+send:info time 10 depth 5 seldepth 6 nodes 2406 nps 240599 currmove 3c2b score cp -929 multipv 1 hashfull 15 pv 3c2b P*5c 5b4b 7i8h 4d4c 1i1e
+send:bestmove 3c2b ponder P*5c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*5c
+recv:go ponder btime 188000 wtime 290000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c
+recv:go btime 191000 wtime 290000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 79 nps 4294967295 currmove 2b3a score cp -753 multipv 1 hashfull 15 pv 2b3a 4e3c+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 2 nodes 171 nps 85499 currmove 2b3a score cp -823 multipv 1 hashfull 15 pv 2b3a 4e3c+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 259 nps 129499 currmove 2b3a score cp -893 multipv 1 hashfull 15 pv 2b3a
+send:info time 3 depth 2 seldepth 2 nodes 399 nps 133000 currmove 2b3a score cp -913 multipv 1 hashfull 15 pv 2b3a P*5c
+send:info time 4 depth 3 seldepth 4 nodes 802 nps 200499 currmove 2b3a score cp -943 multipv 1 hashfull 15 pv 2b3a P*5c 5b4c 1i1e
+send:info time 5 depth 4 seldepth 4 nodes 1182 nps 236399 currmove 2b3a score cp -985 multipv 1 hashfull 15 pv 2b3a P*5c 5b4c 7i8h
+send:info string fail-low
+send:info time 14 depth 5 seldepth 1 nodes 3705 nps 264642 currmove 2b3a score cp -1055 multipv 1 hashfull 16 pv 2b3a
+send:info time 16 depth 5 seldepth 9 nodes 5029 nps 314312 currmove 2b3a score cp -1064 multipv 1 hashfull 16 pv 2b3a P*5c 5b4b P*1d P*3g 1i1e 3g3h+ 1d1c+ 1a1c
+send:bestmove 2b3a ponder P*5c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a P*5c
+recv:go ponder btime 191000 wtime 295000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+
+recv:go btime 192000 wtime 295000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 101 nps 100999 currmove 3a5c score cp -884 multipv 1 hashfull 16 pv 3a5c 2c2b+
+send:info time 1 depth 2 seldepth 2 nodes 179 nps 178999 currmove 3a5c score cp -884 multipv 1 hashfull 16 pv 3a5c 2c2b+
+send:info time 2 depth 3 seldepth 4 nodes 447 nps 223499 currmove 3a5c score cp -860 multipv 1 hashfull 16 pv 3a5c 2c2b+ P*4e 1i1e
+send:info time 4 depth 4 seldepth 4 nodes 1408 nps 351999 currmove P*4f score cp -922 multipv 1 hashfull 16 pv P*4f 4g4f P*4e 4f4h
+send:info time 11 depth 5 seldepth 6 nodes 3644 nps 331272 currmove P*4f score cp -989 multipv 1 hashfull 16 pv P*4f 4g4f P*4e 4f4h 3a5c 2c2b+
+send:bestmove P*4f ponder 4g4f
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f
+recv:go ponder btime 192000 wtime 300000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 61 nps 4294967295 currmove P*4e score cp -925 multipv 1 hashfull 17 pv P*4e
+send:info time 0 depth 2 seldepth 2 nodes 207 nps 4294967295 currmove P*4e score cp -922 multipv 1 hashfull 17 pv P*4e 4f4h
+send:info time 1 depth 3 seldepth 4 nodes 348 nps 347999 currmove P*4e score cp -989 multipv 1 hashfull 17 pv P*4e 4f4h 3a5c 2c2b+
+send:info time 3 depth 4 seldepth 4 nodes 828 nps 276000 currmove P*4e score cp -989 multipv 1 hashfull 17 pv P*4e 4f4h 3a5c 2c2b+
+send:info time 9 depth 5 seldepth 6 nodes 2173 nps 241444 currmove P*4e score cp -996 multipv 1 hashfull 17 pv P*4e 4f4h 3a5c 2c2b+ 1e1f 1i1f
+send:bestmove P*4e ponder 4f4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4h
+recv:go ponder btime 196000 wtime 305000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i
+recv:go btime 200000 wtime 305000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 82 nps 4294967295 currmove 3a5c score cp -983 multipv 1 hashfull 17 pv 3a5c 2c2b+
+send:info time 1 depth 2 seldepth 2 nodes 146 nps 146000 currmove 3a5c score cp -983 multipv 1 hashfull 17 pv 3a5c 2c2b+
+send:info time 2 depth 3 seldepth 4 nodes 439 nps 219499 currmove 3a5c score cp -990 multipv 1 hashfull 17 pv 3a5c 2c2b+ 1e1f 1i1f
+send:info string fail-low
+send:info time 11 depth 4 seldepth 1 nodes 3061 nps 278272 currmove 3a5c score cp -1060 multipv 1 hashfull 18 pv 3a5c
+send:info time 17 depth 4 seldepth 4 nodes 5009 nps 294647 currmove P*3g score cp -1070 multipv 1 hashfull 18 pv P*3g 4i4h 3a5c 2c2b+
+send:info string fail-low
+send:info time 34 depth 5 seldepth 1 nodes 12738 nps 374647 currmove P*3g score cp -1140 multipv 1 hashfull 19 pv P*3g
+send:info time 36 depth 5 seldepth 9 nodes 14473 nps 402027 currmove P*3g score cp -1115 multipv 1 hashfull 19 pv P*3g 4i4h 2e2f 1i1e 3a5c 1e1c+ 1a1c 2c2b+ 1c1g+
+send:bestmove P*3g ponder 4i4h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h
+recv:go ponder btime 200000 wtime 310000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 48 nps 4294967295 currmove 3a5c score cp -1070 multipv 1 hashfull 19 pv 3a5c 2c2b+
+send:info time 0 depth 2 seldepth 2 nodes 101 nps 4294967295 currmove 3a5c score cp -1070 multipv 1 hashfull 19 pv 3a5c 2c2b+
+send:info string fail-low
+send:info time 1 depth 3 seldepth 1 nodes 271 nps 271000 currmove 3a5c score cp -1140 multipv 1 hashfull 19 pv 3a5c
+send:info time 2 depth 3 seldepth 4 nodes 541 nps 270500 currmove 3g3h+ score cp -1144 multipv 1 hashfull 19 pv 3g3h+ 4h3h 3a5c 2c2b+
+send:info time 3 depth 4 seldepth 6 nodes 928 nps 309333 currmove 3g3h+ score cp -1181 multipv 1 hashfull 19 pv 3g3h+ 4h3h 3a5c 2c2b+ 1e1f 1i1f
+send:info time 21 depth 5 seldepth 6 nodes 7561 nps 360047 currmove 3g3h+ score cp -1249 multipv 1 hashfull 20 pv 3g3h+ 4h3h 3a5c 2c2b+ P*3g 3h3g
+send:bestmove 3g3h+ ponder 4h3h
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h
+recv:go ponder btime 203000 wtime 315000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 59 nps 4294967295 currmove P*3g score cp -1187 multipv 1 hashfull 20 pv P*3g 3h3g
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 113 nps 4294967295 currmove 9a9b score cp -1257 multipv 1 hashfull 20 pv 9a9b
+send:info time 1 depth 2 seldepth 2 nodes 170 nps 169999 currmove 2e2f score cp -1217 multipv 1 hashfull 20 pv 2e2f 2c2b+
+send:info string fail-low
+send:info time 3 depth 3 seldepth 1 nodes 641 nps 213666 currmove 2e2f score cp -1287 multipv 1 hashfull 20 pv 2e2f
+send:info time 7 depth 3 seldepth 4 nodes 1600 nps 228571 currmove 4e4f score cp -1304 multipv 1 hashfull 20 pv 4e4f 2c2b+ P*3g 3h3g
+send:info time 8 depth 4 seldepth 6 nodes 1977 nps 247124 currmove 2e2f score cp -1312 multipv 1 hashfull 20 pv 2e2f 2c2b+ 2f2g+ 3f2g 3a5c 1i1e
+send:info time 25 depth 5 seldepth 6 nodes 8817 nps 352680 currmove 3a5c score cp -1349 multipv 1 hashfull 21 pv 3a5c 2c2b+ P*3g 3h2h 3g3h+ 2h3h
+send:bestmove 3a5c ponder 2c2b+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+
+recv:go ponder btime 207000 wtime 320000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 51 nps 4294967295 currmove P*3g score cp -1249 multipv 1 hashfull 21 pv P*3g 3h3g
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 102 nps 4294967295 currmove P*3g score cp -1319 multipv 1 hashfull 21 pv P*3g
+send:info time 1 depth 2 seldepth 2 nodes 161 nps 161000 currmove P*3g score cp -1346 multipv 1 hashfull 21 pv P*3g 3h2h
+send:info time 1 depth 3 seldepth 4 nodes 272 nps 272000 currmove P*3g score cp -1349 multipv 1 hashfull 21 pv P*3g 3h2h 3g3h+ 2h3h
+send:info string fail-low
+send:info time 5 depth 4 seldepth 1 nodes 1018 nps 203599 currmove P*3g score cp -1419 multipv 1 hashfull 21 pv P*3g
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 1855 nps 265000 currmove P*3g score cp -1489 multipv 1 hashfull 21 pv P*3g
+send:info string fail-low
+send:info time 14 depth 4 seldepth 1 nodes 3877 nps 276928 currmove P*3g score cp -1573 multipv 1 hashfull 22 pv P*3g
+send:info time 19 depth 4 seldepth 5 nodes 5852 nps 307999 currmove 6d6e score cp -1600 multipv 1 hashfull 22 pv 6d6e 2b1a 6e6f 6g6f 5c6d
+send:info time 24 depth 5 seldepth 6 nodes 7840 nps 326666 currmove 7d7e score cp -1626 multipv 1 hashfull 22 pv 7d7e 2b1a 7e7f 6g7f 8a1a 1i1e
+send:bestmove 7d7e ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 2b1a
+recv:go ponder btime 207000 wtime 325000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e
+recv:go btime 211000 wtime 325000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 94 nps 4294967295 currmove 1e1f score cp -1420 multipv 1 hashfull 22 pv 1e1f 1i1f
+send:info string fail-low
+send:info time 2 depth 2 seldepth 2 nodes 240 nps 119999 currmove 2e2f score cp -1490 multipv 1 hashfull 22 pv 2e2f P*1d
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 471 nps 157000 currmove 2e2f score cp -1560 multipv 1 hashfull 22 pv 2e2f
+send:info time 4 depth 2 seldepth 2 nodes 652 nps 163000 currmove P*3g score cp -1577 multipv 1 hashfull 22 pv P*3g 3h2h
+send:info time 6 depth 3 seldepth 4 nodes 1079 nps 179833 currmove P*3g score cp -1588 multipv 1 hashfull 22 pv P*3g 3h2h 3g3h+ 2h3h
+send:info string fail-low
+send:info time 9 depth 4 seldepth 1 nodes 2005 nps 222777 currmove P*3g score cp -1658 multipv 1 hashfull 23 pv P*3g
+send:info string fail-low
+send:info time 14 depth 4 seldepth 1 nodes 3737 nps 266928 currmove P*3g score cp -1728 multipv 1 hashfull 23 pv P*3g
+send:info string fail-low
+send:info time 20 depth 4 seldepth 1 nodes 6256 nps 312799 currmove P*3g score cp -1812 multipv 1 hashfull 23 pv P*3g
+send:info time 22 depth 4 seldepth 5 nodes 7171 nps 325954 currmove 6d6e score cp -1809 multipv 1 hashfull 23 pv 6d6e 2b1a 6e6f 6g6f 5c6d
+send:info time 27 depth 5 seldepth 8 nodes 9329 nps 345518 currmove P*8h score cp -1866 multipv 1 hashfull 23 pv P*8h 2b1a 8h8i+ 7i8i 8a1a N*7d 6b7c 1i1e
+send:bestmove P*8h ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 2b1a
+recv:go ponder btime 211000 wtime 330000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h
+recv:go btime 213000 wtime 330000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 56 nps 4294967295 currmove 5e5f score cp -1611 multipv 1 hashfull 24 pv 5e5f 6g5f
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 154 nps 154000 currmove 5e5f score cp -1681 multipv 1 hashfull 24 pv 5e5f P*1d
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 259 nps 258999 currmove 5e5f score cp -1751 multipv 1 hashfull 24 pv 5e5f
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 471 nps 235499 currmove 6b7c score cp -1835 multipv 1 hashfull 24 pv 6b7c
+send:info time 3 depth 2 seldepth 4 nodes 660 nps 220000 currmove 9c9d score cp -1836 multipv 1 hashfull 24 pv 9c9d 2b1a 9d9e 1i1e
+send:info time 4 depth 3 seldepth 4 nodes 931 nps 232749 currmove 9c9d score cp -1883 multipv 1 hashfull 24 pv 9c9d 9e9d 9a9d 9i9d
+send:info string fail-low
+send:info time 7 depth 4 seldepth 6 nodes 1750 nps 250000 currmove 9c9d score cp -1953 multipv 1 hashfull 24 pv 9c9d 9e9d 9a9d 9i9d P*9f 9d9c+
+send:info time 8 depth 4 seldepth 6 nodes 2541 nps 317625 currmove 6d6e score cp -1963 multipv 1 hashfull 24 pv 6d6e 7g6e 5d6e 6f6e 5c7e 1i1e
+send:info string fail-low
+send:info time 13 depth 5 seldepth 1 nodes 3504 nps 269538 currmove 6d6e score cp -2033 multipv 1 hashfull 24 pv 6d6e
+send:info string fail-low
+send:info time 16 depth 5 seldepth 1 nodes 4283 nps 267687 currmove 6d6e score cp -2103 multipv 1 hashfull 24 pv 6d6e
+send:info time 19 depth 5 seldepth 8 nodes 5415 nps 284999 currmove 9c9d score cp -2096 multipv 1 hashfull 24 pv 9c9d 2b1a 9d9e N*7d 6b7b L*8f 8a1a 1i1e
+send:bestmove 9c9d ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 2b1a
+recv:go ponder btime 213000 wtime 335000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d
+recv:go btime 217000 wtime 335000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 46 nps 4294967295 currmove 9a9d score cp -1883 multipv 1 hashfull 24 pv 9a9d 9i9d
+send:info time 0 depth 2 seldepth 4 nodes 150 nps 4294967295 currmove 9a9d score cp -1871 multipv 1 hashfull 24 pv 9a9d 9i9d P*9f 9d9c+
+send:info string fail-low
+send:info time 4 depth 3 seldepth 1 nodes 623 nps 155750 currmove 9a9d score cp -1941 multipv 1 hashfull 24 pv 9a9d
+send:info string fail-low
+send:info time 5 depth 3 seldepth 1 nodes 1022 nps 204399 currmove 9a9d score cp -2011 multipv 1 hashfull 24 pv 9a9d
+send:info time 7 depth 3 seldepth 4 nodes 1470 nps 210000 currmove 9a9d score cp -2044 multipv 1 hashfull 24 pv 9a9d 9i9d P*7f 6g7f
+send:info string fail-low
+send:info time 12 depth 4 seldepth 1 nodes 2797 nps 233083 currmove 9a9d score cp -2114 multipv 1 hashfull 24 pv 9a9d
+send:info time 19 depth 4 seldepth 6 nodes 5053 nps 265947 currmove 9a9d score cp -2146 multipv 1 hashfull 25 pv 9a9d 9i9d P*9f 2b1a 9f9g+ 8h9g
+send:info time 21 depth 5 seldepth 6 nodes 5819 nps 277095 currmove 9a9d score cp -2146 multipv 1 hashfull 25 pv 9a9d 9i9d P*9f 2b1a 9f9g+ 8h9g
+send:bestmove 9a9d ponder 9i9d
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d
+recv:go ponder btime 217000 wtime 340000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 66 nps 4294967295 currmove P*8f score cp -2139 multipv 1 hashfull 26 pv P*8f 8g8f
+send:info time 0 depth 2 seldepth 2 nodes 133 nps 4294967295 currmove P*8f score cp -2139 multipv 1 hashfull 26 pv P*8f 8g8f
+send:info time 1 depth 3 seldepth 4 nodes 371 nps 370999 currmove P*8f score cp -2186 multipv 1 hashfull 26 pv P*8f 8g8f 8a8f L*8g
+send:info time 1 depth 4 seldepth 8 nodes 600 nps 600000 currmove P*8f score cp -2191 multipv 1 hashfull 26 pv P*8f 8g8f 8a8f L*8g 8f9f 2b1a 9f9d 8g8c+
+send:info string fail-low
+send:info time 5 depth 5 seldepth 1 nodes 1615 nps 322999 currmove P*8f score cp -2261 multipv 1 hashfull 26 pv P*8f
+send:info string fail-low
+send:info time 17 depth 5 seldepth 10 nodes 5904 nps 347294 currmove P*8f score cp -2331 multipv 1 hashfull 26 pv P*8f 8g8f 8a8f L*8g 8f9f N*7d 6b5a 2b1a 9f9d 1i1e
+send:info time 32 depth 5 seldepth 7 nodes 11519 nps 359968 currmove P*9g score cp -2321 multipv 1 hashfull 26 pv P*9g 2b1a 8a1a N*7d 6c7d 7e7d N*7e
+send:bestmove P*9g ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g 2b1a
+recv:go ponder btime 221000 wtime 345000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f
+recv:go btime 221000 wtime 345000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 104 nps 103999 currmove 9g9h+ score cp -1875 multipv 1 hashfull 27 pv 9g9h+ 8h9h
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 215 nps 107499 currmove 9g9h+ score cp -1945 multipv 1 hashfull 27 pv 9g9h+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 331 nps 165499 currmove 9g9h+ score cp -2015 multipv 1 hashfull 27 pv 9g9h+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 460 nps 229999 currmove 9g9h+ score cp -2099 multipv 1 hashfull 27 pv 9g9h+
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 600 nps 200000 currmove 9g9h+ score cp -2199 multipv 1 hashfull 27 pv 9g9h+
+send:info time 3 depth 2 seldepth 4 nodes 740 nps 246666 currmove 9g9h+ score cp -2219 multipv 1 hashfull 27 pv 9g9h+ 8h9h 8a7a 9d9c+
+send:info string fail-low
+send:info time 7 depth 3 seldepth 1 nodes 1473 nps 210428 currmove 9g9h+ score cp -2289 multipv 1 hashfull 27 pv 9g9h+
+send:info string fail-low
+send:info time 9 depth 3 seldepth 1 nodes 2012 nps 223555 currmove 9g9h+ score cp -2359 multipv 1 hashfull 27 pv 9g9h+
+send:info string fail-low
+send:info time 11 depth 3 seldepth 1 nodes 2894 nps 263090 currmove 9g9h+ score cp -2443 multipv 1 hashfull 27 pv 9g9h+
+send:info time 14 depth 3 seldepth 4 nodes 3570 nps 254999 currmove 9g9h+ score cp -2479 multipv 1 hashfull 27 pv 9g9h+ 8h9h 8a7a 2b1a
+send:info time 19 depth 4 seldepth 6 nodes 5409 nps 284684 currmove 8a7a score cp -2491 multipv 1 hashfull 27 pv 8a7a 2b1a 7a1a 8f8c+ 6b5a 9d9c+
+send:info string fail-high
+send:info time 20 depth 5 seldepth 6 nodes 5989 nps 299449 currmove 8a7a score cp -2421 multipv 1 hashfull 27 pv 8a7a 2b1a 7a1a 8f8c+ 6b5a 9d9c+
+send:info string fail-high
+send:info time 21 depth 5 seldepth 6 nodes 6300 nps 299999 currmove 8a7a score cp -2351 multipv 1 hashfull 27 pv 8a7a 2b1a 7a1a 8f8c+ 6b5a 9d9c+
+send:info time 23 depth 5 seldepth 6 nodes 6817 nps 296391 currmove 8a7a score cp -2327 multipv 1 hashfull 28 pv 8a7a 2b1a 7a7e 8f8c+ P*7f 9d9c+
+send:bestmove 8a7a ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 2b1a
+recv:go ponder btime 221000 wtime 350000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f
+recv:go btime 223000 wtime 350000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 98 nps 97999 currmove 9g9h+ score cp -1773 multipv 1 hashfull 28 pv 9g9h+ 8h9h
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 198 nps 197999 currmove 9g9h+ score cp -1843 multipv 1 hashfull 28 pv 9g9h+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 300 nps 150000 currmove 9g9h+ score cp -1913 multipv 1 hashfull 28 pv 9g9h+
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 417 nps 139000 currmove 9g9h+ score cp -1997 multipv 1 hashfull 28 pv 9g9h+
+send:info time 4 depth 2 seldepth 4 nodes 583 nps 145750 currmove 9g9h+ score cp -2076 multipv 1 hashfull 28 pv 9g9h+ 8h9h 2e2f 9d9c+
+send:info string fail-low
+send:info time 7 depth 3 seldepth 1 nodes 1197 nps 171000 currmove 9g9h+ score cp -2146 multipv 1 hashfull 28 pv 9g9h+
+send:info string fail-low
+send:info time 8 depth 3 seldepth 1 nodes 1510 nps 188749 currmove 9g9h+ score cp -2216 multipv 1 hashfull 28 pv 9g9h+
+send:info time 9 depth 3 seldepth 4 nodes 1928 nps 214222 currmove 9g9h+ score cp -2286 multipv 1 hashfull 28 pv 9g9h+ 8h9h 6d6e 2b1a
+send:info string fail-low
+send:info time 13 depth 4 seldepth 1 nodes 3012 nps 231692 currmove 9g9h+ score cp -2356 multipv 1 hashfull 28 pv 9g9h+
+send:info time 19 depth 4 seldepth 6 nodes 5176 nps 272421 currmove 1e1f score cp -2351 multipv 1 hashfull 28 pv 1e1f 2b1a 7a1a 9d9c+ 6b5a 8f8c+
+send:info time 31 depth 5 seldepth 8 nodes 10048 nps 324129 currmove 6d6e score cp -2369 multipv 1 hashfull 29 pv 6d6e 8f8b+ 7a7e 7f7e 5c7e 2b1a 6e6f 1i1e
+send:bestmove 6d6e ponder 8f8b+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 8f8b+
+recv:go ponder btime 223000 wtime 355000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e
+recv:go btime 225000 wtime 355000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 69 nps 4294967295 currmove 9g9h+ score cp -1989 multipv 1 hashfull 29 pv 9g9h+ 8h9h
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 182 nps 90999 currmove 9g9h+ score cp -2059 multipv 1 hashfull 29 pv 9g9h+
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 292 nps 97333 currmove 9g9h+ score cp -2129 multipv 1 hashfull 29 pv 9g9h+
+send:info string fail-low
+send:info time 3 depth 2 seldepth 1 nodes 417 nps 139000 currmove 9g9h+ score cp -2213 multipv 1 hashfull 29 pv 9g9h+
+send:info time 4 depth 2 seldepth 4 nodes 599 nps 149750 currmove 9g9h+ score cp -2293 multipv 1 hashfull 29 pv 9g9h+ 8h9h 2e2f 9d9c+
+send:info string fail-low
+send:info time 7 depth 3 seldepth 1 nodes 1423 nps 203285 currmove 9g9h+ score cp -2363 multipv 1 hashfull 29 pv 9g9h+
+send:info string fail-low
+send:info time 9 depth 3 seldepth 1 nodes 1783 nps 198111 currmove 9g9h+ score cp -2433 multipv 1 hashfull 29 pv 9g9h+
+send:info string fail-low
+send:info time 11 depth 3 seldepth 1 nodes 2348 nps 213454 currmove 9g9h+ score cp -2517 multipv 1 hashfull 29 pv 9g9h+
+send:info time 13 depth 3 seldepth 4 nodes 2965 nps 228076 currmove 9g9h+ score cp -2553 multipv 1 hashfull 29 pv 9g9h+ 8h9h 2e2f 2b1a
+send:info time 22 depth 4 seldepth 6 nodes 5488 nps 249454 currmove 2e2f score cp -2526 multipv 1 hashfull 30 pv 2e2f 2b1a 7a1a 8h9g 6b5a 9d9c+
+send:info time 29 depth 5 seldepth 6 nodes 7472 nps 257655 currmove 2e2f score cp -2526 multipv 1 hashfull 30 pv 2e2f 2b1a 7a1a 8h9g 6b5a 9d9c+
+send:bestmove 2e2f ponder 2b1a
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 2b1a
+recv:go ponder btime 225000 wtime 360000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+
+recv:go btime 224000 wtime 360000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 42 nps 4294967295 currmove 7a4a score cp -2473 multipv 1 hashfull 30 pv 7a4a 8h9g
+send:info string fail-low
+send:info time 1 depth 2 seldepth 2 nodes 214 nps 213999 currmove 7a4a score cp -2543 multipv 1 hashfull 30 pv 7a4a 8h9g
+send:info time 3 depth 2 seldepth 8 nodes 404 nps 134666 currmove 9g9h+ score cp -2561 multipv 1 hashfull 30 pv 9g9h+ 8h9h 2f2g+ 8b7a 2g3h 2b1a 6b7a 9d9c+
+send:info string fail-low
+send:info time 6 depth 3 seldepth 1 nodes 1190 nps 198333 currmove 9g9h+ score cp -2631 multipv 1 hashfull 30 pv 9g9h+
+send:info time 8 depth 3 seldepth 3 nodes 1893 nps 236624 currmove 7a4a score cp -2636 multipv 1 hashfull 30 pv 7a4a 2b1a 6b5a
+send:info time 12 depth 4 seldepth 4 nodes 2714 nps 226166 currmove 7a4a score cp -2632 multipv 1 hashfull 30 pv 7a4a 8h9g 6b5a 5h6g
+send:info time 16 depth 5 seldepth 6 nodes 4193 nps 262062 currmove 7a4a score cp -2679 multipv 1 hashfull 30 pv 7a4a 8h9g 6b5a 5h6g 4e4f 6h4f
+send:bestmove 7a4a ponder 8h9g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 8h9g
+recv:go ponder btime 224000 wtime 365000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b
+recv:go btime 228000 wtime 365000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 56 nps 4294967295 currmove 2f2g+ score cp -2642 multipv 1 hashfull 31 pv 2f2g+ 3f2g
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 126 nps 4294967295 currmove 6b6a score cp -2712 multipv 1 hashfull 31 pv 6b6a
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 196 nps 195999 currmove 5b4c score cp -2782 multipv 1 hashfull 31 pv 5b4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 266 nps 266000 currmove 5c4b score cp -2872 multipv 1 hashfull 31 pv 5c4b
+send:info time 2 depth 2 seldepth 4 nodes 375 nps 187499 currmove 2f2g+ score cp -2912 multipv 1 hashfull 31 pv 2f2g+ 3f2g 9g9h+ 8h9h
+send:info time 2 depth 3 seldepth 4 nodes 594 nps 297000 currmove 4a6a score cp -2913 multipv 1 hashfull 31 pv 4a6a 9d9c+ 6b5a 8h9g
+send:info time 3 depth 4 seldepth 4 nodes 687 nps 229000 currmove 4a6a score cp -2913 multipv 1 hashfull 31 pv 4a6a 9d9c+ 6b5a 8h9g
+send:info string fail-low
+send:info time 8 depth 5 seldepth 1 nodes 1738 nps 217249 currmove 4a6a score cp -2983 multipv 1 hashfull 31 pv 4a6a
+send:info time 12 depth 5 seldepth 6 nodes 2507 nps 208916 currmove 4a6a score cp -2962 multipv 1 hashfull 31 pv 4a6a 9d9c+ 1c2e N*7d 6b5a 8h9g
+send:bestmove 4a6a ponder 9d9c+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 9d9c+
+recv:go ponder btime 228000 wtime 370000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e
+recv:go btime 230000 wtime 370000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 2 nodes 37 nps 4294967295 currmove 5b5a score cp -3280 multipv 1 hashfull 31 pv 5b5a 9d9c+
+send:info time 1 depth 2 seldepth 2 nodes 84 nps 83999 currmove 5b5a score cp -3280 multipv 1 hashfull 31 pv 5b5a 9d9c+
+send:info time 1 depth 3 seldepth 4 nodes 157 nps 157000 currmove 5b5a score cp -3263 multipv 1 hashfull 31 pv 5b5a 6h9e 6b5b 9e7c+
+send:info time 2 depth 4 seldepth 5 nodes 256 nps 127999 currmove 5b5a score cp -3312 multipv 1 hashfull 31 pv 5b5a 6h9e 6b5b 9e7c+ 5a6b
+send:info time 18 depth 5 seldepth 7 nodes 4521 nps 251166 currmove 5b5a score cp -3359 multipv 1 hashfull 32 pv 5b5a 6h9e 6b5b 9e7c+ 9g9h+ 8h9h 5a6b
+send:bestmove 5b5a ponder 6h9e
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e
+recv:go ponder btime 230000 wtime 375000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 11 nps 4294967295 currmove 6b5b score cp -3263 multipv 1 hashfull 32 pv 6b5b 9e7c+
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 44 nps 4294967295 currmove 6b5b score cp -3333 multipv 1 hashfull 32 pv 6b5b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 86 nps 85999 currmove 6b5b score cp -3403 multipv 1 hashfull 32 pv 6b5b
+send:info time 1 depth 2 seldepth 4 nodes 192 nps 191999 currmove 6b5b score cp -3291 multipv 1 hashfull 32 pv 6b5b 9e7c+ 9g9h+ 8h7g
+send:info string fail-low
+send:info time 1 depth 3 seldepth 1 nodes 224 nps 223999 currmove 6b5b score cp -3361 multipv 1 hashfull 32 pv 6b5b
+send:info string fail-low
+send:info time 2 depth 3 seldepth 1 nodes 256 nps 127999 currmove 6b5b score cp -3431 multipv 1 hashfull 32 pv 6b5b
+send:info time 3 depth 3 seldepth 5 nodes 390 nps 130000 currmove 6b5b score cp -3359 multipv 1 hashfull 32 pv 6b5b 9e7c+ 9g9h+ 8h9h 5a6b
+send:info string fail-low
+send:info time 3 depth 4 seldepth 1 nodes 455 nps 151666 currmove 6b5b score cp -3433 multipv 1 hashfull 32 pv 6b5b
+send:info time 4 depth 4 seldepth 5 nodes 564 nps 141000 currmove 6b5b score cp -3469 multipv 1 hashfull 32 pv 6b5b 9e7c+ 1c2e 9d9c+ 5a6b
+send:info time 8 depth 5 seldepth 6 nodes 1791 nps 223874 currmove 6b5b score cp -3500 multipv 1 hashfull 32 pv 6b5b 9e7c+ 1c2e 9d9c+ 5a6b 7c9e
+send:bestmove 6b5b ponder 9e7c+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 9e7c+
+recv:go ponder btime 233000 wtime 380000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+
+recv:go btime 237000 wtime 380000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 2 nodes 178 nps 177999 currmove 2f2g+ score cp -3297 multipv 1 hashfull 32 pv 2f2g+ 3f2g
+send:info time 3 depth 2 seldepth 2 nodes 534 nps 178000 currmove 4e4f score cp -3318 multipv 1 hashfull 32 pv 4e4f 8h9g
+send:info time 7 depth 3 seldepth 4 nodes 1378 nps 196857 currmove 2f2g+ score cp -3368 multipv 1 hashfull 32 pv 2f2g+ 3f2g 4d3e 8h9g
+send:info time 13 depth 4 seldepth 5 nodes 2815 nps 216538 currmove 2f2g+ score cp -3389 multipv 1 hashfull 33 pv 2f2g+ 3f2g 4d3e 8h9g P*3a
+send:info string fail-low
+send:info time 20 depth 5 seldepth 1 nodes 5193 nps 259649 currmove 2f2g+ score cp -3459 multipv 1 hashfull 33 pv 2f2g+
+send:info string fail-low
+send:info time 34 depth 5 seldepth 1 nodes 9676 nps 284588 currmove 2f2g+ score cp -3529 multipv 1 hashfull 34 pv 2f2g+
+send:info time 35 depth 5 seldepth 6 nodes 10433 nps 298085 currmove 2f2g+ score cp -3526 multipv 1 hashfull 34 pv 2f2g+ 3f2g 1c2e 8h9g 1e1f 8b7b
+send:bestmove 2f2g+ ponder 3f2g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g
+recv:go ponder btime 237000 wtime 385000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 2 nodes 47 nps 4294967295 currmove 1c2e score cp -3436 multipv 1 hashfull 34 pv 1c2e 8h9g
+send:info time 0 depth 2 seldepth 2 nodes 93 nps 4294967295 currmove 1c2e score cp -3436 multipv 1 hashfull 34 pv 1c2e 8h9g
+send:info time 1 depth 3 seldepth 3 nodes 306 nps 306000 currmove 1c2e score cp -3368 multipv 1 hashfull 34 pv 1c2e 9d9c+ 1e1f
+send:info string fail-low
+send:info time 2 depth 4 seldepth 1 nodes 389 nps 194499 currmove 1c2e score cp -3438 multipv 1 hashfull 34 pv 1c2e
+send:info string fail-low
+send:info time 3 depth 4 seldepth 1 nodes 650 nps 216666 currmove 1c2e score cp -3508 multipv 1 hashfull 34 pv 1c2e
+send:info time 4 depth 4 seldepth 4 nodes 784 nps 195999 currmove 1c2e score cp -3526 multipv 1 hashfull 34 pv 1c2e 8h9g 1e1f 8b7b
+send:info string fail-low
+send:info time 9 depth 5 seldepth 1 nodes 2131 nps 236777 currmove 1c2e score cp -3596 multipv 1 hashfull 34 pv 1c2e
+send:info time 23 depth 5 seldepth 6 nodes 6872 nps 298782 currmove 1c2e score cp -3656 multipv 1 hashfull 35 pv 1c2e 8h9g 1e1f 7c6c 5d6c 2g2f
+send:bestmove 1c2e ponder 8h9g
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 8h9g
+recv:go ponder btime 241000 wtime 390000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d
+recv:go btime 243000 wtime 390000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 1 nodes 173 nps 172999 currmove 1e1f score cp -3268 multipv 1 hashfull 36 pv 1e1f
+send:info string fail-low
+send:info time 3 depth 2 seldepth 11 nodes 743 nps 247666 currmove 1e1f score cp -3338 multipv 1 hashfull 36 pv 1e1f 3c4b 5c4b 3b4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 1g2g
+send:info string fail-low
+send:info time 4 depth 2 seldepth 1 nodes 868 nps 216999 currmove 1e1f score cp -3408 multipv 1 hashfull 36 pv 1e1f
+send:info string fail-low
+send:info time 4 depth 2 seldepth 1 nodes 1013 nps 253249 currmove 1e1f score cp -3492 multipv 1 hashfull 36 pv 1e1f
+send:info time 5 depth 2 seldepth 2 nodes 1191 nps 238199 currmove 1e1f score cp -3531 multipv 1 hashfull 36 pv 1e1f 8b7b
+send:info string fail-high
+send:info time 7 depth 3 seldepth 2 nodes 1659 nps 237000 currmove 1e1f score cp -3461 multipv 1 hashfull 36 pv 1e1f 8b7b
+send:info time 8 depth 3 seldepth 4 nodes 2038 nps 254749 currmove 1e1f score cp -3499 multipv 1 hashfull 36 pv 1e1f 7c6c 5d6c N*3f
+send:info time 15 depth 4 seldepth 9 nodes 3298 nps 219866 currmove 1e1f score cp -3553 multipv 1 hashfull 36 pv 1e1f 7c6c 5d6c N*3f 6c5d 3f4d 5c4d 8h9g 1f1g+
+send:info time 23 depth 5 seldepth 9 nodes 5414 nps 235391 currmove 1e1f score cp -3553 multipv 1 hashfull 36 pv 1e1f 7c6c 5d6c N*3f 6c5d 3f4d 5c4d 8h9g 1f1g+
+send:bestmove 1e1f ponder 7c6c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 7c6c
+recv:go ponder btime 243000 wtime 395000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b
+recv:go btime 246000 wtime 395000 binc 5000 winc 5000
+send:info time 3 depth 1 seldepth 9 nodes 610 nps 203333 currmove 5c4b score cp -3315 multipv 1 hashfull 37 pv 5c4b 3c4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 6a6c
+send:info string fail-high
+send:info time 3 depth 2 seldepth 9 nodes 687 nps 229000 currmove 5c4b score cp -3245 multipv 1 hashfull 37 pv 5c4b 3c4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 6a6c
+send:info time 4 depth 2 seldepth 9 nodes 863 nps 215749 currmove 5c4b score cp -3315 multipv 1 hashfull 37 pv 5c4b 3c4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 6a6c
+send:info time 6 depth 3 seldepth 9 nodes 1171 nps 195166 currmove 5c4b score cp -3315 multipv 1 hashfull 37 pv 5c4b 3c4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 6a6c
+send:info time 11 depth 4 seldepth 9 nodes 1965 nps 178636 currmove 5c4b score cp -3315 multipv 1 hashfull 37 pv 5c4b 3c4b 5a4b 3d3c+ 1f1g+ 3c4b 5b4b 7c6c 6a6c
+send:info string fail-low
+send:info time 17 depth 5 seldepth 1 nodes 3526 nps 207411 currmove 5c4b score cp -3385 multipv 1 hashfull 37 pv 5c4b
+send:info string fail-low
+send:info time 18 depth 5 seldepth 1 nodes 3880 nps 215555 currmove 5c4b score cp -3455 multipv 1 hashfull 37 pv 5c4b
+send:info string fail-low
+send:info time 21 depth 5 seldepth 1 nodes 4643 nps 221095 currmove 5c4b score cp -3539 multipv 1 hashfull 37 pv 5c4b
+send:info time 31 depth 5 seldepth 9 nodes 8613 nps 277838 currmove 5a4b score cp -3583 multipv 1 hashfull 38 pv 5a4b 3c4b 5b4b 3d3c+ 4b5b 7c6c 5d6c 9e7c+ 1f1g+
+send:bestmove 5a4b ponder 3c4b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b
+recv:go ponder btime 246000 wtime 400000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 1 depth 1 seldepth 7 nodes 151 nps 151000 currmove 5b4b score cp -3408 multipv 1 hashfull 38 pv 5b4b 7c6c 5d6c 3d3c+ 4b4a 8h9g 1f1g+
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 165 nps 164999 currmove 5b4b score cp -3478 multipv 1 hashfull 38 pv 5b4b
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 193 nps 192999 currmove 5b4b score cp -3548 multipv 1 hashfull 38 pv 5b4b
+send:info time 2 depth 2 seldepth 5 nodes 260 nps 129999 currmove 5b4b score cp -3577 multipv 1 hashfull 38 pv 5b4b 3d3c+ 4b5b 7c6c 5b6c
+send:info time 7 depth 3 seldepth 7 nodes 894 nps 127714 currmove 5b4b score cp -3583 multipv 1 hashfull 38 pv 5b4b 3d3c+ 4b5b 7c6c 5d6c 9e7c+ 1f1g+
+send:info time 8 depth 4 seldepth 9 nodes 968 nps 120999 currmove 5b4b score cp -3644 multipv 1 hashfull 38 pv 5b4b 3d3c+ 4b5b 7c6c 5d6c 9e7c+ 9g9h+ 8h7g 1f1g+
+send:info time 9 depth 5 seldepth 9 nodes 1185 nps 131666 currmove 5b4b score cp -3644 multipv 1 hashfull 38 pv 5b4b 3d3c+ 4b5b 7c6c 5d6c 9e7c+ 9g9h+ 8h7g 1f1g+
+send:bestmove 5b4b ponder 3d3c+
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+
+recv:go ponder btime 250000 wtime 405000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 3 nodes 58 nps 4294967295 currmove 4b5b score cp -3577 multipv 1 hashfull 38 pv 4b5b 7c6c 5b6c
+send:info time 0 depth 2 seldepth 5 nodes 108 nps 4294967295 currmove 4b5b score cp -3583 multipv 1 hashfull 38 pv 4b5b 7c6c 5d6c 9e7c+ 1f1g+
+send:info time 1 depth 3 seldepth 7 nodes 413 nps 412999 currmove 4b5b score cp -3604 multipv 1 hashfull 38 pv 4b5b 7c6c 5d6c N*3f 1f1g+ 3f4d 5c4d
+send:info string fail-low
+send:info time 6 depth 4 seldepth 1 nodes 599 nps 99833 currmove 4b5b score cp -3674 multipv 1 hashfull 38 pv 4b5b
+send:info time 6 depth 4 seldepth 7 nodes 861 nps 143500 currmove 4b5b score cp -3709 multipv 1 hashfull 38 pv 4b5b 7c6c 5d6c N*3f N*6f 3f4d 5c4d
+send:info string fail-high
+send:info time 10 depth 5 seldepth 7 nodes 1760 nps 175999 currmove 4b5b score cp -3639 multipv 1 hashfull 38 pv 4b5b 7c6c 5d6c N*3f N*6f 3f4d 5c4d
+send:info time 14 depth 5 seldepth 7 nodes 2880 nps 205714 currmove 4b5b score cp -3604 multipv 1 hashfull 38 pv 4b5b 7c6c 5d6c N*3f 1f1g+ 3f4d 5c4d
+send:bestmove 4b5b ponder 7c6c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b 7c6c
+recv:go ponder btime 254000 wtime 410000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b
+recv:go btime 253000 wtime 410000 binc 5000 winc 5000
+send:info time 2 depth 1 seldepth 11 nodes 380 nps 189999 currmove 5c4b score cp -3243 multipv 1 hashfull 39 pv 5c4b 7c6b 6a6b 3c4b 5b5c 3h3c+ G*4c 4b4c 4d4c 9e6b+ 5c6b
+send:info string fail-low
+send:info time 4 depth 2 seldepth 1 nodes 442 nps 110499 currmove 5c4b score cp -3313 multipv 1 hashfull 39 pv 5c4b
+send:info time 5 depth 2 seldepth 4 nodes 542 nps 108399 currmove 5c4b score cp -3351 multipv 1 hashfull 39 pv 5c4b 7c6b 5b5c 3c4b
+send:info string fail-low
+send:info time 6 depth 3 seldepth 1 nodes 839 nps 139833 currmove 5c4b score cp -3421 multipv 1 hashfull 39 pv 5c4b
+send:info string fail-low
+send:info time 7 depth 3 seldepth 1 nodes 1095 nps 156428 currmove 5c4b score cp -3491 multipv 1 hashfull 39 pv 5c4b
+send:info string fail-low
+send:info time 8 depth 3 seldepth 1 nodes 1338 nps 167249 currmove 5c4b score cp -3575 multipv 1 hashfull 39 pv 5c4b
+send:info time 9 depth 3 seldepth 6 nodes 1632 nps 181333 currmove 5c4b score cp -3581 multipv 1 hashfull 39 pv 5c4b 7c6b 5b5c 6b6a N*9f 8h7g
+send:info time 17 depth 4 seldepth 11 nodes 3491 nps 205352 currmove 5c4b score cp -3610 multipv 1 hashfull 39 pv 5c4b 7c6b 5b5c 3c4b P*3g 6b6a 3g3h+ 9e6b+ 5c4b 6b4d 2e3g+
+send:info string fail-low
+send:info time 28 depth 5 seldepth 1 nodes 6872 nps 245428 currmove 5c4b score cp -3680 multipv 1 hashfull 39 pv 5c4b
+send:info time 32 depth 5 seldepth 7 nodes 9256 nps 280484 currmove 5c4b score cp -3693 multipv 1 hashfull 39 pv 5c4b 7c6b 5b5c 6b6a G*5b 3c4b 5c4b
+send:bestmove 5c4b ponder 7c6b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 7c6b
+recv:go ponder btime 253000 wtime 415000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b
+recv:go btime 258000 wtime 415000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 3 nodes 95 nps 4294967295 currmove 5b4b score cp -2658 multipv 1 hashfull 39 pv 5b4b 7c6c 6a6c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 3 nodes 206 nps 205999 currmove 5b4b score cp -2728 multipv 1 hashfull 39 pv 5b4b 7c6c 6a6c
+send:info string fail-low
+send:info time 3 depth 2 seldepth 2 nodes 428 nps 142666 currmove 5b4b score cp -2798 multipv 1 hashfull 39 pv 5b4b 7c6b
+send:info string fail-low
+send:info time 6 depth 2 seldepth 2 nodes 737 nps 122833 currmove 5b4b score cp -2882 multipv 1 hashfull 40 pv 5b4b 7c6b
+send:info time 7 depth 2 seldepth 6 nodes 1111 nps 158714 currmove 5b4b score cp -2954 multipv 1 hashfull 40 pv 5b4b B*3c 4b5c 7c6c 5d6c 9e5a+
+send:info string fail-low
+send:info time 9 depth 3 seldepth 2 nodes 1476 nps 163999 currmove 5b4b score cp -3024 multipv 1 hashfull 40 pv 5b4b 3h3c+
+send:info string fail-low
+send:info time 11 depth 3 seldepth 2 nodes 1809 nps 164454 currmove 5b4b score cp -3094 multipv 1 hashfull 40 pv 5b4b 3h3c+
+send:info string fail-low
+send:info time 12 depth 3 seldepth 2 nodes 2107 nps 175583 currmove 5b4b score cp -3178 multipv 1 hashfull 40 pv 5b4b 3h3c+
+send:info time 13 depth 3 seldepth 9 nodes 2400 nps 184615 currmove 5b4b score cp -3153 multipv 1 hashfull 40 pv 5b4b B*3c 4b5c 7c6c 6a6c 3c1a+ 5d6e 3h3c+ G*4c
+send:info string fail-high
+send:info time 16 depth 4 seldepth 9 nodes 3484 nps 217749 currmove 5b4b score cp -3083 multipv 1 hashfull 40 pv 5b4b B*3c 4b5c 7c6c 6a6c 3c1a+ 5d6e 3h3c+ G*4c
+send:info time 23 depth 4 seldepth 7 nodes 5762 nps 250521 currmove 5b4b score cp -3040 multipv 1 hashfull 40 pv 5b4b B*2d 4b5c 7c6c 5d6c 8h9g G*4b
+send:info string fail-low
+send:info time 31 depth 5 seldepth 2 nodes 8267 nps 266677 currmove 5b4b score cp -3110 multipv 1 hashfull 40 pv 5b4b 3h3c+
+send:info string fail-low
+send:info time 36 depth 5 seldepth 2 nodes 9836 nps 273222 currmove 5b4b score cp -3180 multipv 1 hashfull 41 pv 5b4b 3h3c+
+send:info string fail-low
+send:info time 39 depth 5 seldepth 2 nodes 10855 nps 278333 currmove 5b4b score cp -3264 multipv 1 hashfull 41 pv 5b4b 3h3c+
+send:info time 44 depth 5 seldepth 11 nodes 12834 nps 291681 currmove 5b4b score cp -3260 multipv 1 hashfull 41 pv 5b4b 7c6c 9g9h+ 8h9h 5d6c S*3c 4b4c 3c4d+ 4c4d 3h3b+ 1f1g+
+send:bestmove 5b4b ponder 7c6c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b 7c6c
+recv:go ponder btime 258000 wtime 420000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d
+recv:go btime 262000 wtime 420000 binc 5000 winc 5000
+send:info time 1 depth 1 seldepth 4 nodes 144 nps 144000 currmove 4b5c score cp -3025 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 8h9g
+send:info string fail-high
+send:info time 2 depth 2 seldepth 4 nodes 209 nps 104499 currmove 4b5c score cp -2955 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 8h9g
+send:info time 4 depth 2 seldepth 4 nodes 286 nps 71500 currmove 4b5c score cp -3025 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 8h9g
+send:info string fail-low
+send:info time 4 depth 3 seldepth 1 nodes 310 nps 77500 currmove 4b5c score cp -3095 multipv 1 hashfull 41 pv 4b5c
+send:info string fail-low
+send:info time 4 depth 3 seldepth 1 nodes 334 nps 83499 currmove 4b5c score cp -3165 multipv 1 hashfull 41 pv 4b5c
+send:info string fail-low
+send:info time 5 depth 3 seldepth 1 nodes 358 nps 71599 currmove 4b5c score cp -3249 multipv 1 hashfull 41 pv 4b5c
+send:info string fail-low
+send:info time 5 depth 3 seldepth 10 nodes 482 nps 96399 currmove 4b5c score cp -3349 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 3h3c+ G*4c S*4b 5c5b 8h9g 4c3c 2d3c+
+send:info string fail-low
+send:info time 6 depth 3 seldepth 10 nodes 595 nps 99166 currmove 4b5c score cp -3469 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 3h3c+ G*4c S*4b 5c5b 8h9g 4c3c 2d3c+
+send:info time 7 depth 3 seldepth 8 nodes 735 nps 105000 currmove 4b5c score cp -3509 multipv 1 hashfull 41 pv 4b5c 3h3c+ G*4c 7c6c 5c6c 8h9g 4c3c 2d3c+
+send:info string fail-low
+send:info time 7 depth 4 seldepth 1 nodes 763 nps 109000 currmove 4b5c score mate -10 multipv 1 hashfull 41 pv 4b5c
+send:info time 8 depth 4 seldepth 9 nodes 834 nps 104249 currmove 4b5c score mate -10 multipv 1 hashfull 41 pv 4b5c 7c6c 5d6c 3h3c+ G*4c S*4b 5c5b P*5c 4c5c
+send:bestmove 4b5c ponder 7c6c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 7c6c
+recv:go ponder btime 262000 wtime 425000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+
+recv:go btime 263000 wtime 425000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 3 nodes 37 nps 4294967295 currmove G*4c score cp -2840 multipv 1 hashfull 42 pv G*4c 7c6c 5d6c
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 48 nps 4294967295 currmove G*4c score cp -3100 multipv 1 hashfull 42 pv G*4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 59 nps 58999 currmove G*4c score cp -3282 multipv 1 hashfull 42 pv G*4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 79 nps 79000 currmove G*4c score cp -3366 multipv 1 hashfull 42 pv G*4c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 107 nps 106999 currmove G*4c score cp -3466 multipv 1 hashfull 42 pv G*4c
+send:info time 2 depth 2 seldepth 6 nodes 143 nps 71500 currmove G*4c score cp -3509 multipv 1 hashfull 42 pv G*4c 7c6c 5c6c 8h9g 4c3c 2d3c+
+send:info string fail-low
+send:info time 3 depth 3 seldepth 1 nodes 182 nps 60666 currmove G*4c score cp -3579 multipv 1 hashfull 42 pv G*4c
+send:info string fail-low
+send:info time 3 depth 3 seldepth 1 nodes 201 nps 67000 currmove G*4c score cp -3649 multipv 1 hashfull 42 pv G*4c
+send:info string fail-low
+send:info time 4 depth 3 seldepth 1 nodes 223 nps 55749 currmove G*4c score cp -3733 multipv 1 hashfull 42 pv G*4c
+send:info time 6 depth 3 seldepth 10 nodes 404 nps 67333 currmove 4d4c score cp -3812 multipv 1 hashfull 42 pv 4d4c 7c6c 5c6c S*7b 6c5c 7b6a 1f1g+ 9e7c+ 4c3c 2d3c+
+send:info time 6 depth 4 seldepth 10 nodes 568 nps 94666 currmove 4d4c score cp -3812 multipv 1 hashfull 42 pv 4d4c 7c6c 5c6c S*7b 6c5c 7b6a 1f1g+ 9e7c+ 4c3c 2d3c+
+send:info string fail-low
+send:info time 11 depth 5 seldepth 1 nodes 1294 nps 117636 currmove G*4c score cp -3882 multipv 1 hashfull 42 pv G*4c
+send:info time 15 depth 5 seldepth 10 nodes 2083 nps 138866 currmove G*4c score cp -3931 multipv 1 hashfull 42 pv G*4c 7c6c 5c6c S*7b 6c5c 7b6a 4c3c R*8c P*6c 2d3c+
+send:bestmove G*4c ponder 7c6c
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c
+recv:go ponder btime 263000 wtime 430000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 4 nodes 27 nps 4294967295 currmove 5c6c score cp -3509 multipv 1 hashfull 42 pv 5c6c 8h9g 4c3c 2d3c+
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 39 nps 4294967295 currmove 5c6c score cp -3579 multipv 1 hashfull 42 pv 5c6c
+send:info string fail-low
+send:info time 0 depth 2 seldepth 1 nodes 54 nps 4294967295 currmove 5c6c score cp -3649 multipv 1 hashfull 42 pv 5c6c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 69 nps 69000 currmove 5c6c score cp -3733 multipv 1 hashfull 42 pv 5c6c
+send:info string fail-low
+send:info time 1 depth 2 seldepth 1 nodes 93 nps 92999 currmove 5c6c score cp -3833 multipv 1 hashfull 42 pv 5c6c
+send:info time 1 depth 2 seldepth 6 nodes 129 nps 128999 currmove 5c6c score cp -3892 multipv 1 hashfull 42 pv 5c6c S*7b 6c5c 7b6a 4c3c 2d3c+
+send:info time 2 depth 3 seldepth 6 nodes 218 nps 108999 currmove 5c6c score cp -3892 multipv 1 hashfull 42 pv 5c6c S*7b 6c5c 7b6a 4c3c 2d3c+
+send:info time 4 depth 4 seldepth 6 nodes 362 nps 90499 currmove 5c6c score cp -3892 multipv 1 hashfull 42 pv 5c6c S*7b 6c5c 7b6a 4c3c 2d3c+
+send:info string fail-low
+send:info time 5 depth 5 seldepth 1 nodes 548 nps 109599 currmove 5c6c score cp -3962 multipv 1 hashfull 42 pv 5c6c
+send:info time 5 depth 5 seldepth 8 nodes 773 nps 154599 currmove 5c6c score cp -3985 multipv 1 hashfull 42 pv 5c6c S*7b 6c5c 7b6a 4c3c 2d3c+ P*8d 9e8d
+send:bestmove 5c6c ponder S*7b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*7b
+recv:go ponder btime 261000 wtime 435000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*6d
+recv:go btime 261000 wtime 435000 binc 5000 winc 5000
+send:info time 2 depth 1 seldepth 3 nodes 229 nps 114499 currmove 6c5b score cp -3596 multipv 1 hashfull 42 pv 6c5b 3c4d 1f1g+
+send:info string fail-low
+send:info time 2 depth 2 seldepth 1 nodes 238 nps 118999 currmove 6c5b score mate -6 multipv 1 hashfull 42 pv 6c5b
+send:info time 3 depth 2 seldepth 5 nodes 283 nps 94333 currmove 6c5b score mate -6 multipv 1 hashfull 42 pv 6c5b 3c3b N*4b P*5c 4c5c
+send:bestmove 6c5b ponder 3c3b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*6d 6c5b 3c3b
+recv:go ponder btime 261000 wtime 440000 binc 5000 winc 5000
+recv:stop
+send:bestmove resign
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*6d 6c5b P*5c
+recv:go btime 262000 wtime 440000 binc 5000 winc 5000
+send:info time 0 depth 1 seldepth 4 nodes 18 nps 4294967295 currmove 5b4a score cp -3338 multipv 1 hashfull 42 pv 5b4a 8h9g 4c3c 2d3c+
+send:info string fail-low
+send:info time 1 depth 2 seldepth 4 nodes 115 nps 114999 currmove 5b4a score mate -4 multipv 1 hashfull 42 pv 5b4a 8h9g 4c3c 2d3c+
+send:info time 1 depth 2 seldepth 3 nodes 129 nps 128999 currmove 5b4a score mate -4 multipv 1 hashfull 42 pv 5b4a P*4b 4c4b
+send:bestmove 5b4a ponder P*4b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*6d 6c5b P*5c 5b4a P*4b
+recv:go ponder btime 262000 wtime 445000 binc 5000 winc 5000
+recv:ponderhit
+send:info time 0 depth 1 seldepth 1 nodes 2 nps 4294967295 currmove 4c4b score mate -2 multipv 1 hashfull 42 pv 4c4b
+send:bestmove 4c4b
+recv:position startpos moves 2g2f 8c8d 7g7f 8d8e 8h7g 3c3d 7i6h 4c4d 2f2e 2b3c 3i4h 3a3b 6i7h 3b4c 6g6f 4a3b 6h6g 6a5b 4g4f 7a6b 3g3f 6c6d 2i3g 6b6c 4h4g 7c7d 4i5h 8a7c 2h2i 8b8a 1g1f 5a6b 9g9f 6b7b 9f9e 5c5d 5i6h 6d6e 6f6e 7c6e 7g8h 8e8f 8g8f 8a8f P*8g 8f8a P*6f 6e5g+ 5h5g P*6d 4g5f 3d3e 5f4g 3e3f 4g3f P*3d 6h7i 7b6b 8h7g 1c1d 7g6h 5d5e P*5f 5e5f 5g5f P*5e 5f5e 4c5d 5e5f P*5e 5f5g 3d3e 3f4g 6b5c 2i2f 3b4c 8i7g 3c4b 5g5h 4c3d 4f4e 4d4e P*3f 3e3f 4g3f 4b3c P*3e 3d4d 2e2d 2c2d P*2b 2a1c 1f1e 2d2e 2f2i 1d1e 2i4i 5c6b 3g4e P*4h 4i4h P*4g 4h4g 3c2b P*2c 2b3a 4e3c+ P*4f 4g4f P*4e 4f4i P*3g 4i4h 3g3h+ 4h3h 3a5c 2c2b+ 7d7e 7f7e P*8h 7i8h 9c9d 9e9d 9a9d 9i9d P*9g L*8f 8a7a 6g7f 6d6e 6f6e 2e2f 8f8b+ 7a4a 2b3b 4a6a 7g8e 5b5a 6h9e 6b5b 8e7c+ 2f2g+ 3f2g 1c2e 3e3d 1e1f 3b4b 5a4b 3c4b 5b4b 3d3c+ 4b5b G*4b 5c4b 3c4b 5b4b B*2d 4b5c 3h3c+ G*4c 7c6c 5c6c S*6d 6c5b P*5c 5b4a P*4b 4c4b 3c4b
+recv:go btime 270000 wtime 450000 binc 5000 winc 5000
+send:bestmove resign
+recv:gameover lose
+recv:quit

@@ -29,7 +29,7 @@ jobs:
           node-version: lts/*
           cache: "npm"
       - run: npm version
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - run: npm run electron:build
       - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }}
       - uses: actions/upload-artifact@v4

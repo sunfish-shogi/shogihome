@@ -1,0 +1,25 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COMMAND_DIR=$DIR/../../../../dist/command/usi-csa-bridge
+COMMAND=$COMMAND_DIR/index.js
+MOCK_DIR=$DIR/mock
+SCENARIO_DIR=$DIR/scenario/$1
+
+if [ ! -d $SCENARIO_DIR ]; then
+  echo "Scenario $1 not found"
+  exit 1
+fi
+
+if [ ! -f $COMMAND ]; then
+  echo "Command $COMMAND not found"
+  echo "Please build the usi-csa-bridge command by running 'npm run usi-csa-bridge:build'"
+  exit 1
+fi
+
+npx --no-install tsx $MOCK_DIR/csa-replay-server.ts $SCENARIO_DIR/csa.log &
+node $COMMAND --all-log-file $SCENARIO_DIR/bridge-config.yaml
+wait
+
+$SCENARIO_DIR/verify-record
