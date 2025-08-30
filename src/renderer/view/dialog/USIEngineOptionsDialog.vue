@@ -150,9 +150,19 @@
         </div>
       </div>
     </div>
-    <button class="wide" @click="reset()">
-      {{ t.resetToEngineDefaultValues }}
-    </button>
+    <div class="menu row">
+      <button class="wide" @click="reset()">
+        {{ t.resetToEngineDefaultValues }}
+      </button>
+      <button class="wide" @click="copyOptions()">
+        <Icon :icon="IconType.COPY" />
+        {{ t.copy }}
+      </button>
+      <button class="wide" @click="pasteOptions()">
+        <Icon :icon="IconType.PASTE" />
+        {{ t.paste }}
+      </button>
+    </div>
     <div class="main-buttons">
       <button data-hotkey="Enter" autofocus @click="ok()">
         {{ okButtonText }}
@@ -169,11 +179,14 @@ import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import {
+  compressUSIEngineOptionsClipboardData,
+  decompressUSIEngineOptionsClipboardData,
   emptyUSIEngine,
   getUSIEngineOptionCurrentValue,
   mergeUSIEngine,
   USIEngine,
   USIEngineOption,
+  USIEngineOptionsClipboardData,
 } from "@/common/settings/usi";
 import { computed, onMounted, PropType, ref } from "vue";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -184,6 +197,9 @@ import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import DialogFrame from "./DialogFrame.vue";
+import { useMessageStore } from "@/renderer/store/message";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons";
 
 const props = defineProps({
   latest: {
@@ -311,12 +327,14 @@ const reset = () => {
   });
 };
 
-const ok = () => {
+const buildEngineOptions = () => {
+  const newEngineOptions = { ...engine.value.options };
   options.value.forEach((option) => {
-    const engineOption = engine.value.options[option.name];
-    if (!engineOption) {
+    const org = engine.value.options[option.name];
+    if (!org) {
       return;
     }
+    const engineOption = { ...org };
     if (engineOption.type === "button") {
       return;
     }
@@ -329,7 +347,54 @@ const ok = () => {
     } else {
       engineOption.value = (option.currentValue as string) || undefined;
     }
+    newEngineOptions[option.name] = engineOption;
   });
+  return newEngineOptions;
+};
+
+const restoreEngineOptions = (newOptions: { [name: string]: USIEngineOption }) => {
+  options.value.forEach((option) => {
+    const newOption = newOptions[option.name];
+    if (!newOption || newOption.type === "button" || newOption.type !== option.type) {
+      return;
+    }
+    option.currentValue =
+      getUSIEngineOptionCurrentValue(newOption) ?? (option.type === "spin" ? 0 : "");
+  });
+};
+
+const copyOptions = async () => {
+  const data: USIEngineOptionsClipboardData = {
+    schema: "es://usi-engine-options-clipboard-data",
+    options: buildEngineOptions(),
+    enableEarlyPonder: engine.value.enableEarlyPonder,
+  };
+  try {
+    const base64 = await compressUSIEngineOptionsClipboardData(data);
+    await navigator.clipboard.writeText(base64);
+    useMessageStore().enqueue({ text: t.copiedToClipboard });
+  } catch (e) {
+    useErrorStore().add(e);
+  }
+};
+
+const pasteOptions = async () => {
+  busyState.retain();
+  try {
+    const base64 = await navigator.clipboard.readText();
+    const data = await decompressUSIEngineOptionsClipboardData(base64);
+    restoreEngineOptions(data.options);
+    engine.value.enableEarlyPonder = data.enableEarlyPonder;
+    useMessageStore().enqueue({ text: t.pastedFromClipboard });
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
+const ok = () => {
+  engine.value.options = buildEngineOptions();
   emit("ok", engine.value);
 };
 
@@ -409,5 +474,8 @@ const cancel = () => {
 }
 .option .additional {
   margin-top: 5px;
+}
+.menu > *:not(:first-child) {
+  margin-left: 5px;
 }
 </style>

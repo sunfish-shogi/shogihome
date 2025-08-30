@@ -648,6 +648,8 @@ export const vi: Texts = {
   yamlFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng YAML.",
   jsonFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng JSON.",
   usiCsaBridgeCommandCopiedToClipboard: "Lệnh usi-csa-bridge đã được sao chép.",
+  copiedToClipboard: "クリップボードにコピーしました。", // TODO: Translate
+  pastedFromClipboard: "クリップボードから貼り付けました。", // TODO: Translate
   youCanNotCloseAppWhileCSAOnlineGame: "Bạn không thể đóng ứng dụng trong khi đang có ván CSA.",
   fileExtensionNotSupported: "Không hỗ trợ định dạng này.",
   errorOccuredWhileDisconnectingFromCSAServer: "Đã có lỗi trong khi ngắt kết nối khỏi máy chủ CSA.",
