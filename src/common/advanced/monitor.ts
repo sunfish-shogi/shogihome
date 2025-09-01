@@ -7,7 +7,7 @@ export type OSState = {
   cpuTotalTime: number;
   cpuIdleTime: number;
   memoryTotal: number;
-  memoryFree: number;
+  memoryFree?: number;
 };
 
 export function blankOSState(): OSState {
@@ -17,7 +17,6 @@ export function blankOSState(): OSState {
     cpuTotalTime: 0,
     cpuIdleTime: 0,
     memoryTotal: 0,
-    memoryFree: 0,
   };
 }
 
