@@ -4,6 +4,7 @@ import child_process from "node:child_process";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { shell } from "electron";
 import { escapePosixArg, escapeWinArg, escapeLinuxDesktopToken } from "./escape.js";
+import { resolveConflictFilePath } from "./filename.js";
 
 export async function createDesktopShortcut(name: string, args: string[]) {
   const desktopPath = getAppPath("desktop");
@@ -24,7 +25,7 @@ export async function createDesktopShortcut(name: string, args: string[]) {
 }
 
 async function createWindowsShortcut(dirname: string, name: string, args: string[]) {
-  const shortcutPath = path.join(dirname, `${name}.lnk`);
+  const shortcutPath = await resolveConflictFilePath(path.join(dirname, `${name}.lnk`));
   const safeArgs = args.map(escapeWinArg).join(" ");
   const ok = shell.writeShortcutLink(shortcutPath, {
     target: process.execPath,
@@ -41,14 +42,14 @@ async function createAppleScript(dirname: string, name: string, args: string[]) 
   if (args.some((arg) => arg.includes('"'))) {
     throw new Error("AppleScript does not support double quotes in arguments.");
   }
-  const scriptPath = path.join(dirname, `${name}.applescript`);
+  const scriptPath = await resolveConflictFilePath(path.join(dirname, `${name}.applescript`));
   const execPath = process.execPath;
   const safeArgs = [execPath, ...args]
     .map((arg) => arg.replace(/\\/g, "\\\\").replace(/ /g, "\\ "))
     .join(" ");
   const script = `do shell script "${safeArgs}"`;
   await fs.promises.writeFile(scriptPath, script, "utf8");
-  const compiledPath = path.join(dirname, `${name}.app`);
+  const compiledPath = await resolveConflictFilePath(path.join(dirname, `${name}.app`));
   await new Promise<void>((resolve, reject) => {
     child_process.exec(
       `osacompile -o ${escapePosixArg(compiledPath)} ${escapePosixArg(scriptPath)}`,
@@ -66,7 +67,7 @@ async function createAppleScript(dirname: string, name: string, args: string[]) 
 
 async function createLinuxDesktop(dirname: string, name: string, args: string[]) {
   const execPath = process.env.APPIMAGE || process.execPath;
-  const desktopFilePath = path.join(dirname, `${name}.desktop`);
+  const desktopFilePath = await resolveConflictFilePath(path.join(dirname, `${name}.desktop`));
   const execTokens = [execPath, ...args].map(escapeLinuxDesktopToken).join(" ");
   const content = `[Desktop Entry]
 Type=Application
