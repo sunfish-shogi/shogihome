@@ -23,22 +23,7 @@ import {
   Move,
   SpecialMoveType,
 } from "tsshogi";
-
-async function getAlternativeFilePathWithNumberSuffix(
-  filePath: string,
-  maxNumber: number,
-): Promise<string> {
-  const parsed = path.parse(filePath);
-  let suffix = 2;
-  while (await exists(filePath)) {
-    if (suffix > maxNumber) {
-      throw new Error("Too many files with the same name");
-    }
-    filePath = path.join(parsed.dir, parsed.name + "-" + suffix + parsed.ext);
-    suffix++;
-  }
-  return filePath;
-}
+import { resolveConflictFilePath } from "./filename.js";
 
 export async function convertRecordFiles(
   settings: BatchConversionSettings,
@@ -124,7 +109,7 @@ class DirectoryWriter {
         case FileNameConflictAction.OVERWRITE:
           break;
         case FileNameConflictAction.NUMBER_SUFFIX:
-          destination = await getAlternativeFilePathWithNumberSuffix(destination, 1000);
+          destination = await resolveConflictFilePath(destination);
           break;
         case FileNameConflictAction.SKIP:
           getAppLogger().debug(`batch conversion: skipped: ${source}`);

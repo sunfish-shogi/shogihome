@@ -447,6 +447,9 @@ button.duplicate {
   font-size: 0.85em;
   padding-left: 5px;
   padding-right: 5px;
+  box-sizing: border-box;
+  margin: 0px 3px 0px 0px;
+  vertical-align: top;
 }
 .bookmark {
   display: inline-block;
@@ -458,6 +461,7 @@ button.duplicate {
   box-sizing: border-box;
   border: 1px solid var(--text-separator-color);
   border-radius: 5px;
+  vertical-align: top;
 }
 .options {
   width: 100%;

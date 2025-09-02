@@ -169,7 +169,7 @@ echo -n <Base64> | base64 -d | gzip -c -d
 
 ## E2E テスト
 
-ShogiHome のプロジェクトルートディレクトリで以下の要領でコマンドを実行します。
+ShogiHome のプロジェクトルートディレクトリで以下の要領でコマンドを実行します。 Bash のスクリプトであるため Windows では実行できません。
 
 ```
 npm run usi-csa-bridge:build
