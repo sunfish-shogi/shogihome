@@ -65,7 +65,7 @@
     "proper-lockfile": "^4.1.2",
     "semver": "^7.7.1",
     "splitpanes": "^4.0.3",
-    "tsshogi": "^2.0.0",
+    "tsshogi": "^2.1.0",
     "vue": "^3.4.34",
     "yaml": "^2.5.0"
   },
