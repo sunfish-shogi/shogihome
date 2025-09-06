@@ -6,10 +6,10 @@ import {
   Book,
   BookEntry,
   BookFormat,
-  BookPatch,
   commonBookMoveToArray,
   IDX_COUNT,
   IDX_USI,
+  mergeBookEntries,
 } from "./types.js";
 import {
   loadYaneuraOuBook,
@@ -51,7 +51,7 @@ type InMemoryBook = Book & {
   saved: boolean;
 };
 
-type OnTheFlyBook = BookPatch & {
+type OnTheFlyBook = Book & {
   type: "on-the-fly";
   path: string;
   file: fs.promises.FileHandle;
@@ -59,51 +59,55 @@ type OnTheFlyBook = BookPatch & {
   saved: boolean;
 };
 
-// 局面を検索する。 on-the-fly の場合は返されたエントリーを更新しても book に反映されない。
-async function retrieveEntryReadOnly(
-  book: BookHandle,
-  sfen: string,
-): Promise<BookEntry | undefined> {
+// マージ済みのエントリーを取得する。
+async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
   switch (book.format) {
-    case "yane2016":
-      if (book.type === "in-memory") {
-        return book.yaneEntries[sfen];
+    case "yane2016": {
+      const entry = book.entries.get(sfen);
+      if (book.type === "in-memory" || entry?.type === "normal") {
+        return entry;
       }
-      return (
-        book.patch[sfen] || (await searchYaneuraOuBookMovesOnTheFly(sfen, book.file, book.size))
-      );
-    case "apery":
-      if (book.type === "in-memory") {
-        return book.aperyEntries.get(aperyHash(sfen));
+      const base = await searchYaneuraOuBookMovesOnTheFly(sfen, book.file, book.size);
+      return mergeBookEntries(base, entry);
+    }
+    case "apery": {
+      const entry = book.entries.get(aperyHash(sfen));
+      if (book.type === "in-memory" || entry?.type === "normal") {
+        return entry;
       }
-      return (
-        book.patch.get(aperyHash(sfen)) ||
-        (await searchAperyBookMovesOnTheFly(sfen, book.file, book.size))
-      );
+      const base = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
+      return mergeBookEntries(base, entry);
+    }
   }
 }
 
-// 局面を検索する。返されたエントリーを更新した場合に book に反映されることを保証する。
-async function retrieveEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
-  const entry = await retrieveEntryReadOnly(book, sfen);
-  if (entry && book.type === "on-the-fly") {
-    switch (book.format) {
-      case "yane2016":
-        book.patch[sfen] = entry;
-        break;
-      case "apery":
-        book.patch.set(aperyHash(sfen), entry);
-        break;
-    }
+// メモリ上のエントリーを取得する。返されたエントリーを更新した場合に book に反映されることを保証する。
+function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
+  switch (book.format) {
+    case "yane2016":
+      return book.entries.get(sfen);
+    case "apery":
+      return book.entries.get(aperyHash(sfen));
   }
-  return entry;
+}
+
+function storeEntry(sfen: string, entry: BookEntry): void {
+  switch (book.format) {
+    case "yane2016":
+      book.entries.set(sfen, entry);
+      break;
+    case "apery":
+      book.entries.set(aperyHash(sfen), entry);
+      break;
+  }
+  book.saved = false;
 }
 
 function emptyBook(): BookHandle {
   return {
     type: "in-memory",
     format: "yane2016",
-    yaneEntries: {},
+    entries: new Map<string, BookEntry>(),
     saved: true,
   };
 }
@@ -143,14 +147,14 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
       ...common,
       type: "on-the-fly",
       format: "yane2016",
-      patch: {},
+      entries: new Map<string, BookEntry>(),
     });
   } else {
     replaceBook({
       ...common,
       type: "on-the-fly",
       format: "apery",
-      patch: new Map<bigint, BookEntry>(),
+      entries: new Map<bigint, BookEntry>(),
     });
   }
 }
@@ -265,11 +269,8 @@ export function clearBook(): void {
 }
 
 export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
-  const entry = await retrieveEntryReadOnly(book, sfen);
-  if (!entry) {
-    return [];
-  }
-  return entry.moves.map(arrayMoveToCommonBookMove);
+  const entry = await retrieveMergedEntry(book, sfen);
+  return entry ? entry.moves.map(arrayMoveToCommonBookMove) : [];
 }
 
 function updateBookEntry(entry: BookEntry, move: BookMove): void {
@@ -282,19 +283,19 @@ function updateBookEntry(entry: BookEntry, move: BookMove): void {
   entry.moves.push(commonBookMoveToArray(move));
 }
 
-export async function updateBookMove(sfen: string, move: BookMove): Promise<void> {
-  book.saved = false;
-  const entry = await retrieveEntry(book, sfen);
+export async function updateBookMove(sfen: string, move: BookMove) {
+  const entry = await retrieveMergedEntry(book, sfen);
   if (book.format === "yane2016") {
-    const entries = book.type === "in-memory" ? book.yaneEntries : book.patch;
     if (entry) {
       updateBookEntry(entry, move);
+      book.entries.set(sfen, entry);
     } else {
-      entries[sfen] = {
+      book.entries.set(sfen, {
+        type: "normal",
         comment: "",
         moves: [commonBookMoveToArray(move)],
         minPly: 0,
-      };
+      });
     }
   } else {
     const sanitizedMove = {
@@ -306,30 +307,32 @@ export async function updateBookMove(sfen: string, move: BookMove): Promise<void
     delete sanitizedMove.usi2; // not supported
     delete sanitizedMove.depth; // not supported
     const hash = aperyHash(sfen);
-    const entries = book.type === "in-memory" ? book.aperyEntries : book.patch;
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
+      book.entries.set(hash, entry);
     } else {
-      entries.set(hash, {
+      book.entries.set(hash, {
+        type: "normal",
         comment: "",
         moves: [commonBookMoveToArray(sanitizedMove)],
         minPly: 0,
       });
     }
   }
+  book.saved = false;
 }
 
 export async function removeBookMove(sfen: string, usi: string) {
-  const entry = await retrieveEntry(book, sfen);
+  const entry = await retrieveMergedEntry(book, sfen);
   if (!entry) {
     return;
   }
   entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
-  book.saved = false;
+  storeEntry(sfen, entry);
 }
 
 export async function updateBookMoveOrder(sfen: string, usi: string, order: number) {
-  const entry = await retrieveEntry(book, sfen);
+  const entry = await retrieveMergedEntry(book, sfen);
   if (!entry) {
     return;
   }
@@ -339,13 +342,44 @@ export async function updateBookMoveOrder(sfen: string, usi: string, order: numb
   }
   entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
   entry.moves.splice(order, 0, move);
-  book.saved = false;
+  storeEntry(sfen, entry);
 }
 
-async function updateBookMoveOrderByCounts(sfen: string) {
-  const entry = await retrieveEntry(book, sfen);
-  if (!entry) {
-    return;
+function updateBookMovePatch(sfen: string, move: BookMove) {
+  let entry = retrieveEntry(book, sfen);
+  if (book.format === "yane2016") {
+    if (entry) {
+      updateBookEntry(entry, move);
+    } else {
+      entry = {
+        type: book.type === "in-memory" ? "normal" : "patch",
+        comment: "",
+        moves: [commonBookMoveToArray(move)],
+        minPly: 0,
+      };
+      book.entries.set(sfen, entry);
+    }
+  } else {
+    const sanitizedMove = {
+      score: 0, // required for Apery book
+      count: 0, // required for Apery book
+      ...move,
+      comment: "", // not supported
+    };
+    delete sanitizedMove.usi2; // not supported
+    delete sanitizedMove.depth; // not supported
+    const hash = aperyHash(sfen);
+    if (entry) {
+      updateBookEntry(entry, sanitizedMove);
+    } else {
+      entry = {
+        type: book.type === "in-memory" ? "normal" : "patch",
+        comment: "",
+        moves: [commonBookMoveToArray(sanitizedMove)],
+        minPly: 0,
+      };
+      book.entries.set(hash, entry);
+    }
   }
   entry.moves.sort((a, b) => (b[IDX_COUNT] || 0) - (a[IDX_COUNT] || 0));
   book.saved = false;
@@ -396,7 +430,7 @@ export async function importBookMoves(
   let entryCount = 0;
   let duplicateCount = 0;
 
-  async function importMove(node: ImmutableNode, sfen: string) {
+  function importMove(node: ImmutableNode, sfen: string) {
     if (!(node.move instanceof Move)) {
       return;
     }
@@ -407,7 +441,7 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const entry = await retrieveEntry(bookRef, sfen);
+    const entry = retrieveEntry(bookRef, sfen);
     const bookMoves = entry?.moves || [];
     const moves = bookMoves.map(arrayMoveToCommonBookMove);
     const existing = moves.find((move) => move.usi === usi);
@@ -418,8 +452,7 @@ export async function importBookMoves(
     }
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
-    await updateBookMove(sfen, bookMove);
-    await updateBookMoveOrderByCounts(sfen);
+    updateBookMovePatch(sfen, bookMove);
   }
 
   for (const path of paths) {
@@ -468,16 +501,12 @@ export async function importBookMoves(
           continue;
         }
         hasValidLines = true;
-        const nodes = [] as ImmutableNode[];
         record.forEach((node) => {
-          nodes.push(node);
-        });
-        for (const node of nodes) {
           const prev = node.prev;
           if (prev && targetColorSet[prev.nextColor]) {
-            await importMove(node, prev.sfen);
+            importMove(node, prev.sfen);
           }
-        }
+        });
       }
       if (hasValidLines) {
         successFileCount++;
@@ -514,16 +543,12 @@ export async function importBookMoves(
       }
     }
 
-    const nodes = [] as ImmutableNode[];
     record.forEach((node) => {
-      nodes.push(node);
-    });
-    for (const node of nodes) {
       const prev = node.prev;
       if (prev && targetColorSet[prev.nextColor]) {
-        await importMove(node, prev.sfen);
+        importMove(node, prev.sfen);
       }
-    }
+    });
     successFileCount++;
   }
 

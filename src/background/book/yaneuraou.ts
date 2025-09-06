@@ -12,7 +12,7 @@ import {
   IDX_SCORE,
   IDX_USI,
   IDX_USI2,
-  YaneBookPatch,
+  mergeBookEntries,
 } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
 
@@ -107,10 +107,7 @@ function parseLine(line: string): Line {
 }
 
 function appendCommentLine(base: string, next: string): string {
-  if (base === "") {
-    return next;
-  }
-  return base + "\n" + next;
+  return base ? base + "\n" + next : next;
 }
 
 async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry) => Promise<void>) {
@@ -143,7 +140,7 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
           if (current) {
             await nextEntry(current[0], current[1]);
           }
-          current = [parsed.sfen, { comment: "", moves: [], minPly: parsed.ply }];
+          current = [parsed.sfen, { type: "normal", comment: "", moves: [], minPly: parsed.ply }];
           break;
         case "move":
           if (current) {
@@ -164,20 +161,20 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
 }
 
 export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
-  const entries: { [sfen: string]: BookEntry } = {};
+  const entries: Map<string, BookEntry> = new Map();
   await load(input, async (sfen, entry) => {
-    if (entries[sfen]) {
-      if (entry.minPly < entries[sfen].minPly) {
-        entries[sfen] = entry;
-      }
-    } else {
-      entries[sfen] = entry;
+    const existing = entries.get(sfen);
+    if (!existing || entry.minPly < existing.minPly) {
+      entries.set(sfen, entry);
     }
   });
-  return { format: "yane2016", yaneEntries: entries };
+  return { format: "yane2016", entries };
 }
 
 async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
+  if (entry.moves.length === 0) {
+    return;
+  }
   if (!output.write(SFENMarker + sfen + "\n")) {
     await events.once(output, "drain");
   }
@@ -226,8 +223,8 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
     output.on("error", reject);
   });
   output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-  for (const sfen of Object.keys(book.yaneEntries).sort()) {
-    const entry = book.yaneEntries[sfen];
+  for (const sfen of Array.from(book.entries.keys()).sort()) {
+    const entry = book.entries.get(sfen) as BookEntry;
     await writeEntry(output, sfen, entry);
   }
   output.end();
@@ -236,7 +233,7 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
 
 export async function mergeYaneuraOuBook(
   input: Readable,
-  bookPatch: YaneBookPatch,
+  bookPatch: YaneBook,
   output: Writable,
 ): Promise<void> {
   if (bookPatch.format !== "yane2016") {
@@ -249,7 +246,7 @@ export async function mergeYaneuraOuBook(
     output.on("error", reject);
   });
   output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-  const patchKeys = Object.keys(bookPatch.patch).sort();
+  const patchKeys = Array.from(bookPatch.entries.keys()).sort();
   let patchIndex = 0;
   let lastPatchKey = "";
   try {
@@ -259,7 +256,11 @@ export async function mergeYaneuraOuBook(
         if (patchKey > sfen) {
           break;
         }
-        await writeEntry(output, patchKey, bookPatch.patch[patchKey]);
+        let patch = bookPatch.entries.get(patchKey) as BookEntry;
+        if (patchKey === sfen) {
+          patch = mergeBookEntries(entry, patch) as BookEntry;
+        }
+        await writeEntry(output, patchKey, patch);
         lastPatchKey = patchKey;
       }
       if (sfen !== lastPatchKey) {
@@ -268,7 +269,7 @@ export async function mergeYaneuraOuBook(
     });
     for (; patchIndex < patchKeys.length; patchIndex++) {
       const patchKey = patchKeys[patchIndex];
-      await writeEntry(output, patchKey, bookPatch.patch[patchKey]);
+      await writeEntry(output, patchKey, bookPatch.entries.get(patchKey) as BookEntry);
     }
     output.end();
   } catch (error) {
@@ -405,7 +406,7 @@ export async function searchYaneuraOuBookMovesOnTheFly(
   if (read.bytesRead === 0) {
     return;
   }
-  let comment: string = "";
+  let comment = "";
   const moves: BookMove[] = [];
   let i = 0;
   // eslint-disable-next-line no-constant-condition
@@ -425,5 +426,5 @@ export async function searchYaneuraOuBookMovesOnTheFly(
       break;
     }
   }
-  return { comment, moves, minPly: ply };
+  return { type: "normal", comment, moves, minPly: ply };
 }

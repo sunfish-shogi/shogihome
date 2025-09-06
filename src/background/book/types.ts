@@ -6,33 +6,24 @@ export type BookFormat = BookFormatYane2016 | BookFormatApery;
 
 export type YaneBook = {
   format: BookFormatYane2016;
-  yaneEntries: { [sfen: string]: BookEntry };
+  entries: Map<string, BookEntry>;
 };
 
 export type AperyBook = {
   format: BookFormatApery;
-  aperyEntries: Map<bigint, BookEntry>;
+  entries: Map<bigint, BookEntry>;
 };
 
 export type Book = YaneBook | AperyBook;
 
-export type YaneBookPatch = {
-  format: BookFormatYane2016;
-  patch: { [sfen: string]: BookEntry };
-};
-
-export type AperyBookPatch = {
-  format: BookFormatApery;
-  patch: Map<bigint, BookEntry>;
-};
-
-export type BookPatch = YaneBookPatch | AperyBookPatch;
-
 export type BookEntry = {
+  type: BookEntryType;
   comment: string; // 局面に対するコメント
   moves: BookMove[]; // この局面に対する定跡手
   minPly: number; // 初期局面からの手数
 };
+
+export type BookEntryType = "normal" | "patch";
 
 export type BookMove = [
   usi: string,
@@ -63,4 +54,60 @@ export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
 
 export function commonBookMoveToArray(move: CommonBookMove): BookMove {
   return [move.usi, move.usi2, move.score, move.depth, move.count, move.comment];
+}
+
+export function mergeBookEntries(
+  base: BookEntry | undefined,
+  patch: BookEntry | undefined,
+): BookEntry | undefined {
+  if (patch?.type === "normal") {
+    return patch;
+  }
+  if (!base) {
+    if (!patch) {
+      return;
+    }
+    return {
+      ...patch,
+      type: "normal",
+    };
+  }
+  if (!patch) {
+    return base;
+  }
+
+  const baseMovesMap = new Map<string, BookMove>();
+  for (const move of base.moves) {
+    baseMovesMap.set(move[IDX_USI], move);
+  }
+  const patchMovesMap = new Map<string, BookMove>();
+  for (const move of patch.moves) {
+    patchMovesMap.set(move[IDX_USI], move);
+  }
+  const moves = base.moves.map((move) => {
+    const p = patchMovesMap.get(move[IDX_USI]);
+    if (p) {
+      return [
+        p[IDX_USI],
+        p[IDX_USI2] !== undefined ? p[IDX_USI2] : move[IDX_USI2],
+        p[IDX_SCORE] !== undefined ? p[IDX_SCORE] : move[IDX_SCORE],
+        p[IDX_DEPTH] !== undefined ? p[IDX_DEPTH] : move[IDX_DEPTH],
+        p[IDX_COUNT] !== undefined ? p[IDX_COUNT] + (move[IDX_COUNT] || 0) : move[IDX_COUNT],
+        p[IDX_COMMENTS] || move[IDX_COMMENTS],
+      ] as BookMove;
+    }
+    return move;
+  });
+  for (const move of patch.moves) {
+    if (!baseMovesMap.has(move[IDX_USI])) {
+      moves.push(move);
+    }
+  }
+
+  return {
+    type: "normal",
+    comment: patch.comment || base.comment,
+    moves,
+    minPly: Math.min(base.minPly, patch.minPly),
+  };
 }
