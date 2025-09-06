@@ -454,7 +454,14 @@ export async function importBookMoves(
       const lines = sourceData.toString("utf-8").split(/\r?\n/);
       let hasValidLines = false;
       let invalidLine = "";
-      for (const line of lines) {
+      for (let index = 0; index < lines.length; index++) {
+        if (onProgress) {
+          const progress =
+            (successFileCount + errorFileCount + skippedFileCount + index / lines.length) /
+            paths.length;
+          onProgress(progress);
+        }
+        const line = lines[index];
         const record = Record.newByUSI(line.trim());
         if (record instanceof Error) {
           invalidLine = line;
