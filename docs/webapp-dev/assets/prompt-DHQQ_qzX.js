@@ -1,0 +1,1 @@
+class u{func;timeout;after(i,s){this.func=i,!this.timeout&&(this.timeout=setTimeout(this.invoke.bind(this),s))}invoke(){this.func?.(),this.clear()}clear(){this.timeout&&(clearTimeout(this.timeout),this.timeout=void 0),this.func=void 0}}var e=(t=>(t.CSA="csa",t.USI="usi",t))(e||{});export{u as L,e as P};
