@@ -3,12 +3,12 @@ import events from "node:events";
 import { Readable, Writable } from "node:stream";
 import {
   AperyBook,
-  AperyBookPatch,
   BookEntry,
   BookMove,
   IDX_COUNT,
   IDX_SCORE,
   IDX_USI,
+  mergeBookEntries,
 } from "./types.js";
 import { fromAperyMove, toAperyMove } from "./apery_move.js";
 import { hash } from "./apery_zobrist.js";
@@ -45,34 +45,39 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMo
 
 async function load(
   input: Readable,
-  nextEntry: (hash: bigint, bookMove: BookMove) => Promise<void>,
+  nextEntry: (hash: bigint, bookMove: BookEntry) => Promise<void>,
 ): Promise<void> {
+  let lastHash = BigInt(0);
+  let entry: BookEntry | undefined;
   for await (const chunk of input) {
     if (chunk.length % 16 !== 0) {
       throw new Error("Invalid Apery book format");
     }
     for (let offset = 0; offset < chunk.length; offset += 16) {
       const { hash, bookMove } = decodeEntry(chunk, offset);
-      await nextEntry(hash, bookMove);
+      if (entry && lastHash !== hash) {
+        await nextEntry(lastHash, entry);
+        entry = undefined;
+      }
+      if (!entry) {
+        entry = { type: "normal", comment: "", moves: [bookMove], minPly: 0 };
+        lastHash = hash;
+      } else if (!entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
+        entry.moves.push(bookMove);
+      }
     }
+  }
+  if (entry) {
+    await nextEntry(lastHash, entry);
   }
 }
 
 export async function loadAperyBook(input: Readable): Promise<AperyBook> {
   const entries = new Map<bigint, BookEntry>();
-  await load(input, async (hash, bookMove) => {
-    const entry = entries.get(hash);
-    if (!entry) {
-      entries.set(hash, {
-        comment: "",
-        moves: [bookMove],
-        minPly: 0,
-      });
-    } else if (!entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
-      entry.moves.push(bookMove);
-    }
+  await load(input, async (hash, entry) => {
+    entries.set(hash, entry);
   });
-  return { format: "apery", aperyEntries: entries };
+  return { format: "apery", entries };
 }
 
 function compareHash(a: bigint, b: bigint): number {
@@ -128,6 +133,7 @@ export async function searchAperyBookMovesOnTheFly(
     moves.push(decodeEntry(buffer).bookMove);
   }
   return {
+    type: "normal",
     comment: "",
     moves,
     minPly: 0,
@@ -151,10 +157,10 @@ export async function storeAperyBook(book: AperyBook, output: Writable): Promise
     output.on("finish", resolve);
     output.on("error", reject);
   });
-  const keys = book.aperyEntries.keys();
+  const keys = book.entries.keys();
   const orderedKeys = Array.from(keys).sort(compareHash);
   for (const key of orderedKeys) {
-    const entry = book.aperyEntries.get(key) as BookEntry;
+    const entry = book.entries.get(key) as BookEntry;
     await writeBookMoves(output, key, entry.moves);
   }
   output.end();
@@ -163,35 +169,38 @@ export async function storeAperyBook(book: AperyBook, output: Writable): Promise
 
 export async function mergeAperyBook(
   input: Readable,
-  bookPatch: AperyBookPatch,
+  bookPatch: AperyBook,
   output: Writable,
 ): Promise<void> {
   const end = new Promise((resolve, reject) => {
     output.on("finish", resolve);
     output.on("error", reject);
   });
-  const keys = bookPatch.patch.keys();
+  const keys = bookPatch.entries.keys();
   const patchKeys = Array.from(keys).sort(compareHash);
   let patchIndex = 0;
   let lastPatchKey = BigInt(0);
   try {
-    await load(input, async (key, bookMove) => {
+    await load(input, async (key, entry) => {
       for (; patchIndex < patchKeys.length; patchIndex++) {
         const patchKey = patchKeys[patchIndex];
-        const entry = bookPatch.patch.get(patchKey);
-        if (patchKey > key || !entry) {
+        if (patchKey > key) {
           break;
         }
-        await writeBookMoves(output, patchKey, entry.moves);
+        let patch = bookPatch.entries.get(patchKey) as BookEntry;
+        if (patchKey === key) {
+          patch = mergeBookEntries(entry, patch) as BookEntry;
+        }
+        await writeBookMoves(output, patchKey, patch.moves);
         lastPatchKey = patchKey;
       }
       if (key != lastPatchKey) {
-        await writeBookMove(output, key, bookMove);
+        await writeBookMoves(output, key, entry.moves);
       }
     });
     for (; patchIndex < patchKeys.length; patchIndex++) {
       const patchKey = patchKeys[patchIndex];
-      const entry = bookPatch.patch.get(patchKey);
+      const entry = bookPatch.entries.get(patchKey);
       if (entry) {
         await writeBookMoves(output, patchKey, entry.moves);
       }
