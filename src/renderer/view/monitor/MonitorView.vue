@@ -135,8 +135,9 @@
         <div class="footer">
           <span>{{ states.os.version }}/{{ states.os.arch }}</span>
           <span>CPU Usage: {{ cpuUsage.toFixed(1) }}%</span>
-          <span v-if="memoryFree !== null && memoryUsage !== null">
-            Memory Free: {{ memoryFree.toFixed(2) }}GiB ({{ memoryUsage.toFixed(1) }}%)
+          <span>
+            Memory Free: {{ memoryFree.toFixed(2) }}GiB
+            <span v-if="memoryUsage !== null">({{ memoryUsage.toFixed(1) }}%)</span>
           </span>
         </div>
       </div>
@@ -208,11 +209,9 @@ onBeforeUnmount(() => {
   }
 });
 
-const memoryFree = computed(() =>
-  states.value.os.memoryFree !== undefined ? states.value.os.memoryFree / 1024 ** 2 : null,
-);
+const memoryFree = computed(() => states.value.os.memoryFree / 1024 ** 2);
 const memoryUsage = computed(() =>
-  states.value.os.memoryFree !== undefined && states.value.os.memoryTotal
+  states.value.os.memoryTotal
     ? (states.value.os.memoryFree / states.value.os.memoryTotal) * 100
     : null,
 );
