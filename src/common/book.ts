@@ -17,8 +17,8 @@ export type BookImportSummary = {
   successFileCount: number; // 正常に読み込んだファイルの数
   errorFileCount: number; // 読み込みエラーが発生したファイルの数
   skippedFileCount: number; // 読み込みをスキップしたファイルの数
-  entryCount: number; // 新規に登録された定跡手の数
-  duplicateCount: number; // 重複した定跡手の数
+  entryCount?: number; // 新規に登録された定跡手の数
+  duplicateCount?: number; // 重複した定跡手の数
 };
 
 export type BookMoveEx = BookMove & {
