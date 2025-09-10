@@ -1,0 +1,8 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+for N in $(for d in $DIR/scenario/*/; do basename "$d"; done); do
+  echo "Running scenario $N"
+  $DIR/run $N
+done

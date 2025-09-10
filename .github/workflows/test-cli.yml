@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       USI_ENGINE_JSON: .config/electron-shogi/usi_engine.json
+      USI_CSA_BRIDGE_TMP: /tmp/usi-csa-bridge
     steps:
       # Setup
       - uses: actions/checkout@v5
@@ -21,12 +22,19 @@ jobs:
           cache: "npm"
       - run: npm version
       - run: npm ci --no-audit --no-fund
+      - run: npm -g i tsx
 
       # usi-csa-bridge
       - run: npm run usi-csa-bridge:build
-      - name: Test usi-csa-bridge (Scenario 1)
+      - run: mv ./dist/command/usi-csa-bridge ${USI_CSA_BRIDGE_TMP}
+      - name: Install dependencies for usi-csa-bridge
+        run: |
+          set -eux
+          cd ${USI_CSA_BRIDGE_TMP}
+          npm i --no-audit --no-fund
+      - name: Test usi-csa-bridge
         timeout-minutes: 1
-        run: ./src/tests/e2e/usi-csa-bridge/run 1
+        run: ${USI_CSA_BRIDGE_TMP}/e2e/run-all
 
       # Electron App
       - run: npm run electron:build
