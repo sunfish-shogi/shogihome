@@ -2,7 +2,7 @@
 set -o pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COMMAND_DIR=$DIR/../../../../dist/command/usi-csa-bridge
+COMMAND_DIR=$DIR/..
 COMMAND=$COMMAND_DIR/index.js
 MOCK_DIR=$DIR/mock
 SCENARIO_DIR=$DIR/scenario/$1
@@ -14,7 +14,6 @@ fi
 
 if [ ! -f $COMMAND ]; then
   echo "Command $COMMAND not found"
-  echo "Please build the usi-csa-bridge command by running 'npm run usi-csa-bridge:build'"
   exit 1
 fi
 
