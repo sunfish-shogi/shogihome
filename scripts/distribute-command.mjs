@@ -37,6 +37,7 @@ const packageJson = {
   bin: {
     cli: "index.js",
   },
+  files: ["LICENSE", "README.md", "index.js", "package.json"],
   scripts: {},
   dependencies: commonPackageJson.dependencies,
   devDependencies: {},
