@@ -19,22 +19,26 @@ const e2eDistDir = path.join(distDir, "e2e");
 
 const commonPackageJson = JSON.parse(fs.readFileSync(packageJsonFileName, "utf8"));
 const packageJson = {
-  ...commonPackageJson,
   name,
+  version: commonPackageJson.version,
   description: `command line tool derived from ShogiHome(https://github.com/sunfish-shogi/shogihome)`,
+  author: commonPackageJson.author,
+  license: commonPackageJson.license,
   private: false,
+  repository: commonPackageJson.repository,
+  keywords: commonPackageJson.keywords,
+  bugs: commonPackageJson.bugs,
   publishConfig: {
     access: "public",
   },
-  homepage:
-    "https://github.com/sunfish-shogi/shogihome/blob/main/src/command/usi-csa-bridge#readme",
+  homepage: `https://github.com/sunfish-shogi/shogihome/blob/main/src/command/${name}#readme`,
   type: "commonjs",
   main: "index.js",
-  module: undefined,
   bin: {
     cli: "index.js",
   },
   scripts: {},
+  dependencies: commonPackageJson.dependencies,
   devDependencies: {},
 };
 depcheck(distDir, {
