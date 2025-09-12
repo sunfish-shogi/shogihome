@@ -38,7 +38,11 @@ function issueSessionID(): number {
 }
 
 const clients = new Map<number, Client>();
-const sessionRemoveDelay = 20e3;
+let sessionRemoveDelay = 20e3;
+
+export function setSessionRemoveDelay(delay: number): void {
+  sessionRemoveDelay = delay;
+}
 
 function registerClient(client: Client): void {
   clients.set(client.sessionID, client);
