@@ -122,7 +122,11 @@ function issueSessionID(): number {
 }
 
 const sessions = new Map<number, Session>();
-const engineRemoveDelay = 20e3;
+let sessionRemoveDelay = 20e3;
+
+export function setSessionRemoveDelay(delay: number): void {
+  sessionRemoveDelay = delay;
+}
 
 function isSessionExists(sessionID: number): boolean {
   return sessions.has(sessionID);
@@ -153,7 +157,7 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
       .on("close", () => {
         setTimeout(() => {
           sessions.delete(sessionID);
-        }, engineRemoveDelay);
+        }, sessionRemoveDelay);
       })
       .on("error", (err) => {
         const lastReceived = process.lastReceived?.command;
