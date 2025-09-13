@@ -290,12 +290,9 @@ const updateChart = (config: ChartConfig) => {
   chart.options.color = config.palette.main;
   chart.options.scales = buildScalesOption(store.record, config);
   chart.options.plugins = {
-    legend: {
-      display: config.showLegend,
-    },
-    tooltip: {
-      enabled: false,
-    },
+    legend: { display: config.showLegend },
+    title: { display: false },
+    tooltip: { enabled: false },
   };
   chart.update();
 };
@@ -329,18 +326,28 @@ const updateChartLazy = () => {
 
 onMounted(() => {
   const element = canvas.value as HTMLCanvasElement;
-  const context = element.getContext("2d") as CanvasRenderingContext2D;
+  const context = element.getContext("2d", { desynchronized: true }) as CanvasRenderingContext2D;
   chart = new Chart(context, {
     type: "scatter",
     data: {
       datasets: [],
     },
     options: {
-      animation: {
-        duration: 0,
-      },
+      animation: false,
       responsive: true,
       maintainAspectRatio: false,
+      resizeDelay: 100,
+      parsing: false,
+      normalized: true,
+      interaction: {
+        mode: "nearest",
+      },
+      elements: {
+        point: {
+          hitRadius: 0,
+          hoverRadius: 0,
+        },
+      },
       events: ["click"],
       onClick,
     },
