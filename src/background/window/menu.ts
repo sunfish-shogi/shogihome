@@ -39,6 +39,7 @@ import { materialIconsGuideURL } from "@/common/links/google.js";
 import { openPath } from "@/background/helpers/electron.js";
 import { createMonitorWindow } from "./monitor.js";
 import { createListItems } from "@/common/message.js";
+import { BoardLayoutType } from "@/common/settings/layout.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -385,6 +386,35 @@ function createMenuTemplate(window: BrowserWindow) {
           click: () => {
             createMonitorWindow(window);
           },
+        },
+        {
+          type: "separator",
+        },
+        {
+          label: t.boardLayout,
+          submenu: [
+            {
+              label: t.standard,
+              click: () => {
+                updateAppSettings({ boardLayoutType: BoardLayoutType.STANDARD });
+              },
+              accelerator: "CmdOrCtrl+1",
+            },
+            {
+              label: t.compact,
+              click: () => {
+                updateAppSettings({ boardLayoutType: BoardLayoutType.COMPACT });
+              },
+              accelerator: "CmdOrCtrl+2",
+            },
+            {
+              label: t.portrait,
+              click: () => {
+                updateAppSettings({ boardLayoutType: BoardLayoutType.PORTRAIT });
+              },
+              accelerator: "CmdOrCtrl+3",
+            },
+          ],
         },
         {
           type: "separator",

@@ -1006,7 +1006,6 @@ export function onMenuEvent(event: MenuEvent, ...args: any[]): void {
   mainWindow.webContents.send(Renderer.MENU_EVENT, event, ...args);
 }
 
-// FIXME: do not export
 export function updateAppSettings(settings: AppSettingsUpdate): void {
   mainWindow.webContents.send(Renderer.UPDATE_APP_SETTINGS, JSON.stringify(settings));
 }
