@@ -110,6 +110,12 @@
           @update:value="(enabled: boolean) => emit('toggleShowComment', enabled)"
         />
       </div>
+      <div v-if="showTreeViewButton" class="option">
+        <button @click="emit('switchToTreeView')">
+          <Icon :icon="IconType.TREE" />
+          ツリー表示<!-- TODO: i18n -->
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -148,6 +154,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: undefined,
+  },
+  showTreeViewButton: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
   opacity: {
     type: Number,
@@ -188,6 +199,7 @@ const emit = defineEmits<{
   showDuplicatePositions: [sfen: string];
   toggleShowElapsedTime: [enabled: boolean];
   toggleShowComment: [enabled: boolean];
+  switchToTreeView: [];
 }>();
 
 const moveList = ref(null as HTMLDivElement | null);
@@ -458,5 +470,15 @@ button.duplicate {
 .option {
   padding: 0 6px 0 6px;
   margin-right: 4px;
+}
+.option {
+  height: 28px;
+}
+.option button {
+  height: 26px;
+  vertical-align: middle;
+}
+.option button .icon {
+  height: 1.4em;
 }
 </style>

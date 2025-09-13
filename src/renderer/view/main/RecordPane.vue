@@ -8,6 +8,7 @@
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
         :sub-area-toggle-label="t.book"
+        :show-tree-view-button="showTreeViewButton"
         :opacity="appSettings.enableTransparent ? appSettings.recordOpacity : 1"
         :show-top-control="showTopControl"
         :show-bottom-control="showBottomControl"
@@ -25,6 +26,7 @@
         @show-duplicate-positions="showDuplicatePositions"
         @toggle-show-elapsed-time="onToggleElapsedTime"
         @toggle-show-comment="onToggleComment"
+        @switch-to-tree-view="onSwitchToTreeView"
       >
         <template #sub-area>
           <BookPanel class="full" />
@@ -62,6 +64,7 @@ import BookPanel from "./BookPanel.vue";
 import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
 import DuplicatePositionsDialog from "@/renderer/view/dialog/DuplicatePositionsDialog.vue";
 import { ImmutableNode } from "tsshogi";
+import { RecordViewType } from "@/common/settings/app";
 
 defineProps({
   showElapsedTime: {
@@ -86,6 +89,11 @@ defineProps({
     type: Boolean,
     required: false,
     default: true,
+  },
+  showTreeViewButton: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
@@ -125,6 +133,12 @@ const onToggleElapsedTime = (enabled: boolean) => {
 const onToggleComment = (enabled: boolean) => {
   appSettings.updateAppSettings({
     showCommentInRecordView: enabled,
+  });
+};
+
+const onSwitchToTreeView = () => {
+  appSettings.updateAppSettings({
+    recordViewType: RecordViewType.TREE,
   });
 };
 </script>
