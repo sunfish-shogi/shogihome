@@ -111,7 +111,6 @@
                   { value: '', label: t.defaultValue },
                   ...option.vars.map((v) => ({ value: v, label: v })),
                 ]"
-                :free-text-label="t.freeTextUnsafe"
               />
               <button
                 v-if="option.type === 'button'"
