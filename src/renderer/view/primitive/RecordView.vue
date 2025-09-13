@@ -79,7 +79,7 @@
             :disabled="!operational"
             @click="emit('backToMainBranch')"
           >
-            {{ backToMainBranchLabel }}
+            {{ t.backToMainBranch }}
           </button>
         </div>
       </div>
@@ -96,16 +96,16 @@
       <div v-if="subAreaToggleLabel" class="option">
         <ToggleButton v-model:value="showSubArea" :label="subAreaToggleLabel" />
       </div>
-      <div v-if="elapsedTimeToggleLabel" class="option">
+      <div class="option">
         <ToggleButton
-          :label="elapsedTimeToggleLabel"
+          :label="t.elapsedTime"
           :value="showElapsedTime"
           @update:value="(enabled: boolean) => emit('toggleShowElapsedTime', enabled)"
         />
       </div>
-      <div v-if="commentToggleLabel" class="option">
+      <div class="option">
         <ToggleButton
-          :label="commentToggleLabel"
+          :label="t.commentsAndBookmarks"
           :value="showComment"
           @update:value="(enabled: boolean) => emit('toggleShowComment', enabled)"
         />
@@ -144,22 +144,7 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
-  backToMainBranchLabel: {
-    type: String,
-    required: false,
-    default: undefined,
-  },
   subAreaToggleLabel: {
-    type: String,
-    required: false,
-    default: undefined,
-  },
-  elapsedTimeToggleLabel: {
-    type: String,
-    required: false,
-    default: undefined,
-  },
-  commentToggleLabel: {
     type: String,
     required: false,
     default: undefined,

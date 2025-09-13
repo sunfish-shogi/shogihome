@@ -28,7 +28,6 @@
       :black-player-byoyomi="clock?.black.byoyomi"
       :white-player-time="clock?.white.time"
       :white-player-byoyomi="clock?.white.byoyomi"
-      :next-move-label="t.nextTurn"
       :drop-shadows="!isMobileWebApp()"
       @resize="onResize"
       @move="onMove"

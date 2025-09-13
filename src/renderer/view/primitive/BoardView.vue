@@ -165,7 +165,7 @@
       </div>
 
       <!-- 手番 -->
-      <div v-if="main.turn" class="turn" :style="main.turn.style">{{ nextMoveLabel }}</div>
+      <div v-if="main.turn" class="turn" :style="main.turn.style">{{ t.nextTurn }}</div>
 
       <!-- コントロールパネル -->
       <div v-if="main.control" :style="main.control.left.style">
@@ -210,6 +210,7 @@ import {
 import { BoardLayoutType } from "@/common/settings/layout";
 import { CompactLayoutBuilder } from "./board/compact";
 import BoardGrid from "./BoardGrid.vue";
+import { t } from "@/common/i18n";
 
 type State = {
   pointer: Square | Piece | null;
@@ -341,11 +342,6 @@ const props = defineProps({
     type: Number,
     required: false,
     default: undefined,
-  },
-  nextMoveLabel: {
-    type: String,
-    required: false,
-    default: "手番",
   },
   dropShadows: {
     type: Boolean,
