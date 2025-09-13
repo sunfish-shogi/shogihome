@@ -16,6 +16,7 @@ import {
   PositionImageTypeface,
   PromotionSelectorStyle,
   RecordShortcutKeys,
+  RecordViewType,
   RightSideControlType,
   Tab,
   TabPaneType,
@@ -130,6 +131,9 @@ class AppSettingsStore {
   }
   get boardFlipping(): boolean {
     return this.merged.boardFlipping;
+  }
+  get recordViewType(): RecordViewType {
+    return this.merged.recordViewType;
   }
   get tabPaneType(): TabPaneType {
     return this.merged.tabPaneType;

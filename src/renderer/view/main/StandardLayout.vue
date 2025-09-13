@@ -25,10 +25,13 @@
               @resize="onBoardPaneResize"
             />
             <RecordPane
+              v-if="appSettings.recordViewType === RecordViewType.LIST"
               :style="recordPaneStyle"
               :show-comment="appSettings.showCommentInRecordView"
               :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
+              :show-tree-view-button="true"
             />
+            <RecordTreePane v-else :style="recordPaneStyle" />
           </div>
           <button
             v-if="!isBottomPaneVisible"
@@ -116,7 +119,7 @@ import TabPane, { headerHeight as tabHeaderHeight } from "./TabPane.vue";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import ControlPane, { ControlGroup } from "./ControlPane.vue";
 import { RectSize } from "@/common/assets/geometry";
-import { AppSettingsUpdate, Tab, TabPaneType } from "@/common/settings/app";
+import { AppSettingsUpdate, RecordViewType, Tab, TabPaneType } from "@/common/settings/app";
 import { BoardLayoutType } from "@/common/settings/layout";
 import api from "@/renderer/ipc/api";
 import { LogLevel } from "@/common/log";
@@ -127,6 +130,7 @@ import "splitpanes/dist/splitpanes.css";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { useAppSettings } from "@/renderer/store/settings";
+import RecordTreePane from "./RecordTreePane.vue";
 
 const splitterWidth = 8;
 const margin = 10;

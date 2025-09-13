@@ -131,6 +131,11 @@ export enum RecordShortcutKeys {
   HORIZONTAL = "horizontal",
 }
 
+export enum RecordViewType {
+  LIST = "list",
+  TREE = "tree",
+}
+
 export enum PositionImageStyle {
   BOOK = "book",
   GAME = "game",
@@ -189,6 +194,9 @@ export type AppSettings = {
 
   // Board View
   boardFlipping: boolean;
+
+  // Record View
+  recordViewType: RecordViewType;
 
   // Tab View
   tabPaneType: TabPaneType;
@@ -346,6 +354,7 @@ export function defaultAppSettings(opt?: {
     clockSoundTarget: ClockSoundTarget.ONLY_USER,
     recordShortcutKeys: RecordShortcutKeys.VERTICAL,
     boardFlipping: false,
+    recordViewType: RecordViewType.LIST,
     tabPaneType: TabPaneType.DOUBLE_V2,
     tab: Tab.RECORD_INFO,
     tab2: Tab.CHART,
