@@ -30,9 +30,9 @@ button {
   margin: 0;
   height: 26px;
   vertical-align: middle;
-  line-height: 24px;
 }
 button .icon {
-  height: 1.8em;
+  height: 1.6em;
+  line-height: 24px;
 }
 </style>
