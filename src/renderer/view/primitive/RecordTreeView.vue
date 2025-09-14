@@ -2,7 +2,7 @@
   <div class="root">
     <div class="content">
       <svg class="edges" :style="graph.edgesStyle">
-        <g style="stroke: var(--text-separator-color); stroke-width: 2; stroke-dasharray: 4">
+        <g style="stroke: var(--text-separator-color); stroke-width: 2; stroke-dasharray: 2">
           <line
             v-for="(edge, index) of graph.edges"
             :key="index"
@@ -14,7 +14,13 @@
         </g>
       </svg>
       <div class="nodes">
-        <div v-for="(node, index) of graph.nodes" :key="index" :style="node.style">
+        <div
+          v-for="(node, index) of graph.nodes"
+          :key="index"
+          :class="node.class"
+          :style="node.style"
+          @click="emit('nodeClick', node.recordNode)"
+        >
           {{ node.text }}
         </div>
       </div>
@@ -23,14 +29,14 @@
 </template>
 
 <script lang="ts">
-const gridWidth = 200;
-const gridHeight = 40;
-const edgeWidth = 150;
+const gridWidth = 130;
+const gridHeight = 30;
+const edgeWidth = 110;
 const edgeHeight = 20;
 </script>
 
 <script setup lang="ts">
-import { ImmutableRecord } from "tsshogi";
+import { ImmutableNode, ImmutableRecord } from "tsshogi";
 import { computed, PropType } from "vue";
 
 const props = defineProps({
@@ -40,15 +46,23 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits<{
+  nodeClick: [node: ImmutableNode];
+}>();
+
 const graph = computed(() => {
   const nodes: {
     text: string;
+    class: {
+      active: boolean;
+    };
     style: {
       left: string;
       top: string;
       width: string;
       height: string;
     };
+    recordNode: ImmutableNode;
   }[] = [];
   const edges: { x1: number; y1: number; x2: number; y2: number }[] = [];
   let x = gridWidth / 2;
@@ -63,21 +77,24 @@ const graph = computed(() => {
       firstBranchXMap.set(node.ply, x);
     } else {
       x += gridWidth;
-      branchTopY = y;
+      branchTopY = Math.max(y - gridHeight, 0);
       width = x + gridWidth / 2;
     }
     nodes.push({
       text: node.displayText,
+      class: { active: node === props.record.current },
       style: { left: x + "px", top: y + "px", width: edgeWidth + "px", height: edgeHeight + "px" },
+      recordNode: node,
     });
-    if (node.isFirstBranch) {
-      if (node.prev && !node.next) {
-        const y1 = branchTopY;
-        edges.push({ x1: x, y1, x2: x, y2: y });
-      }
-    } else if (!node.branch) {
+    if (node.prev && !node.next) {
+      const y1 = branchTopY;
+      edges.push({ x1: x, y1, x2: x, y2: y });
+    }
+    if (!node.isFirstBranch && !node.branch) {
       const x1 = firstBranchXMap.get(node.ply) ?? x;
-      edges.push({ x1, y1: y, x2: x, y2: y });
+      const y1 = y - gridHeight;
+      const y2 = y1;
+      edges.push({ x1, y1, x2: x, y2 });
     }
   });
   const edgesStyle = {
@@ -92,6 +109,7 @@ const graph = computed(() => {
 .root {
   background-color: var(--text-bg-color);
   overflow: auto;
+  user-select: none;
 }
 .content {
   position: relative;
@@ -108,10 +126,18 @@ const graph = computed(() => {
 .nodes > div {
   position: absolute;
   transform: translate(-50%, -50%);
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 20px;
   color: var(--text-color);
   border: 1px solid var(--text-separator-color);
   border-radius: 4px;
   background-color: var(--text-bg-color);
   white-space: nowrap;
+}
+.nodes > div.active {
+  font-weight: bold;
+  background-color: var(--text-bg-color-selected);
 }
 </style>
