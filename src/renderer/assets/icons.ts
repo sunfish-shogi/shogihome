@@ -113,7 +113,7 @@ export const iconSourceMap = {
   [IconType.MATE_SEARCH]: "icon/psychology_alt_FILL0.svg",
   [IconType.ADD]: "icon/add_circle_FILL0.svg",
   [IconType.TREE]: "icon/graph_FILL0.svg",
-  [IconType.NUMBER_LIST]: "icon/list_FILL0.svg",
+  [IconType.NUMBER_LIST]: "icon/format_list_numbered_FILL0.svg",
   [IconType.NOTE]: "icon/note_alt_FILL0.svg",
   [IconType.BATCH]: "icon/home_storage_FILL0.svg",
   [IconType.OPEN_FOLDER]: "icon/folder_open_FILL0.svg",
