@@ -149,7 +149,7 @@ li {
 ul.faq {
   margin-left: auto;
   margin-right: auto;
-  width: min(90vw, 110vh);
+  width: min(90vw, 110vh, 1400px);
   text-align: left;
 }
 
@@ -164,7 +164,7 @@ ul.faq li li {
 .long-text {
   margin-left: auto;
   margin-right: auto;
-  width: min(90vw, 110vh);
+  width: min(90vw, 110vh, 1400px);
   text-align: left;
 }
 
