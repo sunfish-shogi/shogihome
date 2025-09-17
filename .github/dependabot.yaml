@@ -7,7 +7,6 @@ updates:
       day: "saturday"
       time: "17:00"
       timezone: "Asia/Tokyo"
-    open-pull-requests-limit: 0
     cooldown:
       default-days: 5
   - package-ecosystem: "github-actions"
