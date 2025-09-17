@@ -41,6 +41,7 @@ export class AnalysisManager {
     return this;
   }
 
+
   async start(settings: AnalysisSettings): Promise<void> {
     if (!settings.usi) {
       throw new Error("エンジンが設定されていません。");
@@ -193,9 +194,19 @@ export class AnalysisManager {
   }
 
   private onResult(): void {
-    if (!this.searchInfo || !this.lastSearchInfo) {
-      return;
+    //@LoveKapibarasan
+    if (!this.searchInfo) {
+    // ダミーの SearchInfo を生成
+      this.searchInfo = {
+        usi: "",        // 必須なので空文字で埋める
+      };
     }
+    if (!this.lastSearchInfo) {
+      this.lastSearchInfo = {
+        usi: "",
+      };
+    }
+    //=====
     const searchInfo1 = this.settings.descending ? this.searchInfo : this.lastSearchInfo;
     const searchInfo2 = this.settings.descending ? this.lastSearchInfo : this.searchInfo;
     // 逆順の場合は 1 手後の局面に結果を書き込む

@@ -85,6 +85,9 @@ export enum Background {
   OPEN_LOG_FILE = "openLogFile",
   LOG = "log",
   ON_CLOSABLE = "onClosable",
+  //@LoveKapibarasan
+  LIST_FILES = "listFiles",
+  //=====
 }
 
 export enum Renderer {

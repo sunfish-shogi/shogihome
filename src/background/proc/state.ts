@@ -36,6 +36,6 @@ export async function collectOSState(): Promise<OSState> {
     cpuTotalTime,
     cpuIdleTime,
     memoryTotal: mem.total,
-    memoryFree: mem.free + (process.platform === "darwin" ? mem.fileBacked : 0),
+    memoryFree: mem.free +(process.platform === "darwin" && "fileBacked" in mem ? (mem as any).fileBacked : 0),
   };
 }

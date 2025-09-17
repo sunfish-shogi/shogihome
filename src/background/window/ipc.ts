@@ -233,6 +233,15 @@ ipcMain.handle(Background.OPEN_RECORD, async (event, path: string) => {
   getAppLogger().debug(`open record: ${path}`);
   return fs.readFile(path);
 });
+//@LoveKapibarasan
+ipcMain.handle(Background.LIST_FILES, async (event, dir: string): Promise<string[]> => {
+  validateIPCSender(event.senderFrame);
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  return entries
+    .filter((entry) => entry.isFile())
+    .map((entry) => path.join(dir, entry.name));
+});
+//=====
 
 async function showOpenDialog(
   properties: ("openFile" | "createDirectory" | "openDirectory" | "noResolveAliases")[],

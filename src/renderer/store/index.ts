@@ -22,6 +22,7 @@ import {
   exportBOD,
   InitialPositionType,
   ImmutableNode,
+  Record,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { GameSettings } from "@/common/settings/game.js";
@@ -71,7 +72,9 @@ import { LayoutProfile } from "@/common/settings/layout.js";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp.js";
 import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";
-
+//@LoveKapibarasan
+import { ref } from "vue";
+//=====
 export type PVPreview = {
   position: ImmutablePosition;
   engineName?: string;
@@ -152,6 +155,10 @@ class Store {
   private onUpdateRecordTreeHandlers: UpdateTreeHandler[] = [];
   private onUpdateCustomDataHandlers: UpdateCustomDataHandler[] = [];
 
+  //@LoveKapibarasan
+  private abortControllers = new Map<string, AbortController>();
+  public recordRef = ref<ImmutableRecord>(this.recordManager.record);
+  //=====
   constructor() {
     const refs = reactive(this);
     this._reactive = refs;
@@ -160,6 +167,10 @@ class Store {
         this.onChangePositionHandlers.forEach((handler) => handler());
         saveRecordForWebApp(this.record);
         this.updateResearchPosition();
+        //@LoveKapibarasan
+        // record の参照を差し替えることで Vue に更新を伝える
+        this.recordRef.value = this.recordManager.record;
+        //=====
       })
       .on("updateTree", () => {
         this.onUpdateRecordTreeHandlers.forEach((handler) => handler());
@@ -814,6 +825,35 @@ class Store {
       useErrorStore().add(e);
     }
   }
+  //@LoveKapibarasan
+  async doQuizMove(
+    move: Move,
+    expectedMove: Move,
+    successCounter: number,
+    record: Record,
+  ): Promise<number> {
+    /*
+    if (this.appState !== AppState.Quiz) {
+      return;
+    }
+    */
+    const appSettings = useAppSettings();
+    try {
+      playPieceBeat(appSettings.pieceVolume);
+    } catch (e) {
+      useErrorStore().add(e);
+    }
+    await new Promise(resolve => setTimeout(resolve, 500));
+    if (expectedMove && move.equals(expectedMove)) {
+      record.goForward();
+      playPieceBeat(appSettings.pieceVolume);
+      return ++successCounter;
+    } else {
+      record.removeCurrentMove();
+      return successCounter;
+    }
+  }
+  //=====
 
   private onFinish(): void {
     if (this.appState === AppState.ANALYSIS) {
@@ -884,32 +924,119 @@ class Store {
     this.recordManager.updateSearchInfo(type, info);
   }
 
-  startAnalysis(analysisSettings: AnalysisSettings): void {
+  startAnalysis(analysisSettings: AnalysisSettings): Promise<void> {
     if (this.appState !== AppState.ANALYSIS_DIALOG || useBusyState().isBusy) {
-      return;
+      return Promise.reject(new Error("AppState not ANALYSIS_DIALOG or busy")); // TODO: i18n
     }
     useBusyState().retain();
-    api
+    const signal = this.startTask("batchAnalysis");
+    return api
       .saveAnalysisSettings(analysisSettings)
       .then(() => this.analysisManager.start(analysisSettings))
       .then(() => {
         this._appState = AppState.ANALYSIS;
       })
       .catch((e) => {
-        useErrorStore().add("検討の初期化中にエラーが出ました: " + e);
+        const msg = "検討の初期化中にエラーが出ました: " + e;
+        useErrorStore().add(msg);
+        return Promise.reject(new Error(msg));
       })
       .finally(() => {
         useBusyState().release();
       });
   }
+//@LoveKapibarasan
+  startTask(taskName: string) {
+    const controller = new AbortController();
+    this.abortControllers.set(taskName, controller);
+    return controller.signal;
+  }
 
+  stopTask(taskName: string) {
+    this.abortControllers.get(taskName)?.abort();
+    this.abortControllers.delete(taskName);
+  }
+startBatchAnalysis(analysisSettings: AnalysisSettings, dir?: string): Promise<void> {
+  if (this.appState !== AppState.ANALYSIS_DIALOG || useBusyState().isBusy) {
+    return Promise.reject(new Error("AppState not ANALYSIS_DIALOG or busy")); // TODO: i18n
+  }
+
+  // Close AnalysisDialog
+  this.closeModalDialog();
+
+  useBusyState().retain();
+  const signal = this.startTask("batchAnalysis");
+  return Promise.resolve()
+    .then(() => {
+      // dir が渡されていなければダイアログを出す
+      if (dir) {
+        return dir;
+      }
+      return api.showSelectDirectoryDialog();
+    })
+    .then((selectedDir) => {
+      if (!selectedDir) {
+        return;
+      }
+      return api.listFiles(selectedDir).then((files) => {
+        return files.reduce((prev, path) => {
+          return prev
+            // openRecord
+            .then(() => {
+              signal.throwIfAborted();
+              useBusyState().release();
+              return this.openRecord(path);
+            })
+            .then(() => {
+              signal.throwIfAborted();
+              this.showAnalysisDialog();
+              return this.startAnalysis(analysisSettings);
+            })
+            // saveRecord
+            .then(() => {
+              signal.throwIfAborted();
+              // dequeue message
+              const msgStore = useMessageStore();
+              if (msgStore.hasMessage) {
+                msgStore.dequeue();
+              }
+              return this.saveRecord({ overwrite: true });
+            })
+            .then(() => {
+              signal.throwIfAborted();
+              useBusyState().retain();
+            });
+        }, Promise.resolve());
+      })
+      .then(() => {
+        // 全部終わったあとにまとめて通知
+        useMessageStore().enqueue({
+          text: "連続解析が終了しました。",
+          withCopyButton: false,
+        }); //TODO i18n
+      });
+    })
+    .catch((e) => {
+      const msg = "一括解析中にエラーが発生しました: " + e;
+      useErrorStore().add(msg);
+      return Promise.reject(new Error(msg));
+    })
+    .finally(() => {
+      useBusyState().release();
+    });
+}
   stopAnalysis(): void {
     if (this.appState !== AppState.ANALYSIS) {
       return;
     }
+    this.stopTask("batchAnalysis");
     this.analysisManager.close();
     this._appState = AppState.NORMAL;
   }
+
+//=====
+
+
 
   startMateSearch(mateSearchSettings: MateSearchSettings): void {
     if (this.appState !== AppState.MATE_SEARCH_DIALOG || useBusyState().isBusy) {
@@ -1240,13 +1367,13 @@ class Store {
     }
   }
 
-  openRecord(path?: string, opt?: { ply?: number }): void {
+  openRecord(path?: string, opt?: { ply?: number }): Promise<void> {
     if (this.appState !== AppState.NORMAL || useBusyState().isBusy) {
       useErrorStore().add(t.pleaseEndActiveFeaturesBeforeOpenRecord);
-      return;
+      return Promise.reject(new Error("AppState not NORMAL or busy")); //TODO i18n
     }
     useBusyState().retain();
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => {
         return path || api.showOpenRecordDialog(getStandardRecordFileFormats());
       })
@@ -1257,11 +1384,14 @@ class Store {
         const appSettings = useAppSettings();
         const autoDetect = appSettings.textDecodingRule == TextDecodingRule.AUTO_DETECT;
         return api.openRecord(path).then((data) => {
-          const e = this.recordManager.importRecordFromBuffer(data, path, {
-            autoDetect,
-          });
-          return e && Promise.reject(e);
+        const e = this.recordManager.importRecordFromBuffer(data, path, {
+          autoDetect,
         });
+        if (e) {
+          return Promise.reject(e);
+        }
+       return Promise.resolve();
+      });
       })
       .then(() => {
         if (opt?.ply) {
@@ -1269,19 +1399,21 @@ class Store {
         }
       })
       .catch((e) => {
-        useErrorStore().add("棋譜の読み込み中にエラーが出ました: " + e); // TODO: i18n
+          const msg = "棋譜の読み込み中にエラーが出ました: " + e;
+          useErrorStore().add(msg);
+          return Promise.reject(msg);
       })
       .finally(() => {
         useBusyState().release();
       });
   }
 
-  saveRecord(options?: { overwrite?: boolean; format?: RecordFileFormat }): void {
+  saveRecord(options?: { overwrite?: boolean; format?: RecordFileFormat }): Promise<void> {
     if (this.appState !== AppState.NORMAL || useBusyState().isBusy) {
-      return;
+      return Promise.reject(new Error("AppState not NORMAL or busy")); // TODO: i18n
     }
     useBusyState().retain();
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => {
         const path = this.recordManager.recordFilePath;
         if (options?.overwrite && path) {
@@ -1328,6 +1460,7 @@ class Store {
       })
       .catch((e) => {
         useErrorStore().add(e);
+        return Promise.reject(e);
       })
       .finally(() => {
         useBusyState().release();

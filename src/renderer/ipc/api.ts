@@ -142,6 +142,10 @@ export interface API {
   getVersionStatus(): Promise<VersionStatus>;
   sendTestNotification(): void;
   getPathForFile(file: File): string;
+
+  //@LoveKapibarasan
+  listFiles(dir: string): Promise<string[]>;
+  //=====
 }
 
 interface ExtendedWindow extends Window {
@@ -297,6 +301,11 @@ const api: API = {
   async getVersionStatus(): Promise<VersionStatus> {
     return JSON.parse(await bridge.getVersionStatus());
   },
+  //@LoveKapibarasan
+  async listFiles(dir: string): Promise<string[]> {
+    return await bridge.listFiles(dir);
+  },
+  //=====
 };
 
 export default api;

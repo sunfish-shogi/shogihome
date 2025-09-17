@@ -482,4 +482,9 @@ export const webAPI: Bridge = {
   onProgress(): void {
     // Do Nothing
   },
+  //@LoveKapibarasan
+  async listFiles(): Promise<string[]> {
+  return [];
+  },
+  //=====
 };

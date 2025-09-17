@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { htmlTemplate } from "./plugins/html_template";
 
+
 export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: "/src" }],

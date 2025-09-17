@@ -146,4 +146,7 @@ export interface Bridge {
   sendTestNotification(): void;
   getPathForFile(file: File): string;
   onProgress(callback: (progress: number) => void): void;
+  //@LoveKapibarasan
+  listFiles(dir: string): Promise<string[]>;
+  //=====
 }

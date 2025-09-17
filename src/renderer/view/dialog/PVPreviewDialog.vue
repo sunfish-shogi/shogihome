@@ -16,6 +16,8 @@
       :flip="flip"
       :black-player-name="t.sente"
       :white-player-name="t.gote"
+      :allow-move="true"
+      @move="onMove"
     >
       <template #right-control>
         <div class="full column">
@@ -58,22 +60,49 @@
         </div>
       </template>
     </BoardView>
-    <div class="informations">
-      <div class="information">
-        {{ info }}
-      </div>
-      <div class="information">
-        <span v-for="(move, index) in displayPV" :key="index">
-          <span class="move-element" :class="{ selected: move.selected }"
-            >&nbsp;{{ move.text }}&nbsp;</span
-          >
-        </span>
+    <div class="informations" v-if="showAnswer">
+      <div class="informations">
+        <div class="information">
+          {{ info }}
+        </div>
+        <div class="information" v-if="score">
+          評価値: {{ score }}
+        </div>
+        <div class="information">
+            <span v-for="(move, index) in displayPV" :key="index">
+              <span class="move-element" :class="{ selected: move.selected }">
+                &nbsp;{{ move.text }}&nbsp;
+              </span>
+            </span>
+        </div>
       </div>
     </div>
+    <div class="options">
+      <label>
+        <input type="checkbox" v-model="showAnswer" />
+          読み筋を表示
+      </label>
+    </div>
+    <div class="bookmarks">
+    <div class="bookmark-controls">
+      <button @click="goNextBookmark">
+      次のブックマークへ 
+      </button>
+    </div>
+</div>
+
   </DialogFrame>
 </template>
 
 <script setup lang="ts">
+
+// @LoveKapibarasan
+//onMove, allowMove, buttons
+const showAnswer = ref(false);
+const successCounter = ref(0);
+//=====
+
+
 import { Color, ImmutablePosition, Move, Record } from "tsshogi";
 import { onMounted, PropType, ref, reactive, watch, onBeforeUnmount, computed } from "vue";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
@@ -150,7 +179,9 @@ const store = useStore();
 const messageStore = useMessageStore();
 const appSettings = useAppSettings();
 const maxSize = reactive(new RectSize(0, 0));
-const record = reactive(new Record());
+//@LoveKapibarasan
+const record = reactive(new Record()) as unknown as Record;
+//=====
 const flip = ref(appSettings.boardFlipping);
 
 const updateSize = () => {
@@ -163,7 +194,9 @@ const updateRecord = () => {
   for (const move of props.pv) {
     record.append(move, { ignoreValidation: true });
   }
-  record.goto(1);
+  //@LoveKapibarasan
+  record.goto(0);
+  //=====
 };
 
 onMounted(() => {
@@ -287,8 +320,37 @@ const insertToComment = () => {
     text: t.insertedComment,
   });
 };
-</script>
+//@LoveKapibarasan
 
+const onMove = async (move: Move) => {
+  const expectedMove =
+  record.moves[record.current.ply]?.move instanceof Move
+      ? (record.moves[record.current.ply].move as Move)
+      : null;
+
+  if (!expectedMove) return;
+  successCounter.value = await store.doQuizMove(
+    move,
+    expectedMove,
+    successCounter.value,
+    record
+  );
+};
+const goNextBookmark = () => {
+  const bookmarks = store.record.bookmarks;
+  if (!bookmarks.length) return;
+
+  const current = store.record.current.bookmark;
+  const idx = bookmarks.indexOf(current);
+  const next = bookmarks[idx + 1] ?? bookmarks[0];
+
+  if (next) {
+    store.jumpToBookmark(next);
+    updateRecord();
+  }
+};
+//=====
+</script>
 <style scoped>
 .board-view {
   margin-left: auto;

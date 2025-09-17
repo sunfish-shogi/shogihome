@@ -405,6 +405,12 @@ const api: Bridge = {
       callback(progress);
     });
   },
+  //@LoveKapibarasan
+  listFiles(dir: string): Promise<string[]> {
+    return ipcRenderer.invoke(Background.LIST_FILES, dir);
+  },
+
+  //=====
 };
 
 contextBridge.exposeInMainWorld("electronShogiAPI", api);
