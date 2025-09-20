@@ -72,7 +72,7 @@ You can see the development progress at [Project Board](https://github.com/users
 ```
 git clone https://github.com/sunfish-shogi/shogihome.git
 cd shogihome
-npm install
+npm ci
 ```
 
 ### Launch
