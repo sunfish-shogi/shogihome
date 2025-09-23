@@ -27,11 +27,15 @@ jobs:
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
       - name: Latest Version
         run: |
+          set -euo pipefail
           echo "Latest Version is $LATEST_TAG"
           git checkout $LATEST_TAG
+          npm ci --dry-run --prefer-online
           npm audit --audit-level critical
       - name: Stable Version
         run: |
+          set -euo pipefail
           echo "Stable Version is $STABLE_TAG"
           git checkout $STABLE_TAG
+          npm ci --dry-run --prefer-online
           npm audit --audit-level critical
