@@ -1,7 +1,7 @@
-const TerserPlugin = require("terser-webpack-plugin");
-const webpack = require("webpack");
-const customPlugins = require("./plugins/webpack");
-const path = require("path");
+import TerserPlugin from "terser-webpack-plugin";
+import webpack from "webpack";
+import { AddExecPermission } from "./plugins/webpack.mjs";
+import path from "path";
 
 const optimization = {
   minimize: true,
@@ -28,7 +28,7 @@ const moduleForCJS = {
 
 const resolveForCJS = {
   alias: {
-    "@": path.resolve(__dirname, "src"),
+    "@": path.resolve(import.meta.dirname, "src"),
   },
   extensions: [".ts", ".js"],
   extensionAlias: {
@@ -36,7 +36,7 @@ const resolveForCJS = {
   },
 };
 
-module.exports = [
+export default [
   {
     name: "background",
     mode: "production",
@@ -44,7 +44,7 @@ module.exports = [
     target: "electron-main",
     output: {
       filename: "background.js",
-      path: __dirname + "/dist/packed",
+      path: import.meta.dirname + "/dist/packed",
     },
     externals: ["electron"],
     experiments: {
@@ -59,7 +59,7 @@ module.exports = [
     target: "electron-preload",
     output: {
       filename: "preload.js",
-      path: __dirname + "/dist/packed",
+      path: import.meta.dirname + "/dist/packed",
       libraryTarget: "commonjs2",
     },
     module: moduleForCJS,
@@ -74,7 +74,7 @@ module.exports = [
     target: "node",
     output: {
       filename: "index.js",
-      path: __dirname + "/dist/command/usi-csa-bridge",
+      path: import.meta.dirname + "/dist/command/usi-csa-bridge",
       libraryTarget: "commonjs2",
     },
     module: moduleForCJS,
@@ -87,7 +87,7 @@ module.exports = [
         resource.request = newResource;
       }),
       new webpack.BannerPlugin({ banner: "#!/usr/bin/env node", raw: true }),
-      customPlugins.AddExecPermission,
+      AddExecPermission,
     ],
   },
 ];

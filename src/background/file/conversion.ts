@@ -181,7 +181,6 @@ class SingleFileWriter {
     let p: ImmutableNode = record.first;
     const pos = record.initialPosition.clone();
     const stack: [ImmutableNode, string][] = [];
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       if (p.next) {
         stack.push([p, moves]);

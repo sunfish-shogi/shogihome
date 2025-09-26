@@ -54,7 +54,7 @@ export function setup(): void {
           });
         });
       }
-    } catch (e) {
+    } catch {
       return;
     }
     try {
