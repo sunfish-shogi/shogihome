@@ -176,17 +176,14 @@ async function main() {
     .catch(onFatalError);
 
   function onGameNext() {
-    // eslint-disable-next-line no-console
     getAppLogger().info("waiting for new game...");
   }
 
   function onNewGame(n: number) {
-    // eslint-disable-next-line no-console
     getAppLogger().info(`${ordinal(n)} game started.`);
   }
 
   function onGameEnd() {
-    // eslint-disable-next-line no-console
     getAppLogger().info("completed. will exit after some seconds...");
   }
 
@@ -224,7 +221,6 @@ async function main() {
   }
 
   function onLoginRetry() {
-    // eslint-disable-next-line no-console
     getAppLogger().warn(`Retry login after ${loginRetryIntervalSeconds} seconds...`);
   }
 

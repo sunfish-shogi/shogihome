@@ -481,7 +481,7 @@ const importProfile = async () => {
     store.addCustomProfile(profile);
     messageStore.enqueue({ text: t.profileImported });
   } catch (e) {
-    errorStore.add(new Error(t.failedToImportProfile));
+    errorStore.add(new Error(`${t.failedToImportProfile}: ${e}`));
   }
 };
 

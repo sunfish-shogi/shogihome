@@ -25,7 +25,6 @@ export function createMockPlayer(moves: { [usi: string]: MoveWithOption }) {
         throw new Error("unexpected USI: " + usi);
       }
       if (m.usi === "no-reply") {
-        // eslint-disable-next-line  @typescript-eslint/no-empty-function
         return new Promise<void>(() => {});
       }
       if (m.usi === "resign") {

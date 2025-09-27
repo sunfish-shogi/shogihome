@@ -422,13 +422,13 @@ export function preload(config: Config) {
   setUSISessionRemoveDelay(0);
   setCSASessionRemoveDelay(0);
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const usi = require("@/renderer/players/usi.js");
   setUSIHandlers({
     ...usi,
     sendPromptCommand: () => {},
   });
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const csa = require("@/renderer/store/csa.js");
   setCSAHandlers({
     ...csa,

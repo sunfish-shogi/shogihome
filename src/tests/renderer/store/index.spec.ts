@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import api, { API } from "@/renderer/ipc/api.js";
 import { exportKI2, ImmutablePosition, InitialPositionSFEN, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store/index.js";

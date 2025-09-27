@@ -18,13 +18,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        prompt: resolve(__dirname, "prompt.html"),
-        monitor: resolve(__dirname, "monitor.html"),
-        "layout-manager": resolve(__dirname, "layout-manager.html"),
+        main: resolve(import.meta.dirname, "index.html"),
+        prompt: resolve(import.meta.dirname, "prompt.html"),
+        monitor: resolve(import.meta.dirname, "monitor.html"),
+        "layout-manager": resolve(import.meta.dirname, "layout-manager.html"),
       },
     },
-    outDir: resolve(__dirname, "dist"),
+    outDir: resolve(import.meta.dirname, "dist"),
     chunkSizeWarningLimit: 5000000,
   },
   server: {
@@ -50,7 +50,7 @@ export default defineConfig({
         // 設定ファイル
         "vite.config.mts",
         "vite.config-pwa.mts",
-        "webpack.config.cjs",
+        "webpack.config.mjs",
         ".*.*",
         "**/*.d.ts",
         "**/*.vue",

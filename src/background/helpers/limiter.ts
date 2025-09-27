@@ -9,7 +9,6 @@ export class RateLimiter {
   }
 
   async waitUntilAllowed(): Promise<void> {
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       const now = Date.now();
 
