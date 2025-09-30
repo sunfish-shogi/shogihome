@@ -81,6 +81,18 @@ const config = {
     ],
   },
   publish: null,
+
+  // https://www.electronjs.org/docs/latest/tutorial/fuses
+  electronFuses: {
+    runAsNode: false, // 任意の JavaScript コードの実行を防止 (Default: true)
+    //enableCookieEncryption: true, // Cookieは使わないので変更しない (Default: false)
+    enableNodeOptionsEnvironmentVariable: false, // Node.js の特別な環境変数を無効化 (Default: true)
+    enableNodeCliInspectArguments: false, // --inspect などの引数を無効化 (Default: true)
+    enableEmbeddedAsarIntegrityValidation: true, // ASAR の整合性検証を有効化 (Default: false)
+    onlyLoadAppFromAsar: true, // ASAR 以外からのアプリケーションコードの読み込みを防止 (Default: false)
+    loadBrowserProcessSpecificV8Snapshot: true, // ブラウザープロセスのスナップショットを分離 (Default: false)
+    grantFileProtocolExtraPrivileges: false, // 本番環境ではカスタムスキームを使用するため不要 (Default: true)
+  },
 };
 
 export default config;
