@@ -2,7 +2,7 @@
   <div>
     <div class="frame" :style="main.frame.style" @click="clickFrame()">
       <!-- 後手の駒台 -->
-      <div class="hand" :style="main.whiteHandStyle">
+      <div class="hand" :class="flip ? 'front' : 'back'" :style="main.whiteHandStyle">
         <div
           class="hand-background"
           :class="{ 'drop-shadows': dropShadows }"
@@ -45,7 +45,7 @@
       </div>
 
       <!-- 先手の駒台 -->
-      <div class="hand" :style="main.blackHandStyle">
+      <div class="hand" :class="flip ? 'back' : 'front'" :style="main.blackHandStyle">
         <div
           class="hand-background"
           :class="{ 'drop-shadows': dropShadows }"
@@ -69,13 +69,14 @@
       <img
         v-for="arrow in arrows"
         :key="arrow.id"
+        class="arrows"
         src="/arrow/arrow.svg"
         :style="arrow.style"
         style="object-fit: cover; object-position: left top"
       />
 
       <!-- 操作用レイヤー -->
-      <div class="board" :style="main.boardStyle">
+      <div class="board operation" :style="main.boardStyle">
         <div
           v-for="square in board.squares"
           :key="square.id"
@@ -101,7 +102,7 @@
           <img class="piece-image" :src="board.doNotPromote.imagePath" draggable="false" />
         </div>
       </div>
-      <div class="hand" :style="main.blackHandStyle">
+      <div class="hand operation" :style="main.blackHandStyle">
         <div
           :style="blackHand.touchAreaStyle"
           @click.stop.prevent="clickHandArea(Color.BLACK)"
@@ -113,7 +114,7 @@
           @click.stop.prevent="clickHand(Color.BLACK, pointer.type)"
         ></div>
       </div>
-      <div class="hand" :style="main.whiteHandStyle">
+      <div class="hand operation" :style="main.whiteHandStyle">
         <div
           :style="whiteHand.touchAreaStyle"
           @click.stop.prevent="clickHandArea(Color.WHITE)"
@@ -168,10 +169,10 @@
       <div v-if="main.turn" class="turn" :style="main.turn.style">{{ t.nextTurn }}</div>
 
       <!-- コントロールパネル -->
-      <div v-if="main.control" :style="main.control.left.style">
+      <div v-if="main.control" class="control" :style="main.control.left.style">
         <slot name="left-control"></slot>
       </div>
-      <div v-if="main.control" :style="main.control.right.style">
+      <div v-if="main.control" class="control" :style="main.control.right.style">
         <slot name="right-control"></slot>
       </div>
     </div>
@@ -717,5 +718,26 @@ const whitePlayerTimeSeverity = computed(() => {
 .piece-image {
   max-width: 100%;
   max-height: 100%;
+}
+
+.hand.back {
+  z-index: 10;
+}
+.board {
+  z-index: 11;
+}
+.hand.front {
+  z-index: 12;
+}
+.arrows {
+  z-index: 20;
+}
+.board.operation,
+.hand.operation,
+.player-name,
+.clock,
+.turn,
+.control {
+  z-index: 30;
 }
 </style>
