@@ -34,3 +34,15 @@ export function getTempPathForTesting(): string {
   }
   return tempPathForTesting;
 }
+
+export function getPreloadPath(): string {
+  return isProduction()
+    ? path.join(process.resourcesPath, "app.asar/dist/packed/preload.js")
+    : path.join(import.meta.dirname, "../../../packed/preload.js");
+}
+
+export function getBundlePath(): string {
+  return isProduction()
+    ? path.join(process.resourcesPath, "app.asar/dist")
+    : path.join(import.meta.dirname, "../../..");
+}

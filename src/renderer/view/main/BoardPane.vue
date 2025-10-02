@@ -3,11 +3,16 @@
     <BoardView
       :layout-type="layoutType || appSettings.boardLayoutType"
       :board-image-type="appSettings.boardImage"
-      :custom-board-image-url="appSettings.boardImageFileURL"
+      :custom-board-image-url="
+        appSettings.boardImageFileURL && fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
+      "
       :board-image-opacity="appSettings.enableTransparent ? appSettings.boardOpacity : 1"
       :board-grid-color="appSettings.boardGridColor || undefined"
       :piece-stand-image-type="appSettings.pieceStandImage"
-      :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
+      :custom-piece-stand-image-url="
+        appSettings.pieceStandImageFileURL &&
+        fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
+      "
       :piece-stand-image-opacity="appSettings.enableTransparent ? appSettings.pieceStandOpacity : 1"
       :promotion-selector-style="appSettings.promotionSelectorStyle"
       :board-label-type="appSettings.boardLabelType"
@@ -70,6 +75,7 @@ import {
 } from "@/common/settings/app";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { isMobileWebApp } from "@/renderer/ipc/api";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 defineProps({
   maxSize: {

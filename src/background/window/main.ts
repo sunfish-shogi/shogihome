@@ -11,12 +11,11 @@ import { loadWindowSettings, saveWindowSettings } from "@/background/settings.js
 import { buildWindowSettings } from "@/common/settings/window.js";
 import { getAppLogger } from "@/background/log.js";
 import { AppState } from "@/common/control/state.js";
-import { isDevelopment, isPreview, isTest } from "@/background/proc/env.js";
+import { getPreloadPath, isDevelopment, isTest } from "@/background/proc/env.js";
 import { checkUpdates } from "@/background/version.js";
 import { setupMenu } from "@/background/window/menu.js";
 import { t } from "@/common/i18n/index.js";
 import { ghioDomain } from "@/common/links/github.js";
-import { getPreloadPath, getPreviewHTMLPath, getProductionHTMLPath } from "./path.js";
 
 export function createWindow(onClosed: () => void) {
   let settings = loadWindowSettings();
@@ -75,17 +74,10 @@ export function createWindow(onClosed: () => void) {
         getAppLogger().error(`failed to load dev server URL: ${e}`);
         throw e;
       });
-  } else if (isPreview()) {
-    // Preview
-    getAppLogger().info("load app URL");
-    win.loadFile(getPreviewHTMLPath("index")).catch((e) => {
-      getAppLogger().error(`failed to load app URL: ${e}`);
-      throw e;
-    });
   } else {
-    // Production
+    // Preview or Production
     getAppLogger().info("load app URL");
-    win.loadFile(getProductionHTMLPath("index")).catch((e) => {
+    win.loadURL("app://bundle/index.html").catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });
