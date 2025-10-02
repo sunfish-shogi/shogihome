@@ -3,10 +3,15 @@
     <BoardView
       class="board-view"
       :board-image-type="appSettings.boardImage"
-      :custom-board-image-url="appSettings.boardImageFileURL"
+      :custom-board-image-url="
+        appSettings.boardImageFileURL && fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
+      "
       :board-grid-color="appSettings.boardGridColor || undefined"
       :piece-stand-image-type="appSettings.pieceStandImage"
-      :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
+      :custom-piece-stand-image-url="
+        appSettings.pieceStandImageFileURL &&
+        fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
+      "
       :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
       :king-piece-type="appSettings.kingPieceType"
       :board-label-type="appSettings.boardLabelType"
@@ -90,6 +95,7 @@ import { AppState } from "@/common/control/state";
 import { useMessageStore } from "@/renderer/store/message";
 import DialogFrame from "./DialogFrame.vue";
 import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 const props = defineProps({
   position: {

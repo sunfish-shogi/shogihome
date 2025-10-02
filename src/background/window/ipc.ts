@@ -80,7 +80,7 @@ import {
 } from "@/common/game/csa.js";
 import { CSAServerSettings } from "@/common/settings/csa.js";
 import { isEncryptionAvailable } from "@/background/helpers/encrypt.js";
-import { validateIPCSender } from "./security.js";
+import { validateIPCSender } from "@/background/security/ipc.js";
 import { t } from "@/common/i18n/index.js";
 import { Rect } from "@/common/assets/geometry.js";
 import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.js";

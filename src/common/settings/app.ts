@@ -4,6 +4,7 @@ import { RecordFileFormat } from "@/common/file/record.js";
 import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
 import { BoardLayoutType, PositionImageFontWeight } from "./layout.js";
 import { SearchCommentFormat } from "./comment.js";
+import { fileURLToCustomSchemeURL } from "@/common/url.js";
 
 export enum Thema {
   STANDARD = "standard",
@@ -525,7 +526,9 @@ export function getPieceImageURLTemplate(settings: AppSettings): string {
     case PieceImageType.CUSTOM_IMAGE:
       if (settings.croppedPieceImageBaseURL) {
         const query = settings.croppedPieceImageQuery ? `?${settings.croppedPieceImageQuery}` : "";
-        return settings.croppedPieceImageBaseURL + "/${piece}.png" + query;
+        return (
+          fileURLToCustomSchemeURL(settings.croppedPieceImageBaseURL) + "/${piece}.png" + query
+        );
       }
   }
   return "./piece/hitomoji/${piece}.png";

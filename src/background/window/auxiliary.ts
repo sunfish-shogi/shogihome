@@ -1,7 +1,6 @@
 import { BrowserWindow } from "electron";
-import { isDevelopment, isPreview, isTest } from "@/background/proc/env.js";
+import { getPreloadPath, isDevelopment, isTest } from "@/background/proc/env.js";
 import { getAppLogger } from "@/background/log.js";
-import { getPreloadPath, getPreviewHTMLPath, getProductionHTMLPath } from "./path.js";
 
 export function createAuxiliaryWindow(
   name: string,
@@ -28,9 +27,9 @@ export function createAuxiliaryWindow(
     onClosed(win.webContents.id);
   });
 
+  const params = new URLSearchParams(query);
   if (isDevelopment() || isTest()) {
     // Development
-    const params = new URLSearchParams(query);
     getAppLogger().info("load dev server URL (%s)", name);
     win
       .loadURL("http://localhost:5173/" + name + "?" + params.toString())
@@ -43,17 +42,10 @@ export function createAuxiliaryWindow(
         getAppLogger().error(`failed to load dev server URL: ${e}`);
         throw e;
       });
-  } else if (isPreview()) {
-    // Preview
-    getAppLogger().info("load app URL (%s)", name);
-    win.loadFile(getPreviewHTMLPath(name), { query }).catch((e) => {
-      getAppLogger().error(`failed to load app URL: ${e}`);
-      throw e;
-    });
   } else {
-    // Production
+    // Preview or Production
     getAppLogger().info("load app URL (%s)", name);
-    win.loadFile(getProductionHTMLPath(name), { query }).catch((e) => {
+    win.loadURL(`app://bundle/${name}.html?${params.toString()}`).catch((e) => {
       getAppLogger().error(`failed to load app URL: ${e}`);
       throw e;
     });
