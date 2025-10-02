@@ -203,6 +203,16 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
 
 ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
   validateIPCSender(event.senderFrame);
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      throw new Error();
+    }
+  } catch {
+    sendError(new Error("Invalid URL: External links must start with http:// or https://"));
+    return;
+  }
+  getAppLogger().debug(`open web browser: ${url}`);
   shell.openExternal(url);
 });
 
