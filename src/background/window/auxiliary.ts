@@ -11,8 +11,6 @@ export function createAuxiliaryWindow(
   const win = new BrowserWindow({
     webPreferences: {
       preload: getPreloadPath(),
-      // on development, disable webSecurity to allow mix of "file://" and "http://localhost:5173"
-      webSecurity: !isDevelopment(),
       // NOTE: 現状、子ウィンドウではタイマーの実行が抑制されても困るケースが無いので、スロットリングは有効(デフォルト)にしておく。
       //backgroundThrottling: false,
     },
