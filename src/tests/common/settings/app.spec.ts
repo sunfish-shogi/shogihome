@@ -50,7 +50,7 @@ describe("settings/csa", () => {
         pieceImageFileURL: "/home/user/pictures/piece.png",
         croppedPieceImageBaseURL: "file:///home/user/.cache/piece",
       }),
-    ).toBe("file:///home/user/.cache/piece/${piece}.png");
+    ).toBe("user-file://localhost/home/user/.cache/piece/${piece}.png");
 
     expect(
       getPieceImageURLTemplate({
@@ -60,6 +60,6 @@ describe("settings/csa", () => {
         croppedPieceImageBaseURL: "file:///home/user/.cache/piece",
         croppedPieceImageQuery: "updated=12345",
       }),
-    ).toBe("file:///home/user/.cache/piece/${piece}.png?updated=12345");
+    ).toBe("user-file://localhost/home/user/.cache/piece/${piece}.png?updated=12345");
   });
 });
