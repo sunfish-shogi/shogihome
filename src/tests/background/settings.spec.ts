@@ -60,7 +60,7 @@ describe("background/settings", () => {
     const bookImportSettings = await loadBookImportSettings();
 
     expect(windowSettings).toEqual(defaultWindowSettings());
-    expect(usiEngines.engineList).empty;
+    expect(usiEngines.engineList).toHaveLength(0);
     expect(appSettings).toEqual(
       defaultAppSettings({
         returnCode: process.platform === "win32" ? "\r\n" : "\n",

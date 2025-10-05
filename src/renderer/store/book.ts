@@ -184,30 +184,28 @@ export class BookStore {
       .saveBookImportSettings(settings)
       .then(() => api.importBookMoves(settings))
       .then((summary) => {
+        const items = [
+          {
+            text: t.file,
+            children: [
+              `${t.success}: ${summary.successFileCount}`,
+              `${t.failed}: ${summary.errorFileCount}`,
+              `${t.skipped}: ${summary.skippedFileCount}`,
+            ],
+          },
+        ];
+        if (summary.entryCount !== undefined && summary.duplicateCount !== undefined) {
+          items.push({
+            text: t.moveEntry,
+            children: [
+              `${t.new}: ${summary.entryCount}`,
+              `${t.duplicated}: ${summary.duplicateCount}`,
+            ],
+          });
+        }
         useMessageStore().enqueue({
           text: t.bookMovesWereImported,
-          attachments: [
-            {
-              type: "list",
-              items: [
-                {
-                  text: t.file,
-                  children: [
-                    `${t.success}: ${summary.successFileCount}`,
-                    `${t.failed}: ${summary.errorFileCount}`,
-                    `${t.skipped}: ${summary.skippedFileCount}`,
-                  ],
-                },
-                {
-                  text: t.moveEntry,
-                  children: [
-                    `${t.new}: ${summary.entryCount}`,
-                    `${t.duplicated}: ${summary.duplicateCount}`,
-                  ],
-                },
-              ],
-            },
-          ],
+          attachments: [{ type: "list", items }],
           withCopyButton: true,
         });
         return this.reloadBookMoves();

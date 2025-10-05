@@ -83,7 +83,7 @@ GitHub アカウントをお持ちでない場合は [送信フォーム](https:
 ```
 git clone https://github.com/sunfish-shogi/shogihome.git
 cd shogihome
-npm install
+npm ci
 ```
 
 ### Launch

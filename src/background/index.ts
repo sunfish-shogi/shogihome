@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, BrowserWindow, session, Menu, dialog } from "electron";
+import { app, BrowserWindow, session, Menu, dialog, protocol } from "electron";
 import { loadAppSettingsOnce } from "@/background/settings.js";
 import {
   getAppLogger,
@@ -9,7 +9,13 @@ import {
   shutdownLoggers,
 } from "@/background/log.js";
 import { isActiveSessionExists, quitAll as usiQuitAll } from "@/background/usi/index.js";
-import { validateHTTPRequest } from "./window/security.js";
+import {
+  APP_SCHEME,
+  FILE_SCHEME,
+  handleApp,
+  handleUserFile,
+  validateHTTPRequest,
+} from "./security/http.js";
 import { getPortableExeDir, isDevelopment, isPortable, isTest } from "@/background/proc/env.js";
 import { setLanguage, t } from "@/common/i18n/index.js";
 import { parseProcessArgs } from "./proc/args.js";
@@ -142,6 +148,9 @@ app.on("web-contents-created", (_, contents) => {
   contents.on("will-navigate", (event) => {
     event.preventDefault();
   });
+  contents.on("will-attach-webview", (event) => {
+    event.preventDefault();
+  });
   contents.setWindowOpenHandler(() => {
     return { action: "deny" };
   });
@@ -169,10 +178,12 @@ const dockMenu = Menu.buildFromTemplate([
   },
 ]);
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on("ready", () => {
+protocol.registerSchemesAsPrivileged([APP_SCHEME, FILE_SCHEME]);
+
+app.whenReady().then(() => {
+  protocol.handle(APP_SCHEME.scheme, handleApp);
+  protocol.handle(FILE_SCHEME.scheme, handleUserFile);
+
   if (isDevelopment()) {
     getAppLogger().info("install Vue3 Dev Tools");
     // Install Vue DevTools

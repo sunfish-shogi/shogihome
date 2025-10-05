@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import fs from "node:fs";
 
 function checkPackageJson(packageJsonPath: string) {

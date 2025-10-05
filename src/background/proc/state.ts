@@ -36,9 +36,6 @@ export async function collectOSState(): Promise<OSState> {
     cpuTotalTime,
     cpuIdleTime,
     memoryTotal: mem.total,
-    // TODO:
-    //   macOS では Activity Monitor に近い値が出せないので非表示にしておく
-    //   Electron に追加予定の mem.purgeable を加えると Activity Monitor に近い値が出せるようになる
-    memoryFree: process.platform === "darwin" ? undefined : mem.free,
+    memoryFree: mem.free + (process.platform === "darwin" ? mem.fileBacked : 0),
   };
 }

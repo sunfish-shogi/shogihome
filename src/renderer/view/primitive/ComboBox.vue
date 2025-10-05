@@ -5,7 +5,7 @@
         <option v-for="option in options" :key="option.value" :value="option.value">
           {{ option.label }}
         </option>
-        <option value="__FREE_TEXT__">{{ freeTextLabel }}</option>
+        <option value="__FREE_TEXT__">{{ t.freeTextUnsafe }}</option>
       </select>
       <input v-show="selected === '__FREE_TEXT__'" v-model="freeInput" type="text" />
     </div>
@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { t } from "@/common/i18n";
 import { PropType, ref, watch } from "vue";
 
 type Option = {
@@ -28,10 +29,6 @@ const props = defineProps({
   options: {
     type: Array as PropType<Option[]>,
     required: true,
-  },
-  freeTextLabel: {
-    type: String,
-    default: "自由入力",
   },
 });
 

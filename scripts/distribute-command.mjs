@@ -14,24 +14,32 @@ const readmeSrcFilePath = path.join(srcDir, "README.md");
 const readmeDistFilePath = path.join(distDir, "README.md");
 const licenseSrcFilePath = path.join("LICENSE");
 const licenseDistFilePath = path.join(distDir, "LICENSE");
+const e2eSrcDir = path.join(srcDir, "e2e");
+const e2eDistDir = path.join(distDir, "e2e");
 
 const commonPackageJson = JSON.parse(fs.readFileSync(packageJsonFileName, "utf8"));
 const packageJson = {
-  ...commonPackageJson,
   name,
+  version: commonPackageJson.version,
   description: `command line tool derived from ShogiHome(https://github.com/sunfish-shogi/shogihome)`,
+  author: commonPackageJson.author,
+  license: commonPackageJson.license,
   private: false,
+  repository: commonPackageJson.repository,
+  keywords: commonPackageJson.keywords,
+  bugs: commonPackageJson.bugs,
   publishConfig: {
     access: "public",
   },
-  homepage:
-    "https://github.com/sunfish-shogi/shogihome/blob/main/src/command/usi-csa-bridge#readme",
+  homepage: `https://github.com/sunfish-shogi/shogihome/blob/main/src/command/${name}#readme`,
   type: "commonjs",
   main: "index.js",
   bin: {
     cli: "index.js",
   },
+  files: ["LICENSE", "README.md", "index.js", "package.json"],
   scripts: {},
+  dependencies: commonPackageJson.dependencies,
   devDependencies: {},
 };
 depcheck(distDir, {
@@ -45,6 +53,10 @@ depcheck(distDir, {
 
 fs.copyFileSync(readmeSrcFilePath, readmeDistFilePath);
 fs.copyFileSync(licenseSrcFilePath, licenseDistFilePath);
+
+if (fs.existsSync(e2eSrcDir)) {
+  fs.cpSync(e2eSrcDir, e2eDistDir, { recursive: true });
+}
 
 // Check if 'electron' is found in the program file
 const program = fs.readFileSync(programFilePath, "utf-8");

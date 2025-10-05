@@ -552,11 +552,18 @@ export async function importBookMoves(
     successFileCount++;
   }
 
+  if (bookRef.type === "in-memory") {
+    return {
+      successFileCount,
+      errorFileCount,
+      skippedFileCount,
+      entryCount,
+      duplicateCount,
+    };
+  }
   return {
     successFileCount,
     errorFileCount,
     skippedFileCount,
-    entryCount,
-    duplicateCount,
   };
 }

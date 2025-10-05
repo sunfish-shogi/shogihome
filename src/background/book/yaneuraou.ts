@@ -409,7 +409,6 @@ export async function searchYaneuraOuBookMovesOnTheFly(
   let comment = "";
   const moves: BookMove[] = [];
   let i = 0;
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const moveLine = readLineFromBuffer(buffer, read.bytesRead, i);
     i += moveLine.length + 1;

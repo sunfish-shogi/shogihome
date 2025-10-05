@@ -24,10 +24,16 @@
         <div v-else class="game">
           <BoardView
             :board-image-type="appSettings.boardImage"
-            :custom-board-image-url="appSettings.boardImageFileURL"
+            :custom-board-image-url="
+              appSettings.boardImageFileURL &&
+              fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
+            "
             :board-grid-color="appSettings.boardGridColor || undefined"
             :piece-stand-image-type="appSettings.pieceStandImage"
-            :custom-piece-stand-image-url="appSettings.pieceStandImageFileURL"
+            :custom-piece-stand-image-url="
+              appSettings.pieceStandImageFileURL &&
+              fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
+            "
             :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
             :king-piece-type="appSettings.kingPieceType"
             :board-label-type="appSettings.boardLabelType"
@@ -194,6 +200,7 @@ import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useErrorStore } from "@/renderer/store/error";
 import DialogFrame from "./DialogFrame.vue";
 import { PositionImageFontWeight } from "@/common/settings/layout";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;

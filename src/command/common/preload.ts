@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { LogDestination, getAppLogger, setLogDestinations } from "@/background/log.js";
 import {
+  setSessionRemoveDelay as setCSASessionRemoveDelay,
   login as csaLogin,
   logout as csaLogout,
   agree as csaAgree,
@@ -11,6 +12,7 @@ import {
   setHandlers as setCSAHandlers,
 } from "@/background/csa/index.js";
 import {
+  setSessionRemoveDelay as setUSISessionRemoveDelay,
   ready as usiReady,
   setOption as usiSetOption,
   go as usiGo,
@@ -417,13 +419,16 @@ export function preload(config: Config) {
   setLogDestinations(LogType.USI, usiDestinations, config.logLevel);
   setLogDestinations(LogType.CSA, csaDestinations, config.logLevel);
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  setUSISessionRemoveDelay(0);
+  setCSASessionRemoveDelay(0);
+
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const usi = require("@/renderer/players/usi.js");
   setUSIHandlers({
     ...usi,
     sendPromptCommand: () => {},
   });
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const csa = require("@/renderer/store/csa.js");
   setCSAHandlers({
     ...csa,

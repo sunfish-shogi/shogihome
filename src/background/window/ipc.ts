@@ -80,7 +80,7 @@ import {
 } from "@/common/game/csa.js";
 import { CSAServerSettings } from "@/common/settings/csa.js";
 import { isEncryptionAvailable } from "@/background/helpers/encrypt.js";
-import { validateIPCSender } from "./security.js";
+import { validateIPCSender } from "@/background/security/ipc.js";
 import { t } from "@/common/i18n/index.js";
 import { Rect } from "@/common/assets/geometry.js";
 import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.js";
@@ -203,6 +203,16 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
 
 ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
   validateIPCSender(event.senderFrame);
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      throw new Error();
+    }
+  } catch {
+    sendError(new Error("Invalid URL: External links must start with http:// or https://"));
+    return;
+  }
+  getAppLogger().debug(`open web browser: ${url}`);
   shell.openExternal(url);
 });
 
@@ -1006,7 +1016,6 @@ export function onMenuEvent(event: MenuEvent, ...args: any[]): void {
   mainWindow.webContents.send(Renderer.MENU_EVENT, event, ...args);
 }
 
-// FIXME: do not export
 export function updateAppSettings(settings: AppSettingsUpdate): void {
   mainWindow.webContents.send(Renderer.UPDATE_APP_SETTINGS, JSON.stringify(settings));
 }
