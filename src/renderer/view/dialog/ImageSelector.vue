@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <button class="thin select" @click="select">{{ t.select }}</button>
-      <img v-if="url" ref="preview" class="preview" :src="url" />
+      <img v-if="url" ref="preview" class="preview" :src="fileURLToCustomSchemeURL(url)" />
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@ import { t } from "@/common/i18n";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 const props = defineProps({
   defaultUrl: {

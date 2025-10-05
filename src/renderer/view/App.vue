@@ -112,6 +112,7 @@ import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api";
 import { openCopyright } from "@/renderer/helpers/copyright";
 import { installHotKeyForMainWindow } from "@/renderer/devices/hotkey";
 import { DialogPosition } from "@/common/settings/layout";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 const clipboard = ref();
 const appSettings = useAppSettings();
@@ -176,7 +177,8 @@ const style = computed(() => {
         size = "auto";
         break;
     }
-    style["background-image"] = `url("${appSettings.backgroundImageFileURL}")`;
+    style["background-image"] =
+      `url("${fileURLToCustomSchemeURL(appSettings.backgroundImageFileURL)}")`;
     style["background-size"] = size;
   }
   if (store.customLayout?.backgroundColor) {
