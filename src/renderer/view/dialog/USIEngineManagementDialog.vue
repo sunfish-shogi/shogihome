@@ -21,33 +21,48 @@
           {{ t.noEngineRegistered }}
         </div>
         <div
-          v-for="engine in engines"
+          v-for="engine of engines"
           v-show="engine.visible"
           :key="engine.uri"
-          class="row engine"
+          class="column engine"
+          :class="{ highlight: engine.uri === lastAdded }"
           :value="engine.uri"
         >
-          <div class="column">
-            <div class="engine-name" :class="{ highlight: engine.uri === lastAdded }">
-              {{ engine.name }}
-            </div>
-            <div class="row tags">
-              <div
-                v-for="tag of engine.tags"
-                :key="tag.name"
-                class="tag"
-                :style="{ backgroundColor: tag.color }"
-              >
-                {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
-              </div>
-              <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
-            </div>
+          <div class="row">
+            <img
+              v-if="metadataMap[engine.uri]?.engineThumbnailURL"
+              class="thumbnail"
+              :src="fileURLToCustomSchemeURL(metadataMap[engine.uri].engineThumbnailURL)"
+            />
+            <img
+              v-if="metadataMap[engine.uri]?.evalThumbnailURL"
+              class="thumbnail"
+              :src="fileURLToCustomSchemeURL(metadataMap[engine.uri].evalThumbnailURL as string)"
+            />
           </div>
-          <div class="column space-evenly">
-            <div class="row space-evenly">
-              <button @click="openOptions(engine.uri)">{{ t.config }}</button>
-              <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
-              <button @click="remove(engine.uri)">{{ t.remove }}</button>
+          <div class="row">
+            <div class="column">
+              <div class="engine-name">
+                {{ engine.name }}
+              </div>
+              <div class="row tags">
+                <div
+                  v-for="tag of engine.tags"
+                  :key="tag.name"
+                  class="tag"
+                  :style="{ backgroundColor: tag.color }"
+                >
+                  {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
+                </div>
+                <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
+              </div>
+            </div>
+            <div class="column space-evenly">
+              <div class="row space-evenly">
+                <button @click="openOptions(engine.uri)"><Icon :icon="IconType.SETTINGS" /></button>
+                <button @click="duplicate(engine.uri)"><Icon :icon="IconType.COPY" /></button>
+                <button @click="remove(engine.uri)"><Icon :icon="IconType.TRASH" /></button>
+              </div>
             </div>
           </div>
         </div>
@@ -90,7 +105,13 @@
 import { t } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
-import { duplicateEngine, USIEngine, USIEngines, ImmutableUSIEngines } from "@/common/settings/usi";
+import {
+  duplicateEngine,
+  USIEngine,
+  USIEngines,
+  ImmutableUSIEngines,
+  USIEngineMetadataMap,
+} from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { ref, onMounted, computed, onBeforeUnmount, reactive } from "vue";
 import USIEngineOptionsDialog from "@/renderer/view/dialog/USIEngineOptionsDialog.vue";
@@ -100,6 +121,9 @@ import { useBusyState } from "@/renderer/store/busy";
 import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
 import DialogFrame from "./DialogFrame.vue";
 import AddEngineTagDialog from "./AddEngineTagDialog.vue";
+import { fileURLToCustomSchemeURL } from "@/common/url";
+import { IconType } from "@/renderer/assets/icons";
+import Icon from "@/renderer/view/primitive/Icon.vue";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -107,6 +131,7 @@ const list = ref();
 const optionDialog = ref(null as USIEngine | null);
 const mergeDialog = ref(false);
 const usiEngines = ref(new USIEngines());
+const metadataMap = ref({} as USIEngineMetadataMap);
 const filter = ref("");
 const lastAdded = ref("");
 const addTagDialog = ref(false);
@@ -133,7 +158,7 @@ onMounted(async () => {
       childList: true,
       subtree: true,
     });
-    usiEngines.value = await api.loadUSIEngines();
+    [usiEngines.value, metadataMap.value] = await api.loadUSIEngines();
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -329,18 +354,25 @@ const mergeCancel = () => {
   margin-left: 5px;
 }
 .engine {
-  margin: 0px 5px 0px 5px;
-  padding: 5px;
-  border-bottom: 1px solid gray;
+  margin: 5px;
+  padding: 10px;
+  background-color: var(--dialog-card-color);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 }
-.highlight {
-  font-weight: bold;
+.engine.highlight {
+  background-color: var(--dialog-card-highlight-color);
+}
+.engine img.thumbnail {
+  margin: 0 8px 0 0;
+  height: 50px;
+  width: auto;
+  border: 1px solid var(--dialog-border-color);
 }
 .engine-name {
   text-align: left;
+  font-weight: bold;
   width: 450px;
-  margin-top: 5px;
-  margin-right: 10px;
+  margin: 5px 10px 5px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -350,11 +382,11 @@ const mergeCancel = () => {
   flex-wrap: wrap;
 }
 .tag {
-  font-size: 0.8em;
+  font-size: 0.7em;
   line-height: 1.5;
-  margin: 2px 5px 2px 0px;
+  margin: 2px 2px 2px 0px;
   padding: 0px 8px 0px 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   color: white;
   user-select: none;
 }

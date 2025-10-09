@@ -32,7 +32,7 @@ export interface Bridge {
   saveCSAGameSettingsHistory(settings: string): Promise<void>;
   loadMateSearchSettings(): Promise<string>;
   saveMateSearchSettings(settings: string): Promise<void>;
-  loadUSIEngines(): Promise<string>;
+  loadUSIEngines(): Promise<[string, string]>;
   saveUSIEngines(egneins: string): Promise<void>;
   loadBookImportSettings(): Promise<string>;
   saveBookImportSettings(json: string): Promise<void>;

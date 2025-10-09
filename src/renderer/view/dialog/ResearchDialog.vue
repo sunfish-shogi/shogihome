@@ -96,7 +96,7 @@ busyState.retain();
 onMounted(async () => {
   try {
     researchSettings.value = await api.loadResearchSettings();
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
     engineURI.value = researchSettings.value.usi?.uri || "";
     secondaryEngineURIs.value =
       researchSettings.value.secondaries?.map((engine) => engine.usi?.uri || "") || [];

@@ -624,3 +624,10 @@ export async function decompressUSIEngineOptionsClipboardData(
   }
   return data;
 }
+
+export type USIEngineMetadata = {
+  engineThumbnailURL: string;
+  evalThumbnailURL?: string;
+};
+
+export type USIEngineMetadataMap = { [uri: string]: USIEngineMetadata };

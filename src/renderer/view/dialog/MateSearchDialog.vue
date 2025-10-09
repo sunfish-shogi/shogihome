@@ -62,7 +62,7 @@ busyState.retain();
 onMounted(async () => {
   try {
     mateSearchSettings.value = await api.loadMateSearchSettings();
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
     engineURI.value = mateSearchSettings.value.usi?.uri || "";
   } catch (e) {
     useErrorStore().add(e);

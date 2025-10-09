@@ -271,7 +271,7 @@ onMounted(async () => {
   try {
     isEncryptionAvailable.value = await api.isEncryptionAvailable();
     history.value = await api.loadCSAGameSettingsHistory();
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
     const settings = buildCSAGameSettingsByHistory(history.value, 0);
     csaGameSettings.value = JSON.parse(JSON.stringify(settings)); // history を書き換えないために deep copy が必要
     if (csaGameSettings.value.server.blankLinePing) {

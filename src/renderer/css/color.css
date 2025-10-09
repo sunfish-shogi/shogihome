@@ -32,7 +32,9 @@
   --dialog-color: black;
   --dialog-bg-color: #d0d6d0;
   --dialog-border-color: dimgray;
-  --info-dialog-color: white;
+  --dialog-card-color: #dde6dd;
+  --dialog-card-highlight-color: #fefec2;
+  --cialog-color: white;
   --info-dialog-bg-color: #5f8f5f;
   --info-dialog-border-color: white;
   --error-dialog-color: white;
@@ -88,6 +90,8 @@
   --dialog-color: black;
   --dialog-bg-color: #efc4c4;
   --dialog-border-color: #cd6666;
+  --dialog-card-color: #f2d5d5;
+  --dialog-card-highlight-color: #fefec2;
   --info-dialog-color: white;
   --info-dialog-bg-color: #c84e4e;
   --info-dialog-border-color: white;
@@ -144,6 +148,8 @@
   --dialog-color: black;
   --dialog-bg-color: #dbb579;
   --dialog-border-color: #bc6c25;
+  --dialog-card-color: #e0c396;
+  --dialog-card-highlight-color: #fefec2;
   --info-dialog-color: white;
   --info-dialog-bg-color: #bc6c25;
   --info-dialog-border-color: white;
@@ -200,6 +206,8 @@
   --dialog-color: black;
   --dialog-bg-color: #e9e8ef;
   --dialog-border-color: #a6abd0;
+  --dialog-card-color: #f3f3f7;
+  --dialog-card-highlight-color: #fefec2;
   --info-dialog-color: white;
   --info-dialog-bg-color: #2859a6;
   --info-dialog-border-color: white;
@@ -256,6 +264,8 @@
   --dialog-color: white;
   --dialog-bg-color: #222d2d;
   --dialog-border-color: dimgray;
+  --dialog-card-color: #2e3939;
+  --dialog-card-highlight-color: #fefec2;
   --info-dialog-color: white;
   --info-dialog-bg-color: #222d2d;
   --info-dialog-border-color: white;
@@ -312,6 +322,8 @@
   --dialog-color: white;
   --dialog-bg-color: black;
   --dialog-border-color: dimgray;
+  --dialog-card-color: #2f2f2f;
+  --dialog-card-highlight-color: #fefec2;
   --info-dialog-color: white;
   --info-dialog-bg-color: black;
   --info-dialog-border-color: white;

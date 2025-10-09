@@ -56,7 +56,7 @@ busyState.retain();
 
 onMounted(async () => {
   try {
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
