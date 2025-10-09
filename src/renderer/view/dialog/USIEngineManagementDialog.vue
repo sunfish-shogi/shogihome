@@ -351,8 +351,7 @@ const mergeCancel = () => {
   margin: 5px;
   padding: 10px;
   background-color: var(--dialog-card-color);
-  border: 1px solid var(--dialog-border-color);
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
 .engine.highlight {
   background-color: var(--dialog-card-highlight-color);
