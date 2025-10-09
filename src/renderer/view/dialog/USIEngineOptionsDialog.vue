@@ -2,22 +2,28 @@
   <DialogFrame @cancel="cancel">
     <div class="title">{{ t.manageEngines }}</div>
     <div class="form-group">
-      <div class="option-filter">
-        <input v-model.trim="filter" class="filter" :placeholder="t.filterByOptionName" />
+      <div class="option-filter row">
+        <ToggleButton v-model:value="detailed" label="詳細表示" />
+        <input
+          v-show="detailed"
+          v-model.trim="filter"
+          class="filter"
+          :placeholder="t.filterByOptionName"
+        />
       </div>
       <div class="column option-list">
         <!-- 名前 -->
-        <div class="row option">
+        <div v-show="detailed" class="row option">
           <div class="option-name">{{ t.engineName }}</div>
           <div class="option-unchangeable">{{ engine.defaultName }}</div>
         </div>
         <!-- 作者 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="detailed && !filterWords.length" class="row option">
           <div class="option-name">{{ t.author }}</div>
           <div class="option-unchangeable">{{ engine.author }}</div>
         </div>
         <!-- 場所 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="detailed && !filterWords.length" class="row option">
           <div class="option-name">{{ t.enginePath }}</div>
           <div class="option-unchangeable">
             <div>{{ engine.path }}</div>
@@ -30,7 +36,7 @@
           </div>
         </div>
         <!-- 表示名 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="detailed && !filterWords.length" class="row option">
           <div class="option-name">{{ t.displayName }}</div>
           <div class="option-value">
             <input v-model="engine.name" class="option-value-text" type="text" />
@@ -39,7 +45,7 @@
         <!-- オプション -->
         <div
           v-for="(option, index) in options"
-          v-show="optionVisibility[index]"
+          v-show="detailed && optionVisibility[index]"
           :key="option.name"
           class="row option"
         >
@@ -223,6 +229,7 @@ type Option = USIEngineOption & {
 
 const busyState = useBusyState();
 const appSettings = useAppSettings();
+const detailed = ref(false);
 const filter = ref("");
 const filterWords = computed(() => filter.value.split(/ +/).filter((s) => s));
 const engine = ref(emptyUSIEngine());
@@ -416,9 +423,13 @@ const cancel = () => {
 }
 .option-filter {
   margin: 0px 5px 5px 5px;
+  align-items: center;
+}
+.option-filter > *:not(:first-child) {
+  margin-left: 30px;
 }
 .filter {
-  width: 100%;
+  width: 300px;
 }
 .option-name {
   width: 290px;
