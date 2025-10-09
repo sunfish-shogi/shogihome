@@ -21,33 +21,52 @@
           {{ t.noEngineRegistered }}
         </div>
         <div
-          v-for="engine in engines"
+          v-for="(engine, engineIndex) of engines"
           v-show="engine.visible"
           :key="engine.uri"
-          class="row engine"
+          class="column engine"
+          :class="{ highlight: engine.uri === lastAdded }"
           :value="engine.uri"
         >
-          <div class="column">
-            <div class="engine-name" :class="{ highlight: engine.uri === lastAdded }">
-              {{ engine.name }}
-            </div>
-            <div class="row tags">
-              <div
-                v-for="tag of engine.tags"
-                :key="tag.name"
-                class="tag"
-                :style="{ backgroundColor: tag.color }"
-              >
-                {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
-              </div>
-              <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
-            </div>
+          <div class="row icons" :class="{ hidden: engineIndex % 3 === 0 }">
+            <img
+              class="icon"
+              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/yane.png'"
+            />
+            <img
+              class="icon small"
+              :class="{ hidden: engineIndex % 4 === 1 }"
+              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/suisho.png'"
+            />
+            <img
+              class="icon small"
+              :class="{ hidden: engineIndex % 3 === 1 }"
+              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/peta.png'"
+            />
           </div>
-          <div class="column space-evenly">
-            <div class="row space-evenly">
-              <button @click="openOptions(engine.uri)">{{ t.config }}</button>
-              <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
-              <button @click="remove(engine.uri)">{{ t.remove }}</button>
+          <div class="row">
+            <div class="column">
+              <div class="engine-name">
+                {{ engine.name }}
+              </div>
+              <div class="row tags">
+                <div
+                  v-for="tag of engine.tags"
+                  :key="tag.name"
+                  class="tag"
+                  :style="{ backgroundColor: tag.color }"
+                >
+                  {{ tag.name }} <span @click="removeTag(engine.uri, tag.name)">&#x2715;</span>
+                </div>
+                <div class="tag add" @click="showAddTagDialog(engine.uri)">&plus;</div>
+              </div>
+            </div>
+            <div class="column space-evenly">
+              <div class="row space-evenly">
+                <button @click="openOptions(engine.uri)">{{ t.config }}</button>
+                <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
+                <button @click="remove(engine.uri)">{{ t.remove }}</button>
+              </div>
             </div>
           </div>
         </div>
@@ -329,18 +348,32 @@ const mergeCancel = () => {
   margin-left: 5px;
 }
 .engine {
-  margin: 0px 5px 0px 5px;
-  padding: 5px;
-  border-bottom: 1px solid gray;
+  margin: 5px;
+  padding: 10px;
+  background-color: var(--dialog-card-color);
+  border: 1px solid var(--dialog-border-color);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 }
-.highlight {
-  font-weight: bold;
+.engine.highlight {
+  background-color: var(--dialog-card-highlight-color);
+}
+.engine .icons {
+  align-items: end;
+}
+.engine .icons img.icon {
+  margin: 0 8px 0 0;
+  height: 50px;
+  width: auto;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+.engine .icons img.icon.small {
+  height: 50px;
 }
 .engine-name {
   text-align: left;
+  font-weight: bold;
   width: 450px;
-  margin-top: 5px;
-  margin-right: 10px;
+  margin: 5px 10px 5px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -350,11 +383,11 @@ const mergeCancel = () => {
   flex-wrap: wrap;
 }
 .tag {
-  font-size: 0.8em;
+  font-size: 0.7em;
   line-height: 1.5;
-  margin: 2px 5px 2px 0px;
+  margin: 2px 2px 2px 0px;
   padding: 0px 8px 0px 8px;
-  border-radius: 8px;
+  border-radius: 6px;
   color: white;
   user-select: none;
 }
