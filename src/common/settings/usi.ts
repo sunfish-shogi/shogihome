@@ -14,6 +14,7 @@ export const Threads = "Threads";
 export const NumberOfThreads = "NumberOfThreads";
 export const MultiPV = "MultiPV";
 export const StochasticPonder = "Stochastic_Ponder";
+export const FVScale = "FV_SCALE";
 
 export type USIEngineOptionType = "check" | "spin" | "combo" | "button" | "string" | "filename";
 

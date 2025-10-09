@@ -141,6 +141,7 @@ export interface Bridge {
   showSelectDirectoryDialog(defaultPath?: string): Promise<string>;
   openExplorer(path: string): void;
   openWebBrowser(url: string): void;
+  getMachineSpec(): Promise<string>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<string>;
   sendTestNotification(): void;

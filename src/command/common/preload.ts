@@ -377,6 +377,9 @@ const bridge: Bridge = {
   openWebBrowser() {
     throw new Error("This feature is not available on command line tool");
   },
+  async getMachineSpec(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async isEncryptionAvailable(): Promise<boolean> {
     return false;
   },

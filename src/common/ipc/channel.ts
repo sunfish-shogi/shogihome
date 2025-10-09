@@ -79,6 +79,7 @@ export enum Background {
   SETUP_PROMPT = "setupPrompt",
   OPEN_PROMPT = "openPrompt",
   INVOKE_PROMPT_COMMAND = "invokePromptCommand",
+  GET_MACHINE_SPEC = "getMachineSpec",
   IS_ENCRYPTION_AVAILABLE = "isEncryptionAvailable",
   GET_VERSION_STATUS = "getVersionStatus",
   SEND_TEST_NOTIFICATION = "sendTestNotification",

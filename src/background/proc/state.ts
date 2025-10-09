@@ -1,5 +1,5 @@
 import os from "node:os";
-import { OSState } from "@/common/advanced/monitor";
+import { MachineSpec, OSState } from "@/common/advanced/monitor";
 
 function getOSVersion() {
   const osVersion = process.getSystemVersion();
@@ -17,7 +17,7 @@ function getOSVersion() {
 
 let osVersion = "";
 
-export async function collectOSState(): Promise<OSState> {
+export function collectOSState(): OSState {
   if (!osVersion) {
     osVersion = getOSVersion();
   }
@@ -37,5 +37,13 @@ export async function collectOSState(): Promise<OSState> {
     cpuIdleTime,
     memoryTotal: mem.total,
     memoryFree: mem.free + (process.platform === "darwin" ? mem.fileBacked : 0),
+  };
+}
+
+export function getMachineSpec(): MachineSpec {
+  const cpus = os.cpus();
+  return {
+    cpuCores: cpus.length,
+    memory: os.totalmem() / 1024,
   };
 }

@@ -194,6 +194,9 @@ class AppSettingsStore {
   get nodeCountFormat(): NodeCountFormat {
     return this.merged.nodeCountFormat;
   }
+  get showEngineOptionDetails(): boolean {
+    return this.merged.showEngineOptionDetails;
+  }
   get evaluationViewFrom(): EvaluationViewFrom {
     return this.merged.evaluationViewFrom;
   }
