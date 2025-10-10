@@ -113,7 +113,7 @@ busyState.retain();
 onMounted(async () => {
   try {
     settings.value = await api.loadAnalysisSettings();
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
     engineURI.value = settings.value.usi?.uri || "";
   } catch (e) {
     useErrorStore().add(e);

@@ -21,27 +21,23 @@
           {{ t.noEngineRegistered }}
         </div>
         <div
-          v-for="(engine, engineIndex) of engines"
+          v-for="engine of engines"
           v-show="engine.visible"
           :key="engine.uri"
           class="column engine"
           :class="{ highlight: engine.uri === lastAdded }"
           :value="engine.uri"
         >
-          <div class="row icons" :class="{ hidden: engineIndex % 3 === 0 }">
+          <div class="row">
             <img
-              class="icon"
-              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/yane.png'"
+              v-if="metadataMap[engine.uri]?.engineThumbnailURL"
+              class="thumbnail"
+              :src="fileURLToCustomSchemeURL(metadataMap[engine.uri].engineThumbnailURL)"
             />
             <img
-              class="icon small"
-              :class="{ hidden: engineIndex % 4 === 1 }"
-              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/suisho.png'"
-            />
-            <img
-              class="icon small"
-              :class="{ hidden: engineIndex % 3 === 1 }"
-              :src="'user-file://localhost/Users/sunfish/Desktop/sample_img/peta.png'"
+              v-if="metadataMap[engine.uri]?.evalThumbnailURL"
+              class="thumbnail"
+              :src="fileURLToCustomSchemeURL(metadataMap[engine.uri].evalThumbnailURL as string)"
             />
           </div>
           <div class="row">
@@ -109,7 +105,13 @@
 import { t } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
-import { duplicateEngine, USIEngine, USIEngines, ImmutableUSIEngines } from "@/common/settings/usi";
+import {
+  duplicateEngine,
+  USIEngine,
+  USIEngines,
+  ImmutableUSIEngines,
+  USIEngineMetadataMap,
+} from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { ref, onMounted, computed, onBeforeUnmount, reactive } from "vue";
 import USIEngineOptionsDialog from "@/renderer/view/dialog/USIEngineOptionsDialog.vue";
@@ -119,6 +121,7 @@ import { useBusyState } from "@/renderer/store/busy";
 import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
 import DialogFrame from "./DialogFrame.vue";
 import AddEngineTagDialog from "./AddEngineTagDialog.vue";
+import { fileURLToCustomSchemeURL } from "@/common/url";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -126,6 +129,7 @@ const list = ref();
 const optionDialog = ref(null as USIEngine | null);
 const mergeDialog = ref(false);
 const usiEngines = ref(new USIEngines());
+const metadataMap = ref({} as USIEngineMetadataMap);
 const filter = ref("");
 const lastAdded = ref("");
 const addTagDialog = ref(false);
@@ -152,7 +156,7 @@ onMounted(async () => {
       childList: true,
       subtree: true,
     });
-    usiEngines.value = await api.loadUSIEngines();
+    [usiEngines.value, metadataMap.value] = await api.loadUSIEngines();
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -351,22 +355,16 @@ const mergeCancel = () => {
   margin: 5px;
   padding: 10px;
   background-color: var(--dialog-card-color);
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 }
 .engine.highlight {
   background-color: var(--dialog-card-highlight-color);
 }
-.engine .icons {
-  align-items: end;
-}
-.engine .icons img.icon {
+.engine img.thumbnail {
   margin: 0 8px 0 0;
   height: 50px;
   width: auto;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-}
-.engine .icons img.icon.small {
-  height: 50px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
 }
 .engine-name {
   text-align: left;

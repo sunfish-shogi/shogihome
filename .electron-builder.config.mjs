@@ -22,6 +22,7 @@ const config = {
     "dist/piece",
     "dist/sound",
     "dist/stand",
+    "dist/thumbnail",
     "dist/index.html",
     "dist/prompt.html",
     "dist/monitor.html",

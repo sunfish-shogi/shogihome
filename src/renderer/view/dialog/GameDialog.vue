@@ -278,7 +278,7 @@ busyState.retain();
 onMounted(async () => {
   try {
     gameSettings.value = await api.loadGameSettings();
-    engines.value = await api.loadUSIEngines();
+    [engines.value] = await api.loadUSIEngines();
     blackPlayerURI.value = gameSettings.value.black.uri;
     whitePlayerURI.value = gameSettings.value.white.uri;
     hours.value = Math.floor(gameSettings.value.timeLimit.timeSeconds / 3600);

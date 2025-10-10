@@ -83,7 +83,7 @@ const api: Bridge = {
   async saveMateSearchSettings(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_MATE_SEARCH_SETTINGS, json);
   },
-  async loadUSIEngines(): Promise<string> {
+  async loadUSIEngines(): Promise<[string, string]> {
     return await ipcRenderer.invoke(Background.LOAD_USI_ENGINES);
   },
   async saveUSIEngines(json: string): Promise<void> {

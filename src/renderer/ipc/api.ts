@@ -1,4 +1,4 @@
-import { USIEngine, USIEngines } from "@/common/settings/usi.js";
+import { USIEngine, USIEngineMetadataMap, USIEngines } from "@/common/settings/usi.js";
 import { GameSettings } from "@/common/settings/game.js";
 import { AppSettings } from "@/common/settings/app.js";
 import { webAPI } from "./web.js";
@@ -49,7 +49,7 @@ export interface API {
   saveCSAGameSettingsHistory(settings: CSAGameSettingsHistory): Promise<void>;
   loadMateSearchSettings(): Promise<MateSearchSettings>;
   saveMateSearchSettings(settings: MateSearchSettings): Promise<void>;
-  loadUSIEngines(): Promise<USIEngines>;
+  loadUSIEngines(): Promise<[USIEngines, USIEngineMetadataMap]>;
   saveUSIEngines(usiEngines: USIEngines): Promise<void>;
   loadBookImportSettings(): Promise<BookImportSettings>;
   saveBookImportSettings(settings: BookImportSettings): Promise<void>;
@@ -211,8 +211,9 @@ const api: API = {
   async loadRecordFileHistory(): Promise<RecordFileHistory> {
     return JSON.parse(await bridge.loadRecordFileHistory());
   },
-  async loadUSIEngines(): Promise<USIEngines> {
-    return new USIEngines(await bridge.loadUSIEngines());
+  async loadUSIEngines(): Promise<[USIEngines, USIEngineMetadataMap]> {
+    const [engines, meta] = await bridge.loadUSIEngines();
+    return [new USIEngines(engines), JSON.parse(meta)];
   },
   saveUSIEngines(usiEngines: USIEngines): Promise<void> {
     return bridge.saveUSIEngines(usiEngines.json);

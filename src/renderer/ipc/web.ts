@@ -3,7 +3,7 @@ import { defaultAnalysisSettings } from "@/common/settings/analysis.js";
 import { defaultAppSettings } from "@/common/settings/app.js";
 import { defaultGameSettings } from "@/common/settings/game.js";
 import { defaultResearchSettings } from "@/common/settings/research.js";
-import { USIEngines } from "@/common/settings/usi.js";
+import { USIEngineMetadataMap, USIEngines } from "@/common/settings/usi.js";
 import { LogLevel } from "@/common/log.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
 import { t } from "@/common/i18n/index.js";
@@ -150,8 +150,8 @@ export const webAPI: Bridge = {
   async saveMateSearchSettings(json: string): Promise<void> {
     localStorage.setItem(STORAGE_KEY.MATE_SEARCH_SETTINGS, json);
   },
-  async loadUSIEngines(): Promise<string> {
-    return new USIEngines().json;
+  async loadUSIEngines(): Promise<[string, string]> {
+    return [new USIEngines().json, JSON.stringify({} as USIEngineMetadataMap)];
   },
   async saveUSIEngines(): Promise<void> {
     // Do Nothing

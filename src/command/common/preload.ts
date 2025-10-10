@@ -99,7 +99,7 @@ const bridge: Bridge = {
   async saveMateSearchSettings(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
-  async loadUSIEngines(): Promise<string> {
+  async loadUSIEngines(): Promise<[string, string]> {
     throw new Error("This feature is not available on command line tool");
   },
   async saveUSIEngines(): Promise<void> {
