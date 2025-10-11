@@ -59,9 +59,9 @@
             </div>
             <div class="column space-evenly">
               <div class="row space-evenly">
-                <button @click="openOptions(engine.uri)">{{ t.config }}</button>
-                <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
-                <button @click="remove(engine.uri)">{{ t.remove }}</button>
+                <button @click="openOptions(engine.uri)"><Icon :icon="IconType.SETTINGS" /></button>
+                <button @click="duplicate(engine.uri)"><Icon :icon="IconType.COPY" /></button>
+                <button @click="remove(engine.uri)"><Icon :icon="IconType.TRASH" /></button>
               </div>
             </div>
           </div>
@@ -122,6 +122,8 @@ import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
 import DialogFrame from "./DialogFrame.vue";
 import AddEngineTagDialog from "./AddEngineTagDialog.vue";
 import { fileURLToCustomSchemeURL } from "@/common/url";
+import { IconType } from "@/renderer/assets/icons";
+import Icon from "@/renderer/view/primitive/Icon.vue";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -364,7 +366,7 @@ const mergeCancel = () => {
   margin: 0 8px 0 0;
   height: 50px;
   width: auto;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--dialog-border-color);
 }
 .engine-name {
   text-align: left;

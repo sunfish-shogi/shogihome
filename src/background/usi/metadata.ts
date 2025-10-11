@@ -5,6 +5,7 @@ import {
   USIEngines,
 } from "@/common/settings/usi.js";
 import path from "node:path";
+import fs from "node:fs";
 import { pathToFileURL } from "node:url";
 import { exists } from "@/background/helpers/file.js";
 
@@ -25,6 +26,25 @@ async function getEngineThumbnailPath(engine: USIEngine): Promise<string> {
   const engineThumbnailPath = path.join(engineRoot, "thumbnail.png");
   if (await exists(engineThumbnailPath)) {
     return pathToFileURL(engineThumbnailPath).toString();
+  }
+
+  // script
+  if ([".bat", ".cmd", ".sh", ".py"].includes(path.extname(engine.path).toLowerCase())) {
+    return "thumbnail/script.png";
+  }
+
+  // script (shebang)
+  try {
+    const shebangBuffer = Buffer.alloc(2);
+    const fd = await fs.promises.open(engine.path, "r");
+    await fd.read(shebangBuffer, 0, 2, 0);
+    await fd.close();
+    // #(0x23) !(0x21)
+    if (shebangBuffer[0] === 0x23 && shebangBuffer[1] === 0x21) {
+      return "thumbnail/script.png";
+    }
+  } catch {
+    // ignore
   }
 
   return "thumbnail/engine_default.png";
