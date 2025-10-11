@@ -183,18 +183,18 @@ export const vi: Texts = {
   analysis: "Phân tích",
   analyze: "Phân tích",
   stopAnalysis: "Dừng phân tích",
-  searchDuplicatePositions: "同一局面を検索", // TODO: Translate
-  duplicatePositionSearch: "同一局面検索", // TODO: Translate
-  duplicatePositions: "同一局面", // TODO: Translate
-  duplicatePos: "同一局面", // TODO: Translate
-  via: "経路", // TODO: Translate
-  lastMove: "直前の指し手", // TODO: Translate
-  nextMoves: "次の指し手", // TODO: Translate
-  goToThisPosition: "この局面へ移動", // TODO: Translate
-  noDuplicatePositions: "重複する局面はありません。", // TODO: Translate
-  nDuplicatePositionsFound: (n: number) => `${n} 件の重複する局面が見つかりました。`, // TODO: Translate
-  appearanceCount: "出現数", // TODO: Translate
-  showList: "一覧を表示", // TODO: Translate
+  searchDuplicatePositions: "Tìm thế cờ lặp lại",
+  duplicatePositionSearch: "Tìm thế cờ lặp lại",
+  duplicatePositions: "Thế cờ lặp lại", 
+  duplicatePos: "Lặp lại",
+  via: "Thông qua",
+  lastMove: "Nước liền trước",
+  nextMoves: "Nước liền sau",
+  goToThisPosition: "Đi đến thế cờ này", 
+  noDuplicatePositions: "Không có thế cờ lặp lại.",
+  nDuplicatePositionsFound: (n: number) => `Tìm thấy ${n} thế cờ lặp lại.`, 
+  appearanceCount: "Số lần lặp lại",
+  showList: "Hiện tất cả",
   setupPosition: "Xếp thế cờ",
   startPositionSetup: "Bắt đầu xếp thế cờ",
   completePositionSetup: "Hoàn tất xếp thế cờ",
@@ -266,8 +266,8 @@ export const vi: Texts = {
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
   pasteDialog: "Hộp thoại dán",
-  liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
-  onTheFlyThreshold: "On-the-fly 閾値", // TODO: Translate
+  liveDuplicatePositionDetection: "Tự động tìm thế cờ lặp lại",
+  onTheFlyThreshold: "Giá trị On-the-fly", 
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",
   functionalOnJapaneseOnly: "Chỉ dùng cho bản tiếng Nhật",
@@ -373,7 +373,7 @@ export const vi: Texts = {
   fromSuffix: "",
   toPrefix: "tới",
   toSuffix: "",
-  plyPrefix: "Nước thứ",
+  plyPrefix: "Nước thứ ",
   plySuffix: "",
   hoursSuffix: "h",
   minutesSuffix: "p",
@@ -463,7 +463,7 @@ export const vi: Texts = {
   filterByOptionName: "Lọc theo tên tùy chọn",
   filterByEngineName: "Lọc theo tên phần mềm",
   bookStyle: "Kiểu sách",
-  bookStyleDiagram: "書籍風局面図", // TODO: Translate
+  bookStyleDiagram: "Hình cờ kiểu sách",
   gameStyle: "Kiểu bàn cờ",
   thin: "Mảnh",
   bold: "Đậm",
@@ -633,8 +633,8 @@ export const vi: Texts = {
     "Nếu nó không hoạt động, vui lòng cho phép thông báo trong tùy chọn hệ điều hành.",
   translationHelpNeeded: "Chúng tôi cần bạn giúp đỡ phiên dịch.",
   restartRequiredAfterLocaleChange: "Khởi động lại ứng dụng để áp dụng ngôn ngữ.",
-  createDesktopShortcut: "デスクトップにショートカットを作成", // TODO: Translate
-  desktopShortcutCreated: "デスクトップにショートカットを作成しました。", // TODO: Translate
+  createDesktopShortcut: "Tạo lối tắt trên desktop",
+  desktopShortcutCreated: "Đã tạo lối tắt trên desktop.", 
   areYouSureWantToResign: "Bạn có thật sự muốn đầu hàng không?",
   areYouSureWantToDoDeclaration: "Bạn có thật sự muốn tuyên bố không?",
   areYouSureWantToQuitGames: "Bạn có thật sự muốn bỏ ván không?",
@@ -648,8 +648,8 @@ export const vi: Texts = {
   yamlFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng YAML.",
   jsonFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng JSON.",
   usiCsaBridgeCommandCopiedToClipboard: "Lệnh usi-csa-bridge đã được sao chép.",
-  copiedToClipboard: "クリップボードにコピーしました。", // TODO: Translate
-  pastedFromClipboard: "クリップボードから貼り付けました。", // TODO: Translate
+  copiedToClipboard: "Đã sao chép vào bảng tạm.", 
+  pastedFromClipboard: "Đã dán từ bảng tạm.", 
   youCanNotCloseAppWhileCSAOnlineGame: "Bạn không thể đóng ứng dụng trong khi đang có ván CSA.",
   fileExtensionNotSupported: "Không hỗ trợ định dạng này.",
   errorOccuredWhileDisconnectingFromCSAServer: "Đã có lỗi trong khi ngắt kết nối khỏi máy chủ CSA.",
@@ -733,8 +733,8 @@ export const vi: Texts = {
   bookMovesWereImported: "Dữ liệu định thức đã được nhập thành công.",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
-  cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。", // TODO: Translate
-  pleaseSpecifyOtherFileName: "別のファイル名を指定してください。", // TODO: Translate
+  cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.", 
+  pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.", 
   sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.",
   sourceDirectoryNotSet: "Vui lòng chọn một tập tin.",
   minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.",
