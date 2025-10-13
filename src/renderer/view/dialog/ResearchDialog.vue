@@ -25,6 +25,18 @@
           {{ t.remove }}
         </button>
       </div>
+      <div v-if="cpuUsage > 1.0" class="form-group danger">
+        {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
+      </div>
+      <div v-else-if="cpuUsage > 0.75" class="form-group warning">
+        {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(75) }}
+      </div>
+      <div v-if="memoryUsage > 1.0" class="form-group danger">
+        {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
+      </div>
+      <div v-else-if="memoryUsage > 0.9" class="form-group warning">
+        {{ t.totalUSIHashExceedsNPercentOfMemory(90) }}
+      </div>
       <button class="center thin" @click="secondaryEngineURIs.push('')">
         <Icon :icon="IconType.ADD" />
         {{ t.addNthEngine(secondaryEngineURIs.length + 2) }}
@@ -73,9 +85,15 @@ import {
   ResearchSettings,
   validateResearchSettings,
 } from "@/common/settings/research";
-import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
+import {
+  getPredefinedUSIEngineTag,
+  getUSIEngineOptionCurrentValue,
+  getUSIEngineThreads,
+  USIEngines,
+  USIHash,
+} from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -83,6 +101,7 @@ import { IconType } from "@/renderer/assets/icons";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "./DialogFrame.vue";
+import { MachineSpec } from "@/common/advanced/monitor";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -90,6 +109,7 @@ const researchSettings = ref(defaultResearchSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
 const secondaryEngineURIs = ref([] as string[]);
+const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 
 busyState.retain();
 
@@ -100,12 +120,43 @@ onMounted(async () => {
     engineURI.value = researchSettings.value.usi?.uri || "";
     secondaryEngineURIs.value =
       researchSettings.value.secondaries?.map((engine) => engine.usi?.uri || "") || [];
+    machineSpec.value = await api.getMachineSpec();
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
   } finally {
     busyState.release();
   }
+});
+
+const cpuUsage = computed(() => {
+  let threadsSum = 0;
+  for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
+    const engine = engines.value.getEngine(uri);
+    if (!engine) {
+      continue;
+    }
+    const threads = getUSIEngineThreads(engine);
+    if (typeof threads === "number") {
+      threadsSum += threads;
+    }
+  }
+  return threadsSum / machineSpec.value.cpuCores;
+});
+
+const memoryUsage = computed(() => {
+  let usiHashSum = 0;
+  for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
+    const engine = engines.value.getEngine(uri);
+    if (!engine) {
+      continue;
+    }
+    const usiHash = getUSIEngineOptionCurrentValue(engine.options[USIHash]);
+    if (typeof usiHash === "number") {
+      usiHashSum += usiHash;
+    }
+  }
+  return (usiHashSum * 1024) / machineSpec.value.memory;
 });
 
 const onStart = () => {

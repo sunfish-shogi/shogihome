@@ -808,10 +808,16 @@ export const en: Texts = {
   cpuUsageExceedsNPercent(n: number): string {
     return `CPU usage exceeds ${n}%.`;
   },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `The total number of threads exceeds ${n}% of CPU cores.`;
+  },
   memoryUsageExceedsNPercent(n: number): string {
     return `Memory usage exceeds ${n}%.`;
   },
   memoryUsageIsLessThanNPercent(n: number): string {
     return `Memory usage is less than ${n}%.`;
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `The total USI_Hash exceeds ${n}% of memory.`;
   },
 };

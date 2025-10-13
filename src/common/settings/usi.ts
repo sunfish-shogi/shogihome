@@ -84,14 +84,14 @@ export function getUSIEngineThreads(engine: USIEngine): number | undefined {
   const value =
     getUSIEngineOptionCurrentValue(engine.options[Threads]) ||
     getUSIEngineOptionCurrentValue(engine.options[NumberOfThreads]);
-  return value as number | undefined;
+  return typeof value === "number" ? value : undefined;
 }
 
 export function getUSIEngineMultiPV(engine: USIEngine): number | undefined {
   const value =
     getUSIEngineOptionCurrentValue(engine.options[USIMultiPV]) ||
     getUSIEngineOptionCurrentValue(engine.options[MultiPV]);
-  return value as number | undefined;
+  return typeof value === "number" ? value : undefined;
 }
 
 export function getUSIEngineStochasticPonder(engine: USIEngine): boolean {

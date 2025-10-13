@@ -807,10 +807,16 @@ export const ja: Texts = {
   cpuUsageExceedsNPercent(n: number): string {
     return `全CPUコアの${n}%を超えています。`;
   },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%を超えています。`;
+  },
   memoryUsageExceedsNPercent(n: number): string {
     return `全メモリの${n}%を超えています。`;
   },
   memoryUsageIsLessThanNPercent(n: number): string {
     return `全メモリの${n}%未満です。`;
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `USI_Hash の合計が全メモリの${n}%を超えています。`;
   },
 };

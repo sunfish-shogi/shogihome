@@ -750,6 +750,8 @@ export type Texts = {
   youCanExitFullScreenByPressing(key: string): string;
   skippedMovesInMerge(skipped: number, total: number): string;
   cpuUsageExceedsNPercent(n: number): string;
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string;
   memoryUsageExceedsNPercent(n: number): string;
   memoryUsageIsLessThanNPercent(n: number): string;
+  totalUSIHashExceedsNPercentOfMemory(n: number): string;
 };

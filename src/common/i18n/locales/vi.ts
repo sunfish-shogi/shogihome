@@ -803,10 +803,16 @@ export const vi: Texts = {
   cpuUsageExceedsNPercent(n: number): string {
     return `全CPUコアの${n}%を超えています。`; // TODO: Translate
   },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%を超えています。`; // TODO: Translate
+  },
   memoryUsageExceedsNPercent(n: number): string {
     return `全メモリの${n}%を超えています。`; // TODO: Translate
   },
   memoryUsageIsLessThanNPercent(n: number): string {
     return `全メモリの${n}%未満です。`; // TODO: Translate
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
   },
 };
