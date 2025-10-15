@@ -1,6 +1,11 @@
 import { CSAProtocolVersion } from "@/common/settings/csa.js";
 import { Command } from "./command.js";
 
+export type MachineSpec = {
+  cpuCores: number;
+  memory: number;
+};
+
 export type OSState = {
   version: string;
   arch: string;

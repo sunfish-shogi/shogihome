@@ -334,6 +334,7 @@ export const zh_tw: Texts = {
   searchEngine: "引擎",
   ponder: "對方手番時運算 (Ponder)",
   numberOfThreads: "執行緒數",
+  threads: "スレッド", // TODO: Translate
   suggestionsCount: "候補手數量",
   startPosition: "開始局面",
   beginFromThisPosition: "自此局面開始",
@@ -375,6 +376,7 @@ export const zh_tw: Texts = {
   hoursSuffix: "小時",
   minutesSuffix: "分",
   secondsSuffix: "秒",
+  detailSettings: "詳細設定", // TODO: translate
   engineManagement: "引擎管理",
   engineName: "引擎名稱",
   author: "作者",
@@ -732,6 +734,10 @@ export const zh_tw: Texts = {
     "不相容的設定將自動被移除。您確認要更換引擎嗎？",
   largeSuggestionsCountMayCausePerformanceDegradation: "增加候補手可能會導致效能下降。",
   doYouReallyWantToIncreaseTheSuggestionsCount: "您確定要增加候選手數嗎？",
+  recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。", // TODO: Translate
+  aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。", // TODO: Translate
+  yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。", // TODO: Translate
+  increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。", // TODO: Translate
   totalNumber: (n: number) => `總計 ${n} 筆`,
   number: (n: number) => `${n} 筆`,
   tryToReloginToCSAServerNSecondsLater: (n) => `請在${n}秒後再次嘗試登入 CSA 伺服器。`,
@@ -781,5 +787,20 @@ export const zh_tw: Texts = {
   },
   skippedMovesInMerge(skipped: number, total: number): string {
     return `${total}手內之${skipped}手無法被合併。`;
+  },
+  cpuUsageExceedsNPercent(n: number): string {
+    return `全CPUコアの${n}%を超えています。`; // TODO: Translate
+  },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%を超えています。`; // TODO: Translate
+  },
+  memoryUsageExceedsNPercent(n: number): string {
+    return `全メモリの${n}%を超えています。`; // TODO: Translate
+  },
+  memoryUsageIsLessThanNPercent(n: number): string {
+    return `全メモリの${n}%未満です。`; // TODO: Translate
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
   },
 };

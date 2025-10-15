@@ -337,6 +337,7 @@ export const en: Texts = {
   searchEngine: "Search Engine",
   ponder: "Ponder",
   numberOfThreads: "Threads",
+  threads: "Threads",
   suggestionsCount: "Suggestions Count",
   startPosition: "Position",
   beginFromThisPosition: "Begin from this position",
@@ -378,6 +379,7 @@ export const en: Texts = {
   hoursSuffix: "h",
   minutesSuffix: "min",
   secondsSuffix: "sec",
+  detailSettings: "Detail Settings",
   engineManagement: "Engine Management",
   engineName: "Engine Name",
   author: "Author",
@@ -748,6 +750,10 @@ export const en: Texts = {
     "Large suggestions count may cause performance degradation.",
   doYouReallyWantToIncreaseTheSuggestionsCount:
     "Do you really want to increase the suggestions count?",
+  recommendLowerSettingsForDailyUse: "Recommend lower settings for daily use.",
+  aiPerformanceMayDegrade: "AI performance may degrade.",
+  yourPCMayBecomeSlow: "Your PC may become slow.",
+  increasingItMayImproveAIPerformance: "Increasing it may improve AI performance.",
   totalNumber: (n: number) => `Total: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Try to relogin to the CSA server in ${n} seconds.`,
@@ -798,5 +804,20 @@ export const en: Texts = {
   },
   skippedMovesInMerge(skipped: number, total: number): string {
     return `${skipped} / ${total} moves were skipped in the merge.`;
+  },
+  cpuUsageExceedsNPercent(n: number): string {
+    return `CPU usage exceeds ${n}%.`;
+  },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `The total number of threads exceeds ${n}% of CPU cores.`;
+  },
+  memoryUsageExceedsNPercent(n: number): string {
+    return `Memory usage exceeds ${n}%.`;
+  },
+  memoryUsageIsLessThanNPercent(n: number): string {
+    return `Memory usage is less than ${n}%.`;
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `The total USI_Hash exceeds ${n}% of memory.`;
   },
 };

@@ -12,7 +12,7 @@ import { defaultMateSearchSettings } from "@/common/settings/mate.js";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
 import { getEmptyHistory } from "@/common/file/history.js";
 import { VersionStatus } from "@/common/version.js";
-import { blankOSState, SessionStates } from "@/common/advanced/monitor.js";
+import { blankOSState, SessionStates, MachineSpec } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
@@ -466,6 +466,10 @@ export const webAPI: Bridge = {
   },
   openWebBrowser(url: string) {
     window.open(url, "_blank");
+  },
+  async getMachineSpec(): Promise<string> {
+    const spec: MachineSpec = { cpuCores: 1, memory: 1024 ** 2 };
+    return JSON.stringify(spec);
   },
   async isEncryptionAvailable(): Promise<boolean> {
     return false;

@@ -107,6 +107,11 @@ body::-webkit-scrollbar {
   background-color: var(--text-bg-color-warning);
 }
 
+.danger {
+  color: var(--text-color-danger);
+  background-color: var(--text-bg-color-danger);
+}
+
 .scroll {
   overflow: auto;
 }

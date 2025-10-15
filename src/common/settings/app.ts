@@ -218,6 +218,7 @@ export type AppSettings = {
   translateEngineOptionName: boolean;
   engineTimeoutSeconds: number;
   nodeCountFormat: NodeCountFormat;
+  showEngineOptionDetails: boolean;
 
   // Evaluation
   evaluationViewFrom: EvaluationViewFrom;
@@ -367,6 +368,7 @@ export function defaultAppSettings(opt?: {
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
     nodeCountFormat: NodeCountFormat.COMMA_SEPARATED,
+    showEngineOptionDetails: false,
     evaluationViewFrom: EvaluationViewFrom.EACH,
     maxArrowsPerEngine: 3,
     coefficientInSigmoid: 600,

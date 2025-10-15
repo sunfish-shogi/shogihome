@@ -337,6 +337,7 @@ export const vi: Texts = {
   searchEngine: "Phần mềm",
   ponder: "Đọc trước",
   numberOfThreads: "Luồng",
+  threads: "スレッド", // TODO: Translate
   suggestionsCount: "Số nước đề xuất",
   startPosition: "Thế cờ ban đầu",
   beginFromThisPosition: "Bắt đầu từ thế cờ này",
@@ -378,6 +379,7 @@ export const vi: Texts = {
   hoursSuffix: "h",
   minutesSuffix: "p",
   secondsSuffix: "s",
+  detailSettings: "詳細設定", // TODO: translate
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
   author: "Tác giả",
@@ -744,6 +746,10 @@ export const vi: Texts = {
   largeSuggestionsCountMayCausePerformanceDegradation:
     "Số nước đề xuất quá lớn có thể làm ứng dụng chậm đi đáng kể.",
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",
+  recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。", // TODO: Translate
+  aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。", // TODO: Translate
+  yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。", // TODO: Translate
+  increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。", // TODO: Translate
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,
@@ -793,5 +799,20 @@ export const vi: Texts = {
   },
   skippedMovesInMerge(skipped: number, total: number): string {
     return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`;
+  },
+  cpuUsageExceedsNPercent(n: number): string {
+    return `全CPUコアの${n}%を超えています。`; // TODO: Translate
+  },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%を超えています。`; // TODO: Translate
+  },
+  memoryUsageExceedsNPercent(n: number): string {
+    return `全メモリの${n}%を超えています。`; // TODO: Translate
+  },
+  memoryUsageIsLessThanNPercent(n: number): string {
+    return `全メモリの${n}%未満です。`; // TODO: Translate
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
   },
 };

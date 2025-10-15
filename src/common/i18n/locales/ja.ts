@@ -337,6 +337,7 @@ export const ja: Texts = {
   searchEngine: "エンジン",
   ponder: "先読み(Ponder)",
   numberOfThreads: "スレッド数",
+  threads: "スレッド",
   suggestionsCount: "候補手の数",
   startPosition: "開始局面",
   beginFromThisPosition: "この局面から開始",
@@ -378,6 +379,7 @@ export const ja: Texts = {
   hoursSuffix: "時間",
   minutesSuffix: "分",
   secondsSuffix: "秒",
+  detailSettings: "詳細設定",
   engineManagement: "エンジン管理",
   engineName: "エンジン名",
   author: "作者",
@@ -748,6 +750,10 @@ export const ja: Texts = {
   largeSuggestionsCountMayCausePerformanceDegradation:
     "候補手を増やしすぎると動作が重くなる可能性があります。",
   doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？",
+  recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。",
+  aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。",
+  yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。",
+  increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。",
   totalNumber: (n: number) => `合計 ${n} 件`,
   number: (n: number) => `${n} 件`,
   tryToReloginToCSAServerNSecondsLater: (n) => `CSAサーバーへのログインを${n}秒後に再試行します。`,
@@ -797,5 +803,20 @@ export const ja: Texts = {
   },
   skippedMovesInMerge(skipped: number, total: number): string {
     return `${total}手中、${skipped}手がマージできませんでした。`;
+  },
+  cpuUsageExceedsNPercent(n: number): string {
+    return `全CPUコアの${n}%を超えています。`;
+  },
+  totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%を超えています。`;
+  },
+  memoryUsageExceedsNPercent(n: number): string {
+    return `全メモリの${n}%を超えています。`;
+  },
+  memoryUsageIsLessThanNPercent(n: number): string {
+    return `全メモリの${n}%未満です。`;
+  },
+  totalUSIHashExceedsNPercentOfMemory(n: number): string {
+    return `USI_Hash の合計が全メモリの${n}%を超えています。`;
   },
 };

@@ -127,7 +127,7 @@ import { LayoutProfileList } from "@/common/settings/layout.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 import { createDesktopShortcut } from "@/background/file/shortcuts.js";
 import { escapeFileName } from "@/common/file/path.js";
-import { collectOSState } from "@/background/proc/state.js";
+import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
 
 const isWindows = process.platform === "win32";
 
@@ -853,7 +853,7 @@ ipcMain.handle(Background.CSA_STOP, (event, sessionID: number): void => {
 ipcMain.handle(Background.COLLECT_SESSION_STATES, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);
   const sessionStates: SessionStates = {
-    os: await collectOSState(),
+    os: collectOSState(),
     usiSessions: collectUSISessionStates(),
     csaSessions: collectCSASessionStates(),
   };
@@ -934,6 +934,11 @@ ipcMain.on(
     }
   },
 );
+
+ipcMain.handle(Background.GET_MACHINE_SPEC, (event) => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(getMachineSpec());
+});
 
 ipcMain.on(
   Background.OPEN_PROMPT,

@@ -15,7 +15,7 @@ import { BatchConversionResult } from "@/common/file/conversion.js";
 import { RecordFileHistory } from "@/common/file/history.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { VersionStatus } from "@/common/version.js";
-import { SessionStates } from "@/common/advanced/monitor.js";
+import { MachineSpec, SessionStates } from "@/common/advanced/monitor.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
 import { CommandHistory, CommandType } from "@/common/advanced/command.js";
 import { Bridge } from "./bridge.js";
@@ -138,6 +138,7 @@ export interface API {
   showSelectDirectoryDialog(defaultPath?: string): Promise<string>;
   openExplorer(path: string): void;
   openWebBrowser(url: string): void;
+  getMachineSpec(): Promise<MachineSpec>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<VersionStatus>;
   sendTestNotification(): void;
@@ -294,6 +295,9 @@ const api: API = {
   },
 
   // MISC
+  async getMachineSpec(): Promise<MachineSpec> {
+    return JSON.parse(await bridge.getMachineSpec());
+  },
   async getVersionStatus(): Promise<VersionStatus> {
     return JSON.parse(await bridge.getVersionStatus());
   },

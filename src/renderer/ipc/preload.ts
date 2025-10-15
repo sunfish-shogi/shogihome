@@ -388,6 +388,9 @@ const api: Bridge = {
   openWebBrowser(url: string) {
     ipcRenderer.send(Background.OPEN_WEB_BROWSER, url);
   },
+  async getMachineSpec(): Promise<string> {
+    return await ipcRenderer.invoke(Background.GET_MACHINE_SPEC);
+  },
   async isEncryptionAvailable(): Promise<boolean> {
     return await ipcRenderer.invoke(Background.IS_ENCRYPTION_AVAILABLE);
   },

@@ -2,22 +2,28 @@
   <DialogFrame @cancel="cancel">
     <div class="title">{{ t.manageEngines }}</div>
     <div class="form-group">
-      <div class="option-filter">
-        <input v-model.trim="filter" class="filter" :placeholder="t.filterByOptionName" />
+      <div class="option-filter row">
+        <ToggleButton v-model:value="detailed" :label="t.detailSettings" />
+        <input
+          v-show="detailed"
+          v-model.trim="filter"
+          class="filter"
+          :placeholder="t.filterByOptionName"
+        />
       </div>
       <div class="column option-list">
         <!-- 名前 -->
-        <div class="row option">
+        <div v-show="detailed" class="row option">
           <div class="option-name">{{ t.engineName }}</div>
           <div class="option-unchangeable">{{ engine.defaultName }}</div>
         </div>
         <!-- 作者 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="detailed && !filterWords.length" class="row option">
           <div class="option-name">{{ t.author }}</div>
           <div class="option-unchangeable">{{ engine.author }}</div>
         </div>
         <!-- 場所 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="detailed && !filterWords.length" class="row option">
           <div class="option-name">{{ t.enginePath }}</div>
           <div class="option-unchangeable">
             <div>{{ engine.path }}</div>
@@ -30,7 +36,7 @@
           </div>
         </div>
         <!-- 表示名 -->
-        <div v-show="!filterWords.length" class="row option">
+        <div v-show="!detailed || !filterWords.length" class="row option">
           <div class="option-name">{{ t.displayName }}</div>
           <div class="option-value">
             <input v-model="engine.name" class="option-value-text" type="text" />
@@ -135,6 +141,74 @@
                   : option.default
               }}
             </span>
+            <!-- Threads / NumberOfThreads -->
+            <div
+              v-if="
+                (option.name === Threads || option.name === NumberOfThreads) &&
+                typeof option.currentValue === 'number' &&
+                machineSpec.cpuCores > 0
+              "
+            >
+              <PercentageBarChart
+                class="bar-chart"
+                :value="option.currentValue"
+                :max="machineSpec.cpuCores"
+                :unit="t.threads"
+              />
+              <div v-if="option.currentValue > machineSpec.cpuCores" class="form-group danger">
+                <div class="note">{{ t.cpuUsageExceedsNPercent(100) }}</div>
+              </div>
+              <div
+                v-else-if="
+                  option.currentValue >= 2 && option.currentValue > machineSpec.cpuCores * 0.5
+                "
+                class="form-group warning"
+              >
+                <div class="note">
+                  {{ t.cpuUsageExceedsNPercent(50) }}{{ t.recommendLowerSettingsForDailyUse }}
+                </div>
+              </div>
+            </div>
+            <!-- USI_Hash -->
+            <div
+              v-if="
+                option.name === USIHash &&
+                typeof option.currentValue === 'number' &&
+                machineSpec.memory > 0
+              "
+            >
+              <PercentageBarChart
+                class="bar-chart"
+                :value="option.currentValue"
+                :max="machineSpec.memory / 1024"
+                unit="MB"
+              />
+              <div
+                v-if="option.currentValue * 1024 > machineSpec.memory * 0.95"
+                class="form-group danger"
+              >
+                <div class="note">
+                  {{ t.memoryUsageExceedsNPercent(95) }}{{ t.aiPerformanceMayDegrade }}
+                </div>
+              </div>
+              <div
+                v-else-if="option.currentValue * 1024 > machineSpec.memory * 0.9"
+                class="form-group warning"
+              >
+                <div class="note">
+                  {{ t.memoryUsageExceedsNPercent(90) }}{{ t.yourPCMayBecomeSlow }}
+                </div>
+              </div>
+              <div
+                v-else-if="option.currentValue * 1024 < machineSpec.memory * 0.2"
+                class="form-group warning"
+              >
+                <div class="note">
+                  {{ t.memoryUsageIsLessThanNPercent(20)
+                  }}{{ t.increasingItMayImproveAIPerformance }}
+                </div>
+              </div>
+            </div>
             <!-- 早期 ponder -->
             <div v-if="option.name === 'USI_Ponder' && option.type === 'check'" class="additional">
               <ToggleButton v-model:value="engine.enableEarlyPonder" :label="t.earlyPonder" />
@@ -181,11 +255,16 @@ import {
   compressUSIEngineOptionsClipboardData,
   decompressUSIEngineOptionsClipboardData,
   emptyUSIEngine,
+  FVScale,
   getUSIEngineOptionCurrentValue,
   mergeUSIEngine,
+  NumberOfThreads,
+  Threads,
   USIEngine,
   USIEngineOption,
   USIEngineOptionsClipboardData,
+  USIHash,
+  USIPonder,
 } from "@/common/settings/usi";
 import { computed, onMounted, PropType, ref } from "vue";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -199,6 +278,8 @@ import DialogFrame from "./DialogFrame.vue";
 import { useMessageStore } from "@/renderer/store/message";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
+import { MachineSpec } from "@/common/advanced/monitor";
+import PercentageBarChart from "@/renderer/view/primitive/PercentageBarChart.vue";
 
 const props = defineProps({
   latest: {
@@ -223,18 +304,31 @@ type Option = USIEngineOption & {
 
 const busyState = useBusyState();
 const appSettings = useAppSettings();
+const detailed = ref(appSettings.showEngineOptionDetails);
 const filter = ref("");
 const filterWords = computed(() => filter.value.split(/ +/).filter((s) => s));
 const engine = ref(emptyUSIEngine());
 const options = ref<Option[]>([]);
 const optionVisibility = computed(() =>
-  options.value.map(
-    (option) =>
-      filterWords.value.length === 0 ||
-      (option.displayName && filterString(option.displayName, filterWords.value)) ||
-      filterString(option.name, filterWords.value),
-  ),
+  options.value.map((option) => {
+    if (detailed.value) {
+      return (
+        filterWords.value.length === 0 ||
+        (option.displayName && filterString(option.displayName, filterWords.value)) ||
+        filterString(option.name, filterWords.value)
+      );
+    } else {
+      return (
+        option.name === Threads ||
+        option.name === NumberOfThreads ||
+        option.name === USIHash ||
+        option.name === USIPonder ||
+        option.name === FVScale
+      );
+    }
+  }),
 );
+const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 
 busyState.retain();
 onMounted(async () => {
@@ -249,6 +343,7 @@ onMounted(async () => {
         ...option,
         currentValue: getUSIEngineOptionCurrentValue(option) ?? (option.type === "spin" ? 0 : ""),
       }));
+    machineSpec.value = await api.getMachineSpec();
   } catch (e) {
     useErrorStore().add(e);
     emit("cancel");
@@ -392,12 +487,22 @@ const pasteOptions = async () => {
   }
 };
 
+const saveAppSettings = () => {
+  if (detailed.value !== appSettings.showEngineOptionDetails) {
+    appSettings.updateAppSettings({
+      showEngineOptionDetails: detailed.value,
+    });
+  }
+};
+
 const ok = () => {
+  saveAppSettings();
   engine.value.options = buildEngineOptions();
   emit("ok", engine.value);
 };
 
 const cancel = () => {
+  saveAppSettings();
   emit("cancel");
 };
 </script>
@@ -416,6 +521,10 @@ const cancel = () => {
 }
 .option-filter {
   margin: 0px 5px 5px 5px;
+  align-items: center;
+}
+.option-filter > *:not(:first-child) {
+  margin-left: 30px;
 }
 .filter {
   width: 100%;
@@ -468,11 +577,16 @@ const cancel = () => {
   opacity: 0.7;
 }
 .option-default-value.highlight {
-  color: var(--text-color-danger);
-  background-color: var(--text-bg-color-danger);
+  color: var(--text-color-warning);
+  background-color: var(--text-bg-color-warning);
 }
 .option .additional {
   margin-top: 5px;
+}
+.bar-chart {
+  margin: 10px 0 5px 0;
+  width: 100%;
+  border: 1px solid var(--dialog-border-color);
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;
