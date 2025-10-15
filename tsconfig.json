@@ -8,10 +8,10 @@
     "moduleResolution": "Node",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "dist/src",
     "types": ["vitest/globals"],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
