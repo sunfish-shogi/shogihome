@@ -145,7 +145,8 @@
             <div
               v-if="
                 (option.name === Threads || option.name === NumberOfThreads) &&
-                typeof option.currentValue === 'number'
+                typeof option.currentValue === 'number' &&
+                machineSpec.cpuCores > 0
               "
             >
               <PercentageBarChart
@@ -169,7 +170,13 @@
               </div>
             </div>
             <!-- USI_Hash -->
-            <div v-if="option.name === USIHash && typeof option.currentValue === 'number'">
+            <div
+              v-if="
+                option.name === USIHash &&
+                typeof option.currentValue === 'number' &&
+                machineSpec.memory > 0
+              "
+            >
               <PercentageBarChart
                 class="bar-chart"
                 :value="option.currentValue"
