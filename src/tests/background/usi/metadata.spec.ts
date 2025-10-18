@@ -13,7 +13,18 @@ describe("usi/metadata", () => {
 
   describe("without extension", async () => {
     const testCases = [
+      // native binary
       { name: "native", content: "native-engine", isShellScript: false },
+
+      // shell scripts
+      { name: "sh", content: "#!/bin/sh\necho script engine", isShellScript: true },
+      { name: "bash", content: "#!/bin/bash\necho script engine", isShellScript: true },
+      { name: "bash-eu", content: "#!/bin/bash -eu\necho script engine", isShellScript: true },
+      { name: "env-bash", content: "#!/usr/bin/env bash\necho script engine", isShellScript: true },
+      // shebang が無い場合は判定困難のため isShellScript=false とする。
+      { name: "plain", content: "echo script engine", isShellScript: false },
+
+      // other interpreters
       {
         name: "python",
         content: "#!/usr/bin/python3\nprint('script engine')",
@@ -24,11 +35,6 @@ describe("usi/metadata", () => {
         content: "#!/usr/bin/env python3\nprint('script engine')",
         isShellScript: false,
       },
-      { name: "sh", content: "#!/bin/sh\necho script engine", isShellScript: true },
-      { name: "bash", content: "#!/bin/bash\necho script engine", isShellScript: true },
-      { name: "bash-eu", content: "#!/bin/bash -eu\necho script engine", isShellScript: true },
-      { name: "env-bash", content: "#!/usr/bin/env bash\necho script engine", isShellScript: true },
-      { name: "plain", content: "echo script engine", isShellScript: false },
     ];
     const enginePath = path.join(tmpdir, "without-ext-engine");
     for (const testCase of testCases) {
