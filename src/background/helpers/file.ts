@@ -32,3 +32,45 @@ export async function listFiles(dir: string, maxDepth: number): Promise<string[]
   }
   return files;
 }
+
+const SHELLSCRIPT_EXTENSIONS = [
+  ".bat", // Windows Batch File (DOS)
+  ".cmd", // Windows Batch File (NT)
+  ".ps1", // PowerShell
+  ".sh", // Shell Script
+];
+const EXECUTABLE_EXTENSIONS = [".exe"];
+
+export async function isShellScript(filePath: string): Promise<boolean> {
+  const ext = path.extname(filePath).toLowerCase();
+  if (EXECUTABLE_EXTENSIONS.includes(ext)) {
+    return false;
+  }
+  if (SHELLSCRIPT_EXTENSIONS.includes(ext)) {
+    return true;
+  }
+  try {
+    const shebangBuffer = Buffer.alloc(64);
+    const fd = await fs.open(filePath, "r");
+    try {
+      await fd.read(shebangBuffer, 0, shebangBuffer.length, 0);
+      // shebang check
+      // # = 0x23
+      // ! = 0x21
+      const shebang = shebangBuffer[0] === 0x23 && shebangBuffer[1] === 0x21;
+      if (!shebang) {
+        return false;
+      }
+      // check interpreter
+      const interpreter = shebangBuffer.toString("utf-8").split(/\r?\n/)[0];
+      if (interpreter.endsWith("sh")) {
+        return true;
+      }
+    } finally {
+      await fd.close();
+    }
+  } catch {
+    // ignore
+  }
+  return false;
+}
