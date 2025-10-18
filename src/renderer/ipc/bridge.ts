@@ -69,7 +69,7 @@ export interface Bridge {
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
-  getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string>;
+  getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<[string, string]>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
   usiLaunch(json: string, timeoutSeconds: number): Promise<number>;
   usiReady(sessionID: number): Promise<void>;

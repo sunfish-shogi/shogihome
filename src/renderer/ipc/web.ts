@@ -285,7 +285,7 @@ export const webAPI: Bridge = {
   async showSelectUSIEngineDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
-  async getUSIEngineInfo(): Promise<string> {
+  async getUSIEngineInfo(): Promise<[string, string]> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async sendUSIOptionButtonSignal(): Promise<void> {

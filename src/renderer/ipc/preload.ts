@@ -182,7 +182,7 @@ const api: Bridge = {
   async showSelectUSIEngineDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SELECT_USI_ENGINE_DIALOG);
   },
-  async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string> {
+  async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<[string, string]> {
     return await ipcRenderer.invoke(Background.GET_USI_ENGINE_INFO, path, timeoutSeconds);
   },
   async sendUSIOptionButtonSignal(

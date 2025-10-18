@@ -128,6 +128,7 @@ import { ProcessArgs } from "@/common/ipc/process.js";
 import { createDesktopShortcut } from "@/background/file/shortcuts.js";
 import { escapeFileName } from "@/common/file/path.js";
 import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
+import { loadUSIEngineMeta } from "@/background/usi/metadata.js";
 
 const isWindows = process.platform === "win32";
 
@@ -727,9 +728,12 @@ ipcMain.handle(Background.SHOW_SELECT_USI_ENGINE_DIALOG, async (event): Promise<
 
 ipcMain.handle(
   Background.GET_USI_ENGINE_INFO,
-  async (event, path: string, timeoutSeconds: number): Promise<string> => {
+  async (event, path: string, timeoutSeconds: number): Promise<[string, string]> => {
     validateIPCSender(event.senderFrame);
-    return JSON.stringify(await usiGetUSIEngineInfo(path, timeoutSeconds));
+    return [
+      JSON.stringify(await usiGetUSIEngineInfo(path, timeoutSeconds)),
+      JSON.stringify(await loadUSIEngineMeta(path)),
+    ];
   },
 );
 
