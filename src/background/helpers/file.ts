@@ -32,3 +32,58 @@ export async function listFiles(dir: string, maxDepth: number): Promise<string[]
   }
   return files;
 }
+
+const SHELLSCRIPT_EXTENSIONS = [
+  ".bat", // Windows Batch File (DOS)
+  ".cmd", // Windows Batch File (NT)
+  ".ps1", // PowerShell
+  ".sh", // Shell Script
+];
+const EXECUTABLE_EXTENSIONS = [".exe"];
+
+export async function isShellScript(filePath: string): Promise<boolean> {
+  const ext = path.extname(filePath).toLowerCase();
+  if (EXECUTABLE_EXTENSIONS.includes(ext)) {
+    return false;
+  }
+  if (SHELLSCRIPT_EXTENSIONS.includes(ext)) {
+    return true;
+  }
+  try {
+    const buffer = Buffer.alloc(64);
+    const fd = await fs.open(filePath, "r");
+    try {
+      await fd.read(buffer, 0, buffer.length, 0);
+      // shebang check
+      // # = 0x23
+      // ! = 0x21
+      const shebang = buffer[0] === 0x23 && buffer[1] === 0x21;
+      if (shebang) {
+        // check interpreter
+        const interpreter = buffer.toString("utf-8").split(/\r?\n/)[0].split(/\s+/);
+        return (
+          // e.g. #!/bin/sh, #!/bin/bash
+          (interpreter.length >= 1 && interpreter[0].endsWith("sh")) ||
+          // e.g. #!/usr/bin/env bash
+          (interpreter.length >= 2 &&
+            interpreter[0].endsWith("/env") &&
+            interpreter[1].endsWith("sh"))
+        );
+      } else {
+        // if including only printable characters, consider as shell script
+        for (let i = 0; i < buffer.length; i++) {
+          const byte = buffer[i];
+          if (byte > 0x00 && (byte < 0x09 || (byte > 0x0d && byte < 0x20) || byte > 0x7e)) {
+            return false;
+          }
+        }
+        return true;
+      }
+    } finally {
+      await fd.close();
+    }
+  } catch {
+    // ignore
+  }
+  return false;
+}

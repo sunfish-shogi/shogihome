@@ -146,7 +146,8 @@
               v-if="
                 (option.name === Threads || option.name === NumberOfThreads) &&
                 typeof option.currentValue === 'number' &&
-                machineSpec.cpuCores > 0
+                machineSpec.cpuCores > 0 &&
+                !metadata.isShellScript
               "
             >
               <PercentageBarChart
@@ -174,7 +175,8 @@
               v-if="
                 option.name === USIHash &&
                 typeof option.currentValue === 'number' &&
-                machineSpec.memory > 0
+                machineSpec.memory > 0 &&
+                !metadata.isShellScript
               "
             >
               <PercentageBarChart
@@ -261,6 +263,7 @@ import {
   NumberOfThreads,
   Threads,
   USIEngine,
+  USIEngineMetadata,
   USIEngineOption,
   USIEngineOptionsClipboardData,
   USIHash,
@@ -329,12 +332,13 @@ const optionVisibility = computed(() =>
   }),
 );
 const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
+const metadata = ref<USIEngineMetadata>({ isShellScript: false });
 
 busyState.retain();
 onMounted(async () => {
   try {
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
-    engine.value = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
+    [engine.value, metadata.value] = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
     mergeUSIEngine(engine.value, props.latest);
     options.value = Object.values(engine.value.options)
       .sort((a, b): number => (a.order < b.order ? -1 : 1))
@@ -368,7 +372,7 @@ const replaceEnginePath = async () => {
       message: t.incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath,
       onOk: async () => {
         try {
-          const newEngine = await api.getUSIEngineInfo(path, timeoutSeconds);
+          const [newEngine] = await api.getUSIEngineInfo(path, timeoutSeconds);
           mergeUSIEngine(newEngine, engine.value); // もとの設定を引き継ぐ
           engine.value = newEngine;
         } catch (e) {

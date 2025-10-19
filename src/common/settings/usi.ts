@@ -625,3 +625,7 @@ export async function decompressUSIEngineOptionsClipboardData(
   }
   return data;
 }
+
+export type USIEngineMetadata = {
+  isShellScript: boolean;
+};

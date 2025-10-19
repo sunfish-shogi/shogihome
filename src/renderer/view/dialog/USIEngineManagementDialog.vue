@@ -204,7 +204,7 @@ const add = async () => {
     }
     const appSettings = useAppSettings();
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
-    const engine = await api.getUSIEngineInfo(path, timeoutSeconds);
+    const [engine] = await api.getUSIEngineInfo(path, timeoutSeconds);
     usiEngines.value.addEngine(engine);
     lastAdded.value = scrollTo = engine.uri;
   } catch (e) {
