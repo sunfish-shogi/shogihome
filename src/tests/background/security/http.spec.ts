@@ -16,8 +16,9 @@ describe("security/http", () => {
   });
 
   it("handleApp", async () => {
+    const rootDirPrefix = process.platform === "win32" ? "Z:/" : "";
     vi.stubGlobal("process", {
-      resourcesPath: "/path/to/resources",
+      resourcesPath: rootDirPrefix + "/path/to/resources",
       env: { ...process.env, NODE_ENV: "production" },
     });
     (net.fetch as Mock).mockResolvedValue(new Response("ok"));
@@ -25,11 +26,11 @@ describe("security/http", () => {
     const validURLs = [
       {
         url: "app://bundle/foo/bar.baz",
-        fileURL: "file:///path/to/resources/app.asar/dist/foo/bar.baz",
+        fileURL: `file:///${rootDirPrefix}path/to/resources/app.asar/dist/foo/bar.baz`,
       },
       {
         url: "app://bundle/foo/../bar.baz",
-        fileURL: "file:///path/to/resources/app.asar/dist/bar.baz",
+        fileURL: `file:///${rootDirPrefix}path/to/resources/app.asar/dist/bar.baz`,
       },
     ];
     for (const { url, fileURL } of validURLs) {
