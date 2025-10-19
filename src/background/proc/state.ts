@@ -41,9 +41,36 @@ export function collectOSState(): OSState {
 }
 
 export function getMachineSpec(): MachineSpec {
-  const cpus = os.cpus();
   return {
-    cpuCores: cpus.length,
+    cpuCores: os.availableParallelism(),
     memory: os.totalmem() / 1024,
+  };
+}
+
+type CPUInfo = {
+  architecture: string;
+  availableCores: number;
+  cores: { [model: string]: number };
+};
+
+export function getCPUInfo(): CPUInfo {
+  const cpus = os.cpus();
+  cpus.sort((a, b) => {
+    const model = a.model.localeCompare(b.model);
+    if (model !== 0) {
+      return model;
+    }
+    return b.speed - a.speed;
+  });
+  const cores: { [model: string]: number } = {};
+  for (let i = 0; i < cpus.length; i++) {
+    const cpu = cpus[i];
+    const name = `${cpu.model} / ${cpu.speed} MHz`;
+    cores[name] = (cores[name] || 0) + 1;
+  }
+  return {
+    architecture: os.machine(),
+    availableCores: os.availableParallelism(),
+    cores,
   };
 }
