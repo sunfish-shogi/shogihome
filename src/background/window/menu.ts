@@ -40,6 +40,7 @@ import { openPath } from "@/background/helpers/electron.js";
 import { createMonitorWindow } from "./monitor.js";
 import { createListItems } from "@/common/message.js";
 import { BoardLayoutType } from "@/common/settings/layout.js";
+import { getCPUInfo } from "@/background/proc/state.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -616,6 +617,27 @@ function createMenuTemplate(window: BrowserWindow) {
         },
         {
           type: "separator",
+        },
+        {
+          label: "CPU Information",
+          click: () => {
+            const cpu = getCPUInfo();
+            sendMessage({
+              text: "CPU Information",
+              attachments: [
+                {
+                  type: "list",
+                  items: [
+                    { text: `Architecture: ${cpu.architecture}` },
+                    { text: `Available: ${cpu.availableCores} cores` },
+                    ...Object.entries(cpu.cores).map(([model, count]) => ({
+                      text: `${model} (${count} cores)`,
+                    })),
+                  ],
+                },
+              ],
+            });
+          },
         },
         {
           label: "GPU Feature Status",

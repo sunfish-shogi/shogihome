@@ -51,7 +51,7 @@ export function createListItems(object: unknown[] | object): ListItem[] {
     return object.map((item, index) => {
       if (item instanceof Object || Array.isArray(item)) {
         return {
-          text: `${index}`,
+          text: `${index + 1}`,
           children: createListChildren(item),
         };
       } else {
