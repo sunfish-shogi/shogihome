@@ -735,7 +735,7 @@ class Store {
       });
     } else if (specialMoveType) {
       useMessageStore().enqueue({
-        text: `${t.gameEnded}（${formatSpecialMove(specialMoveType)})`,
+        text: `${t.gameEnded}（${formatSpecialMove(specialMoveType, this.record.current.nextColor)})`,
       });
     }
     this._appState = AppState.NORMAL;
