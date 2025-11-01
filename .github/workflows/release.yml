@@ -32,7 +32,7 @@ jobs:
       - run: npm ci --no-audit --no-fund --prefer-online
       - run: npm run electron:build
       - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ${{ matrix.os}}-release
           path: dist/release-*.zip
