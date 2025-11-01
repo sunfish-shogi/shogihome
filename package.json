@@ -104,7 +104,7 @@
     "ts-loader": "^9.5.2",
     "tsc-alias": "^1.7.0",
     "tsx": "^4.19.3",
-    "typescript": "^5.5.4",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.44.1",
     "vite": "^7.1.12",
     "vite-plugin-pwa": "^1.0.0",
