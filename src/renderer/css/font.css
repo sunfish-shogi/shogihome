@@ -7,6 +7,29 @@ html {
   font-size: 16px;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic UI",
+    "Yu Gothic",
+    "Noto Sans JP",
+    "Noto Sans CJK JP",
+    "Helvetica Neue",
+    Arial,
+    "Segoe UI",
+    Meiryo,
+    "Apple Color Emoji",
+    "Noto Color Emoji",
+    sans-serif !important;
+}
+
 .gothic {
   font-family:
     "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Avenir",
