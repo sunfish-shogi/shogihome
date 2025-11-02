@@ -5,7 +5,7 @@ permissions:
 
 on:
   push:
-    branches: [main, "support-*"]
+    branches: [main, "support-*", "workaround-mac-font-issue"]
   pull_request:
     branches: [main, "support-*"]
 
