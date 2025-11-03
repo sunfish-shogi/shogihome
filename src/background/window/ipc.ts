@@ -129,6 +129,7 @@ import { createDesktopShortcut } from "@/background/file/shortcuts.js";
 import { escapeFileName } from "@/common/file/path.js";
 import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
 import { loadUSIEngineMeta } from "@/background/usi/metadata.js";
+import { Lazy } from "@/common/helpers/lazy.js";
 
 const isWindows = process.platform === "win32";
 
@@ -665,6 +666,8 @@ ipcMain.handle(Background.LOAD_LAYOUT_PROFILE_LIST, async (event): Promise<[stri
   return [layoutURI, json];
 });
 
+const layoutProfileLazySaver = new Lazy();
+
 ipcMain.on(Background.UPDATE_LAYOUT_PROFILE_LIST, (event, uri: string, json: string) => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("update layout: %s", uri);
@@ -672,9 +675,11 @@ ipcMain.on(Background.UPDATE_LAYOUT_PROFILE_LIST, (event, uri: string, json: str
   const layoutList = JSON.parse(json) as LayoutProfileList;
   const layout = layoutList.profiles.find((p) => p.uri === uri) || null;
   mainWindow.webContents.send(Renderer.UPDATE_LAYOUT_PROFILE, layout && JSON.stringify(layout));
-  saveLayoutProfileList(JSON.parse(json)).catch((e) => {
-    sendError(new Error(`failed to save layout config: ${e}`));
-  });
+  layoutProfileLazySaver.after(() => {
+    saveLayoutProfileList(JSON.parse(json)).catch((e) => {
+      sendError(new Error(`failed to save layout config: ${e}`));
+    });
+  }, 500);
 });
 
 ipcMain.handle(

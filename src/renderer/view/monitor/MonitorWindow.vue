@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry";
-import { Lazy } from "@/renderer/helpers/lazy";
+import { Lazy } from "@/common/helpers/lazy";
 import { useAppSettings } from "@/renderer/store/settings";
 import MonitorView from "@/renderer/view/monitor/MonitorView.vue";
 import { onMounted, onUnmounted, reactive } from "vue";

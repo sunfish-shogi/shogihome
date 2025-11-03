@@ -187,7 +187,7 @@ import {
 import { useStore } from "@/renderer/store";
 import { IconType } from "@/renderer/assets/icons";
 import api from "@/renderer/ipc/api";
-import { Lazy } from "@/renderer/helpers/lazy";
+import { Lazy } from "@/common/helpers/lazy";
 import {
   PositionImageHandLabelType,
   PositionImageStyle,

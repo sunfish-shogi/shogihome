@@ -5,7 +5,7 @@ import { ImmutableRecord } from "tsshogi";
 import { MultiPV, USIEngine, USIMultiPV } from "@/common/settings/usi.js";
 import { SearchInfoSenderType } from "./record.js";
 import { useAppSettings } from "./settings.js";
-import { Lazy } from "@/renderer/helpers/lazy.js";
+import { Lazy } from "@/common/helpers/lazy.js";
 
 function getSenderTypeByIndex(index: number): SearchInfoSenderType | undefined {
   switch (index) {

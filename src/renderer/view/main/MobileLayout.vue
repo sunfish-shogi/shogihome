@@ -97,7 +97,7 @@ enum SideUIType {
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry";
 import { BoardLayoutType } from "@/common/settings/layout";
-import { Lazy } from "@/renderer/helpers/lazy";
+import { Lazy } from "@/common/helpers/lazy";
 import BoardPane from "@/renderer/view/main/BoardPane.vue";
 import RecordPane from "@/renderer/view/main/RecordPane.vue";
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
