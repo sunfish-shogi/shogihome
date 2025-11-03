@@ -27,6 +27,7 @@ import { ProcessArgs } from "@/common/ipc/process.js";
 
 type AppInfo = {
   appVersion?: string;
+  buildVersion?: string;
 };
 
 export interface API {

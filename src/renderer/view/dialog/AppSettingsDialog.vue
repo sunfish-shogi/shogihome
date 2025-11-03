@@ -649,7 +649,7 @@
         <div class="section-title">{{ t.appVersion }}</div>
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.installed }}</div>
-          {{ appInfo.appVersion }}
+          {{ appInfo.appVersion }} ({{ appInfo.buildVersion }})
         </div>
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.latest }}</div>
