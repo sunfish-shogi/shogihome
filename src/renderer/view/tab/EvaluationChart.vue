@@ -16,7 +16,7 @@ import { Color, ImmutableNode, ImmutableRecord } from "tsshogi";
 import { scoreToPercentage } from "@/renderer/store/score";
 import { Thema } from "@/common/settings/app";
 import { t } from "@/common/i18n";
-import { Lazy } from "@/renderer/helpers/lazy";
+import { Lazy } from "@/common/helpers/lazy";
 import { EvaluationChartType } from "@/common/settings/layout";
 
 const MATE_SCORE = 1000000;
