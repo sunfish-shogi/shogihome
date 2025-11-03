@@ -4,6 +4,13 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { htmlTemplate } from "./plugins/html_template";
 
+const appVersion = process.env.npm_package_version || "0.0.0";
+const buildEnv = process.env.CI === "true" ? "ci" : "local";
+const buildNumber =
+  process.env.BUILD_NUMBER ||
+  `${Date.now()}.${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`;
+const buildVersion = process.env.BUILD_VERSION || `${buildEnv}-${buildNumber}`;
+
 export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: "/src" }],
@@ -11,7 +18,8 @@ export default defineConfig({
   plugins: [
     vue(),
     htmlTemplate({
-      APP_VERSION: `${process.env.npm_package_version}`,
+      APP_VERSION: appVersion,
+      BUILD_VERSION: buildVersion,
     }),
   ],
   base: "./",
