@@ -34,7 +34,13 @@
           <span>{{ t.nodes }}: </span>
           <span>{{ (monitor.nodes && formatNodeCount(monitor.nodes)) || "---" }}</span>
         </div>
-        <div class="header">
+        <div
+          class="header"
+          :class="{
+            warn: (monitor.hashfull || 0) >= 0.6,
+            danger: (monitor.hashfull || 0) >= 0.9,
+          }"
+        >
           <span>{{ t.hashUsage }}: </span>
           <span>{{ monitor.hashfull ? (monitor.hashfull * 100).toFixed(1) : "---" }} %</span>
         </div>
@@ -331,6 +337,12 @@ const updateMultiPV = (add: number) => {
 .header span {
   font-size: 12px;
   white-space: nowrap;
+}
+.header.warn {
+  background-color: var(--text-bg-color-warning);
+}
+.header.danger {
+  background-color: var(--text-bg-color-danger);
 }
 .list-area {
   width: 100%;
