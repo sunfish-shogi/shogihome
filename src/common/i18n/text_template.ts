@@ -374,6 +374,7 @@ export type Texts = {
   hoursSuffix: string;
   minutesSuffix: string;
   secondsSuffix: string;
+  totalMoves: string;
   detailSettings: string;
   engineManagement: string;
   engineName: string;

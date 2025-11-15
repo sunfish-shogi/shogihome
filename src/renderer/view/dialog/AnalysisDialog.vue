@@ -40,6 +40,7 @@
             :disabled="!settings.endCriteria.enableNumber"
           />
           <div class="form-item-small-label">{{ t.plySuffix }}{{ t.toSuffix }}</div>
+          <div class="form-item-small-label">({{ t.totalMoves }}: {{ totalMoves }})</div>
         </div>
         <div class="form-item">
           <ToggleButton v-model:value="settings.descending" :label="t.descending" />
@@ -94,19 +95,25 @@ import { defaultAnalysisSettings, validateAnalysisSettings } from "@/common/sett
 import { CommentBehavior } from "@/common/settings/comment";
 import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "./DialogFrame.vue";
+import { Move } from "tsshogi";
 
 const store = useStore();
 const busyState = useBusyState();
 const settings = ref(defaultAnalysisSettings());
 const engines = ref(new USIEngines());
 const engineURI = ref("");
+const totalMoves = computed(() => {
+  const moves = store.record.moves;
+  const lastMove = moves[moves.length - 1];
+  return lastMove.ply === 0 ? 0 : lastMove.move instanceof Move ? lastMove.ply : lastMove.ply - 1;
+});
 
 busyState.retain();
 

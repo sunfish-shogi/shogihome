@@ -379,6 +379,7 @@ export const en: Texts = {
   hoursSuffix: "h",
   minutesSuffix: "min",
   secondsSuffix: "sec",
+  totalMoves: "Total Moves",
   detailSettings: "Detail Settings",
   engineManagement: "Engine Management",
   engineName: "Engine Name",
