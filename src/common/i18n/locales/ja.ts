@@ -379,6 +379,7 @@ export const ja: Texts = {
   hoursSuffix: "時間",
   minutesSuffix: "分",
   secondsSuffix: "秒",
+  totalMoves: "総手数",
   detailSettings: "詳細設定",
   engineManagement: "エンジン管理",
   engineName: "エンジン名",
