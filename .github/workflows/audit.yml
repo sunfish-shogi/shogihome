@@ -17,7 +17,9 @@ jobs:
           fetch-tags: true
       - uses: actions/setup-node@v6
         with:
-          node-version: lts/*
+          # 最新の node/npm だと v1.25.1 と v1.24.6 の package-lock.json に対して npm-ci がエラーになるのでバージョンを一時固定
+          #node-version: lts/*
+          node-version: 22.20.0
           cache: "npm"
       - run: npm version
       - run: |
