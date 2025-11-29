@@ -123,9 +123,14 @@ type ErrorCallback = (e: Error) => void;
 type TimeoutCallback = () => void;
 type CloseCallback = () => void;
 type USIOKCallback = () => void;
-type ReadyCallback = () => void;
-type BestmoveCallback = (position: string, move: string, ponder?: string) => void;
-type CheckmateCallback = (position: string, moves: string[]) => void;
+type ReadyCallback = (readyTimeMs: number) => void;
+type BestmoveCallback = (
+  position: string,
+  move: string,
+  ponder: string | undefined,
+  thinkingTimeMs: number,
+) => void;
+type CheckmateCallback = (position: string, moves: string[], thinkingTimeMs: number) => void;
 type CheckmateNotImplementedCallback = () => void;
 type CheckmateTimeoutCallback = (position: string) => void;
 type NoMateCallback = (position: string) => void;
@@ -204,6 +209,8 @@ export class EngineProcess {
     discarded: 0,
     commands: [],
   };
+  private readyStartTimeMs = 0;
+  private goTimeMs = 0;
   timeoutCallback?: TimeoutCallback;
   errorCallback?: ErrorCallback;
   closeCallback?: CloseCallback;
@@ -389,6 +396,7 @@ export class EngineProcess {
     }
     this.send("isready");
     this._state = State.WaitingForReadyOK;
+    this.readyStartTimeMs = Date.now();
   }
 
   go(position: string, timeState?: TimeState): void {
@@ -591,6 +599,8 @@ export class EngineProcess {
         ? State.WaitingForCheckmate
         : State.WaitingForBestMove;
     this.reservedGoCommand = undefined;
+
+    this.goTimeMs = Date.now();
   }
 
   private send(command: string): void {
@@ -720,7 +730,8 @@ export class EngineProcess {
       return;
     }
     this._state = State.Ready;
-    this.readyCallback?.();
+    const readyTimeMs = Date.now() - this.readyStartTimeMs;
+    this.readyCallback?.(readyTimeMs);
     this.send("usinewgame");
     this.sendReservedGoCommands();
   }
@@ -743,7 +754,8 @@ export class EngineProcess {
       const a = args.split(" ");
       const move = a[0];
       const ponder = (a.length >= 3 && a[1] === "ponder" && a[2]) || undefined;
-      this.bestMoveCallback(this.currentPosition, move, ponder);
+      const thinkingTimeMs = Date.now() - this.goTimeMs;
+      this.bestMoveCallback(this.currentPosition, move, ponder, thinkingTimeMs);
     }
     this._state = State.Ready;
     this._currentPosition = "";
@@ -768,7 +780,8 @@ export class EngineProcess {
       this.noMateCallback?.(this.currentPosition);
       return;
     }
-    this.checkmateCallback?.(this.currentPosition, args.trim().split(" "));
+    const thinkingTimeMs = Date.now() - this.goTimeMs;
+    this.checkmateCallback?.(this.currentPosition, args.trim().split(" "), thinkingTimeMs);
   }
 
   invoke(type: CommandType, command: string): void {

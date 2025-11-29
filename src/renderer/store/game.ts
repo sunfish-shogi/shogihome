@@ -30,7 +30,7 @@ import {
   calculateZValue,
   Z_VALUE_95,
   Z_VALUE_99,
-} from "@/common/statistics.js";
+} from "@/common/helpers/math.js";
 import { useAppSettings } from "./settings.js";
 
 enum GameState {
