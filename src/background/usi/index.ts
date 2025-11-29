@@ -10,6 +10,8 @@ import { CommandHistory, CommandType, Command } from "@/common/advanced/command.
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { Color, getNextColorFromUSI } from "tsshogi";
 import { TimeStates } from "@/common/game/time.js";
+import { newUSIEngineStatsEntry, USIEngineStatsEntry } from "@/common/stats/usi.js";
+import { addStatsEntry } from "@/background/stats/usi.js";
 
 interface Handlers {
   onUSIBestMove(sessionID: number, usi: string, usiMove: string, ponder?: string): void;
@@ -112,6 +114,7 @@ type Session = {
   process: EngineProcess;
   engine: USIEngine;
   createdMs: number;
+  stats: USIEngineStatsEntry;
 };
 
 let lastSessionID = 0;
@@ -147,14 +150,19 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
     engineOptions: Object.values(engine.options),
     enableEarlyPonder: engine.enableEarlyPonder,
   });
-  sessions.set(sessionID, {
+  const session = {
     process,
     engine: engine,
     createdMs: Date.now(),
-  });
+    stats: newUSIEngineStatsEntry(),
+  };
+  sessions.set(sessionID, session);
   return new Promise<number>((resolve, reject) => {
     process
       .on("close", () => {
+        const closedMs = Date.now();
+        session.stats.totalUptimeMs += closedMs - session.createdMs;
+        addStatsEntry(engine.uri, session.stats, new Date(session.createdMs));
         setTimeout(() => {
           sessions.delete(sessionID);
         }, sessionRemoveDelay);
@@ -164,9 +172,13 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
         reject(newUnexpectedError(err.message, lastReceived));
       })
       .on("timeout", () => reject(newTimeoutError(timeoutSeconds)))
-      .on("bestmove", (usi, usiMove, ponder) => h?.onUSIBestMove(sessionID, usi, usiMove, ponder))
-      .on("checkmate", (position, moves) => {
+      .on("bestmove", (usi, usiMove, ponder, goTimeMs) => {
+        h?.onUSIBestMove(sessionID, usi, usiMove, ponder);
+        session.stats.totalGoTimeMs += goTimeMs;
+      })
+      .on("checkmate", (position, moves, mateTimeMs) => {
         h?.onUSICheckmate(sessionID, position, moves);
+        session.stats.totalMateTimeMs += mateTimeMs;
       })
       .on("checkmateNotImplemented", () => {
         h?.onUSICheckmateNotImplemented(sessionID);
@@ -189,10 +201,16 @@ export function ready(sessionID: number): Promise<void> {
   const session = getSession(sessionID);
   const process = session.process;
   return new Promise<void>((resolve, reject) => {
-    process.on("ready", resolve).on("error", (err) => {
-      const lastReceived = process.lastReceived?.command;
-      reject(newUnexpectedError(err.message, lastReceived));
-    });
+    process
+      .on("ready", (readyTimeMs) => {
+        resolve();
+        session.stats.gameCount += 1;
+        session.stats.totalReadyTimeMs += readyTimeMs;
+      })
+      .on("error", (err) => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(err.message, lastReceived));
+      });
     const error = process.ready();
     if (error) {
       const lastReceived = process.lastReceived?.command;
@@ -231,6 +249,7 @@ export function go(sessionID: number, usi: string, timeStates: TimeStates): void
   const nextColor = getNextColorFromUSI(usi);
   session.process.go(usi, buildTimeState(nextColor, timeStates));
   session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
+  session.stats.goCount += 1;
 }
 
 export function goPonder(sessionID: number, usi: string, timeStates: TimeStates): void {
@@ -238,24 +257,28 @@ export function goPonder(sessionID: number, usi: string, timeStates: TimeStates)
   const nextColor = getNextColorFromUSI(usi);
   session.process.goPonder(usi, buildTimeState(nextColor, timeStates));
   session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
+  session.stats.goPonderCount += 1;
 }
 
 export function goInfinite(sessionID: number, usi: string): void {
   const session = getSession(sessionID);
   session.process.go(usi);
   session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
+  session.stats.goInfiniteCount += 1;
 }
 
 export function goMate(sessionID: number, usi: string, maxSeconds?: number): void {
   const session = getSession(sessionID);
   session.process.goMate(usi, maxSeconds);
   session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
+  session.stats.goMateCount += 1;
 }
 
 export function ponderHit(sessionID: number, timeStates: TimeStates): void {
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(session.process.currentPosition);
   session.process.ponderHit(buildTimeState(nextColor, timeStates));
+  session.stats.ponderHitCount += 1;
 }
 
 export function stop(sessionID: number): void {
@@ -268,12 +291,15 @@ export function gameover(sessionID: number, result: GameResult): void {
   switch (result) {
     case GameResult.WIN:
       session.process.gameover(USIGameResult.WIN);
+      session.stats.winCount += 1;
       break;
     case GameResult.LOSE:
       session.process.gameover(USIGameResult.LOSE);
+      session.stats.loseCount += 1;
       break;
     case GameResult.DRAW:
       session.process.gameover(USIGameResult.DRAW);
+      session.stats.drawCount += 1;
       break;
   }
 }
