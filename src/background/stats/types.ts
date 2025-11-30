@@ -22,7 +22,7 @@ export type USIEngineStatsEntry = {
 
 export function newUSIEngineStatsEntry(): USIEngineStatsEntry {
   return {
-    runCount: 1,
+    runCount: 0,
     totalUptimeMs: 0,
     gameCount: 0,
     totalReadyTimeMs: 0,
@@ -36,6 +36,24 @@ export function newUSIEngineStatsEntry(): USIEngineStatsEntry {
     goMateCount: 0,
     totalGoTimeMs: 0,
     totalMateTimeMs: 0,
+  };
+}
+
+export type USIEngineStats = {
+  earliestDate: string;
+  latestDate: string;
+  latest: USIEngineStatsEntry;
+  daily: [string, USIEngineStatsEntry][];
+  allTime: USIEngineStatsEntry;
+};
+
+export function newUSIEngineStats(firstEntry: USIEngineStatsEntry, date: string): USIEngineStats {
+  return {
+    earliestDate: date,
+    latestDate: date,
+    latest: firstEntry,
+    daily: [[date, firstEntry]],
+    allTime: { ...firstEntry },
   };
 }
 
@@ -61,40 +79,24 @@ function addUSIEngineStatsEntryValues(
   };
 }
 
-export type USIEngineStats = {
-  earliestDate: string;
-  latestDate: string;
-  latest: USIEngineStatsEntry;
-  daily: Map<string, USIEngineStatsEntry>;
-  allTime: USIEngineStatsEntry;
-};
-
-export function newUSIEngineStats(firstEntry: USIEngineStatsEntry, date: string): USIEngineStats {
-  const daily = new Map<string, USIEngineStatsEntry>();
-  daily.set(date, firstEntry);
-
-  return {
-    earliestDate: date,
-    latestDate: date,
-    latest: firstEntry,
-    daily: daily,
-    allTime: { ...firstEntry },
-  };
-}
-
 export function addUSIEngineStatsEntry(
   stats: USIEngineStats,
   entry: USIEngineStatsEntry,
   date: string,
 ) {
   if (stats.latestDate !== date) {
-    stats.daily.set(date, entry);
+    stats.daily.unshift([date, entry]);
   } else {
-    const oldEntry = stats.daily.get(date);
+    const oldEntry = stats.daily[0][1];
     const newEntry = oldEntry ? addUSIEngineStatsEntryValues(oldEntry, entry) : entry;
-    stats.daily.set(date, newEntry);
+    stats.daily[0][1] = newEntry;
+  }
+  if (stats.daily.length > 5) {
+    stats.daily.pop();
   }
   stats.latestDate = date;
   stats.latest = entry;
   stats.allTime = addUSIEngineStatsEntryValues(stats.allTime, entry);
 }
+
+export type USIEngineStatsMap = { [key: string]: USIEngineStats };

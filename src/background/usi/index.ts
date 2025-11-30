@@ -10,8 +10,7 @@ import { CommandHistory, CommandType, Command } from "@/common/advanced/command.
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { Color, getNextColorFromUSI } from "tsshogi";
 import { TimeStates } from "@/common/game/time.js";
-import { newUSIEngineStatsEntry, USIEngineStatsEntry } from "@/common/stats/usi.js";
-import { addStatsEntry } from "@/background/stats/usi.js";
+import { newUSIEngineStatsEntry, USIEngineStatsEntry } from "@/background/stats/types.js";
 
 interface Handlers {
   onUSIBestMove(sessionID: number, usi: string, usiMove: string, ponder?: string): void;
@@ -20,6 +19,12 @@ interface Handlers {
   onUSICheckmateTimeout(sessionID: number, usi: string): void;
   onUSINoMate(sessionID: number, usi: string): void;
   onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand): void;
+  onUSIStats(
+    sessionID: number,
+    usi: string,
+    stats: USIEngineStatsEntry,
+    launchTimeMs: number,
+  ): void;
   sendPromptCommand(sessionID: number, command: Command): void;
 }
 
@@ -162,7 +167,7 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
       .on("close", () => {
         const closedMs = Date.now();
         session.stats.totalUptimeMs += closedMs - session.createdMs;
-        addStatsEntry(engine.uri, session.stats, new Date(session.createdMs));
+        h?.onUSIStats(sessionID, engine.uri, session.stats, session.createdMs);
         setTimeout(() => {
           sessions.delete(sessionID);
         }, sessionRemoveDelay);
@@ -189,7 +194,10 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
       .on("noMate", (position) => {
         h?.onUSINoMate(sessionID, position);
       })
-      .on("usiok", () => resolve(sessionID))
+      .on("usiok", () => {
+        resolve(sessionID);
+        session.stats.runCount += 1;
+      })
       .on("command", (command) => {
         h?.sendPromptCommand(sessionID, command);
       });

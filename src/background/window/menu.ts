@@ -41,6 +41,7 @@ import { createMonitorWindow } from "./monitor.js";
 import { createListItems } from "@/common/message.js";
 import { BoardLayoutType } from "@/common/settings/layout.js";
 import { getCPUInfo } from "@/background/proc/state.js";
+import { outputStatsHTML } from "@/background/stats/html.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -602,6 +603,12 @@ function createMenuTemplate(window: BrowserWindow) {
         menuItem(`${t.connectToCSAServer}(${t.adminMode})`, MenuEvent.CONNECT_TO_CSA_SERVER, [
           AppState.NORMAL,
         ]),
+        {
+          label: "統計情報", // TODO: i18n
+          click: () => {
+            outputStatsHTML().catch(sendError);
+          },
+        },
         {
           type: "separator",
         },

@@ -1,23 +1,42 @@
+import path from "node:path";
+import fs from "node:fs/promises";
+import { getAppPath } from "@/background/proc/path-electron.js";
+import { exists } from "@/background/helpers/file.js";
+import { writeFileAtomic } from "@/background/file/atomic.js";
+import { sendError } from "@/background/window/ipc.js";
 import {
   addUSIEngineStatsEntry,
   newUSIEngineStats,
-  USIEngineStats,
   USIEngineStatsEntry,
-} from "@/common/stats/usi";
+  USIEngineStatsMap,
+} from "./types";
 
-const statsMap: Map<string, USIEngineStats> = new Map();
+const statsFilePath = path.join(getAppPath("userData"), "usi_engine_stats.json");
 
-export function getStats(uri: string): USIEngineStats | undefined {
-  return statsMap.get(uri);
+export async function getUSIEngineStatsMap(): Promise<USIEngineStatsMap> {
+  if (!(await exists(statsFilePath))) {
+    return {};
+  }
+  const data = await fs.readFile(statsFilePath, "utf-8");
+  return JSON.parse(data) as USIEngineStatsMap;
 }
 
-export function addStatsEntry(uri: string, entry: USIEngineStatsEntry, launchDate: Date) {
+export function updateUSIEngineStats(
+  engineURI: string,
+  newEntry: USIEngineStatsEntry,
+  launchDate: Date,
+) {
   const date = launchDate.toISOString().substring(0, 10);
-  const stats = statsMap.get(uri);
-  if (stats) {
-    addUSIEngineStatsEntry(stats, entry, date);
-    return;
-  }
-  const newStats = newUSIEngineStats(entry, date);
-  statsMap.set(uri, newStats);
+  getUSIEngineStatsMap().then((statsMap) => {
+    const stats = statsMap[engineURI];
+    if (stats) {
+      addUSIEngineStatsEntry(stats, newEntry, date);
+    } else {
+      const newStats = newUSIEngineStats(newEntry, date);
+      statsMap[engineURI] = newStats;
+    }
+    writeFileAtomic(statsFilePath, JSON.stringify(statsMap, undefined, 2), "utf-8").catch(
+      sendError,
+    );
+  });
 }

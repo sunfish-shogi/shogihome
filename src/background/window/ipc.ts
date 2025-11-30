@@ -130,6 +130,8 @@ import { escapeFileName } from "@/common/file/path.js";
 import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
 import { loadUSIEngineMeta } from "@/background/usi/metadata.js";
 import { Lazy } from "@/common/helpers/lazy.js";
+import { USIEngineStatsEntry } from "@/background/stats/types";
+import { updateUSIEngineStats } from "@/background/stats/usi.js";
 
 const isWindows = process.platform === "win32";
 
@@ -1064,6 +1066,9 @@ setUSIHandlers({
   },
   onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand): void {
     mainWindow.webContents.send(Renderer.USI_INFO, sessionID, usi, JSON.stringify(info));
+  },
+  onUSIStats(_: number, usi: string, stats: USIEngineStatsEntry, launchTimeMs: number): void {
+    updateUSIEngineStats(usi, stats, new Date(launchTimeMs));
   },
   sendPromptCommand: sendPromptCommand.bind(this, PromptTarget.USI),
 });
