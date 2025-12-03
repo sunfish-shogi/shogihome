@@ -56,6 +56,7 @@ export enum Background {
   SAVE_BOOK_IMPORT_SETTINGS = "saveBookImportSettings",
   SHOW_SELECT_USI_ENGINE_DIALOG = "showSelectUSIEngineDialog",
   GET_USI_ENGINE_INFO = "getUSIEngineInfo",
+  GET_USI_ENGINE_METADATA = "getUSIEngineMetadata",
   SEND_USI_OPTION_BUTTON_SIGNAL = "sendUSIOptionButtonSignal",
   LAUNCH_USI = "usiLaunch",
   USI_READY = "usiReady",

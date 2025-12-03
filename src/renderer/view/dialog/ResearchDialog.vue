@@ -89,11 +89,12 @@ import {
   getPredefinedUSIEngineTag,
   getUSIEngineOptionCurrentValue,
   getUSIEngineThreads,
+  USIEngineMetadata,
   USIEngines,
   USIHash,
 } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -107,6 +108,7 @@ const store = useStore();
 const busyState = useBusyState();
 const researchSettings = ref(defaultResearchSettings());
 const engines = ref(new USIEngines());
+const engineMetadataMap = reactive(new Map<string, USIEngineMetadata>());
 const engineURI = ref("");
 const secondaryEngineURIs = ref([] as string[]);
 const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
@@ -129,6 +131,26 @@ onMounted(async () => {
   }
 });
 
+watch(() => engineURI.value, loadMetadataIfNeeded);
+watch(
+  () => secondaryEngineURIs.value,
+  (uris) => {
+    for (const uri of uris) {
+      loadMetadataIfNeeded(uri);
+    }
+  },
+  { deep: true },
+);
+
+function loadMetadataIfNeeded(uri: string) {
+  const engine = engines.value.getEngine(uri);
+  if (uri && !engineMetadataMap.has(uri) && engine) {
+    api.getUSIEngineMetadata(engine.path).then((meta) => {
+      engineMetadataMap.set(uri, meta);
+    });
+  }
+}
+
 const cpuUsage = computed(() => {
   let threadsSum = 0;
   for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
@@ -137,7 +159,8 @@ const cpuUsage = computed(() => {
       continue;
     }
     const threads = getUSIEngineThreads(engine);
-    if (typeof threads === "number") {
+    const metadata = engineMetadataMap.get(uri);
+    if (typeof threads === "number" && metadata && !metadata.isShellScript) {
       threadsSum += threads;
     }
   }
@@ -152,7 +175,8 @@ const memoryUsage = computed(() => {
       continue;
     }
     const usiHash = getUSIEngineOptionCurrentValue(engine.options[USIHash]);
-    if (typeof usiHash === "number") {
+    const metadata = engineMetadataMap.get(uri);
+    if (typeof usiHash === "number" && metadata && !metadata.isShellScript) {
       usiHashSum += usiHash;
     }
   }

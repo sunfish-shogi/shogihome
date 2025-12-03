@@ -733,14 +733,16 @@ ipcMain.handle(Background.SHOW_SELECT_USI_ENGINE_DIALOG, async (event): Promise<
 
 ipcMain.handle(
   Background.GET_USI_ENGINE_INFO,
-  async (event, path: string, timeoutSeconds: number): Promise<[string, string]> => {
+  async (event, path: string, timeoutSeconds: number): Promise<string> => {
     validateIPCSender(event.senderFrame);
-    return [
-      JSON.stringify(await usiGetUSIEngineInfo(path, timeoutSeconds)),
-      JSON.stringify(await loadUSIEngineMeta(path)),
-    ];
+    return JSON.stringify(await usiGetUSIEngineInfo(path, timeoutSeconds));
   },
 );
+
+ipcMain.handle(Background.GET_USI_ENGINE_METADATA, async (event, path: string): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await loadUSIEngineMeta(path));
+});
 
 ipcMain.handle(
   Background.SEND_USI_OPTION_BUTTON_SIGNAL,

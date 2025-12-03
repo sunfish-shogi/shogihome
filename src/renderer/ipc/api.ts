@@ -85,7 +85,8 @@ export interface API {
 
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
-  getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<[USIEngine, USIEngineMetadata]>;
+  getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine>;
+  getUSIEngineMetadata(path: string): Promise<USIEngineMetadata>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
   usiLaunch(engine: USIEngine, timeoutSeconds: number): Promise<number>;
   usiReady(sessionID: number): Promise<void>;
@@ -246,12 +247,13 @@ const api: API = {
   },
 
   // USI
-  async getUSIEngineInfo(
-    path: string,
-    timeoutSeconds: number,
-  ): Promise<[USIEngine, USIEngineMetadata]> {
-    const [engine, metadata] = await bridge.getUSIEngineInfo(path, timeoutSeconds);
-    return [JSON.parse(engine), JSON.parse(metadata)];
+  async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine> {
+    const engine = await bridge.getUSIEngineInfo(path, timeoutSeconds);
+    return JSON.parse(engine);
+  },
+  async getUSIEngineMetadata(path: string): Promise<USIEngineMetadata> {
+    const metadata = await bridge.getUSIEngineMetadata(path);
+    return JSON.parse(metadata);
   },
   usiLaunch(engine: USIEngine, timeoutSeconds: number): Promise<number> {
     return bridge.usiLaunch(JSON.stringify(engine), timeoutSeconds);
