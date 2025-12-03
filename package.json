@@ -103,7 +103,7 @@
     "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.5.2",
     "tsc-alias": "^1.7.0",
-    "tsx": "^4.19.3",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0",
     "vite": "^7.1.12",
