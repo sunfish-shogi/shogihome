@@ -130,7 +130,7 @@ import { escapeFileName } from "@/common/file/path.js";
 import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
 import { loadUSIEngineMeta } from "@/background/usi/metadata.js";
 import { Lazy } from "@/common/helpers/lazy.js";
-import { USIEngineStatsEntry } from "@/background/stats/types";
+import { USIEngineStatsEntry } from "@/background/stats/types.js";
 import { updateUSIEngineStats } from "@/background/stats/usi.js";
 
 const isWindows = process.platform === "win32";

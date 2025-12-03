@@ -9,7 +9,7 @@ import {
   newUSIEngineStats,
   USIEngineStatsEntry,
   USIEngineStatsMap,
-} from "./types";
+} from "./types.js";
 
 const statsFilePath = path.join(getAppPath("userData"), "usi_engine_stats.json");
 

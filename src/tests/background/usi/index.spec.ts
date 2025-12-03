@@ -33,6 +33,7 @@ const handlers = {
   onUSINoMate: vi.fn(),
   onUSIInfo: vi.fn(),
   onUSIPonderInfo: vi.fn(),
+  onUSIStats: vi.fn(),
   sendPromptCommand: vi.fn(),
 };
 setHandlers(handlers);
