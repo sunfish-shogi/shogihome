@@ -27,7 +27,8 @@ async function generateUSIEngineStatsHTML(): Promise<string> {
 
   html += `<h1>${t.usiEngine}</h1>\n`;
   const usiEngines = await loadUSIEngines();
-  const usiEngineStatsEntries = Object.entries(getUSIEngineStatsMap()).sort((a, b) => {
+  const usiEngineStatsMap = await getUSIEngineStatsMap();
+  const usiEngineStatsEntries = Object.entries(usiEngineStatsMap).sort((a, b) => {
     return b[1].latestDate.localeCompare(a[1].latestDate);
   });
   for (const [uri, stats] of usiEngineStatsEntries) {

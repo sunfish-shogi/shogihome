@@ -10,6 +10,7 @@ import {
   USIEngineStatsEntry,
   USIEngineStatsMap,
 } from "./types.js";
+import { getDateString } from "@/common/helpers/datetime.js";
 
 const statsFilePath = path.join(getAppPath("userData"), "usi_engine_stats.json");
 
@@ -26,7 +27,7 @@ export function updateUSIEngineStats(
   newEntry: USIEngineStatsEntry,
   launchDate: Date,
 ) {
-  const date = launchDate.toISOString().substring(0, 10);
+  const date = getDateString(launchDate).replaceAll("/", "-");
   getUSIEngineStatsMap().then((statsMap) => {
     const stats = statsMap[engineURI];
     if (stats) {
