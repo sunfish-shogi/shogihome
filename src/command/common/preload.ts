@@ -198,7 +198,10 @@ const bridge: Bridge = {
   async showSelectUSIEngineDialog(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
-  async getUSIEngineInfo(): Promise<[string, string]> {
+  async getUSIEngineInfo(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async getUSIEngineMetadata(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
   async sendUSIOptionButtonSignal(): Promise<void> {

@@ -338,7 +338,8 @@ busyState.retain();
 onMounted(async () => {
   try {
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
-    [engine.value, metadata.value] = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
+    engine.value = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
+    metadata.value = await api.getUSIEngineMetadata(props.latest.path);
     mergeUSIEngine(engine.value, props.latest);
     options.value = Object.values(engine.value.options)
       .sort((a, b): number => (a.order < b.order ? -1 : 1))
@@ -372,7 +373,7 @@ const replaceEnginePath = async () => {
       message: t.incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath,
       onOk: async () => {
         try {
-          const [newEngine] = await api.getUSIEngineInfo(path, timeoutSeconds);
+          const newEngine = await api.getUSIEngineInfo(path, timeoutSeconds);
           mergeUSIEngine(newEngine, engine.value); // もとの設定を引き継ぐ
           engine.value = newEngine;
         } catch (e) {
