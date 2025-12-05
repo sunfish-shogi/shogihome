@@ -1,16 +1,18 @@
 export type USIEngineStatsEntry = {
-  // 起動に関する統計情報
+  // NOTICE: 新しい要素を追加する場合は既存データを読み込む際の undefined を 0 として扱うこと
+
+  // 起動
   runCount: number;
   totalUptimeMs: number;
 
-  // 対局に関する統計情報
+  // 対局
   gameCount: number;
   totalReadyTimeMs: number;
   winCount: number;
   loseCount: number;
   drawCount: number;
 
-  // 思考に関する統計情報
+  // 思考のインタラクション
   goCount: number; // go ponder / go infinite / go mate を含まない
   goPonderCount: number;
   ponderHitCount: number;
@@ -18,6 +20,32 @@ export type USIEngineStatsEntry = {
   goMateCount: number;
   totalGoTimeMs: number;
   totalMateTimeMs: number;
+
+  // ノード数
+  totalNodeCount: number;
+  maxNPS: number;
+  npsSampleCount: number;
+  meanNPS: number;
+
+  // 深さ
+  maxDepth: number;
+  maxSelDepth: number;
+  depth10Count: number;
+  depth10TotalTimeMs: number;
+  depth20Count: number;
+  depth20TotalTimeMs: number;
+  depth30Count: number;
+  depth30TotalTimeMs: number;
+  depth40Count: number;
+  depth40TotalTimeMs: number;
+
+  // ハッシュ使用率
+  maxHashUsagePercent: number;
+  hashUsageSampleCount: number;
+  meanHashUsagePercent: number;
+  hashUsageOver50PercentCount: number;
+  hashUsageOver70PercentCount: number;
+  hashUsageOver90PercentCount: number;
 };
 
 export function newUSIEngineStatsEntry(): USIEngineStatsEntry {
@@ -36,6 +64,26 @@ export function newUSIEngineStatsEntry(): USIEngineStatsEntry {
     goMateCount: 0,
     totalGoTimeMs: 0,
     totalMateTimeMs: 0,
+    totalNodeCount: 0,
+    maxNPS: 0,
+    npsSampleCount: 0,
+    meanNPS: 0,
+    maxDepth: 0,
+    maxSelDepth: 0,
+    depth10Count: 0,
+    depth10TotalTimeMs: 0,
+    depth20Count: 0,
+    depth20TotalTimeMs: 0,
+    depth30Count: 0,
+    depth30TotalTimeMs: 0,
+    depth40Count: 0,
+    depth40TotalTimeMs: 0,
+    maxHashUsagePercent: 0,
+    hashUsageSampleCount: 0,
+    meanHashUsagePercent: 0,
+    hashUsageOver50PercentCount: 0,
+    hashUsageOver70PercentCount: 0,
+    hashUsageOver90PercentCount: 0,
   };
 }
 
@@ -76,6 +124,26 @@ function addUSIEngineStatsEntryValues(
     goMateCount: a.goMateCount + b.goMateCount,
     totalGoTimeMs: a.totalGoTimeMs + b.totalGoTimeMs,
     totalMateTimeMs: a.totalMateTimeMs + b.totalMateTimeMs,
+    totalNodeCount: a.totalNodeCount + b.totalNodeCount,
+    maxNPS: a.maxNPS + b.maxNPS,
+    npsSampleCount: a.npsSampleCount + b.npsSampleCount,
+    meanNPS: a.meanNPS + b.meanNPS,
+    maxDepth: a.maxDepth + b.maxDepth,
+    maxSelDepth: a.maxSelDepth + b.maxSelDepth,
+    depth10Count: a.depth10Count + b.depth10Count,
+    depth10TotalTimeMs: a.depth10TotalTimeMs + b.depth10TotalTimeMs,
+    depth20Count: a.depth20Count + b.depth20Count,
+    depth20TotalTimeMs: a.depth20TotalTimeMs + b.depth20TotalTimeMs,
+    depth30Count: a.depth30Count + b.depth30Count,
+    depth30TotalTimeMs: a.depth30TotalTimeMs + b.depth30TotalTimeMs,
+    depth40Count: a.depth40Count + b.depth40Count,
+    depth40TotalTimeMs: a.depth40TotalTimeMs + b.depth40TotalTimeMs,
+    maxHashUsagePercent: a.maxHashUsagePercent + b.maxHashUsagePercent,
+    hashUsageSampleCount: a.hashUsageSampleCount + b.hashUsageSampleCount,
+    meanHashUsagePercent: a.meanHashUsagePercent + b.meanHashUsagePercent,
+    hashUsageOver50PercentCount: a.hashUsageOver50PercentCount + b.hashUsageOver50PercentCount,
+    hashUsageOver70PercentCount: a.hashUsageOver70PercentCount + b.hashUsageOver70PercentCount,
+    hashUsageOver90PercentCount: a.hashUsageOver90PercentCount + b.hashUsageOver90PercentCount,
   };
 }
 
@@ -100,3 +168,4 @@ export function addUSIEngineStatsEntry(
 }
 
 export type USIEngineStatsMap = { [key: string]: USIEngineStats };
+export type PartialUSIEngineStatsMap = { [key: string]: Partial<USIEngineStats> };

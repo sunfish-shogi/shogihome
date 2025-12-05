@@ -115,11 +115,19 @@ export function sendOptionButtonSignal(
   });
 }
 
+type StatsTemporaryData = {
+  nodes?: number;
+  nps?: number;
+  depth?: number;
+  hashfullPerMill?: number;
+};
+
 type Session = {
   process: EngineProcess;
   engine: USIEngine;
   createdMs: number;
   stats: USIEngineStatsEntry;
+  statsTempData?: StatsTemporaryData;
 };
 
 let lastSessionID = 0;
@@ -136,6 +144,15 @@ export function setSessionRemoveDelay(delay: number): void {
   sessionRemoveDelay = delay;
 }
 
+function newSession(process: EngineProcess, engine: USIEngine): Session {
+  return {
+    process,
+    engine: engine,
+    createdMs: Date.now(),
+    stats: newUSIEngineStatsEntry(),
+  };
+}
+
 function isSessionExists(sessionID: number): boolean {
   return sessions.has(sessionID);
 }
@@ -148,6 +165,139 @@ function getSession(sessionID: number): Session {
   return session;
 }
 
+function updateStatsOnUSIOK(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.runCount += 1;
+}
+
+function updateStatsOnReady(sessionID: number, readyTimeMs: number): void {
+  const session = getSession(sessionID);
+  session.stats.gameCount += 1;
+  session.stats.totalReadyTimeMs += readyTimeMs;
+}
+
+function updateStatsOnGo(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.goCount += 1;
+  session.statsTempData = undefined;
+}
+
+function updateStatsOnGoPonder(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.goPonderCount += 1;
+}
+
+function updateStatsOnPonderHit(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.ponderHitCount += 1;
+}
+
+function updateStatsOnGoInfinite(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.goInfiniteCount += 1;
+}
+
+function updateStatsOnGoMate(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.goMateCount += 1;
+}
+
+function updateStatsOnGameover(sessionID: number, result: GameResult): void {
+  const session = getSession(sessionID);
+  switch (result) {
+    case GameResult.WIN:
+      session.stats.winCount += 1;
+      break;
+    case GameResult.LOSE:
+      session.stats.loseCount += 1;
+      break;
+    case GameResult.DRAW:
+      session.stats.drawCount += 1;
+      break;
+  }
+}
+
+function updateStatsOnUSIInfo(sessionID: number, info: USIInfoCommand): void {
+  const session = getSession(sessionID);
+  session.stats.maxNPS = Math.max(session.stats.maxNPS, info.nps ?? 0);
+  session.stats.maxDepth = Math.max(session.stats.maxDepth, info.depth ?? 0);
+  session.stats.maxSelDepth = Math.max(session.stats.maxSelDepth, info.seldepth ?? 0);
+  if (info.depth) {
+    if ((session.statsTempData?.depth ?? 0) < 10 && info.depth >= 10) {
+      session.stats.depth10Count += 1;
+      session.stats.depth10TotalTimeMs += info.timeMs ?? 0;
+    }
+    if ((session.statsTempData?.depth ?? 0) < 20 && info.depth >= 20) {
+      session.stats.depth20Count += 1;
+      session.stats.depth20TotalTimeMs += info.timeMs ?? 0;
+    }
+    if ((session.statsTempData?.depth ?? 0) < 30 && info.depth >= 30) {
+      session.stats.depth30Count += 1;
+      session.stats.depth30TotalTimeMs += info.timeMs ?? 0;
+    }
+    if ((session.statsTempData?.depth ?? 0) < 40 && info.depth >= 40) {
+      session.stats.depth40Count += 1;
+      session.stats.depth40TotalTimeMs += info.timeMs ?? 0;
+    }
+  }
+  session.stats.maxHashUsagePercent = Math.max(
+    session.stats.maxHashUsagePercent,
+    (info.hashfullPerMill ?? 0) / 10,
+  );
+  session.statsTempData = {
+    nodes: info.nodes ?? session.statsTempData?.nodes,
+    nps: info.nps ?? session.statsTempData?.nps,
+    depth: Math.max(info.depth || 0, session.statsTempData?.depth || 0),
+    hashfullPerMill: info.hashfullPerMill ?? session.statsTempData?.hashfullPerMill,
+  };
+}
+
+function updateStatsOnGoEnd(sessionID: number): void {
+  const session = getSession(sessionID);
+  session.stats.totalNodeCount += session.statsTempData?.nodes ?? 0;
+  if (session.statsTempData?.nps) {
+    session.stats.npsSampleCount += 1;
+    session.stats.meanNPS =
+      (session.stats.meanNPS * (session.stats.npsSampleCount - 1) + session.statsTempData.nps) /
+      session.stats.npsSampleCount;
+  }
+  if (session.statsTempData?.hashfullPerMill) {
+    const hashUsagePercent = session.statsTempData.hashfullPerMill / 10;
+    session.stats.hashUsageSampleCount += 1;
+    session.stats.meanHashUsagePercent =
+      (session.stats.meanHashUsagePercent * (session.stats.hashUsageSampleCount - 1) +
+        hashUsagePercent) /
+      session.stats.hashUsageSampleCount;
+    if (hashUsagePercent > 50) {
+      session.stats.hashUsageOver50PercentCount += 1;
+    }
+    if (hashUsagePercent > 70) {
+      session.stats.hashUsageOver70PercentCount += 1;
+    }
+    if (hashUsagePercent > 90) {
+      session.stats.hashUsageOver90PercentCount += 1;
+    }
+  }
+}
+
+function updateStatsOnBestMove(sessionID: number, goTimeMs: number): void {
+  const session = getSession(sessionID);
+  session.stats.totalGoTimeMs += goTimeMs;
+  updateStatsOnGoEnd(sessionID);
+}
+
+function updateStatsOnCheckMate(sessionID: number, mateTimeMs: number): void {
+  const session = getSession(sessionID);
+  session.stats.totalMateTimeMs += mateTimeMs;
+  updateStatsOnGoEnd(sessionID);
+}
+
+function updateStatsOnClose(sessionID: number): void {
+  const session = getSession(sessionID);
+  const closedMs = Date.now();
+  session.stats.totalUptimeMs += closedMs - session.createdMs;
+}
+
 export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<number> {
   const sessionID = issueSessionID();
   const process = new EngineProcess(resolveEnginePath(engine.path), sessionID, getUSILogger(), {
@@ -155,18 +305,12 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
     engineOptions: Object.values(engine.options),
     enableEarlyPonder: engine.enableEarlyPonder,
   });
-  const session = {
-    process,
-    engine: engine,
-    createdMs: Date.now(),
-    stats: newUSIEngineStatsEntry(),
-  };
+  const session = newSession(process, engine);
   sessions.set(sessionID, session);
   return new Promise<number>((resolve, reject) => {
     process
       .on("close", () => {
-        const closedMs = Date.now();
-        session.stats.totalUptimeMs += closedMs - session.createdMs;
+        updateStatsOnClose(sessionID);
         h?.onUSIStats(sessionID, engine.uri, session.stats, session.createdMs);
         setTimeout(() => {
           sessions.delete(sessionID);
@@ -179,11 +323,11 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
       .on("timeout", () => reject(newTimeoutError(timeoutSeconds)))
       .on("bestmove", (usi, usiMove, ponder, goTimeMs) => {
         h?.onUSIBestMove(sessionID, usi, usiMove, ponder);
-        session.stats.totalGoTimeMs += goTimeMs;
+        updateStatsOnBestMove(sessionID, goTimeMs);
       })
       .on("checkmate", (position, moves, mateTimeMs) => {
         h?.onUSICheckmate(sessionID, position, moves);
-        session.stats.totalMateTimeMs += mateTimeMs;
+        updateStatsOnCheckMate(sessionID, mateTimeMs);
       })
       .on("checkmateNotImplemented", () => {
         h?.onUSICheckmateNotImplemented(sessionID);
@@ -196,7 +340,7 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
       })
       .on("usiok", () => {
         resolve(sessionID);
-        session.stats.runCount += 1;
+        updateStatsOnUSIOK(sessionID);
       })
       .on("command", (command) => {
         h?.sendPromptCommand(sessionID, command);
@@ -212,8 +356,7 @@ export function ready(sessionID: number): Promise<void> {
     process
       .on("ready", (readyTimeMs) => {
         resolve();
-        session.stats.gameCount += 1;
-        session.stats.totalReadyTimeMs += readyTimeMs;
+        updateStatsOnReady(sessionID, readyTimeMs);
       })
       .on("error", (err) => {
         const lastReceived = process.lastReceived?.command;
@@ -252,41 +395,46 @@ function buildTimeState(color: Color, timeStates: TimeStates): TimeState {
   };
 }
 
+function onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand) {
+  h?.onUSIInfo(sessionID, usi, info);
+  updateStatsOnUSIInfo(sessionID, info);
+}
+
 export function go(sessionID: number, usi: string, timeStates: TimeStates): void {
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(usi);
   session.process.go(usi, buildTimeState(nextColor, timeStates));
-  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
-  session.stats.goCount += 1;
+  session.process.on("info", (usi, info) => onUSIInfo(sessionID, usi, info));
+  updateStatsOnGo(sessionID);
 }
 
 export function goPonder(sessionID: number, usi: string, timeStates: TimeStates): void {
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(usi);
   session.process.goPonder(usi, buildTimeState(nextColor, timeStates));
-  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
-  session.stats.goPonderCount += 1;
+  session.process.on("info", (usi, info) => onUSIInfo(sessionID, usi, info));
+  updateStatsOnGoPonder(sessionID);
 }
 
 export function goInfinite(sessionID: number, usi: string): void {
   const session = getSession(sessionID);
   session.process.go(usi);
-  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
-  session.stats.goInfiniteCount += 1;
+  session.process.on("info", (usi, info) => onUSIInfo(sessionID, usi, info));
+  updateStatsOnGoInfinite(sessionID);
 }
 
 export function goMate(sessionID: number, usi: string, maxSeconds?: number): void {
   const session = getSession(sessionID);
   session.process.goMate(usi, maxSeconds);
-  session.process.on("info", (usi, info) => h?.onUSIInfo(sessionID, usi, info));
-  session.stats.goMateCount += 1;
+  session.process.on("info", (usi, info) => onUSIInfo(sessionID, usi, info));
+  updateStatsOnGoMate(sessionID);
 }
 
 export function ponderHit(sessionID: number, timeStates: TimeStates): void {
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(session.process.currentPosition);
   session.process.ponderHit(buildTimeState(nextColor, timeStates));
-  session.stats.ponderHitCount += 1;
+  updateStatsOnPonderHit(sessionID);
 }
 
 export function stop(sessionID: number): void {
@@ -299,17 +447,15 @@ export function gameover(sessionID: number, result: GameResult): void {
   switch (result) {
     case GameResult.WIN:
       session.process.gameover(USIGameResult.WIN);
-      session.stats.winCount += 1;
       break;
     case GameResult.LOSE:
       session.process.gameover(USIGameResult.LOSE);
-      session.stats.loseCount += 1;
       break;
     case GameResult.DRAW:
       session.process.gameover(USIGameResult.DRAW);
-      session.stats.drawCount += 1;
       break;
   }
+  updateStatsOnGameover(sessionID, result);
 }
 
 export function quit(sessionID: number): void {
