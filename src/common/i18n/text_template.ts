@@ -71,6 +71,7 @@ export type Texts = {
   copyUSILogTailCommand: string;
   copyCSALogTailCommand: string;
   reloadCustomPieceImage: string;
+  statisticsReport: string;
   launchUSIEngine: string;
   connectToCSAServer: string;
   adminMode: string;

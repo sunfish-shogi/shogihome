@@ -123,11 +123,13 @@ type ErrorCallback = (e: Error) => void;
 type TimeoutCallback = () => void;
 type CloseCallback = () => void;
 type USIOKCallback = () => void;
-type ReadyCallback = () => void;
+type ReadyCallback = (readyTimeMs: number) => void;
 type BestmoveCallback = (position: string, move: string, ponder?: string) => void;
+type GoEndCallback = (thinkingTimeMs: number) => void;
 type CheckmateCallback = (position: string, moves: string[]) => void;
 type CheckmateNotImplementedCallback = () => void;
 type CheckmateTimeoutCallback = (position: string) => void;
+type CheckmateEndCallback = (thinkingTimeMs: number) => void;
 type NoMateCallback = (position: string) => void;
 type InfoCallback = (position: string, info: USIInfoCommand) => void;
 type CommandCallback = (command: Command) => void;
@@ -204,15 +206,19 @@ export class EngineProcess {
     discarded: 0,
     commands: [],
   };
+  private readyStartTimeMs = 0;
+  private goTimeMs = 0;
   timeoutCallback?: TimeoutCallback;
   errorCallback?: ErrorCallback;
   closeCallback?: CloseCallback;
   usiOkCallback?: USIOKCallback;
   readyCallback?: ReadyCallback;
   bestMoveCallback?: BestmoveCallback;
+  goEndCallback?: GoEndCallback;
   checkmateCallback?: CheckmateCallback;
   checkmateNotImplementedCallback?: CheckmateNotImplementedCallback;
   checkmateTimeoutCallback?: CheckmateTimeoutCallback;
+  checkmateEndCallback?: CheckmateEndCallback;
   noMateCallback?: NoMateCallback;
   infoCallback?: InfoCallback;
   commandCallback?: CommandCallback;
@@ -270,9 +276,11 @@ export class EngineProcess {
   on(event: "usiok", callback: USIOKCallback): this;
   on(event: "ready", callback: ReadyCallback): this;
   on(event: "bestmove", callback: BestmoveCallback): this;
+  on(event: "goEnd", callback: GoEndCallback): this;
   on(event: "checkmate", callback: CheckmateCallback): this;
   on(event: "checkmateNotImplemented", callback: CheckmateNotImplementedCallback): this;
   on(event: "checkmateTimeout", callback: CheckmateTimeoutCallback): this;
+  on(event: "checkmateEnd", callback: CheckmateEndCallback): this;
   on(event: "noMate", callback: NoMateCallback): this;
   on(event: "info", callback: InfoCallback): this;
   on(event: "command", callback: (command: Command) => void): this;
@@ -296,6 +304,9 @@ export class EngineProcess {
       case "bestmove":
         this.bestMoveCallback = callback as BestmoveCallback;
         break;
+      case "goEnd":
+        this.goEndCallback = callback as GoEndCallback;
+        break;
       case "checkmate":
         this.checkmateCallback = callback as CheckmateCallback;
         break;
@@ -304,6 +315,9 @@ export class EngineProcess {
         break;
       case "checkmateTimeout":
         this.checkmateTimeoutCallback = callback as CheckmateTimeoutCallback;
+        break;
+      case "checkmateEnd":
+        this.checkmateEndCallback = callback as CheckmateEndCallback;
         break;
       case "noMate":
         this.noMateCallback = callback as NoMateCallback;
@@ -332,6 +346,23 @@ export class EngineProcess {
     if (this.state === State.WillQuit) {
       return;
     }
+
+    switch (this.state) {
+      case State.WaitingForBestMove:
+      case State.WaitingForPonderBestMove:
+        if (this.goEndCallback) {
+          const thinkingTimeMs = Date.now() - this.goTimeMs;
+          this.goEndCallback(thinkingTimeMs);
+        }
+        break;
+      case State.WaitingForCheckmate:
+        if (this.checkmateEndCallback) {
+          const thinkingTimeMs = Date.now() - this.goTimeMs;
+          this.checkmateEndCallback(thinkingTimeMs);
+        }
+        break;
+    }
+
     this._state = State.WillQuit;
     this.clearLaunchTimeout();
     this.logger.info("sid=%d: quit USI engine", this.sessionID);
@@ -389,6 +420,7 @@ export class EngineProcess {
     }
     this.send("isready");
     this._state = State.WaitingForReadyOK;
+    this.readyStartTimeMs = Date.now();
   }
 
   go(position: string, timeState?: TimeState): void {
@@ -591,6 +623,7 @@ export class EngineProcess {
         ? State.WaitingForCheckmate
         : State.WaitingForBestMove;
     this.reservedGoCommand = undefined;
+    this.goTimeMs = Date.now();
   }
 
   private send(command: string): void {
@@ -720,7 +753,8 @@ export class EngineProcess {
       return;
     }
     this._state = State.Ready;
-    this.readyCallback?.();
+    const readyTimeMs = Date.now() - this.readyStartTimeMs;
+    this.readyCallback?.(readyTimeMs);
     this.send("usinewgame");
     this.sendReservedGoCommands();
   }
@@ -735,8 +769,10 @@ export class EngineProcess {
       return;
     }
 
+    const thinkingTimeMs = Date.now() - this.goTimeMs;
     if (this.state !== State.WaitingForBestMove && this.state !== State.WaitingForPonderBestMove) {
       this.logger.warn("sid=%d: onBestMove: unexpected state: %s", this.sessionID, this.state);
+      this.goEndCallback?.(thinkingTimeMs);
       return;
     }
     if (this.bestMoveCallback && this.state === State.WaitingForBestMove) {
@@ -748,27 +784,34 @@ export class EngineProcess {
     this._state = State.Ready;
     this._currentPosition = "";
     this.sendReservedGoCommands();
+    this.goEndCallback?.(thinkingTimeMs);
   }
 
   private onCheckmate(args: string): void {
     this.flushReservedSetOptionCommands();
 
+    const thinkingTimeMs = Date.now() - this.goTimeMs;
     if (this.state !== State.WaitingForCheckmate) {
       this.logger.warn("sid=%d: onCheckmate: unexpected state: %s", this.sessionID, this.state);
+      this.checkmateEndCallback?.(thinkingTimeMs);
       return;
     }
     this._state = State.Ready;
     if (args.trim() === "notimplemented") {
       this.checkmateNotImplementedCallback?.();
+      this.checkmateEndCallback?.(thinkingTimeMs);
       return;
     } else if (args.trim() === "timeout") {
       this.checkmateTimeoutCallback?.(this.currentPosition);
+      this.checkmateEndCallback?.(thinkingTimeMs);
       return;
     } else if (args.trim() === "nomate") {
       this.noMateCallback?.(this.currentPosition);
+      this.checkmateEndCallback?.(thinkingTimeMs);
       return;
     }
     this.checkmateCallback?.(this.currentPosition, args.trim().split(" "));
+    this.checkmateEndCallback?.(thinkingTimeMs);
   }
 
   invoke(type: CommandType, command: string): void {
