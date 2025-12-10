@@ -73,6 +73,7 @@ export const vi: Texts = {
   copyUSILogTailCommand: "Sao chép lệnh kết thúc log USI",
   copyCSALogTailCommand: "Sao chép lệnh kết thúc log CSA",
   reloadCustomPieceImage: "Tải lại ảnh quân tùy chỉnh",
+  statisticsReport: "統計情報", // TODO: Translate
   launchUSIEngine: "Khởi động phần mềm shogi",
   connectToCSAServer: "Kết nối với máy chủ CSA",
   adminMode: "Chế độ nâng cao",

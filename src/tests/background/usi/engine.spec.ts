@@ -20,9 +20,11 @@ function bindHandlers(engine: EngineProcess) {
     usiok: vi.fn(),
     ready: vi.fn(),
     bestmove: vi.fn(),
+    goEnd: vi.fn(),
     checkmate: vi.fn(),
     checkmateNotImplemented: vi.fn(),
     checkmateTimeout: vi.fn(),
+    checkmateEnd: vi.fn(),
     noMate: vi.fn(),
     info: vi.fn(),
   };
@@ -31,9 +33,11 @@ function bindHandlers(engine: EngineProcess) {
   engine.on("usiok", handlers.usiok);
   engine.on("ready", handlers.ready);
   engine.on("bestmove", handlers.bestmove);
+  engine.on("goEnd", handlers.goEnd);
   engine.on("checkmate", handlers.checkmate);
   engine.on("checkmateNotImplemented", handlers.checkmateNotImplemented);
   engine.on("checkmateTimeout", handlers.checkmateTimeout);
+  engine.on("checkmateEnd", handlers.checkmateEnd);
   engine.on("noMate", handlers.noMate);
   engine.on("info", handlers.info);
   return handlers;
@@ -221,6 +225,7 @@ describe("background/usi/engine", () => {
     });
     onReceive("bestmove 7g7f ponder 3c3d");
     expect(handlers.bestmove).lastCalledWith("position test01", "7g7f", "3c3d");
+    expect(handlers.goEnd).toBeCalledTimes(1);
     engine.goPonder("position test01-ponder", {
       btime: 53e3,
       wtime: 60e3,
@@ -250,6 +255,7 @@ describe("background/usi/engine", () => {
     expect(mockChildProcess.prototype.send).lastCalledWith("ponderhit");
     onReceive("bestmove 1g1f");
     expect(handlers.bestmove).lastCalledWith("position test01-ponder", "1g1f", undefined);
+    expect(handlers.goEnd).toBeCalledTimes(2);
     engine.gameover(GameResult.WIN);
     expect(mockChildProcess.prototype.send).lastCalledWith("gameover win");
 
@@ -279,6 +285,7 @@ describe("background/usi/engine", () => {
     expect(mockChildProcess.prototype.send).lastCalledWith("stop");
     onReceive("bestmove 2g2f");
     expect(handlers.bestmove).lastCalledWith("position test02", "2g2f", undefined);
+    expect(handlers.goEnd).toBeCalledTimes(3);
     engine.gameover(GameResult.LOSE);
     expect(mockChildProcess.prototype.send).lastCalledWith("gameover lose");
 
@@ -391,23 +398,28 @@ describe("background/usi/engine", () => {
     expect(mockChildProcess.prototype.send).nthCalledWith(5, "go mate infinite");
     onReceive("checkmate 2c2b 3a2b 3c3a+");
     expect(handlers.checkmate).lastCalledWith("position test01", ["2c2b", "3a2b", "3c3a+"]);
+    expect(handlers.checkmateEnd).toBeCalledTimes(1);
 
     engine.goMate("position test02");
     onReceive("checkmate nomate");
     expect(handlers.noMate).lastCalledWith("position test02");
+    expect(handlers.checkmateEnd).toBeCalledTimes(2);
 
     engine.goMate("position test03");
     onReceive("checkmate timeout");
     expect(handlers.checkmateTimeout).lastCalledWith("position test03");
+    expect(handlers.checkmateEnd).toBeCalledTimes(3);
 
     engine.goMate("position test04");
     onReceive("checkmate notimplemented");
     expect(handlers.checkmateNotImplemented).toBeCalled();
+    expect(handlers.checkmateEnd).toBeCalledTimes(4);
 
     engine.goMate("position test05", 12.3456);
     expect(mockChildProcess.prototype.send).lastCalledWith("go mate 12345");
     onReceive("checkmate 2c2b 3a2b 3c3a+");
     expect(handlers.checkmate).lastCalledWith("position test05", ["2c2b", "3a2b", "3c3a+"]);
+    expect(handlers.checkmateEnd).toBeCalledTimes(5);
 
     engine.quit();
     onClose();

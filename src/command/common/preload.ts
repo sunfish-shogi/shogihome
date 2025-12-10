@@ -432,6 +432,7 @@ export function preload(config: Config) {
   const usi = require("@/renderer/players/usi.js");
   setUSIHandlers({
     ...usi,
+    onEngineProcessStats: () => {},
     sendPromptCommand: () => {},
   });
   // eslint-disable-next-line @typescript-eslint/no-require-imports

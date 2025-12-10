@@ -21,13 +21,6 @@ export default defineConfigWithVueTs([
   {
     files: ["**/*.{ts,mts,cts,tsx,vue}"],
     ...importPlugin.flatConfigs.typescript,
-    settings: {
-      "import/resolver": {
-        typescript: true, // require eslint-import-resolver-typescript
-      },
-      "import/ignore": ["node_modules"],
-      "import/core-modules": ["typescript-eslint"],
-    },
   },
   {
     files: ["eslint.config.*"],
@@ -49,7 +42,7 @@ export default defineConfigWithVueTs([
       "no-restricted-imports": ["error", { patterns: ["../"] }],
       "no-irregular-whitespace": "off",
       "vue/multi-word-component-names": "off",
-      "import/no-cycle": 1,
+      "import/no-cycle": "error",
       "import/no-restricted-paths": [
         "error",
         {
@@ -73,6 +66,13 @@ export default defineConfigWithVueTs([
           ],
         },
       ],
+    },
+    settings: {
+      "import/resolver": {
+        typescript: true, // require eslint-import-resolver-typescript
+      },
+      "import/ignore": ["node_modules"],
+      "import/core-modules": ["typescript-eslint"],
     },
   },
   prettierConfig,

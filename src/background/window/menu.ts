@@ -41,6 +41,7 @@ import { createMonitorWindow } from "./monitor.js";
 import { createListItems } from "@/common/message.js";
 import { BoardLayoutType } from "@/common/settings/layout.js";
 import { getCPUInfo } from "@/background/proc/state.js";
+import { outputStatsHTML } from "@/background/stats/html.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -617,6 +618,12 @@ function createMenuTemplate(window: BrowserWindow) {
         },
         {
           type: "separator",
+        },
+        {
+          label: t.statisticsReport,
+          click: () => {
+            outputStatsHTML().catch(sendError);
+          },
         },
         {
           label: "CPU Information",

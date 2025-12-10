@@ -25,6 +25,7 @@ const historyPath = path.join(userDir, "record_file_history.json");
 const backupDir = path.join(userDir, "backup/kifu");
 
 const lock = new AsyncLock();
+const lockKey = "history";
 
 export async function getHistoryWithoutLock(): Promise<RecordFileHistory> {
   try {
@@ -66,13 +67,13 @@ function trancate(history: RecordFileHistory): void {
 }
 
 export function getHistory(): Promise<RecordFileHistory> {
-  return lock.acquire("history", async () => {
+  return lock.acquire(lockKey, async () => {
     return await getHistoryWithoutLock();
   });
 }
 
 export function addHistory(path: string): void {
-  lock.acquire("history", async () => {
+  lock.acquire(lockKey, async () => {
     try {
       const history = await getHistoryWithoutLock();
       history.entries = history.entries.filter(
@@ -93,7 +94,7 @@ export function addHistory(path: string): void {
 }
 
 export function clearHistory(): Promise<void> {
-  return lock.acquire("history", async () => {
+  return lock.acquire(lockKey, async () => {
     const history = await getHistoryWithoutLock();
     for (const entry of history.entries) {
       if (entry.class === HistoryClass.BACKUP && entry.backupFileName) {
@@ -118,7 +119,7 @@ export function saveBackup(kif: string): Promise<void> {
     entry.ply = record.length;
   }
 
-  return lock.acquire("history", async () => {
+  return lock.acquire(lockKey, async () => {
     const history = await getHistoryWithoutLock();
     history.entries.push({
       id: issueEntryID(),

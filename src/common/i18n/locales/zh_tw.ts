@@ -73,6 +73,7 @@ export const zh_tw: Texts = {
   copyUSILogTailCommand: "複製即時顯示USI通訊紀錄指令",
   copyCSALogTailCommand: "複製即時顯示CSA通訊紀錄指令",
   reloadCustomPieceImage: "重整自訂棋駒圖片",
+  statisticsReport: "統計情報", // TODO: Translate
   launchUSIEngine: "啟動USI引擎",
   connectToCSAServer: "連接CSA伺服器",
   adminMode: "管理模式",

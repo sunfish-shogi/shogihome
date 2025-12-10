@@ -74,6 +74,7 @@ export const en: Texts = {
   copyUSILogTailCommand: "Copy USI Log Tail Command",
   copyCSALogTailCommand: "Copy CSA Log Tail Command",
   reloadCustomPieceImage: "Reload Custom Piece Image",
+  statisticsReport: "Statistics Report",
   launchUSIEngine: "Launch USI Engine",
   connectToCSAServer: "Connect to CSA Server",
   adminMode: "Admin Mode",

@@ -73,6 +73,7 @@ export const ja: Texts = {
   copyUSILogTailCommand: "USI通信ログのTailコマンドをコピー",
   copyCSALogTailCommand: "CSA通信ログのTailコマンドをコピー",
   reloadCustomPieceImage: "カスタム駒画像をリロード",
+  statisticsReport: "統計情報",
   launchUSIEngine: "USIエンジンを起動",
   connectToCSAServer: "CSAサーバーに接続",
   adminMode: "管理モード",
