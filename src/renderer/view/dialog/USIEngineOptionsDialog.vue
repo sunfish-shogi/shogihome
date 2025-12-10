@@ -260,6 +260,7 @@ import {
   FVScale,
   getUSIEngineOptionCurrentValue,
   mergeUSIEngine,
+  NodesLimit,
   NumberOfThreads,
   Threads,
   USIEngine,
@@ -326,7 +327,8 @@ const optionVisibility = computed(() =>
         option.name === NumberOfThreads ||
         option.name === USIHash ||
         option.name === USIPonder ||
-        option.name === FVScale
+        option.name === FVScale ||
+        option.name === NodesLimit
       );
     }
   }),
