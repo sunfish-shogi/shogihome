@@ -86,7 +86,7 @@ export function calculateGameStatistics(results: GameResults): GameStatistics {
   };
 }
 
-type SaveRecordCallback = () => void;
+type SaveRecordCallback = (dir: string) => void;
 type GameNextCallback = () => void;
 type GameEndCallback = (results: GameResults, specialMoveType: SpecialMoveType) => void;
 type FlipBoardCallback = (flip: boolean) => void;
@@ -642,7 +642,7 @@ export class GameManager {
         this.addGameResults(color, specialMoveType);
         // 自動保存が有効な場合は棋譜を保存する。
         if (this._settings.enableAutoSave) {
-          this.onSaveRecord();
+          this.onSaveRecord(this._settings.autoSaveDirectory);
         }
         // 連続対局の終了条件を満たしているか中断が要求されていれば終了する。
         const complete =

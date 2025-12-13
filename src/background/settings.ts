@@ -58,8 +58,13 @@ export function openSettingsDirectory(): Promise<void> {
 }
 
 export async function openAutoSaveDirectory(): Promise<void> {
-  const appSettings = await loadAppSettings();
-  await openPath(appSettings.autoSaveDirectory || docDir);
+  const gameSettings = await loadGameSettings();
+  await openPath(gameSettings.autoSaveDirectory || docDir);
+}
+
+export async function openAutoSaveDirectoryForCSA(): Promise<void> {
+  const csaGameSettings = await loadCSAGameSettingsHistory();
+  await openPath(csaGameSettings.autoSaveDirectory || docDir);
 }
 
 const windowSettingsPath = path.join(userDir, "window.json");
@@ -109,14 +114,14 @@ const defaultReturnCode = process.platform === "win32" ? "\r\n" : "\n";
 function getDefaultAppSettings(): AppSettings {
   return defaultAppSettings({
     returnCode: defaultReturnCode,
-    autoSaveDirectory: docDir,
+    autoSaveDirectory: docDir, // Deprecated
   });
 }
 
 function loadAppSettingsFromMemory(json: string): AppSettings {
   return normalizeAppSettings(JSON.parse(json), {
     returnCode: defaultReturnCode,
-    autoSaveDirectory: docDir,
+    autoSaveDirectory: docDir, // Deprecated
   });
 }
 
@@ -171,10 +176,17 @@ export async function saveGameSettings(settings: GameSettings): Promise<void> {
 }
 
 export async function loadGameSettings(): Promise<GameSettings> {
+  const opts = {
+    // v1.26.0 で autoSaveDirectory がアプリ設定から移動したので値を引き継ぐ。
+    autoSaveDirectory: loadAppSettingsOnce().autoSaveDirectory || docDir,
+  };
   if (!(await exists(gameSettingsPath))) {
-    return defaultGameSettings();
+    return defaultGameSettings(opts);
   }
-  return normalizeGameSettings(JSON.parse(await fs.promises.readFile(gameSettingsPath, "utf8")));
+  return normalizeGameSettings(
+    JSON.parse(await fs.promises.readFile(gameSettingsPath, "utf8")),
+    opts,
+  );
 }
 
 const csaGameSettingsHistoryPath = path.join(rootDir, "csa_game_setting_history.json");
@@ -192,12 +204,16 @@ export async function saveCSAGameSettingsHistory(settings: CSAGameSettingsHistor
 }
 
 export async function loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHistory> {
+  const opts = {
+    // v1.26.0 で autoSaveDirectory がアプリ設定から移動したので値を引き継ぐ。
+    autoSaveDirectory: loadAppSettingsOnce().autoSaveDirectory || docDir,
+  };
   if (!(await exists(csaGameSettingsHistoryPath))) {
-    return defaultCSAGameSettingsHistory();
+    return defaultCSAGameSettingsHistory(opts);
   }
   const encrypted = JSON.parse(await fs.promises.readFile(csaGameSettingsHistoryPath, "utf8"));
   return decryptCSAGameSettingsHistory(
-    normalizeSecureCSAGameSettingsHistory(encrypted),
+    normalizeSecureCSAGameSettingsHistory(encrypted, opts),
     isEncryptionAvailable() ? DecryptString : undefined,
   );
 }

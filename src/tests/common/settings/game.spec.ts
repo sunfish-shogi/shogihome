@@ -37,12 +37,27 @@ describe("settings/game", () => {
       humanIsFront: false,
       enableComment: false,
       enableAutoSave: false,
+      autoSaveDirectory: "/path/to/autosave",
       repeat: 3,
       swapPlayers: false,
       maxMoves: 80,
       jishogiRule: JishogiRule.NONE,
     };
-    const result = normalizeGameSettings(settings);
+    const result = normalizeGameSettings(settings, { autoSaveDirectory: "/path/to/autosave/old" });
     expect(result).toStrictEqual(settings);
+
+    const result2 = normalizeGameSettings(
+      {
+        ...settings,
+        startPosition: "current",
+        autoSaveDirectory: "",
+      },
+      { autoSaveDirectory: "/path/to/autosave/old" },
+    );
+    expect(result2).toStrictEqual({
+      ...settings,
+      startPosition: "current",
+      autoSaveDirectory: "/path/to/autosave/old",
+    });
   });
 });

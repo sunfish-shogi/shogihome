@@ -755,13 +755,13 @@ class Store {
     }
   }
 
-  private onSaveRecord(): void {
+  private onSaveRecord(dir: string): void {
     const appSettings = useAppSettings();
     const fname = generateRecordFileName(this.recordManager.record, {
       template: appSettings.recordFileNameTemplate,
       extension: appSettings.defaultRecordFileFormat,
     });
-    const path = join(appSettings.autoSaveDirectory, fname);
+    const path = join(dir, fname);
     this.saveRecordByPath(path).catch((e) => {
       useErrorStore().add(e);
     });

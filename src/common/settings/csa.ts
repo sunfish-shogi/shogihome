@@ -5,6 +5,7 @@ import { USIEngineForCLI, exportUSIEnginesForCLI, importUSIEnginesForCLI } from 
 import { RecordFileFormat } from "@/common/file/record.js";
 import { AppSettings } from "./app.js";
 import ejpn from "encoding-japanese";
+import { removeLastSlash } from "@/common/helpers/path.js";
 const [base64Decode, base64Encode] = [ejpn.base64Decode, ejpn.base64Encode];
 
 export enum CSAProtocolVersion {
@@ -38,6 +39,7 @@ export type CSAGameSettings = {
   autoFlip: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
+  autoSaveDirectory: string;
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
@@ -66,6 +68,7 @@ export function defaultCSAGameSettings(): CSAGameSettings {
     autoFlip: true,
     enableComment: true,
     enableAutoSave: true,
+    autoSaveDirectory: "",
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
@@ -136,13 +139,16 @@ export type CSAGameSettingsHistory = {
   autoFlip: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
+  autoSaveDirectory: string;
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
 };
 
-export function defaultCSAGameSettingsHistory(): CSAGameSettingsHistory {
-  return {
+export function defaultCSAGameSettingsHistory(opt?: {
+  autoSaveDirectory?: string;
+}): CSAGameSettingsHistory {
+  const result: CSAGameSettingsHistory = {
     player: {
       name: t.human,
       uri: uri.ES_HUMAN,
@@ -151,10 +157,12 @@ export function defaultCSAGameSettingsHistory(): CSAGameSettingsHistory {
     autoFlip: true,
     enableComment: true,
     enableAutoSave: true,
+    autoSaveDirectory: removeLastSlash(opt?.autoSaveDirectory || ""),
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
   };
+  return result;
 }
 
 export function buildCSAGameSettingsByHistory(
@@ -170,6 +178,7 @@ export function buildCSAGameSettingsByHistory(
     autoFlip: history.autoFlip,
     enableComment: history.enableComment,
     enableAutoSave: history.enableAutoSave,
+    autoSaveDirectory: history.autoSaveDirectory,
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
@@ -207,6 +216,7 @@ export function appendCSAGameSettingsHistory(
     autoFlip: settings.autoFlip,
     enableComment: settings.enableComment,
     enableAutoSave: settings.enableAutoSave,
+    autoSaveDirectory: settings.autoSaveDirectory,
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
@@ -242,12 +252,15 @@ export type SecureCSAGameSettingsHistory = {
   autoFlip: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
+  autoSaveDirectory: string;
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
 };
 
-export function defaultSecureCSAGameSettingsHistory(): SecureCSAGameSettingsHistory {
+export function defaultSecureCSAGameSettingsHistory(opts?: {
+  autoSaveDirectory?: string;
+}): SecureCSAGameSettingsHistory {
   return {
     player: {
       name: t.human,
@@ -257,6 +270,7 @@ export function defaultSecureCSAGameSettingsHistory(): SecureCSAGameSettingsHist
     autoFlip: true,
     enableComment: true,
     enableAutoSave: true,
+    autoSaveDirectory: opts?.autoSaveDirectory || "",
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
@@ -265,6 +279,7 @@ export function defaultSecureCSAGameSettingsHistory(): SecureCSAGameSettingsHist
 
 export function normalizeSecureCSAGameSettingsHistory(
   history: SecureCSAGameSettingsHistory,
+  opts?: { autoSaveDirectory?: string },
 ): SecureCSAGameSettingsHistory {
   const serverHistory = [] as SecureCSAServerSettings[];
   for (const settings of history.serverHistory) {
@@ -274,7 +289,7 @@ export function normalizeSecureCSAGameSettingsHistory(
     });
   }
   return {
-    ...defaultSecureCSAGameSettingsHistory(),
+    ...defaultSecureCSAGameSettingsHistory(opts),
     ...history,
     player: {
       ...defaultPlayerSettings(),
@@ -313,6 +328,7 @@ export function encryptCSAGameSettingsHistory(
     autoFlip: history.autoFlip,
     enableComment: history.enableComment,
     enableAutoSave: history.enableAutoSave,
+    autoSaveDirectory: history.autoSaveDirectory,
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
@@ -347,6 +363,7 @@ export function decryptCSAGameSettingsHistory(
     autoFlip: history.autoFlip,
     enableComment: history.enableComment,
     enableAutoSave: history.enableAutoSave,
+    autoSaveDirectory: history.autoSaveDirectory,
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
@@ -387,9 +404,12 @@ export function exportCSAGameSettingsForCLI(
 
 export function importCSAGameSettingsForCLI(
   settings: CSAGameSettingsForCLI,
-  playerURI?: string,
+  opts?: {
+    playerURI?: string;
+    autoSaveDirectory?: string;
+  },
 ): CSAGameSettings {
-  const usi = importUSIEnginesForCLI(settings.usi, playerURI);
+  const usi = importUSIEnginesForCLI(settings.usi, opts?.playerURI);
   return {
     player: {
       name: settings.usi.name,
@@ -400,6 +420,7 @@ export function importCSAGameSettingsForCLI(
     autoFlip: true,
     enableComment: settings.enableComment,
     enableAutoSave: settings.saveRecordFile,
+    autoSaveDirectory: opts?.autoSaveDirectory || "",
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,

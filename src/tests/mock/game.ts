@@ -55,4 +55,5 @@ export const gameSettings10m30s: GameSettings = {
   swapPlayers: true,
   maxMoves: 1000,
   jishogiRule: JishogiRule.NONE,
+  autoSaveDirectory: "",
 };

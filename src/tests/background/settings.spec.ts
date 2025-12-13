@@ -68,8 +68,16 @@ describe("background/settings", () => {
       }),
     );
     expect(batchConversionSettings).toEqual(defaultBatchConversionSettings());
-    expect(gameSettings).toEqual(defaultGameSettings());
-    expect(csaGameSettingsHistory).toEqual(defaultCSAGameSettingsHistory());
+    expect(gameSettings).toEqual(
+      defaultGameSettings({
+        autoSaveDirectory: path.join(getAppPath("documents"), "ShogiHome"),
+      }),
+    );
+    expect(csaGameSettingsHistory).toEqual(
+      defaultCSAGameSettingsHistory({
+        autoSaveDirectory: path.join(getAppPath("documents"), "ShogiHome"),
+      }),
+    );
     expect(researchSettings).toEqual(defaultResearchSettings());
     expect(analysisSettings).toEqual(defaultAnalysisSettings());
     expect(mateSearchSettings).toEqual(defaultMateSearchSettings());

@@ -438,19 +438,6 @@
             ]"
           />
         </div>
-        <!-- 自動保存先 -->
-        <div v-if="!isMobileWebApp()" class="form-item row">
-          <div class="form-item-label-wide">
-            {{ t.autoSavingDirectory }}
-          </div>
-          <input v-model="update.autoSaveDirectory" class="file-path" type="text" />
-          <button class="thin" @click="selectAutoSaveDirectory">
-            {{ t.select }}
-          </button>
-          <button class="thin auxiliary" @click="onOpenAutoSaveDirectory">
-            <Icon :icon="IconType.OPEN_FOLDER" />
-          </button>
-        </div>
         <!-- 棋譜ファイル名-->
         <div class="form-item row">
           <div class="form-item-label-wide">
@@ -823,7 +810,6 @@ const update = ref({
   defaultRecordFileFormat: org.defaultRecordFileFormat,
   textDecodingRule: org.textDecodingRule,
   returnCode: org.returnCode,
-  autoSaveDirectory: org.autoSaveDirectory,
   recordFileNameTemplate: org.recordFileNameTemplate,
   useCSAV3: org.useCSAV3,
   enableUSIFileStartpos: org.enableUSIFileStartpos,
@@ -896,24 +882,6 @@ const saveAndClose = async () => {
   } finally {
     busyState.release();
   }
-};
-
-const selectAutoSaveDirectory = async () => {
-  busyState.retain();
-  try {
-    const path = await api.showSelectDirectoryDialog(update.value.autoSaveDirectory);
-    if (path) {
-      update.value.autoSaveDirectory = path;
-    }
-  } catch (e) {
-    useErrorStore().add(e);
-  } finally {
-    busyState.release();
-  }
-};
-
-const onOpenAutoSaveDirectory = () => {
-  api.openExplorer(update.value.autoSaveDirectory);
 };
 
 const howToWriteFileNameTemplate = () => {

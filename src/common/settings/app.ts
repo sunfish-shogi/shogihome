@@ -5,6 +5,7 @@ import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
 import { BoardLayoutType, PositionImageFontWeight } from "./layout.js";
 import { SearchCommentFormat } from "./comment.js";
 import { fileURLToCustomSchemeURL } from "@/common/url.js";
+import { removeLastSlash } from "@/common/helpers/path.js";
 
 export enum Thema {
   STANDARD = "standard",
@@ -202,7 +203,7 @@ export type AppSettings = {
   defaultRecordFileFormat: RecordFileFormat;
   textDecodingRule: TextDecodingRule;
   returnCode: string;
-  autoSaveDirectory: string;
+  autoSaveDirectory: string; // Deprecated
   recordFileNameTemplate: string;
   useCSAV3: boolean;
   enableUSIFileStartpos: boolean;
@@ -320,7 +321,7 @@ export function buildUpdatedAppSettings(org: AppSettings, update: AppSettingsUpd
 
 export function defaultAppSettings(opt?: {
   returnCode?: string;
-  autoSaveDirectory?: string;
+  autoSaveDirectory?: string; // Deprecated
 }): AppSettings {
   return {
     language: Language.JA,
@@ -407,16 +408,14 @@ export function normalizeAppSettings(
   settings: AppSettings,
   opt?: {
     returnCode?: string;
-    autoSaveDirectory?: string;
+    autoSaveDirectory?: string; // Deprecated
   },
 ): AppSettings {
   const result = {
     ...defaultAppSettings(opt),
     ...settings,
   };
-  if (result.autoSaveDirectory.endsWith("\\") || result.autoSaveDirectory.endsWith("/")) {
-    result.autoSaveDirectory = result.autoSaveDirectory.slice(0, -1);
-  }
+  result.autoSaveDirectory = removeLastSlash(result.autoSaveDirectory);
   // 旧バージョンでは盤画像に合わせて自動で駒台の色が選ばれていた。
   if (!settings.pieceStandImage) {
     switch (settings.boardImage) {
