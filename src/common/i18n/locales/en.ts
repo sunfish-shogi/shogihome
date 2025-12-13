@@ -283,6 +283,7 @@ export const en: Texts = {
   useUpDownToMove1Ply: "Use ↑/↓ to Move 1 Ply",
   useLeftRightToMove1Ply: "Use ←/→ to Move 1 Ply",
   file: "File",
+  folder: "Folder",
   recordFile: "Record File",
   executableFile: "Executable",
   imageFile: "Image",
@@ -731,6 +732,7 @@ export const en: Texts = {
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart:
     "For exporting conversion log, please enable app logs, set log level to DEBUG and restart this app.",
   sourceDirectoryNotSpecified: "Source directory is not specified.",
+  sourceFileMustBeSFEN: "Source file must have a .sfen extension.",
   sourceFormatsNotSpecified: "Source formats are not specified.",
   destinationDirectoryNotSpecified: "Destination directory is not specified.",
   destinationFileNotSpecified: "Destination file is not specified.",

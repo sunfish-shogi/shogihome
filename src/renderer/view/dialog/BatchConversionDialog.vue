@@ -3,7 +3,16 @@
     <div class="title">{{ t.batchConversion }}</div>
     <div class="form-group">
       <div>{{ t.inputs }}</div>
-      <div class="form-item row">
+      <div class="form-item center">
+        <HorizontalSelector
+          v-model:value="settings.sourceType"
+          :items="[
+            { label: t.folder, value: SourceType.DIRECTORY },
+            { label: '.sfen', value: SourceType.SINGLE_FILE },
+          ]"
+        />
+      </div>
+      <div v-show="settings.sourceType === SourceType.DIRECTORY" class="form-item row">
         <input v-model="settings.source" class="grow" type="text" />
         <button class="thin" @click="selectSourceDirectory">
           {{ t.select }}
@@ -12,7 +21,7 @@
           <Icon :icon="IconType.OPEN_FOLDER" />
         </button>
       </div>
-      <div class="form-item">
+      <div v-show="settings.sourceType === SourceType.DIRECTORY" class="form-item">
         <div class="form-item-label-wide">{{ t.formats }}</div>
         <div class="formats">
           <ToggleButton v-model:value="sourceFormats.kif" class="toggle" label=".kif" />
@@ -23,13 +32,22 @@
           <ToggleButton v-model:value="sourceFormats.jkf" class="toggle" label=".jkf" />
         </div>
       </div>
-      <div class="form-item row">
+      <div v-show="settings.sourceType === SourceType.DIRECTORY" class="form-item row">
         <div class="form-item-label-wide">{{ t.subdirectories }}</div>
         <ToggleButton v-model:value="settings.subdirectories" class="toggle" />
       </div>
+      <div v-show="settings.sourceType === SourceType.SINGLE_FILE" class="form-item row">
+        <input v-model="settings.singleFileSource" class="grow" type="text" />
+        <button class="thin" @click="selectSourceFile">
+          {{ t.select }}
+        </button>
+        <button class="thin open-dir" @click="openDirectory(settings.singleFileSource)">
+          <Icon :icon="IconType.OPEN_FOLDER" />
+        </button>
+      </div>
       <hr />
       <div>{{ t.outputs }}</div>
-      <div class="form-item center">
+      <div v-show="settings.sourceType === SourceType.DIRECTORY" class="form-item center">
         <HorizontalSelector
           v-model:value="settings.destinationType"
           :items="[
@@ -38,7 +56,13 @@
           ]"
         />
       </div>
-      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+      <div
+        v-show="
+          settings.sourceType === SourceType.SINGLE_FILE ||
+          settings.destinationType === DestinationType.DIRECTORY
+        "
+        class="form-item row"
+      >
         <input v-model="settings.destination" class="grow" type="text" />
         <button class="thin" @click="selectDestinationDirectory">
           {{ t.select }}
@@ -47,7 +71,13 @@
           <Icon :icon="IconType.OPEN_FOLDER" />
         </button>
       </div>
-      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+      <div
+        v-show="
+          settings.sourceType === SourceType.SINGLE_FILE ||
+          settings.destinationType === DestinationType.DIRECTORY
+        "
+        class="form-item row"
+      >
         <div class="form-item-label-wide">{{ t.format }}</div>
         <div class="formats">
           <HorizontalSelector
@@ -63,11 +93,23 @@
           />
         </div>
       </div>
-      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+      <div
+        v-show="
+          settings.sourceType === SourceType.DIRECTORY &&
+          settings.destinationType === DestinationType.DIRECTORY
+        "
+        class="form-item row"
+      >
         <div class="form-item-label-wide">{{ t.createSubdirectories }}</div>
         <ToggleButton v-model:value="settings.createSubdirectories" class="toggle" />
       </div>
-      <div v-show="settings.destinationType !== DestinationType.SINGLE_FILE" class="form-item row">
+      <div
+        v-show="
+          settings.sourceType === SourceType.DIRECTORY &&
+          settings.destinationType === DestinationType.DIRECTORY
+        "
+        class="form-item row"
+      >
         <div class="form-item-label-wide">{{ t.nameConflictAction }}</div>
         <HorizontalSelector
           v-model:value="settings.fileNameConflictAction"
@@ -81,7 +123,13 @@
           ]"
         />
       </div>
-      <div v-show="settings.destinationType === DestinationType.SINGLE_FILE" class="form-item row">
+      <div
+        v-show="
+          settings.sourceType === SourceType.DIRECTORY &&
+          settings.destinationType === DestinationType.SINGLE_FILE
+        "
+        class="form-item row"
+      >
         <input v-model="settings.singleFileDestination" class="grow" type="text" />
         <button class="thin" @click="selectDestinationFile">
           {{ t.select }}
@@ -120,6 +168,7 @@ import {
   DestinationType,
   FileNameConflictAction,
   defaultBatchConversionSettings,
+  SourceType,
 } from "@/common/settings/conversion";
 import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
@@ -177,6 +226,20 @@ const selectSourceDirectory = async () => {
     const path = await api.showSelectDirectoryDialog(settings.value.source);
     if (path) {
       settings.value.source = path;
+    }
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
+const selectSourceFile = async () => {
+  busyState.retain();
+  try {
+    const path = await api.showSelectSFENDialog(settings.value.singleFileSource);
+    if (path) {
+      settings.value.singleFileSource = path;
     }
   } catch (e) {
     useErrorStore().add(e);
