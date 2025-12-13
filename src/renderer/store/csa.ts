@@ -42,7 +42,7 @@ export enum CSAGameState {
   GAME,
 }
 
-type SaveRecordCallback = () => void;
+type SaveRecordCallback = (dir: string) => void;
 type GameNextCallback = () => void;
 type NewGameCallback = (n: number) => void;
 type GameEndCallback = () => void;
@@ -258,7 +258,7 @@ export class CSAGameManager {
 
     // 自動保存が有効な場合は棋譜を保存する。
     if (this._state === CSAGameState.GAME && this.settings.enableAutoSave) {
-      this.onSaveRecord();
+      this.onSaveRecord(this.settings.autoSaveDirectory);
     }
 
     // 停止が要求されている場合は連続対局や再試行をしない。

@@ -2,6 +2,7 @@ import { InitialPositionType } from "tsshogi";
 import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
+import { removeLastSlash } from "@/common/helpers/path.js";
 
 export type TimeLimitSettings = {
   timeSeconds: number;
@@ -43,13 +44,14 @@ export type GameSettings = {
   humanIsFront: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
+  autoSaveDirectory: string;
   repeat: number;
   swapPlayers: boolean;
   maxMoves: number;
   jishogiRule: JishogiRule;
 };
 
-export function defaultGameSettings(): GameSettings {
+export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): GameSettings {
   return {
     black: defaultPlayerSettings(),
     white: defaultPlayerSettings(),
@@ -61,6 +63,7 @@ export function defaultGameSettings(): GameSettings {
     humanIsFront: true,
     enableComment: true,
     enableAutoSave: true,
+    autoSaveDirectory: removeLastSlash(opts?.autoSaveDirectory || ""),
     repeat: 1,
     swapPlayers: false,
     maxMoves: 1000,
@@ -68,9 +71,12 @@ export function defaultGameSettings(): GameSettings {
   };
 }
 
-export function normalizeGameSettings(settings: GameSettings): GameSettings {
-  return {
-    ...defaultGameSettings(),
+export function normalizeGameSettings(
+  settings: GameSettings,
+  opts?: { autoSaveDirectory?: string },
+): GameSettings {
+  const result = {
+    ...defaultGameSettings(opts),
     ...{
       // v1.21.0 までは startPosition を省略可能で、それが現在の current に相当していた。
       startPosition: "current",
@@ -89,6 +95,10 @@ export function normalizeGameSettings(settings: GameSettings): GameSettings {
       ...settings.timeLimit,
     },
   };
+  if (!result.autoSaveDirectory) {
+    result.autoSaveDirectory = removeLastSlash(opts?.autoSaveDirectory || "");
+  }
+  return result;
 }
 
 export function validateGameSettings(gameSettings: GameSettings): Error | undefined {

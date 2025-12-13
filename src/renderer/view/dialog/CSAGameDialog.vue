@@ -181,15 +181,24 @@
         </div>
         <div class="form-item">
           <div class="form-item-label-wide">
-            {{ t.saveRecordAutomatically }}
-          </div>
-          <ToggleButton v-model:value="csaGameSettings.enableAutoSave" />
-        </div>
-        <div class="form-item">
-          <div class="form-item-label-wide">
             {{ t.adjustBoardAutomatically }}
           </div>
           <ToggleButton v-model:value="csaGameSettings.autoFlip" />
+        </div>
+        <div class="form-item">
+          <div class="form-item-label-wide">
+            {{ t.saveRecordAutomatically }}
+          </div>
+          <ToggleButton v-model:value="csaGameSettings.enableAutoSave" />
+          <input
+            v-model="csaGameSettings.autoSaveDirectory"
+            class="file-path"
+            type="text"
+            :disabled="!csaGameSettings.enableAutoSave"
+          />
+          <button class="thin" @click="selectAutoSaveDirectory">
+            {{ t.select }}
+          </button>
         </div>
       </div>
     </div>
@@ -412,6 +421,20 @@ const onChangeHistory = (event: Event) => {
   }
 };
 
+const selectAutoSaveDirectory = async () => {
+  busyState.retain();
+  try {
+    const path = await api.showSelectDirectoryDialog(csaGameSettings.value.autoSaveDirectory);
+    if (path) {
+      csaGameSettings.value.autoSaveDirectory = path;
+    }
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
 const logEnabled = computed(() => {
   const appSettings = useAppSettings();
   return appSettings.enableCSALog && appSettings.enableAppLog && appSettings.enableUSILog;
@@ -427,6 +450,9 @@ input.number {
 }
 .long-text {
   width: 250px;
+}
+.file-path {
+  width: 180px;
 }
 .main-buttons button {
   line-height: 150%;

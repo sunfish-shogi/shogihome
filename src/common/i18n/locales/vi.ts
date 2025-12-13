@@ -258,7 +258,6 @@ export const vi: Texts = {
   newlineCharacter: "Ký tự dòng mới",
   old90sMac: "Mac năm 90",
   autoSaving: "Tự động lưu",
-  autoSavingDirectory: "Thư mục lưu tự động",
   recordFileName: "Tên tệp kỳ phổ",
   select: "Chọn",
   shuffle: "Trộn",

@@ -5,7 +5,7 @@ import {
   PieceImageType,
 } from "@/common/settings/app.js";
 
-describe("settings/csa", () => {
+describe("settings/app", () => {
   it("normalize", () => {
     const result = normalizeAppSettings(defaultAppSettings(), {
       returnCode: "\r\n",

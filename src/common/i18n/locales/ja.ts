@@ -258,7 +258,6 @@ export const ja: Texts = {
   newlineCharacter: "改行文字",
   old90sMac: "90年代Mac",
   autoSaving: "自動保存",
-  autoSavingDirectory: "棋譜の自動保存先",
   recordFileName: "棋譜ファイル名",
   select: "選択",
   shuffle: "シャッフル",

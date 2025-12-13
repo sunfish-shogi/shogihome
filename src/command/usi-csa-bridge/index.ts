@@ -152,7 +152,9 @@ async function main() {
   }
 
   // CSAGameSettings に変換してバリデーションを実行します。
-  const settings = importCSAGameSettingsForCLI(cliSettings);
+  const settings = importCSAGameSettingsForCLI(cliSettings, {
+    autoSaveDirectory: recordDir(),
+  });
   const validationError = validateCSAGameSettings(settings);
   if (validationError) {
     getAppLogger().error(validationError);
@@ -189,7 +191,7 @@ async function main() {
 
   const returnCode = returnCodeName() === "CRLF" ? "\r\n" : "\n";
 
-  function onSaveRecord() {
+  function onSaveRecord(dir: string) {
     const fileName = generateRecordFileName(recordManager.record, {
       template:
         recordFileNameTemplate() ||
@@ -197,7 +199,6 @@ async function main() {
         defaultRecordFileNameTemplate,
       extension: recordFileFormat() || cliSettings.recordFileFormat || RecordFileFormat.KIF,
     });
-    const dir = recordDir();
     const filePath = path.join(dir, fileName);
     fs.promises
       .mkdir(dir, { recursive: true })

@@ -158,6 +158,7 @@ class AppSettingsStore {
   get returnCode(): string {
     return this.merged.returnCode;
   }
+  // Deprecated
   get autoSaveDirectory(): string {
     return this.merged.autoSaveDirectory;
   }

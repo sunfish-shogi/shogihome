@@ -36,6 +36,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -60,6 +61,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -84,6 +86,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -108,6 +111,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -132,6 +136,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -156,6 +161,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -181,6 +187,7 @@ describe("settings/csa", () => {
       autoFlip: false,
       enableComment: false,
       enableAutoSave: false,
+      autoSaveDirectory: "",
       repeat: 3,
       autoRelogin: false,
       restartPlayerEveryGame: false,
@@ -203,6 +210,7 @@ describe("settings/csa", () => {
         autoFlip: true,
         enableComment: true,
         enableAutoSave: true,
+        autoSaveDirectory: "",
         repeat: 1,
         autoRelogin: true,
         restartPlayerEveryGame: false,
@@ -268,6 +276,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -356,6 +365,7 @@ describe("settings/csa", () => {
       autoFlip: true,
       enableComment: true,
       enableAutoSave: true,
+      autoSaveDirectory: "",
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
@@ -441,7 +451,9 @@ describe("settings/csa", () => {
   });
 
   it("import-cli-settings", () => {
-    const result = importCSAGameSettingsForCLI(csaGameSettingsForCLI, playerURI);
+    const result = importCSAGameSettingsForCLI(csaGameSettingsForCLI, {
+      playerURI,
+    });
     const expected = JSON.parse(JSON.stringify(csaGameSettings)) as CSAGameSettings;
     // CLI 用設定から逆変換するときに入らない情報を除去してから比較する。
     expected.player.usi!.author = "";

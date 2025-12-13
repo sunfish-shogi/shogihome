@@ -258,7 +258,6 @@ export const en: Texts = {
   newlineCharacter: "Newline Character",
   old90sMac: "90's Mac",
   autoSaving: "Auto-Save",
-  autoSavingDirectory: "Auto-Save Directory",
   recordFileName: "Record File Name",
   select: "Select",
   shuffle: "Shuffle",

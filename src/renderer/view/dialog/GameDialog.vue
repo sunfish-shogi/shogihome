@@ -208,15 +208,25 @@
           </div>
           <div class="form-item">
             <ToggleButton
+              v-model:value="gameSettings.humanIsFront"
+              :label="t.adjustBoardToHumanPlayer"
+            />
+          </div>
+          <div class="form-item">
+            <ToggleButton
               v-model:value="gameSettings.enableAutoSave"
               :label="t.saveRecordAutomatically"
             />
           </div>
           <div class="form-item">
-            <ToggleButton
-              v-model:value="gameSettings.humanIsFront"
-              :label="t.adjustBoardToHumanPlayer"
+            <input
+              v-model="gameSettings.autoSaveDirectory"
+              type="text"
+              :disabled="!gameSettings.enableAutoSave"
             />
+            <button class="thin" @click="selectAutoSaveDirectory">
+              {{ t.select }}
+            </button>
           </div>
         </div>
       </div>
@@ -371,8 +381,24 @@ const onSelectStartPositionListFile = async () => {
     if (sfenPath) {
       gameSettings.value.startPositionListFile = sfenPath;
     }
+  } catch (e) {
+    useErrorStore().add(e);
   } finally {
     useBusyState().release();
+  }
+};
+
+const selectAutoSaveDirectory = async () => {
+  busyState.retain();
+  try {
+    const path = await api.showSelectDirectoryDialog(gameSettings.value.autoSaveDirectory);
+    if (path) {
+      gameSettings.value.autoSaveDirectory = path;
+    }
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
   }
 };
 </script>

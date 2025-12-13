@@ -9,7 +9,11 @@ import {
   MenuItemConstructorOptions,
   shell,
 } from "electron";
-import { openAutoSaveDirectory, openSettingsDirectory } from "@/background/settings.js";
+import {
+  openAutoSaveDirectory,
+  openAutoSaveDirectoryForCSA,
+  openSettingsDirectory,
+} from "@/background/settings.js";
 import {
   getTailCommand,
   getFilePath as getLogFilePath,
@@ -126,10 +130,21 @@ function createMenuTemplate(window: BrowserWindow) {
         ),
         { type: "separator" },
         {
-          label: t.openAutoSaveDirectory,
-          click: () => {
-            openAutoSaveDirectory().catch(sendError);
-          },
+          label: `${t.openAutoSaveDirectory}`,
+          submenu: [
+            {
+              label: t.offlineGame,
+              click: () => {
+                openAutoSaveDirectory().catch(sendError);
+              },
+            },
+            {
+              label: t.csaOnlineGame,
+              click: () => {
+                openAutoSaveDirectoryForCSA().catch(sendError);
+              },
+            },
+          ],
         },
         { type: "separator" },
         isMac ? { role: "close", label: t.close } : { role: "quit", label: t.quit },

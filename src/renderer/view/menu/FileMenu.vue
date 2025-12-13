@@ -158,7 +158,6 @@ const emit = defineEmits<{
 }>();
 
 const store = useStore();
-const appSettings = useAppSettings();
 const dialog = ref();
 const isInitialPositionMenuVisible = ref(false);
 const isGameMenuVisible = ref(false);
@@ -227,8 +226,9 @@ const onExportImage = () => {
   store.showExportBoardImageDialog();
   emit("close");
 };
-const onOpenAutoSaveDirectory = () => {
-  api.openExplorer(appSettings.autoSaveDirectory);
+const onOpenAutoSaveDirectory = async () => {
+  const gameSettings = await api.loadGameSettings();
+  api.openExplorer(gameSettings.autoSaveDirectory);
   emit("close");
 };
 const onCopyKIF = () => {

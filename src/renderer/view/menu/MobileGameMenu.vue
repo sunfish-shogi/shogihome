@@ -88,6 +88,7 @@ const selectTurn = (turn: Color) => {
     humanIsFront: true,
     enableComment: false,
     enableAutoSave: false,
+    autoSaveDirectory: "",
     repeat: 1,
     swapPlayers: false,
     maxMoves: 1000,

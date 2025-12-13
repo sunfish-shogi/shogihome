@@ -253,7 +253,6 @@ export type Texts = {
   newlineCharacter: string;
   old90sMac: string;
   autoSaving: string;
-  autoSavingDirectory: string;
   recordFileName: string;
   select: string;
   shuffle: string;

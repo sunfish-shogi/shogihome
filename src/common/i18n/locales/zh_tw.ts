@@ -255,7 +255,6 @@ export const zh_tw: Texts = {
   newlineCharacter: "換行符號",
   old90sMac: "90年代Mac",
   autoSaving: "自動保存",
-  autoSavingDirectory: "棋譜自動保存地點",
   recordFileName: "棋譜檔案名稱",
   select: "選擇",
   shuffle: "隨機",
