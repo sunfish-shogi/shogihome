@@ -78,8 +78,8 @@ function formatUSIEngineStatsAsHTMLTable(stats: USIEngineStatsEntry): string {
     html += formatRow("平均準備時間", `${mean.toFixed(3)} 秒`);
   }
   html += formatRow(
-    "勝 / 負 / 引き分け",
-    `${stats.winCount} / ${stats.loseCount} / ${stats.drawCount}`,
+    "勝 - 引き分け - 負",
+    `${stats.winCount} - ${stats.drawCount} - ${stats.loseCount}`,
   );
   html += formatRow(
     "探索回数",
