@@ -29,6 +29,7 @@ export type BatchConversionSettings = {
   destinationFormat: RecordFileFormat;
   fileNameConflictAction: FileNameConflictAction;
   singleFileDestination: string;
+  enableUSIResign: boolean;
 };
 
 export function defaultBatchConversionSettings(): BatchConversionSettings {
@@ -51,6 +52,7 @@ export function defaultBatchConversionSettings(): BatchConversionSettings {
     destinationFormat: RecordFileFormat.KIF,
     fileNameConflictAction: FileNameConflictAction.NUMBER_SUFFIX,
     singleFileDestination: "",
+    enableUSIResign: true,
   };
 }
 

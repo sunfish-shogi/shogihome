@@ -265,6 +265,7 @@ export const ja: Texts = {
   positionOfUSIOutput: "USI の局面表記",
   movesOfUSIOutput: "USI の指し手表記",
   onlySFEN: "SFEN のみ",
+  minimal: "最小限",
   pasteDialog: "貼り付けダイアログ",
   liveDuplicatePositionDetection: "同一局面を常に検出",
   onTheFlyThreshold: "On-the-fly 閾値",

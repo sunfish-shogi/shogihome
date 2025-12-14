@@ -291,6 +291,7 @@ describe("conversion", () => {
       {
         appSettings: defaultAppSettings(),
         destination: "all.sfen",
+        enableUSIResign: false,
         expected: [
           "startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5d5e 6h7h 3a4b 5g5f 4b3c 5f5e 3c4d 4h5g 4d5e P*5f 5e4d 4i5h",
           "startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b",
@@ -304,11 +305,9 @@ describe("conversion", () => {
         ],
       },
       {
-        appSettings: {
-          ...defaultAppSettings(),
-          enableUSIFileResign: true,
-        },
+        appSettings: defaultAppSettings(),
         destination: "all-noStartpos-resign.sfen",
+        enableUSIResign: true,
         expected: [
           "startpos moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5d5e 6h7h 3a4b 5g5f 4b3c 5f5e 3c4d 4h5g 4d5e P*5f 5e4d 4i5h",
           "startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b 3i3h 7a7b 2e2d 2c2d 2h2d P*2c 2d2f 6c6d 3g3f 3c3d 3h3g 5a4b 3g4f 2b4d 3f3e 3d3e 5i6i",
@@ -327,6 +326,7 @@ describe("conversion", () => {
           enableUSIFileStartpos: false,
         },
         destination: "all-noStartpos-resign.sfen",
+        enableUSIResign: false,
         expected: [
           "sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 2g2f 3c3d 7g7f 5c5d 3i4h 8b5b 5i6h 5d5e 6h7h 3a4b 5g5f 4b3c 5f5e 3c4d 4h5g 4d5e P*5f 5e4d 4i5h",
           "sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 2g2f 8c8d 2f2e 8d8e 6i7h 4a3b",
@@ -357,6 +357,7 @@ describe("conversion", () => {
         subdirectories: true,
         destinationType: DestinationType.SINGLE_FILE,
         singleFileDestination: destinationFullPath,
+        enableUSIResign: testCase.enableUSIResign,
       });
       expect(result).toStrictEqual({
         successTotal: 8,

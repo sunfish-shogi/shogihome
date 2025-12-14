@@ -265,6 +265,7 @@ export const vi: Texts = {
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
+  minimal: "最小限", // TODO: Translate
   pasteDialog: "Hộp thoại dán",
   liveDuplicatePositionDetection: "Tự động tìm thế cờ lặp lại",
   onTheFlyThreshold: "Giá trị On-the-fly",

@@ -1194,7 +1194,12 @@ class Store {
       target === "after" ? this.recordManager.record.getSubtree() : this.recordManager.record;
     const str = record.getUSI({
       startpos: appSettings.enableUSIFileStartpos,
-      resign: appSettings.enableUSIFileResign,
+      resign: appSettings.enableUSIFileSpecialMoves,
+      repDraw: appSettings.enableUSIFileSpecialMoves,
+      draw: appSettings.enableUSIFileSpecialMoves,
+      timeout: appSettings.enableUSIFileSpecialMoves,
+      break: appSettings.enableUSIFileSpecialMoves,
+      win: appSettings.enableUSIFileSpecialMoves,
       allMoves: target !== "before",
     });
     navigator.clipboard.writeText(str);

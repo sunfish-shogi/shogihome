@@ -260,6 +260,7 @@ export type Texts = {
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;
+  minimal: string;
   pasteDialog: string;
   liveDuplicatePositionDetection: string;
   onTheFlyThreshold: string;

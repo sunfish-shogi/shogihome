@@ -138,6 +138,16 @@
           <Icon :icon="IconType.OPEN_FOLDER" />
         </button>
       </div>
+      <div
+        v-show="
+          settings.sourceType === SourceType.DIRECTORY &&
+          settings.destinationType === DestinationType.SINGLE_FILE
+        "
+        class="form-item row"
+      >
+        <div class="form-item-label-wide">resign</div>
+        <ToggleButton v-model:value="settings.enableUSIResign" class="toggle" />
+      </div>
     </div>
     <button class="wide" data-hotkey="Enter" @click="convert">
       {{ t.convert }}
