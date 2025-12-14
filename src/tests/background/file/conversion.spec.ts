@@ -3,6 +3,7 @@ import { RecordFileFormat } from "@/common/file/record.js";
 import {
   DestinationType,
   FileNameConflictAction,
+  SourceType,
   defaultBatchConversionSettings,
 } from "@/common/settings/conversion.js";
 import fs from "node:fs";
@@ -15,7 +16,7 @@ import { getTempPathForTesting } from "@/background/proc/env.js";
 const tmpdir = path.join(getTempPathForTesting(), "conversion");
 
 describe("conversion", () => {
-  it("separate", async () => {
+  it("individual", async () => {
     const testCases = [
       {
         sourceFormats: [
@@ -256,6 +257,7 @@ describe("conversion", () => {
       for (let i = 0; i < 1 + (testCase.repeat || 0); i++) {
         const result = await convertRecordFiles({
           ...defaultBatchConversionSettings(),
+          sourceType: SourceType.DIRECTORY,
           source: "src/tests/testdata/conversion/input",
           sourceFormats: testCase.sourceFormats,
           subdirectories: testCase.subdirectories,
@@ -284,7 +286,7 @@ describe("conversion", () => {
     }
   });
 
-  it("sfen", async () => {
+  it("merge", async () => {
     const testCases = [
       {
         appSettings: defaultAppSettings(),
@@ -343,6 +345,7 @@ describe("conversion", () => {
       const destinationFullPath = path.join(tmpdir, testCase.destination);
       const result = await convertRecordFiles({
         ...defaultBatchConversionSettings(),
+        sourceType: SourceType.DIRECTORY,
         source: "src/tests/testdata/conversion/input",
         sourceFormats: [
           RecordFileFormat.KIF,
@@ -375,6 +378,40 @@ describe("conversion", () => {
         .split(/\r?\n/)
         .sort();
       expect(list).toStrictEqual(testCase.expected);
+    }
+  });
+
+  it("division", async () => {
+    await saveAppSettings(defaultAppSettings());
+    const destinationFullPath = path.join(tmpdir, "sfen-to-ki2");
+    const result = await convertRecordFiles({
+      ...defaultBatchConversionSettings(),
+      sourceType: SourceType.SINGLE_FILE,
+      singleFileSource: "src/tests/testdata/conversion/division-input.sfen",
+      destinationType: DestinationType.SINGLE_FILE, // 入力が単一ファイルの場合は無効
+      destination: destinationFullPath,
+      destinationFormat: RecordFileFormat.KI2U,
+    });
+    expect(result).toStrictEqual({
+      successTotal: 3,
+      success: {},
+      failedTotal: 0,
+      failed: {},
+      skippedTotal: 0,
+      skipped: {},
+    });
+    const actualFilePaths = (await listFiles(destinationFullPath, Infinity)).sort();
+    const expectedFileNames = ["record_000001.ki2u", "record_000002.ki2u", "record_000003.ki2u"];
+    expect(actualFilePaths).toStrictEqual(
+      expectedFileNames.map((f) => path.join(destinationFullPath, f)),
+    );
+    for (const fileName of expectedFileNames) {
+      const expected = fs.readFileSync(
+        path.join("src/tests/testdata/conversion/output/sfen-to-ki2", fileName),
+        "utf-8",
+      );
+      const actual = fs.readFileSync(path.join(destinationFullPath, fileName), "utf-8");
+      expect(actual).toStrictEqual(expected);
     }
   });
 });

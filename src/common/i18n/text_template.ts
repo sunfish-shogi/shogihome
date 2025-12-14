@@ -278,6 +278,7 @@ export type Texts = {
   useUpDownToMove1Ply: string;
   useLeftRightToMove1Ply: string;
   file: string;
+  folder: string;
   recordFile: string;
   executableFile: string;
   imageFile: string;
@@ -706,6 +707,7 @@ export type Texts = {
   engineNotSelected: string;
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart: string;
   sourceDirectoryNotSpecified: string;
+  sourceFileMustBeSFEN: string;
   sourceFormatsNotSpecified: string;
   destinationDirectoryNotSpecified: string;
   destinationFileNotSpecified: string;

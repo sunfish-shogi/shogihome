@@ -283,6 +283,7 @@ export const vi: Texts = {
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",
+  folder: "フォルダ", // TODO: Translate
   recordFile: "Tệp kỳ phổ",
   executableFile: "Tệp phần mềm",
   imageFile: "Tệp ảnh",
@@ -728,6 +729,7 @@ export const vi: Texts = {
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart:
     "Để xuất log chuyển đổi, vui lòng bật log ứng dụng, đặt cấp độ log thành DEBUG và khởi động lại ứng dụng.",
   sourceDirectoryNotSpecified: "Đường dẫn nguồn chưa được đặt.",
+  sourceFileMustBeSFEN: "入力ファイルは .sfen 形式でなければなりません。", // TODO: Translate
   sourceFormatsNotSpecified: "Định dạng nguồn chưa được đặt.",
   destinationDirectoryNotSpecified: "Đường dẫn đến chưa được đặt.",
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",

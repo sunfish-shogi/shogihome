@@ -283,6 +283,7 @@ export const ja: Texts = {
   useUpDownToMove1Ply: "↑/↓キーで1手移動",
   useLeftRightToMove1Ply: "←/→キーで1手移動",
   file: "ファイル",
+  folder: "フォルダ",
   recordFile: "棋譜ファイル",
   executableFile: "実行可能ファイル",
   imageFile: "画像ファイル",
@@ -732,6 +733,7 @@ export const ja: Texts = {
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart:
     "変換ログを出力するにはアプリログを有効にし、ログレベルをデバッグに設定してアプリを再起動してください。",
   sourceDirectoryNotSpecified: "入力ディレクトリが指定されていません。",
+  sourceFileMustBeSFEN: "入力ファイルは .sfen 形式でなければなりません。",
   sourceFormatsNotSpecified: "入力の対象フォーマットが指定されていません。",
   destinationDirectoryNotSpecified: "出力ディレクトリが指定されていません。",
   destinationFileNotSpecified: "出力ファイルが指定されていません。",

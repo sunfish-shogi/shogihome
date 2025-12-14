@@ -280,6 +280,7 @@ export const zh_tw: Texts = {
   useUpDownToMove1Ply: "使用↑/↓鍵移動1手",
   useLeftRightToMove1Ply: "使用←/→鍵移動1手",
   file: "檔案",
+  folder: "フォルダ", // TODO: Translate
   recordFile: "棋譜檔案",
   executableFile: "可執行檔案",
   imageFile: "圖片檔案",
@@ -717,6 +718,7 @@ export const zh_tw: Texts = {
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart:
     "如要監看轉換紀錄，請在程式設定內設定 log level 到 Debug 並重新啟動本程式。",
   sourceDirectoryNotSpecified: "輸入目錄尚未被指定。",
+  sourceFileMustBeSFEN: "入力ファイルは .sfen 形式でなければなりません。", // TODO: Translate
   sourceFormatsNotSpecified: "輸入格式尚未被指定。",
   destinationDirectoryNotSpecified: "輸出格式尚未被指定。",
   destinationFileNotSpecified: "輸出檔案尚未被指定。",
