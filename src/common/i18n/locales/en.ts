@@ -265,6 +265,7 @@ export const en: Texts = {
   positionOfUSIOutput: "Position of USI Output",
   movesOfUSIOutput: "Moves of USI Output",
   onlySFEN: "Only SFEN",
+  minimal: "Minimal",
   pasteDialog: "Paste Dialog",
   liveDuplicatePositionDetection: "Live Duplicate Position Detection",
   onTheFlyThreshold: "On-the-fly Threshold",

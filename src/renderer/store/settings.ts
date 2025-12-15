@@ -171,8 +171,12 @@ class AppSettingsStore {
   get enableUSIFileStartpos(): boolean {
     return this.merged.enableUSIFileStartpos;
   }
+  // Deprecated
   get enableUSIFileResign(): boolean {
     return this.merged.enableUSIFileResign;
+  }
+  get enableUSIFileSpecialMoves(): boolean {
+    return this.merged.enableUSIFileSpecialMoves;
   }
   get showPasteDialog(): boolean {
     return this.merged.showPasteDialog;

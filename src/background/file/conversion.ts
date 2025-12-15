@@ -270,7 +270,7 @@ class SingleFileWriter {
       }
       if (p.move instanceof Move) {
         branches.push(moves + " " + p.move.usi);
-      } else if (this.appSettings.enableUSIFileResign && p.move.type === SpecialMoveType.RESIGN) {
+      } else if (this.settings.enableUSIResign && p.move.type === SpecialMoveType.RESIGN) {
         branches.push(moves + " resign");
       } else {
         branches.push(moves);

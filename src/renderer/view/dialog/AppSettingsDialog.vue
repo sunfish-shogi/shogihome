@@ -476,14 +476,14 @@
           <div class="form-item-label-wide">{{ t.movesOfUSIOutput }}</div>
           <HorizontalSelector
             class="selector"
-            :value="String(update.enableUSIFileResign)"
+            :value="String(update.enableUSIFileSpecialMoves)"
             :items="[
-              { label: t.onlySFEN, value: 'false' },
-              { label: 'SFEN / resign', value: 'true' },
+              { label: t.minimal, value: 'false' },
+              { label: t.all, value: 'true' },
             ]"
             @update:value="
               (value: string) => {
-                update.enableUSIFileResign = value === 'true';
+                update.enableUSIFileSpecialMoves = value === 'true';
               }
             "
           />
@@ -813,7 +813,7 @@ const update = ref({
   recordFileNameTemplate: org.recordFileNameTemplate,
   useCSAV3: org.useCSAV3,
   enableUSIFileStartpos: org.enableUSIFileStartpos,
-  enableUSIFileResign: org.enableUSIFileResign,
+  enableUSIFileSpecialMoves: org.enableUSIFileSpecialMoves,
   showPasteDialog: org.showPasteDialog,
   liveDuplicatePositionDetection: org.liveDuplicatePositionDetection,
   bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,

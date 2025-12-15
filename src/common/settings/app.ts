@@ -207,7 +207,8 @@ export type AppSettings = {
   recordFileNameTemplate: string;
   useCSAV3: boolean;
   enableUSIFileStartpos: boolean;
-  enableUSIFileResign: boolean;
+  enableUSIFileResign: boolean; // Deprecated
+  enableUSIFileSpecialMoves: boolean;
   showPasteDialog: boolean;
   liveDuplicatePositionDetection: boolean;
 
@@ -362,6 +363,7 @@ export function defaultAppSettings(opt?: {
     useCSAV3: false,
     enableUSIFileStartpos: true,
     enableUSIFileResign: false,
+    enableUSIFileSpecialMoves: false,
     showPasteDialog: true,
     liveDuplicatePositionDetection: true,
     bookOnTheFlyThresholdMB: 64,
@@ -454,6 +456,10 @@ export function normalizeAppSettings(
   }
   // 旧バージョンでは On-the-fly の最大値が 4096 だったが 512 に変更した。
   result.bookOnTheFlyThresholdMB = Math.min(Math.max(result.bookOnTheFlyThresholdMB, 0), 512);
+  // 旧バージョンの USI 棋譜では resign のみに対応していた。
+  if (settings.enableUSIFileSpecialMoves === undefined) {
+    result.enableUSIFileSpecialMoves = result.enableUSIFileResign;
+  }
   return result;
 }
 

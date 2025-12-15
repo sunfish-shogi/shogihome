@@ -262,6 +262,7 @@ export const zh_tw: Texts = {
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
+  minimal: "最小限", // TODO: Translate
   pasteDialog: "貼上視窗",
   liveDuplicatePositionDetection: "同一局面を常に検出", // TODO: Translate
   onTheFlyThreshold: "On-the-fly 閾値", // TODO: Translate
