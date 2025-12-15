@@ -8,7 +8,7 @@ function checkPackageJson(packageJsonPath: string) {
   const packageJson = fs.readFileSync(packageJsonPath, "utf-8");
   const { name, version, scripts } = JSON.parse(packageJson);
 
-  // All packages should have preinstall scripts
+  // All packages must not have preinstall scripts
   if (scripts?.preinstall) {
     throw new Error(`Package ${name}@${version} has unexpected preinstall scripts`);
   }
