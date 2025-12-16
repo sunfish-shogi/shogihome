@@ -336,6 +336,20 @@ const optionVisibility = computed(() =>
 const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 const metadata = ref<USIEngineMetadata>({ isShellScript: false });
 
+function optionOrder(option: USIEngineOption): number {
+  switch (option.name) {
+    case Threads:
+    case NumberOfThreads:
+      return -100;
+    case USIHash:
+      return -99;
+    case FVScale:
+      return -98;
+    default:
+      return option.order;
+  }
+}
+
 busyState.retain();
 onMounted(async () => {
   try {
@@ -344,7 +358,7 @@ onMounted(async () => {
     metadata.value = await api.getUSIEngineMetadata(props.latest.path);
     mergeUSIEngine(engine.value, props.latest);
     options.value = Object.values(engine.value.options)
-      .sort((a, b): number => (a.order < b.order ? -1 : 1))
+      .sort((a, b): number => (optionOrder(a) < optionOrder(b) ? -1 : 1))
       .map((option) => ({
         displayName: appSettings.translateEngineOptionName ? usiOptionNameMap[option.name] : "",
         ...option,
