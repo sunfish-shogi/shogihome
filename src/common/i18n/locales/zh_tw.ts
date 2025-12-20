@@ -388,6 +388,7 @@ export const zh_tw: Texts = {
   openDirectory: "開啟資料夾",
   replaceEnginePath: "重新選擇引擎",
   displayName: "表示名稱",
+  showAllOptions: "全てのオプションを表示", // TODO: Translate
   invoke: "執行",
   resetToEngineDefaultValues: "回復至引擎預設設定",
   defaultValue: "預設値",

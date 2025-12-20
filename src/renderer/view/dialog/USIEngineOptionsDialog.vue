@@ -223,6 +223,11 @@
             </div>
           </div>
         </div>
+        <div class="menu">
+          <button v-show="!detailed" class="thin option-control" @click="detailed = true">
+            {{ t.showAllOptions }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="menu row">
@@ -255,6 +260,7 @@ import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import {
   compressUSIEngineOptionsClipboardData,
+  ConsiderationMode,
   decompressUSIEngineOptionsClipboardData,
   emptyUSIEngine,
   FVScale,
@@ -328,7 +334,8 @@ const optionVisibility = computed(() =>
         option.name === USIHash ||
         option.name === USIPonder ||
         option.name === FVScale ||
-        option.name === NodesLimit
+        option.name === NodesLimit ||
+        option.name === ConsiderationMode
       );
     }
   }),
@@ -343,8 +350,6 @@ function optionOrder(option: USIEngineOption): number {
       return -100;
     case USIHash:
       return -99;
-    case FVScale:
-      return -98;
     default:
       return option.order;
   }
@@ -608,6 +613,10 @@ const cancel = () => {
   margin: 10px 0 5px 0;
   width: 100%;
   border: 1px solid var(--dialog-border-color);
+}
+.option-control {
+  width: calc(100% - 10px);
+  margin: 10px 5px;
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;
