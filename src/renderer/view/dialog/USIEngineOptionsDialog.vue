@@ -223,6 +223,11 @@
             </div>
           </div>
         </div>
+        <div class="menu">
+          <button v-show="!detailed" class="thin option-control" @click="detailed = true">
+            {{ t.showAllOptions }}
+          </button>
+        </div>
       </div>
     </div>
     <div class="menu row">
@@ -608,6 +613,10 @@ const cancel = () => {
   margin: 10px 0 5px 0;
   width: 100%;
   border: 1px solid var(--dialog-border-color);
+}
+.option-control {
+  width: calc(100% - 10px);
+  margin: 10px 5px;
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;

@@ -386,6 +386,7 @@ export type Texts = {
   openDirectory: string;
   replaceEnginePath: string;
   displayName: string;
+  showAllOptions: string;
   invoke: string;
   resetToEngineDefaultValues: string;
   defaultValue: string;
