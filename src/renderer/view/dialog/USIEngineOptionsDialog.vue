@@ -255,6 +255,7 @@ import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import {
   compressUSIEngineOptionsClipboardData,
+  ConsiderationMode,
   decompressUSIEngineOptionsClipboardData,
   emptyUSIEngine,
   FVScale,
@@ -328,7 +329,8 @@ const optionVisibility = computed(() =>
         option.name === USIHash ||
         option.name === USIPonder ||
         option.name === FVScale ||
-        option.name === NodesLimit
+        option.name === NodesLimit ||
+        option.name === ConsiderationMode
       );
     }
   }),
@@ -343,8 +345,6 @@ function optionOrder(option: USIEngineOption): number {
       return -100;
     case USIHash:
       return -99;
-    case FVScale:
-      return -98;
     default:
       return option.order;
   }
