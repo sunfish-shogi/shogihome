@@ -625,6 +625,9 @@ export const en: Texts = {
   someLogsDisabled: "Some log settings are disabled.",
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
+  hwaEnabled: "HWA(Hardware Acceleration) Enabled",
+  hwaIsNotRecommendedForLongGames: "HWA is not recommended for long games.",
+  pleaseDisableHWAAndRestart: "Please disable HWA in app settings and restart this app.",
   notSendPVOnStandardCSAProtocol: "Client do not send PV on standard CSA protocol.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Password will saved as plaintext because OS side encryption is not available.",

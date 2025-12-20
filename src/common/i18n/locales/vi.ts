@@ -624,6 +624,9 @@ export const vi: Texts = {
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
+  hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。", // TODO: Translate
+  hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。", // TODO: Translate
+  pleaseDisableHWAAndRestart: "アプリ設定からHWAを無効にしてアプリを再起動してください。", // TODO: Translate
   notSendPVOnStandardCSAProtocol: "PV không được gửi trong phương thức CSA tiêu chuẩn.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",

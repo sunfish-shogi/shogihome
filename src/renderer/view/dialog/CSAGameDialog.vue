@@ -9,6 +9,13 @@
           {{ t.pleaseEnableLogsAndRestart }}
         </div>
       </div>
+      <div v-if="hwaEnabled" class="form-group warning">
+        <div class="note">
+          {{ t.hwaEnabled }}<br />
+          {{ t.hwaIsNotRecommendedForLongGames }}<br />
+          {{ t.pleaseDisableHWAAndRestart }}
+        </div>
+      </div>
       <div class="form-group">
         <div>{{ t.player }}</div>
         <PlayerSelector
@@ -438,6 +445,11 @@ const selectAutoSaveDirectory = async () => {
 const logEnabled = computed(() => {
   const appSettings = useAppSettings();
   return appSettings.enableCSALog && appSettings.enableAppLog && appSettings.enableUSILog;
+});
+
+const hwaEnabled = computed(() => {
+  const appSettings = useAppSettings();
+  return appSettings.enableHardwareAcceleration;
 });
 </script>
 

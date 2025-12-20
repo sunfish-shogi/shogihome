@@ -614,6 +614,9 @@ export type Texts = {
   someLogsDisabled: string;
   logsRecommendedForCSAProtocol: string;
   pleaseEnableLogsAndRestart: string;
+  hwaEnabled: string;
+  hwaIsNotRecommendedForLongGames: string;
+  pleaseDisableHWAAndRestart: string;
   notSendPVOnStandardCSAProtocol: string;
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable: string;
   pleaseUncheckSaveHistoryIfNotWantSave: string;
