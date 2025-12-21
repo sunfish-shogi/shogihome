@@ -619,6 +619,9 @@ export const zh_tw: Texts = {
   someLogsDisabled: "部份 log 已被無效化。",
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
   pleaseEnableLogsAndRestart: "請在程式設定中開啟紀錄並重新啟動本程式。",
+  hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。", // TODO: Translate
+  hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。", // TODO: Translate
+  pleaseDisableHWAAndRestart: "アプリ設定からHWAを無効にしてアプリを再起動してください。", // TODO: Translate
   notSendPVOnStandardCSAProtocol: "在標準的CSA協定中不會送出評價值以及思考棋步。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "由於無法使用系統的加密機能，輸入的密碼將會以明文保存。",

@@ -625,6 +625,9 @@ export const ja: Texts = {
   someLogsDisabled: "一部のログが無効になっています。",
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
+  hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。",
+  hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。",
+  pleaseDisableHWAAndRestart: "アプリ設定からHWAを無効にしてアプリを再起動してください。",
   notSendPVOnStandardCSAProtocol: "標準のCSAプロトコルでは評価値や読み筋が送信されません。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "OSの暗号化機能が利用できないため、入力したパスワードは平文で保存されます。",
