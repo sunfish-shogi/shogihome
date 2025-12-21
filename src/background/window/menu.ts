@@ -658,16 +658,6 @@ function createMenuTemplate(window: BrowserWindow) {
                   ],
                 },
               ],
-            });
-          },
-        },
-        {
-          label: "GPU Feature Status",
-          click: () => {
-            const status = app.getGPUFeatureStatus();
-            sendMessage({
-              text: "GPU Feature Status",
-              attachments: [{ type: "list", items: createListItems(status) }],
               withCopyButton: true,
             });
           },
@@ -685,6 +675,17 @@ function createMenuTemplate(window: BrowserWindow) {
                 attachments: [{ type: "list", items: createListItems(gpuInfo) }],
                 withCopyButton: true,
               });
+            });
+          },
+        },
+        {
+          label: "GPU Feature Status",
+          click: () => {
+            const status = app.getGPUFeatureStatus();
+            sendMessage({
+              text: "GPU Feature Status",
+              attachments: [{ type: "list", items: createListItems(status) }],
+              withCopyButton: true,
             });
           },
         },
