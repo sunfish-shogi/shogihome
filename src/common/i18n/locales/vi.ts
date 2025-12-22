@@ -381,6 +381,7 @@ export const vi: Texts = {
   hoursSuffix: "h",
   minutesSuffix: "p",
   secondsSuffix: "s",
+  eg: "e.g.", // TODO: translate
   totalMoves: "総手数", // TODO: translate
   detailSettings: "詳細設定", // TODO: translate
   engineManagement: "Quản lý phần mềm",

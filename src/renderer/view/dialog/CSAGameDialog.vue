@@ -77,6 +77,7 @@
             class="long-text"
             list="csa-server-host"
             type="text"
+            :placeholder="`${t.eg} ${floodgateDomain}`"
           />
           <datalist id="csa-server-host">
             <option :value="officialCSAServerDomain"></option>
@@ -92,6 +93,7 @@
             class="number"
             list="csa-server-port-number"
             type="number"
+            :placeholder="`${t.eg} 4081`"
           />
           <datalist id="csa-server-port-number">
             <option value="4081"></option>
