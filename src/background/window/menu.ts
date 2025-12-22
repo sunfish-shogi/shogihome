@@ -520,9 +520,15 @@ function createMenuTemplate(window: BrowserWindow) {
           },
         },
         {
-          label: t.autoSaving,
+          label: `${t.autoSaving} (Local)`,
           click: () => {
             openAutoSaveDirectory().catch(sendError);
+          },
+        },
+        {
+          label: `${t.autoSaving} (CSA)`,
+          click: () => {
+            openAutoSaveDirectoryForCSA().catch(sendError);
           },
         },
       ],
