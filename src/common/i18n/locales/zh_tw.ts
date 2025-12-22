@@ -378,6 +378,7 @@ export const zh_tw: Texts = {
   hoursSuffix: "小時",
   minutesSuffix: "分",
   secondsSuffix: "秒",
+  eg: "e.g.", // TODO: translate
   totalMoves: "総手数", // TODO: translate
   detailSettings: "詳細設定", // TODO: translate
   engineManagement: "引擎管理",
