@@ -263,10 +263,18 @@ function isValidOptionValue(option: USIEngineOption): boolean {
       if (typeof option.value !== "number") {
         return false;
       }
-      if (option.min !== undefined && option.value < option.min) {
+      if (
+        option.min !== undefined &&
+        option.value < option.min &&
+        option.value !== option.default
+      ) {
         return false;
       }
-      if (option.max !== undefined && option.value > option.max) {
+      if (
+        option.max !== undefined &&
+        option.value > option.max &&
+        option.value !== option.default
+      ) {
         return false;
       }
       break;
