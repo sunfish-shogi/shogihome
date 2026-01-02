@@ -104,7 +104,7 @@ npm run serve
 # Electron App (Installer)
 npm run electron:build
 
-# Electron App (Portable)
+# Electron App (Windows Portable App)
 npm run electron:portable
 
 # Web App

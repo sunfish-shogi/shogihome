@@ -7,6 +7,9 @@ const target = process.argv[2];
 
 switch (target) {
   case "portable":
+    if (process.platform !== "win32") {
+      throw new Error("Portable build is only supported on Windows.");
+    }
     config.win.target = "portable";
     break;
 }
