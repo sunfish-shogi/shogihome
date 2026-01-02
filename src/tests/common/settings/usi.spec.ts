@@ -490,6 +490,25 @@ describe("settings/usi", () => {
       type: "button",
       order: 7,
     };
+    // AobaNNUE において default が min 未満の事例があったため default と等しいものは範囲外でも許容
+    const validSpinOption: USIEngineOption = {
+      name: "MySpin",
+      type: "spin",
+      order: 8,
+      default: 0,
+      min: 100,
+      max: 200,
+      value: 0,
+    };
+    const validSpinOption2: USIEngineOption = {
+      name: "MySpin2",
+      type: "spin",
+      order: 9,
+      default: 300,
+      min: 100,
+      max: 200,
+      value: 300,
+    };
 
     it("ok", () => {
       expect(
@@ -507,6 +526,8 @@ describe("settings/usi", () => {
             MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
+            MySpin: validSpinOption,
+            MySpin2: validSpinOption2,
           },
           enableEarlyPonder: false,
         }),
@@ -529,6 +550,8 @@ describe("settings/usi", () => {
             MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
+            MySpin: validSpinOption,
+            MySpin2: validSpinOption2,
           },
           enableEarlyPonder: false,
         }),
@@ -557,6 +580,8 @@ describe("settings/usi", () => {
             MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
+            MySpin: validSpinOption,
+            MySpin2: validSpinOption2,
           },
           enableEarlyPonder: false,
         } as unknown as USIEngine),
@@ -586,6 +611,8 @@ describe("settings/usi", () => {
             MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
+            MySpin: validSpinOption,
+            MySpin2: validSpinOption2,
           },
           enableEarlyPonder: false,
         } as unknown as USIEngine),
@@ -614,6 +641,8 @@ describe("settings/usi", () => {
             MyCombo2: validComboOption2,
             MyFilename: validFilenameOption,
             MyButton: validButtonOption,
+            MySpin: validSpinOption,
+            MySpin2: validSpinOption2,
           },
           enableEarlyPonder: false,
         } as unknown as USIEngine),
