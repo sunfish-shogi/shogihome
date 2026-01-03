@@ -62,7 +62,7 @@ export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): Game
     enableEngineTimeout: false,
     humanIsFront: true,
     enableComment: true,
-    enableAutoSave: true,
+    enableAutoSave: !!opts?.autoSaveDirectory,
     autoSaveDirectory: removeLastSlash(opts?.autoSaveDirectory || ""),
     repeat: 1,
     swapPlayers: false,

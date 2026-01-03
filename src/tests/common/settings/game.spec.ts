@@ -1,8 +1,31 @@
-import { GameSettings, JishogiRule, normalizeGameSettings } from "@/common/settings/game.js";
+import {
+  GameSettings,
+  JishogiRule,
+  normalizeGameSettings,
+  defaultGameSettings,
+} from "@/common/settings/game.js";
 import { InitialPositionType } from "tsshogi";
 import * as uri from "@/common/uri.js";
 
 describe("settings/game", () => {
+  it("defaultGameSettings/withAutoSaveDirectory", () => {
+    const result = defaultGameSettings({ autoSaveDirectory: "/path/to/autosave" });
+    expect(result.enableAutoSave).toBe(true);
+    expect(result.autoSaveDirectory).toBe("/path/to/autosave");
+  });
+
+  it("defaultGameSettings/withoutAutoSaveDirectory", () => {
+    const result = defaultGameSettings();
+    expect(result.enableAutoSave).toBe(false);
+    expect(result.autoSaveDirectory).toBe("");
+  });
+
+  it("defaultGameSettings/withEmptyAutoSaveDirectory", () => {
+    const result = defaultGameSettings({ autoSaveDirectory: "" });
+    expect(result.enableAutoSave).toBe(false);
+    expect(result.autoSaveDirectory).toBe("");
+  });
+
   it("normalize", () => {
     const settings: GameSettings = {
       black: {
