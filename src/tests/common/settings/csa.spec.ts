@@ -9,6 +9,7 @@ import {
   importCSAGameSettingsForCLI,
   normalizeSecureCSAGameSettingsHistory,
   validateCSAGameSettings,
+  defaultCSAGameSettingsHistory,
 } from "@/common/settings/csa.js";
 import { defaultAppSettings } from "@/common/settings/app.js";
 import {
@@ -19,6 +20,24 @@ import {
 } from "@/tests/mock/csa.js";
 
 describe("settings/csa", () => {
+  it("defaultCSAGameSettingsHistory/withAutoSaveDirectory", () => {
+    const result = defaultCSAGameSettingsHistory({ autoSaveDirectory: "/path/to/autosave" });
+    expect(result.enableAutoSave).toBe(true);
+    expect(result.autoSaveDirectory).toBe("/path/to/autosave");
+  });
+
+  it("defaultCSAGameSettingsHistory/withoutAutoSaveDirectory", () => {
+    const result = defaultCSAGameSettingsHistory();
+    expect(result.enableAutoSave).toBe(false);
+    expect(result.autoSaveDirectory).toBe("");
+  });
+
+  it("defaultCSAGameSettingsHistory/withEmptyAutoSaveDirectory", () => {
+    const result = defaultCSAGameSettingsHistory({ autoSaveDirectory: "" });
+    expect(result.enableAutoSave).toBe(false);
+    expect(result.autoSaveDirectory).toBe("");
+  });
+
   it("validate/noError", () => {
     const result = validateCSAGameSettings({
       player: {
