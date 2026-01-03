@@ -4,7 +4,11 @@ import fs from "node:fs";
 
 const platform = process.argv[2];
 const version = process.argv[3];
-const outputPath = `dist/release-${version}-${platform}.zip`;
+const variant = process.argv[4] || "installer";
+const outputPath =
+  variant === "portable"
+    ? `dist/release-${version}-portable.zip`
+    : `dist/release-${version}-${platform}.zip`;
 
 const packageJson = JSON.parse(fs.readFileSync("./package.json"));
 if (`v${packageJson.version}` !== version) {

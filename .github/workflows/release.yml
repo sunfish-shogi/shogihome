@@ -15,10 +15,16 @@ jobs:
         include:
           - os: windows
             os_short: win
+            variant: installer
+          - os: windows
+            os_short: win
+            variant: portable
           - os: macos
             os_short: mac
+            variant: installer
           - os: ubuntu
             os_short: linux
+            variant: installer
     runs-on: ${{ matrix.os }}-latest
     steps:
       - run: git config --global core.autocrlf false
@@ -31,10 +37,13 @@ jobs:
       - run: npm version
       - run: npm ci --no-audit --no-fund --prefer-online
       - run: npm run electron:build
-      - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }}
+        if: matrix.variant != 'portable'
+      - run: npm run electron:portable
+        if: matrix.variant == 'portable'
+      - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }} ${{ matrix.variant }}
       - uses: actions/upload-artifact@v6
         with:
-          name: ${{ matrix.os}}-release
+          name: ${{ matrix.os }}${{ matrix.variant == 'portable' && '-portable' || '' }}-release
           path: dist/release-*.zip
   release:
     needs: build
