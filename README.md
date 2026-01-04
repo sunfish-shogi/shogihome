@@ -62,7 +62,7 @@ USI や CSA プロトコルの通信ログの出力はデフォルトで無効�
 
 ## 不具合報告及びその他の開発協力
 
-[プロジェクトへの関わり方について](CONTRIBUTING.md) を必ずお読みください。
+[CONTRIBUTING.md](CONTRIBUTING.md) を必ずお読みください。
 
 GitHub のアカウントをお持ちの方は Issue/PullRequest を活用してください。
 大きな変更はいきなり着手せず Issue を作成してください。
