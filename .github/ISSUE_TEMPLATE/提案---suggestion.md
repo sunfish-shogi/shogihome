@@ -9,7 +9,7 @@ assignees: sunfish-shogi
 
 ## Checklist
 
-- [ ] understand [CONTRIBUTING.md](https://github.com/sunfish-shogi/shogihome/blob/main/CONTRIBUTING.md)
+- [ ] understand [プロジェクトへの関わり方について](https://github.com/sunfish-shogi/shogihome/blob/main/CONTRIBUTING.md)
 - [ ] do not remove following sections
 
 ## 説明 /  Description
