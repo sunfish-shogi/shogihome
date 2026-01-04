@@ -31,7 +31,7 @@ import {
   normalizeSecureCSAGameSettingsHistory,
 } from "@/common/settings/csa.js";
 import { DecryptString, EncryptString, isEncryptionAvailable } from "./helpers/encrypt.js";
-import { getPortableExeDir } from "./proc/env.js";
+import { getPortableExeDir, isPortable } from "./proc/env.js";
 import {
   MateSearchSettings as MateSearchSettings,
   defaultMateSearchSettings,
@@ -178,7 +178,7 @@ export async function saveGameSettings(settings: GameSettings): Promise<void> {
 export async function loadGameSettings(): Promise<GameSettings> {
   const opts = {
     // v1.26.0 で autoSaveDirectory がアプリ設定から移動したので値を引き継ぐ。
-    autoSaveDirectory: loadAppSettingsOnce().autoSaveDirectory || docDir,
+    autoSaveDirectory: isPortable() ? undefined : loadAppSettingsOnce().autoSaveDirectory || docDir,
   };
   if (!(await exists(gameSettingsPath))) {
     return defaultGameSettings(opts);
@@ -206,7 +206,7 @@ export async function saveCSAGameSettingsHistory(settings: CSAGameSettingsHistor
 export async function loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHistory> {
   const opts = {
     // v1.26.0 で autoSaveDirectory がアプリ設定から移動したので値を引き継ぐ。
-    autoSaveDirectory: loadAppSettingsOnce().autoSaveDirectory || docDir,
+    autoSaveDirectory: isPortable() ? undefined : loadAppSettingsOnce().autoSaveDirectory || docDir,
   };
   if (!(await exists(csaGameSettingsHistoryPath))) {
     return defaultCSAGameSettingsHistory(opts);
