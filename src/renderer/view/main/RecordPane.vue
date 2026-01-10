@@ -13,12 +13,14 @@
         :show-bottom-control="showBottomControl"
         :show-branches="showBranches"
         :shortcut-keys="getRecordShortcutKeys(appSettings.recordShortcutKeys)"
+        :branch-list-mode="appSettings.branchListMode"
         @go-begin="store.changePly(0)"
         @go-back="store.goBack()"
         @go-forward="store.goForward()"
         @go-end="store.changePly(Number.MAX_SAFE_INTEGER)"
         @select-move="(ply) => store.changePly(ply)"
         @select-branch="(index) => store.changeBranch(index)"
+        @select-next-branch="selectNextBranch"
         @back-to-main-branch="store.backToMainBranch()"
         @swap-with-previous-branch="store.swapWithPreviousBranch()"
         @swap-with-next-branch="store.swapWithNextBranch()"
@@ -109,6 +111,11 @@ const isRecordOperational = computed(() => store.appState === AppState.NORMAL);
 
 const showDuplicatePositions = (sfen: string) => {
   duplicatePositionsDialog.value = sfen;
+};
+
+const selectNextBranch = (index: number) => {
+  store.goForward();
+  store.changeBranch(index);
 };
 
 const changeNode = (node: ImmutableNode) => {

@@ -150,6 +150,11 @@ export enum PositionImageHandLabelType {
   NONE = "none",
 }
 
+export enum BranchListMode {
+  SIBLING = "sibling",
+  NEXT_MOVE = "nextMove",
+}
+
 export type AppSettings = {
   // Language
   language: Language;
@@ -236,6 +241,7 @@ export type AppSettings = {
   // Record View
   showElapsedTimeInRecordView: boolean;
   showCommentInRecordView: boolean;
+  branchListMode: BranchListMode;
 
   // Logging
   enableAppLog: boolean;
@@ -383,6 +389,7 @@ export function defaultAppSettings(opt?: {
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     showElapsedTimeInRecordView: true,
     showCommentInRecordView: true,
+    branchListMode: BranchListMode.SIBLING,
     enableAppLog: false,
     enableUSILog: false,
     enableCSALog: false,

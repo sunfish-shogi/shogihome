@@ -56,7 +56,9 @@
             v-for="(branch, index) in branches"
             :key="index"
             class="row move-element"
-            :class="{ selected: branch.activeBranch }"
+            :class="{
+              selected: branchListMode !== BranchListMode.NEXT_MOVE && branch.activeBranch,
+            }"
             @click="changeBranch(index)"
           >
             <div class="move-text">{{ branch.displayText }}</div>
@@ -83,7 +85,7 @@
           </button>
         </div>
       </div>
-      <div class="column branch-side-control">
+      <div v-if="branchListMode !== BranchListMode.NEXT_MOVE" class="column branch-side-control">
         <button :disabled="!operational" @click="swapWithPreviousBranch()">
           <Icon :icon="IconType.ARROW_UP" />
         </button>
@@ -122,6 +124,7 @@ import { IconType } from "@/renderer/assets/icons";
 import ToggleButton from "./ToggleButton.vue";
 import { RecordShortcutKeys } from "./board/shortcut";
 import { t } from "@/common/i18n";
+import { BranchListMode } from "@/common/settings/app";
 
 const props = defineProps({
   record: {
@@ -173,6 +176,11 @@ const props = defineProps({
     type: Object as PropType<RecordShortcutKeys>,
     required: true,
   },
+  branchListMode: {
+    type: String as PropType<BranchListMode>,
+    required: false,
+    default: BranchListMode.SIBLING,
+  },
 });
 
 const emit = defineEmits<{
@@ -182,6 +190,7 @@ const emit = defineEmits<{
   goEnd: [];
   selectMove: [ply: number];
   selectBranch: [index: number];
+  selectNextBranch: [index: number];
   backToMainBranch: [];
   swapWithPreviousBranch: [];
   swapWithNextBranch: [];
@@ -226,7 +235,11 @@ const changePly = (number: number) => {
 
 const changeBranch = (index: number) => {
   if (props.operational) {
-    emit("selectBranch", Number(index));
+    if (props.branchListMode === BranchListMode.NEXT_MOVE) {
+      emit("selectNextBranch", Number(index));
+    } else {
+      emit("selectBranch", Number(index));
+    }
   }
 };
 
@@ -262,15 +275,29 @@ const isMainBranch = computed(() => {
 });
 
 const branches = computed(() => {
-  if (!props.record.branchBegin.branch) {
-    return null;
+  if (props.branchListMode === BranchListMode.NEXT_MOVE) {
+    // Show next move branches (children of current position)
+    const next = props.record.current.next;
+    if (!next || !next.branch) {
+      // No branches or only one next move - don't show
+      return null;
+    }
+    const ret: ImmutableNode[] = [];
+    for (let p: ImmutableNode | null = next; p; p = p.branch) {
+      ret.push(p);
+    }
+    return ret;
+  } else {
+    // Current behavior - show sibling branches
+    if (!props.record.branchBegin.branch) {
+      return null;
+    }
+    const ret: ImmutableNode[] = [];
+    for (let p: ImmutableNode | null = props.record.branchBegin; p; p = p.branch) {
+      ret.push(p);
+    }
+    return ret;
   }
-  const ret: ImmutableNode[] = [];
-  let p: ImmutableNode | null;
-  for (p = props.record.branchBegin; p; p = p.branch) {
-    ret.push(p);
-  }
-  return ret;
 });
 
 onUpdated(() => {
