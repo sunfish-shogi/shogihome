@@ -332,6 +332,18 @@
             ]"
           />
         </div>
+        <!-- 分岐の表示 -->
+        <div class="form-item">
+          <div class="form-item-label-wide">{{ t.branchListMode }}</div>
+          <HorizontalSelector
+            v-model:value="update.branchListMode"
+            class="selector"
+            :items="[
+              { label: t.previousMoveBranches, value: BranchListMode.SIBLING },
+              { label: t.nextMoveBranches, value: BranchListMode.NEXT_MOVE },
+            ]"
+          />
+        </div>
       </div>
       <hr />
       <!-- 音 -->
@@ -739,6 +751,7 @@ import {
   BoardImageType,
   PieceStandImageType,
   BoardLabelType,
+  BranchListMode,
   LeftSideControlType,
   PromotionSelectorStyle,
   RightSideControlType,
@@ -802,6 +815,7 @@ const update = ref({
   leftSideControlType: org.leftSideControlType,
   rightSideControlType: org.rightSideControlType,
   tabPaneType: org.tabPaneType,
+  branchListMode: org.branchListMode,
   pieceVolume: org.pieceVolume,
   clockVolume: org.clockVolume,
   clockPitch: org.clockPitch,

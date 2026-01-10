@@ -292,6 +292,9 @@ export const zh_tw: Texts = {
   comments: "備註",
   commentsAndBookmarks: "備註・書籤",
   branches: "分支",
+  branchListMode: "分岐の表示", // TODO: Translate
+  previousMoveBranches: "着手した手", // TODO: Translate
+  nextMoveBranches: "次の手", // TODO: Translate
   bookmark: "書籤",
   bookmarkList: "書籤一覽",
   useBookmarkAsHeader: "將書籤名稱作為標題",

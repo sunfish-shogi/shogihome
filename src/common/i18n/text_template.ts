@@ -290,6 +290,9 @@ export type Texts = {
   comments: string;
   commentsAndBookmarks: string;
   branches: string;
+  branchListMode: string;
+  previousMoveBranches: string;
+  nextMoveBranches: string;
   bookmark: string;
   bookmarkList: string;
   useBookmarkAsHeader: string;

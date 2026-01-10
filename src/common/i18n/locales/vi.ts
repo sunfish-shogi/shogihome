@@ -295,6 +295,9 @@ export const vi: Texts = {
   comments: "Bình luận",
   commentsAndBookmarks: "Bình luận & đánh dấu",
   branches: "Nhánh",
+  branchListMode: "分岐の表示", // TODO: Translate
+  previousMoveBranches: "着手した手", // TODO: Translate
+  nextMoveBranches: "次の手", // TODO: Translate
   bookmark: "Đánh dấu",
   bookmarkList: "Đánh dấu",
   useBookmarkAsHeader: "Sử dụng đánh dấu làm đầu đề",

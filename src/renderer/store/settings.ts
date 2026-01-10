@@ -4,6 +4,7 @@ import {
   BackgroundImageType,
   BoardImageType,
   BoardLabelType,
+  BranchListMode,
   ClockSoundTarget,
   EvaluationViewFrom,
   KingPieceType,
@@ -234,6 +235,9 @@ class AppSettingsStore {
   }
   get showCommentInRecordView(): boolean {
     return this.merged.showCommentInRecordView;
+  }
+  get branchListMode(): BranchListMode {
+    return this.merged.branchListMode;
   }
   get enableAppLog(): boolean {
     return this.merged.enableAppLog;
