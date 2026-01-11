@@ -395,6 +395,7 @@ export const en: Texts = {
   openDirectory: "Open Directory",
   replaceEnginePath: "Replace Engine Path",
   displayName: "Display Name",
+  frontendBook: "Frontend Book",
   showAllOptions: "Show All Options",
   invoke: "Invoke",
   resetToEngineDefaultValues: "Reset to default values",

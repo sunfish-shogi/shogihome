@@ -150,32 +150,43 @@ const api: Bridge = {
   async showOpenBookDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
   },
-  async showSaveBookDialog(): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG);
+  async showSaveBookDialog(session: number): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session);
   },
-  async clearBook(): Promise<void> {
-    return await ipcRenderer.invoke(Background.CLEAR_BOOK);
+  async clearBook(session: number): Promise<void> {
+    return await ipcRenderer.invoke(Background.CLEAR_BOOK, session);
   },
-  async openBook(path: string, json: string): Promise<void> {
-    await ipcRenderer.invoke(Background.OPEN_BOOK, path, json);
+  async openBook(session: number, path: string, json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.OPEN_BOOK, session, path, json);
   },
-  async saveBook(path: string): Promise<void> {
-    return await ipcRenderer.invoke(Background.SAVE_BOOK, path);
+  async openBookAsNewSession(path: string, json: string): Promise<number> {
+    return await ipcRenderer.invoke(Background.OPEN_BOOK_AS_NEW_SESSION, path, json);
   },
-  async searchBookMoves(sfen: string): Promise<string> {
-    return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, sfen);
+  async closeBookSession(session: number): Promise<void> {
+    return await ipcRenderer.invoke(Background.CLOSE_BOOK_SESSION, session);
   },
-  async updateBookMove(sfen: string, json: string): Promise<void> {
-    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE, sfen, json);
+  async saveBook(session: number, path: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.SAVE_BOOK, session, path);
   },
-  async removeBookMove(sfen: string, usi: string): Promise<void> {
-    return await ipcRenderer.invoke(Background.REMOVE_BOOK_MOVE, sfen, usi);
+  async searchBookMoves(session: number, sfen: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, session, sfen);
   },
-  async updateBookMoveOrder(sfen: string, usi: string, order: number): Promise<void> {
-    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE_ORDER, sfen, usi, order);
+  async updateBookMove(session: number, sfen: string, json: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE, session, sfen, json);
   },
-  async importBookMoves(json: string): Promise<string> {
-    return await ipcRenderer.invoke(Background.IMPORT_BOOK_MOVES, json);
+  async removeBookMove(session: number, sfen: string, usi: string): Promise<void> {
+    return await ipcRenderer.invoke(Background.REMOVE_BOOK_MOVE, session, sfen, usi);
+  },
+  async updateBookMoveOrder(
+    session: number,
+    sfen: string,
+    usi: string,
+    order: number,
+  ): Promise<void> {
+    return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE_ORDER, session, sfen, usi, order);
+  },
+  async importBookMoves(session: number, json: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.IMPORT_BOOK_MOVES, session, json);
   },
 
   // USI

@@ -175,6 +175,12 @@ const bridge: Bridge = {
   async openBook(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
+  async openBookAsNewSession(): Promise<number> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async closeBookSession(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async saveBook(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },

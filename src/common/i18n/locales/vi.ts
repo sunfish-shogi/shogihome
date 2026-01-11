@@ -395,6 +395,7 @@ export const vi: Texts = {
   openDirectory: "Mở đường dẫn",
   replaceEnginePath: "Chọn lại đường dẫn phần mềm",
   displayName: "Tên hiển thị",
+  frontendBook: "定跡 (GUI拡張)", // TODO: Translate
   showAllOptions: "全てのオプションを表示", // TODO: Translate
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
