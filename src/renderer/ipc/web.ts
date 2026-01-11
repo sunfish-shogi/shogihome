@@ -263,10 +263,10 @@ export const webAPI: Bridge = {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async openBookAsNewSession(): Promise<number> {
-    throw new Error("This feature is not available on command line tool");
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async closeBookSession(): Promise<void> {
-    throw new Error("This feature is not available on command line tool");
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async saveBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
