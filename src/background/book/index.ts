@@ -131,7 +131,7 @@ function getBook(session: number): BookHandle {
 
 export function isBookUnsaved(session: number): boolean {
   const book = getBook(session);
-  return book.type === "in-memory" && !book.saved;
+  return !book.saved;
 }
 
 export function getBookFormat(session: number): BookFormat {
