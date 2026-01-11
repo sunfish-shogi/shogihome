@@ -234,6 +234,9 @@ export async function openBookAsNewSession(
 }
 
 export function closeBookSession(session: number): void {
+  if (session === defaultBookSession) {
+    throw new Error("Cannot close default book session");
+  }
   clearBook(session);
   bookFiles.delete(session);
 }
