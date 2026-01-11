@@ -111,7 +111,7 @@ function emptyBook(): BookHandle {
 let book: BookHandle = emptyBook();
 
 export function isBookUnsaved(): boolean {
-  return book.type === "in-memory" && !book.saved;
+  return !book.saved;
 }
 
 export function getBookFormat(): BookFormat {
