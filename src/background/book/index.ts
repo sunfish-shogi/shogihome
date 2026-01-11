@@ -214,7 +214,7 @@ export async function openBook(
   const size = stat.size;
   if (
     options?.forceOnTheFly ||
-    (options?.onTheFlyThresholdMB && size > options.onTheFlyThresholdMB * 1024 * 1024)
+    (options?.onTheFlyThresholdMB !== undefined && size > options.onTheFlyThresholdMB * 1024 * 1024)
   ) {
     await openBookOnTheFly(session, path, size);
     return "on-the-fly";
