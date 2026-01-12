@@ -30,17 +30,17 @@ describe("store/research", () => {
     expect(mockAPI.usiReady).toBeCalledTimes(1);
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers(); // 遅延実行
+    await vi.runOnlyPendingTimersAsync(); // 遅延実行
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
     expect(mockAPI.usiGoInfinite).toBeCalledWith(100, "position startpos");
 
     // 時間制限が無いので stop コマンドは送信されない。
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiStop).toBeCalledTimes(0);
 
     record.append(record.position.createMoveByUSI("7g7f") as Move);
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers(); // 遅延実行
+    await vi.runOnlyPendingTimersAsync(); // 遅延実行
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(2);
     expect(mockAPI.usiGoInfinite).toBeCalledWith(100, "position startpos moves 7g7f");
   });
@@ -54,11 +54,11 @@ describe("store/research", () => {
     await manager.launch(researchSettingsMax5Seconds);
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers(); // 遅延実行
+    await vi.runOnlyPendingTimersAsync(); // 遅延実行
     expect(mockAPI.usiStop).toBeCalledTimes(0);
 
     // 時間制限があるので stop コマンドが送信される。
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiStop).toBeCalledTimes(1);
   });
 
@@ -72,11 +72,11 @@ describe("store/research", () => {
     expect(mockAPI.usiReady).toBeCalledTimes(3);
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers(); // 遅延実行
+    await vi.runOnlyPendingTimersAsync(); // 遅延実行
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(3);
     record.append(record.position.createMoveByUSI("7g7f") as Move);
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers(); // 遅延実行
+    await vi.runOnlyPendingTimersAsync(); // 遅延実行
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(6);
   });
 
@@ -90,7 +90,7 @@ describe("store/research", () => {
     await manager.launch(researchSettingsSecondaryEngines);
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(3);
     // all sessions are unpaused
     expect(manager.isPaused(101)).toBeFalsy();
@@ -104,10 +104,11 @@ describe("store/research", () => {
     // update position
     record.append(record.position.createMoveByUSI("7g7f") as Move);
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(5);
     // unpause 102
     manager.unpause(102);
+    await vi.advanceTimersByTimeAsync(0); // flush promises
     expect(manager.isPaused(101)).toBeFalsy();
     expect(manager.isPaused(102)).toBeFalsy();
     expect(manager.isPaused(103)).toBeFalsy();
@@ -138,7 +139,7 @@ describe("store/research", () => {
     });
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
     expect(mockAPI.usiStop).not.toBeCalled();
     expect(manager.getMultiPV(101)).toBe(4);
@@ -161,7 +162,7 @@ describe("store/research", () => {
     await manager.launch(researchSettings); // without MultiPV option
     const record = new Record();
     manager.updatePosition(record);
-    vi.runOnlyPendingTimers();
+    await vi.runOnlyPendingTimersAsync();
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
     expect(mockAPI.usiStop).not.toBeCalled();
     expect(manager.getMultiPV(101)).toBeUndefined();

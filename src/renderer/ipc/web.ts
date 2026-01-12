@@ -262,6 +262,12 @@ export const webAPI: Bridge = {
   async openBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async openBookAsNewSession(): Promise<number> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async closeBookSession(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async saveBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },

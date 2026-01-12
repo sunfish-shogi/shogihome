@@ -395,6 +395,7 @@ export const ja: Texts = {
   openDirectory: "フォルダを開く",
   replaceEnginePath: "エンジン再選択",
   displayName: "表示名",
+  frontendBook: "定跡 (GUI拡張)",
   showAllOptions: "全てのオプションを表示",
   invoke: "実行",
   resetToEngineDefaultValues: "エンジンの既定値に戻す",

@@ -88,7 +88,11 @@
               <button
                 v-if="option.type === 'filename'"
                 class="thin"
-                @click="selectFile(option.name)"
+                @click="
+                  selectFile((value) => {
+                    option.currentValue = value;
+                  })
+                "
               >
                 {{ t.select }}
               </button>
@@ -223,6 +227,34 @@
             </div>
           </div>
         </div>
+        <!-- 定跡 (GUI拡張) -->
+        <div v-show="detailed && !filterWords.length" class="row option">
+          <div class="option-name">{{ t.frontendBook }}</div>
+          <div class="option-value">
+            <div class="row center">
+              <ToggleButton v-model:value="extraBook.enabled" />
+              <div v-show="extraBook.enabled" class="option-value-control">
+                <input v-model="extraBook.filePath" class="option-value-filename" type="text" />
+                <button
+                  class="thin"
+                  @click="
+                    selectFile((value) => {
+                      extraBook.filePath = value;
+                    })
+                  "
+                >
+                  {{ t.select }}
+                </button>
+              </div>
+            </div>
+            <ToggleButton
+              v-show="extraBook.enabled"
+              v-model:value="extraBook.onTheFly"
+              class="additional"
+              label="On-the-fly"
+            />
+          </div>
+        </div>
         <div class="menu">
           <button v-show="!detailed" class="thin option-control" @click="detailed = true">
             {{ t.showAllOptions }}
@@ -263,6 +295,7 @@ import {
   ConsiderationMode,
   decompressUSIEngineOptionsClipboardData,
   emptyUSIEngine,
+  emptyUSIEngineExtraBookConfig,
   FVScale,
   getUSIEngineOptionCurrentValue,
   mergeUSIEngine,
@@ -270,6 +303,7 @@ import {
   NumberOfThreads,
   Threads,
   USIEngine,
+  USIEngineExtraBookConfig,
   USIEngineMetadata,
   USIEngineOption,
   USIEngineOptionsClipboardData,
@@ -340,6 +374,11 @@ const optionVisibility = computed(() =>
     }
   }),
 );
+const extraBook = ref<USIEngineExtraBookConfig>({
+  enabled: false,
+  filePath: "",
+  onTheFly: false,
+});
 const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 const metadata = ref<USIEngineMetadata>({ isShellScript: false });
 
@@ -369,6 +408,7 @@ onMounted(async () => {
         ...option,
         currentValue: getUSIEngineOptionCurrentValue(option) ?? (option.type === "spin" ? 0 : ""),
       }));
+    extraBook.value = engine.value.extraBook || emptyUSIEngineExtraBookConfig();
     machineSpec.value = await api.getMachineSpec();
   } catch (e) {
     useErrorStore().add(e);
@@ -409,13 +449,12 @@ const replaceEnginePath = async () => {
   }
 };
 
-const selectFile = async (name: string) => {
+const selectFile = async (callback: (value: string) => void) => {
   busyState.retain();
   try {
     const path = await api.showSelectFileDialog();
-    const option = options.value.find((option) => option.name === name);
-    if (path && option) {
-      option.currentValue = path;
+    if (path) {
+      callback(path);
     }
   } catch (e) {
     useErrorStore().add(e);
@@ -439,6 +478,11 @@ const sendOptionButtonSignal = async (name: string) => {
 const reset = () => {
   engine.value.name = engine.value.defaultName;
   engine.value.enableEarlyPonder = false;
+  extraBook.value = {
+    enabled: false,
+    filePath: "",
+    onTheFly: false,
+  };
   options.value.forEach((option) => {
     if (option.type === "button") {
       return;
@@ -488,6 +532,7 @@ const copyOptions = async () => {
     schema: "es://usi-engine-options-clipboard-data",
     options: buildEngineOptions(),
     enableEarlyPonder: engine.value.enableEarlyPonder,
+    extraBook: extraBook.value,
   };
   try {
     const base64 = await compressUSIEngineOptionsClipboardData(data);
@@ -505,6 +550,11 @@ const pasteOptions = async () => {
     const data = await decompressUSIEngineOptionsClipboardData(base64);
     restoreEngineOptions(data.options);
     engine.value.enableEarlyPonder = data.enableEarlyPonder;
+    extraBook.value = data.extraBook || {
+      enabled: false,
+      filePath: "",
+      onTheFly: false,
+    };
     useMessageStore().enqueue({ text: t.pastedFromClipboard });
   } catch (e) {
     useErrorStore().add(e);
@@ -524,6 +574,7 @@ const saveAppSettings = () => {
 const ok = () => {
   saveAppSettings();
   engine.value.options = buildEngineOptions();
+  engine.value.extraBook = extraBook.value;
   emit("ok", engine.value);
 };
 

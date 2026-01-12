@@ -110,17 +110,19 @@ import * as uri from "@/common/uri.js";
 import { openPath } from "@/background/helpers/electron.js";
 import {
   clearBook,
+  closeBookSession,
   getBookFormat,
   importBookMoves,
   isBookUnsaved,
   openBook,
+  openBookAsNewSession,
   removeBookMove,
   saveBook,
   searchBookMoves,
   updateBookMove,
   updateBookMoveOrder,
 } from "@/background/book/index.js";
-import { BookLoadingOptions, BookMove } from "@/common/book.js";
+import { BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
 import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
@@ -588,12 +590,12 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   return ret;
 });
 
-ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event): Promise<string> => {
+ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise<string> => {
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show save-book dialog");
   const filter =
-    getBookFormat() === "yane2016"
+    getBookFormat(session) === "yane2016"
       ? { name: "YaneuraOu Book Database", extensions: ["db"] }
       : { name: "Apery Book", extensions: ["bin"] };
   const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
@@ -603,44 +605,77 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event): Promise<string> 
   return ret;
 });
 
-ipcMain.handle(Background.CLEAR_BOOK, (event) => {
+ipcMain.handle(Background.CLEAR_BOOK, (event, session) => {
   validateIPCSender(event.senderFrame);
-  clearBook();
-});
-
-ipcMain.handle(Background.OPEN_BOOK, async (event, path: string, json: string): Promise<void> => {
-  validateIPCSender(event.senderFrame);
-  getAppLogger().debug(`open book: ${path}`);
-  const options = JSON.parse(json) as BookLoadingOptions;
-  await openBook(path, options);
-});
-
-ipcMain.handle(Background.SAVE_BOOK, async (event, path: string): Promise<void> => {
-  validateIPCSender(event.senderFrame);
-  getAppLogger().debug(`save book: ${path}`);
-  await saveBook(path);
-});
-
-ipcMain.handle(Background.SEARCH_BOOK_MOVES, async (event, sfen: string): Promise<string> => {
-  validateIPCSender(event.senderFrame);
-  return JSON.stringify(await searchBookMoves(sfen));
-});
-
-ipcMain.handle(Background.UPDATE_BOOK_MOVE, async (event, sfen: string, json: string) => {
-  validateIPCSender(event.senderFrame);
-  await updateBookMove(sfen, JSON.parse(json) as BookMove);
-});
-
-ipcMain.handle(Background.REMOVE_BOOK_MOVE, async (event, sfen: string, usi: string) => {
-  validateIPCSender(event.senderFrame);
-  await removeBookMove(sfen, usi);
+  clearBook(session);
 });
 
 ipcMain.handle(
-  Background.UPDATE_BOOK_MOVE_ORDER,
-  async (event, sfen: string, usi: string, order: number) => {
+  Background.OPEN_BOOK,
+  async (event, session: number, path: string, json: string): Promise<void> => {
     validateIPCSender(event.senderFrame);
-    await updateBookMoveOrder(sfen, usi, order);
+    getAppLogger().debug(`open book: ${path}`);
+    const options = JSON.parse(json) as BookLoadingOptions;
+    await openBook(session, path, options);
+  },
+);
+
+ipcMain.handle(
+  Background.OPEN_BOOK_AS_NEW_SESSION,
+  async (event, path: string, json: string): Promise<number> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`open book as new session: ${path}`);
+    const options = JSON.parse(json) as BookLoadingOptions;
+    const { session } = await openBookAsNewSession(path, options);
+    getAppLogger().debug(`new book session: ${session}`);
+    return session;
+  },
+);
+
+ipcMain.handle(Background.CLOSE_BOOK_SESSION, (event, session: number) => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug(`close book session: ${session}`);
+  closeBookSession(session);
+});
+
+ipcMain.handle(
+  Background.SAVE_BOOK,
+  async (event, session: number, path: string): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`save book: ${path}`);
+    await saveBook(session, path);
+  },
+);
+
+ipcMain.handle(
+  Background.SEARCH_BOOK_MOVES,
+  async (event, session: number, sfen: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    return JSON.stringify(await searchBookMoves(session, sfen));
+  },
+);
+
+ipcMain.handle(
+  Background.UPDATE_BOOK_MOVE,
+  async (event, session: number, sfen: string, json: string) => {
+    validateIPCSender(event.senderFrame);
+    await updateBookMove(session, sfen, JSON.parse(json) as BookMove);
+  },
+);
+
+ipcMain.handle(
+  Background.REMOVE_BOOK_MOVE,
+  async (event, session: number, sfen: string, usi: string) => {
+    validateIPCSender(event.senderFrame);
+    await removeBookMove(session, sfen, usi);
+  },
+);
+
+ipcMain.handle(
+  Background.UPDATE_BOOK_MOVE_ORDER,
+  async (event, session: number, sfen: string, usi: string, order: number) => {
+    validateIPCSender(event.senderFrame);
+    await updateBookMoveOrder(session, sfen, usi, order);
   },
 );
 
@@ -656,10 +691,13 @@ ipcMain.handle(Background.SAVE_BOOK_IMPORT_SETTINGS, async (event, json: string)
   await saveBookImportSettings(JSON.parse(json));
 });
 
-ipcMain.handle(Background.IMPORT_BOOK_MOVES, async (event, json: string): Promise<string> => {
-  validateIPCSender(event.senderFrame);
-  return JSON.stringify(await importBookMoves(JSON.parse(json), sendProgress));
-});
+ipcMain.handle(
+  Background.IMPORT_BOOK_MOVES,
+  async (event, session: number, json: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    return JSON.stringify(await importBookMoves(session, JSON.parse(json), sendProgress));
+  },
+);
 
 ipcMain.handle(Background.LOAD_LAYOUT_PROFILE_LIST, async (event): Promise<[string, string]> => {
   validateIPCSender(event.senderFrame);
@@ -1009,7 +1047,7 @@ ipcMain.on(Background.ON_CLOSABLE, (event) => {
 
 export function onClose(): void {
   const confirmations = [];
-  if (isBookUnsaved()) {
+  if (isBookUnsaved(defaultBookSession)) {
     confirmations.push(t.anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp);
   }
   mainWindow.webContents.send(Renderer.CLOSE, confirmations);

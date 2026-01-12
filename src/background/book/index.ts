@@ -1,5 +1,10 @@
 import fs, { ReadStream } from "node:fs";
-import { BookImportSummary, BookLoadingMode, BookLoadingOptions, BookMove } from "@/common/book.js";
+import {
+  BookImportSummary,
+  BookLoadingOptions,
+  BookMove,
+  defaultBookSession,
+} from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
 import {
   arrayMoveToCommonBookMove,
@@ -91,7 +96,7 @@ function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
   }
 }
 
-function storeEntry(sfen: string, entry: BookEntry): void {
+function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   switch (book.format) {
     case "yane2016":
       book.entries.set(sfen, entry);
@@ -112,13 +117,25 @@ function emptyBook(): BookHandle {
   };
 }
 
-let book: BookHandle = emptyBook();
+const bookFiles = new Map<number, BookHandle>();
+bookFiles.set(defaultBookSession, emptyBook());
+let nextBookSession = defaultBookSession + 1;
 
-export function isBookUnsaved(): boolean {
-  return book.type === "in-memory" && !book.saved;
+function getBook(session: number): BookHandle {
+  const book = bookFiles.get(session);
+  if (!book) {
+    throw new Error("Book session not found: " + session);
+  }
+  return book;
 }
 
-export function getBookFormat(): BookFormat {
+export function isBookUnsaved(session: number): boolean {
+  const book = getBook(session);
+  return !book.saved;
+}
+
+export function getBookFormat(session: number): BookFormat {
+  const book = getBook(session);
   return book.format;
 }
 
@@ -126,7 +143,7 @@ function getFormatByPath(path: string): "yane2016" | "apery" {
   return path.endsWith(".db") ? "yane2016" : "apery";
 }
 
-async function openBookOnTheFly(path: string, size: number): Promise<void> {
+async function openBookOnTheFly(session: number, path: string, size: number): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
   const file = await fs.promises.open(path, "r");
@@ -143,14 +160,14 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
   }
   const common = { path, file, size, saved: true };
   if (format === "yane2016") {
-    replaceBook({
+    replaceBook(session, {
       ...common,
       type: "on-the-fly",
       format: "yane2016",
       entries: new Map<string, BookEntry>(),
     });
   } else {
-    replaceBook({
+    replaceBook(session, {
       ...common,
       type: "on-the-fly",
       format: "apery",
@@ -159,7 +176,7 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
   }
 }
 
-async function openBookInMemory(path: string, size: number): Promise<void> {
+async function openBookInMemory(session: number, path: string, size: number): Promise<void> {
   getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
   let file: ReadStream | undefined;
   try {
@@ -174,7 +191,7 @@ async function openBookInMemory(path: string, size: number): Promise<void> {
         book = await loadAperyBook(file);
         break;
     }
-    replaceBook({
+    replaceBook(session, {
       type: "in-memory",
       saved: true,
       ...book,
@@ -185,9 +202,10 @@ async function openBookInMemory(path: string, size: number): Promise<void> {
 }
 
 export async function openBook(
+  session: number,
   path: string,
   options?: BookLoadingOptions,
-): Promise<BookLoadingMode> {
+): Promise<"in-memory" | "on-the-fly"> {
   const stat = await fs.promises.lstat(path);
   if (!stat.isFile()) {
     throw new Error("Not a file: " + path);
@@ -195,23 +213,41 @@ export async function openBook(
 
   const size = stat.size;
   if (
-    options?.onTheFlyThresholdMB !== undefined &&
-    size > options.onTheFlyThresholdMB * 1024 * 1024
+    options?.forceOnTheFly ||
+    (options?.onTheFlyThresholdMB !== undefined && size > options.onTheFlyThresholdMB * 1024 * 1024)
   ) {
-    await openBookOnTheFly(path, size);
+    await openBookOnTheFly(session, path, size);
     return "on-the-fly";
   } else {
-    await openBookInMemory(path, size);
+    await openBookInMemory(session, path, size);
     return "in-memory";
   }
 }
 
-function replaceBook(newBook: BookHandle) {
-  clearBook();
-  book = newBook;
+export async function openBookAsNewSession(
+  path: string,
+  options?: BookLoadingOptions,
+): Promise<{ session: number; mode: "in-memory" | "on-the-fly" }> {
+  const session = nextBookSession++;
+  const mode = await openBook(session, path, options);
+  return { session, mode };
 }
 
-export async function saveBook(path: string) {
+export function closeBookSession(session: number): void {
+  if (session === defaultBookSession) {
+    throw new Error("Cannot close default book session");
+  }
+  clearBook(session);
+  bookFiles.delete(session);
+}
+
+function replaceBook(session: number, newBook: BookHandle) {
+  clearBook(session);
+  bookFiles.set(session, newBook);
+}
+
+export async function saveBook(session: number, path: string) {
+  const book = getBook(session);
   // on-the-fly の場合は上書きを禁止
   if (book.type === "on-the-fly" && (await exists(path))) {
     const inputRealPath = await fs.promises.realpath(book.path);
@@ -261,14 +297,19 @@ export async function saveBook(path: string) {
   }
 }
 
-export function clearBook(): void {
+export function clearBook(session: number): void {
+  const book = bookFiles.get(session);
+  if (!book) {
+    return;
+  }
   if (book.type === "on-the-fly") {
     book.file.close();
   }
-  book = emptyBook();
+  bookFiles.set(session, emptyBook());
 }
 
-export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
+export async function searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {
+  const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
   return entry ? entry.moves.map(arrayMoveToCommonBookMove) : [];
 }
@@ -283,7 +324,8 @@ function updateBookEntry(entry: BookEntry, move: BookMove): void {
   entry.moves.push(commonBookMoveToArray(move));
 }
 
-export async function updateBookMove(sfen: string, move: BookMove) {
+export async function updateBookMove(session: number, sfen: string, move: BookMove) {
+  const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
   if (book.format === "yane2016") {
     if (entry) {
@@ -322,16 +364,23 @@ export async function updateBookMove(sfen: string, move: BookMove) {
   book.saved = false;
 }
 
-export async function removeBookMove(sfen: string, usi: string) {
+export async function removeBookMove(session: number, sfen: string, usi: string) {
+  const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
   if (!entry) {
     return;
   }
   entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
-  storeEntry(sfen, entry);
+  storeEntry(book, sfen, entry);
 }
 
-export async function updateBookMoveOrder(sfen: string, usi: string, order: number) {
+export async function updateBookMoveOrder(
+  session: number,
+  sfen: string,
+  usi: string,
+  order: number,
+) {
+  const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
   if (!entry) {
     return;
@@ -342,10 +391,10 @@ export async function updateBookMoveOrder(sfen: string, usi: string, order: numb
   }
   entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
   entry.moves.splice(order, 0, move);
-  storeEntry(sfen, entry);
+  storeEntry(book, sfen, entry);
 }
 
-function updateBookMovePatch(sfen: string, move: BookMove) {
+function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
   let entry = retrieveEntry(book, sfen);
   if (book.format === "yane2016") {
     if (entry) {
@@ -386,13 +435,13 @@ function updateBookMovePatch(sfen: string, move: BookMove) {
 }
 
 export async function importBookMoves(
+  session: number,
   settings: BookImportSettings,
   onProgress?: (progress: number) => void,
 ): Promise<BookImportSummary> {
   getAppLogger().info("Importing book moves: %s", JSON.stringify(settings));
 
-  // 非同期処理のために参照を複製する
-  const bookRef = book;
+  const book = getBook(session);
 
   const appSettings = await loadAppSettings();
 
@@ -441,7 +490,7 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const entry = retrieveEntry(bookRef, sfen);
+    const entry = retrieveEntry(book, sfen);
     const bookMoves = entry?.moves || [];
     const moves = bookMoves.map(arrayMoveToCommonBookMove);
     const existing = moves.find((move) => move.usi === usi);
@@ -452,7 +501,7 @@ export async function importBookMoves(
     }
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
-    updateBookMovePatch(sfen, bookMove);
+    updateBookMovePatch(book, sfen, bookMove);
   }
 
   for (const path of paths) {
@@ -552,7 +601,7 @@ export async function importBookMoves(
     successFileCount++;
   }
 
-  if (bookRef.type === "in-memory") {
+  if (book.type === "in-memory") {
     return {
       successFileCount,
       errorFileCount,

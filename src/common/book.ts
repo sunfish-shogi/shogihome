@@ -1,5 +1,3 @@
-export type BookLoadingMode = "in-memory" | "on-the-fly";
-
 export type BookMove = {
   usi: string; // 定跡手
   usi2?: string; // 相手の応手
@@ -11,6 +9,7 @@ export type BookMove = {
 
 export type BookLoadingOptions = {
   onTheFlyThresholdMB?: number; // On-the-fly に切り替える閾値(MebiBytes)
+  forceOnTheFly?: boolean; // 強制的に On-the-fly モードにする
 };
 
 export type BookImportSummary = {
@@ -24,3 +23,5 @@ export type BookImportSummary = {
 export type BookMoveEx = BookMove & {
   repetition?: number; // 千日手
 };
+
+export const defaultBookSession = 1;

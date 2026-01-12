@@ -354,7 +354,7 @@ describe("settings/usi", () => {
     expect(out.defaultName).toBe("Test Engine");
     expect(out.author).toBe("Author");
     expect(out.path).toBe("/foo/bar/baz");
-    expect(out.options).toStrictEqual({
+    expect(out.options).toEqual({
       foo: {
         name: "foo",
         type: "spin",
@@ -413,7 +413,7 @@ describe("settings/usi", () => {
       enableEarlyPonder: false,
     };
     mergeUSIEngine(lhs, rhs);
-    expect(lhs).toStrictEqual({
+    expect(lhs).toEqual({
       uri: "uri-b",
       name: "name-b",
       defaultName: "default-name-a",

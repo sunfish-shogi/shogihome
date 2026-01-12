@@ -390,6 +390,7 @@ export type Texts = {
   openDirectory: string;
   replaceEnginePath: string;
   displayName: string;
+  frontendBook: string;
   showAllOptions: string;
   invoke: string;
   resetToEngineDefaultValues: string;

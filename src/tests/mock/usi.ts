@@ -14,6 +14,11 @@ export const testUSIEngine: USIEngine = {
   },
   tags: ["対局"],
   enableEarlyPonder: false,
+  extraBook: {
+    enabled: false,
+    filePath: "",
+    onTheFly: false,
+  },
 };
 
 export const testUSIEngineWithPonder: USIEngine = {

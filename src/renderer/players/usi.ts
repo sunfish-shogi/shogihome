@@ -12,6 +12,7 @@ import { Color, ImmutablePosition, Move, Position } from "tsshogi";
 import { Player, SearchInfo, SearchHandler, MateHandler } from "./player.js";
 import { GameResult } from "@/common/game/result.js";
 import { TimeStates } from "@/common/game/time.js";
+import { LogLevel } from "@/common/log.js";
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
@@ -45,6 +46,7 @@ export class USIPlayer implements Player {
   private info?: SearchInfo;
   private usiInfoTimeout?: number;
   private customMultiPV?: number;
+  private bookSessionID?: number;
 
   constructor(
     private engine: USIEngine,
@@ -61,8 +63,20 @@ export class USIPlayer implements Player {
   }
 
   async launch(): Promise<void> {
-    this._sessionID = await api.usiLaunch(this.engine, this.timeoutSeconds);
-    usiPlayers[this.sessionID] = this;
+    try {
+      if (this.engine.extraBook?.enabled && this.engine.extraBook.filePath) {
+        this.bookSessionID = await api.openBookAsNewSession(this.engine.extraBook.filePath, {
+          forceOnTheFly: this.engine.extraBook.onTheFly,
+        });
+      }
+      this._sessionID = await api.usiLaunch(this.engine, this.timeoutSeconds);
+      usiPlayers[this.sessionID] = this;
+    } catch (e) {
+      if (this.bookSessionID) {
+        await api.closeBookSession(this.bookSessionID);
+      }
+      throw e;
+    }
   }
 
   isEngine(): boolean {
@@ -83,6 +97,9 @@ export class USIPlayer implements Player {
     this.searchHandler = handler;
     this.usi = usi;
     this.position = position.clone();
+    if (await this.searchBook()) {
+      return;
+    }
     if (this.ponderMove && this.ponder === this.usi) {
       api.usiPonderHit(this.sessionID, timeStates);
     } else {
@@ -152,8 +169,69 @@ export class USIPlayer implements Player {
     this.usi = usi;
     this.info = undefined;
     this.position = position.clone();
+    if (await this.searchBook()) {
+      return;
+    }
     await api.usiGoInfinite(this.sessionID, usi);
     onStartSearch(this.sessionID, this.position);
+  }
+
+  private async searchBook(): Promise<boolean> {
+    if (!this.bookSessionID || !this.position) {
+      return false;
+    }
+    try {
+      // 定跡を検索
+      const bookMoves = await api.searchBookMoves(this.bookSessionID, this.position.sfen);
+      if (bookMoves.length === 0) {
+        return false;
+      }
+      // Ponder 中の場合は停止
+      if (this.ponderMove) {
+        await api.usiStop(this.sessionID);
+        this.ponderMove = undefined;
+        this.ponder = undefined;
+      }
+      // 読み筋表示を初期化
+      onStartSearch(this.sessionID, this.position);
+      // 定跡に登録されている手の一覧を表示
+      if (onUpdateUSIInfo && this.usi) {
+        for (let i = 0; i < bookMoves.length; i++) {
+          const bookMove = bookMoves[i];
+          const move = this.position.createMoveByUSI(bookMove.usi);
+          if (move) {
+            const info: USIInfoCommand = {
+              multipv: i + 1,
+              depth: bookMove.depth,
+              scoreCP: bookMove.score,
+              nodes: bookMove.count,
+              currmove: bookMove.usi,
+              pv: bookMove.usi2 ? [bookMove.usi, bookMove.usi2] : [bookMove.usi],
+            };
+            onUpdateUSIInfo(this.sessionID, this.position, this.name, info);
+          }
+        }
+      }
+      // 最善手を返却
+      const searchHandler = this.searchHandler;
+      this.clearHandlers();
+      if (searchHandler) {
+        const bestMove = bookMoves[0];
+        const move = this.position.createMoveByUSI(bestMove.usi);
+        if (!move) {
+          api.log(
+            LogLevel.ERROR,
+            `Failed to search book moves: invalid move from book: ${bestMove.usi}`,
+          );
+          return false;
+        }
+        searchHandler.onMove(move);
+      }
+      return true;
+    } catch (e) {
+      api.log(LogLevel.ERROR, `Failed to search book moves: ${e}`);
+      return false;
+    }
   }
 
   async stop(): Promise<void> {
@@ -168,6 +246,9 @@ export class USIPlayer implements Player {
     this.clearHandlers();
     await api.usiQuit(this.sessionID);
     delete usiPlayers[this.sessionID];
+    if (this.bookSessionID) {
+      await api.closeBookSession(this.bookSessionID);
+    }
   }
 
   private clearHandlers(): void {
