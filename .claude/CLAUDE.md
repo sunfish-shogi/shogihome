@@ -42,6 +42,7 @@ src/
 ```
 
 **Critical rules:**
+
 - `renderer/` and `background/` cannot import from each other directly
 - Only `common/` code can be imported by both renderer and background
 - No relative imports using `../` (enforced by ESLint)
@@ -50,6 +51,7 @@ src/
 ### IPC Communication
 
 Renderer and background communicate via IPC through the preload script:
+
 - `src/renderer/ipc/preload.ts` - Exposes safe API to renderer
 - Request-response pattern for all cross-process communication
 
