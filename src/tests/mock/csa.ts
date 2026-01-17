@@ -10,6 +10,7 @@ import {
 import { PlayerSettings } from "@/common/settings/player.js";
 import { defaultRecordFileNameTemplate } from "@/common/file/path.js";
 import { Color } from "tsshogi";
+import { SearchCommentFormat } from "@/common/settings/comment.js";
 
 export const playerURI = "es://usi-engine/test-engine";
 
@@ -85,6 +86,7 @@ export const csaGameSettings: CSAGameSettings = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  searchCommentFormat: SearchCommentFormat.SHOGIHOME,
 };
 
 export const emptyCSAGameSettingsHistory: CSAGameSettingsHistory = {
@@ -220,4 +222,5 @@ export const csaGameSettingsForCLI: CSAGameSettingsForCLI = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  searchCommentFormat: SearchCommentFormat.SHOGIHOME,
 };

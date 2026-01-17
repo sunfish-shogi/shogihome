@@ -348,6 +348,8 @@ export const en: Texts = {
   beginFromThisPosition: "Begin from this position",
   maxMoves: "Max Moves",
   gameRepetition: "Repeat",
+  parallelism: "Parallelism",
+  parallelGame: "Parallel Game",
   jishogi: "Jishogi",
   rule24: "24-point rule",
   rule27: "27-point rule",
@@ -728,6 +730,10 @@ export const en: Texts = {
   canNotUseByoyomiWithFischer: "You cannot use Byoyomi with Fischer.",
   repeatsMustBeOneIfHumanPlayerIncluded:
     "The number of repeats must be 1, if a human player is included.",
+  parallelismMustBeOneIfHumanPlayerIncluded: "Parallelism must be 1 if a human player is included.",
+  parallelismMustBeOneIfCurrentPositionIsUsed: "Parallelism must be 1 if current position is used.",
+  parallelismMustLessThanOrEqualToRepeats:
+    "Parallelism must be less than or equal to the number of repeats.",
   protocolVersionNotSelected: "Protocol version is not selected.",
   hostNameIsEmpty: "Host name is empty.",
   invalidPortNumber: "Invalid port number.",

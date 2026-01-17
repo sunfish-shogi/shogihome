@@ -57,6 +57,7 @@
       :pv="store.pvPreview.pv"
       @close="store.closePVPreviewDialog()"
     />
+    <ParallelGameViewer v-if="store.appState === AppState.PARALLEL_GAME" />
     <!-- PCブラウザの場合のみライセンスへの遷移が無いので、画面の隅にボタンを表示する。 -->
     <button v-if="!isNative() && !isMobileWebApp()" class="copyright" @click="openCopyright">
       &copy;
@@ -88,7 +89,7 @@ import { useStore } from "@/renderer/store";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import AnalysisDialog from "@/renderer/view/dialog/AnalysisDialog.vue";
 import CSAGameReadyDialog from "@/renderer/view/dialog/CSAGameReadyDialog.vue";
-import { CSAGameState } from "@/renderer/store/csa";
+import { CSAGameState } from "@/renderer/game/csa";
 import { useAppSettings } from "@/renderer/store/settings";
 import { BackgroundImageType } from "@/common/settings/app";
 import MateSearchDialog from "./dialog/MateSearchDialog.vue";
@@ -102,6 +103,7 @@ import LoadRemoteFileDialog from "./dialog/LoadRemoteFileDialog.vue";
 import ShareDialog from "./dialog/ShareDialog.vue";
 import AddBookMovesDialog from "./dialog/AddBookMovesDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
+import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
 import { useErrorStore } from "@/renderer/store/error";

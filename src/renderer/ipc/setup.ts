@@ -22,7 +22,7 @@ import {
   onCSAMove,
   onCSAReject,
   onCSAStart,
-} from "@/renderer/store/csa.js";
+} from "@/renderer/game/csa.js";
 import { useAppSettings } from "@/renderer/store/settings.js";
 import { t } from "@/common/i18n/index.js";
 import { LogLevel } from "@/common/log.js";

@@ -47,6 +47,7 @@ import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
 import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { SearchCommentFormat } from "@/common/settings/comment";
 
 const store = useStore();
 const dialog = ref();
@@ -90,9 +91,11 @@ const selectTurn = (turn: Color) => {
     enableAutoSave: false,
     autoSaveDirectory: "",
     repeat: 1,
+    parallelism: 1,
     swapPlayers: false,
     maxMoves: 1000,
     jishogiRule: JishogiRule.NONE,
+    searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   });
   emit("close");
 };

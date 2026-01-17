@@ -1,3 +1,4 @@
+import { SearchCommentFormat } from "@/common/settings/comment.js";
 import { GameSettings, JishogiRule } from "@/common/settings/game.js";
 import { InitialPositionType } from "tsshogi";
 
@@ -53,7 +54,9 @@ export const gameSettings10m30s: GameSettings = {
   enableAutoSave: true,
   repeat: 1,
   swapPlayers: true,
+  parallelism: 1,
   maxMoves: 1000,
   jishogiRule: JishogiRule.NONE,
   autoSaveDirectory: "",
+  searchCommentFormat: SearchCommentFormat.SHOGIHOME,
 };

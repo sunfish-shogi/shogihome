@@ -9,11 +9,11 @@
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry.js";
 import { useStore } from "@/renderer/store";
-import { RecordCustomData, SearchInfo } from "@/renderer/store/record";
+import { RecordCustomData, SearchInfo } from "@/renderer/record/manager";
 import { computed, onMounted, onUnmounted, PropType, ref, watch } from "vue";
 import { ActiveElement, Chart, ChartEvent, Color as ChartColor, ChartDataset } from "chart.js";
 import { Color, ImmutableNode, ImmutableRecord } from "tsshogi";
-import { scoreToPercentage } from "@/renderer/store/score";
+import { scoreToPercentage } from "@/renderer/record/score";
 import { Thema } from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { Lazy } from "@/common/helpers/lazy";

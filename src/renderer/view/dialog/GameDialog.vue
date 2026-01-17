@@ -187,6 +187,16 @@
             <input v-model.number="gameSettings.repeat" class="number" type="number" min="1" />
           </div>
           <div class="form-item">
+            <div class="form-item-label">{{ t.parallelism }}</div>
+            <input
+              v-model.number="gameSettings.parallelism"
+              class="number"
+              type="number"
+              min="1"
+              max="10"
+            />
+          </div>
+          <div class="form-item">
             <div class="form-item-label">{{ t.jishogi }}</div>
             <select v-model="gameSettings.jishogiRule">
               <option :value="JishogiRule.NONE">{{ t.none }}</option>
@@ -265,6 +275,7 @@ import { InitialPositionType } from "tsshogi";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "./DialogFrame.vue";
+import { useAppSettings } from "@/renderer/store/settings";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -336,6 +347,7 @@ const onStart = () => {
       increment: increment.value,
     },
     startPositionListOrder: startPositionListShuffle.value ? "shuffle" : "sequential",
+    searchCommentFormat: useAppSettings().searchCommentFormat,
   };
   if (setDifferentTime.value) {
     newSettings.whiteTimeLimit = {

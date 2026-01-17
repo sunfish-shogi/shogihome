@@ -6,6 +6,7 @@ export enum AppState {
   EXPORT_POSITION_IMAGE_DIALOG = "exportBoardImageDialog",
   GAME_DIALOG = "gameDialog",
   GAME = "game",
+  PARALLEL_GAME = "parallelGame",
   CSA_GAME_DIALOG = "csaGameDialog",
   CSA_GAME = "csaGame",
   ANALYSIS = "analysis",

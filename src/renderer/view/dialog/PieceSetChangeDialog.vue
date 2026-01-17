@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
-import { PieceSet } from "@/renderer/store/record";
+import { PieceSet } from "@/renderer/record/manager";
 import {
   PieceType,
   countExistingPieces,

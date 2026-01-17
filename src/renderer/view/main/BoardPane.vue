@@ -66,7 +66,7 @@ import { useStore } from "@/renderer/store";
 import ControlPane, { ControlGroup } from "@/renderer/view/main/ControlPane.vue";
 import { AppState } from "@/common/control/state.js";
 import { humanPlayer } from "@/renderer/players/human";
-import { CSAGameState } from "@/renderer/store/csa";
+import { CSAGameState } from "@/renderer/game/csa";
 import { useAppSettings } from "@/renderer/store/settings";
 import {
   RightSideControlType,

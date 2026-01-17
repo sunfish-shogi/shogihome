@@ -1,4 +1,9 @@
-import { USIEngine, USIEngineMetadata, USIEngines } from "@/common/settings/usi.js";
+import {
+  USIEngine,
+  USIEngineLaunchOptions,
+  USIEngineMetadata,
+  USIEngines,
+} from "@/common/settings/usi.js";
 import { GameSettings } from "@/common/settings/game.js";
 import { AppSettings } from "@/common/settings/app.js";
 import { webAPI } from "./web.js";
@@ -90,7 +95,7 @@ export interface API {
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine>;
   getUSIEngineMetadata(path: string): Promise<USIEngineMetadata>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
-  usiLaunch(engine: USIEngine, timeoutSeconds: number): Promise<number>;
+  usiLaunch(engine: USIEngine, options?: USIEngineLaunchOptions): Promise<number>;
   usiReady(sessionID: number): Promise<void>;
   usiSetOption(sessionID: number, name: string, value: string): Promise<void>;
   usiGo(sessionID: number, usi: string, timeStates: TimeStates): Promise<void>;
@@ -260,8 +265,8 @@ const api: API = {
     const metadata = await bridge.getUSIEngineMetadata(path);
     return JSON.parse(metadata);
   },
-  usiLaunch(engine: USIEngine, timeoutSeconds: number): Promise<number> {
-    return bridge.usiLaunch(JSON.stringify(engine), timeoutSeconds);
+  usiLaunch(engine: USIEngine, options?: USIEngineLaunchOptions): Promise<number> {
+    return bridge.usiLaunch(JSON.stringify(engine), JSON.stringify(options || {}));
   },
   usiReady(sessionID: number): Promise<void> {
     return bridge.usiReady(sessionID);

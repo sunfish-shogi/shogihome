@@ -1,12 +1,8 @@
 import { InitialPositionType, Move, RecordMetadataKey, SpecialMoveType } from "tsshogi";
-import { Clock } from "@/renderer/store/clock.js";
-import {
-  calculateGameStatistics,
-  GameManager,
-  GameResults,
-  StartPositionList,
-} from "@/renderer/store/game.js";
-import { RecordManager } from "@/renderer/store/record.js";
+import { Clock } from "@/renderer/game/clock.js";
+import { GameManager } from "@/renderer/game/game.js";
+import { GameResults } from "@/renderer/game/result.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 import { playerURI01, playerURI02, gameSettings10m30s } from "@/tests/mock/game.js";
 import { createMockPlayer, createMockPlayerBuilder } from "@/tests/mock/player.js";
 import { GameSettings, JishogiRule } from "@/common/settings/game.js";
@@ -31,7 +27,7 @@ export interface MockGameHandlers {
 function createMockHandlers() {
   return {
     onError: vi.fn(),
-    onSaveRecord: vi.fn().mockReturnValue(Promise.resolve()),
+    onSaveRecord: vi.fn(),
     onGameNext: vi.fn(),
     onPieceBeat: vi.fn(),
     onBeepShort: vi.fn(),
@@ -50,7 +46,7 @@ function invoke(
 ) {
   return new Promise<void>((resolve, reject) => {
     const manager = new GameManager(recordManager, new Clock(), new Clock())
-      .on("gameEnd", (gameResults, specialMoveType) => {
+      .on("closed", (gameResults, specialMoveType) => {
         try {
           assert(gameResults, specialMoveType);
           resolve();
@@ -66,7 +62,7 @@ function invoke(
       .on("beepUnlimited", handlers.onBeepUnlimited)
       .on("stopBeep", handlers.onStopBeep);
     manager
-      .start(gameSettings, playerBuilder)
+      .startLinear(gameSettings, playerBuilder)
       .then(() => {
         if (interrupt) {
           interrupt(manager);
@@ -76,206 +72,9 @@ function invoke(
   });
 }
 
-describe("store/game", () => {
+describe("game/game", () => {
   afterEach(() => {
     vi.clearAllMocks();
-  });
-
-  it("statistics/case1", async () => {
-    const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 15, winBlack: 8, winWhite: 7 },
-      player2: { name: "Player2", win: 3, winBlack: 1, winWhite: 2 },
-      draw: 2,
-      invalid: 1,
-      total: 21,
-    });
-    expect(statistics.rating.toPrecision(6)).toBe("279.588");
-    expect(statistics.ratingLower.toPrecision(6)).toBe("116.129");
-    expect(statistics.ratingUpper.toPrecision(6)).toBe("NaN");
-    expect(statistics.zValue.toPrecision(6)).toBe("2.82843");
-    expect(statistics.npIsGreaterThan5).toBeTruthy();
-    expect(statistics.significance5pc).toBeTruthy();
-    expect(statistics.significance1pc).toBeTruthy();
-  });
-
-  it("statistics/case2", async () => {
-    const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 9, winBlack: 5, winWhite: 4 },
-      player2: { name: "Player2", win: 1, winBlack: 0, winWhite: 1 },
-      draw: 2,
-      invalid: 1,
-      total: 13,
-    });
-    expect(statistics.npIsGreaterThan5).toBeFalsy();
-    expect(statistics.rating.toPrecision(6)).toBe("381.697");
-    expect(statistics.ratingLower.toPrecision(6)).toBe("158.982");
-    expect(statistics.ratingUpper.toPrecision(6)).toBe("NaN");
-    expect(statistics.zValue.toPrecision(6)).toBe("2.52982");
-    expect(statistics.significance5pc).toBeTruthy();
-    expect(statistics.significance1pc).toBeFalsy();
-  });
-
-  it("statistics/case3", async () => {
-    const statistics = calculateGameStatistics({
-      player1: { name: "Player1", win: 76, winBlack: 31, winWhite: 45 },
-      player2: { name: "Player2", win: 21, winBlack: 9, winWhite: 12 },
-      draw: 2,
-      invalid: 1,
-      total: 100,
-    });
-    expect(statistics.npIsGreaterThan5).toBeTruthy();
-    expect(statistics.rating.toPrecision(6)).toBe("223.438");
-    expect(statistics.ratingLower.toPrecision(6)).toBe("148.469");
-    expect(statistics.ratingUpper.toPrecision(6)).toBe("323.370");
-    expect(statistics.zValue.toPrecision(6)).toBe("5.58440");
-    expect(statistics.significance5pc).toBeTruthy();
-    expect(statistics.significance1pc).toBeTruthy();
-  });
-
-  it("StartPositionList", async () => {
-    mockAPI.loadSFENFile.mockImplementation(async () => [
-      "position startpos moves 2g2f 3c3d 7g7f",
-      "position startpos moves 2g2f 8c8d 2f2e",
-      "position startpos moves 7g7f 8b3b 2g2f",
-      "position startpos moves 7g7f 8c8d 2g2f",
-    ]);
-    const list = new StartPositionList();
-    expect(list.next()).toBe("position startpos");
-
-    // no swapping / sequential / 2 games
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 2,
-      }),
-    ).resolves.toBeUndefined();
-    expect(mockAPI.loadSFENFile).toBeCalledWith("path/to/file.sfen");
-    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
-    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
-
-    // no swapping / shuffle / 2 games
-    const variations = new Set<string>();
-    for (let i = 0; i < 100; i++) {
-      await expect(
-        list.reset({
-          filePath: "path/to/file.sfen",
-          swapPlayers: false,
-          order: "shuffle",
-          maxGames: 2,
-        }),
-      ).resolves.toBeUndefined();
-      const first = list.next();
-      const second = list.next();
-      expect(first).match(/^position startpos moves /);
-      expect(second).match(/^position startpos moves /);
-      expect(first).not.toBe(second);
-      variations.add(first);
-    }
-    expect(variations.size).toBe(4);
-
-    // swapping / sequential / 4 games
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: true,
-        order: "sequential",
-        maxGames: 4,
-      }),
-    ).resolves.toBeUndefined();
-    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f"); // 1st position, 1st game
-    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f"); // 1st position, 2nd game
-    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e"); // 2nd position, 1st game
-    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e"); // 2nd position, 2nd game
-
-    // no swapping / sequential / 6 games
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 6,
-      }),
-    ).resolves.toBeUndefined();
-    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
-    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
-    expect(list.next()).toBe("position startpos moves 7g7f 8b3b 2g2f");
-    expect(list.next()).toBe("position startpos moves 7g7f 8c8d 2g2f");
-    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
-    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
-  });
-
-  it("StartPositionList/simple-sfen", async () => {
-    mockAPI.loadSFENFile.mockImplementation(async () => [
-      "ln1g3+Rl/2sk1s+P2/2ppppb1p/p1b3p2/8P/P4P3/2PPP1P2/1+r2GS3/LN+p2KGNL w GN2Ps 36",
-      "ln1g2B+Rl/2s6/pPppppk2/6p1p/9/4P1P1P/P1PPSP3/3+psK3/L+r3G1NL b SNb2gn2p 39",
-      "ln+P3s+Pl/2+R1Gsk2/p3pp1g1/4r1ppp/1NS6/6P2/PP1+bPPS1P/3+p1K3/LG3G1NL w Nb3p 72",
-      "lnsgk2+Pl/6+N2/p1pp2p1p/4p2R1/9/2P3P2/P2PPPN1P/4s1g1K/L4+r2L w 2B2SN4P2g 56",
-    ]);
-    const list = new StartPositionList();
-    expect(list.next()).toBe("position startpos");
-
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 4,
-      }),
-    ).resolves.toBeUndefined();
-    expect(mockAPI.loadSFENFile).toBeCalledWith("path/to/file.sfen");
-    expect(list.next()).toBe(
-      "sfen ln1g3+Rl/2sk1s+P2/2ppppb1p/p1b3p2/8P/P4P3/2PPP1P2/1+r2GS3/LN+p2KGNL w GN2Ps 36",
-    );
-    expect(list.next()).toBe(
-      "sfen ln1g2B+Rl/2s6/pPppppk2/6p1p/9/4P1P1P/P1PPSP3/3+psK3/L+r3G1NL b SNb2gn2p 39",
-    );
-    expect(list.next()).toBe(
-      "sfen ln+P3s+Pl/2+R1Gsk2/p3pp1g1/4r1ppp/1NS6/6P2/PP1+bPPS1P/3+p1K3/LG3G1NL w Nb3p 72",
-    );
-    expect(list.next()).toBe(
-      "sfen lnsgk2+Pl/6+N2/p1pp2p1p/4p2R1/9/2P3P2/P2PPPN1P/4s1g1K/L4+r2L w 2B2SN4P2g 56",
-    );
-  });
-
-  it("StartPositionList/empty", async () => {
-    mockAPI.loadSFENFile.mockResolvedValueOnce([]);
-    const list = new StartPositionList();
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 2,
-      }),
-    ).rejects.toThrow("No available positions in the list.");
-  });
-
-  it("StartPositionList/invalid", async () => {
-    mockAPI.loadSFENFile.mockImplementation(async () => [
-      "position startpos moves 2g2f 3c3d 7g7f",
-      "position startpos moves 2g2f 8c8d 2f2e",
-      "invalid position",
-      "position startpos moves 7g7f 8c8d 2g2f",
-    ]);
-    const list = new StartPositionList();
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 2,
-      }),
-    ).resolves.toBeUndefined();
-    await expect(
-      list.reset({
-        filePath: "path/to/file.sfen",
-        swapPlayers: false,
-        order: "sequential",
-        maxGames: 3,
-      }),
-    ).rejects.toThrow("Invalid USI: invalid position");
   });
 
   it("GameManager/resign", () => {
@@ -510,8 +309,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
-          player2: { name: "USI Engine 01", win: 2, winBlack: 1, winWhite: 1 },
+          player1: { name: "USI Engine 01", win: 2, winBlack: 1, winWhite: 1 },
+          player2: { name: "USI Engine 02", win: 0, winBlack: 0, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 2,
@@ -1021,8 +820,8 @@ describe("store/game", () => {
       mockPlayerBuilder,
       (gameResults, specialMoveType) => {
         expect(gameResults).toStrictEqual({
-          player1: { name: "USI Engine 02", win: 2, winBlack: 2, winWhite: 0 },
-          player2: { name: "USI Engine 01", win: 2, winBlack: 2, winWhite: 0 },
+          player1: { name: "USI Engine 01", win: 2, winBlack: 2, winWhite: 0 },
+          player2: { name: "USI Engine 02", win: 2, winBlack: 2, winWhite: 0 },
           draw: 0,
           invalid: 0,
           total: 4,

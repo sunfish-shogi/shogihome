@@ -24,7 +24,7 @@ import {
   ImmutableNode,
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
-import { GameSettings } from "@/common/settings/game.js";
+import { defaultGameSettings, GameSettings } from "@/common/settings/game.js";
 import { ClockSoundTarget, Tab, TextDecodingRule } from "@/common/settings/app.js";
 import { beepShort, beepUnlimited, playPieceBeat, stopBeep } from "@/renderer/devices/audio.js";
 import {
@@ -35,20 +35,20 @@ import {
   UpdateCustomDataHandler,
   PieceSet,
   UpdateTreeHandler,
-} from "./record.js";
-import { calculateGameStatistics, GameManager, GameResults } from "./game.js";
+} from "@/renderer/record/manager.js";
+import { GameManager } from "@/renderer/game/game.js";
+import { calculateGameStatistics, GameResults } from "@/renderer/game/result.js";
+import { CSAGameManager, CSAGameState } from "@/renderer/game/csa.js";
+import { Clock } from "@/renderer/game/clock.js";
 import { generateRecordFileName, join } from "@/renderer/helpers/path.js";
 import { ResearchSettings } from "@/common/settings/research.js";
 import { USIPlayerMonitor, USIMonitor } from "./usi.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import { useMessageStore } from "./message.js";
-import * as uri from "@/common/uri.js";
 import { AnalysisManager } from "./analysis.js";
 import { AnalysisSettings } from "@/common/settings/analysis.js";
 import { MateSearchSettings } from "@/common/settings/mate.js";
 import { LogLevel } from "@/common/log.js";
-import { CSAGameManager, CSAGameState } from "./csa.js";
-import { Clock } from "./clock.js";
 import { CSAGameSettings, appendCSAGameSettingsHistory } from "@/common/settings/csa.js";
 import { defaultPlayerBuilder } from "@/renderer/players/builder.js";
 import { USIInfoCommand } from "@/common/game/usi.js";
@@ -71,6 +71,7 @@ import { LayoutProfile } from "@/common/settings/layout.js";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp.js";
 import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";
+import { ParallelGameManager, ParallelGameProgress } from "@/renderer/game/parallel.js";
 
 export type PVPreview = {
   position: ImmutablePosition;
@@ -141,6 +142,9 @@ class Store {
   private blackClock = new Clock();
   private whiteClock = new Clock();
   private gameManager = new GameManager(this.recordManager, this.blackClock, this.whiteClock);
+  private parallelGameManager = new ParallelGameManager();
+  private _parallelGameProgress?: ParallelGameProgress;
+  private _gameSettings: GameSettings = defaultGameSettings();
   private csaGameManager = new CSAGameManager(this.recordManager, this.blackClock, this.whiteClock);
   private analysisManager = new AnalysisManager(this.recordManager);
   private mateSearchManager = new MateSearchManager();
@@ -183,7 +187,7 @@ class Store {
       });
     this.gameManager
       .on("saveRecord", this.onSaveRecord.bind(refs))
-      .on("gameEnd", this.onGameEnd.bind(refs))
+      .on("closed", this.onGameClosed.bind(refs))
       .on("flipBoard", this.onFlipBoard.bind(refs))
       .on("pieceBeat", () => playPieceBeat(useAppSettings().pieceVolume))
       .on("beepShort", this.onBeepShort.bind(refs))
@@ -192,9 +196,16 @@ class Store {
       .on("error", (e) => {
         useErrorStore().add(e);
       });
+    this.parallelGameManager
+      .on("progress", this.onParallelGameProgress.bind(refs))
+      .on("saveRecord", this.onSaveRecord.bind(refs))
+      .on("closed", this.onGameClosed.bind(refs))
+      .on("error", (e) => {
+        useErrorStore().add(e);
+      });
     this.csaGameManager
       .on("saveRecord", this.onSaveRecord.bind(refs))
-      .on("gameEnd", this.onCSAGameEnd.bind(refs))
+      .on("closed", this.onCSAGameClosed.bind(refs))
       .on("flipBoard", this.onFlipBoard.bind(refs))
       .on("pieceBeat", () => playPieceBeat(useAppSettings().pieceVolume))
       .on("beepShort", this.onBeepShort.bind(refs))
@@ -607,12 +618,24 @@ class Store {
     useBusyState().retain();
     api
       .saveGameSettings(settings)
-      .then(() => {
+      .then(async () => {
+        this._gameSettings = settings;
         const appSettings = useAppSettings();
-        const builder = defaultPlayerBuilder(appSettings.engineTimeoutSeconds);
-        return this.gameManager.start(settings, builder);
+        if (settings.parallelism >= 2) {
+          const playerBuilder = defaultPlayerBuilder({
+            timeoutSeconds: appSettings.engineTimeoutSeconds,
+            discardUSIInfo: true,
+          });
+          await this.parallelGameManager.start(settings, playerBuilder);
+          this._appState = AppState.PARALLEL_GAME;
+        } else {
+          const playerBuilder = defaultPlayerBuilder({
+            timeoutSeconds: appSettings.engineTimeoutSeconds,
+          });
+          await this.gameManager.startLinear(settings, playerBuilder);
+          this._appState = AppState.GAME;
+        }
       })
-      .then(() => (this._appState = AppState.GAME))
       .catch((e) => {
         useErrorStore().add(e);
       })
@@ -622,7 +645,7 @@ class Store {
   }
 
   get gameSettings(): GameSettings {
-    return this.gameManager.settings;
+    return this._gameSettings;
   }
 
   get gameResults(): GameResults {
@@ -663,7 +686,9 @@ class Store {
       })
       .then(() => {
         const appSettings = useAppSettings();
-        const builder = defaultPlayerBuilder(appSettings.engineTimeoutSeconds);
+        const builder = defaultPlayerBuilder({
+          timeoutSeconds: appSettings.engineTimeoutSeconds,
+        });
         return this.csaGameManager.login(settings, builder);
       })
       .then(() => (this._appState = AppState.CSA_GAME))
@@ -691,7 +716,7 @@ class Store {
     switch (this.appState) {
       case AppState.GAME:
         // 連続対局の場合は確認ダイアログを表示する。
-        if (this.gameManager.settings.repeat >= 2) {
+        if (this.gameSettings.repeat >= 2) {
           this.showConfirmation({
             message: t.areYouSureWantToQuitGames,
             onOk: () => this.gameManager.stop(),
@@ -699,6 +724,12 @@ class Store {
         } else {
           this.gameManager.stop();
         }
+        break;
+      case AppState.PARALLEL_GAME:
+        this.showConfirmation({
+          message: t.areYouSureWantToQuitGames,
+          onOk: () => this.parallelGameManager.stop(),
+        });
         break;
       case AppState.CSA_GAME:
         // 確認ダイアログを表示する。
@@ -722,8 +753,16 @@ class Store {
     });
   }
 
-  private onGameEnd(results: GameResults, specialMoveType: SpecialMoveType): void {
-    if (this.appState !== AppState.GAME) {
+  get parallelGameProgress(): ParallelGameProgress | undefined {
+    return this._parallelGameProgress;
+  }
+
+  private onParallelGameProgress(progress: ParallelGameProgress): void {
+    this._parallelGameProgress = progress;
+  }
+
+  private onGameClosed(results: GameResults, specialMoveType?: SpecialMoveType): void {
+    if (this.appState !== AppState.GAME && this.appState !== AppState.PARALLEL_GAME) {
       return;
     }
     api.log(LogLevel.INFO, `game end: ${JSON.stringify(results)}`);
@@ -741,7 +780,7 @@ class Store {
     this._appState = AppState.NORMAL;
   }
 
-  private onCSAGameEnd(): void {
+  private onCSAGameClosed(): void {
     if (this.appState !== AppState.CSA_GAME) {
       return;
     }
@@ -755,14 +794,14 @@ class Store {
     }
   }
 
-  private onSaveRecord(dir: string): void {
+  private onSaveRecord(dir: string, recordManager: RecordManager = this.recordManager): void {
     const appSettings = useAppSettings();
-    const fname = generateRecordFileName(this.recordManager.record, {
+    const fname = generateRecordFileName(recordManager.record, {
       template: appSettings.recordFileNameTemplate,
       extension: appSettings.defaultRecordFileFormat,
     });
     const path = join(dir, fname);
-    this.saveRecordByPath(path).catch((e) => {
+    this.saveRecordByPath(path, { recordManager }).catch((e) => {
       useErrorStore().add(e);
     });
   }
@@ -1339,9 +1378,13 @@ class Store {
       });
   }
 
-  private async saveRecordByPath(path: string, opt?: { detectGarbled: boolean }): Promise<void> {
+  private async saveRecordByPath(
+    path: string,
+    opt?: { detectGarbled?: boolean; recordManager?: RecordManager },
+  ): Promise<void> {
     const appSettings = useAppSettings();
-    const result = this.recordManager.exportRecordAsBuffer(path, {
+    const recordManager = opt?.recordManager || this.recordManager;
+    const result = recordManager.exportRecordAsBuffer(path, {
       returnCode: appSettings.returnCode,
       detectGarbled: opt?.detectGarbled,
       csa: { v3: appSettings.useCSAV3 },
@@ -1476,15 +1519,9 @@ class Store {
       case AppState.NORMAL:
         return true;
       case AppState.GAME:
-        return (
-          (this.recordManager.record.position.color === Color.BLACK
-            ? this.gameManager.settings.black.uri
-            : this.gameManager.settings.white.uri) === uri.ES_HUMAN
-        );
+        return this.gameManager.waitingForHumanPlayerMove;
       case AppState.CSA_GAME:
-        return (
-          this.csaGameManager.isMyTurn && this.csaGameManager.settings.player.uri === uri.ES_HUMAN
-        );
+        return this.csaGameManager.waitingForHumanPlayerMove;
     }
     return false;
   }

@@ -44,7 +44,7 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useStore } from "@/renderer/store";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
-import { CSAGameState, loginRetryIntervalSeconds } from "@/renderer/store/csa";
+import { CSAGameState, loginRetryIntervalSeconds } from "@/renderer/game/csa";
 import { t } from "@/common/i18n";
 import api from "@/renderer/ipc/api";
 import { PromptTarget } from "@/common/advanced/prompt";

@@ -6,6 +6,7 @@ import { RecordFileFormat } from "@/common/file/record.js";
 import { AppSettings } from "./app.js";
 import ejpn from "encoding-japanese";
 import { removeLastSlash } from "@/common/helpers/path.js";
+import { SearchCommentFormat } from "./comment.js";
 const [base64Decode, base64Encode] = [ejpn.base64Decode, ejpn.base64Encode];
 
 export enum CSAProtocolVersion {
@@ -43,6 +44,7 @@ export type CSAGameSettings = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  searchCommentFormat: SearchCommentFormat;
 };
 
 export function defaultCSAServerSettings(): CSAServerSettings {
@@ -72,6 +74,7 @@ export function defaultCSAGameSettings(): CSAGameSettings {
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
+    searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   };
 }
 
@@ -182,6 +185,7 @@ export function buildCSAGameSettingsByHistory(
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
+    searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   };
 }
 
@@ -380,6 +384,7 @@ export type CSAGameSettingsForCLI = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  searchCommentFormat?: SearchCommentFormat;
 };
 
 export function exportCSAGameSettingsForCLI(
@@ -399,6 +404,7 @@ export function exportCSAGameSettingsForCLI(
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
+    searchCommentFormat: settings.searchCommentFormat,
   };
 }
 
@@ -424,6 +430,7 @@ export function importCSAGameSettingsForCLI(
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
+    searchCommentFormat: settings.searchCommentFormat || SearchCommentFormat.SHOGIHOME,
   };
 }
 

@@ -60,7 +60,7 @@ export class MateSearchManager {
     }
     // エンジンを起動する。
     const appSettings = useAppSettings();
-    this.engine = new USIPlayer(settings.usi, appSettings.engineTimeoutSeconds);
+    this.engine = new USIPlayer(settings.usi, { timeoutSeconds: appSettings.engineTimeoutSeconds });
     const maxSeconds = settings.enableMaxSeconds ? settings.maxSeconds : undefined;
     try {
       await this.engine.launch();

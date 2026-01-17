@@ -6,6 +6,7 @@ import {
 } from "@/common/settings/game.js";
 import { InitialPositionType } from "tsshogi";
 import * as uri from "@/common/uri.js";
+import { SearchCommentFormat } from "@/common/settings/comment.js";
 
 describe("settings/game", () => {
   it("defaultGameSettings/withAutoSaveDirectory", () => {
@@ -63,8 +64,10 @@ describe("settings/game", () => {
       autoSaveDirectory: "/path/to/autosave",
       repeat: 3,
       swapPlayers: false,
+      parallelism: 1,
       maxMoves: 80,
       jishogiRule: JishogiRule.NONE,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     };
     const result = normalizeGameSettings(settings, { autoSaveDirectory: "/path/to/autosave/old" });
     expect(result).toStrictEqual(settings);

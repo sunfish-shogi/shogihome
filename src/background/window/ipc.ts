@@ -33,7 +33,7 @@ import {
   saveResearchSettings,
   saveUSIEngines,
 } from "@/background/settings.js";
-import { USIEngine, USIEngines } from "@/common/settings/usi.js";
+import { USIEngine, USIEngineLaunchOptions, USIEngines } from "@/common/settings/usi.js";
 import { MenuEvent } from "@/common/control/menu.js";
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
@@ -792,10 +792,11 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(Background.LAUNCH_USI, async (event, json: string, timeoutSeconds: number) => {
+ipcMain.handle(Background.LAUNCH_USI, async (event, json: string, json2: string) => {
   validateIPCSender(event.senderFrame);
   const engine = JSON.parse(json) as USIEngine;
-  return await usiSetupPlayer(engine, timeoutSeconds);
+  const options = JSON.parse(json2) as USIEngineLaunchOptions;
+  return await usiSetupPlayer(engine, options);
 });
 
 ipcMain.handle(Background.USI_READY, async (event, sessionID: number) => {

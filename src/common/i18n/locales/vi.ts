@@ -348,6 +348,8 @@ export const vi: Texts = {
   beginFromThisPosition: "Bắt đầu từ thế cờ này",
   maxMoves: "Số nước tối đa",
   gameRepetition: "Lặp lại thế cờ",
+  parallelism: "並列数", // TODO: Translate
+  parallelGame: "並列対局", // TODO: Translate
   jishogi: "Bế tắc",
   rule24: "Luật 24 điểm",
   rule27: "Luật 27 điểm",
@@ -725,6 +727,11 @@ export const vi: Texts = {
   bothTimeLimitAndByoyomiAreNotSet: "Thời gian và byoyomi chưa được đặt.",
   canNotUseByoyomiWithFischer: "Bạn không thể dùng byoyomi với chế độ Fischer.",
   repeatsMustBeOneIfHumanPlayerIncluded: "Nếu có người chơi, số lần lặp lại phải là 1.",
+  parallelismMustBeOneIfHumanPlayerIncluded:
+    "人が対局する場合、並列実行数は1以外を設定できません。", // TODO: Translate
+  parallelismMustBeOneIfCurrentPositionIsUsed:
+    "現在の局面を開始局面にする場合、並列実行数は1以外を設定できません。", // TODO: Translate
+  parallelismMustLessThanOrEqualToRepeats: "並列実行数は連続対局の回数以下にしてください。", // TODO: Translate
   protocolVersionNotSelected: "Chưa chọn phiên bản phương thức.",
   hostNameIsEmpty: "Tên máy chủ trống.",
   invalidPortNumber: "Cổng không hợp lệ.",

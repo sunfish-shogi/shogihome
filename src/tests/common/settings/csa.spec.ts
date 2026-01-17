@@ -18,6 +18,7 @@ import {
   emptyCSAGameSettingsHistory,
   playerURI,
 } from "@/tests/mock/csa.js";
+import { SearchCommentFormat } from "@/common/settings/comment.js";
 
 describe("settings/csa", () => {
   it("defaultCSAGameSettingsHistory/withAutoSaveDirectory", () => {
@@ -59,6 +60,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeUndefined();
   });
@@ -84,6 +86,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
   });
@@ -109,6 +112,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
   });
@@ -134,6 +138,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
   });
@@ -159,6 +164,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
   });
@@ -184,6 +190,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
   });
@@ -233,6 +240,7 @@ describe("settings/csa", () => {
         repeat: 1,
         autoRelogin: true,
         restartPlayerEveryGame: false,
+        searchCommentFormat: SearchCommentFormat.SHOGIHOME,
       };
     };
     let history = emptyCSAGameSettingsHistory;

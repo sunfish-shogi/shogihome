@@ -1,10 +1,10 @@
 import api, { API } from "@/renderer/ipc/api.js";
 import { exportKI2, ImmutablePosition, InitialPositionSFEN, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store/index.js";
-import { RecordCustomData } from "@/renderer/store/record.js";
+import { RecordCustomData } from "@/renderer/record/manager.js";
 import * as audio from "@/renderer/devices/audio.js";
 import { gameSettings10m30s } from "@/tests/mock/game.js";
-import { GameManager } from "@/renderer/store/game.js";
+import { GameManager } from "@/renderer/game/game.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import { AnalysisManager } from "@/renderer/store/analysis.js";
 import { analysisSettings } from "@/tests/mock/analysis.js";
@@ -15,7 +15,7 @@ import {
   emptyCSAGameSettingsHistory,
   singleCSAGameSettingsHistory,
 } from "@/tests/mock/csa.js";
-import { CSAGameManager } from "@/renderer/store/csa.js";
+import { CSAGameManager } from "@/renderer/game/csa.js";
 import { convert } from "encoding-japanese";
 import { Mocked, MockedClass } from "vitest";
 import { useAppSettings } from "@/renderer/store/settings.js";
@@ -30,8 +30,8 @@ import { MateSearchManager } from "@/renderer/store/mate.js";
 
 vi.mock("@/renderer/devices/audio.js");
 vi.mock("@/renderer/ipc/api.js");
-vi.mock("@/renderer/store/game.js");
-vi.mock("@/renderer/store/csa.js");
+vi.mock("@/renderer/game/game.js");
+vi.mock("@/renderer/game/csa.js");
 vi.mock("@/renderer/players/usi.js");
 vi.mock("@/renderer/store/analysis.js");
 vi.mock("@/renderer/store/mate.js");
@@ -385,7 +385,7 @@ describe("store/index", () => {
 
   it("startGame/success", async () => {
     mockAPI.saveGameSettings.mockResolvedValue();
-    mockGameManager.prototype.start.mockResolvedValue();
+    mockGameManager.prototype.startLinear.mockResolvedValue();
     const store = createStore();
     store.showGameDialog();
     store.startGame(gameSettings10m30s);
@@ -395,8 +395,8 @@ describe("store/index", () => {
     expect(store.appState).toBe(AppState.GAME);
     expect(mockAPI.saveGameSettings).toBeCalledTimes(1);
     expect(mockAPI.saveGameSettings.mock.calls[0][0]).toBe(gameSettings10m30s);
-    expect(mockGameManager.prototype.start).toBeCalledTimes(1);
-    expect(mockGameManager.prototype.start.mock.calls[0][0]).toBe(gameSettings10m30s);
+    expect(mockGameManager.prototype.startLinear).toBeCalledTimes(1);
+    expect(mockGameManager.prototype.startLinear.mock.calls[0][0]).toBe(gameSettings10m30s);
   });
 
   it("startGame/invalidState", () => {

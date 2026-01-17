@@ -130,7 +130,7 @@ import { onMounted, ref } from "vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
-import { RecordCustomData } from "@/renderer/store/record";
+import { RecordCustomData } from "@/renderer/record/manager";
 import { useErrorStore } from "@/renderer/store/error";
 import { BookMove } from "@/common/book";
 import { IconType } from "@/renderer/assets/icons";

@@ -206,8 +206,8 @@ const api: Bridge = {
   ): Promise<void> {
     await ipcRenderer.invoke(Background.SEND_USI_OPTION_BUTTON_SIGNAL, path, name, timeoutSeconds);
   },
-  async usiLaunch(json: string, timeoutSeconds: number): Promise<number> {
-    return await ipcRenderer.invoke(Background.LAUNCH_USI, json, timeoutSeconds);
+  async usiLaunch(json: string, json2: string): Promise<number> {
+    return await ipcRenderer.invoke(Background.LAUNCH_USI, json, json2);
   },
   async usiReady(sessionID: number): Promise<void> {
     await ipcRenderer.invoke(Background.USI_READY, sessionID);
