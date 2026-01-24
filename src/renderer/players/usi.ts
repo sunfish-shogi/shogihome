@@ -6,6 +6,7 @@ import {
   getUSIEngineStochasticPonder,
   MultiPV,
   USIEngine,
+  USIEngineLaunchOptions,
   USIMultiPV,
 } from "@/common/settings/usi.js";
 import { Color, ImmutablePosition, Move, Position } from "tsshogi";
@@ -50,7 +51,7 @@ export class USIPlayer implements Player {
 
   constructor(
     private engine: USIEngine,
-    private timeoutSeconds: number,
+    private launchOptions?: USIEngineLaunchOptions,
     private onSearchInfo?: (info: SearchInfo) => void,
   ) {}
 
@@ -69,7 +70,7 @@ export class USIPlayer implements Player {
           forceOnTheFly: this.engine.extraBook.onTheFly,
         });
       }
-      this._sessionID = await api.usiLaunch(this.engine, this.timeoutSeconds);
+      this._sessionID = await api.usiLaunch(this.engine, this.launchOptions);
       usiPlayers[this.sessionID] = this;
     } catch (e) {
       if (this.bookSessionID) {

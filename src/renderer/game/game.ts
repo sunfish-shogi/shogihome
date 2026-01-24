@@ -1,94 +1,51 @@
 import { LogLevel } from "@/common/log.js";
 import api from "@/renderer/ipc/api.js";
 import { Player, SearchInfo } from "@/renderer/players/player.js";
-import { defaultGameSettings, GameSettings, JishogiRule } from "@/common/settings/game.js";
+import {
+  defaultTimeLimitSettings,
+  JishogiRule,
+  LinearGameSettings,
+} from "@/common/settings/game.js";
 import {
   Color,
-  detectRecordFormat,
   formatMove,
   JishogiDeclarationResult,
   JishogiDeclarationRule,
   judgeJishogiDeclaration,
   Move,
   PieceType,
-  Record,
-  RecordFormatType,
   reverseColor,
   SpecialMoveType,
   Square,
 } from "tsshogi";
 import { CommentBehavior } from "@/common/settings/comment.js";
-import { RecordManager, SearchInfoSenderType } from "./record.js";
+import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
 import { Clock } from "./clock.js";
 import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder.js";
 import { GameResult } from "@/common/game/result.js";
 import { t } from "@/common/i18n/index.js";
 import { TimeStates } from "@/common/game/time.js";
 import {
-  calculateEloRatingFromWinRate,
-  calculateWinRateConfidenceInterval,
-  calculateZValue,
-  Z_VALUE_95,
-  Z_VALUE_99,
-} from "@/common/helpers/math.js";
-import { useAppSettings } from "./settings.js";
+  buildGameCoordinator,
+  emptyGameCoodinator,
+  GameConditions,
+  GameCoordinator,
+} from "./coordinator.js";
+import { GameResults, newGameResults } from "./result.js";
+import * as uri from "@/common/uri.js";
+import { defaultPlayerSettings } from "@/common/settings/player.js";
 
 enum GameState {
   IDLE = "idle",
-  STARTING = "STARTING",
+  STARTING = "starting",
   ACTIVE = "active",
   PENDING = "pending",
   BUSY = "busy",
 }
 
-export type PlayerGameResults = {
-  name: string;
-  win: number;
-  winBlack: number;
-  winWhite: number;
-};
-
-export type GameResults = {
-  player1: PlayerGameResults;
-  player2: PlayerGameResults;
-  draw: number;
-  invalid: number;
-  total: number;
-};
-
-export type GameStatistics = {
-  rating: number;
-  ratingLower: number;
-  ratingUpper: number;
-  npIsGreaterThan5: boolean;
-  zValue: number;
-  significance5pc: boolean;
-  significance1pc: boolean;
-};
-
-export function calculateGameStatistics(results: GameResults): GameStatistics {
-  const n = results.player1.win + results.player2.win;
-  const wins = Math.max(results.player1.win, results.player2.win);
-  const winRate = wins / n;
-  const winRateCI = calculateWinRateConfidenceInterval(Z_VALUE_95, winRate, n);
-  const rating = calculateEloRatingFromWinRate(winRate);
-  const ratingLower = calculateEloRatingFromWinRate(winRate - winRateCI);
-  const ratingUpper = calculateEloRatingFromWinRate(winRate + winRateCI);
-  const zValue = Math.abs(calculateZValue(results.player1.win, n, 0.5));
-  return {
-    rating,
-    ratingLower,
-    ratingUpper,
-    npIsGreaterThan5: n > 10,
-    zValue,
-    significance5pc: zValue > Z_VALUE_95,
-    significance1pc: zValue > Z_VALUE_99,
-  };
-}
-
 type SaveRecordCallback = (dir: string) => void;
 type GameNextCallback = () => void;
-type GameEndCallback = (results: GameResults, specialMoveType: SpecialMoveType) => void;
+type ClosedCallback = (results: GameResults, specialMoveType: SpecialMoveType) => void;
 type FlipBoardCallback = (flip: boolean) => void;
 type PieceBeatCallback = () => void;
 type BeepShortCallback = () => void;
@@ -96,110 +53,26 @@ type BeepUnlimitedCallback = () => void;
 type StopBeepCallback = () => void;
 type ErrorCallback = (e: unknown) => void;
 
-function newGameResults(name1: string, name2: string): GameResults {
-  return {
-    player1: { name: name1, win: 0, winBlack: 0, winWhite: 0 },
-    player2: { name: name2, win: 0, winBlack: 0, winWhite: 0 },
-    draw: 0,
-    invalid: 0,
-    total: 0,
-  };
-}
-
-export class StartPositionList {
-  private usiList: string[] = [];
-  private maxRepeat: number = 1;
-  private index = 0;
-  private repeat = 0;
-
-  clear(): void {
-    this.usiList = [];
-    this.maxRepeat = 1;
-    this.index = 0;
-    this.repeat = 0;
-  }
-
-  async reset(params: {
-    filePath: string;
-    swapPlayers: boolean;
-    order: "sequential" | "shuffle";
-    maxGames: number;
-  }): Promise<void> {
-    // load SFEN file
-    const usiList = await api.loadSFENFile(params.filePath);
-    if (params.order === "shuffle") {
-      for (let i = usiList.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [usiList[i], usiList[j]] = [usiList[j], usiList[i]];
-      }
-    }
-    const maxPositions = Math.ceil(params.maxGames / (params.swapPlayers ? 2 : 1));
-    if (usiList.length > maxPositions) {
-      usiList.length = maxPositions;
-    }
-
-    // add "sfen " prefix to simple SFEN strings
-    for (let i = 0; i < usiList.length; i++) {
-      if (
-        !usiList[i].startsWith("sfen ") &&
-        detectRecordFormat(usiList[i]) === RecordFormatType.SFEN
-      ) {
-        usiList[i] = `sfen ${usiList[i]}`;
-      }
-    }
-
-    // validate USI
-    if (usiList.length === 0) {
-      throw new Error("No available positions in the list.");
-    }
-    for (let i = 0; i < usiList.length; i++) {
-      const record = Record.newByUSI(usiList[i]);
-      if (!(record instanceof Record)) {
-        throw record;
-      }
-    }
-
-    this.usiList = usiList;
-    this.maxRepeat = params.swapPlayers ? 2 : 1;
-    this.index = 0;
-    this.repeat = 0;
-  }
-
-  next(): string {
-    if (this.usiList.length === 0) {
-      return "position startpos";
-    }
-    if (this.repeat < this.maxRepeat) {
-      this.repeat++;
-    } else {
-      this.index++;
-      this.repeat = 1;
-      if (this.index >= this.usiList.length) {
-        this.index = 0;
-      }
-    }
-    return this.usiList[this.index];
-  }
-}
-
 export class GameManager {
-  private state: GameState;
-  private _settings: GameSettings;
-  private startPly = 0;
-  private repeat = 0;
-  private startPositionList = new StartPositionList();
+  private state = GameState.IDLE;
+  private coordinator = emptyGameCoodinator();
+  private blackPlayerSettings = defaultPlayerSettings();
+  private whitePlayerSettings = defaultPlayerSettings();
+  private blackTimeLimit = defaultTimeLimitSettings();
+  private whiteTimeLimit = defaultTimeLimitSettings();
   private blackPlayer?: Player;
   private whitePlayer?: Player;
+  private swapped = false;
   private playerBuilder = defaultPlayerBuilder();
   private _results: GameResults = newGameResults("", "");
-  private lastEventID: number;
+  private lastEventID = 0;
   private onSaveRecord: SaveRecordCallback = () => {
     /* noop */
   };
   private onGameNext: GameNextCallback = () => {
     /* noop */
   };
-  private onGameEnd: GameEndCallback = () => {
+  private onClosed: ClosedCallback = () => {
     /* noop */
   };
   private onFlipBoard: FlipBoardCallback = () => {
@@ -225,15 +98,11 @@ export class GameManager {
     private recordManager: RecordManager,
     private blackClock: Clock,
     private whiteClock: Clock,
-  ) {
-    this.state = GameState.IDLE;
-    this._settings = defaultGameSettings();
-    this.lastEventID = 0;
-  }
+  ) {}
 
   on(event: "saveRecord", handler: SaveRecordCallback): this;
   on(event: "gameNext", handler: GameNextCallback): this;
-  on(event: "gameEnd", handler: GameEndCallback): this;
+  on(event: "closed", handler: ClosedCallback): this;
   on(event: "flipBoard", handler: FlipBoardCallback): this;
   on(event: "pieceBeat", handler: PieceBeatCallback): this;
   on(event: "beepShort", handler: BeepShortCallback): this;
@@ -248,8 +117,8 @@ export class GameManager {
       case "gameNext":
         this.onGameNext = handler as GameNextCallback;
         break;
-      case "gameEnd":
-        this.onGameEnd = handler as GameEndCallback;
+      case "closed":
+        this.onClosed = handler as ClosedCallback;
         break;
       case "flipBoard":
         this.onFlipBoard = handler as FlipBoardCallback;
@@ -273,47 +142,58 @@ export class GameManager {
     return this;
   }
 
-  get settings(): GameSettings {
-    return this._settings;
+  get waitingForHumanPlayerMove(): boolean {
+    return (
+      (this.recordManager.record.position.color === Color.BLACK
+        ? this.blackPlayerSettings.uri
+        : this.whitePlayerSettings.uri) === uri.ES_HUMAN
+    );
   }
 
   get results(): GameResults {
     return this._results;
   }
 
-  async start(settings: GameSettings, playerBuilder: PlayerBuilder): Promise<void> {
+  async startLinear(settings: LinearGameSettings, playerBuilder: PlayerBuilder): Promise<void> {
+    const gameTask = await buildGameCoordinator({
+      settings,
+      currentPly: this.recordManager.record.current.ply,
+    });
+    await this.start(gameTask, playerBuilder);
+  }
+
+  async start(coordinator: GameCoordinator, playerBuilder: PlayerBuilder): Promise<void> {
     if (this.state !== GameState.IDLE) {
       throw Error(
         "GameManager#start: 前回の対局が正常に終了できていません。アプリを再起動してください。",
       );
     }
     this.state = GameState.STARTING;
-    this._settings = settings;
+    this.coordinator = coordinator;
+    this.blackPlayerSettings = coordinator.black;
+    this.whitePlayerSettings = coordinator.white;
+    this.blackTimeLimit = coordinator.timeLimit;
+    this.whiteTimeLimit = coordinator.whiteTimeLimit || coordinator.timeLimit;
     this.playerBuilder = playerBuilder;
-    this.repeat = 0;
-    if (settings.startPosition === "current") {
-      // 連続対局用に何手目から開始するかを記憶する。
-      this.startPly = this.recordManager.record.current.ply;
+    this._results = newGameResults(this.blackPlayerSettings.name, this.whitePlayerSettings.name);
+    const firstGameConditions = this.coordinator.next(this.recordManager);
+    if (firstGameConditions === null) {
+      this.state = GameState.IDLE;
+      throw new Error("GameManager#start: 対局タスクが空です。");
+    } else if (firstGameConditions instanceof Error) {
+      this.state = GameState.IDLE;
+      throw new Error(`GameManager#start: ${firstGameConditions.message}`);
     }
-    this._results = newGameResults(settings.black.name, settings.white.name);
     try {
-      // 初期局面リストを読み込む。
-      if (settings.startPosition === "list") {
-        await this.startPositionList.reset({
-          filePath: settings.startPositionListFile,
-          swapPlayers: settings.swapPlayers,
-          order: settings.startPositionListOrder,
-          maxGames: settings.repeat,
-        });
-      }
       // プレイヤーを初期化する。
-      this.blackPlayer = await this.playerBuilder.build(this.settings.black, (info) =>
+      this.blackPlayer = await this.playerBuilder.build(this.blackPlayerSettings, (info) =>
         this.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
       );
-      this.whitePlayer = await this.playerBuilder.build(this.settings.white, (info) =>
+      this.whitePlayer = await this.playerBuilder.build(this.whitePlayerSettings, (info) =>
         this.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
       );
-      await this.goNextGame();
+      this.swapped = false;
+      await this.goNextGame(firstGameConditions);
     } catch (e) {
       try {
         await this.closePlayers();
@@ -321,44 +201,26 @@ export class GameManager {
         this.onError(errorOnClose);
       } finally {
         this.state = GameState.IDLE;
-        this.startPositionList.clear();
       }
       throw new Error(`GameManager#start: ${t.failedToStartNewGame}: ${e}`);
     }
   }
 
-  private async goNextGame(): Promise<void> {
+  private async goNextGame(gameConditions: GameConditions): Promise<void> {
     if (this.blackPlayer === undefined || this.whitePlayer === undefined) {
       throw new Error("GameManager#goNextGame: プレイヤーが初期化されていません。");
     }
-    // 連続対局の回数をカウントアップする。
-    this.repeat++;
-    // 初期局面を設定する。
-    switch (this.settings.startPosition) {
-      case "current":
-        if (this.recordManager.record.current.ply !== this.startPly) {
-          this.recordManager.changePly(this.startPly);
-          this.recordManager.removeNextMove();
-        }
-        break;
-      case "list":
-        this.recordManager.importRecord(this.startPositionList.next(), {
-          type: RecordFormatType.USI,
-          markAsSaved: true,
-        });
-        this.recordManager.updateComment(t.beginFromThisPosition);
-        break;
-      default:
-        this.recordManager.resetByInitialPositionType(this.settings.startPosition);
+    // 手番を調整する。
+    if (gameConditions.swapPlayers !== this.swapped) {
+      this.swapPlayers();
     }
     // 対局のメタデータを設定する。
     this.recordManager.setGameStartMetadata({
-      gameTitle:
-        this.settings.repeat >= 2 ? `連続対局 ${this.repeat}/${this.settings.repeat}` : undefined,
-      blackName: this.settings.black.name,
-      whiteName: this.settings.white.name,
-      blackTimeLimit: this.settings.timeLimit,
-      whiteTimeLimit: this.settings.whiteTimeLimit || this.settings.timeLimit,
+      gameTitle: gameConditions.gameTitle,
+      blackName: this.blackPlayerSettings.name,
+      whiteName: this.whitePlayerSettings.name,
+      blackTimeLimit: this.blackTimeLimit,
+      whiteTimeLimit: this.whiteTimeLimit,
     });
     // 対局時計を設定する。
     this.blackClock.setup(this.getBlackClockSettings());
@@ -375,20 +237,14 @@ export class GameManager {
     setTimeout(() => this.nextMove());
   }
 
-  private getCommonClockSettings() {
+  private getBlackClockSettings() {
     return {
-      timeMs: this.settings.timeLimit.timeSeconds * 1e3,
-      byoyomi: this.settings.timeLimit.byoyomi,
-      increment: this.settings.timeLimit.increment,
+      timeMs: this.blackTimeLimit.timeSeconds * 1e3,
+      byoyomi: this.blackTimeLimit.byoyomi,
+      increment: this.blackTimeLimit.increment,
       onBeepShort: () => this.onBeepShort(),
       onBeepUnlimited: () => this.onBeepUnlimited(),
       onStopBeep: () => this.onStopBeep(),
-    };
-  }
-
-  private getBlackClockSettings() {
-    return {
-      ...this.getCommonClockSettings(),
       onTimeout: () => {
         this.timeout(Color.BLACK);
       },
@@ -396,25 +252,21 @@ export class GameManager {
   }
 
   private getWhiteClockSettings() {
-    const settings = {
-      ...this.getCommonClockSettings(),
+    return {
+      timeMs: this.whiteTimeLimit.timeSeconds * 1e3,
+      byoyomi: this.whiteTimeLimit.byoyomi,
+      increment: this.whiteTimeLimit.increment,
+      onBeepShort: () => this.onBeepShort(),
+      onBeepUnlimited: () => this.onBeepUnlimited(),
+      onStopBeep: () => this.onStopBeep(),
       onTimeout: () => {
         this.timeout(Color.WHITE);
       },
     };
-    if (!this.settings.whiteTimeLimit) {
-      return settings;
-    }
-    return {
-      ...settings,
-      timeMs: this.settings.whiteTimeLimit.timeSeconds * 1e3,
-      byoyomi: this.settings.whiteTimeLimit.byoyomi,
-      increment: this.settings.whiteTimeLimit.increment,
-    };
   }
 
   private adjustBoardOrientation(): void {
-    if (this.settings.humanIsFront) {
+    if (this.coordinator.humanIsFront) {
       if (!this.blackPlayer?.isEngine() && this.whitePlayer?.isEngine()) {
         this.onFlipBoard(false);
       } else if (this.blackPlayer?.isEngine() && !this.whitePlayer?.isEngine()) {
@@ -430,8 +282,8 @@ export class GameManager {
     // 最大手数に到達したら終了する。
     // ただし、最後の2手のどちらかが王手なら対局を延長する。
     if (
-      this._settings.maxMoves &&
-      this.recordManager.record.current.ply >= this._settings.maxMoves &&
+      this.coordinator.maxMoves &&
+      this.recordManager.record.current.ply >= this.coordinator.maxMoves &&
       !this.recordManager.record.current.isCheck &&
       !this.recordManager.record.current.prev?.isCheck
     ) {
@@ -510,12 +362,12 @@ export class GameManager {
       this.updateSearchInfo(SearchInfoSenderType.PLAYER, info);
     }
     // コメントを追加する。
-    if (info && this.settings.enableComment) {
-      const appSettings = useAppSettings();
-      const engineName = this.settings[move.color].name;
+    if (info && this.coordinator.enableComment) {
+      const engineName =
+        move.color === Color.BLACK ? this.blackPlayerSettings.name : this.whitePlayerSettings.name;
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
-        appSettings.searchCommentFormat,
+        this.coordinator.searchCommentFormat,
         info,
         CommentBehavior.APPEND,
         { engineName },
@@ -541,7 +393,7 @@ export class GameManager {
     }
     // トライルールのチェックを行う。
     if (
-      this.settings.jishogiRule == JishogiRule.TRY &&
+      this.coordinator.jishogiRule == JishogiRule.TRY &&
       move.pieceType === PieceType.KING &&
       ((move.color === Color.BLACK && move.to.equals(new Square(5, 1))) ||
         (move.color === Color.WHITE && move.to.equals(new Square(5, 9))))
@@ -576,14 +428,14 @@ export class GameManager {
     }
     const position = this.recordManager.record.position;
     if (
-      this.settings.jishogiRule == JishogiRule.NONE ||
-      this.settings.jishogiRule == JishogiRule.TRY
+      this.coordinator.jishogiRule == JishogiRule.NONE ||
+      this.coordinator.jishogiRule == JishogiRule.TRY
     ) {
       this.end(SpecialMoveType.FOUL_LOSE);
       return;
     }
     const rule =
-      this.settings.jishogiRule == JishogiRule.GENERAL24
+      this.coordinator.jishogiRule == JishogiRule.GENERAL24
         ? JishogiDeclarationRule.GENERAL24
         : JishogiDeclarationRule.GENERAL27;
     switch (judgeJishogiDeclaration(rule, position, position.color)) {
@@ -604,7 +456,7 @@ export class GameManager {
     this.onStopBeep();
     // エンジンの時間切れが無効の場合は通知を送って対局を継続する。
     const player = this.getPlayer(color);
-    if (player?.isEngine() && !this.settings.enableEngineTimeout) {
+    if (player?.isEngine() && !this.coordinator.enableEngineTimeout) {
       player.stop().catch((e) => {
         this.onError(new Error(`GameManager#timeout: ${t.failedToSendStopCommand}: ${e}`));
       });
@@ -615,6 +467,15 @@ export class GameManager {
   }
 
   stop(): void {
+    if (this.state === GameState.STARTING) {
+      const timer = setInterval(() => {
+        if (this.state !== GameState.STARTING) {
+          clearInterval(timer);
+          this.stop();
+        }
+      }, 100);
+      return;
+    }
     this.end(SpecialMoveType.INTERRUPT);
   }
 
@@ -641,12 +502,19 @@ export class GameManager {
         // 連続対局の記録に追加する。
         this.addGameResults(color, specialMoveType);
         // 自動保存が有効な場合は棋譜を保存する。
-        if (this._settings.enableAutoSave) {
-          this.onSaveRecord(this._settings.autoSaveDirectory);
+        if (this.coordinator.enableAutoSave) {
+          this.onSaveRecord(this.coordinator.autoSaveDirectory);
         }
-        // 連続対局の終了条件を満たしているか中断が要求されていれば終了する。
+        // 次の対局の設定を取得する。
+        const nextGameConditions = this.coordinator.next(this.recordManager);
+        if (nextGameConditions instanceof Error) {
+          this.onError(new Error(`GameManager#end: ${nextGameConditions.message}`));
+        }
+        // 連続対局の終了条件を満たす場合または中断が要求された場合、エラーが発生した場合は対局を終了する。
         const complete =
-          specialMoveType === SpecialMoveType.INTERRUPT || this.repeat >= this.settings.repeat;
+          specialMoveType === SpecialMoveType.INTERRUPT ||
+          nextGameConditions === null ||
+          nextGameConditions instanceof Error;
         if (complete) {
           // プレイヤーを解放する。
           this.closePlayers()
@@ -655,18 +523,13 @@ export class GameManager {
             })
             .finally(() => {
               this.state = GameState.IDLE;
-              this.startPositionList.clear();
-              this.onGameEnd(this.results, specialMoveType);
+              this.onClosed(this.results, specialMoveType);
             });
           return;
         }
-        // 連続対局時の手番入れ替えが有効ならプレイヤーを入れ替える。
-        if (this.settings.swapPlayers) {
-          this.swapPlayers();
-        }
         // 次の対局を開始する。
         this.state = GameState.STARTING;
-        this.goNextGame().catch((e) => {
+        this.goNextGame(nextGameConditions).catch((e) => {
           this.onError(new Error(`GameManager#end: ${t.failedToStartNewGame}: ${e}`));
         });
       })
@@ -684,15 +547,24 @@ export class GameManager {
   }
 
   private addGameResults(color: Color, specialMoveType: SpecialMoveType): void {
-    const gameResult = specialMoveToPlayerGameResult(color, Color.BLACK, specialMoveType);
+    const player1Color = this.swapped ? Color.WHITE : Color.BLACK;
+    const gameResult = specialMoveToPlayerGameResult(color, player1Color, specialMoveType);
     switch (gameResult) {
       case GameResult.WIN:
         this._results.player1.win++;
-        this._results.player1.winBlack++;
+        if (player1Color === Color.BLACK) {
+          this._results.player1.winBlack++;
+        } else {
+          this._results.player1.winWhite++;
+        }
         break;
       case GameResult.LOSE:
         this._results.player2.win++;
-        this._results.player2.winWhite++;
+        if (player1Color === Color.BLACK) {
+          this._results.player2.winWhite++;
+        } else {
+          this._results.player2.winBlack++;
+        }
         break;
       case GameResult.DRAW:
         this._results.draw++;
@@ -705,24 +577,13 @@ export class GameManager {
   }
 
   private swapPlayers(): void {
-    this._settings = {
-      ...this.settings,
-      black: this.settings.white,
-      white: this.settings.black,
-    };
-    if (this._settings.whiteTimeLimit) {
-      this._settings = {
-        ...this.settings,
-        timeLimit: this._settings.whiteTimeLimit,
-        whiteTimeLimit: this._settings.timeLimit,
-      };
-    }
+    this.swapped = !this.swapped;
+    [this.blackPlayerSettings, this.whitePlayerSettings] = [
+      this.whitePlayerSettings,
+      this.blackPlayerSettings,
+    ];
+    [this.blackTimeLimit, this.whiteTimeLimit] = [this.whiteTimeLimit, this.blackTimeLimit];
     [this.blackPlayer, this.whitePlayer] = [this.whitePlayer, this.blackPlayer];
-    this._results = {
-      ...this.results,
-      player1: this.results.player2,
-      player2: this.results.player1,
-    };
   }
 
   private async sendGameResult(color: Color, specialMoveType: SpecialMoveType): Promise<void> {

@@ -1,5 +1,5 @@
 import { AnalysisManager } from "@/renderer/store/analysis.js";
-import { RecordManager } from "@/renderer/store/record.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 import { analysisSettings as baseAnalysisSettings } from "@/tests/mock/analysis.js";
 import { USIPlayer } from "@/renderer/players/usi.js";
 import { MockedClass } from "vitest";

@@ -96,9 +96,9 @@ import {
   importCSAGameSettingsForCLI,
   validateCSAGameSettings,
 } from "@/common/settings/csa";
-import { Clock } from "@/renderer/store/clock";
-import { RecordManager } from "@/renderer/store/record";
-import { CSAGameManager, loginRetryIntervalSeconds } from "@/renderer/store/csa";
+import { Clock } from "@/renderer/game/clock";
+import { RecordManager } from "@/renderer/record/manager";
+import { CSAGameManager, loginRetryIntervalSeconds } from "@/renderer/game/csa";
 import { defaultPlayerBuilder } from "@/renderer/players/builder";
 import { getAppLogger } from "@/background/log";
 import { generateRecordFileName } from "@/renderer/helpers/path";
@@ -165,12 +165,14 @@ async function main() {
   const blackClock = new Clock();
   const whiteClock = new Clock();
   const gameManager = new CSAGameManager(recordManager, blackClock, whiteClock);
-  const playerBuilder = defaultPlayerBuilder(engineTimeout());
+  const playerBuilder = defaultPlayerBuilder({
+    timeoutSeconds: engineTimeout(),
+  });
 
   gameManager
     .on("gameNext", onGameNext)
     .on("newGame", onNewGame)
-    .on("gameEnd", onGameEnd)
+    .on("closed", onClosed)
     .on("saveRecord", onSaveRecord)
     .on("loginRetry", onLoginRetry)
     .on("error", onError)
@@ -185,7 +187,7 @@ async function main() {
     getAppLogger().info(`${ordinal(n)} game started.`);
   }
 
-  function onGameEnd() {
+  function onClosed() {
     getAppLogger().info("completed. will exit after some seconds...");
   }
 

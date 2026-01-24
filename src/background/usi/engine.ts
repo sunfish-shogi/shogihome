@@ -21,6 +21,7 @@ export type EngineProcessOption = {
   timeout?: number;
   engineOptions?: USIEngineOption[];
   enableEarlyPonder?: boolean;
+  discardUSIInfo?: boolean;
 };
 
 export type TimeState = {
@@ -660,7 +661,7 @@ export class EngineProcess {
     } else if (command.startsWith("checkmate ")) {
       this.onCheckmate(command.substring(10));
     } else if (command.startsWith("info ")) {
-      if (this.infoCallback) {
+      if (!this.option.discardUSIInfo && this.infoCallback) {
         const args = command.substring(5);
         this.infoCallback?.(this.currentPosition, parseInfoCommand(args));
       }

@@ -74,7 +74,7 @@ export interface Bridge {
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string>;
   getUSIEngineMetadata(path: string): Promise<string>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
-  usiLaunch(json: string, timeoutSeconds: number): Promise<number>;
+  usiLaunch(json: string, options: string): Promise<number>;
   usiReady(sessionID: number): Promise<void>;
   usiSetOption(sessionID: number, name: string, value: string): Promise<void>;
   usiGo(sessionID: number, usi: string, timeStatesJSON: string): Promise<void>;

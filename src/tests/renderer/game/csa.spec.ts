@@ -10,7 +10,7 @@ import {
   Square,
   specialMove,
 } from "tsshogi";
-import { Clock } from "@/renderer/store/clock.js";
+import { Clock } from "@/renderer/game/clock.js";
 import {
   CSAGameManager,
   CSAGameState,
@@ -18,8 +18,8 @@ import {
   onCSAGameSummary,
   onCSAMove,
   onCSAStart,
-} from "@/renderer/store/csa.js";
-import { RecordManager } from "@/renderer/store/record.js";
+} from "@/renderer/game/csa.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 import {
   csaGameSettings,
   csaGameSummary,
@@ -43,7 +43,7 @@ export function applyMockHandlers(manager: CSAGameManager) {
   const handlers = {
     onSaveRecord: vi.fn().mockReturnValue(Promise.resolve()),
     onGameNext: vi.fn(),
-    onGameEnd: vi.fn(),
+    onClosed: vi.fn(),
     onFlipBoard: vi.fn(),
     onPieceBeat: vi.fn(),
     onBeepShort: vi.fn(),
@@ -54,7 +54,7 @@ export function applyMockHandlers(manager: CSAGameManager) {
   manager
     .on("saveRecord", handlers.onSaveRecord)
     .on("gameNext", handlers.onGameNext)
-    .on("gameEnd", handlers.onGameEnd)
+    .on("closed", handlers.onClosed)
     .on("flipBoard", handlers.onFlipBoard)
     .on("pieceBeat", handlers.onPieceBeat)
     .on("beepShort", handlers.onBeepShort)
@@ -64,7 +64,7 @@ export function applyMockHandlers(manager: CSAGameManager) {
   return handlers;
 }
 
-describe("store/csa", () => {
+describe("game/csa", () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -74,7 +74,7 @@ describe("store/csa", () => {
     vi.clearAllMocks();
   });
 
-  it("CSAManager/resign", async () => {
+  it("CSAGameManager/resign", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaAgree.mockResolvedValueOnce();
@@ -192,7 +192,7 @@ describe("store/csa", () => {
     });
     expect(mockPlayer.startPonder).toBeCalledTimes(2);
     expect(mockPlayer.close).toBeCalledTimes(0);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     onCSAGameResult(sessionID, CSASpecialMove.RESIGN, CSAGameResult.WIN);
     vi.runOnlyPendingTimers();
     expect(mockAPI.csaLogout).toBeCalledTimes(1);
@@ -201,7 +201,7 @@ describe("store/csa", () => {
     expect(mockPlayer.readyNewGame).toBeCalledTimes(1);
     expect(mockPlayer.gameover).toBeCalledTimes(1);
     expect(mockPlayer.close).toBeCalledTimes(1);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
@@ -215,7 +215,7 @@ describe("store/csa", () => {
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
   });
 
-  it("CSAManager/earlyPonder", async () => {
+  it("CSAGameManager/earlyPonder", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaAgree.mockResolvedValueOnce();
@@ -303,7 +303,7 @@ describe("store/csa", () => {
     expect(mockPlayer.startSearch).toBeCalledTimes(3);
     expect(mockPlayer.startPonder).toBeCalledTimes(4);
     expect(mockPlayer.close).toBeCalledTimes(0);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     onCSAGameResult(sessionID, CSASpecialMove.RESIGN, CSAGameResult.WIN);
     vi.runOnlyPendingTimers();
     expect(mockAPI.csaLogout).toBeCalledTimes(1);
@@ -312,7 +312,7 @@ describe("store/csa", () => {
     expect(mockPlayer.readyNewGame).toBeCalledTimes(1);
     expect(mockPlayer.gameover).toBeCalledTimes(1);
     expect(mockPlayer.close).toBeCalledTimes(1);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
@@ -326,7 +326,7 @@ describe("store/csa", () => {
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
   });
 
-  it("CSAManager/resign/twice", async () => {
+  it("CSAGameManager/resign/twice", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValue(sessionID);
     mockAPI.csaAgree.mockResolvedValue();
@@ -383,7 +383,7 @@ describe("store/csa", () => {
     expect(mockAPI.csaLogin).toBeCalledTimes(1);
     await vi.runOnlyPendingTimersAsync();
     expect(mockHandlers.onGameNext).toBeCalledTimes(2);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(mockAPI.csaLogin).toBeCalledTimes(2);
     expect(mockAPI.csaAgree).toBeCalledTimes(1);
@@ -415,12 +415,12 @@ describe("store/csa", () => {
     expect(mockPlayer.gameover).toBeCalledTimes(2);
     expect(mockPlayer.close).toBeCalledTimes(1);
     expect(mockHandlers.onGameNext).toBeCalledTimes(2);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
   });
 
-  it("CSAManager/resign/twice/restartEngineEveryGame", async () => {
+  it("CSAGameManager/resign/twice/restartEngineEveryGame", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValue(sessionID);
     mockAPI.csaAgree.mockResolvedValue();
@@ -481,7 +481,7 @@ describe("store/csa", () => {
     expect(mockPlayer.close).toBeCalledTimes(1); // 1局目終了後に close される。
     expect(mockPlayerBuilder.build).toBeCalledTimes(2); // 2局目開始時に build される。
     expect(mockHandlers.onGameNext).toBeCalledTimes(2);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(mockAPI.csaLogin).toBeCalledTimes(2);
     expect(mockAPI.csaAgree).toBeCalledTimes(1);
@@ -513,12 +513,12 @@ describe("store/csa", () => {
     expect(mockPlayer.gameover).toBeCalledTimes(2);
     expect(mockPlayer.close).toBeCalledTimes(2);
     expect(mockHandlers.onGameNext).toBeCalledTimes(2);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
   });
 
-  it("CSAManager/unequal_time_config", async () => {
+  it("CSAGameManager/unequal_time_config", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaAgree.mockResolvedValueOnce();
@@ -614,7 +614,7 @@ describe("store/csa", () => {
     });
     expect(mockPlayer.startPonder).toBeCalledTimes(2);
     expect(mockPlayer.close).toBeCalledTimes(0);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     onCSAGameResult(sessionID, CSASpecialMove.RESIGN, CSAGameResult.WIN);
     vi.runOnlyPendingTimers();
     expect(mockAPI.csaLogout).toBeCalledTimes(1);
@@ -623,7 +623,7 @@ describe("store/csa", () => {
     expect(mockPlayer.readyNewGame).toBeCalledTimes(1);
     expect(mockPlayer.gameover).toBeCalledTimes(1);
     expect(mockPlayer.close).toBeCalledTimes(1);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(6);
     expect(recordManager.record.moves[1].comment).toBe(
@@ -637,7 +637,7 @@ describe("store/csa", () => {
     expect(recordManager.record.moves[5].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
   });
 
-  it("CSAManager/invalidPosition", async () => {
+  it("CSAGameManager/invalidPosition", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaLogout.mockResolvedValueOnce();
@@ -659,7 +659,7 @@ describe("store/csa", () => {
     expect(mockHandlers.onError).toBeCalledTimes(1);
   });
 
-  it("CSAManager/initialMoves", async () => {
+  it("CSAGameManager/initialMoves", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaAgree.mockResolvedValueOnce();
@@ -753,19 +753,19 @@ P-
     expect(mockPlayer.startSearch).toBeCalledTimes(3);
     expect(mockPlayer.startPonder).toBeCalledTimes(3);
     expect(mockPlayer.close).toBeCalledTimes(0);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
     onCSAGameResult(sessionID, CSASpecialMove.RESIGN, CSAGameResult.WIN);
     vi.runOnlyPendingTimers();
     expect(mockAPI.csaLogout).toBeCalledTimes(1);
     expect(mockAPI.csaLogout.mock.calls[0][0]).toBe(sessionID);
     expect(mockPlayer.close).toBeCalledTimes(1);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(1);
+    expect(mockHandlers.onClosed).toBeCalledTimes(1);
     expect(mockHandlers.onError).toBeCalledTimes(0);
     expect(recordManager.record.moves).toHaveLength(10);
     expect(recordManager.record.moves[9].move).toStrictEqual(specialMove(SpecialMoveType.RESIGN));
   });
 
-  it("CSAManager/engineLaunchError", async () => {
+  it("CSAGameManager/engineLaunchError", async () => {
     const sessionID = Math.floor(Math.random() * 1000);
     mockAPI.csaLogin.mockResolvedValueOnce(sessionID);
     mockAPI.csaAgree.mockResolvedValueOnce();
@@ -778,10 +778,10 @@ P-
     await expect(manager.login(csaGameSettings, mockPlayerBuilder)).rejects.toThrow();
     expect(manager.state).toBe(CSAGameState.OFFLINE);
     expect(mockHandlers.onGameNext).toBeCalledTimes(0);
-    expect(mockHandlers.onGameEnd).toBeCalledTimes(0);
+    expect(mockHandlers.onClosed).toBeCalledTimes(0);
   });
 
-  describe("CSAManager/onPlayerMove", () => {
+  describe("CSAGameManager/onPlayerMove", () => {
     mockAPI.csaMove.mockResolvedValue();
     const recordManager = new RecordManager();
     const move = new Move(

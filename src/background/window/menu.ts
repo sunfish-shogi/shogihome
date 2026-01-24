@@ -350,7 +350,7 @@ function createMenuTemplate(window: BrowserWindow) {
         menuItem(t.game, MenuEvent.START_GAME, [AppState.NORMAL], "CmdOrCtrl+G"),
         menuItem(t.csaOnlineGame, MenuEvent.START_CSA_GAME, [AppState.NORMAL]),
         { type: "separator" },
-        menuItem(t.interrupt, MenuEvent.STOP_GAME, [AppState.GAME]),
+        menuItem(t.interrupt, MenuEvent.STOP_GAME, [AppState.GAME, AppState.PARALLEL_GAME]),
         menuItem(t.resign, MenuEvent.RESIGN, [AppState.GAME, AppState.CSA_GAME]),
         menuItem(t.winByDeclaration, MenuEvent.WIN, [AppState.GAME, AppState.CSA_GAME]),
         { type: "separator" },

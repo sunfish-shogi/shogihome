@@ -664,3 +664,8 @@ export async function decompressUSIEngineOptionsClipboardData(
 export type USIEngineMetadata = {
   isShellScript: boolean;
 };
+
+export type USIEngineLaunchOptions = {
+  timeoutSeconds?: number;
+  discardUSIInfo?: boolean;
+};

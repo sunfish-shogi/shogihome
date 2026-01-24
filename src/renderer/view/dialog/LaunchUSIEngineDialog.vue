@@ -71,7 +71,9 @@ const onStart = async () => {
     useErrorStore().add(t.engineNotSelected);
     return;
   }
-  const sessionID = await api.usiLaunch(settings, appSettings.engineTimeoutSeconds);
+  const sessionID = await api.usiLaunch(settings, {
+    timeoutSeconds: appSettings.engineTimeoutSeconds,
+  });
   api.openPrompt(PromptTarget.USI, sessionID, settings.name);
   useAppSettings().updateAppSettings({ tab: Tab.MONITOR });
   store.closeModalDialog();

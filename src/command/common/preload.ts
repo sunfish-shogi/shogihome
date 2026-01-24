@@ -28,7 +28,7 @@ import {
 } from "@/background/usi/index.js";
 import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
-import { USIEngine } from "@/common/settings/usi.js";
+import { USIEngine, USIEngineLaunchOptions } from "@/common/settings/usi.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
 import { Language, setLanguage } from "@/common/i18n/index.js";
 
@@ -213,9 +213,10 @@ const bridge: Bridge = {
   async sendUSIOptionButtonSignal(): Promise<void> {
     // Do Nothing
   },
-  async usiLaunch(json: string, timeoutSeconds: number): Promise<number> {
+  async usiLaunch(json: string, json2: string): Promise<number> {
     const engine = JSON.parse(json) as USIEngine;
-    return await usiSetupPlayer(engine, timeoutSeconds);
+    const options = JSON.parse(json2) as USIEngineLaunchOptions;
+    return await usiSetupPlayer(engine, options);
   },
   async usiReady(sessionID: number): Promise<void> {
     return await usiReady(sessionID);

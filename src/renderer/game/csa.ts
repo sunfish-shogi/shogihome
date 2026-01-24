@@ -23,12 +23,12 @@ import {
 } from "tsshogi";
 import { Clock } from "./clock.js";
 import { CommentBehavior } from "@/common/settings/comment.js";
-import { RecordManager, SearchInfoSenderType } from "./record.js";
+import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
 import { t } from "@/common/i18n/index.js";
 import { GameResult } from "@/common/game/result.js";
 import { USIPlayer } from "@/renderer/players/usi.js";
 import { TimeStates } from "@/common/game/time.js";
-import { useAppSettings } from "./settings.js";
+import * as uri from "@/common/uri.js";
 
 export const loginRetryIntervalSeconds = 10;
 
@@ -45,7 +45,7 @@ export enum CSAGameState {
 type SaveRecordCallback = (dir: string) => void;
 type GameNextCallback = () => void;
 type NewGameCallback = (n: number) => void;
-type GameEndCallback = () => void;
+type ClosedCallback = () => void;
 type LoginRetryCallback = () => void;
 type FlipBoardCallback = (flip: boolean) => void;
 type PieceBeatCallback = () => void;
@@ -74,7 +74,7 @@ export class CSAGameManager {
   private onSaveRecord: SaveRecordCallback = () => {};
   private onGameNext: GameNextCallback = () => {};
   private onNewGame: NewGameCallback = () => {};
-  private onGameEnd: GameEndCallback = () => {};
+  private onClosed: ClosedCallback = () => {};
   private onLoginRetry: LoginRetryCallback = () => {};
   private onFlipBoard: FlipBoardCallback = () => {};
   private onPieceBeat: PieceBeatCallback = () => {};
@@ -92,7 +92,7 @@ export class CSAGameManager {
   on(event: "saveRecord", handler: SaveRecordCallback): this;
   on(event: "gameNext", handler: GameNextCallback): this;
   on(event: "newGame", handler: NewGameCallback): this;
-  on(event: "gameEnd", handler: GameEndCallback): this;
+  on(event: "closed", handler: ClosedCallback): this;
   on(event: "loginRetry", handler: LoginRetryCallback): this;
   on(event: "flipBoard", handler: FlipBoardCallback): this;
   on(event: "pieceBeat", handler: PieceBeatCallback): this;
@@ -111,8 +111,8 @@ export class CSAGameManager {
       case "newGame":
         this.onNewGame = handler as NewGameCallback;
         break;
-      case "gameEnd":
-        this.onGameEnd = handler as GameEndCallback;
+      case "closed":
+        this.onClosed = handler as ClosedCallback;
         break;
       case "loginRetry":
         this.onLoginRetry = handler as LoginRetryCallback;
@@ -158,6 +158,10 @@ export class CSAGameManager {
   get isMyTurn(): boolean {
     const color = this.recordManager.record.position.color;
     return color === this.gameSummary.myColor;
+  }
+
+  get waitingForHumanPlayerMove(): boolean {
+    return this.isMyTurn && this.settings.player.uri === uri.ES_HUMAN;
   }
 
   /**
@@ -299,7 +303,7 @@ export class CSAGameManager {
         });
         this.player = undefined;
       }
-      this.onGameEnd();
+      this.onClosed();
       return;
     }
 
@@ -397,12 +401,11 @@ export class CSAGameManager {
     }
 
     // コメントを記録する。
-    const appSettings = useAppSettings();
     if (isMyMove && this.searchInfo && this.settings.enableComment) {
       const engineName = this.gameSummary.players[move.color].playerName;
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
-        appSettings.searchCommentFormat,
+        this.settings.searchCommentFormat,
         this.searchInfo,
         CommentBehavior.APPEND,
         { engineName },

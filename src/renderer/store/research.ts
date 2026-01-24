@@ -3,7 +3,7 @@ import { USIPlayer } from "@/renderer/players/usi.js";
 import { SearchInfo } from "@/renderer/players/player.js";
 import { ImmutableRecord } from "tsshogi";
 import { MultiPV, USIEngine, USIMultiPV } from "@/common/settings/usi.js";
-import { SearchInfoSenderType } from "./record.js";
+import { SearchInfoSenderType } from "@/renderer/record/manager.js";
 import { useAppSettings } from "./settings.js";
 import { Lazy } from "@/common/helpers/lazy.js";
 
@@ -91,11 +91,15 @@ export class ResearchManager {
       const usiEngine: USIEngine = { ...usi!, options };
       const type = getSenderTypeByIndex(index);
       return {
-        usi: new USIPlayer(usiEngine, appSettings.engineTimeoutSeconds, (info) => {
-          if (type !== undefined && this.synced) {
-            this.onUpdateSearchInfo(type, info);
-          }
-        }),
+        usi: new USIPlayer(
+          usiEngine,
+          { timeoutSeconds: appSettings.engineTimeoutSeconds },
+          (info) => {
+            if (type !== undefined && this.synced) {
+              this.onUpdateSearchInfo(type, info);
+            }
+          },
+        ),
         paused: false,
       };
     });

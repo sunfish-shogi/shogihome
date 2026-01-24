@@ -343,6 +343,8 @@ export type Texts = {
   beginFromThisPosition: string;
   maxMoves: string;
   gameRepetition: string;
+  parallelism: string;
+  parallelGame: string;
   jishogi: string;
   rule24: string;
   rule27: string;
@@ -705,6 +707,9 @@ export type Texts = {
   bothTimeLimitAndByoyomiAreNotSet: string;
   canNotUseByoyomiWithFischer: string;
   repeatsMustBeOneIfHumanPlayerIncluded: string;
+  parallelismMustBeOneIfHumanPlayerIncluded: string;
+  parallelismMustBeOneIfCurrentPositionIsUsed: string;
+  parallelismMustLessThanOrEqualToRepeats: string;
   protocolVersionNotSelected: string;
   hostNameIsEmpty: string;
   invalidPortNumber: string;

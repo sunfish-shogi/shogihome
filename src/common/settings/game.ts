@@ -3,6 +3,7 @@ import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from ".
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
 import { removeLastSlash } from "@/common/helpers/path.js";
+import { SearchCommentFormat } from "./comment.js";
 
 export type TimeLimitSettings = {
   timeSeconds: number;
@@ -18,10 +19,8 @@ export function defaultTimeLimitSettings(): TimeLimitSettings {
   };
 }
 
-export type GameStartPositionType =
-  | InitialPositionType
-  | "current" // 現局面
-  | "list"; // 局面集
+export type SingleGameStartPositionType = InitialPositionType | "current" /* 現局面 */;
+export type GameStartPositionType = SingleGameStartPositionType | "list" /* 局面集 */;
 
 export enum JishogiRule {
   NONE = "none",
@@ -32,23 +31,32 @@ export enum JishogiRule {
 
 export const DeclarableJishogiRules = [JishogiRule.GENERAL24, JishogiRule.GENERAL27];
 
-export type GameSettings = {
+export type SingleGameSettings = {
   black: PlayerSettings;
   white: PlayerSettings;
   timeLimit: TimeLimitSettings;
   whiteTimeLimit?: TimeLimitSettings;
-  startPosition: GameStartPositionType; // v1.21.0 から undefined を廃止
-  startPositionListFile: string;
-  startPositionListOrder: "sequential" | "shuffle";
+  startPosition: SingleGameStartPositionType; // v1.21.0 から undefined を廃止
   enableEngineTimeout: boolean;
   humanIsFront: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
   autoSaveDirectory: string;
-  repeat: number;
-  swapPlayers: boolean;
   maxMoves: number;
   jishogiRule: JishogiRule;
+  searchCommentFormat: SearchCommentFormat;
+};
+
+export type LinearGameSettings = Omit<SingleGameSettings, "startPosition"> & {
+  startPosition: GameStartPositionType; // v1.21.0 から undefined を廃止
+  startPositionListFile: string;
+  startPositionListOrder: "sequential" | "shuffle";
+  repeat: number;
+  swapPlayers: boolean;
+};
+
+export type GameSettings = LinearGameSettings & {
+  parallelism: number;
 };
 
 export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): GameSettings {
@@ -65,9 +73,11 @@ export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): Game
     enableAutoSave: !!opts?.autoSaveDirectory,
     autoSaveDirectory: removeLastSlash(opts?.autoSaveDirectory || ""),
     repeat: 1,
+    parallelism: 1,
     swapPlayers: false,
     maxMoves: 1000,
     jishogiRule: JishogiRule.GENERAL27,
+    searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   };
 }
 
@@ -131,12 +141,26 @@ export function validateGameSettings(gameSettings: GameSettings): Error | undefi
   if (gameSettings.repeat < 1) {
     return new Error("The number of repeats must be positive.");
   }
+  if (!Number.isInteger(gameSettings.parallelism) || gameSettings.parallelism < 1) {
+    return new Error("Parallelism must be a positive integer.");
+  }
   const containsHuman =
     gameSettings.black.uri === uri.ES_HUMAN || gameSettings.white.uri === uri.ES_HUMAN;
   if (containsHuman && gameSettings.repeat > 1) {
     return new Error(t.repeatsMustBeOneIfHumanPlayerIncluded);
   }
-  return;
+  if (containsHuman && gameSettings.parallelism > 1) {
+    return new Error(t.parallelismMustBeOneIfHumanPlayerIncluded);
+  }
+  if (gameSettings.startPosition === "current" && gameSettings.parallelism > 1) {
+    return new Error(t.parallelismMustBeOneIfCurrentPositionIsUsed);
+  }
+  if (gameSettings.parallelism > gameSettings.repeat) {
+    return new Error(t.parallelismMustLessThanOrEqualToRepeats);
+  }
+  if (gameSettings.parallelism > 10) {
+    return new Error("Parallelism must be 10 or less.");
+  }
 }
 
 export function validateGameSettingsForWeb(gameSettings: GameSettings): Error | undefined {

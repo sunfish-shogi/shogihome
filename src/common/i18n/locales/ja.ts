@@ -348,6 +348,8 @@ export const ja: Texts = {
   beginFromThisPosition: "この局面から開始",
   maxMoves: "最大手数",
   gameRepetition: "連続対局",
+  parallelism: "並列数",
+  parallelGame: "並列対局",
   jishogi: "持将棋",
   rule24: "24点法",
   rule27: "27点法",
@@ -727,6 +729,11 @@ export const ja: Texts = {
   canNotUseByoyomiWithFischer: "秒読みとフィッシャールールは併用できません。",
   repeatsMustBeOneIfHumanPlayerIncluded:
     "人が対局する場合、連続対局の回数は1以外を設定できません。",
+  parallelismMustBeOneIfHumanPlayerIncluded:
+    "人が対局する場合、並列実行数は1以外を設定できません。",
+  parallelismMustBeOneIfCurrentPositionIsUsed:
+    "現在の局面を開始局面にする場合、並列実行数は1以外を設定できません。",
+  parallelismMustLessThanOrEqualToRepeats: "並列実行数は連続対局の回数以下にしてください。",
   protocolVersionNotSelected: "プロトコルのバージョンを選択してください。",
   hostNameIsEmpty: "ホスト名が空です。",
   invalidPortNumber: "無効なポート番号です。",

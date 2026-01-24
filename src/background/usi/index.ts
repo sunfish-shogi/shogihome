@@ -1,4 +1,4 @@
-import { USIEngine, emptyUSIEngine } from "@/common/settings/usi.js";
+import { USIEngine, USIEngineLaunchOptions, emptyUSIEngine } from "@/common/settings/usi.js";
 import { EngineProcess, GameResult as USIGameResult, TimeState, State } from "./engine.js";
 import * as uri from "@/common/uri.js";
 import { GameResult } from "@/common/game/result.js";
@@ -305,12 +305,14 @@ function updateStatsOnClose(sessionID: number): void {
   session.stats.totalUptimeMs += closedMs - session.createdMs;
 }
 
-export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<number> {
+export function setupPlayer(engine: USIEngine, options?: USIEngineLaunchOptions): Promise<number> {
   const sessionID = issueSessionID();
+  const timeoutSeconds = options?.timeoutSeconds || 10;
   const process = new EngineProcess(resolveEnginePath(engine.path), sessionID, getUSILogger(), {
     timeout: timeoutSeconds * 1e3,
     engineOptions: Object.values(engine.options),
     enableEarlyPonder: engine.enableEarlyPonder,
+    discardUSIInfo: options?.discardUSIInfo,
   });
   const session = newSession(process, engine);
   sessions.set(sessionID, session);

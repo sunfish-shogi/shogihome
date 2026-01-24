@@ -338,6 +338,7 @@ const buildConfig = (): CSAGameSettings => {
       ...csaGameSettings.value.server,
       blankLinePing: blankLinePing.value ? blankLinePingSettings.value : undefined,
     },
+    searchCommentFormat: appSettings.searchCommentFormat,
   };
 };
 

@@ -102,7 +102,7 @@ describe("background/usi/index", () => {
   });
 
   it("setOption", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     expect(mockChildProcess.prototype.send).lastCalledWith("usi");
@@ -119,7 +119,7 @@ describe("background/usi/index", () => {
   });
 
   it("go", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     expect(mockChildProcess.prototype.send).lastCalledWith("usi");
@@ -240,7 +240,7 @@ describe("background/usi/index", () => {
         ...testUSIEngine,
         enableEarlyPonder: true,
       },
-      10,
+      { timeoutSeconds: 10 },
     );
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
@@ -267,7 +267,7 @@ describe("background/usi/index", () => {
   });
 
   it("go infinite", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     onReceive("usiok");
@@ -300,7 +300,7 @@ describe("background/usi/index", () => {
   });
 
   it("go mate", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     onReceive("usiok");
@@ -343,7 +343,7 @@ describe("background/usi/index", () => {
   });
 
   it("gameover", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     expect(mockChildProcess.prototype.send).lastCalledWith("usi");
@@ -392,13 +392,13 @@ describe("background/usi/index", () => {
   });
 
   it("quitAll", async () => {
-    const setupPromise0 = setupPlayer(testUSIEngine, 10);
+    const setupPromise0 = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
     const onReceive0 = getChildProcessHandler("receive", 0);
     const onClose0 = getChildProcessHandler("close", 0);
     onReceive0("usiok");
     await setupPromise0;
 
-    const setupPromise1 = setupPlayer(testUSIEngine, 10);
+    const setupPromise1 = setupPlayer(testUSIEngine);
     const onReceive1 = getChildProcessHandler("receive", 1);
     const onClose1 = getChildProcessHandler("close", 1);
     onReceive1("usiok");
@@ -414,7 +414,7 @@ describe("background/usi/index", () => {
   });
 
   it("activeSessionCount", async () => {
-    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const setupPromise = setupPlayer(testUSIEngine);
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     expect(mockChildProcess.prototype.send).lastCalledWith("usi");

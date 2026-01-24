@@ -34,8 +34,8 @@ describe("builder", () => {
         enableEarlyPonder: false,
       },
     };
-    const player = await defaultPlayerBuilder().build(settings);
+    const player = await defaultPlayerBuilder({ timeoutSeconds: 10 }).build(settings);
     expect(player).toBeInstanceOf(USIPlayer);
-    expect(mockAPI.usiLaunch).toBeCalledWith(settings.usi, 10);
+    expect(mockAPI.usiLaunch).toBeCalledWith(settings.usi, { timeoutSeconds: 10 });
   });
 });

@@ -13,9 +13,9 @@ import {
   specialMove,
 } from "tsshogi";
 import { SCORE_MATE_INFINITE } from "@/common/game/usi.js";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/store/record.js";
+import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
 
-describe("store/record", () => {
+describe("record/manager", () => {
   it("new", () => {
     const recordManager = new RecordManager();
     expect(recordManager.unsaved).toBeFalsy();

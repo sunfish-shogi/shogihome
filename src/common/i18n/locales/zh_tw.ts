@@ -345,6 +345,8 @@ export const zh_tw: Texts = {
   beginFromThisPosition: "自此局面開始",
   maxMoves: "最大手數",
   gameRepetition: "連續對局",
+  parallelism: "並列数", // TODO: Translate
+  parallelGame: "並列対局", // TODO: Translate
   jishogi: "持將棋",
   rule24: "24點法",
   rule27: "27點法",
@@ -715,6 +717,11 @@ export const zh_tw: Texts = {
   bothTimeLimitAndByoyomiAreNotSet: "持時間與讀秒尚未設置。",
   canNotUseByoyomiWithFischer: "讀秒與 Fischer 選項無法同時併用。",
   repeatsMustBeOneIfHumanPlayerIncluded: "若要與人對局，連續對局次數僅能設為 1 。",
+  parallelismMustBeOneIfHumanPlayerIncluded:
+    "人が対局する場合、並列実行数は1以外を設定できません。", // TODO: Translate
+  parallelismMustBeOneIfCurrentPositionIsUsed:
+    "現在の局面を開始局面にする場合、並列実行数は1以外を設定できません。", // TODO: Translate
+  parallelismMustLessThanOrEqualToRepeats: "並列実行数は連続対局の回数以下にしてください。", // TODO: Translate
   protocolVersionNotSelected: "請選擇協定版本。",
   hostNameIsEmpty: "主機名稱為空。",
   invalidPortNumber: "不可用的連接埠號碼。",

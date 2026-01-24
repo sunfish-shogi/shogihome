@@ -1,6 +1,6 @@
-import { Clock } from "@/renderer/store/clock.js";
+import { Clock } from "@/renderer/game/clock.js";
 
-describe("store/clock", () => {
+describe("game/clock", () => {
   beforeAll(() => {
     vi.useFakeTimers();
   });

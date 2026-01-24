@@ -26,7 +26,7 @@ describe("store/research", () => {
     mockAPI.usiStop.mockResolvedValue();
     const manager = new ResearchManager();
     await manager.launch(researchSettings);
-    expect(mockAPI.usiLaunch).toBeCalledWith(researchSettings.usi, 10);
+    expect(mockAPI.usiLaunch).toBeCalledWith(researchSettings.usi, { timeoutSeconds: 10 });
     expect(mockAPI.usiReady).toBeCalledTimes(1);
     const record = new Record();
     manager.updatePosition(record);

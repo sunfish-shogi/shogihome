@@ -46,7 +46,7 @@ describe("usi", () => {
     const record1 = Record.newByUSI(usi1) as Record;
     const record2 = Record.newByUSI(usi2) as Record;
     const record3 = Record.newByUSI(usi3) as Record;
-    const player = new USIPlayer(testUSIEngineWithPonder, 10);
+    const player = new USIPlayer(testUSIEngineWithPonder, { timeoutSeconds: 10 });
     await player.launch();
     expect(mockAPI.usiLaunch).toBeCalledTimes(1);
     const searchHandler = {
@@ -113,7 +113,7 @@ describe("usi", () => {
         ...testUSIEngine,
         extraBook: { enabled: true, filePath: "/path/to/book", onTheFly: false },
       },
-      10,
+      { timeoutSeconds: 10 },
     );
     await player.launch();
     expect(mockAPI.openBookAsNewSession).toBeCalledWith("/path/to/book", { forceOnTheFly: false });
@@ -146,7 +146,7 @@ describe("usi", () => {
         ...testUSIEngine,
         extraBook: { enabled: true, filePath: "/path/to/book", onTheFly: false },
       },
-      10,
+      { timeoutSeconds: 10 },
     );
     await player.launch();
     expect(mockAPI.openBookAsNewSession).toBeCalledWith("/path/to/book", { forceOnTheFly: false });
@@ -186,7 +186,7 @@ describe("usi", () => {
         ...testUSIEngineWithPonder,
         extraBook: { enabled: true, filePath: "/path/to/book", onTheFly: false },
       },
-      10,
+      { timeoutSeconds: 10 },
     );
     await player.launch();
     expect(mockAPI.openBookAsNewSession).toBeCalledWith("/path/to/book", { forceOnTheFly: false });
@@ -220,7 +220,7 @@ describe("usi", () => {
     const usi2 = "position startpos moves 7g7f 3c3d 2g2f";
     const record1 = Record.newByUSI(usi1) as Record;
     const record2 = Record.newByUSI(usi2) as Record;
-    const player = new USIPlayer(testUSIEngineWithPonder, 10);
+    const player = new USIPlayer(testUSIEngineWithPonder, { timeoutSeconds: 10 });
     await player.launch();
     const searchHandler = {
       onMove: vi.fn(),
@@ -243,7 +243,7 @@ describe("usi", () => {
     mockAPI.usiGoMate.mockResolvedValueOnce();
     const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
     const record = Record.newByUSI(usi) as Record;
-    const player = new USIPlayer(testUSIEngine, 10);
+    const player = new USIPlayer(testUSIEngine, { timeoutSeconds: 10 });
     await player.launch();
     const handler = {
       onCheckmate: vi.fn(),
@@ -272,7 +272,7 @@ describe("usi", () => {
     mockAPI.usiGoMate.mockResolvedValueOnce();
     const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
     const record = Record.newByUSI(usi) as Record;
-    const player = new USIPlayer(testUSIEngine, 10);
+    const player = new USIPlayer(testUSIEngine, { timeoutSeconds: 10 });
     await player.launch();
     const handler = {
       onCheckmate: vi.fn(),
@@ -298,7 +298,7 @@ describe("usi", () => {
     mockAPI.usiGoMate.mockResolvedValueOnce();
     const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
     const record = Record.newByUSI(usi) as Record;
-    const player = new USIPlayer(testUSIEngine, 10);
+    const player = new USIPlayer(testUSIEngine, { timeoutSeconds: 10 });
     await player.launch();
     const handler = {
       onCheckmate: vi.fn(),
@@ -326,7 +326,7 @@ describe("usi", () => {
     const usi = "position startpos moves 7g7f 3c3d";
     const record = Record.newByUSI(usi) as Record;
     const onSearchInfo = vi.fn();
-    const player = new USIPlayer(testUSIEngine, 10, onSearchInfo);
+    const player = new USIPlayer(testUSIEngine, { timeoutSeconds: 10 }, onSearchInfo);
     await player.launch();
     const searchHandler = {
       onMove: vi.fn(),
