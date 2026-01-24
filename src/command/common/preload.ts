@@ -443,7 +443,7 @@ export function preload(config: Config) {
     sendPromptCommand: () => {},
   });
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const csa = require("@/renderer/store/csa.js");
+  const csa = require("@/renderer/game/csa.js");
   setCSAHandlers({
     ...csa,
     sendPromptCommand: () => {},
