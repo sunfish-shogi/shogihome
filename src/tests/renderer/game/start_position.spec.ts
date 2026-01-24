@@ -50,6 +50,33 @@ describe("game/start_position", () => {
     }
     expect(variations.size).toBe(4);
 
+    // swapping / shuffle / 6 games
+    for (let i = 0; i < 100; i++) {
+      await expect(
+        list.reset({
+          filePath: "path/to/file.sfen",
+          swapPlayers: true,
+          order: "shuffle",
+          maxGames: 6,
+        }),
+      ).resolves.toBeUndefined();
+      const first = list.next();
+      const second = list.next();
+      const third = list.next();
+      const fourth = list.next();
+      const fifth = list.next();
+      const sixth = list.next();
+      expect(first).match(/^position startpos moves /);
+      expect(third).match(/^position startpos moves /);
+      expect(fifth).match(/^position startpos moves /);
+      expect(second).toBe(first);
+      expect(third).not.toBe(first);
+      expect(fourth).toBe(third);
+      expect(fifth).not.toBe(first);
+      expect(fifth).not.toBe(third);
+      expect(sixth).toBe(fifth);
+    }
+
     // swapping / sequential / 4 games
     await expect(
       list.reset({
