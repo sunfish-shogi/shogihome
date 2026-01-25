@@ -830,9 +830,6 @@ export const en: Texts = {
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
     return `The total number of threads exceeds ${n}% of CPU cores.`;
   },
-  totalNumberOfThreadsIsLessThanNPercentOfCpuCores(n: number): string {
-    return `The total number of threads is less than ${n}% of CPU cores.`;
-  },
   memoryUsageExceedsNPercent(n: number): string {
     return `Memory usage exceeds ${n}%.`;
   },

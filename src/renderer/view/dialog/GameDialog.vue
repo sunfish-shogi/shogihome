@@ -196,25 +196,6 @@
               max="10"
             />
           </div>
-          <div v-if="cpuUsage > 1.0" class="form-group danger">
-            {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
-          </div>
-          <div v-else-if="cpuUsage > 0.75" class="form-group warning">
-            {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(75) }}
-          </div>
-          <div v-else-if="cpuUsage > 0 && cpuUsage < 0.5" class="form-group warning">
-            {{ t.totalNumberOfThreadsIsLessThanNPercentOfCpuCores(50)
-            }}{{ t.increasingItMayImproveAIPerformance }}
-          </div>
-          <div v-if="memoryUsage > 1.0" class="form-group danger">
-            {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
-          </div>
-          <div v-else-if="memoryUsage > 0.9" class="form-group warning">
-            {{ t.totalUSIHashExceedsNPercentOfMemory(90) }}
-          </div>
-          <div v-else-if="memoryUsage > 0 && memoryUsage < 0.2" class="form-group warning">
-            {{ t.memoryUsageIsLessThanNPercent(20) }}{{ t.increasingItMayImproveAIPerformance }}
-          </div>
           <div class="form-item">
             <div class="form-item-label">{{ t.jishogi }}</div>
             <select v-model="gameSettings.jishogiRule">
@@ -259,6 +240,18 @@
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="cpuUsage > 1.0" class="form-group danger">
+      {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
+    </div>
+    <div v-else-if="cpuUsage > 0.9" class="form-group warning">
+      {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(90) }}
+    </div>
+    <div v-if="memoryUsage > 1.0" class="form-group danger">
+      {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
+    </div>
+    <div v-else-if="memoryUsage > 0.8" class="form-group warning">
+      {{ t.totalUSIHashExceedsNPercentOfMemory(80) }}
     </div>
     <div class="main-buttons">
       <button data-hotkey="Enter" autofocus @click="onStart()">
@@ -371,7 +364,8 @@ const cpuUsage = computed(() => {
   }
   const blackThreads = getEngineThreads(blackPlayerURI.value);
   const whiteThreads = getEngineThreads(whitePlayerURI.value);
-  const ponderEnabled = getEnginePonder(blackPlayerURI.value) || getEnginePonder(whitePlayerURI.value);
+  const ponderEnabled =
+    getEnginePonder(blackPlayerURI.value) || getEnginePonder(whitePlayerURI.value);
   const perGameThreads = ponderEnabled
     ? blackThreads + whiteThreads
     : Math.max(blackThreads, whiteThreads);
