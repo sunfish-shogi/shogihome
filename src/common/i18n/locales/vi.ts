@@ -330,6 +330,8 @@ export const vi: Texts = {
   gote: "Hậu thủ",
   goteOrUwate: "Hậu thủ (Thượng thủ)",
   uwate: "Thượng thủ",
+  targetEngine: "検査対象エンジン", // TODO: Translate
+  baseEngine: "基準エンジン", // TODO: Translate
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "Furigoma",
   currentPosition: "Thế cờ hiện tại",

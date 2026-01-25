@@ -96,6 +96,8 @@ const selectTurn = (turn: Color) => {
     maxMoves: 1000,
     jishogiRule: JishogiRule.NONE,
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
+    sprtEnabled: false,
+    sprt: { elo0: 0, elo1: 3, alpha: 0.05, beta: 0.05, maxGames: 10000 },
   });
   emit("close");
 };
