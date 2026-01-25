@@ -581,6 +581,9 @@ class Store {
     info: USIInfoCommand,
     ponderMove?: Move,
   ): void {
+    if (this.appState === AppState.PARALLEL_GAME) {
+      return;
+    }
     const appSettings = useAppSettings();
     this.usiMonitor.update(
       sessionID,
@@ -624,7 +627,7 @@ class Store {
         if (settings.parallelism >= 2) {
           const playerBuilder = defaultPlayerBuilder({
             timeoutSeconds: appSettings.engineTimeoutSeconds,
-            discardUSIInfo: true,
+            discardUSIInfo: !settings.enableComment,
           });
           await this.parallelGameManager.start(settings, playerBuilder);
           this._appState = AppState.PARALLEL_GAME;
