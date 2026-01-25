@@ -830,6 +830,9 @@ export const ja: Texts = {
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
     return `スレッド数の合計がCPUコア数の${n}%を超えています。`;
   },
+  totalNumberOfThreadsIsLessThanNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%未満です。`;
+  },
   memoryUsageExceedsNPercent(n: number): string {
     return `全メモリの${n}%を超えています。`;
   },

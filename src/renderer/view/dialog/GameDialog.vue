@@ -196,6 +196,25 @@
               max="10"
             />
           </div>
+          <div v-if="cpuUsage > 1.0" class="form-group danger">
+            {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
+          </div>
+          <div v-else-if="cpuUsage > 0.75" class="form-group warning">
+            {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(75) }}
+          </div>
+          <div v-else-if="cpuUsage > 0 && cpuUsage < 0.5" class="form-group warning">
+            {{ t.totalNumberOfThreadsIsLessThanNPercentOfCpuCores(50)
+            }}{{ t.increasingItMayImproveAIPerformance }}
+          </div>
+          <div v-if="memoryUsage > 1.0" class="form-group danger">
+            {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
+          </div>
+          <div v-else-if="memoryUsage > 0.9" class="form-group warning">
+            {{ t.totalUSIHashExceedsNPercentOfMemory(90) }}
+          </div>
+          <div v-else-if="memoryUsage > 0 && memoryUsage < 0.2" class="form-group warning">
+            {{ t.memoryUsageIsLessThanNPercent(20) }}{{ t.increasingItMayImproveAIPerformance }}
+          </div>
           <div class="form-item">
             <div class="form-item-label">{{ t.jishogi }}</div>
             <select v-model="gameSettings.jishogiRule">
@@ -254,8 +273,17 @@
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { USIEngine, USIEngines, getPredefinedUSIEngineTag } from "@/common/settings/usi";
-import { ref, onMounted } from "vue";
+import {
+  getPredefinedUSIEngineTag,
+  getUSIEngineOptionCurrentValue,
+  getUSIEnginePonder,
+  getUSIEngineThreads,
+  USIEngine,
+  USIEngineMetadata,
+  USIEngines,
+  USIHash,
+} from "@/common/settings/usi";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import api, { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
@@ -276,6 +304,7 @@ import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "./DialogFrame.vue";
 import { useAppSettings } from "@/renderer/store/settings";
+import { MachineSpec } from "@/common/advanced/monitor";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -291,8 +320,10 @@ const setDifferentTime = ref(false);
 const startPositionListShuffle = ref(false);
 const gameSettings = ref(defaultGameSettings());
 const engines = ref(new USIEngines());
+const engineMetadataMap = reactive(new Map<string, USIEngineMetadata>());
 const blackPlayerURI = ref("");
 const whitePlayerURI = ref("");
+const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 
 busyState.retain();
 
@@ -313,6 +344,7 @@ onMounted(async () => {
     whiteIncrement.value = whiteTimeLimit.increment;
     setDifferentTime.value = !!gameSettings.value.whiteTimeLimit;
     startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
+    machineSpec.value = await api.getMachineSpec();
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -320,6 +352,79 @@ onMounted(async () => {
     busyState.release();
   }
 });
+
+watch(() => blackPlayerURI.value, loadMetadataIfNeeded);
+watch(() => whitePlayerURI.value, loadMetadataIfNeeded);
+
+function loadMetadataIfNeeded(uri: string) {
+  const engine = engines.value.getEngine(uri);
+  if (uri && !engineMetadataMap.has(uri) && engine) {
+    api.getUSIEngineMetadata(engine.path).then((meta) => {
+      engineMetadataMap.set(uri, meta);
+    });
+  }
+}
+
+const cpuUsage = computed(() => {
+  if (machineSpec.value.cpuCores === 0) {
+    return 0;
+  }
+  const blackThreads = getEngineThreads(blackPlayerURI.value);
+  const whiteThreads = getEngineThreads(whitePlayerURI.value);
+  const ponderEnabled = getEnginePonder(blackPlayerURI.value) || getEnginePonder(whitePlayerURI.value);
+  const perGameThreads = ponderEnabled
+    ? blackThreads + whiteThreads
+    : Math.max(blackThreads, whiteThreads);
+  return (perGameThreads * gameSettings.value.parallelism) / machineSpec.value.cpuCores;
+});
+
+const memoryUsage = computed(() => {
+  if (machineSpec.value.memory === 0) {
+    return 0;
+  }
+  const blackHash = getEngineHash(blackPlayerURI.value);
+  const whiteHash = getEngineHash(whitePlayerURI.value);
+  const usiHashSum = (blackHash + whiteHash) * gameSettings.value.parallelism;
+  return (usiHashSum * 1024) / machineSpec.value.memory;
+});
+
+function getEngineThreads(playerURI: string): number {
+  const engine = engines.value.getEngine(playerURI);
+  if (!engine) {
+    return 0;
+  }
+  const metadata = engineMetadataMap.get(playerURI);
+  if (!metadata || metadata.isShellScript) {
+    return 0;
+  }
+  const threads = getUSIEngineThreads(engine);
+  return typeof threads === "number" ? threads : 0;
+}
+
+function getEngineHash(playerURI: string): number {
+  const engine = engines.value.getEngine(playerURI);
+  if (!engine) {
+    return 0;
+  }
+  const metadata = engineMetadataMap.get(playerURI);
+  if (!metadata || metadata.isShellScript) {
+    return 0;
+  }
+  const usiHash = getUSIEngineOptionCurrentValue(engine.options[USIHash]);
+  return typeof usiHash === "number" ? usiHash : 0;
+}
+
+function getEnginePonder(playerURI: string): boolean {
+  const engine = engines.value.getEngine(playerURI);
+  if (!engine) {
+    return false;
+  }
+  const metadata = engineMetadataMap.get(playerURI);
+  if (!metadata || metadata.isShellScript) {
+    return false;
+  }
+  return getUSIEnginePonder(engine);
+}
 
 const buildPlayerSettings = (playerURI: string): PlayerSettings => {
   if (uri.isUSIEngine(playerURI) && engines.value.hasEngine(playerURI)) {

@@ -769,6 +769,7 @@ export type Texts = {
   skippedMovesInMerge(skipped: number, total: number): string;
   cpuUsageExceedsNPercent(n: number): string;
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string;
+  totalNumberOfThreadsIsLessThanNPercentOfCpuCores(n: number): string;
   memoryUsageExceedsNPercent(n: number): string;
   memoryUsageIsLessThanNPercent(n: number): string;
   totalUSIHashExceedsNPercentOfMemory(n: number): string;

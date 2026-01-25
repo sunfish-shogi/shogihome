@@ -826,6 +826,9 @@ export const vi: Texts = {
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
     return `スレッド数の合計がCPUコア数の${n}%を超えています。`; // TODO: Translate
   },
+  totalNumberOfThreadsIsLessThanNPercentOfCpuCores(n: number): string {
+    return `スレッド数の合計がCPUコア数の${n}%未満です。`; // TODO: Translate
+  },
   memoryUsageExceedsNPercent(n: number): string {
     return `全メモリの${n}%を超えています。`; // TODO: Translate
   },
