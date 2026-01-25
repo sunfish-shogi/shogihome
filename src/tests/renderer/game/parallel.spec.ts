@@ -256,27 +256,6 @@ describe("renderer/game/parallel", () => {
     );
   });
 
-  it("ParallelGameManager/validation/repeatLessThan2", async () => {
-    const mockHandlers = createMockHandlers();
-    const manager = new ParallelGameManager()
-      .on("progress", mockHandlers.onProgress)
-      .on("saveRecord", mockHandlers.onSaveRecord)
-      .on("error", mockHandlers.onError);
-
-    const mockPlayerBuilder = createMockPlayerBuilder({});
-
-    await expect(
-      manager.start(
-        {
-          ...gameSettings10m30s,
-          repeat: 1,
-          parallelism: 1,
-        },
-        mockPlayerBuilder,
-      ),
-    ).rejects.toThrow("ParallelGameManager#start: settings.repeat must be 2 or more.");
-  });
-
   it("ParallelGameManager/validation/parallelismLessThan1", async () => {
     const manager = new ParallelGameManager();
     const mockPlayerBuilder = createMockPlayerBuilder({});

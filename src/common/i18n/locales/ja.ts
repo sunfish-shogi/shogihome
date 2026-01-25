@@ -330,6 +330,8 @@ export const ja: Texts = {
   gote: "後手",
   goteOrUwate: "後手（上手）",
   uwate: "上手",
+  targetEngine: "検査対象エンジン",
+  baseEngine: "基準エンジン",
   swapSenteGote: "先後入れ替え",
   pieceToss: "振り駒",
   currentPosition: "現在の局面",

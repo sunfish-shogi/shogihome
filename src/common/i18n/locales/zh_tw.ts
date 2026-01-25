@@ -327,6 +327,8 @@ export const zh_tw: Texts = {
   gote: "後手",
   goteOrUwate: "後手（上手）",
   uwate: "上手",
+  targetEngine: "検査対象エンジン", // TODO: Translate
+  baseEngine: "基準エンジン", // TODO: Translate
   swapSenteGote: "先後交換",
   pieceToss: "振駒",
   currentPosition: "現在局面",

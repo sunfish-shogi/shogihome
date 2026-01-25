@@ -60,3 +60,23 @@ export function calculateGameStatistics(results: GameResults): GameStatistics {
     significance1pc: zValue > Z_VALUE_99,
   };
 }
+
+export type SPRTResult = "accept" | "reject" | "inconclusive";
+
+export type SPRTSummary = {
+  elo0: number;
+  elo1: number;
+  alpha: number;
+  beta: number;
+  pentanomial: {
+    loseLose: number;
+    loseDraw: number;
+    drawDrawOrWinLose: number;
+    winDraw: number;
+    winWin: number;
+  };
+  llr: number;
+  lowerBound: number;
+  upperBound: number;
+  result: SPRTResult;
+};
