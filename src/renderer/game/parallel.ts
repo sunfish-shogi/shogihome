@@ -6,6 +6,7 @@ import { PlayerBuilder } from "@/renderer/players/builder.js";
 import { buildGameCoordinator } from "./coordinator.js";
 import { GameResults, newGameResults } from "./result.js";
 import { RecordMetadataKey } from "tsshogi";
+import { GameResult } from "@/common/game/result.js";
 
 export type WorkerStats = {
   gameCount: number;
@@ -33,6 +34,14 @@ export class ParallelGameManager {
   private settings = defaultGameSettings();
   private _workers: Worker[] = [];
   private runningWorkers = 0;
+  private sprtPairResults = new Map<number, GameResult[]>();
+  private sprtPairCounts = {
+    loseLose: 0,
+    loseDraw: 0,
+    drawDrawOrWinLose: 0,
+    winDraw: 0,
+    winWin: 0,
+  };
 
   private onProgress: ProgressCallback = () => {
     /* noop */
@@ -88,6 +97,14 @@ export class ParallelGameManager {
 
     this._workers = [];
     this.runningWorkers = 0;
+    this.sprtPairResults.clear();
+    this.sprtPairCounts = {
+      loseLose: 0,
+      loseDraw: 0,
+      drawDrawOrWinLose: 0,
+      winDraw: 0,
+      winWin: 0,
+    };
     try {
       for (let i = 0; i < settings.parallelism; i++) {
         const recordManager = new RecordManager();
@@ -119,6 +136,9 @@ export class ParallelGameManager {
               gameResults: this.results,
             });
           })
+          .on("gameResult", (summary) => {
+            this.trackSprtPairResult(summary.pairIndex, summary.result);
+          })
           .on("closed", () => {
             worker.currentGameTitle = undefined;
             worker.currentBlackPlayerName = undefined;
@@ -128,6 +148,7 @@ export class ParallelGameManager {
             if (this.runningWorkers === 0) {
               const results = this.results;
               this._workers = [];
+              console.log("SPRT pair stats", this.sprtPairCounts);
               this.onClosed(results);
             }
           })
@@ -167,5 +188,29 @@ export class ParallelGameManager {
       results.total += workerResults.total;
     }
     return results;
+  }
+
+  private trackSprtPairResult(pairIndex: number, result: GameResult): void {
+    const pairResults = this.sprtPairResults.get(pairIndex) ?? [];
+    pairResults.push(result);
+    if (pairResults.length < 2) {
+      this.sprtPairResults.set(pairIndex, pairResults);
+      return;
+    }
+    this.sprtPairResults.delete(pairIndex);
+    const winCount = pairResults.filter((item) => item === GameResult.WIN).length;
+    const loseCount = pairResults.filter((item) => item === GameResult.LOSE).length;
+    const drawCount = pairResults.filter((item) => item === GameResult.DRAW).length;
+    if (winCount === 2) {
+      this.sprtPairCounts.winWin++;
+    } else if (winCount === 1 && drawCount === 1) {
+      this.sprtPairCounts.winDraw++;
+    } else if (loseCount === 2) {
+      this.sprtPairCounts.loseLose++;
+    } else if (loseCount === 1 && drawCount === 1) {
+      this.sprtPairCounts.loseDraw++;
+    } else if ((winCount === 1 && loseCount === 1) || drawCount === 2) {
+      this.sprtPairCounts.drawDrawOrWinLose++;
+    }
   }
 }

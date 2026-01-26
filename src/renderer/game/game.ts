@@ -45,6 +45,12 @@ enum GameState {
 
 type SaveRecordCallback = (dir: string) => void;
 type GameNextCallback = () => void;
+type GameResultSummary = {
+  gameIndex: number;
+  pairIndex: number;
+  result: GameResult;
+};
+type GameResultCallback = (summary: GameResultSummary) => void;
 type ClosedCallback = (results: GameResults, specialMoveType: SpecialMoveType) => void;
 type FlipBoardCallback = (flip: boolean) => void;
 type PieceBeatCallback = () => void;
@@ -65,11 +71,15 @@ export class GameManager {
   private swapped = false;
   private playerBuilder = defaultPlayerBuilder();
   private _results: GameResults = newGameResults("", "");
+  private currentGameConditions?: GameConditions;
   private lastEventID = 0;
   private onSaveRecord: SaveRecordCallback = () => {
     /* noop */
   };
   private onGameNext: GameNextCallback = () => {
+    /* noop */
+  };
+  private onGameResult: GameResultCallback = () => {
     /* noop */
   };
   private onClosed: ClosedCallback = () => {
@@ -102,6 +112,7 @@ export class GameManager {
 
   on(event: "saveRecord", handler: SaveRecordCallback): this;
   on(event: "gameNext", handler: GameNextCallback): this;
+  on(event: "gameResult", handler: GameResultCallback): this;
   on(event: "closed", handler: ClosedCallback): this;
   on(event: "flipBoard", handler: FlipBoardCallback): this;
   on(event: "pieceBeat", handler: PieceBeatCallback): this;
@@ -116,6 +127,9 @@ export class GameManager {
         break;
       case "gameNext":
         this.onGameNext = handler as GameNextCallback;
+        break;
+      case "gameResult":
+        this.onGameResult = handler as GameResultCallback;
         break;
       case "closed":
         this.onClosed = handler as ClosedCallback;
@@ -214,6 +228,7 @@ export class GameManager {
     if (gameConditions.swapPlayers !== this.swapped) {
       this.swapPlayers();
     }
+    this.currentGameConditions = gameConditions;
     // 対局のメタデータを設定する。
     this.recordManager.setGameStartMetadata({
       gameTitle: gameConditions.gameTitle,
@@ -500,7 +515,14 @@ export class GameManager {
         });
         this.recordManager.setGameEndMetadata();
         // 連続対局の記録に追加する。
-        this.addGameResults(color, specialMoveType);
+        const gameResult = this.addGameResults(color, specialMoveType);
+        if (gameResult && this.currentGameConditions) {
+          this.onGameResult({
+            gameIndex: this.currentGameConditions.gameIndex,
+            pairIndex: this.currentGameConditions.pairIndex,
+            result: gameResult,
+          });
+        }
         // 自動保存が有効な場合は棋譜を保存する。
         if (this.coordinator.enableAutoSave) {
           this.onSaveRecord(this.coordinator.autoSaveDirectory);
@@ -546,7 +568,7 @@ export class GameManager {
     this.recordManager.updateSearchInfo(senderType, info);
   }
 
-  private addGameResults(color: Color, specialMoveType: SpecialMoveType): void {
+  private addGameResults(color: Color, specialMoveType: SpecialMoveType): GameResult | null {
     const player1Color = this.swapped ? Color.WHITE : Color.BLACK;
     const gameResult = specialMoveToPlayerGameResult(color, player1Color, specialMoveType);
     switch (gameResult) {
@@ -574,6 +596,7 @@ export class GameManager {
         break;
     }
     this._results.total++;
+    return gameResult;
   }
 
   private swapPlayers(): void {
