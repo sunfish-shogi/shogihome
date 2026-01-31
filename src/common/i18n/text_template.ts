@@ -197,6 +197,8 @@ export type Texts = {
   changeTurn: string;
   initializePosition: string;
   changePieceSet: string;
+  setAllPiecesToStandardCounts: string;
+  setAllPiecesToZero: string;
   appSettings: string;
   language: string;
   theme: string;

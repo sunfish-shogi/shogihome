@@ -15,6 +15,10 @@
             />
           </div>
         </div>
+        <button class="bulk thin" @click="setStandardCounts">
+          {{ t.setAllPiecesToStandardCounts }}
+        </button>
+        <button class="bulk thin" @click="setAllZero">{{ t.setAllPiecesToZero }}</button>
       </div>
       <div class="main-buttons">
         <button data-hotkey="Enter" autofocus @click="ok()">
@@ -65,6 +69,30 @@ const counts = ref(
   ),
 );
 
+// 平手の駒数
+const standardCounts = {
+  [PieceType.KING]: 2,
+  [PieceType.ROOK]: 2,
+  [PieceType.BISHOP]: 2,
+  [PieceType.GOLD]: 4,
+  [PieceType.SILVER]: 4,
+  [PieceType.KNIGHT]: 4,
+  [PieceType.LANCE]: 4,
+  [PieceType.PAWN]: 18,
+} as Record<PieceType, number>;
+
+const setStandardCounts = () => {
+  for (const pieceType of pieceTypes) {
+    counts.value[pieceType] = standardCounts[pieceType];
+  }
+};
+
+const setAllZero = () => {
+  for (const pieceType of pieceTypes) {
+    counts.value[pieceType] = 0;
+  }
+};
+
 const ok = () => {
   const update = Object.fromEntries(
     pieceTypes.map((pieceType) => {
@@ -94,5 +122,9 @@ const cancel = () => {
 }
 .number {
   width: 3em;
+}
+button.bulk {
+  width: 100%;
+  margin-top: 0.5em;
 }
 </style>

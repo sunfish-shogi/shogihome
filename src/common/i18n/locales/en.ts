@@ -202,6 +202,8 @@ export const en: Texts = {
   changeTurn: "Change Turn",
   initializePosition: "Initialize Position",
   changePieceSet: "Change Piece Set",
+  setAllPiecesToStandardCounts: "Set All Pieces to Standard Counts",
+  setAllPiecesToZero: "Set All Pieces to Zero",
   appSettings: "Preferences",
   language: "Languages",
   theme: "Theme",

@@ -199,6 +199,8 @@ export const zh_tw: Texts = {
   changeTurn: "變更手番",
   initializePosition: "初始化局面",
   changePieceSet: "調整棋駒數",
+  setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
+  setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
   appSettings: "程式設定",
   language: "語言",
   theme: "主題",
