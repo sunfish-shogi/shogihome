@@ -70,7 +70,7 @@ const counts = ref(
 );
 
 // 平手の駒数
-const standardCounts: Record<PieceType, number> = {
+const standardCounts = {
   [PieceType.KING]: 2,
   [PieceType.ROOK]: 2,
   [PieceType.BISHOP]: 2,
