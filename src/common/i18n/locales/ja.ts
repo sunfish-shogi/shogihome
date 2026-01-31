@@ -202,6 +202,8 @@ export const ja: Texts = {
   changeTurn: "手番変更",
   initializePosition: "局面の初期化",
   changePieceSet: "駒の増減",
+  setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする",
+  setAllPiecesToZero: "全ての駒を0にする",
   appSettings: "アプリ設定",
   language: "言語",
   theme: "テーマ",

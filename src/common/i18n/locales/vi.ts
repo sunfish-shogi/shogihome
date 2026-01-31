@@ -202,6 +202,8 @@ export const vi: Texts = {
   changeTurn: "Đổi lượt đi",
   initializePosition: "Đặt lại thế cờ",
   changePieceSet: "Tăng giảm quân",
+  setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
+  setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",
