@@ -73,7 +73,7 @@ export const vi: Texts = {
   copyUSILogTailCommand: "Sao chép lệnh kết thúc log USI",
   copyCSALogTailCommand: "Sao chép lệnh kết thúc log CSA",
   reloadCustomPieceImage: "Tải lại ảnh quân tùy chỉnh",
-  statisticsReport: "統計情報", // TODO: Translate
+  statisticsReport: "Thống kê",
   launchUSIEngine: "Khởi động phần mềm shogi",
   connectToCSAServer: "Kết nối với máy chủ CSA",
   adminMode: "Chế độ nâng cao",
@@ -267,7 +267,7 @@ export const vi: Texts = {
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
-  minimal: "最小限", // TODO: Translate
+  minimal: "Nhỏ nhất",
   pasteDialog: "Hộp thoại dán",
   liveDuplicatePositionDetection: "Tự động tìm thế cờ lặp lại",
   onTheFlyThreshold: "Giá trị On-the-fly",
@@ -286,7 +286,7 @@ export const vi: Texts = {
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",
-  folder: "フォルダ", // TODO: Translate
+  folder: "Tập tin",
   recordFile: "Tệp kỳ phổ",
   executableFile: "Tệp phần mềm",
   imageFile: "Tệp ảnh",
@@ -297,9 +297,9 @@ export const vi: Texts = {
   comments: "Bình luận",
   commentsAndBookmarks: "Bình luận & đánh dấu",
   branches: "Nhánh",
-  branchListMode: "分岐の表示", // TODO: Translate
-  previousMoveBranches: "着手した手", // TODO: Translate
-  nextMoveBranches: "次の手", // TODO: Translate
+  branchListMode: "Hiển thị các nhánh",
+  previousMoveBranches: "Các nước đã đi",
+  nextMoveBranches: "Nước tiếp theo",
   bookmark: "Đánh dấu",
   bookmarkList: "Đánh dấu",
   useBookmarkAsHeader: "Sử dụng đánh dấu làm đầu đề",
@@ -344,14 +344,14 @@ export const vi: Texts = {
   searchEngine: "Phần mềm",
   ponder: "Đọc trước",
   numberOfThreads: "Luồng",
-  threads: "スレッド", // TODO: Translate
+  threads: "Luồng",
   suggestionsCount: "Số nước đề xuất",
   startPosition: "Thế cờ ban đầu",
   beginFromThisPosition: "Bắt đầu từ thế cờ này",
   maxMoves: "Số nước tối đa",
   gameRepetition: "Lặp lại thế cờ",
-  parallelism: "並列数", // TODO: Translate
-  parallelGame: "並列対局", // TODO: Translate
+  parallelism: "Số ván song song",
+  parallelGame: "Ván song song",
   jishogi: "Bế tắc",
   rule24: "Luật 24 điểm",
   rule27: "Luật 27 điểm",
@@ -388,9 +388,9 @@ export const vi: Texts = {
   hoursSuffix: "h",
   minutesSuffix: "p",
   secondsSuffix: "s",
-  eg: "e.g.", // TODO: translate
-  totalMoves: "総手数", // TODO: translate
-  detailSettings: "詳細設定", // TODO: translate
+  eg: "vd.",
+  totalMoves: "Tổng số nước", 
+  detailSettings: "Cài đặt chi tiết",
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
   author: "Tác giả",
@@ -399,8 +399,8 @@ export const vi: Texts = {
   openDirectory: "Mở đường dẫn",
   replaceEnginePath: "Chọn lại đường dẫn phần mềm",
   displayName: "Tên hiển thị",
-  frontendBook: "定跡 (GUI拡張)", // TODO: Translate
-  showAllOptions: "全てのオプションを表示", // TODO: Translate
+  frontendBook: "Định thức (mở rộng GUI)",
+  showAllOptions: "Hiển thị tất cả cài đặt",
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
   defaultValue: "Giá trị mặc định",
@@ -633,9 +633,9 @@ export const vi: Texts = {
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
-  hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。", // TODO: Translate
-  hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。", // TODO: Translate
-  pleaseDisableHWAAndRestart: "アプリ設定からHWAを無効にしてアプリを再起動してください。", // TODO: Translate
+  hwaEnabled: "Đã bật gia tốc phần cứng (HWA).",
+  hwaIsNotRecommendedForLongGames: "Vui lòng tắt HWA nếu ván cờ kéo dài.",
+  pleaseDisableHWAAndRestart: "Vui lòng tắt HWA trong mục cài đặt và khởi động lại ứng dụng.",
   notSendPVOnStandardCSAProtocol: "PV không được gửi trong phương thức CSA tiêu chuẩn.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",
@@ -730,10 +730,10 @@ export const vi: Texts = {
   canNotUseByoyomiWithFischer: "Bạn không thể dùng byoyomi với chế độ Fischer.",
   repeatsMustBeOneIfHumanPlayerIncluded: "Nếu có người chơi, số lần lặp lại phải là 1.",
   parallelismMustBeOneIfHumanPlayerIncluded:
-    "人が対局する場合、並列実行数は1以外を設定できません。", // TODO: Translate
+    "Nếu có người thi đấu, số ván song song phải là 1.",
   parallelismMustBeOneIfCurrentPositionIsUsed:
-    "現在の局面を開始局面にする場合、並列実行数は1以外を設定できません。", // TODO: Translate
-  parallelismMustLessThanOrEqualToRepeats: "並列実行数は連続対局の回数以下にしてください。", // TODO: Translate
+    "Nếu bắt đầu bằng thế cờ hiện tại, số ván song song phải là 1.",
+  parallelismMustLessThanOrEqualToRepeats: "Vui lòng đặt số ván song song không quá số ván liên tục.",
   protocolVersionNotSelected: "Chưa chọn phiên bản phương thức.",
   hostNameIsEmpty: "Tên máy chủ trống.",
   invalidPortNumber: "Cổng không hợp lệ.",
@@ -748,7 +748,7 @@ export const vi: Texts = {
   forExportingConversionLogPleaseEnableAppLogsAndSetLogLevelDebugAndRestart:
     "Để xuất log chuyển đổi, vui lòng bật log ứng dụng, đặt cấp độ log thành DEBUG và khởi động lại ứng dụng.",
   sourceDirectoryNotSpecified: "Đường dẫn nguồn chưa được đặt.",
-  sourceFileMustBeSFEN: "入力ファイルは .sfen 形式でなければなりません。", // TODO: Translate
+  sourceFileMustBeSFEN: "Tên tập tin phải có đuôi .sfen.",
   sourceFormatsNotSpecified: "Định dạng nguồn chưa được đặt.",
   destinationDirectoryNotSpecified: "Đường dẫn đến chưa được đặt.",
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",
@@ -768,10 +768,10 @@ export const vi: Texts = {
   largeSuggestionsCountMayCausePerformanceDegradation:
     "Số nước đề xuất quá lớn có thể làm ứng dụng chậm đi đáng kể.",
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",
-  recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。", // TODO: Translate
-  aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。", // TODO: Translate
-  yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。", // TODO: Translate
-  increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。", // TODO: Translate
+  recommendLowerSettingsForDailyUse: "Nên sử dụng cài đặt thấp hơn cho PC thông thường.",
+  aiPerformanceMayDegrade: "Tính năng phần mềm có thể suy giảm.",
+  yourPCMayBecomeSlow: "Thao tác PC có thể bị chậm lại.",
+  increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.", 
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,
@@ -823,18 +823,18 @@ export const vi: Texts = {
     return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`;
   },
   cpuUsageExceedsNPercent(n: number): string {
-    return `全CPUコアの${n}%を超えています。`; // TODO: Translate
+    return `Đang sử dụng quá ${n}% CPU.`; 
   },
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
-    return `スレッド数の合計がCPUコア数の${n}%を超えています。`; // TODO: Translate
+    return `Số luồng vượt quá ${n}% số lõi CPU.`;
   },
   memoryUsageExceedsNPercent(n: number): string {
-    return `全メモリの${n}%を超えています。`; // TODO: Translate
+    return `Sử dụng RAM vượt quá ${n}%.`;
   },
   memoryUsageIsLessThanNPercent(n: number): string {
-    return `全メモリの${n}%未満です。`; // TODO: Translate
+    return `Sử dụng RAM ít hơn ${n}%.`;
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
-    return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
+    return `Tổng USI_HASH vượt quá ${n}% RAM.`;
   },
 };
