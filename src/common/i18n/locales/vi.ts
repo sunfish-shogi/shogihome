@@ -389,7 +389,7 @@ export const vi: Texts = {
   minutesSuffix: "p",
   secondsSuffix: "s",
   eg: "vd.",
-  totalMoves: "Tổng số nước", 
+  totalMoves: "Tổng số nước",
   detailSettings: "Cài đặt chi tiết",
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
@@ -729,11 +729,11 @@ export const vi: Texts = {
   bothTimeLimitAndByoyomiAreNotSet: "Thời gian và byoyomi chưa được đặt.",
   canNotUseByoyomiWithFischer: "Bạn không thể dùng byoyomi với chế độ Fischer.",
   repeatsMustBeOneIfHumanPlayerIncluded: "Nếu có người chơi, số lần lặp lại phải là 1.",
-  parallelismMustBeOneIfHumanPlayerIncluded:
-    "Nếu có người thi đấu, số ván song song phải là 1.",
+  parallelismMustBeOneIfHumanPlayerIncluded: "Nếu có người thi đấu, số ván song song phải là 1.",
   parallelismMustBeOneIfCurrentPositionIsUsed:
     "Nếu bắt đầu bằng thế cờ hiện tại, số ván song song phải là 1.",
-  parallelismMustLessThanOrEqualToRepeats: "Vui lòng đặt số ván song song không quá số ván liên tục.",
+  parallelismMustLessThanOrEqualToRepeats:
+    "Vui lòng đặt số ván song song không quá số ván liên tục.",
   protocolVersionNotSelected: "Chưa chọn phiên bản phương thức.",
   hostNameIsEmpty: "Tên máy chủ trống.",
   invalidPortNumber: "Cổng không hợp lệ.",
@@ -771,7 +771,7 @@ export const vi: Texts = {
   recommendLowerSettingsForDailyUse: "Nên sử dụng cài đặt thấp hơn cho PC thông thường.",
   aiPerformanceMayDegrade: "Tính năng phần mềm có thể suy giảm.",
   yourPCMayBecomeSlow: "Thao tác PC có thể bị chậm lại.",
-  increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.", 
+  increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.",
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,
@@ -823,7 +823,7 @@ export const vi: Texts = {
     return `Trong ${total} nước, đã không thể sáp nhập ${skipped} nước.`;
   },
   cpuUsageExceedsNPercent(n: number): string {
-    return `Đang sử dụng quá ${n}% CPU.`; 
+    return `Đang sử dụng quá ${n}% CPU.`;
   },
   totalNumberOfThreadsExceedsNPercentOfCpuCores(n: number): string {
     return `Số luồng vượt quá ${n}% số lõi CPU.`;
