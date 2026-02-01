@@ -78,7 +78,7 @@
     "@types/semver": "^7.5.8",
     "@types/splitpanes": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^8.44.0",
-    "@typescript-eslint/parser": "^8.44.0",
+    "@typescript-eslint/parser": "^8.53.1",
     "@vitejs/plugin-vue": "^6.0.2",
     "@vitest/coverage-v8": "^4.0.17",
     "@vitest/ui": "^4.0.17",
