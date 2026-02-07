@@ -1,10 +1,14 @@
 <template>
   <DialogFrame>
-    <div class="title">{{ t.parallelGame }}</div>
+    <div v-if="store.gameSettings.sprtEnabled" class="title">SPRT</div>
+    <div v-else class="title">{{ t.parallelGame }}</div>
     <div class="content form-group scroll">
       <div class="game-results row">
-        <div>
-          <ul v-if="store.parallelGameProgress">
+        <div v-if="!store.parallelGameProgress">
+          {{ t.processingPleaseWait }}
+        </div>
+        <div v-if="store.parallelGameProgress">
+          <ul>
             <li>
               {{ store.parallelGameProgress.gameResults.player1.name }}
               <ul>
@@ -38,6 +42,32 @@
               }}
             </li>
             <li>{{ t.invalidGames }}: {{ store.parallelGameProgress.gameResults.invalid }}</li>
+          </ul>
+        </div>
+        <div v-if="store.parallelGameProgress?.sprtSummary">
+          <ul>
+            <li>
+              Elo0={{ store.parallelGameProgress.sprtSummary.elo0 }} Elo1={{
+                store.parallelGameProgress.sprtSummary.elo1
+              }}
+            </li>
+            <li>
+              &alpha;={{ store.parallelGameProgress.sprtSummary.alpha }} &beta;={{
+                store.parallelGameProgress.sprtSummary.beta
+              }}
+            </li>
+            <li>
+              5-nomial: [{{ store.parallelGameProgress.sprtSummary.pentanomial.loseLose }},
+              {{ store.parallelGameProgress.sprtSummary.pentanomial.loseDraw }},
+              {{ store.parallelGameProgress.sprtSummary.pentanomial.drawDrawOrWinLose }},
+              {{ store.parallelGameProgress.sprtSummary.pentanomial.winDraw }},
+              {{ store.parallelGameProgress.sprtSummary.pentanomial.winWin }}]
+            </li>
+            <li>
+              LLR: {{ store.parallelGameProgress.sprtSummary.llr.toFixed(5) }} [{{
+                store.parallelGameProgress.sprtSummary.lowerBound.toFixed(5)
+              }}, {{ store.parallelGameProgress.sprtSummary.upperBound.toFixed(5) }}]
+            </li>
           </ul>
         </div>
       </div>

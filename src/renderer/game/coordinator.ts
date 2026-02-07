@@ -11,6 +11,8 @@ import { t } from "@/common/i18n/translation_table.js";
 export type GameConditions = {
   gameTitle?: string;
   swapPlayers: boolean;
+  gameIndex: number;
+  pairIndex: number;
 };
 
 export type GameCoordinator = Omit<SingleGameSettings, "startPosition"> & {
@@ -26,20 +28,21 @@ export async function buildGameCoordinator(params: {
   currentPly: number;
 }): Promise<GameCoordinator> {
   const { settings, currentPly } = params;
+  const maxGames = settings.sprtEnabled ? settings.sprt.maxGames : settings.repeat;
   const startPositionList = new StartPositionList();
   if (settings.startPosition === "list") {
     await startPositionList.reset({
       filePath: settings.startPositionListFile,
       swapPlayers: settings.swapPlayers,
       order: settings.startPositionListOrder,
-      maxGames: settings.repeat,
+      maxGames: maxGames,
     });
   }
   let gameCount = 0;
   return {
     ...settings,
     next: (recordManager: RecordManager) => {
-      if (gameCount >= settings.repeat) {
+      if (gameCount >= maxGames) {
         return null;
       }
       gameCount++;
@@ -60,10 +63,11 @@ export async function buildGameCoordinator(params: {
       } else {
         recordManager.resetByInitialPositionType(settings.startPosition);
       }
-      const gameTitle =
-        settings.repeat >= 2 ? `連続対局 ${gameCount}/${settings.repeat}` : undefined;
+      const gameTitle = maxGames >= 2 ? `連続対局 ${gameCount}/${maxGames}` : undefined;
       const swapPlayers = settings.swapPlayers && gameCount % 2 === 0;
-      return { gameTitle, swapPlayers };
+      const gameIndex = gameCount;
+      const pairIndex = Math.floor((gameCount - 1) / 2) + 1;
+      return { gameTitle, swapPlayers, gameIndex, pairIndex };
     },
   };
 }

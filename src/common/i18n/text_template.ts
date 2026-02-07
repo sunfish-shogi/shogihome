@@ -325,6 +325,8 @@ export type Texts = {
   gote: string;
   goteOrUwate: string;
   uwate: string;
+  targetEngine: string;
+  baseEngine: string;
   swapSenteGote: string;
   pieceToss: string;
   currentPosition: string;

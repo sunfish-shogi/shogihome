@@ -47,12 +47,32 @@ export type SingleGameSettings = {
   searchCommentFormat: SearchCommentFormat;
 };
 
+export type SPRTSettings = {
+  elo0: number;
+  elo1: number;
+  alpha: number;
+  beta: number;
+  maxGames: number;
+};
+
+export function defaultSPRTSettings(): SPRTSettings {
+  return {
+    elo0: 0.5,
+    elo1: 2.5,
+    alpha: 0.05,
+    beta: 0.05,
+    maxGames: 100000,
+  };
+}
+
 export type LinearGameSettings = Omit<SingleGameSettings, "startPosition"> & {
   startPosition: GameStartPositionType; // v1.21.0 から undefined を廃止
   startPositionListFile: string;
   startPositionListOrder: "sequential" | "shuffle";
   repeat: number;
   swapPlayers: boolean;
+  sprtEnabled: boolean;
+  sprt: SPRTSettings;
 };
 
 export type GameSettings = LinearGameSettings & {
@@ -78,6 +98,8 @@ export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): Game
     maxMoves: 1000,
     jishogiRule: JishogiRule.GENERAL27,
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
+    sprtEnabled: false,
+    sprt: defaultSPRTSettings(),
   };
 }
 
@@ -103,6 +125,10 @@ export function normalizeGameSettings(
     timeLimit: {
       ...defaultTimeLimitSettings(),
       ...settings.timeLimit,
+    },
+    sprt: {
+      ...defaultSPRTSettings(),
+      ...settings.sprt,
     },
   };
   if (!result.autoSaveDirectory) {
@@ -155,11 +181,31 @@ export function validateGameSettings(gameSettings: GameSettings): Error | undefi
   if (gameSettings.startPosition === "current" && gameSettings.parallelism > 1) {
     return new Error(t.parallelismMustBeOneIfCurrentPositionIsUsed);
   }
-  if (gameSettings.parallelism > gameSettings.repeat) {
+  if (!gameSettings.sprtEnabled && gameSettings.parallelism > gameSettings.repeat) {
     return new Error(t.parallelismMustLessThanOrEqualToRepeats);
   }
   if (gameSettings.parallelism > 10) {
     return new Error("Parallelism must be 10 or less.");
+  }
+  if (gameSettings.sprtEnabled) {
+    if (containsHuman) {
+      return new Error("SPRT cannot be used with human players.");
+    }
+    if (!gameSettings.swapPlayers) {
+      return new Error("SPRT: swapPlayers must be enabled.");
+    }
+    if (gameSettings.sprt.elo0 >= gameSettings.sprt.elo1) {
+      return new Error("SPRT: elo0 must be less than elo1.");
+    }
+    if (gameSettings.sprt.alpha <= 0 || gameSettings.sprt.alpha >= 1) {
+      return new Error("SPRT: alpha must be between 0 and 1.");
+    }
+    if (gameSettings.sprt.beta <= 0 || gameSettings.sprt.beta >= 1) {
+      return new Error("SPRT: beta must be between 0 and 1.");
+    }
+    if (!Number.isInteger(gameSettings.sprt.maxGames) || gameSettings.sprt.maxGames <= 0) {
+      return new Error("SPRT: maxGames must be a positive integer.");
+    }
   }
 }
 
