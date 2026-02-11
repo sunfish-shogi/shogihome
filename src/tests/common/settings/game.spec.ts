@@ -68,6 +68,8 @@ describe("settings/game", () => {
       maxMoves: 80,
       jishogiRule: JishogiRule.NONE,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
+      sprtEnabled: false,
+      sprt: { elo0: 0, elo1: 3, alpha: 0.05, beta: 0.05, maxGames: 10000 },
     };
     const result = normalizeGameSettings(settings, { autoSaveDirectory: "/path/to/autosave/old" });
     expect(result).toStrictEqual(settings);

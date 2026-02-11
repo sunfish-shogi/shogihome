@@ -1,13 +1,19 @@
 <template>
   <DialogFrame @cancel="onCancel">
-    <div class="title">{{ t.game }}</div>
+    <div class="header">
+      <div class="title">{{ t.game }}</div>
+      <div class="mode-selector">
+        <ToggleButton v-model:value="gameSettings.sprtEnabled" label="SPRT" />
+      </div>
+    </div>
     <div class="form-group full-column">
       <div class="row regular-interval">
         <div class="half-column">
-          <div class="top-label">{{ t.senteOrShitate }}</div>
+          <div v-if="gameSettings.sprtEnabled" class="top-label">{{ t.targetEngine }}</div>
+          <div v-else class="top-label">{{ t.senteOrShitate }}</div>
           <PlayerSelector
             v-model:player-uri="blackPlayerURI"
-            :contains-human="true"
+            :contains-human="!gameSettings.sprtEnabled"
             :contains-basic-engines="true"
             :engines="engines"
             :default-tag="getPredefinedUSIEngineTag('game')"
@@ -18,11 +24,12 @@
           />
         </div>
         <div class="half-column">
-          <div class="top-label">{{ t.goteOrUwate }}</div>
+          <div v-if="gameSettings.sprtEnabled" class="top-label">{{ t.baseEngine }}</div>
+          <div v-else class="top-label">{{ t.goteOrUwate }}</div>
           <PlayerSelector
             v-if="whitePlayerURI"
             v-model:player-uri="whitePlayerURI"
-            :contains-human="true"
+            :contains-human="!gameSettings.sprtEnabled"
             :contains-basic-engines="true"
             :engines="engines"
             :default-tag="getPredefinedUSIEngineTag('game')"
@@ -59,7 +66,7 @@
             />
             <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <ToggleButton
               v-model:value="gameSettings.enableEngineTimeout"
               :label="t.enableEngineTimeout"
@@ -67,7 +74,7 @@
           </div>
         </div>
         <div class="half-column">
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <div class="form-item-label">{{ t.allottedTime }}</div>
             <input
               v-model.number="whiteHours"
@@ -90,7 +97,7 @@
             />
             <div class="form-item-small-label">{{ t.minutesSuffix }}</div>
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <div class="form-item-label">{{ t.byoyomi }}</div>
             <input
               v-model.number="whiteByoyomi"
@@ -103,7 +110,7 @@
             />
             <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <div class="form-item-label">{{ t.increments }}</div>
             <input
               v-model.number="whiteIncrement"
@@ -116,12 +123,18 @@
             />
             <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <ToggleButton v-model:value="setDifferentTime" :label="t.setDifferentTimeForGote" />
+          </div>
+          <div v-show="gameSettings.sprtEnabled" class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.enableEngineTimeout"
+              :label="t.enableEngineTimeout"
+            />
           </div>
         </div>
       </div>
-      <div class="players-control">
+      <div v-show="!gameSettings.sprtEnabled" class="players-control">
         <button @click="onSwapColor">
           <Icon :icon="IconType.SWAP_H" />
           <span>{{ t.swapSenteGote }}</span>
@@ -182,7 +195,7 @@
             <div class="form-item-label">{{ t.maxMoves }}</div>
             <input v-model.number="gameSettings.maxMoves" class="number" type="number" min="1" />
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <div class="form-item-label">{{ t.gameRepetition }}</div>
             <input v-model.number="gameSettings.repeat" class="number" type="number" min="1" />
           </div>
@@ -207,7 +220,7 @@
           </div>
         </div>
         <div class="half-column">
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <ToggleButton
               v-model:value="gameSettings.swapPlayers"
               :label="t.swapTurnWhenGameRepetition"
@@ -216,7 +229,7 @@
           <div class="form-item">
             <ToggleButton v-model:value="gameSettings.enableComment" :label="t.outputComments" />
           </div>
-          <div class="form-item">
+          <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <ToggleButton
               v-model:value="gameSettings.humanIsFront"
               :label="t.adjustBoardToHumanPlayer"
@@ -238,6 +251,76 @@
               {{ t.select }}
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="gameSettings.sprtEnabled" class="form-group full-column">
+      <div class="form-item row">
+        <div class="parameter">
+          <span class="label small">Elo0</span>
+          <input
+            v-model.number="gameSettings.sprt.elo0"
+            class="number small"
+            type="number"
+            step="0.5"
+          />
+        </div>
+        <div class="parameter">
+          <span class="label small">Elo1</span>
+          <input
+            v-model.number="gameSettings.sprt.elo1"
+            class="number small"
+            type="number"
+            step="0.5"
+          />
+        </div>
+        <div class="row wrap preset">
+          <button @click="setEloPreset(0.5, 2.5)">[0.5, 2.5]</button>
+          <button @click="setEloPreset(0, 2)">[0, 2]</button>
+          <button @click="setEloPreset(0, 3)">[0, 3]</button>
+          <button @click="setEloPreset(-1.75, 0.25)">[-1.75, 0.25]</button>
+          <button @click="setEloPreset(-3, 1)">[-3, 1]</button>
+        </div>
+      </div>
+      <div class="form-item row">
+        <div class="parameter">
+          <span class="label small">&alpha;</span>
+          <input
+            v-model.number="gameSettings.sprt.alpha"
+            class="number small"
+            type="number"
+            min="0.01"
+            max="0.5"
+            step="0.01"
+          />
+        </div>
+        <div class="parameter">
+          <span class="label small">&beta;</span>
+          <input
+            v-model.number="gameSettings.sprt.beta"
+            class="number small"
+            type="number"
+            min="0.01"
+            max="0.5"
+            step="0.01"
+          />
+        </div>
+        <div class="row wrap preset">
+          <button @click="setAlphaBetaPreset(0.05)">5%</button>
+          <button @click="setAlphaBetaPreset(0.01)">1%</button>
+        </div>
+      </div>
+      <div class="form-item row">
+        <div class="parameter">
+          <!-- TODO: i18n -->
+          <span class="label">MaxGames</span>
+          <input
+            v-model.number="gameSettings.sprt.maxGames"
+            class="number"
+            type="number"
+            min="100"
+            step="1000"
+          />
         </div>
       </div>
     </div>
@@ -448,7 +531,10 @@ const onStart = () => {
     startPositionListOrder: startPositionListShuffle.value ? "shuffle" : "sequential",
     searchCommentFormat: useAppSettings().searchCommentFormat,
   };
-  if (setDifferentTime.value) {
+  if (newSettings.sprtEnabled) {
+    newSettings.swapPlayers = true;
+    delete newSettings.whiteTimeLimit;
+  } else if (setDifferentTime.value) {
     newSettings.whiteTimeLimit = {
       timeSeconds: (whiteHours.value * 60 + whiteMinutes.value) * 60,
       byoyomi: whiteByoyomi.value,
@@ -462,9 +548,9 @@ const onStart = () => {
     : validateGameSettingsForWeb(newSettings);
   if (error) {
     useErrorStore().add(error);
-  } else {
-    store.startGame(newSettings);
+    return;
   }
+  store.startGame(newSettings);
 };
 
 const onCancel = () => {
@@ -483,6 +569,16 @@ const onSwapColor = () => {
     [byoyomi.value, whiteByoyomi.value] = [whiteByoyomi.value, byoyomi.value];
     [increment.value, whiteIncrement.value] = [whiteIncrement.value, increment.value];
   }
+};
+
+const setEloPreset = (elo0: number, elo1: number) => {
+  gameSettings.value.sprt.elo0 = elo0;
+  gameSettings.value.sprt.elo1 = elo1;
+};
+
+const setAlphaBetaPreset = (value: number) => {
+  gameSettings.value.sprt.alpha = value;
+  gameSettings.value.sprt.beta = value;
 };
 
 const onSelectStartPositionListFile = async () => {
@@ -515,6 +611,15 @@ const selectAutoSaveDirectory = async () => {
 </script>
 
 <style scoped>
+.header {
+  position: relative;
+}
+.mode-selector {
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+}
 .top-label {
   text-align: center;
 }
@@ -530,6 +635,17 @@ const selectAutoSaveDirectory = async () => {
 .players-control > * {
   margin-top: 5px;
 }
+.parameter {
+  white-space: nowrap;
+  margin-right: 10px;
+}
+.parameter > span.label {
+  display: inline-block;
+  margin-right: 5px;
+}
+.parameter > span.label.small {
+  width: 40px;
+}
 input.time {
   text-align: right;
   width: 40px;
@@ -537,5 +653,13 @@ input.time {
 input.number {
   text-align: right;
   width: 80px;
+}
+input.number.small {
+  text-align: left;
+  width: 60px;
+}
+.preset button {
+  margin: 0 1px 0 0;
+  padding: 4px 6px;
 }
 </style>

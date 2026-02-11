@@ -37,7 +37,7 @@ import {
   UpdateTreeHandler,
 } from "@/renderer/record/manager.js";
 import { GameManager } from "@/renderer/game/game.js";
-import { calculateGameStatistics, GameResults } from "@/renderer/game/result.js";
+import { calculateGameStatistics, GameResults, SPRTSummary } from "@/renderer/game/result.js";
 import { CSAGameManager, CSAGameState } from "@/renderer/game/csa.js";
 import { Clock } from "@/renderer/game/clock.js";
 import { generateRecordFileName, join } from "@/renderer/helpers/path.js";
@@ -86,50 +86,62 @@ export type PVPreview = {
   pv: Move[];
 };
 
-function getMessageAttachmentsByGameResults(results: GameResults): Attachment[] {
+function getMessageAttachmentsByGameResults(
+  results: GameResults,
+  sprtSummary?: SPRTSummary,
+): Attachment[] {
   const statistics = calculateGameStatistics(results);
-  return [
+  const items: ListItem[] = [
     {
-      type: "list",
-      items: [
-        {
-          text: results.player1.name,
-          children: [
-            `${t.wins}: ${results.player1.win}`,
-            `${t.winsOnBlack}: ${results.player1.winBlack}`,
-            `${t.winsOnWhite}: ${results.player1.winWhite}`,
-          ],
-        },
-        {
-          text: results.player2.name,
-          children: [
-            `${t.wins}: ${results.player2.win}`,
-            `${t.winsOnBlack}: ${results.player2.winBlack}`,
-            `${t.winsOnWhite}: ${results.player2.winWhite}`,
-          ],
-        },
-        { text: `${t.draws}: ${results.draw}` },
-        { text: `${t.validGames}: ${results.total - results.invalid}` },
-        { text: `${t.invalidGames}: ${results.invalid}` },
-        {
-          text: `${t.eloRatingDiff} (${t.ignoreDraws})`,
-          children: [
-            `${statistics.rating.toFixed(2)}`,
-            `95% CI: [${statistics.ratingLower.toFixed(1)}, ${statistics.ratingUpper.toFixed(1)}]`,
-          ],
-        },
-        {
-          text: "二項検定", // TODO: i18n
-          children: [
-            `np > 5: ${statistics.npIsGreaterThan5 ? "True" : "False"}`,
-            `${t.zValue}: ${statistics.zValue.toFixed(2)}`,
-            `${t.significance5pc}: ${statistics.significance5pc ? "True" : "False"}`,
-            `${t.significance1pc}: ${statistics.significance1pc ? "True" : "False"}`,
-          ],
-        },
+      text: results.player1.name,
+      children: [
+        `${t.wins}: ${results.player1.win}`,
+        `${t.winsOnBlack}: ${results.player1.winBlack}`,
+        `${t.winsOnWhite}: ${results.player1.winWhite}`,
+      ],
+    },
+    {
+      text: results.player2.name,
+      children: [
+        `${t.wins}: ${results.player2.win}`,
+        `${t.winsOnBlack}: ${results.player2.winBlack}`,
+        `${t.winsOnWhite}: ${results.player2.winWhite}`,
+      ],
+    },
+    { text: `${t.draws}: ${results.draw}` },
+    { text: `${t.validGames}: ${results.total - results.invalid}` },
+    { text: `${t.invalidGames}: ${results.invalid}` },
+    {
+      text: `${t.eloRatingDiff} (${t.ignoreDraws})`,
+      children: [
+        `${statistics.rating.toFixed(2)}`,
+        `95% CI: [${statistics.ratingLower.toFixed(1)}, ${statistics.ratingUpper.toFixed(1)}]`,
       ],
     },
   ];
+  if (sprtSummary) {
+    items.push({
+      text: "SPRT",
+      children: [
+        `Elo0=${sprtSummary.elo0.toFixed(2)}, Elo1=${sprtSummary.elo1.toFixed(2)}`,
+        `alpha=${sprtSummary.alpha}, beta=${sprtSummary.beta}`,
+        `5-nomial=[${sprtSummary.pentanomial.loseLose}, ${sprtSummary.pentanomial.loseDraw}, ${sprtSummary.pentanomial.drawDrawOrWinLose}, ${sprtSummary.pentanomial.winDraw}, ${sprtSummary.pentanomial.winWin}]`,
+        `LLR=${sprtSummary.llr.toFixed(4)} [${sprtSummary.lowerBound.toFixed(4)}, ${sprtSummary.upperBound.toFixed(4)}]`,
+        sprtSummary.result,
+      ],
+    });
+  } else {
+    items.push({
+      text: "二項検定", // TODO: i18n
+      children: [
+        `np > 5: ${statistics.npIsGreaterThan5 ? "True" : "False"}`,
+        `${t.zValue}: ${statistics.zValue.toFixed(2)}`,
+        `${t.significance5pc}: ${statistics.significance5pc ? "True" : "False"}`,
+        `${t.significance1pc}: ${statistics.significance1pc ? "True" : "False"}`,
+      ],
+    });
+  }
+  return [{ type: "list", items }];
 }
 
 class Store {
@@ -199,7 +211,7 @@ class Store {
     this.parallelGameManager
       .on("progress", this.onParallelGameProgress.bind(refs))
       .on("saveRecord", this.onSaveRecord.bind(refs))
-      .on("closed", this.onGameClosed.bind(refs))
+      .on("closed", this.onParallelGameClosed.bind(refs))
       .on("error", (e) => {
         useErrorStore().add(e);
       });
@@ -624,23 +636,25 @@ class Store {
       .then(async () => {
         this._gameSettings = settings;
         const appSettings = useAppSettings();
-        if (settings.parallelism >= 2) {
+        if (settings.parallelism >= 2 || settings.sprtEnabled) {
+          this._parallelGameProgress = undefined;
           const playerBuilder = defaultPlayerBuilder({
             timeoutSeconds: appSettings.engineTimeoutSeconds,
             discardUSIInfo: !settings.enableComment,
           });
+          this._appState = AppState.PARALLEL_GAME; // info コマンドの表示を抑制するために start より前に state を変更する。
           await this.parallelGameManager.start(settings, playerBuilder);
-          this._appState = AppState.PARALLEL_GAME;
         } else {
           const playerBuilder = defaultPlayerBuilder({
             timeoutSeconds: appSettings.engineTimeoutSeconds,
           });
-          await this.gameManager.startLinear(settings, playerBuilder);
           this._appState = AppState.GAME;
+          await this.gameManager.startLinear(settings, playerBuilder);
         }
       })
       .catch((e) => {
         useErrorStore().add(e);
+        this._appState = AppState.NORMAL;
       })
       .finally(() => {
         useBusyState().release();
@@ -765,7 +779,7 @@ class Store {
   }
 
   private onGameClosed(results: GameResults, specialMoveType?: SpecialMoveType): void {
-    if (this.appState !== AppState.GAME && this.appState !== AppState.PARALLEL_GAME) {
+    if (this.appState !== AppState.GAME) {
       return;
     }
     api.log(LogLevel.INFO, `game end: ${JSON.stringify(results)}`);
@@ -780,6 +794,18 @@ class Store {
         text: `${t.gameEnded}（${formatSpecialMove(specialMoveType, this.record.current.nextColor)})`,
       });
     }
+    this._appState = AppState.NORMAL;
+  }
+
+  private onParallelGameClosed(results: GameResults, sprtSummary?: SPRTSummary): void {
+    if (this.appState !== AppState.PARALLEL_GAME) {
+      return;
+    }
+    useMessageStore().enqueue({
+      text: t.allGamesCompleted,
+      attachments: getMessageAttachmentsByGameResults(results, sprtSummary),
+      withCopyButton: true,
+    });
     this._appState = AppState.NORMAL;
   }
 

@@ -59,4 +59,6 @@ export const gameSettings10m30s: GameSettings = {
   jishogiRule: JishogiRule.NONE,
   autoSaveDirectory: "",
   searchCommentFormat: SearchCommentFormat.SHOGIHOME,
+  sprtEnabled: false,
+  sprt: { elo0: 0, elo1: 3, alpha: 0.05, beta: 0.05, maxGames: 10000 },
 };

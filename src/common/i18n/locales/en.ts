@@ -330,6 +330,8 @@ export const en: Texts = {
   gote: "Gote",
   goteOrUwate: "Gote (Uwate)",
   uwate: "Uwate",
+  targetEngine: "Target Engine",
+  baseEngine: "Base Engine",
   swapSenteGote: "Swap Sente/Gote",
   pieceToss: "Piece Toss",
   currentPosition: "Current Position",
