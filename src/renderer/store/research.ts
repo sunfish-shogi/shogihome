@@ -23,6 +23,7 @@ function getSenderTypeByIndex(index: number): SearchInfoSenderType | undefined {
 }
 
 type UpdateSearchInfoCallback = (type: SearchInfoSenderType, info: SearchInfo) => void;
+type ErrorCallback = (e: unknown) => void;
 
 type Engine = {
   usi: USIPlayer;
@@ -218,13 +219,14 @@ export class ResearchManager {
   close() {
     this.lazyPositionUpdate.clear();
     this.engines.forEach((engine) => clearTimeout(engine.timer));
-    Promise.allSettled(this.engines.map((engine) => engine.usi.close()))
-      .then(() => {
-        this.engines = [];
-        this.ready = false;
-      })
-      .catch((e) => {
-        this.onError(e);
-      });
+    Promise.allSettled(this.engines.map((engine) => engine.usi.close())).then((results) => {
+      for (const result of results) {
+        if (result.status === "rejected") {
+          this.onError(result.reason);
+        }
+      }
+      this.engines = [];
+      this.ready = false;
+    });
   }
 }
