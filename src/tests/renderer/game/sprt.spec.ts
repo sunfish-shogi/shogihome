@@ -4,6 +4,46 @@ describe("game/sprt", () => {
   it("calculateSPRT", () => {
     const testCases = [
       {
+        pentanomial: [0, 0, 0, 0, 0],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: 0, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [10, 5, 2, 5, 10],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: 0, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [0, 0, 0, 0, 3],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: 0.02, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [3, 0, 0, 0, 0],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: -0.02, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [0, 0, 0, 0, 10],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: 0.08, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [10, 0, 0, 0, 0],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: -0.08, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [0, 2, 4, 6, 10],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: 0.13, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
+        pentanomial: [10, 6, 4, 2, 0],
+        config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },
+        expected: { llr: -0.13, lowerBound: -2.94, upperBound: 2.94 },
+      },
+      {
         // https://tests.stockfishchess.org/tests/live_elo/69675ab9d5a3b5895b50fb44
         pentanomial: [19, 4020, 10316, 4215, 24],
         config: { elo0: -1.75, elo1: 0.25, alpha: 0.05, beta: 0.05 },

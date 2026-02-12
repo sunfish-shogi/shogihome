@@ -104,35 +104,46 @@ function pdfStats(pdf: PDF): { mean: number; variance: number } {
 
 const eloScale = (Math.SQRT2 * Math.log(10)) / 800;
 
+// Maximum Likelihood Estimation of PDF under Elo hypothesis
+// Reference: https://www.cantate.be/Fishtest/normalized_elo_practical.pdf
 function mle(pdfhat: PDF, elo: number): PDF {
-  const score = elo * eloScale;
-  let pdfMLE: PDF = pdfhat.map(([ai]) => [ai, 1 / pdfhat.length]);
-  for (let iter = 0; iter < 10; iter++) {
-    const prev = pdfMLE;
-    const { mean, variance } = pdfStats(pdfMLE);
+  const tStar = elo * eloScale;
+  const muRef = 0.5;
+  const l = pdfhat.length;
+
+  // Start with uniform distribution as P0 (safer than pdfhat per section 4.1)
+  let pdf: PDF = pdfhat.map(([v]) => [v, 1 / l]);
+
+  for (let iter = 0; iter < 16; iter++) {
+    const { mean: mu, variance } = pdfStats(pdf);
     const sigma = Math.sqrt(variance);
-    const pdf1: PDF = pdfhat.map(([ai, pi]) => [
-      ai - 0.5 - (score * sigma * (1 + ((mean - ai) / sigma) ** 2)) / 2,
-      pi,
-    ]);
-    const values = pdf1.map(([ai]) => ai);
-    const v = Math.min(...values);
-    const w = Math.max(...values);
-    const epsilon = 1e-9;
-    const lowerBound = -1 / w + epsilon;
-    const upperBound = -1 / v - epsilon;
-    const x = brentq(
-      (x: number) => pdf1.reduce((s, [ai, pi]) => s + (pi * ai) / (1 + x * ai), 0),
-      lowerBound,
-      upperBound,
+    if (sigma < 1e-15) break;
+
+    // φ_i(P) = a_i - μ_ref - (1/2) * t* * σ * (1 + ((a_i - μ)/σ)²)  [section 4.1]
+    const phi = pdf.map(
+      ([ai]) => ai - muRef - 0.5 * tStar * sigma * (1 + ((ai - mu) / sigma) ** 2),
     );
-    pdfMLE = pdfhat.map(([ai, pi], i) => [ai, pi / (1 + x * pdf1[i][0])]);
-    const maxDiff = Math.max(...prev.map(([, pi], i) => Math.abs(pi - pdfMLE[i][1])));
-    if (maxDiff < 1e-9) {
-      break;
-    }
+
+    const u = Math.min(...phi);
+    const v = Math.max(...phi);
+    if (u * v >= 0) break;
+
+    // Solve Σ p̂_i * φ_i / (1 + θ * φ_i) = 0 for θ ∈ (-1/v, -1/u)  [equation 4.9]
+    const eps = 1e-9;
+    const theta = brentq(
+      (t) => pdfhat.reduce((sum, [, pi], i) => sum + (pi * phi[i]) / (1 + t * phi[i]), 0),
+      -1 / v + eps,
+      -1 / u - eps,
+    );
+
+    // p_{n+1,i} = p̂_i / (1 + θ * φ_i)  [equation 4.10]
+    const newPdf: PDF = pdfhat.map(([val, pi], i) => [val, pi / (1 + theta * phi[i])]);
+    const diff = newPdf.reduce((s, [, p], i) => s + Math.abs(p - pdf[i][1]), 0);
+    pdf = newPdf;
+    if (diff < 1e-10) break;
   }
-  return pdfMLE;
+
+  return pdf;
 }
 
 // Calculate SPRT LLR(Log-Likelihood Ratio) and its bounds
