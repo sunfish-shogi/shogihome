@@ -177,6 +177,7 @@ export const zh_tw: Texts = {
   research: "檢討",
   startResearch: "檢討開始",
   endResearch: "結束檢討",
+  startEndResearch: "檢討開始/結束",
   recordAnalysis: "棋譜解析",
   analysis: "解析",
   analyze: "解析開始",

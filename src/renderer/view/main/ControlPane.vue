@@ -10,7 +10,7 @@
           v-show="store.researchState !== ResearchState.RUNNING"
           class="control-item"
           data-hotkey="Mod+r"
-          @click="onResearch"
+          @click="onToggleResearch"
         >
           <Icon :icon="IconType.RESEARCH" />
           <span :class="{ tooltip: compact }">{{ t.research }}</span>
@@ -19,7 +19,7 @@
         <button
           v-show="store.researchState === ResearchState.RUNNING"
           class="control-item close"
-          @click="onEndResearch"
+          @click="onToggleResearch"
         >
           <Icon :icon="IconType.END" />
           <span :class="{ tooltip: compact }">{{ t.endResearch }}</span>
@@ -303,12 +303,12 @@ const onJishogiPoints = () => {
   store.showJishogiPoints();
 };
 
-const onResearch = () => {
-  store.showResearchDialog();
-};
-
-const onEndResearch = () => {
-  store.stopResearch();
+const onToggleResearch = () => {
+  if (store.researchState === ResearchState.RUNNING) {
+    store.stopResearch();
+  } else {
+    store.showResearchDialog();
+  }
 };
 
 const onAnalysis = () => {

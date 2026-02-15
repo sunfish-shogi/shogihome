@@ -180,6 +180,7 @@ export const en: Texts = {
   research: "Research",
   startResearch: "Start Research",
   endResearch: "End Research",
+  startEndResearch: "Start/End Research",
   recordAnalysis: "Record Analysis",
   analysis: "Analyze",
   analyze: "Analyze",

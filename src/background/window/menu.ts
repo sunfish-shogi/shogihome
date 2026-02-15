@@ -28,7 +28,7 @@ import {
   updateAppSettings,
 } from "@/background/window/ipc.js";
 import { MenuEvent } from "@/common/control/menu.js";
-import { AppState, ResearchState } from "@/common/control/state.js";
+import { AppState } from "@/common/control/state.js";
 import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help.js";
 import { t } from "@/common/i18n/index.js";
 import { InitialPositionSFEN } from "tsshogi";
@@ -50,23 +50,19 @@ import { outputStatsHTML } from "@/background/stats/html.js";
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
 
-const stateChangeCallbacks: ((
-  appState: AppState,
-  researchState: ResearchState,
-  busy: boolean,
-) => void)[] = [];
+const stateChangeCallbacks: ((appState: AppState, busy: boolean) => void)[] = [];
 
 function menuItem(
   label: string,
   event: MenuEvent,
-  appStates: (AppState | ResearchState)[] | null,
+  appStates: AppState[] | null,
   accelerator?: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...args: any[]
 ): MenuItemConstructorOptions {
   const index = stateChangeCallbacks.length;
   const id = "menuItem" + index;
-  stateChangeCallbacks.push((appState: AppState, researchState: ResearchState, busy: boolean) => {
+  stateChangeCallbacks.push((appState: AppState, busy: boolean) => {
     const menu = Menu.getApplicationMenu();
     if (!menu) {
       return;
@@ -77,9 +73,9 @@ function menuItem(
     }
     item.enabled = busy
       ? false
-      : !appStates || appStates.length === 0
-        ? true
-        : !!appStates.find((value) => value === appState || value === researchState);
+      : appStates?.length
+        ? !!appStates.find((value) => value === appState)
+        : true;
   });
   return {
     id,
@@ -363,8 +359,7 @@ function createMenuTemplate(window: BrowserWindow) {
     {
       label: t.research,
       submenu: [
-        menuItem(t.startResearch, MenuEvent.START_RESEARCH, [ResearchState.IDLE], "CmdOrCtrl+R"),
-        menuItem(t.endResearch, MenuEvent.STOP_RESEARCH, [ResearchState.RUNNING]),
+        menuItem(t.startEndResearch, MenuEvent.TOGGLE_RESEARCH, null, "CmdOrCtrl+R"),
         { type: "separator" },
         menuItem(
           t.analyze,

@@ -180,6 +180,7 @@ export const ja: Texts = {
   research: "検討",
   startResearch: "検討開始",
   endResearch: "検討終了",
+  startEndResearch: "検討開始/終了",
   recordAnalysis: "棋譜解析",
   analysis: "解析",
   analyze: "解析開始",

@@ -175,6 +175,7 @@ export type Texts = {
   research: string;
   startResearch: string;
   endResearch: string;
+  startEndResearch: string;
   recordAnalysis: string;
   analysis: string;
   analyze: string;

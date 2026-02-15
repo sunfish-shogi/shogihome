@@ -180,6 +180,7 @@ export const vi: Texts = {
   research: "Tính toán",
   startResearch: "Bắt đầu tính toán",
   endResearch: "Dừng tính toán",
+  startEndResearch: "Bắt đầu/Dừng tính toán",
   recordAnalysis: "Phân tích kỳ phổ",
   analysis: "Phân tích",
   analyze: "Phân tích",
