@@ -148,6 +148,7 @@
             <div class="form-item-label">{{ t.startPosition }}</div>
             <select v-model="gameSettings.startPosition">
               <option value="current">{{ t.currentPosition }}</option>
+              <option value="sfen">SFEN</option>
               <option value="list">{{ t.positionList }}</option>
               <option :value="InitialPositionType.STANDARD">
                 {{ t.noHandicap }}
@@ -187,6 +188,14 @@
           <div v-show="gameSettings.startPosition === 'list'" class="form-item">
             <input v-model="gameSettings.startPositionListFile" type="text" placeholder="*.sfen" />
             <button class="thin" @click="onSelectStartPositionListFile">{{ t.select }}</button>
+          </div>
+          <div v-show="gameSettings.startPosition === 'sfen'" class="form-item">
+            <input
+              v-model="gameSettings.startPositionSFEN"
+              class="sfen"
+              type="text"
+              placeholder="sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+            />
           </div>
           <div v-show="gameSettings.startPosition === 'list'" class="form-item">
             <ToggleButton v-model:value="startPositionListShuffle" :label="t.shuffle" />
@@ -528,6 +537,7 @@ const onStart = () => {
       byoyomi: byoyomi.value,
       increment: increment.value,
     },
+    startPositionSFEN: gameSettings.value.startPositionSFEN.trim(),
     startPositionListOrder: startPositionListShuffle.value ? "shuffle" : "sequential",
     searchCommentFormat: useAppSettings().searchCommentFormat,
   };
@@ -661,5 +671,8 @@ input.number.small {
 .preset button {
   margin: 0 1px 0 0;
   padding: 4px 6px;
+}
+.sfen {
+  width: 100%;
 }
 </style>

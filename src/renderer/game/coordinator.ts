@@ -4,7 +4,7 @@ import {
   SingleGameSettings,
 } from "@/common/settings/game.js";
 import { RecordManager } from "@/renderer/record/manager.js";
-import { RecordFormatType } from "tsshogi";
+import { detectRecordFormat, Record, RecordFormatType } from "tsshogi";
 import { StartPositionList } from "./start_position.js";
 import { t } from "@/common/i18n/translation_table.js";
 
@@ -30,6 +30,7 @@ export async function buildGameCoordinator(params: {
   const { settings, currentPly } = params;
   const maxGames = settings.sprtEnabled ? settings.sprt.maxGames : settings.repeat;
   const startPositionList = new StartPositionList();
+  let startPositionUSI = "";
   if (settings.startPosition === "list") {
     await startPositionList.reset({
       filePath: settings.startPositionListFile,
@@ -37,6 +38,19 @@ export async function buildGameCoordinator(params: {
       order: settings.startPositionListOrder,
       maxGames: maxGames,
     });
+  } else if (settings.startPosition === "sfen") {
+    startPositionUSI = settings.startPositionSFEN;
+    if (
+      !startPositionUSI.startsWith("position ") &&
+      !startPositionUSI.startsWith("sfen ") &&
+      detectRecordFormat(startPositionUSI) === RecordFormatType.SFEN
+    ) {
+      startPositionUSI = `sfen ${startPositionUSI}`;
+    }
+    const record = Record.newByUSI(startPositionUSI);
+    if (!(record instanceof Record)) {
+      throw record;
+    }
   }
   let gameCount = 0;
   return {
@@ -59,9 +73,19 @@ export async function buildGameCoordinator(params: {
         if (error) {
           return error;
         }
-        recordManager.updateComment(t.beginFromThisPosition);
+      } else if (settings.startPosition === "sfen") {
+        const error = recordManager.importRecord(startPositionUSI, {
+          type: RecordFormatType.USI,
+          markAsSaved: true,
+        });
+        if (error) {
+          return error;
+        }
       } else {
         recordManager.resetByInitialPositionType(settings.startPosition);
+      }
+      if (recordManager.record.current.ply !== 0 && settings.startPosition !== "current") {
+        recordManager.updateComment(t.beginFromThisPosition);
       }
       const gameTitle = maxGames >= 2 ? `連続対局 ${gameCount}/${maxGames}` : undefined;
       const swapPlayers = settings.swapPlayers && gameCount % 2 === 0;
