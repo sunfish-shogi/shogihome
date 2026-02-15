@@ -1,4 +1,4 @@
-import { InitialPositionType } from "tsshogi";
+import { detectRecordFormat, InitialPositionType, Record, RecordFormatType } from "tsshogi";
 import { PlayerSettings, defaultPlayerSettings, validatePlayerSettings } from "./player.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
@@ -19,7 +19,10 @@ export function defaultTimeLimitSettings(): TimeLimitSettings {
   };
 }
 
-export type SingleGameStartPositionType = InitialPositionType | "current" /* 現局面 */;
+export type SingleGameStartPositionType =
+  | InitialPositionType
+  | "current" /* 現局面 */
+  | "sfen" /* SFEN */;
 export type GameStartPositionType = SingleGameStartPositionType | "list" /* 局面集 */;
 
 export enum JishogiRule {
@@ -37,6 +40,7 @@ export type SingleGameSettings = {
   timeLimit: TimeLimitSettings;
   whiteTimeLimit?: TimeLimitSettings;
   startPosition: SingleGameStartPositionType; // v1.21.0 から undefined を廃止
+  startPositionSFEN: string;
   enableEngineTimeout: boolean;
   humanIsFront: boolean;
   enableComment: boolean;
@@ -85,6 +89,7 @@ export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): Game
     white: defaultPlayerSettings(),
     timeLimit: defaultTimeLimitSettings(),
     startPosition: InitialPositionType.STANDARD, // v1.21.0 から平手初期配置をデフォルトに変更
+    startPositionSFEN: "",
     startPositionListFile: "",
     startPositionListOrder: "sequential",
     enableEngineTimeout: false,
@@ -180,6 +185,21 @@ export function validateGameSettings(gameSettings: GameSettings): Error | undefi
   }
   if (gameSettings.startPosition === "current" && gameSettings.parallelism > 1) {
     return new Error(t.parallelismMustBeOneIfCurrentPositionIsUsed);
+  }
+  if (gameSettings.startPosition === "sfen") {
+    if (!gameSettings.startPositionSFEN) {
+      return new Error("SFEN is empty.");
+    }
+    const normalized =
+      !gameSettings.startPositionSFEN.startsWith("position ") &&
+      !gameSettings.startPositionSFEN.startsWith("sfen ") &&
+      detectRecordFormat(gameSettings.startPositionSFEN) === RecordFormatType.SFEN
+        ? `sfen ${gameSettings.startPositionSFEN}`
+        : gameSettings.startPositionSFEN;
+    const record = Record.newByUSI(normalized);
+    if (!(record instanceof Record)) {
+      return record;
+    }
   }
   if (!gameSettings.sprtEnabled && gameSettings.parallelism > gameSettings.repeat) {
     return new Error(t.parallelismMustLessThanOrEqualToRepeats);

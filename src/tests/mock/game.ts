@@ -46,6 +46,7 @@ export const gameSettings10m30s: GameSettings = {
   white: whitePlayerSettings,
   timeLimit: timeLimitSettings,
   startPosition: InitialPositionType.STANDARD,
+  startPositionSFEN: "",
   startPositionListFile: "",
   startPositionListOrder: "sequential",
   enableEngineTimeout: false,

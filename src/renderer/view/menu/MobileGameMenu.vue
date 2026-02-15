@@ -83,6 +83,7 @@ const selectTurn = (turn: Color) => {
       increment: 0,
     },
     startPosition: InitialPositionType.STANDARD,
+    startPositionSFEN: "",
     startPositionListFile: "",
     startPositionListOrder: "sequential",
     enableEngineTimeout: false,
