@@ -267,11 +267,12 @@ export function setup(): void {
       case MenuEvent.DISPLAY_GAME_RESULTS:
         store.showGameResults();
         break;
-      case MenuEvent.START_RESEARCH:
-        store.showResearchDialog();
-        break;
-      case MenuEvent.STOP_RESEARCH:
-        store.stopResearch();
+      case MenuEvent.TOGGLE_RESEARCH:
+        if (store.researchState === ResearchState.RUNNING) {
+          store.stopResearch();
+        } else {
+          store.showResearchDialog();
+        }
         break;
       case MenuEvent.START_ANALYSIS:
         store.showAnalysisDialog();
