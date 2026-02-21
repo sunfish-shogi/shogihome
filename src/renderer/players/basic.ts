@@ -38,6 +38,306 @@ const pieceValues: { [key in PieceType]: number } = {
   [PieceType.DRAGON]: 1500,
 };
 
+type FastMove = {
+  from: number;
+  to: number;
+  pieceType: PieceType;
+  promote: boolean;
+  drop: boolean;
+};
+
+const BOARD_SIZE = 81;
+const EMPTY = 0;
+
+const allPieceTypes: PieceType[] = [
+  PieceType.PAWN,
+  PieceType.LANCE,
+  PieceType.KNIGHT,
+  PieceType.SILVER,
+  PieceType.GOLD,
+  PieceType.BISHOP,
+  PieceType.ROOK,
+  PieceType.KING,
+  PieceType.PROM_PAWN,
+  PieceType.PROM_LANCE,
+  PieceType.PROM_KNIGHT,
+  PieceType.PROM_SILVER,
+  PieceType.HORSE,
+  PieceType.DRAGON,
+];
+
+const pieceToCode = new Map<PieceType, number>(allPieceTypes.map((pt, i) => [pt, i + 1]));
+const codeToPiece = [null, ...allPieceTypes] as const;
+
+function indexToSquare(index: number): Square {
+  return new Square((index % 9) + 1, Math.floor(index / 9) + 1);
+}
+
+function squareToIndex(square: Square): number {
+  return (square.rank - 1) * 9 + square.file - 1;
+}
+
+function encodePiece(piece: Piece): number {
+  const base = pieceToCode.get(piece.type) || 0;
+  return piece.color === Color.WHITE ? -base : base;
+}
+
+function decodePieceType(code: number): PieceType {
+  return codeToPiece[Math.abs(code)] as PieceType;
+}
+
+function decodeColor(code: number): Color {
+  return code < 0 ? Color.WHITE : Color.BLACK;
+}
+
+function inPromotionZone(color: Color, rank: number): boolean {
+  return color === Color.BLACK ? rank <= 3 : rank >= 7;
+}
+
+function isDeadEndWithoutPromotion(color: Color, pieceType: PieceType, rank: number): boolean {
+  if (color === Color.BLACK) {
+    return (
+      ((pieceType === PieceType.PAWN || pieceType === PieceType.LANCE) && rank === 1) ||
+      (pieceType === PieceType.KNIGHT && rank <= 2)
+    );
+  }
+  return (
+    ((pieceType === PieceType.PAWN || pieceType === PieceType.LANCE) && rank === 9) ||
+    (pieceType === PieceType.KNIGHT && rank >= 8)
+  );
+}
+
+class FastPosition {
+  board = new Int16Array(BOARD_SIZE);
+  handCounts: [{ [key in PieceType]?: number }, { [key in PieceType]?: number }] = [{}, {}];
+  filePawnMask = [0, 0];
+  side: Color;
+  kingIndex = [-1, -1];
+
+  constructor(position: ImmutablePosition) {
+    this.side = position.color;
+    for (const sq of position.board.listNonEmptySquares()) {
+      const piece = position.board.at(sq) as Piece;
+      const idx = squareToIndex(sq);
+      this.board[idx] = encodePiece(piece);
+      const side = piece.color === Color.BLACK ? 0 : 1;
+      if (piece.type === PieceType.KING) {
+        this.kingIndex[side] = idx;
+      } else if (piece.type === PieceType.PAWN) {
+        this.filePawnMask[side] |= 1 << (sq.file - 1);
+      }
+    }
+    for (const pieceType of handPieceTypes) {
+      this.handCounts[0][pieceType] = position.blackHand.count(pieceType);
+      this.handCounts[1][pieceType] = position.whiteHand.count(pieceType);
+    }
+  }
+
+  private static goldLikeMoves = [
+    [0, -1],
+    [-1, -1],
+    [1, -1],
+    [-1, 0],
+    [1, 0],
+    [0, 1],
+  ] as const;
+
+  private static kingMoves = [
+    [0, -1],
+    [-1, -1],
+    [1, -1],
+    [-1, 0],
+    [1, 0],
+    [0, 1],
+    [-1, 1],
+    [1, 1],
+  ] as const;
+
+  generateLegalMoves(position: ImmutablePosition): Move[] {
+    const moves: Move[] = [];
+    const side = this.side;
+    const mySideIndex = side === Color.BLACK ? 0 : 1;
+
+    const addMove = (fm: FastMove): void => {
+      const from = indexToSquare(fm.from);
+      const to = indexToSquare(fm.to);
+      const captured = this.board[fm.to];
+      const move = fm.drop
+        ? new Move(fm.pieceType, to, fm.promote, side, fm.pieceType, null)
+        : new Move(
+            from,
+            to,
+            fm.promote,
+            side,
+            fm.pieceType,
+            captured ? decodePieceType(captured) : null,
+          );
+      // 打ち歩詰めの判定は複雑なため既存バリデータに委ねる。
+      if (fm.drop && fm.pieceType === PieceType.PAWN && !position.isValidMove(move)) {
+        return;
+      }
+      moves.push(move);
+    };
+
+    const addBoardMove = (fromIdx: number, toIdx: number, pieceType: PieceType): void => {
+      const toRank = Math.floor(toIdx / 9) + 1;
+      const fromRank = Math.floor(fromIdx / 9) + 1;
+      const canPromote =
+        isPromotable(pieceType) &&
+        (inPromotionZone(side, fromRank) || inPromotionZone(side, toRank));
+      if (canPromote) {
+        addMove({ from: fromIdx, to: toIdx, pieceType, promote: true, drop: false });
+        if (pieceType !== PieceType.KNIGHT && pieceType !== PieceType.SILVER) {
+          return;
+        }
+        if (isDeadEndWithoutPromotion(side, pieceType, toRank)) {
+          return;
+        }
+      }
+      addMove({ from: fromIdx, to: toIdx, pieceType, promote: false, drop: false });
+    };
+
+    for (let from = 0; from < BOARD_SIZE; from++) {
+      const code = this.board[from];
+      if (!code || decodeColor(code) !== side) {
+        continue;
+      }
+      const pieceType = decodePieceType(code);
+      const file = (from % 9) + 1;
+      const rank = Math.floor(from / 9) + 1;
+      const sign = side === Color.BLACK ? 1 : -1;
+
+      const tryStep = (dx: number, dy: number): void => {
+        const toFile = file + dx;
+        const toRank = rank + dy * sign;
+        if (toFile < 1 || toFile > 9 || toRank < 1 || toRank > 9) {
+          return;
+        }
+        const to = (toRank - 1) * 9 + toFile - 1;
+        const target = this.board[to];
+        if (target && decodeColor(target) === side) {
+          return;
+        }
+        addBoardMove(from, to, pieceType);
+      };
+
+      const trySlide = (dx: number, dy: number): void => {
+        let toFile = file + dx;
+        let toRank = rank + dy * sign;
+        while (toFile >= 1 && toFile <= 9 && toRank >= 1 && toRank <= 9) {
+          const to = (toRank - 1) * 9 + toFile - 1;
+          const target = this.board[to];
+          if (target && decodeColor(target) === side) {
+            break;
+          }
+          addBoardMove(from, to, pieceType);
+          if (target) {
+            break;
+          }
+          toFile += dx;
+          toRank += dy * sign;
+        }
+      };
+
+      switch (pieceType) {
+        case PieceType.PAWN:
+          tryStep(0, -1);
+          break;
+        case PieceType.LANCE:
+          trySlide(0, -1);
+          break;
+        case PieceType.KNIGHT:
+          tryStep(-1, -2);
+          tryStep(1, -2);
+          break;
+        case PieceType.SILVER:
+          tryStep(-1, -1);
+          tryStep(0, -1);
+          tryStep(1, -1);
+          tryStep(-1, 1);
+          tryStep(1, 1);
+          break;
+        case PieceType.GOLD:
+        case PieceType.PROM_PAWN:
+        case PieceType.PROM_LANCE:
+        case PieceType.PROM_KNIGHT:
+        case PieceType.PROM_SILVER:
+          for (const [dx, dy] of FastPosition.goldLikeMoves) {
+            tryStep(dx, dy);
+          }
+          break;
+        case PieceType.BISHOP:
+          trySlide(-1, -1);
+          trySlide(1, -1);
+          trySlide(-1, 1);
+          trySlide(1, 1);
+          break;
+        case PieceType.ROOK:
+          trySlide(0, -1);
+          trySlide(0, 1);
+          trySlide(-1, 0);
+          trySlide(1, 0);
+          break;
+        case PieceType.KING:
+          for (const [dx, dy] of FastPosition.kingMoves) {
+            tryStep(dx, dy);
+          }
+          break;
+        case PieceType.HORSE:
+          trySlide(-1, -1);
+          trySlide(1, -1);
+          trySlide(-1, 1);
+          trySlide(1, 1);
+          tryStep(0, -1);
+          tryStep(0, 1);
+          tryStep(-1, 0);
+          tryStep(1, 0);
+          break;
+        case PieceType.DRAGON:
+          trySlide(0, -1);
+          trySlide(0, 1);
+          trySlide(-1, 0);
+          trySlide(1, 0);
+          tryStep(-1, -1);
+          tryStep(1, -1);
+          tryStep(-1, 1);
+          tryStep(1, 1);
+          break;
+      }
+    }
+
+    for (const pieceType of handPieceTypes) {
+      if (!(this.handCounts[mySideIndex][pieceType] || 0)) {
+        continue;
+      }
+      for (let to = 0; to < BOARD_SIZE; to++) {
+        if (this.board[to] !== EMPTY) {
+          continue;
+        }
+        const file = (to % 9) + 1;
+        const rank = Math.floor(to / 9) + 1;
+        if (pieceType === PieceType.PAWN) {
+          if (this.filePawnMask[mySideIndex] & (1 << (file - 1))) {
+            continue;
+          }
+          if (isDeadEndWithoutPromotion(side, pieceType, rank)) {
+            continue;
+          }
+        }
+        if (
+          (pieceType === PieceType.LANCE || pieceType === PieceType.KNIGHT) &&
+          isDeadEndWithoutPromotion(side, pieceType, rank)
+        ) {
+          continue;
+        }
+        addMove({ from: to, to, pieceType, promote: false, drop: true });
+      }
+    }
+
+    return moves;
+  }
+}
+
 export class BasicPlayer implements Player {
   private timer?: NodeJS.Timeout;
 
@@ -100,7 +400,7 @@ export class BasicPlayer implements Player {
   }
 
   private searchRandom(position: ImmutablePosition): Move | null {
-    const moves = listMoves(position);
+    const moves = listMovesFast(position);
     for (let range = moves.length; range > 0; range--) {
       const index = Math.floor(Math.random() * range);
       const move = moves[index];
@@ -118,7 +418,7 @@ export class BasicPlayer implements Player {
     depth: number,
     repCheck?: (position: ImmutablePosition) => boolean,
   ): [Move, number] | [null, 0] {
-    const moves = listMoves(position);
+    const moves = listMovesFast(position);
     let bestMove: Move | null = null;
     let bestScore = -Infinity;
     for (const move of moves) {
@@ -180,10 +480,12 @@ export class BasicPlayer implements Player {
   }
 }
 
-function listMoves(position: ImmutablePosition): Move[] {
-  const moves: Move[] = [];
+export function listMovesFast(position: ImmutablePosition): Move[] {
+  return new FastPosition(position).generateLegalMoves(position);
+}
 
-  // 盤上の駒を動かす手
+export function listMovesLegacy(position: ImmutablePosition): Move[] {
+  const moves: Move[] = [];
   function addMove(from: Square, to: Square, pieceType: PieceType): void {
     const captured = position.board.at(to);
     if (captured?.color === position.color) {
@@ -195,7 +497,6 @@ function listMoves(position: ImmutablePosition): Move[] {
       (isPromotableRank(position.color, from.rank) || isPromotableRank(position.color, to.rank))
     ) {
       moves.push(move.withPromote());
-      // 桂馬と銀以外は成れるなら成る。香車も成らない方が良い場合はあるがレアケースなので考えない。
       if (pieceType !== PieceType.KNIGHT && pieceType !== PieceType.SILVER) {
         return;
       }
@@ -207,8 +508,7 @@ function listMoves(position: ImmutablePosition): Move[] {
     if (piece.color !== position.color) {
       continue;
     }
-    const directions = movableDirections(piece);
-    for (const direction of directions) {
+    for (const direction of movableDirections(piece)) {
       const moveType = resolveMoveType(piece, direction);
       switch (moveType) {
         case MoveType.SHORT: {
@@ -229,19 +529,15 @@ function listMoves(position: ImmutablePosition): Move[] {
       }
     }
   }
-
-  // 持ち駒を打つ手
   for (const pieceType of handPieceTypes) {
     if (position.hand(position.color).count(pieceType)) {
       for (const to of Square.all) {
         if (!position.board.at(to)) {
-          const move = new Move(pieceType, to, false, position.color, pieceType, null);
-          moves.push(move);
+          moves.push(new Move(pieceType, to, false, position.color, pieceType, null));
         }
       }
     }
   }
-
   return moves;
 }
 
