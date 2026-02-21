@@ -22,6 +22,7 @@ export enum AppState {
   SHARE_DIALOG = "shareDialog",
   ADD_BOOK_MOVES_DIALOG = "addBookMovesDialog",
   SEARCH_DUPLICATE_POSITIONS_DIALOG = "searchDuplicatePositionsDialog",
+  ELAPSED_TIME_CHART_DIALOG = "elapsedTimeChartDialog",
 }
 
 export enum ResearchState {

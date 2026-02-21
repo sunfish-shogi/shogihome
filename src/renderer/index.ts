@@ -9,6 +9,8 @@ import api, { appInfo, isMobileWebApp } from "@/renderer/ipc/api.js";
 import { setup as setupIPC } from "@/renderer/ipc/setup.js";
 import { useStore } from "@/renderer/store/index.js";
 import {
+  BarController,
+  BarElement,
   CategoryScale,
   Chart,
   Legend,
@@ -37,7 +39,16 @@ import("dayjs/locale/en");
 import("dayjs/locale/ja");
 import("dayjs/locale/zh-tw");
 dayjs.extend(relativeTime);
-Chart.register(ScatterController, LineElement, LinearScale, PointElement, CategoryScale, Legend);
+Chart.register(
+  ScatterController,
+  BarController,
+  BarElement,
+  LineElement,
+  LinearScale,
+  PointElement,
+  CategoryScale,
+  Legend,
+);
 
 setupIPC();
 

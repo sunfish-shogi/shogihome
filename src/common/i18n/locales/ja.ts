@@ -283,6 +283,7 @@ export const ja: Texts = {
   logLevel: "ログレベル",
   manageEngines: "エンジン設定",
   flipBoard: "盤面反転",
+  elapsedTimeChart: "消費時間チャート",
   shortcutKeys: "ショートカットキー",
   useUpDownToMove1Ply: "↑/↓キーで1手移動",
   useLeftRightToMove1Ply: "←/→キーで1手移動",

@@ -278,6 +278,7 @@ export type Texts = {
   logLevel: string;
   manageEngines: string;
   flipBoard: string;
+  elapsedTimeChart: string;
   shortcutKeys: string;
   useUpDownToMove1Ply: string;
   useLeftRightToMove1Ply: string;
