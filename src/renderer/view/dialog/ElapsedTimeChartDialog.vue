@@ -107,8 +107,10 @@ const selectedMoveText = computed(() => {
     return "";
   }
   const node = localRecord.value.current;
-  const timeText = node.elapsedMs > 0 ? `${(node.elapsedMs / 1000).toFixed(1)}s` : "";
-  return `#${node.ply} ${node.displayText} ${timeText}`;
+  const plyText = `${t.plyPrefix}${node.ply}${t.plySuffix}`;
+  const timeText =
+    node.elapsedMs > 0 ? `${(node.elapsedMs / 1000).toFixed(1)}${t.secondsSuffix}` : "";
+  return `${plyText} ${node.displayText} ${timeText}`;
 });
 
 type BarData = {
