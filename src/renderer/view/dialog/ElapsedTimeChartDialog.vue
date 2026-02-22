@@ -2,7 +2,7 @@
   <DialogFrame limited @cancel="onClose">
     <div class="title">{{ t.elapsedTimeChart }}</div>
     <div class="content">
-      <div v-if="selectedPosition" class="board-area">
+      <div class="board-area">
         <SimpleBoardView
           :max-size="boardMaxSize"
           :position="selectedPosition"
@@ -17,6 +17,18 @@
       </div>
     </div>
     <div class="main-buttons">
+      <button :data-hotkey="shortcutKeys.Begin" @click="store.changePly(0)">
+        <Icon :icon="IconType.FIRST" />
+      </button>
+      <button :data-hotkey="shortcutKeys.Back" @click="store.goBack()">
+        <Icon :icon="IconType.BACK" />
+      </button>
+      <button :data-hotkey="shortcutKeys.Forward" @click="store.goForward()">
+        <Icon :icon="IconType.NEXT" />
+      </button>
+      <button :data-hotkey="shortcutKeys.End" @click="store.changePly(Number.MAX_SAFE_INTEGER)">
+        <Icon :icon="IconType.LAST" />
+      </button>
       <button autofocus data-hotkey="Escape" @click="onClose">{{ t.close }}</button>
     </div>
   </DialogFrame>
@@ -24,7 +36,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
-import { Color, Move, Record, exportKIF, importKIF, ImmutablePosition } from "tsshogi";
+import { Color, Move, ImmutablePosition, reverseColor } from "tsshogi";
 import { Chart, ActiveElement, ChartEvent } from "chart.js";
 import { useStore } from "@/renderer/store";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -33,6 +45,9 @@ import { t } from "@/common/i18n";
 import { RectSize } from "@/common/assets/geometry";
 import DialogFrame from "./DialogFrame.vue";
 import SimpleBoardView from "@/renderer/view/primitive/SimpleBoardView.vue";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons";
+import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
 
 type ColorPalette = {
   main: string;
@@ -70,81 +85,33 @@ function getColorPalette(thema: Thema): ColorPalette {
 const store = useStore();
 const appSettings = useAppSettings();
 const canvas = ref<HTMLCanvasElement>();
-const selectedPly = ref(1);
-const boardMaxSize = reactive(new RectSize(200, 300));
+const boardMaxSize = reactive(new RectSize(200, 500));
 let chart: Chart | undefined;
 
-// Create a local mutable record for position navigation
-const localRecord = ref<Record>();
+const shortcutKeys = computed(() => getRecordShortcutKeys(appSettings.recordShortcutKeys));
 
-const initLocalRecord = () => {
-  const kif = exportKIF(store.record);
-  const result = importKIF(kif);
-  if (result instanceof Error) {
-    return;
-  }
-  localRecord.value = result;
-  localRecord.value.goto(selectedPly.value);
-};
+const selectedPly = computed(() => store.record.current.ply);
 
-const selectedPosition = computed<ImmutablePosition | undefined>(() => {
-  if (!localRecord.value) {
-    return undefined;
-  }
-  return localRecord.value.position;
-});
+const selectedPosition = computed<ImmutablePosition>(() => store.record.position);
 
 const selectedLastMove = computed<Move | null>(() => {
-  if (!localRecord.value) {
-    return null;
-  }
-  const move = localRecord.value.current.move;
+  const move = store.record.current.move;
   return move instanceof Move ? move : null;
 });
 
 const selectedMoveText = computed(() => {
-  if (!localRecord.value) {
-    return "";
-  }
-  const node = localRecord.value.current;
+  const node = store.record.current;
   const plyText = `${t.plyPrefix}${node.ply}${t.plySuffix}`;
   const timeText =
     node.elapsedMs > 0 ? `${(node.elapsedMs / 1000).toFixed(1)}${t.secondsSuffix}` : "";
   return `${plyText} ${node.displayText} ${timeText}`;
 });
 
-type BarData = {
-  ply: number;
-  seconds: number;
-  isBlack: boolean;
-};
-
-const buildBarData = (): BarData[] => {
-  const nodes = store.record.moves;
-  const data: BarData[] = [];
-  for (const node of nodes) {
-    if (node.ply === 0) {
-      continue;
-    }
-    if (node.elapsedMs <= 0) {
-      continue;
-    }
-    const isBlack = node.nextColor === Color.WHITE;
-    data.push({
-      ply: node.ply,
-      seconds: node.elapsedMs / 1000,
-      isBlack,
-    });
-  }
-  return data;
-};
-
 const buildChart = () => {
   if (!canvas.value) {
     return;
   }
   const palette = getColorPalette(appSettings.thema);
-  const barData = buildBarData();
 
   // Build label and data arrays, always showing at least up to ply 30
   const labels: string[] = [];
@@ -165,7 +132,10 @@ const buildChart = () => {
     labels.push(String(ply));
     const node = nodeMap.get(ply);
     if (node) {
-      const isBlack = node.nextColor === Color.WHITE;
+      // 通常の指し手は nextColor が次手番（指した人の反対色）なので reverseColor が必要。
+      // 投了等のスペシャルムーブは局面が更新されず nextColor が指した人自身の色になる。
+      const moverColor = node.move instanceof Move ? reverseColor(node.nextColor) : node.nextColor;
+      const isBlack = moverColor === Color.BLACK;
       const seconds = node.elapsedMs > 0 ? node.elapsedMs / 1000 : null;
       if (isBlack) {
         blackData.push(seconds);
@@ -180,23 +150,36 @@ const buildChart = () => {
     }
   }
 
-  // Set initial selectedPly to first move with elapsed time
-  if (barData.length > 0 && selectedPly.value === 1) {
-    selectedPly.value = barData[0].ply;
-  }
-
-  const selectedBorderColor = (dataArray: (number | null)[]) => {
-    return dataArray.map((_, index) => {
-      const ply = index + 1;
-      return ply === selectedPly.value ? palette.selected : "transparent";
-    });
-  };
-
-  const selectedBorderWidth = (dataArray: (number | null)[]) => {
-    return dataArray.map((_, index) => {
-      const ply = index + 1;
-      return ply === selectedPly.value ? 3 : 0;
-    });
+  const plyIndicatorPlugin = {
+    id: "plyIndicator",
+    afterDraw(ch: Chart) {
+      const ply = selectedPly.value;
+      if (ply <= 0) return;
+      const index = ply - 1;
+      let barX: number | null = null;
+      let barTopY: number | null = null;
+      for (let di = 0; di < ch.data.datasets.length; di++) {
+        const value = ch.data.datasets[di].data[index];
+        if (value === null || value === undefined) continue;
+        const bar = ch.getDatasetMeta(di).data[index];
+        if (!bar) continue;
+        barX = bar.x;
+        barTopY = bar.y;
+        break;
+      }
+      if (barX === null || barTopY === null) return;
+      const size = 7;
+      const ctx = ch.ctx;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(barX - size, barTopY - size * 2 - 2);
+      ctx.lineTo(barX + size, barTopY - size * 2 - 2);
+      ctx.lineTo(barX, barTopY - 2);
+      ctx.closePath();
+      ctx.fillStyle = palette.selected;
+      ctx.fill();
+      ctx.restore();
+    },
   };
 
   const context = canvas.value.getContext("2d", {
@@ -204,6 +187,7 @@ const buildChart = () => {
   }) as CanvasRenderingContext2D;
   chart = new Chart(context, {
     type: "bar",
+    plugins: [plyIndicatorPlugin],
     data: {
       labels,
       datasets: [
@@ -211,15 +195,11 @@ const buildChart = () => {
           label: t.sente,
           data: blackData,
           backgroundColor: palette.blackPlayer,
-          borderColor: selectedBorderColor(blackData),
-          borderWidth: selectedBorderWidth(blackData),
         },
         {
           label: t.gote,
           data: whiteData,
           backgroundColor: palette.whitePlayer,
-          borderColor: selectedBorderColor(whiteData),
-          borderWidth: selectedBorderWidth(whiteData),
         },
       ],
     },
@@ -252,24 +232,7 @@ const buildChart = () => {
 };
 
 const updateChartSelection = () => {
-  if (!chart) {
-    return;
-  }
-  const palette = getColorPalette(appSettings.thema);
-  const totalLabels = chart.data.labels?.length ?? 0;
-
-  for (const dataset of chart.data.datasets) {
-    const borderColors: string[] = [];
-    const borderWidths: number[] = [];
-    for (let i = 0; i < totalLabels; i++) {
-      const ply = i + 1;
-      borderColors.push(ply === selectedPly.value ? palette.selected : "transparent");
-      borderWidths.push(ply === selectedPly.value ? 3 : 0);
-    }
-    dataset.borderColor = borderColors;
-    dataset.borderWidth = borderWidths;
-  }
-  chart.update();
+  chart?.update();
 };
 
 const onChartClick = (event: ChartEvent, elements: ActiveElement[]) => {
@@ -288,12 +251,12 @@ const onChartClick = (event: ChartEvent, elements: ActiveElement[]) => {
     return;
   }
   const ply = index + 1;
-  selectedPly.value = ply;
+  store.changePly(ply);
 };
 
 const updateBoardSize = () => {
-  boardMaxSize.width = Math.min(window.innerWidth * 0.25, 250);
-  boardMaxSize.height = Math.min(window.innerHeight * 0.6, 350);
+  boardMaxSize.width = Math.min(window.innerWidth * 0.2, 220);
+  boardMaxSize.height = Math.min(window.innerHeight * 0.8, 550);
 };
 
 const onClose = () => {
@@ -302,7 +265,6 @@ const onClose = () => {
 
 onMounted(() => {
   updateBoardSize();
-  initLocalRecord();
   buildChart();
   window.addEventListener("resize", updateBoardSize);
 });
@@ -314,10 +276,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("resize", updateBoardSize);
 });
 
-watch(selectedPly, (ply) => {
-  if (localRecord.value) {
-    localRecord.value.goto(ply);
-  }
+watch(selectedPly, () => {
   updateChartSelection();
 });
 </script>

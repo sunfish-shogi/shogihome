@@ -1163,19 +1163,28 @@ class Store {
   }
 
   goForward(): void {
-    if (this.appState === AppState.NORMAL) {
+    if (
+      this.appState === AppState.NORMAL ||
+      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
+    ) {
       this.recordManager.goForward();
     }
   }
 
   goBack(): void {
-    if (this.appState === AppState.NORMAL) {
+    if (
+      this.appState === AppState.NORMAL ||
+      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
+    ) {
       this.recordManager.goBack();
     }
   }
 
   changePly(ply: number): void {
-    if (this.appState === AppState.NORMAL) {
+    if (
+      this.appState === AppState.NORMAL ||
+      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
+    ) {
       this.recordManager.changePly(ply);
     }
   }
