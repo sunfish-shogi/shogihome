@@ -272,6 +272,11 @@ export const zh_tw: Texts = {
   select: "選擇",
   shuffle: "隨機",
   csaV3Output: "使用 CSA V3 輸出",
+  alwaysOutputUTF8: "常に UTF-8 で出力", // TODO: Translate
+  someOldShogiAppsCannotReadUTF8KifFiles:
+    "一部の古い将棋アプリでは UTF-8 の KIF・KI2 ファイルを読み込めない場合があります。", // TODO: Translate
+  strictDecodingMayFailToReadUTF8KifFiles:
+    "文字コードの設定が「厳格」の場合、UTF-8 で書き出した KIF・KI2 ファイルの読み込みに失敗する可能性があります。", // TODO: Translate
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",

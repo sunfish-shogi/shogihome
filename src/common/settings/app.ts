@@ -211,6 +211,7 @@ export type AppSettings = {
   autoSaveDirectory: string; // Deprecated
   recordFileNameTemplate: string;
   useCSAV3: boolean;
+  useUTF8ForKifAndKi2: boolean;
   enableUSIFileStartpos: boolean;
   enableUSIFileResign: boolean; // Deprecated
   enableUSIFileSpecialMoves: boolean;
@@ -367,6 +368,7 @@ export function defaultAppSettings(opt?: {
     autoSaveDirectory: opt?.autoSaveDirectory || "",
     recordFileNameTemplate: defaultRecordFileNameTemplate,
     useCSAV3: false,
+    useUTF8ForKifAndKi2: false,
     enableUSIFileStartpos: true,
     enableUSIFileResign: false,
     enableUSIFileSpecialMoves: false,

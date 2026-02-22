@@ -265,6 +265,11 @@ export const ja: Texts = {
   select: "選択",
   shuffle: "シャッフル",
   csaV3Output: "CSA V3 で出力",
+  alwaysOutputUTF8: "常に UTF-8 で出力",
+  someOldShogiAppsCannotReadUTF8KifFiles:
+    "一部の古い将棋アプリでは UTF-8 の KIF・KI2 ファイルを読み込めない場合があります。",
+  strictDecodingMayFailToReadUTF8KifFiles:
+    "文字コードの設定が「厳格」の場合、UTF-8 で書き出した KIF・KI2 ファイルの読み込みに失敗する可能性があります。",
   positionOfUSIOutput: "USI の局面表記",
   movesOfUSIOutput: "USI の指し手表記",
   onlySFEN: "SFEN のみ",
