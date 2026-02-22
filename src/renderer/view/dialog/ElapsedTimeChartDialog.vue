@@ -279,6 +279,15 @@ onBeforeUnmount(() => {
 watch(selectedPly, () => {
   updateChartSelection();
 });
+
+watch(
+  () => appSettings.thema,
+  () => {
+    chart?.destroy();
+    chart = undefined;
+    buildChart();
+  },
+);
 </script>
 
 <style scoped>
