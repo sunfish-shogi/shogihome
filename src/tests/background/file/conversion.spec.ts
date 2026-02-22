@@ -183,6 +183,24 @@ describe("conversion", () => {
         expectedFiles: ["csa-sjis.ki2"],
       },
       {
+        sourceFormats: [RecordFileFormat.CSA],
+        subdirectories: false,
+        destination: "csa-to-ki2-utf8",
+        destinationFormat: RecordFileFormat.KI2,
+        useUTF8ForKifAndKi2: true,
+        createSubdirectories: true,
+        fileNameConflictAction: FileNameConflictAction.OVERWRITE,
+        expectedReport: {
+          successTotal: 1,
+          success: { ".csa": 1 },
+          failedTotal: 0,
+          failed: {},
+          skippedTotal: 0,
+          skipped: {},
+        },
+        expectedFiles: ["csa-sjis.ki2"],
+      },
+      {
         sourceFormats: [RecordFileFormat.KI2U],
         subdirectories: false,
         destination: "ki2u-to-kifu/overwrite",
@@ -252,6 +270,7 @@ describe("conversion", () => {
         ...defaultAppSettings(),
         returnCode: "\n",
         useCSAV3: !!testCase.csaV3,
+        useUTF8ForKifAndKi2: !!testCase.useUTF8ForKifAndKi2,
       });
       const destinationFullPath = path.join(tmpdir, testCase.destination);
       for (let i = 0; i < 1 + (testCase.repeat || 0); i++) {

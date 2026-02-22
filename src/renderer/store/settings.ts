@@ -169,6 +169,9 @@ class AppSettingsStore {
   get useCSAV3(): boolean {
     return this.merged.useCSAV3;
   }
+  get useUTF8ForKifAndKi2(): boolean {
+    return this.merged.useUTF8ForKifAndKi2;
+  }
   get enableUSIFileStartpos(): boolean {
     return this.merged.enableUSIFileStartpos;
   }

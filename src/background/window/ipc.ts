@@ -306,11 +306,12 @@ ipcMain.handle(
       throw new Error("failed to open dialog by unexpected error.");
     }
     const appSettings = await loadAppSettings();
+    const KIFEncoding = appSettings.useUTF8ForKifAndKi2 ? "UTF-8" : "Shift_JIS";
     const filters = [
-      { name: "KIF (Shift_JIS)", extensions: ["kif"] },
-      { name: "KIF (UTF-8)", extensions: ["kifu"] },
-      { name: "KI2 (Shift_JIS)", extensions: ["ki2"] },
-      { name: "KI2 (UTF-8)", extensions: ["ki2u"] },
+      { name: `KIF (${KIFEncoding})`, extensions: ["kif"] },
+      { name: "KIFU (UTF-8)", extensions: ["kifu"] },
+      { name: `KI2 (${KIFEncoding})`, extensions: ["ki2"] },
+      { name: "KI2U (UTF-8)", extensions: ["ki2u"] },
       { name: "CSA", extensions: ["csa"] },
       { name: "JSON Kifu Format", extensions: ["jkf"] },
     ];

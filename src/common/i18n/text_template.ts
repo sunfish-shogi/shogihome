@@ -260,6 +260,9 @@ export type Texts = {
   select: string;
   shuffle: string;
   csaV3Output: string;
+  alwaysOutputUTF8: string;
+  someOldShogiAppsCannotReadUTF8KifFiles: string;
+  strictDecodingMayFailToReadUTF8KifFiles: string;
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;

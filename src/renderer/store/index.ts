@@ -1424,6 +1424,7 @@ class Store {
       returnCode: appSettings.returnCode,
       detectGarbled: opt?.detectGarbled,
       csa: { v3: appSettings.useCSAV3 },
+      useUTF8ForKifAndKi2: appSettings.useUTF8ForKifAndKi2,
     });
     if (result instanceof Error) {
       throw result;

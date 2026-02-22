@@ -412,10 +412,10 @@
             v-model:value="update.defaultRecordFileFormat"
             class="selector"
             :items="[
-              { label: '.kif (Shift_JIS)', value: RecordFileFormat.KIF },
-              { label: '.kifu (UTF-8)', value: RecordFileFormat.KIFU },
-              { label: '.ki2 (Shift_JIS)', value: RecordFileFormat.KI2 },
-              { label: '.ki2u (UTF-8)', value: RecordFileFormat.KI2U },
+              { label: '.kif', value: RecordFileFormat.KIF },
+              { label: '.kifu', value: RecordFileFormat.KIFU },
+              { label: '.ki2', value: RecordFileFormat.KI2 },
+              { label: '.ki2u', value: RecordFileFormat.KI2U },
               { label: '.csa', value: RecordFileFormat.CSA },
               { label: '.jkf', value: RecordFileFormat.JKF },
             ]"
@@ -434,6 +434,20 @@
               { label: t.autoDetect, value: TextDecodingRule.AUTO_DETECT },
             ]"
           />
+        </div>
+        <!-- 常に UTF-8 で出力 -->
+        <div class="form-item">
+          <div class="form-item-label-wide">{{ t.alwaysOutputUTF8 }}</div>
+          <ToggleButton v-model:value="update.useUTF8ForKifAndKi2" />
+        </div>
+        <div v-if="update.useUTF8ForKifAndKi2" class="form-group warning">
+          <div class="note">{{ t.someOldShogiAppsCannotReadUTF8KifFiles }}</div>
+        </div>
+        <div
+          v-if="update.useUTF8ForKifAndKi2 && update.textDecodingRule === TextDecodingRule.STRICT"
+          class="form-group danger"
+        >
+          <div class="note">{{ t.strictDecodingMayFailToReadUTF8KifFiles }}</div>
         </div>
         <!-- 改行文字 -->
         <div class="form-item">
@@ -826,6 +840,7 @@ const update = ref({
   returnCode: org.returnCode,
   recordFileNameTemplate: org.recordFileNameTemplate,
   useCSAV3: org.useCSAV3,
+  useUTF8ForKifAndKi2: org.useUTF8ForKifAndKi2,
   enableUSIFileStartpos: org.enableUSIFileStartpos,
   enableUSIFileSpecialMoves: org.enableUSIFileSpecialMoves,
   showPasteDialog: org.showPasteDialog,

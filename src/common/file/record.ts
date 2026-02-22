@@ -85,6 +85,7 @@ export type ExportOptions = {
   returnCode?: string;
   detectGarbled?: boolean;
   csa?: CSAOptions;
+  useUTF8ForKifAndKi2?: boolean;
 };
 
 export type ExportResult = {
@@ -97,7 +98,10 @@ export function exportRecordAsBuffer(
   format: RecordFileFormat,
   opt: ExportOptions,
 ): ExportResult {
-  const encoding = getRecommendedEncodingByFileFormat(format);
+  const encoding =
+    opt.useUTF8ForKifAndKi2 && (format === RecordFileFormat.KIF || format === RecordFileFormat.KI2)
+      ? "UTF8"
+      : getRecommendedEncodingByFileFormat(format);
   let str: string;
   switch (format) {
     case RecordFileFormat.KIF:

@@ -265,6 +265,11 @@ export const en: Texts = {
   select: "Select",
   shuffle: "Shuffle",
   csaV3Output: "CSA V3 Output",
+  alwaysOutputUTF8: "Always Output UTF-8",
+  someOldShogiAppsCannotReadUTF8KifFiles:
+    "Some older Shogi applications may not be able to read KIF/KI2 files encoded in UTF-8.",
+  strictDecodingMayFailToReadUTF8KifFiles:
+    "When text encoding is set to Strict, loading KIF/KI2 files written in UTF-8 may fail.",
   positionOfUSIOutput: "Position of USI Output",
   movesOfUSIOutput: "Moves of USI Output",
   onlySFEN: "Only SFEN",
