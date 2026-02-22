@@ -65,4 +65,5 @@ export enum MenuEvent {
   USI_ENGINES_DIALOG = "usiEngines",
   LAUNCH_USI_ENGINE = "launchUsiEngine",
   CONNECT_TO_CSA_SERVER = "connectToCsaServer",
+  ELAPSED_TIME_CHART = "elapsedTimeChart",
 }

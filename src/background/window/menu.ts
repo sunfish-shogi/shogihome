@@ -402,6 +402,10 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           type: "separator",
         },
+        menuItem(t.elapsedTimeChart, MenuEvent.ELAPSED_TIME_CHART, [AppState.NORMAL]),
+        {
+          type: "separator",
+        },
         {
           label: t.boardLayout,
           submenu: [

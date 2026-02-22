@@ -458,6 +458,12 @@ class Store {
     }
   }
 
+  showElapsedTimeChartDialog(): void {
+    if (this.appState === AppState.NORMAL) {
+      this._appState = AppState.ELAPSED_TIME_CHART_DIALOG;
+    }
+  }
+
   destroyModalDialog(): void {
     if (
       this.appState === AppState.PASTE_DIALOG ||
@@ -474,7 +480,8 @@ class Store {
       this.appState === AppState.LOAD_REMOTE_FILE_DIALOG ||
       this.appState === AppState.SHARE_DIALOG ||
       this.appState === AppState.ADD_BOOK_MOVES_DIALOG ||
-      this.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG
+      this.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG ||
+      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
     ) {
       this._appState = AppState.NORMAL;
     }
@@ -1156,19 +1163,19 @@ class Store {
   }
 
   goForward(): void {
-    if (this.appState === AppState.NORMAL) {
+    if (this.appState === AppState.NORMAL || this.appState === AppState.ELAPSED_TIME_CHART_DIALOG) {
       this.recordManager.goForward();
     }
   }
 
   goBack(): void {
-    if (this.appState === AppState.NORMAL) {
+    if (this.appState === AppState.NORMAL || this.appState === AppState.ELAPSED_TIME_CHART_DIALOG) {
       this.recordManager.goBack();
     }
   }
 
   changePly(ply: number): void {
-    if (this.appState === AppState.NORMAL) {
+    if (this.appState === AppState.NORMAL || this.appState === AppState.ELAPSED_TIME_CHART_DIALOG) {
       this.recordManager.changePly(ply);
     }
   }

@@ -295,6 +295,9 @@ export function setup(): void {
       case MenuEvent.CONNECT_TO_CSA_SERVER:
         store.showConnectToCSAServerDialog();
         break;
+      case MenuEvent.ELAPSED_TIME_CHART:
+        store.showElapsedTimeChartDialog();
+        break;
     }
   });
 

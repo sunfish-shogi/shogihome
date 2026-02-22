@@ -280,6 +280,7 @@ export const zh_tw: Texts = {
   logLevel: "紀錄等級",
   manageEngines: "引擎設定",
   flipBoard: "盤面反轉",
+  elapsedTimeChart: "消費時間圖表",
   shortcutKeys: "快捷鍵",
   useUpDownToMove1Ply: "使用↑/↓鍵移動1手",
   useLeftRightToMove1Ply: "使用←/→鍵移動1手",

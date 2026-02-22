@@ -283,6 +283,7 @@ export const vi: Texts = {
   logLevel: "Mức độ log",
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
+  elapsedTimeChart: "Biểu đồ thời gian",
   shortcutKeys: "Phím tắt",
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",

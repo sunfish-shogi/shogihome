@@ -35,6 +35,7 @@
       v-if="store.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG"
       @close="store.destroyModalDialog()"
     />
+    <ElapsedTimeChartDialog v-if="store.appState === AppState.ELAPSED_TIME_CHART_DIALOG" />
     <CSAGameReadyDialog
       v-if="
         store.csaGameState === CSAGameState.PLAYER_SETUP ||
@@ -103,6 +104,7 @@ import LoadRemoteFileDialog from "./dialog/LoadRemoteFileDialog.vue";
 import ShareDialog from "./dialog/ShareDialog.vue";
 import AddBookMovesDialog from "./dialog/AddBookMovesDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
+import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
