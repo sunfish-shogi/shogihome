@@ -402,6 +402,10 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           type: "separator",
         },
+        menuItem(t.elapsedTimeChart, MenuEvent.ELAPSED_TIME_CHART, [AppState.NORMAL]),
+        {
+          type: "separator",
+        },
         {
           label: t.boardLayout,
           submenu: [
@@ -449,7 +453,6 @@ function createMenuTemplate(window: BrowserWindow) {
               accelerator: "F11",
             },
         menuItem(t.flipBoard, MenuEvent.FLIP_BOARD, null, "CmdOrCtrl+T"),
-        menuItem(t.elapsedTimeChart, MenuEvent.ELAPSED_TIME_CHART, [AppState.NORMAL]),
         {
           label: t.defaultFontSize,
           click: () => {
