@@ -146,29 +146,37 @@ const buildChart = () => {
   const palette = getColorPalette(appSettings.thema);
   const barData = buildBarData();
 
-  if (barData.length === 0) {
-    return;
-  }
-
-  // Build label and data arrays for all plies
+  // Build label and data arrays, always showing at least up to ply 30
   const labels: string[] = [];
   const blackData: (number | null)[] = [];
   const whiteData: (number | null)[] = [];
 
   const nodes = store.record.moves;
+  const nodeMap = new Map<number, (typeof nodes)[0]>();
   for (const node of nodes) {
-    if (node.ply === 0) {
-      continue;
+    if (node.ply > 0) {
+      nodeMap.set(node.ply, node);
     }
-    labels.push(String(node.ply));
-    const isBlack = node.nextColor === Color.WHITE;
-    const seconds = node.elapsedMs > 0 ? node.elapsedMs / 1000 : null;
-    if (isBlack) {
-      blackData.push(seconds);
-      whiteData.push(null);
+  }
+  const lastPly = nodes.length > 1 ? nodes[nodes.length - 1].ply : 0;
+  const maxPly = Math.max(30, lastPly);
+
+  for (let ply = 1; ply <= maxPly; ply++) {
+    labels.push(String(ply));
+    const node = nodeMap.get(ply);
+    if (node) {
+      const isBlack = node.nextColor === Color.WHITE;
+      const seconds = node.elapsedMs > 0 ? node.elapsedMs / 1000 : null;
+      if (isBlack) {
+        blackData.push(seconds);
+        whiteData.push(null);
+      } else {
+        blackData.push(null);
+        whiteData.push(seconds);
+      }
     } else {
       blackData.push(null);
-      whiteData.push(seconds);
+      whiteData.push(null);
     }
   }
 
@@ -248,13 +256,12 @@ const updateChartSelection = () => {
     return;
   }
   const palette = getColorPalette(appSettings.thema);
-  const nodes = store.record.moves;
-  const totalMoves = nodes.length - 1; // exclude ply 0
+  const totalLabels = chart.data.labels?.length ?? 0;
 
   for (const dataset of chart.data.datasets) {
     const borderColors: string[] = [];
     const borderWidths: number[] = [];
-    for (let i = 0; i < totalMoves; i++) {
+    for (let i = 0; i < totalLabels; i++) {
       const ply = i + 1;
       borderColors.push(ply === selectedPly.value ? palette.selected : "transparent");
       borderWidths.push(ply === selectedPly.value ? 3 : 0);
