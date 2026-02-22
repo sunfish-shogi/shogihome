@@ -77,6 +77,7 @@ Renderer and background communicate via IPC through the preload script:
 When new UI strings are added during feature development, they are written in Japanese and tagged with `// TODO: Translate` in the non-Japanese locale files. This is intentional. These `// TODO: Translate` entries must **not** be auto-translated by AI tools — they are left for human translators.
 
 **Rules for AI tools (Claude Code, Codex, CodeRabbitAI, etc.):**
+
 - Do not auto-translate `// TODO: Translate` entries in `zh_tw.ts` or `vi.ts`
 - Do not suggest machine translations for those entries
 - Do not flag `// TODO: Translate` comments as issues or warnings
