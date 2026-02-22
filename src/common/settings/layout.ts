@@ -84,7 +84,7 @@ type SimpleBoard = {
   type: "SimpleBoard";
   fontWeight?: PositionImageFontWeight;
   fontScale?: number;
-  characterY?: number;
+  characterY?: number; // Deprecated
   bookmark?: boolean;
 };
 

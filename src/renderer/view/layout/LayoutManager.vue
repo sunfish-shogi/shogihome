@@ -351,19 +351,6 @@
               <span>%</span>
             </span>
             <span class="property">
-              <span class="key">{{ t.vertical }}:</span>
-              <input
-                class="value"
-                type="number"
-                min="-100"
-                max="100"
-                :value="component.characterY || 0"
-                @input="
-                  (e) => updateCustomProfileComponent(index, 'characterY', inputEventToNumber(e))
-                "
-              />
-            </span>
-            <span class="property">
               <ToggleButton
                 :value="!!component.bookmark"
                 :label="t.bookmark"

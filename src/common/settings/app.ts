@@ -256,7 +256,7 @@ export type AppSettings = {
   positionImageHandLabelType: PositionImageHandLabelType;
   useBookmarkAsPositionImageHeader: boolean;
   positionImageHeader: string;
-  positionImageCharacterY: number;
+  positionImageCharacterY: number; // Deprecated
   positionImageFontScale: number;
   positionImageFontWeight: PositionImageFontWeight;
 
