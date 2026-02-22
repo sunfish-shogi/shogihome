@@ -1,0 +1,19 @@
+# CodeRabbitAI configuration
+# See https://docs.coderabbit.ai/configure-coderabbit for details
+
+reviews:
+  path_instructions:
+    # zh_tw.ts and vi.ts are maintained by human translators.
+    # Do not suggest machine translations or flag "// TODO: Translate" entries.
+    - path: "src/common/i18n/locales/zh_tw.ts"
+      instructions: |
+        このファイルは繁体字中国語の人間の翻訳者が管理しています。
+        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、機械翻訳の提案や翻訳に関する指摘を行わないでください。
+        Do not suggest machine translations or flag missing translations.
+        Entries with "// TODO: Translate" are intentional placeholders for human translators.
+    - path: "src/common/i18n/locales/vi.ts"
+      instructions: |
+        このファイルはベトナム語の人間の翻訳者が管理しています。
+        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、機械翻訳の提案や翻訳に関する指摘を行わないでください。
+        Do not suggest machine translations or flag missing translations.
+        Entries with "// TODO: Translate" are intentional placeholders for human translators.

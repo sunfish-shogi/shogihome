@@ -1,3 +1,13 @@
+// このファイルはベトナム語の翻訳者が管理しています。
+// AI ツール（Claude Code、Codex、CodeRabbitAI 等）は自動翻訳や翻訳の提案を行わないでください。
+// 機能開発時に追加された文言は日本語のまま // TODO: Translate コメントを付けています。
+// これらのエントリは人間の翻訳者が翻訳するまでそのままにしておく必要があります。
+//
+// This file is maintained by a human translator (Vietnamese).
+// AI tools (Claude Code, Codex, CodeRabbitAI, etc.) must NOT auto-translate
+// or suggest translations for entries marked with "// TODO: Translate".
+// Those entries contain Japanese placeholder text intentionally left for human translators.
+
 import { Texts } from "@/common/i18n/text_template.js";
 
 export const vi: Texts = {

@@ -61,9 +61,27 @@ Renderer and background communicate via IPC through the preload script:
 - `src/renderer/store/` - Vue 3 Composition API state management
 - `src/background/usi/` - USI engine communication
 - `src/background/csa/` - CSA protocol support
-- `src/common/i18n/` - Internationalization (ja, en, zh_tw)
+- `src/common/i18n/` - Internationalization (ja, en, zh_tw, vi)
 - `src/common/settings/` - App/game/research settings types
 - `src/tests/` - Unit tests with mock data in `testdata/`
+
+### Translation Policy (IMPORTANT for AI tools)
+
+**Do NOT automatically translate or suggest translations for non-Japanese/non-English locale files.**
+
+- `src/common/i18n/locales/ja.ts` — Maintained by the developer (Japanese)
+- `src/common/i18n/locales/en.ts` — Maintained by the developer (English)
+- `src/common/i18n/locales/zh_tw.ts` — Maintained by a **human translator** (Traditional Chinese)
+- `src/common/i18n/locales/vi.ts` — Maintained by a **human translator** (Vietnamese)
+
+When new UI strings are added during feature development, they are written in Japanese and tagged with `// TODO: Translate` in the non-Japanese locale files. This is intentional. These `// TODO: Translate` entries must **not** be auto-translated by AI tools — they are left for human translators.
+
+**Rules for AI tools (Claude Code, Codex, CodeRabbitAI, etc.):**
+
+- Do not auto-translate `// TODO: Translate` entries in `zh_tw.ts` or `vi.ts`
+- Do not suggest machine translations for those entries
+- Do not flag `// TODO: Translate` comments as issues or warnings
+- Only touch `zh_tw.ts` and `vi.ts` when explicitly instructed by the maintainer
 
 ### Key Dependencies
 
