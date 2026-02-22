@@ -79,7 +79,6 @@
         typeface="mincho"
         :font-weight="c.fontWeight === PositionImageFontWeight.W700X ? 700 : 400"
         :text-shadow="c.fontWeight !== PositionImageFontWeight.W400"
-        :character-y="c.characterY || 0"
         :font-scale="(c.fontScale || 100) / 100"
       />
     </div>

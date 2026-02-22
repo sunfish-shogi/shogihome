@@ -11,20 +11,29 @@
       <div class="board-grid" :style="layout.boardStyle">
         <img src="/board/grid_square.svg" :style="layout.boardImageStyle" />
       </div>
-      <div v-for="(file, index) of layout.files" :key="index" :style="file.style">
-        <span class="file-label" :class="layout.typefaceClass" :style="layout.fileCharacterStyle">{{
-          file.character
-        }}</span>
+      <div
+        v-for="(file, index) of layout.files"
+        :key="index"
+        class="label-wrap"
+        :style="file.style"
+      >
+        <span class="file-label" :class="layout.typefaceClass">{{ file.character }}</span>
       </div>
-      <div v-for="(rank, index) of layout.ranks" :key="index" :style="rank.style">
-        <span class="rank-label" :class="layout.typefaceClass" :style="layout.rankCharacterStyle">{{
-          rank.character
-        }}</span>
+      <div
+        v-for="(rank, index) of layout.ranks"
+        :key="index"
+        class="label-wrap"
+        :style="rank.style"
+      >
+        <span class="rank-label" :class="layout.typefaceClass">{{ rank.character }}</span>
       </div>
-      <div v-for="piece of layout.boardPieces" :key="piece.id" :style="piece.style">
-        <span class="cell" :class="layout.typefaceClass" :style="piece.characterStyle">{{
-          piece.character
-        }}</span>
+      <div
+        v-for="piece of layout.boardPieces"
+        :key="piece.id"
+        class="piece-wrap"
+        :style="piece.style"
+      >
+        <span class="cell" :class="layout.typefaceClass">{{ piece.character }}</span>
       </div>
       <div class="column reverse" :style="layout.blackHand.style">
         <span class="hand black" :class="layout.typefaceClass">☗{{ layout.blackHand.text }}</span>
@@ -79,7 +88,6 @@ function buildParams(size: number) {
     boardLeft: size * 0.15,
     boardTop: size * 0.12,
     boardSize: size * 0.7,
-    boardLineHeight: size * 0.088,
     boardBorderSize: size * 0.004,
     labelSize: size * 0.05,
     labelFontSize: size * 0.03,
@@ -147,11 +155,6 @@ const props = defineProps({
     required: false,
     default: false,
   },
-  characterY: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
   fontScale: {
     type: Number,
     required: false,
@@ -162,7 +165,6 @@ const props = defineProps({
 const layout = computed(() => {
   const size = Math.min(props.maxSize.width, props.maxSize.height);
   const param = buildParams(size);
-  const charY = size * 0.002 * props.characterY;
   return {
     typefaceClass: [
       props.typeface,
@@ -196,7 +198,7 @@ const layout = computed(() => {
       return {
         style: {
           left: `${param.boardLeft + param.pieceSize * (8 - index)}px`,
-          top: `${param.boardTop - param.labelSize - charY}px`,
+          top: `${param.boardTop - param.labelSize}px`,
           width: `${param.pieceSize}px`,
           height: `${param.labelSize}px`,
           fontSize: `${param.labelFontSize * props.fontScale}px`,
@@ -204,14 +206,11 @@ const layout = computed(() => {
         character,
       };
     }),
-    fileCharacterStyle: {
-      lineHeight: `${param.labelSize}px`,
-    },
     ranks: rankNumbers.map((character, index) => {
       return {
         style: {
           left: `${param.boardLeft + param.boardSize}px`,
-          top: `${param.boardTop + param.pieceSize * index - charY}px`,
+          top: `${param.boardTop + param.pieceSize * index}px`,
           width: `${param.labelSize}px`,
           height: `${param.pieceSize}px`,
           fontSize: `${param.labelFontSize * props.fontScale}px`,
@@ -219,9 +218,6 @@ const layout = computed(() => {
         character,
       };
     }),
-    rankCharacterStyle: {
-      lineHeight: `${param.pieceSize}px`,
-    },
     lastMoveStyle: (function () {
       if (!props.lastMove) {
         return null;
@@ -241,20 +237,13 @@ const layout = computed(() => {
         id: `${square.x},${square.y}`,
         style: {
           left: `${param.boardLeft + (param.boardSize * square.x) / 9}px`,
-          top: `${
-            param.boardTop +
-            (param.boardSize * square.y) / 9 -
-            (piece.color === Color.BLACK ? charY : -charY)
-          }px`,
+          top: `${param.boardTop + (param.boardSize * square.y) / 9}px`,
           width: `${param.boardSize / 9}px`,
           height: `${param.boardSize / 9}px`,
           transform: piece.color === Color.WHITE ? "rotate(180deg)" : undefined,
           fontSize: `${(param.boardSize * props.fontScale) / 11}px`,
         },
         character: pieceTypeToStringForBoard(piece.type),
-        characterStyle: {
-          lineHeight: `${param.boardLineHeight}px`,
-        },
       };
     }),
     blackHand: (function () {
@@ -264,7 +253,7 @@ const layout = computed(() => {
         text,
         style: {
           left: `${param.blackHandLeft}px`,
-          top: `${param.blackHandTop - charY}px`,
+          top: `${param.blackHandTop}px`,
           height: `${param.boardSize}px`,
           fontSize: `${fontSize * props.fontScale}px`,
         },
@@ -277,7 +266,7 @@ const layout = computed(() => {
         text,
         style: {
           left: `${param.whiteHandLeft}px`,
-          top: `${param.whiteHandTop + charY}px`,
+          top: `${param.whiteHandTop}px`,
           height: `${param.boardSize}px`,
           fontSize: `${fontSize * props.fontScale}px`,
           transform: "rotate(180deg)",
@@ -315,26 +304,24 @@ const layout = computed(() => {
   white-space: pre-wrap;
   text-align: left;
 }
+.label-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.piece-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .file-label {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
   text-align: center;
-  vertical-align: middle;
 }
 .rank-label {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
   text-align: center;
-  vertical-align: baseline;
 }
 .cell {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
   text-align: center;
-  vertical-align: text-bottom;
 }
 .hand {
   display: inline-block;

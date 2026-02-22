@@ -17,7 +17,6 @@
             :typeface="appSettings.positionImageTypeface"
             :font-weight="fontWeight"
             :text-shadow="textShadow"
-            :character-y="appSettings.positionImageCharacterY"
             :font-scale="appSettings.positionImageFontScale"
           />
         </div>
@@ -61,17 +60,6 @@
                 { value: PositionImageTypeface.MINCHO, label: t.mincho },
               ]"
               @update:value="changeTypeface"
-            />
-          </div>
-          <div>
-            {{ t.vertical }}
-            <input
-              class="number"
-              type="number"
-              min="-100"
-              max="100"
-              :value="appSettings.positionImageCharacterY"
-              @change="changeCharacterY"
             />
           </div>
           <div>
@@ -333,12 +321,6 @@ const changeHeaderText = (e: Event) => {
 const changeWhetherToUseBookmark = (value: boolean) => {
   appSettings.updateAppSettings({
     useBookmarkAsPositionImageHeader: value,
-  });
-};
-
-const changeCharacterY = (e: Event) => {
-  appSettings.updateAppSettings({
-    positionImageCharacterY: readInputAsNumber(e.target as HTMLInputElement),
   });
 };
 
