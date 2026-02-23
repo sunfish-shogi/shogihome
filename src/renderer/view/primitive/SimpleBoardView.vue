@@ -316,12 +316,15 @@ const layout = computed(() => {
 }
 .file-label {
   text-align: center;
+  line-height: 1;
 }
 .rank-label {
   text-align: center;
+  line-height: 1;
 }
 .cell {
   text-align: center;
+  line-height: 1;
 }
 .hand {
   display: inline-block;
