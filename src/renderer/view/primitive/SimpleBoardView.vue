@@ -292,6 +292,42 @@ const layout = computed(() => {
 </script>
 
 <style scoped>
+/*
+ * Font aliases with overridden vertical metrics for use in SVG text elements.
+ *
+ * Japanese fonts on Windows use the larger usWinAscent/usWinDescent values
+ * instead of the typographically correct sTypoAscender/sTypoDescender values.
+ * This creates extra whitespace below CJK glyphs, making them appear too high
+ * when centered with dominant-baseline="central".
+ *
+ * By forcing ascent/descent to match the sTypo values (80%/20%), the em-box
+ * center aligns with the actual visual center of CJK characters on all OSes.
+ */
+@font-face {
+  font-family: "SimpleBoardMincho";
+  src:
+    local("游明朝"), local("Yu Mincho"), local("YuMincho"), local("Hiragino Mincho ProN"),
+    local("Hiragino Mincho Pro"), local("HGS明朝E"), local("MS PMincho");
+  ascent-override: 80%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "SimpleBoardGothic";
+  src:
+    local("Hiragino Kaku Gothic ProN"), local("ヒラギノ角ゴ ProN W3"), local("Hiragino Sans"),
+    local("Yu Gothic UI"), local("YuGothic"), local("Yu Gothic"), local("メイリオ"), local("Meiryo");
+  ascent-override: 80%;
+  descent-override: 20%;
+  line-gap-override: 0%;
+}
+/* Apply the metric-corrected fonts to SVG text elements only (not hand text). */
+text.mincho {
+  font-family: "SimpleBoardMincho", serif;
+}
+text.gothic {
+  font-family: "SimpleBoardGothic", sans-serif;
+}
 .weight-400 {
   font-weight: 400;
 }
