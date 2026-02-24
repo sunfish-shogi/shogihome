@@ -74,6 +74,13 @@
         :style="arrow.style"
         style="object-fit: cover; object-position: left top"
       />
+      <div
+        v-for="arrow in arrows"
+        v-show="arrow.labelText"
+        :key="'label-' + arrow.id"
+        class="arrow-label"
+        :style="arrow.labelStyle"
+      >{{ arrow.labelText }}</div>
 
       <!-- 操作用レイヤー -->
       <div class="board operation" :style="main.boardStyle">
@@ -212,6 +219,7 @@ import { BoardLayoutType } from "@/common/settings/layout";
 import { CompactLayoutBuilder } from "./board/compact";
 import BoardGrid from "./BoardGrid.vue";
 import { t } from "@/common/i18n";
+import { CandidateMove } from "@/renderer/store/index";
 
 type State = {
   pointer: Square | Piece | null;
@@ -288,7 +296,7 @@ const props = defineProps({
     default: null,
   },
   candidates: {
-    type: Array as PropType<Move[]>,
+    type: Array as PropType<CandidateMove[]>,
     required: false,
     default: () => [],
   },
@@ -567,42 +575,73 @@ const whiteHand = computed(() => {
 
 const arrows = computed(() => {
   const arrowWidth = 30 * main.value.ratio;
-  return props.candidates.map((candidate) => {
+  const n = props.candidates.length;
+  const bestScore = props.candidates.reduce<number | undefined>(
+    (best, c) => (c.score !== undefined && (best === undefined || c.score > best) ? c.score : best),
+    undefined,
+  );
+  return props.candidates.map((candidate, index) => {
+    const move = candidate.move;
     const boardBase = layoutBuilder.value.boardBasePoint;
     const blackHandBase = layoutBuilder.value.blackHandBasePoint;
     const whiteHandBase = layoutBuilder.value.whiteHandBasePoint;
     const start =
-      candidate.from instanceof Square
-        ? boardBase.add(boardLayoutBuilder.value.centerOfSquare(candidate.from))
-        : candidate.color === Color.BLACK
+      move.from instanceof Square
+        ? boardBase.add(boardLayoutBuilder.value.centerOfSquare(move.from))
+        : move.color === Color.BLACK
           ? blackHandBase.add(
               handLayoutBuilder.value.centerOfPieceType(
                 props.position.hand(Color.BLACK),
                 Color.BLACK,
-                candidate.from,
+                move.from,
               ),
             )
           : whiteHandBase.add(
               handLayoutBuilder.value.centerOfPieceType(
                 props.position.hand(Color.WHITE),
                 Color.WHITE,
-                candidate.from,
+                move.from,
               ),
             );
-    const end = boardBase.add(boardLayoutBuilder.value.centerOfSquare(candidate.to));
+    const end = boardBase.add(boardLayoutBuilder.value.centerOfSquare(move.to));
     const middle = start.add(end).multiply(0.5);
     const distance = start.distanceTo(end);
     const angle = start.angleTo(end) - Math.PI;
+    // z-index 決定のためスコアに基づいてランクを計算（同率は同順位）
+    let labelText: string;
+    let scoreRank: number;
+    if (candidate.score !== undefined && bestScore !== undefined) {
+      const diff = candidate.score - bestScore;
+      scoreRank =
+        1 + props.candidates.filter((c) => c.score !== undefined && c.score > candidate.score!).length;
+      labelText = diff === 0 ? "Best" : `${diff}`;
+    } else {
+      scoreRank = index + 1;
+      labelText = "";
+    }
     const x = middle.x - distance / 2;
     const y = middle.y - arrowWidth / 2;
+    // 矢印が水平に近いほどラベルをずらす（最大でフォントサイズ12px分）
+    // 矢印が水平より下向き（dy > |dx|）のときは上方向にオフセット
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const horizontalFactor = distance > 0 ? Math.abs(dx) / distance : 0;
+    const labelOffsetY = dy > 0 ? -horizontalFactor * 12 : horizontalFactor * 12;
     return {
-      id: candidate.usi,
+      id: move.usi,
+      labelText,
       style: {
         left: x + "px",
         top: y + "px",
         width: distance + "px",
         height: arrowWidth + "px",
         transform: `rotate(${angle}rad)`,
+        zIndex: 20 + n + 1 - scoreRank,
+      },
+      labelStyle: {
+        left: middle.x + "px",
+        top: middle.y + labelOffsetY + "px",
+        zIndex: 20 + 2 * n + 1 - scoreRank,
       },
     };
   });
@@ -731,6 +770,19 @@ const whitePlayerTimeSeverity = computed(() => {
 }
 .arrows {
   z-index: 20;
+}
+.arrow-label {
+  position: absolute;
+  z-index: 21;
+  transform: translate(-50%, -50%);
+  background: white;
+  color: #fe0000;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 1px 4px;
+  white-space: nowrap;
+  line-height: 1.4;
+  pointer-events: none;
 }
 .board.operation,
 .hand.operation,

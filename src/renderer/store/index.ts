@@ -73,6 +73,11 @@ import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";
 import { ParallelGameManager, ParallelGameProgress } from "@/renderer/game/parallel.js";
 
+export type CandidateMove = {
+  move: Move;
+  score?: number; // 手番側視点の数値スコア（showArrowScore が有効な場合のみ設定）
+};
+
 export type PVPreview = {
   position: ImmutablePosition;
   engineName?: string;
@@ -509,16 +514,23 @@ class Store {
     return this.usiMonitor.sessions;
   }
 
-  get candidates(): Move[] {
+  get candidates(): CandidateMove[] {
     const appSettings = useAppSettings();
     const maxScoreDiff = 100;
     const sfen = this.recordManager.record.position.sfen;
-    const candidates: Move[] = [];
+    // 優先度1: 検討の第1エンジン（研究セッションの中で最小の sessionID）
+    // 優先度2: 対局中の手番側エンジン（ポンダー中でないセッション）
+    // 評価値ラベルはこのセッションのみ表示する。他のセッションは矢印のみ表示する。
+    const preferredSession =
+      this.usiMonitor.sessions.find((s) => this.researchManager.isSessionExists(s.sessionID)) ||
+      this.usiMonitor.sessions.find((s) => !s.ponderMove);
+    const candidates: CandidateMove[] = [];
     const usiSet = new Set<string>();
     for (const session of this.usiMonitor.sessions) {
       if (session.ponderMove) {
         continue;
       }
+      const isPreferred = session === preferredSession;
       let entryCount = 0;
       let maxScore = -Infinity;
       for (const info of session.latestInfo) {
@@ -531,19 +543,21 @@ class Store {
         if (!info.pv?.length) {
           continue;
         }
-        const score =
-          info.score !== undefined
-            ? info.score
-            : info.scoreMate
-              ? info.scoreMate > 0
-                ? 1e8 - info.scoreMate
-                : -1e8 - info.scoreMate
-              : undefined;
-        if (score !== undefined) {
-          if (score < maxScore - maxScoreDiff) {
-            continue;
-          } else if (score > maxScore) {
-            maxScore = score;
+        if (isPreferred) {
+          const score =
+            info.score !== undefined
+              ? info.score
+              : info.scoreMate
+                ? info.scoreMate > 0
+                  ? 1e8 - info.scoreMate
+                  : -1e8 - info.scoreMate
+                : undefined;
+          if (score !== undefined) {
+            if (score < maxScore - maxScoreDiff) {
+              continue;
+            } else if (score > maxScore) {
+              maxScore = score;
+            }
           }
         }
         const usi = info.pv[0];
@@ -561,7 +575,16 @@ class Store {
         if (!move || !pos.doMove(move)) {
           continue;
         }
-        candidates.push(move);
+        let candidateScore: number | undefined;
+        if (isPreferred && appSettings.showArrowScore) {
+          if (info.scoreMate !== undefined) {
+            // engine スコアは手番側視点。詰みを数値化して大小比較できるようにする
+            candidateScore = info.scoreMate > 0 ? 1e8 - info.scoreMate : -1e8 - info.scoreMate;
+          } else if (info.score !== undefined) {
+            candidateScore = info.score; // 手番側視点のままで OK
+          }
+        }
+        candidates.push({ move, score: candidateScore });
         usiSet.add(usi);
         entryCount++;
       }
