@@ -231,6 +231,7 @@ export type AppSettings = {
   // Evaluation
   evaluationViewFrom: EvaluationViewFrom;
   maxArrowsPerEngine: number;
+  showArrowScore: boolean;
   coefficientInSigmoid: number;
   badMoveLevelThreshold1: number;
   badMoveLevelThreshold2: number;
@@ -382,6 +383,7 @@ export function defaultAppSettings(opt?: {
     showEngineOptionDetails: false,
     evaluationViewFrom: EvaluationViewFrom.EACH,
     maxArrowsPerEngine: 3,
+    showArrowScore: true,
     coefficientInSigmoid: 600,
     badMoveLevelThreshold1: 5,
     badMoveLevelThreshold2: 10,
