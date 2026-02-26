@@ -370,6 +370,9 @@ const onRemoveCurrentMove = () => {
 
 <style scoped>
 .control-item {
+  display: flex;
+  align-items: center;
+  position: relative;
   width: 100%;
   height: 20%;
   font-size: 80%;
@@ -381,13 +384,25 @@ const onRemoveCurrentMove = () => {
   padding: 0 5% 0 5%;
 }
 .compact .control-item {
+  justify-content: center;
   text-align: center;
+  overflow: visible;
 }
 .control-item .icon {
   height: 68%;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+  object-fit: contain;
 }
 .compact .control-item .icon {
   height: 48%;
+}
+.control-item span {
+  line-height: 1;
+}
+.control-item .icon + span {
+  margin-left: 5px;
 }
 .tooltip {
   display: none;
@@ -399,7 +414,14 @@ const onRemoveCurrentMove = () => {
   padding: 5px;
   z-index: 100;
 }
-*:hover > .tooltip {
+.compact .control-item .tooltip {
+  margin-left: 0;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+.control-item:hover > .tooltip {
   display: block;
 }
 </style>
