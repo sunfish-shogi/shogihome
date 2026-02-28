@@ -1,5 +1,74 @@
 import os from "node:os";
+import { exec } from "node:child_process";
 import { MachineSpec, OSState } from "@/common/advanced/monitor";
+
+// Cache the PowerShell Promise so the command runs at most once across concurrent callers.
+let powershellPromise: Promise<number> | undefined = undefined;
+
+/**
+ * Reads NUMBER_OF_PROCESSORS from the environment. Fast but limited to the current
+ * processor group on Windows (~64 threads). Returns 0 on failure.
+ */
+function getEnvLogicalProcessorCount(): number {
+  const value = parseInt(process.env.NUMBER_OF_PROCESSORS ?? "", 10);
+  return isNaN(value) || value <= 0 ? 0 : value;
+}
+
+/**
+ * Starts (or returns the cached) PowerShell query for the total logical processor count
+ * across all processor groups. Call early at startup to amortize the latency.
+ * Returns 0 on failure.
+ */
+function getPowershellLogicalProcessorCount(): Promise<number> {
+  if (powershellPromise === undefined) {
+    powershellPromise = new Promise<number>((resolve) => {
+      exec(
+        'powershell -Command "(Get-CimInstance Win32_Processor).NumberOfLogicalProcessors | Measure-Object -Sum | Select-Object -ExpandProperty Sum"',
+        { timeout: 10000, windowsHide: true },
+        (error, stdout) => {
+          if (error) {
+            resolve(0);
+            return;
+          }
+          const value = parseInt(stdout.trim(), 10);
+          resolve(isNaN(value) || value <= 0 ? 0 : value);
+        },
+      );
+    });
+  }
+  return powershellPromise;
+}
+
+/**
+ * On Windows, os.cpus() and os.availableParallelism() are limited to the current
+ * processor group (~64 threads). Combine NUMBER_OF_PROCESSORS (fast) and
+ * PowerShell Get-CimInstance (accurate across all groups), taking the larger value.
+ * Returns 0 only if both sources fail, so the caller can fall back to os.availableParallelism().
+ */
+async function getWindowsLogicalProcessorCount(): Promise<number> {
+  return Math.max(getEnvLogicalProcessorCount(), await getPowershellLogicalProcessorCount());
+}
+
+/**
+ * Kicks off the PowerShell query early at app startup so that the result is likely
+ * ready (or nearly so) by the time getMachineSpec() / getCPUInfo() are called.
+ * Safe to call on non-Windows platforms — it does nothing in that case.
+ */
+export function prefetchWindowsLogicalProcessorCount(): void {
+  if (process.platform === "win32") {
+    getPowershellLogicalProcessorCount();
+  }
+}
+
+async function getAvailableParallelism(): Promise<number> {
+  if (process.platform === "win32") {
+    const count = await getWindowsLogicalProcessorCount();
+    if (count > 0) {
+      return count;
+    }
+  }
+  return os.availableParallelism();
+}
 
 function getOSVersion() {
   const osVersion = process.getSystemVersion();
@@ -40,9 +109,9 @@ export function collectOSState(): OSState {
   };
 }
 
-export function getMachineSpec(): MachineSpec {
+export async function getMachineSpec(): Promise<MachineSpec> {
   return {
-    cpuCores: os.availableParallelism(),
+    cpuCores: await getAvailableParallelism(),
     memory: os.totalmem() / 1024,
   };
 }
@@ -53,7 +122,7 @@ type CPUInfo = {
   cores: { [model: string]: number };
 };
 
-export function getCPUInfo(): CPUInfo {
+export async function getCPUInfo(): Promise<CPUInfo> {
   const cpus = os.cpus();
   cpus.sort((a, b) => {
     const model = a.model.localeCompare(b.model);
@@ -70,7 +139,7 @@ export function getCPUInfo(): CPUInfo {
   }
   return {
     architecture: os.machine(),
-    availableCores: os.availableParallelism(),
+    availableCores: await getAvailableParallelism(),
     cores,
   };
 }
