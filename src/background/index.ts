@@ -26,6 +26,7 @@ import { createWindow } from "./window/main.js";
 import { spawn } from "child_process";
 import { invoke as invokeHeadless } from "./headless/invoke.js";
 import { setProcessArgs } from "./window/ipc.js";
+import { prefetchWindowsLogicalProcessorCount } from "./proc/state.js";
 
 const args = parseProcessArgs(process.argv);
 if (args instanceof Error) {
@@ -50,6 +51,8 @@ switch (args.type) {
       });
     break;
 }
+
+prefetchWindowsLogicalProcessorCount();
 
 const appSettings = loadAppSettingsOnce();
 for (const type of Object.values(LogType)) {

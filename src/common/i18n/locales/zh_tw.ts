@@ -776,6 +776,8 @@ export const zh_tw: Texts = {
   largeSuggestionsCountMayCausePerformanceDegradation: "增加候補手可能會導致效能下降。",
   doYouReallyWantToIncreaseTheSuggestionsCount: "您確定要增加候選手數嗎？",
   recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。", // TODO: Translate
+  checkEngineCompatibilityForNumaEnvironments:
+    "このPCは複数のCPUソケットまたはプロセッサーグループ（NUMA）を持つ可能性があります。NUMA環境に対応していないエンジンでは性能が低下する場合があります。エンジンのNUMA対応状況をご確認ください。", // TODO: Translate
   aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。", // TODO: Translate
   yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。", // TODO: Translate
   increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。", // TODO: Translate

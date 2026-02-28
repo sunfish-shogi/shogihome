@@ -788,6 +788,8 @@ export const vi: Texts = {
     "Số nước đề xuất quá lớn có thể làm ứng dụng chậm đi đáng kể.",
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",
   recommendLowerSettingsForDailyUse: "Nên sử dụng cài đặt thấp hơn cho PC thông thường.",
+  checkEngineCompatibilityForNumaEnvironments:
+    "このPCは複数のCPUソケットまたはプロセッサーグループ（NUMA）を持つ可能性があります。NUMA環境に対応していないエンジンでは性能が低下する場合があります。エンジンのNUMA対応状況をご確認ください。", // TODO: Translate
   aiPerformanceMayDegrade: "Tính năng phần mềm có thể suy giảm.",
   yourPCMayBecomeSlow: "Thao tác PC có thể bị chậm lại.",
   increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.",

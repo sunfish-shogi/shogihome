@@ -781,6 +781,8 @@ export const en: Texts = {
   doYouReallyWantToIncreaseTheSuggestionsCount:
     "Do you really want to increase the suggestions count?",
   recommendLowerSettingsForDailyUse: "Recommend lower settings for daily use.",
+  checkEngineCompatibilityForNumaEnvironments:
+    "This machine may have multiple CPU sockets or processor groups (NUMA). Not all engines handle NUMA environments optimally. Please check whether your engine supports NUMA.",
   aiPerformanceMayDegrade: "AI performance may degrade.",
   yourPCMayBecomeSlow: "Your PC may become slow.",
   increasingItMayImproveAIPerformance: "Increasing it may improve AI performance.",

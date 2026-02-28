@@ -782,6 +782,8 @@ export const ja: Texts = {
     "候補手を増やしすぎると動作が重くなる可能性があります。",
   doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？",
   recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。",
+  checkEngineCompatibilityForNumaEnvironments:
+    "このPCは複数のCPUソケットまたはプロセッサーグループ（NUMA）を持つ可能性があります。NUMA環境に対応していないエンジンでは性能が低下する場合があります。エンジンのNUMA対応状況をご確認ください。",
   aiPerformanceMayDegrade: "AIの性能が低下する可能性があります。",
   yourPCMayBecomeSlow: "PCの動作が重くなる可能性があります。",
   increasingItMayImproveAIPerformance: "大きくすることでAIの性能が向上する可能性があります。",
