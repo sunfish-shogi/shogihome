@@ -122,7 +122,7 @@ export const vi: Texts = {
   success: "Thành công",
   failed: "Thất bại",
   skipped: "Bỏ qua",
-  game: "Ván",
+  game: "Chơi",
   player: "Kỳ thủ",
   server: "Máy chủ",
   selectFromHistory: "Chọn từ lịch sử",
