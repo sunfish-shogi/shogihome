@@ -7,34 +7,63 @@
       <div v-if="footer" class="footer" :class="layout.typefaceClass" :style="layout.footerStyle">
         {{ footer }}
       </div>
-      <div v-if="layout.lastMoveStyle" :style="layout.lastMoveStyle"></div>
-      <div class="board-grid" :style="layout.boardStyle">
-        <img src="/board/grid_square.svg" :style="layout.boardImageStyle" />
-      </div>
-      <div
-        v-for="(file, index) of layout.files"
-        :key="index"
-        class="label-wrap"
-        :style="file.style"
-      >
-        <span class="file-label" :class="layout.typefaceClass">{{ file.character }}</span>
-      </div>
-      <div
-        v-for="(rank, index) of layout.ranks"
-        :key="index"
-        class="label-wrap"
-        :style="rank.style"
-      >
-        <span class="rank-label" :class="layout.typefaceClass">{{ rank.character }}</span>
-      </div>
-      <div
-        v-for="piece of layout.boardPieces"
-        :key="piece.id"
-        class="piece-wrap"
-        :style="piece.style"
-      >
-        <span class="cell" :class="layout.typefaceClass">{{ piece.character }}</span>
-      </div>
+      <svg style="top: 0; left: 0" :width="layout.svgSize" :height="layout.svgSize">
+        <image
+          href="/board/grid_square.svg"
+          :x="layout.boardImage.x"
+          :y="layout.boardImage.y"
+          :width="layout.boardImage.width"
+          :height="layout.boardImage.height"
+        />
+        <rect
+          v-if="layout.lastMoveRect"
+          :x="layout.lastMoveRect.x"
+          :y="layout.lastMoveRect.y"
+          :width="layout.lastMoveRect.width"
+          :height="layout.lastMoveRect.height"
+          fill="gold"
+        />
+        <text
+          v-for="(file, index) of layout.files"
+          :key="index"
+          :x="file.x"
+          :y="file.y"
+          :dy="file.dy"
+          :font-size="file.fontSize"
+          :class="layout.typefaceClass"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          {{ file.character }}
+        </text>
+        <text
+          v-for="(rank, index) of layout.ranks"
+          :key="index"
+          :x="rank.x"
+          :y="rank.y"
+          :dy="rank.dy"
+          :font-size="rank.fontSize"
+          :class="layout.typefaceClass"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          {{ rank.character }}
+        </text>
+        <text
+          v-for="piece of layout.boardPieces"
+          :key="piece.id"
+          :x="piece.x"
+          :y="piece.y"
+          :dy="piece.dy"
+          :font-size="piece.fontSize"
+          :transform="piece.transform"
+          :class="layout.typefaceClass"
+          dominant-baseline="central"
+          text-anchor="middle"
+        >
+          {{ piece.character }}
+        </text>
+      </svg>
       <div class="column reverse" :style="layout.blackHand.style">
         <span class="hand black" :class="layout.typefaceClass">☗{{ layout.blackHand.text }}</span>
       </div>
@@ -60,6 +89,7 @@ import { RectSize } from "@/common/assets/geometry";
 
 const fileNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const rankNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九"];
+const windowsCharacterYOffsetRatio = 0.06;
 
 function buildHandText(name: string, hand: ImmutableHand) {
   const pieces =
@@ -165,7 +195,11 @@ const props = defineProps({
 const layout = computed(() => {
   const size = Math.min(props.maxSize.width, props.maxSize.height);
   const param = buildParams(size);
+  const isWindows = /Windows/i.test(navigator.userAgent);
+  const needsCharacterYOffset = isWindows && props.typeface === "mincho";
+  const characterYOffsetRatio = needsCharacterYOffset ? windowsCharacterYOffsetRatio : 0;
   return {
+    svgSize: size,
     typefaceClass: [
       props.typeface,
       `weight-${props.fontWeight}`,
@@ -186,63 +220,56 @@ const layout = computed(() => {
       top: `${param.footerY}px`,
       fontSize: `${param.fontSize * props.fontScale}px`,
     },
-    boardStyle: {
-      left: `${param.boardLeft - param.boardBorderSize}px`,
-      top: `${param.boardTop - param.boardBorderSize}px`,
-    },
-    boardImageStyle: {
-      width: `${param.boardSize + param.boardBorderSize * 2}px`,
-      height: `${param.boardSize + param.boardBorderSize * 2}px`,
+    boardImage: {
+      x: param.boardLeft - param.boardBorderSize,
+      y: param.boardTop - param.boardBorderSize,
+      width: param.boardSize + param.boardBorderSize * 2,
+      height: param.boardSize + param.boardBorderSize * 2,
     },
     files: fileNumbers.map((character, index) => {
+      const fontSize = param.labelFontSize * props.fontScale;
       return {
-        style: {
-          left: `${param.boardLeft + param.pieceSize * (8 - index)}px`,
-          top: `${param.boardTop - param.labelSize}px`,
-          width: `${param.pieceSize}px`,
-          height: `${param.labelSize}px`,
-          fontSize: `${param.labelFontSize * props.fontScale}px`,
-        },
+        x: param.boardLeft + param.pieceSize * (8 - index) + param.pieceSize / 2,
+        y: param.boardTop - param.labelSize / 2,
+        dy: 0,
+        fontSize,
         character,
       };
     }),
     ranks: rankNumbers.map((character, index) => {
+      const fontSize = param.labelFontSize * props.fontScale;
       return {
-        style: {
-          left: `${param.boardLeft + param.boardSize}px`,
-          top: `${param.boardTop + param.pieceSize * index}px`,
-          width: `${param.labelSize}px`,
-          height: `${param.pieceSize}px`,
-          fontSize: `${param.labelFontSize * props.fontScale}px`,
-        },
+        x: param.boardLeft + param.boardSize + param.labelSize / 2,
+        y: param.boardTop + param.pieceSize * index + param.pieceSize / 2,
+        dy: 0,
+        fontSize,
         character,
       };
     }),
-    lastMoveStyle: (function () {
+    lastMoveRect: (function () {
       if (!props.lastMove) {
         return null;
       }
       const square = props.lastMove.to;
       return {
-        backgroundColor: "gold",
-        left: `${param.boardLeft + (param.boardSize * square.x) / 9}px`,
-        top: `${param.boardTop + (param.boardSize * square.y) / 9}px`,
-        width: `${param.pieceSize}px`,
-        height: `${param.pieceSize}px`,
+        x: param.boardLeft + (param.boardSize * square.x) / 9,
+        y: param.boardTop + (param.boardSize * square.y) / 9,
+        width: param.pieceSize,
+        height: param.pieceSize,
       };
     })(),
     boardPieces: props.position.board.listNonEmptySquares().map((square) => {
       const piece = props.position.board.at(square) as Piece;
+      const cx = param.boardLeft + (param.boardSize * square.x) / 9 + param.pieceSize / 2;
+      const cy = param.boardTop + (param.boardSize * square.y) / 9 + param.pieceSize / 2;
+      const fontSize = (param.boardSize * props.fontScale) / 11;
       return {
         id: `${square.x},${square.y}`,
-        style: {
-          left: `${param.boardLeft + (param.boardSize * square.x) / 9}px`,
-          top: `${param.boardTop + (param.boardSize * square.y) / 9}px`,
-          width: `${param.boardSize / 9}px`,
-          height: `${param.boardSize / 9}px`,
-          transform: piece.color === Color.WHITE ? "rotate(180deg)" : undefined,
-          fontSize: `${(param.boardSize * props.fontScale) / 11}px`,
-        },
+        x: cx,
+        y: cy,
+        dy: fontSize * characterYOffsetRatio,
+        fontSize,
+        transform: piece.color === Color.WHITE ? `rotate(180, ${cx}, ${cy})` : undefined,
         character: pieceTypeToStringForBoard(piece.type),
       };
     }),
@@ -303,28 +330,6 @@ const layout = computed(() => {
 .footer {
   white-space: pre-wrap;
   text-align: left;
-}
-.label-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.piece-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.file-label {
-  text-align: center;
-  line-height: 1;
-}
-.rank-label {
-  text-align: center;
-  line-height: 1;
-}
-.cell {
-  text-align: center;
-  line-height: 1;
 }
 .hand {
   display: inline-block;
