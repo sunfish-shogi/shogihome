@@ -1,8 +1,8 @@
 import { getCPUInfo, getMachineSpec } from "@/background/proc/state";
 
 describe("proc/state", () => {
-  it("getMachineSpec", () => {
-    const spec = getMachineSpec();
+  it("getMachineSpec", async () => {
+    const spec = await getMachineSpec();
     expect(spec).toHaveProperty("cpuCores");
     expect(spec).toHaveProperty("memory");
     expect(typeof spec.cpuCores).toBe("number");
@@ -11,8 +11,8 @@ describe("proc/state", () => {
     expect(spec.memory).toBeGreaterThan(0);
   });
 
-  it("getCPUInfo", () => {
-    const cpuInfo = getCPUInfo();
+  it("getCPUInfo", async () => {
+    const cpuInfo = await getCPUInfo();
     expect(cpuInfo).toHaveProperty("architecture");
     expect(cpuInfo).toHaveProperty("availableCores");
     expect(cpuInfo).toHaveProperty("cores");

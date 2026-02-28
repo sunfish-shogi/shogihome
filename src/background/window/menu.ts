@@ -647,8 +647,8 @@ function createMenuTemplate(window: BrowserWindow) {
         },
         {
           label: "CPU Information",
-          click: () => {
-            const cpu = getCPUInfo();
+          click: async () => {
+            const cpu = await getCPUInfo();
             sendMessage({
               text: "CPU Information",
               attachments: [

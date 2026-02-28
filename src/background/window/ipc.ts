@@ -984,9 +984,9 @@ ipcMain.on(
   },
 );
 
-ipcMain.handle(Background.GET_MACHINE_SPEC, (event) => {
+ipcMain.handle(Background.GET_MACHINE_SPEC, async (event) => {
   validateIPCSender(event.senderFrame);
-  return JSON.stringify(getMachineSpec());
+  return JSON.stringify(await getMachineSpec());
 });
 
 ipcMain.on(
