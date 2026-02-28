@@ -730,6 +730,7 @@ export type Texts = {
   largeSuggestionsCountMayCausePerformanceDegradation: string;
   doYouReallyWantToIncreaseTheSuggestionsCount: string;
   recommendLowerSettingsForDailyUse: string;
+  checkEngineCompatibilityForNumaEnvironments: string;
   aiPerformanceMayDegrade: string;
   yourPCMayBecomeSlow: string;
   increasingItMayImproveAIPerformance: string;

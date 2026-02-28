@@ -169,6 +169,12 @@
                   {{ t.cpuUsageExceedsNPercent(50) }}{{ t.recommendLowerSettingsForDailyUse }}
                 </div>
               </div>
+              <div
+                v-if="machineSpec.cpuCores > 32 && option.currentValue > 32"
+                class="form-group warning"
+              >
+                <div class="note">{{ t.checkEngineCompatibilityForNumaEnvironments }}</div>
+              </div>
             </div>
             <!-- USI_Hash -->
             <div
