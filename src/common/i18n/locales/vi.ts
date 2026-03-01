@@ -122,7 +122,7 @@ export const vi: Texts = {
   success: "Thành công",
   failed: "Thất bại",
   skipped: "Bỏ qua",
-  game: "Ván",
+  game: "Chơi",
   player: "Kỳ thủ",
   server: "Máy chủ",
   selectFromHistory: "Chọn từ lịch sử",
@@ -213,8 +213,8 @@ export const vi: Texts = {
   changeTurn: "Đổi lượt đi",
   initializePosition: "Đặt lại thế cờ",
   changePieceSet: "Tăng giảm quân",
-  setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
-  setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
+  setAllPiecesToStandardCounts: "Đặt lại số lượng quân",
+  setAllPiecesToZero: "Đặt tất cả số quân thành 0",
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",
@@ -275,11 +275,11 @@ export const vi: Texts = {
   select: "Chọn",
   shuffle: "Trộn",
   csaV3Output: "Xuất dưới dạng CSA v3",
-  alwaysOutputUTF8: "常に UTF-8 で出力", // TODO: Translate
+  alwaysOutputUTF8: "Luôn xuất kỳ phổ UTF-8",
   someOldShogiAppsCannotReadUTF8KifFiles:
-    "一部の古い将棋アプリでは UTF-8 の KIF・KI2 ファイルを読み込めない場合があります。", // TODO: Translate
+    "Một số phần mềm shogi cũ có thể không đọc được tệp KIF/KI2 có mã hóa UTF-8.",
   strictDecodingMayFailToReadUTF8KifFiles:
-    "文字コードの設定が「厳格」の場合、UTF-8 で書き出した KIF・KI2 ファイルの読み込みに失敗する可能性があります。", // TODO: Translate
+    "Chế độ mã hóa nghiêm khắc có thể không đọc được tệp KIF/KI2 có mã hóa UTF-8.",
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
@@ -347,8 +347,8 @@ export const vi: Texts = {
   gote: "Hậu thủ",
   goteOrUwate: "Hậu thủ (Thượng thủ)",
   uwate: "Thượng thủ",
-  targetEngine: "検査対象エンジン", // TODO: Translate
-  baseEngine: "基準エンジン", // TODO: Translate
+  targetEngine: "Phần mềm được kiểm tra", 
+  baseEngine: "Phần mềm so sánh",
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "Furigoma",
   currentPosition: "Thế cờ hiện tại",
@@ -789,7 +789,7 @@ export const vi: Texts = {
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",
   recommendLowerSettingsForDailyUse: "Nên sử dụng cài đặt thấp hơn cho PC thông thường.",
   checkEngineCompatibilityForNumaEnvironments:
-    "このPCは複数のCPUソケットまたはプロセッサーグループ（NUMA）を持つ可能性があります。NUMA環境に対応していないエンジンでは性能が低下する場合があります。エンジンのNUMA対応状況をご確認ください。", // TODO: Translate
+    "Máy tính này có thể có nhiều ổ CPU hoặc nhóm vi xử lý (NUMA). Các phần mềm không hỗ trợ NUMA có thể bị suy yếu. Vui lòng kiểm tra nếu phần mềm bạn dùng hỗ trợ NUMA.", 
   aiPerformanceMayDegrade: "Tính năng phần mềm có thể suy giảm.",
   yourPCMayBecomeSlow: "Thao tác PC có thể bị chậm lại.",
   increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.",
