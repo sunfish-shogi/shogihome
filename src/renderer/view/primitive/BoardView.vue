@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div class="frame" :style="main.frame.style" @click="clickFrame()">
+    <div
+      class="frame"
+      :style="main.frame.style"
+      @click="clickFrame()"
+      @pointermove="handlePointerMove"
+      @pointerup="handlePointerUp"
+      @pointercancel="cancelDrag"
+    >
       <!-- 後手の駒台 -->
       <div class="hand" :class="flip ? 'front' : 'back'" :style="main.whiteHandStyle">
         <div
@@ -81,6 +88,9 @@
           v-for="square in board.squares"
           :key="square.id"
           :style="square.style"
+          :data-file="square.file"
+          :data-rank="square.rank"
+          @pointerdown.stop.prevent="startDragFromSquare($event, square.file, square.rank)"
           @click.stop.prevent="clickSquare(square.file, square.rank)"
           @dblclick.stop.prevent="clickSquareR(square.file, square.rank)"
           @contextmenu.stop.prevent="clickSquareR(square.file, square.rank)"
@@ -105,24 +115,36 @@
       <div class="hand operation" :style="main.blackHandStyle">
         <div
           :style="blackHand.touchAreaStyle"
+          data-hand-area="true"
+          :data-color="Color.BLACK"
+          @pointerdown.stop.prevent="startDragFromHandArea($event, Color.BLACK)"
           @click.stop.prevent="clickHandArea(Color.BLACK)"
         ></div>
         <div
           v-for="pointer in blackHand.pointers"
           :key="pointer.id"
           :style="pointer.style"
+          :data-color="Color.BLACK"
+          :data-piece-type="pointer.type"
+          @pointerdown.stop.prevent="startDragFromHand($event, Color.BLACK, pointer.type)"
           @click.stop.prevent="clickHand(Color.BLACK, pointer.type)"
         ></div>
       </div>
       <div class="hand operation" :style="main.whiteHandStyle">
         <div
           :style="whiteHand.touchAreaStyle"
+          data-hand-area="true"
+          :data-color="Color.WHITE"
+          @pointerdown.stop.prevent="startDragFromHandArea($event, Color.WHITE)"
           @click.stop.prevent="clickHandArea(Color.WHITE)"
         ></div>
         <div
           v-for="pointer in whiteHand.pointers"
           :key="pointer.id"
           :style="pointer.style"
+          :data-color="Color.WHITE"
+          :data-piece-type="pointer.type"
+          @pointerdown.stop.prevent="startDragFromHand($event, Color.WHITE, pointer.type)"
           @click.stop.prevent="clickHand(Color.WHITE, pointer.type)"
         ></div>
       </div>
@@ -216,6 +238,19 @@ import { t } from "@/common/i18n";
 type State = {
   pointer: Square | Piece | null;
   reservedMove: Move | null;
+  suppressClick: boolean;
+  drag: {
+    pointerId: number;
+    startX: number;
+    startY: number;
+    dragging: boolean;
+  } | null;
+};
+
+type DragTarget = {
+  pointer: Square | Piece;
+  empty: boolean;
+  color?: Color;
 };
 
 const props = defineProps({
@@ -360,11 +395,22 @@ const emit = defineEmits<{
 const state = reactive({
   pointer: null,
   reservedMove: null,
+  suppressClick: false,
+  drag: null,
 } as State);
 
 const resetState = () => {
   state.pointer = null;
   state.reservedMove = null;
+  state.drag = null;
+};
+
+const consumeSuppressClick = () => {
+  if (!state.suppressClick) {
+    return false;
+  }
+  state.suppressClick = false;
+  return true;
 };
 
 watch(
@@ -440,6 +486,9 @@ const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color 
 };
 
 const clickSquare = (file: number, rank: number) => {
+  if (consumeSuppressClick()) {
+    return;
+  }
   const square = new Square(file, rank);
   const piece = props.position.board.at(square);
   const empty = !piece;
@@ -447,14 +496,150 @@ const clickSquare = (file: number, rank: number) => {
 };
 
 const clickHandArea = (color: Color) => {
+  if (consumeSuppressClick()) {
+    return;
+  }
   // 局面編集の場合はどの持ち駒でもない領域をクリックしても移動先として認識する。
   // empty = true なので移動先としてのみ利用され選択は残らない。
   updatePointer(new Piece(color, PieceType.PAWN), true, color);
 };
 
 const clickHand = (color: Color, type: PieceType) => {
+  if (consumeSuppressClick()) {
+    return;
+  }
   const empty = props.position.hand(color).count(type) === 0;
   updatePointer(new Piece(color, type), empty, color);
+};
+
+const createSquareDragTarget = (file: number, rank: number): DragTarget => {
+  const square = new Square(file, rank);
+  const piece = props.position.board.at(square);
+  return {
+    pointer: square,
+    empty: !piece,
+    color: piece?.color,
+  };
+};
+
+const createHandDragTarget = (color: Color, type: PieceType): DragTarget => {
+  return {
+    pointer: new Piece(color, type),
+    empty: props.position.hand(color).count(type) === 0,
+    color,
+  };
+};
+
+const createHandAreaDragTarget = (color: Color): DragTarget => {
+  return {
+    pointer: new Piece(color, PieceType.PAWN),
+    empty: true,
+    color,
+  };
+};
+
+const startDrag = (event: PointerEvent, source: DragTarget) => {
+  if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) {
+    return;
+  }
+  const currentTarget = event.currentTarget;
+  if (currentTarget instanceof HTMLElement) {
+    try {
+      currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      // noop
+    }
+  }
+  const drag = {
+    pointerId: event.pointerId,
+    startX: event.clientX,
+    startY: event.clientY,
+    dragging: false,
+  };
+  updatePointer(source.pointer, source.empty, source.color);
+  state.drag = drag;
+  state.suppressClick = true;
+};
+
+const startDragFromSquare = (event: PointerEvent, file: number, rank: number) => {
+  startDrag(event, createSquareDragTarget(file, rank));
+};
+
+const startDragFromHandArea = (event: PointerEvent, color: Color) => {
+  startDrag(event, createHandAreaDragTarget(color));
+};
+
+const startDragFromHand = (event: PointerEvent, color: Color, type: PieceType) => {
+  startDrag(event, createHandDragTarget(color, type));
+};
+
+const toDragTarget = (x: number, y: number): DragTarget | null => {
+  const target = document.elementFromPoint(x, y);
+  if (!(target instanceof Element)) {
+    return null;
+  }
+  const square = target.closest(".board.operation > div[data-file][data-rank]");
+  if (square && square instanceof HTMLElement) {
+    const file = Number(square.dataset.file);
+    const rank = Number(square.dataset.rank);
+    if (!Number.isNaN(file) && !Number.isNaN(rank)) {
+      return createSquareDragTarget(file, rank);
+    }
+  }
+  const handPiece = target.closest(".hand.operation > div[data-color][data-piece-type]");
+  if (handPiece && handPiece instanceof HTMLElement) {
+    return createHandDragTarget(
+      handPiece.dataset.color as Color,
+      handPiece.dataset.pieceType as PieceType,
+    );
+  }
+  const handArea = target.closest(".hand.operation > div[data-color][data-hand-area]");
+  if (handArea && handArea instanceof HTMLElement) {
+    return createHandAreaDragTarget(handArea.dataset.color as Color);
+  }
+  return null;
+};
+
+const handlePointerMove = (event: PointerEvent) => {
+  if (!state.drag || state.drag.pointerId !== event.pointerId) {
+    return;
+  }
+  if (!state.drag.dragging) {
+    const dx = event.clientX - state.drag.startX;
+    const dy = event.clientY - state.drag.startY;
+    if (dx * dx + dy * dy < 16) {
+      return;
+    }
+    state.drag.dragging = true;
+  }
+};
+
+const handlePointerUp = (event: PointerEvent) => {
+  if (!state.drag || state.drag.pointerId !== event.pointerId) {
+    return;
+  }
+  const drag = state.drag;
+  state.drag = null;
+  const currentTarget = event.currentTarget;
+  if (currentTarget instanceof HTMLElement && currentTarget.hasPointerCapture(event.pointerId)) {
+    currentTarget.releasePointerCapture(event.pointerId);
+  }
+  if (!drag.dragging) {
+    return;
+  }
+  const target = toDragTarget(event.clientX, event.clientY);
+  if (!target) {
+    return;
+  }
+  updatePointer(target.pointer, target.empty, target.color);
+};
+
+const cancelDrag = (event: PointerEvent) => {
+  const currentTarget = event.currentTarget;
+  if (currentTarget instanceof HTMLElement && currentTarget.hasPointerCapture(event.pointerId)) {
+    currentTarget.releasePointerCapture(event.pointerId);
+  }
+  state.drag = null;
 };
 
 const clickSquareR = (file: number, rank: number) => {
