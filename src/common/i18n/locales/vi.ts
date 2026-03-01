@@ -347,7 +347,7 @@ export const vi: Texts = {
   gote: "Hậu thủ",
   goteOrUwate: "Hậu thủ (Thượng thủ)",
   uwate: "Thượng thủ",
-  targetEngine: "Phần mềm được kiểm tra", 
+  targetEngine: "Phần mềm được kiểm tra",
   baseEngine: "Phần mềm so sánh",
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "Furigoma",
@@ -789,7 +789,7 @@ export const vi: Texts = {
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",
   recommendLowerSettingsForDailyUse: "Nên sử dụng cài đặt thấp hơn cho PC thông thường.",
   checkEngineCompatibilityForNumaEnvironments:
-    "Máy tính này có thể có nhiều ổ CPU hoặc nhóm vi xử lý (NUMA). Các phần mềm không hỗ trợ NUMA có thể bị suy yếu. Vui lòng kiểm tra nếu phần mềm bạn dùng hỗ trợ NUMA.", 
+    "Máy tính này có thể có nhiều ổ CPU hoặc nhóm vi xử lý (NUMA). Các phần mềm không hỗ trợ NUMA có thể bị suy yếu. Vui lòng kiểm tra nếu phần mềm bạn dùng hỗ trợ NUMA.",
   aiPerformanceMayDegrade: "Tính năng phần mềm có thể suy giảm.",
   yourPCMayBecomeSlow: "Thao tác PC có thể bị chậm lại.",
   increasingItMayImproveAIPerformance: "Có thể cải thiện tính năng phần mềm bằng cách tăng lên.",
