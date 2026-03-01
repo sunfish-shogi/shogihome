@@ -871,7 +871,10 @@ const applyDragOpacityToHand = (hand: ReturnType<HandLayoutBuilder["build"]>, co
   if (!drag.active || !(drag.source instanceof Piece) || drag.source.color !== color) {
     return hand;
   }
-  const targetId = drag.source.type + "0";
+  // 標準レイアウトの piece id は "type+index"（例: "pawn0"）、
+  // コンパクト/ポートレイトは "type" のみ（例: "pawn"）
+  const targetId =
+    props.layoutType === BoardLayoutType.STANDARD ? drag.source.type + "0" : drag.source.type;
   return {
     ...hand,
     pieces: hand.pieces.map((p) =>
