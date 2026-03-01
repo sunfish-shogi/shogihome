@@ -1,6 +1,6 @@
 <template>
   <div style="display: inline-block">
-    <div ref="container" class="row wrap container">
+    <div ref="container" :class="['row', 'wrap', 'container', { tab: tab }]">
       <div v-for="item of items" :key="item.value" class="item">
         <input
           type="radio"
@@ -39,6 +39,10 @@ const props = defineProps({
     type: Number,
     default: 28,
   },
+  tab: {
+    type: Boolean,
+    default: false,
+  },
 });
 const emit = defineEmits<{
   "update:value": [value: string];
@@ -47,13 +51,14 @@ const emit = defineEmits<{
 const container = ref() as Ref<HTMLDivElement>;
 const name = issueDOMID();
 const buttonStyle = computed(() => {
+  const r = `${props.height * 0.25}px`;
   return {
     height: `${props.height}px`,
     minWidth: `${props.height * 2.5}px`,
     fontSize: `${props.height * 0.5}px`,
-    borderRadius: `${props.height * 0.25}px`,
-    paddingLeft: `${props.height * 0.25}px`,
-    paddingRight: `${props.height * 0.25}px`,
+    borderRadius: props.tab ? `${r} ${r} 0 0` : r,
+    paddingLeft: r,
+    paddingRight: r,
   };
 });
 
@@ -89,6 +94,16 @@ div.item {
 div.item:not(:last-child) {
   margin-right: 2px;
 }
+div.container.tab {
+  align-items: flex-end;
+  flex-wrap: wrap-reverse;
+}
+div.container.tab div.item {
+  margin-bottom: 0;
+}
+div.container.tab input:checked ~ .button {
+  border-bottom-color: transparent;
+}
 input {
   position: absolute;
   left: 0;
@@ -109,6 +124,9 @@ input {
   color: var(--selector-color);
   background-color: var(--selector-bg-color);
   box-shadow: 1px 1px 3px 0 var(--control-shadow-color);
+}
+.tab .button {
+  box-shadow: 1px 0px 2px 0 var(--control-shadow-color);
 }
 input:checked ~ .button {
   color: var(--pushed-selector-color);

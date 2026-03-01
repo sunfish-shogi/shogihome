@@ -2,7 +2,7 @@
   <DialogFrame limited @cancel="cancel">
     <div class="title">{{ t.appSettings }}</div>
     <div class="tab-selector">
-      <HorizontalSelector v-model:value="selectedTab" :items="tabItems" />
+      <HorizontalSelector v-model:value="selectedTab" :items="tabItems" tab />
     </div>
     <!-- 表示 -->
     <div v-show="selectedTab === 'view'" class="form-group scroll settings">
@@ -957,6 +957,7 @@ const cancel = () => {
 .settings {
   max-width: 590px;
   height: 800px;
+  margin-top: 0;
 }
 input.file-path {
   width: 250px;
