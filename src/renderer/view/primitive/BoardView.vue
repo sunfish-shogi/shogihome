@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="frameEl" class="frame" :style="main.frame.style" @click="clickFrame()">
+    <div class="frame" :style="main.frame.style" @click="clickFrame()">
       <!-- 後手の駒台 -->
       <div class="hand" :class="flip ? 'front' : 'back'" :style="main.whiteHandStyle">
         <div
@@ -401,6 +401,7 @@ watch(
   [() => props.position, () => props.position.sfen, () => props.allowEdit, () => props.allowMove],
   () => {
     resetState();
+    resetDrag();
   },
 );
 
@@ -411,7 +412,6 @@ type DragState = {
   active: boolean; // ゴースト表示中
   pointerId: number | null;
   source: Square | Piece | null;
-  sourceColor: Color | undefined;
   pieceImagePath: string | null;
   ghostX: number;
   ghostY: number;
@@ -424,7 +424,6 @@ const drag = reactive<DragState>({
   active: false,
   pointerId: null,
   source: null,
-  sourceColor: undefined,
   pieceImagePath: null,
   ghostX: 0,
   ghostY: 0,
@@ -437,7 +436,6 @@ const resetDrag = () => {
   drag.active = false;
   drag.pointerId = null;
   drag.source = null;
-  drag.sourceColor = undefined;
   drag.pieceImagePath = null;
   document.body.style.cursor = "";
 };
@@ -445,7 +443,6 @@ const resetDrag = () => {
 // ドラッグ完了後に click イベントを無効化するフラグ（非リアクティブ）
 let dragCompletedFlag = false;
 
-const frameEl = ref<HTMLElement | null>(null);
 const boardOpEl = ref<HTMLElement | null>(null);
 const blackHandOpEl = ref<HTMLElement | null>(null);
 const whiteHandOpEl = ref<HTMLElement | null>(null);
@@ -481,7 +478,6 @@ const beginDragFromSquare = (
   drag.pending = true;
   drag.pointerId = pointerId;
   drag.source = square;
-  drag.sourceColor = piece.color;
   drag.pieceImagePath = getPieceImagePath(piece);
   drag.startX = clientX;
   drag.startY = clientY;
@@ -504,7 +500,6 @@ const beginDragFromHand = (
   drag.pending = true;
   drag.pointerId = pointerId;
   drag.source = new Piece(color, type);
-  drag.sourceColor = color;
   drag.pieceImagePath = getPieceImagePath(new Piece(color, type));
   drag.startX = clientX;
   drag.startY = clientY;
@@ -642,6 +637,7 @@ const onGlobalPointerCancel = (e: PointerEvent) => {
 
 // 盤上マス：pointerdown
 const onSquarePointerDown = (e: PointerEvent, file: number, rank: number) => {
+  if (e.button !== 0) return; // 左ボタン・タッチのみ
   if (drag.pending || drag.active) return;
   dragCompletedFlag = false;
   beginDragFromSquare(e.clientX, e.clientY, file, rank, e.pointerId);
@@ -649,6 +645,7 @@ const onSquarePointerDown = (e: PointerEvent, file: number, rank: number) => {
 
 // 持ち駒：pointerdown
 const onHandPointerDown = (e: PointerEvent, color: Color, type: PieceType) => {
+  if (e.button !== 0) return; // 左ボタン・タッチのみ
   if (drag.pending || drag.active) return;
   dragCompletedFlag = false;
   beginDragFromHand(e.clientX, e.clientY, color, type, e.pointerId);
@@ -871,7 +868,7 @@ const handLayoutBuilder = computed(() => {
 
 // ドラッグ中の持ち駒を半透明にする
 const applyDragOpacityToHand = (hand: ReturnType<HandLayoutBuilder["build"]>, color: Color) => {
-  if (!drag.active || !(drag.source instanceof Piece) || drag.sourceColor !== color) {
+  if (!drag.active || !(drag.source instanceof Piece) || drag.source.color !== color) {
     return hand;
   }
   const targetId = drag.source.type + "0";
