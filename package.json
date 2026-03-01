@@ -66,7 +66,7 @@
     "semver": "^7.7.3",
     "splitpanes": "^4.0.3",
     "tsshogi": "^2.3.1",
-    "vue": "^3.5.26",
+    "vue": "^3.5.28",
     "yaml": "^2.8.2"
   },
   "devDependencies": {
