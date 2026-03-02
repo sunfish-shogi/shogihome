@@ -632,6 +632,9 @@ const onGlobalPointerUp = (e: PointerEvent) => {
 
 const onGlobalPointerCancel = (e: PointerEvent) => {
   if (e.pointerId !== drag.pointerId) return;
+  if (drag.active) {
+    resetState();
+  }
   resetDrag();
 };
 
