@@ -405,8 +405,6 @@ watch(
   },
 );
 
-// ---- ドラッグ&ドロップ ----
-
 type DragState = {
   pending: boolean; // pointerdown 記録済み、動き待ち
   active: boolean; // ゴースト表示中
@@ -666,8 +664,6 @@ onUnmounted(() => {
   document.removeEventListener("pointercancel", onGlobalPointerCancel);
   document.body.style.cursor = "";
 });
-
-// ---- ドラッグ&ドロップ ここまで ----
 
 const clickFrame = () => {
   if (dragCompletedFlag) {
