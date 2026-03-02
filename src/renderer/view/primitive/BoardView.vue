@@ -582,7 +582,7 @@ const completeDrop = (clientX: number, clientY: number) => {
   const source = drag.source;
   const square = getSquareFromClientPoint(clientX, clientY);
   if (square && source) {
-    // 有効な手・編集がある場合のみ着手し、無効なマスへのドロップは単純キャンセル（駒の再選択はしない）
+    // ドロップ先に駒がある場合に clickSquare() を呼ぶとキャンセルと同時にその駒を選択してしまうため有効な移動かどうかを先に判定する。
     const moveFrom = source instanceof Square ? source : (source as Piece).type;
     const move = props.allowMove ? props.position.createMove(moveFrom, square) : null;
     const validMove =
