@@ -866,34 +866,29 @@ const handLayoutBuilder = computed(() => {
   }
 });
 
-// ドラッグ中の持ち駒を半透明にする
-const applyDragOpacityToHand = (hand: ReturnType<HandLayoutBuilder["build"]>, color: Color) => {
-  if (!drag.active || !(drag.source instanceof Piece) || drag.source.color !== color) {
-    return hand;
-  }
-  // 標準レイアウトの piece id は "type+index"（例: "pawn0"）、
-  // コンパクト/ポートレイトは "type" のみ（例: "pawn"）
-  const targetId =
-    props.layoutType === BoardLayoutType.STANDARD ? drag.source.type + "0" : drag.source.type;
-  return {
-    ...hand,
-    pieces: hand.pieces.map((p) =>
-      p.id === targetId ? { ...p, style: { ...p.style, opacity: "0.3" } } : p,
-    ),
-  };
-};
-
 const blackHand = computed(() => {
-  return applyDragOpacityToHand(
-    handLayoutBuilder.value.build(props.position.hand(Color.BLACK), Color.BLACK, state.pointer),
+  const dragSourceType =
+    drag.active && drag.source instanceof Piece && drag.source.color === Color.BLACK
+      ? drag.source.type
+      : undefined;
+  return handLayoutBuilder.value.build(
+    props.position.hand(Color.BLACK),
     Color.BLACK,
+    state.pointer,
+    dragSourceType,
   );
 });
 
 const whiteHand = computed(() => {
-  return applyDragOpacityToHand(
-    handLayoutBuilder.value.build(props.position.hand(Color.WHITE), Color.WHITE, state.pointer),
+  const dragSourceType =
+    drag.active && drag.source instanceof Piece && drag.source.color === Color.WHITE
+      ? drag.source.type
+      : undefined;
+  return handLayoutBuilder.value.build(
+    props.position.hand(Color.WHITE),
     Color.WHITE,
+    state.pointer,
+    dragSourceType,
   );
 });
 
