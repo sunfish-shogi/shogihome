@@ -133,9 +133,12 @@ export class BoardLayoutBuilder {
     return labels;
   }
 
-  private getPieces(board: ImmutableBoard): BoardPiece[] {
+  private getPieces(board: ImmutableBoard, dragSourceSquare?: Square): BoardPiece[] {
     const pieces: BoardPiece[] = [];
     board.listNonEmptySquares().forEach((square) => {
+      if (dragSourceSquare && square.equals(dragSourceSquare)) {
+        return;
+      }
       const piece = board.at(square) as Piece;
       const id = piece.id + square.index;
       const displayColor = this.config.flip ? reverseColor(piece.color) : piece.color;
@@ -275,12 +278,13 @@ export class BoardLayoutBuilder {
     lastMove?: Move | null,
     pointer?: Square | Piece | null,
     reservedMoveForPromotion?: Move | null,
+    dragSourceSquare?: Square,
   ): Board {
     const [promote, doNotPromote] = this.getPromotionControls(reservedMoveForPromotion);
     return {
       background: this.background,
       labels: this.labels,
-      pieces: this.getPieces(board),
+      pieces: this.getPieces(board, dragSourceSquare),
       squares: this.getSquares(lastMove, pointer),
       promote,
       doNotPromote,

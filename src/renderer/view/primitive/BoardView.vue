@@ -837,21 +837,14 @@ const boardLayoutBuilder = computed(() => {
 });
 
 const board = computed(() => {
-  const result = boardLayoutBuilder.value.build(
+  const dragSourceSquare = drag.active && drag.source instanceof Square ? drag.source : undefined;
+  return boardLayoutBuilder.value.build(
     props.position.board,
     props.lastMove,
     state.pointer,
     state.reservedMove,
+    dragSourceSquare,
   );
-  // ドラッグ中は移動元マスの駒を非表示にする
-  if (drag.active && drag.source instanceof Square) {
-    const piece = props.position.board.at(drag.source);
-    if (piece) {
-      const sourceId = piece.id + drag.source.index;
-      return { ...result, pieces: result.pieces.filter((p) => p.id !== sourceId) };
-    }
-  }
-  return result;
 });
 
 const handLayoutBuilder = computed(() => {
