@@ -324,6 +324,7 @@ export const en: Texts = {
   alwaysSenteIsPositive: "Always Sente is Positive",
   signOfEvaluation: "Sign of Evaluation",
   showArrowScore: "Show Score on Arrows",
+  arrowScoreDiffRange: "Arrow Score Range",
   maxArrows: "Max Arrows",
   winRateCoefficient: "Win Rate Coefficient",
   nodeCountFormat: "Node Count Format",

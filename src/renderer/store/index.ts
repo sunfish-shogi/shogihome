@@ -516,7 +516,7 @@ class Store {
 
   get candidates(): CandidateMove[] {
     const appSettings = useAppSettings();
-    const maxScoreDiff = 100;
+    const maxScoreDiff = appSettings.arrowScoreDiffRange;
     const sfen = this.recordManager.record.position.sfen;
     // 優先度1: 検討の第1エンジン（研究セッションの中で最小の sessionID）
     // 優先度2: 対局中の手番側エンジン（ポンダー中でないセッション）

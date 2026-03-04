@@ -593,6 +593,11 @@
         <input v-model.number="update.maxArrowsPerEngine" type="number" max="10" min="0" />
         <div class="form-item-small-label">({{ t.between(0, 10) }})</div>
       </div>
+      <!-- 矢印の評価値範囲 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.arrowScoreDiffRange }}</div>
+        <input v-model.number="update.arrowScoreDiffRange" type="number" min="0" />
+      </div>
       <!-- 矢印に評価値を表示 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.showArrowScore }}</div>
@@ -868,6 +873,7 @@ const update = ref({
   nodeCountFormat: org.nodeCountFormat,
   evaluationViewFrom: org.evaluationViewFrom,
   maxArrowsPerEngine: org.maxArrowsPerEngine,
+  arrowScoreDiffRange: org.arrowScoreDiffRange,
   showArrowScore: org.showArrowScore,
   coefficientInSigmoid: org.coefficientInSigmoid,
   badMoveLevelThreshold1: org.badMoveLevelThreshold1,

@@ -331,6 +331,7 @@ export const zh_tw: Texts = {
   alwaysSenteIsPositive: "先手有利時為正值",
   signOfEvaluation: "評價值符號",
   showArrowScore: "矢印に評価値を表示", // TODO: Translate
+  arrowScoreDiffRange: "矢印の評価値範囲", // TODO: Translate
   maxArrows: "箭頭顯示數量",
   winRateCoefficient: "勝率換算係數",
   nodeCountFormat: "節點數格式",

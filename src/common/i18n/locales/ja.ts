@@ -324,6 +324,7 @@ export const ja: Texts = {
   alwaysSenteIsPositive: "先手有利がプラスの値",
   signOfEvaluation: "評価値の符号",
   showArrowScore: "矢印に評価値を表示",
+  arrowScoreDiffRange: "矢印の評価値範囲",
   maxArrows: "矢印の表示数",
   winRateCoefficient: "勝率換算係数",
   nodeCountFormat: "ノード数表記",
