@@ -212,6 +212,9 @@ class AppSettingsStore {
   get maxArrowsPerEngine(): number {
     return this.merged.maxArrowsPerEngine;
   }
+  get showArrowScore(): boolean {
+    return this.merged.showArrowScore;
+  }
   get coefficientInSigmoid(): number {
     return this.merged.coefficientInSigmoid;
   }

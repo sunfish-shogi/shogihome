@@ -316,6 +316,7 @@ export type Texts = {
   swapEachTurnChange: string;
   alwaysSenteIsPositive: string;
   signOfEvaluation: string;
+  showArrowScore: string;
   maxArrows: string;
   winRateCoefficient: string;
   nodeCountFormat: string;

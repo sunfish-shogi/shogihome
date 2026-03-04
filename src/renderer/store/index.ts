@@ -73,6 +73,11 @@ import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";
 import { ParallelGameManager, ParallelGameProgress } from "@/renderer/game/parallel.js";
 
+type CandidateMove = {
+  move: Move;
+  score?: number; // 手番側視点の数値スコア（showArrowScore が有効な場合のみ設定）
+};
+
 export type PVPreview = {
   position: ImmutablePosition;
   engineName?: string;
@@ -509,16 +514,27 @@ class Store {
     return this.usiMonitor.sessions;
   }
 
-  get candidates(): Move[] {
+  get candidates(): CandidateMove[] {
     const appSettings = useAppSettings();
     const maxScoreDiff = 100;
     const sfen = this.recordManager.record.position.sfen;
-    const candidates: Move[] = [];
+    // 優先度1: 検討の第1エンジン（研究セッションの中で最小の sessionID）
+    // 優先度2: 対局中の手番側エンジン（ポンダー中でないセッション）
+    // 評価値ラベルはこのセッションのみ表示する。他のセッションは矢印のみ表示する。
+    const preferredSession =
+      this.usiMonitor.sessions.find((s) => this.researchManager.isSessionExists(s.sessionID)) ||
+      this.usiMonitor.sessions.find((s) => !s.ponderMove);
+    const candidates: CandidateMove[] = [];
     const usiSet = new Set<string>();
-    for (const session of this.usiMonitor.sessions) {
+    // 優先セッションを先頭に並べ替え、同一手の重複除去で優先セッションが先に登録されるようにする
+    const orderedSessions = preferredSession
+      ? [preferredSession, ...this.usiMonitor.sessions.filter((s) => s !== preferredSession)]
+      : this.usiMonitor.sessions;
+    for (const session of orderedSessions) {
       if (session.ponderMove) {
         continue;
       }
+      const isPreferred = session === preferredSession;
       let entryCount = 0;
       let maxScore = -Infinity;
       for (const info of session.latestInfo) {
@@ -561,7 +577,8 @@ class Store {
         if (!move || !pos.doMove(move)) {
           continue;
         }
-        candidates.push(move);
+        const candidateScore = isPreferred && appSettings.showArrowScore ? score : undefined;
+        candidates.push({ move, score: candidateScore });
         usiSet.add(usi);
         entryCount++;
       }

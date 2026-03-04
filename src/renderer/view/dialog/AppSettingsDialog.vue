@@ -593,6 +593,11 @@
         <input v-model.number="update.maxArrowsPerEngine" type="number" max="10" min="0" />
         <div class="form-item-small-label">({{ t.between(0, 10) }})</div>
       </div>
+      <!-- 矢印に評価値を表示 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.showArrowScore }}</div>
+        <ToggleButton v-model:value="update.showArrowScore" />
+      </div>
       <!-- 勝率換算係数 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -863,6 +868,7 @@ const update = ref({
   nodeCountFormat: org.nodeCountFormat,
   evaluationViewFrom: org.evaluationViewFrom,
   maxArrowsPerEngine: org.maxArrowsPerEngine,
+  showArrowScore: org.showArrowScore,
   coefficientInSigmoid: org.coefficientInSigmoid,
   badMoveLevelThreshold1: org.badMoveLevelThreshold1,
   badMoveLevelThreshold2: org.badMoveLevelThreshold2,

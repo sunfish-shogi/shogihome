@@ -386,16 +386,16 @@ describe("store/index", () => {
 
     await useAppSettings().updateAppSettings({ maxArrowsPerEngine: 3 });
     expect(store.candidates).toHaveLength(4);
-    expect(store.candidates[0].usi).toBe("8c8d");
-    expect(store.candidates[1].usi).toBe("4a3b");
-    expect(store.candidates[2].usi).toBe("3c3d");
-    expect(store.candidates[3].usi).toBe("9c9d");
+    expect(store.candidates[0].move.usi).toBe("8c8d");
+    expect(store.candidates[1].move.usi).toBe("4a3b");
+    expect(store.candidates[2].move.usi).toBe("3c3d");
+    expect(store.candidates[3].move.usi).toBe("9c9d");
 
     await useAppSettings().updateAppSettings({ maxArrowsPerEngine: 1 });
     expect(store.candidates).toHaveLength(3);
-    expect(store.candidates[0].usi).toBe("8c8d");
-    expect(store.candidates[1].usi).toBe("9c9d");
-    expect(store.candidates[2].usi).toBe("3c3d");
+    expect(store.candidates[0].move.usi).toBe("8c8d");
+    expect(store.candidates[1].move.usi).toBe("9c9d");
+    expect(store.candidates[2].move.usi).toBe("3c3d");
 
     await useAppSettings().updateAppSettings({ maxArrowsPerEngine: 0 });
     expect(store.candidates).toHaveLength(0);
