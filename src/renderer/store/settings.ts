@@ -212,6 +212,9 @@ class AppSettingsStore {
   get maxArrowsPerEngine(): number {
     return this.merged.maxArrowsPerEngine;
   }
+  get arrowScoreDiffRange(): number {
+    return this.merged.arrowScoreDiffRange;
+  }
   get showArrowScore(): boolean {
     return this.merged.showArrowScore;
   }

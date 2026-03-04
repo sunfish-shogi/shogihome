@@ -334,6 +334,7 @@ export const vi: Texts = {
   alwaysSenteIsPositive: "Tiên luôn dương",
   signOfEvaluation: "Dấu giá trị đánh giá",
   showArrowScore: "矢印に評価値を表示", // TODO: Translate
+  arrowScoreDiffRange: "矢印の評価値範囲", // TODO: Translate
   maxArrows: "Số mũi tên hiển thị",
   winRateCoefficient: "Hệ số tỷ lệ thắng",
   nodeCountFormat: "Hiển thị số node",

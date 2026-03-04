@@ -317,6 +317,7 @@ export type Texts = {
   alwaysSenteIsPositive: string;
   signOfEvaluation: string;
   showArrowScore: string;
+  arrowScoreDiffRange: string;
   maxArrows: string;
   winRateCoefficient: string;
   nodeCountFormat: string;
