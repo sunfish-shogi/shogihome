@@ -41,7 +41,7 @@ jobs:
       - run: npm run electron:portable
         if: matrix.variant == 'portable'
       - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }} ${{ matrix.variant }}
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.os }}${{ matrix.variant == 'portable' && '-portable' || '' }}-release
           path: dist/release-*.zip
