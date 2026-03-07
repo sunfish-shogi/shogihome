@@ -334,16 +334,16 @@
       </div>
     </div>
     <div v-if="cpuUsage > 1.0" class="form-group danger">
-      {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
+      <div class="note">{{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}</div>
     </div>
     <div v-else-if="cpuUsage > 0.9" class="form-group warning">
-      {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(90) }}
+      <div class="note">{{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(90) }}</div>
     </div>
     <div v-if="memoryUsage > 1.0" class="form-group danger">
-      {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
+      <div class="note">{{ t.totalUSIHashExceedsNPercentOfMemory(100) }}</div>
     </div>
     <div v-else-if="memoryUsage > 0.8" class="form-group warning">
-      {{ t.totalUSIHashExceedsNPercentOfMemory(80) }}
+      <div class="note">{{ t.totalUSIHashExceedsNPercentOfMemory(80) }}</div>
     </div>
     <div class="main-buttons">
       <button data-hotkey="Enter" autofocus @click="onStart()">
