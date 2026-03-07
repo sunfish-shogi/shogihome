@@ -26,16 +26,16 @@
         </button>
       </div>
       <div v-if="cpuUsage > 1.0" class="form-group danger">
-        {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}
+        <div class="note">{{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}</div>
       </div>
       <div v-else-if="cpuUsage > 0.75" class="form-group warning">
-        {{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(75) }}
+        <div class="note">{{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(75) }}</div>
       </div>
       <div v-if="memoryUsage > 1.0" class="form-group danger">
-        {{ t.totalUSIHashExceedsNPercentOfMemory(100) }}
+        <div class="note">{{ t.totalUSIHashExceedsNPercentOfMemory(100) }}</div>
       </div>
       <div v-else-if="memoryUsage > 0.9" class="form-group warning">
-        {{ t.totalUSIHashExceedsNPercentOfMemory(90) }}
+        <div class="note">{{ t.totalUSIHashExceedsNPercentOfMemory(90) }}</div>
       </div>
       <button class="center thin" @click="secondaryEngineURIs.push('')">
         <Icon :icon="IconType.ADD" />
