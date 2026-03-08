@@ -329,18 +329,6 @@
           ]"
         />
       </div>
-      <!-- 分岐の表示 -->
-      <div class="form-item">
-        <div class="form-item-label-wide">{{ t.branchListMode }}</div>
-        <HorizontalSelector
-          v-model:value="update.branchListMode"
-          class="selector"
-          :items="[
-            { label: t.previousMoveBranches, value: BranchListMode.SIBLING },
-            { label: t.nextMoveBranches, value: BranchListMode.NEXT_MOVE },
-          ]"
-        />
-      </div>
     </div>
     <!-- 音 -->
     <div v-show="selectedTab === 'sounds'" class="form-group scroll settings">
@@ -514,6 +502,18 @@
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.liveDuplicatePositionDetection }}</div>
         <ToggleButton v-model:value="update.liveDuplicatePositionDetection" />
+      </div>
+      <!-- 分岐の表示 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.branchListMode }}</div>
+        <HorizontalSelector
+          v-model:value="update.branchListMode"
+          class="selector"
+          :items="[
+            { label: t.previousMoveBranches, value: BranchListMode.SIBLING },
+            { label: t.nextMoveBranches, value: BranchListMode.NEXT_MOVE },
+          ]"
+        />
       </div>
     </div>
     <!-- 定跡 -->
