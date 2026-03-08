@@ -8,13 +8,6 @@
         {{ footer }}
       </div>
       <svg style="top: 0; left: 0" :width="layout.svgSize" :height="layout.svgSize">
-        <image
-          href="/board/grid_square.svg"
-          :x="layout.boardImage.x"
-          :y="layout.boardImage.y"
-          :width="layout.boardImage.width"
-          :height="layout.boardImage.height"
-        />
         <rect
           v-if="layout.lastMoveRect"
           :x="layout.lastMoveRect.x"
@@ -22,6 +15,13 @@
           :width="layout.lastMoveRect.width"
           :height="layout.lastMoveRect.height"
           fill="gold"
+        />
+        <image
+          href="/board/grid_square.svg"
+          :x="layout.boardImage.x"
+          :y="layout.boardImage.y"
+          :width="layout.boardImage.width"
+          :height="layout.boardImage.height"
         />
         <text
           v-for="(file, index) of layout.files"
