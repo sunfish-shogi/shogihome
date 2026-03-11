@@ -1,0 +1,109 @@
+// SPDX-License-Identifier: CC0-1.0
+// packageはC#でいうところのnamespace
+// 文字コードはUTF-8Nで日本語Ok?
+
+package ShogiLib;
+option java_package = "com.google.protobuf";
+option java_outer_classname = "DescriptorProtos";
+
+
+// descriptor.proto must be optimized for speed because reflection-based
+// algorithms don't work during bootstrapping.
+option optimize_for = SPEED;
+
+
+message SBook
+{
+	required string Author = 1;
+	required string Description = 2;
+	repeated SBookState BookStates = 3;
+}
+
+// 局面
+message SBookState
+{
+	// ID
+	required int32 Id = 1;
+
+	// 局面ハッシュ
+	required uint64 BoardKey = 2;
+
+	// 持ち駒　手番
+	required uint32 HandKey  = 3;
+
+	// 対局数
+	required int32 Games  = 4;
+
+	// 先手勝ち数
+	required int32 WonBlack = 5;
+
+	// 後手勝ち数
+	required int32 WonWhite = 6;
+
+	// sfen形式のposition情報
+	optional string Position = 7;
+
+	// コメント
+	optional string Comment = 8;
+
+	// この局面における定跡
+	repeated SBookMove Moves = 9;
+
+	// 評価値
+	repeated SBookEval Evals = 10;
+}
+
+// 指し手
+message SBookMove
+{
+	// 指し手
+    // move
+    // 0-3 from dan  (1-9)  打つ手の場合は0
+    // 4-7 form suji (1-9)  打つ手の場合は0
+    // 8-11 to dan (1-9)
+    // 12-15 to suji (1-9)
+    // 19    promotion flag
+    // 20-23 capture piece 取った駒 (Promotionフラグも含む
+    // 24-29 piece
+    // 31   0:black 1:white
+	required int32 Move = 1;
+
+	// さして評価
+	required SBookMoveEvalution Evalution = 2;
+
+	// 重み
+	required int32 Weight = 3;
+
+	// 次の局面
+	required int32 NextStateId = 4;
+}
+
+// 評価値
+message SBookEval
+{
+	// 評価値
+	required int32 EvalutionValue = 1;
+	
+	// 深さ
+	required int32 Depth = 2;
+	required int32 SelDepth = 3;
+	
+	// ノード数
+	required int64 Nodes = 4;
+	
+	// 読み筋
+	required string Variation = 5;
+	
+	// エンジン名
+	optional string EngineName = 6;
+}
+
+enum SBookMoveEvalution
+{
+    None = 0;    // 未設定
+    Forced = 1;  // 絶対手
+    Good = 2;    // 好手
+    Bad = 3;     // 疑問手
+    Blunder = 4; // 悪手
+}
+
