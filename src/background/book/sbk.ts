@@ -26,19 +26,62 @@ function normalizeSfen(position: string): string | undefined {
 
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
-  const entries = new Map<string, BookEntry>();
+
+  // ID → state のマップを構築
+  const idToState = new Map<number, SBookState>();
+  for (const state of book.BookStates) {
+    idToState.set(state.Id, state);
+  }
+
+  // Position フィールドを持つ局面をシードとして BFS で SFEN を伝播させる
+  const idToSfen = new Map<number, string>();
+  const queue: number[] = [];
 
   for (const state of book.BookStates) {
-    if (!state.Position) continue;
-    const sfen = normalizeSfen(state.Position);
+    if (state.Position) {
+      const sfen = normalizeSfen(state.Position);
+      if (sfen && !idToSfen.has(state.Id)) {
+        idToSfen.set(state.Id, sfen);
+        queue.push(state.Id);
+      }
+    }
+  }
+
+  for (let head = 0; head < queue.length; head++) {
+    const stateId = queue[head];
+    const sfen = idToSfen.get(stateId)!;
+    const state = idToState.get(stateId);
+    if (!state) continue;
+
+    const pos = Position.newBySFEN(sfen);
+    if (!pos) continue;
+
+    for (const m of state.Moves) {
+      if (m.NextStateId === 0 || idToSfen.has(m.NextStateId)) continue;
+      const usi = fromSbkMove(m.Move);
+      const move = pos.createMoveByUSI(usi);
+      if (!move) continue;
+      const nextPos = pos.clone();
+      nextPos.doMove(move);
+      idToSfen.set(m.NextStateId, nextPos.sfen);
+      queue.push(m.NextStateId);
+    }
+  }
+
+  // SFEN が確定した局面をエントリーとして登録
+  const entries = new Map<string, BookEntry>();
+  for (const state of book.BookStates) {
+    const sfen = idToSfen.get(state.Id);
     if (!sfen) continue;
 
     const scoreFromEval = state.Evals[0]?.EvalutionValue;
     const depthFromEval = state.Evals[0]?.Depth;
 
-    const moves: BookMove[] = state.Moves.map((m) => {
+    const pos = Position.newBySFEN(sfen);
+    const moves: BookMove[] = state.Moves.flatMap((m) => {
       const usi = fromSbkMove(m.Move);
-      return [usi, undefined, scoreFromEval, depthFromEval, m.Weight || undefined, ""];
+      if (!pos || !pos.createMoveByUSI(usi)) return [];
+      return [[usi, undefined, scoreFromEval, depthFromEval, m.Weight || undefined, ""]];
     });
 
     entries.set(sfen, {
@@ -60,6 +103,22 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     sfenToId.set(sfen, nextId++);
   }
 
+  // Collect all state IDs reachable via NextStateId.
+  // Only states NOT in this set need a Position field as BFS anchor.
+  const reachableIds = new Set<number>();
+  for (const [sfen, entry] of book.entries) {
+    const pos = Position.newBySFEN(sfen);
+    if (!pos) continue;
+    for (const bookMove of entry.moves) {
+      const move = pos.createMoveByUSI(bookMove[IDX_USI]);
+      if (!move) continue;
+      const nextPos = pos.clone();
+      nextPos.doMove(move);
+      const nextId = sfenToId.get(nextPos.sfen);
+      if (nextId !== undefined) reachableIds.add(nextId);
+    }
+  }
+
   const states: SBookState[] = [];
 
   for (const [sfen, entry] of book.entries) {
@@ -67,23 +126,22 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     const color = sfen.split(" ")[1] === "b" ? Color.BLACK : Color.WHITE;
     const pos = Position.newBySFEN(sfen);
 
-    const sbkMoves: SBookMoveProto[] = entry.moves.map((bookMove) => {
+    const sbkMoves: SBookMoveProto[] = entry.moves.flatMap((bookMove) => {
       const usi = bookMove[IDX_USI];
-      let nextStateId = 0;
-      if (pos) {
-        const move = pos.createMoveByUSI(usi);
-        if (move) {
-          const nextPos = pos.clone();
-          nextPos.doMove(move);
-          nextStateId = sfenToId.get(nextPos.sfen) ?? 0;
-        }
-      }
-      return {
-        Move: toSbkMove(usi, color),
-        Evalution: SBookMoveEvalution.None,
-        Weight: bookMove[IDX_COUNT] ?? 0,
-        NextStateId: nextStateId,
-      };
+      if (!pos) return [];
+      const move = pos.createMoveByUSI(usi);
+      if (!move) return [];
+      const nextPos = pos.clone();
+      nextPos.doMove(move);
+      const nextStateId = sfenToId.get(nextPos.sfen) ?? 0;
+      return [
+        {
+          Move: toSbkMove(usi, color),
+          Evalution: SBookMoveEvalution.None,
+          Weight: bookMove[IDX_COUNT] ?? 0,
+          NextStateId: nextStateId,
+        },
+      ];
     });
 
     const evals: SBookEval[] = [];
@@ -105,7 +163,8 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       Games: 0,
       WonBlack: 0,
       WonWhite: 0,
-      Position: sfen,
+      // Only anchor states (not reachable via NextStateId) need Position.
+      Position: reachableIds.has(stateId) ? undefined : sfen,
       Comment: entry.comment || undefined,
       Moves: sbkMoves,
       Evals: evals,

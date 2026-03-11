@@ -591,10 +591,13 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show save-book dialog");
+  const fmt = getBookFormat(session);
   const filter =
-    getBookFormat(session) === "yane2016"
+    fmt === "yane2016"
       ? { name: "YaneuraOu Book Database", extensions: ["db"] }
-      : { name: "Apery Book", extensions: ["bin"] };
+      : fmt === "apery"
+        ? { name: "Apery Book", extensions: ["bin"] }
+        : { name: "Shogi Book", extensions: ["sbk"] };
   const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
