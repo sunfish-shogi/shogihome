@@ -167,6 +167,13 @@ const buildChart = () => {
         barTopY = bar.y;
         break;
       }
+      if (barX === null) {
+        // バーデータがない場合（消費時間が 0 など）はスケールから X 座標を取得する。
+        const xScale = ch.scales.x;
+        if (!xScale) return;
+        barX = xScale.getPixelForValue(index);
+        barTopY = ch.chartArea.bottom;
+      }
       if (barX === null || barTopY === null) return;
       const size = 7;
       const ctx = ch.ctx;
