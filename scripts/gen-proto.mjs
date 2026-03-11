@@ -19,7 +19,7 @@ for (const protoFile of protoFiles) {
     [
       `--plugin=protoc-gen-ts_proto=${pluginPath}`,
       `--ts_proto_out=${root}`,
-      "--ts_proto_opt=esModuleInterop=true",
+      "--ts_proto_opt=esModuleInterop=true,forceLong=bigint",
       `--proto_path=${root}`,
       protoFile,
     ],
