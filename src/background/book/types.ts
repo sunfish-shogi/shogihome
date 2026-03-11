@@ -2,7 +2,8 @@ import { BookMove as CommonBookMove } from "@/common/book.js";
 
 export type BookFormatYane2016 = "yane2016";
 export type BookFormatApery = "apery";
-export type BookFormat = BookFormatYane2016 | BookFormatApery;
+export type BookFormatSbk = "sbk";
+export type BookFormat = BookFormatYane2016 | BookFormatApery | BookFormatSbk;
 
 export type YaneBook = {
   format: BookFormatYane2016;
@@ -14,7 +15,12 @@ export type AperyBook = {
   entries: Map<bigint, BookEntry>;
 };
 
-export type Book = YaneBook | AperyBook;
+export type SbkBook = {
+  format: BookFormatSbk;
+  entries: Map<string, BookEntry>;
+};
+
+export type Book = YaneBook | AperyBook | SbkBook;
 
 export type BookEntry = {
   type: BookEntryType;

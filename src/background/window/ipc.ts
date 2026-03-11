@@ -579,7 +579,7 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show open-book dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
-    { name: "Book", extensions: ["db", "bin"] },
+    { name: "Book", extensions: ["db", "bin", "sbk"] },
   ]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
