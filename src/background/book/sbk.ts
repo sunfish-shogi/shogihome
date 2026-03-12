@@ -1,6 +1,6 @@
 import events from "node:events";
 import { Writable } from "node:stream";
-import { Color, Position } from "tsshogi";
+import { Position } from "tsshogi";
 import {
   SBook,
   SBookEval,
@@ -57,7 +57,7 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     if (!pos) continue;
 
     for (const m of state.Moves) {
-      if (m.NextStateId === 0 || idToSfen.has(m.NextStateId)) continue;
+      if (m.NextStateId < 0 || idToSfen.has(m.NextStateId)) continue;
       const usi = fromSbkMove(m.Move);
       const move = pos.createMoveByUSI(usi);
       if (!move) continue;
@@ -98,7 +98,7 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
   // Assign state IDs
   const sfenToId = new Map<string, number>();
-  let nextId = 1;
+  let nextId = 0;
   for (const sfen of book.entries.keys()) {
     sfenToId.set(sfen, nextId++);
   }
@@ -123,7 +123,6 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
 
   for (const [sfen, entry] of book.entries) {
     const stateId = sfenToId.get(sfen)!;
-    const color = sfen.split(" ")[1] === "b" ? Color.BLACK : Color.WHITE;
     const pos = Position.newBySFEN(sfen);
 
     const sbkMoves: SBookMoveProto[] = entry.moves.flatMap((bookMove) => {
@@ -133,10 +132,10 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       if (!move) return [];
       const nextPos = pos.clone();
       nextPos.doMove(move);
-      const nextStateId = sfenToId.get(nextPos.sfen) ?? 0;
+      const nextStateId = sfenToId.get(nextPos.sfen) ?? -1;
       return [
         {
-          Move: toSbkMove(usi, color),
+          Move: toSbkMove(move),
           Evalution: SBookMoveEvalution.None,
           Weight: bookMove[IDX_COUNT] ?? 0,
           NextStateId: nextStateId,
