@@ -522,6 +522,9 @@ export type Texts = {
   dialogBackdrop: string;
   record: string;
   book: string;
+  bookInfo: string;
+  loadingMode: string;
+  positionCount: string;
   chart: string;
   analytics: string;
   controlGroup: string;

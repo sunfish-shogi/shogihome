@@ -54,6 +54,7 @@ type BookHandle = InMemoryBook | OnTheFlyBook;
 
 type InMemoryBook = Book & {
   type: "in-memory";
+  path?: string;
   saved: boolean;
 };
 
@@ -139,6 +140,25 @@ export function isBookUnsaved(session: number): boolean {
   return !book.saved;
 }
 
+export type BookInfo = {
+  format: BookFormat;
+  type: "in-memory" | "on-the-fly";
+  path?: string;
+  entryCount: number;
+  unsaved: boolean;
+};
+
+export function getBookInfo(session: number): BookInfo {
+  const book = getBook(session);
+  return {
+    format: book.format,
+    type: book.type,
+    path: book.path,
+    entryCount: book.entries.size,
+    unsaved: !book.saved,
+  };
+}
+
 export function getBookFormat(session: number): BookFormat {
   const book = getBook(session);
   return book.format;
@@ -208,6 +228,7 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
     }
     replaceBook(session, {
       type: "in-memory",
+      path,
       saved: true,
       ...book,
     });
