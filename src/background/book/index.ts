@@ -114,13 +114,30 @@ function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   book.saved = false;
 }
 
-function emptyBook(): BookHandle {
-  return {
-    type: "in-memory",
-    format: "yane2016",
-    entries: new Map<string, BookEntry>(),
-    saved: true,
-  };
+function emptyBook(format: BookFormat = "yane2016"): BookHandle {
+  switch (format) {
+    case "apery":
+      return {
+        type: "in-memory",
+        format: "apery",
+        entries: new Map<bigint, BookEntry>(),
+        saved: true,
+      };
+    case "sbk":
+      return {
+        type: "in-memory",
+        format: "sbk",
+        entries: new Map<string, BookEntry>(),
+        saved: true,
+      };
+    default:
+      return {
+        type: "in-memory",
+        format: "yane2016",
+        entries: new Map<string, BookEntry>(),
+        saved: true,
+      };
+  }
 }
 
 const bookFiles = new Map<number, BookHandle>();
@@ -341,7 +358,7 @@ export async function saveBook(session: number, path: string) {
   }
 }
 
-export function clearBook(session: number): void {
+export function clearBook(session: number, format?: BookFormat): void {
   const book = bookFiles.get(session);
   if (!book) {
     return;
@@ -349,7 +366,7 @@ export function clearBook(session: number): void {
   if (book.type === "on-the-fly") {
     book.file.close();
   }
-  bookFiles.set(session, emptyBook());
+  bookFiles.set(session, emptyBook(format));
 }
 
 export async function searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {

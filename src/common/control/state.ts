@@ -21,6 +21,7 @@ export enum AppState {
   LOAD_REMOTE_FILE_DIALOG = "loadRemoteFileDialog",
   SHARE_DIALOG = "shareDialog",
   ADD_BOOK_MOVES_DIALOG = "addBookMovesDialog",
+  RESET_BOOK_DIALOG = "resetBookDialog",
   SEARCH_DUPLICATE_POSITIONS_DIALOG = "searchDuplicatePositionsDialog",
   ELAPSED_TIME_CHART_DIALOG = "elapsedTimeChartDialog",
 }

@@ -537,6 +537,7 @@ export const zh_tw: Texts = {
   record: "棋譜",
   book: "定跡",
   bookInfo: "定跡の情報", // TODO: Translate
+  resetBook: "定跡の初期化", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
   chart: "圖表",

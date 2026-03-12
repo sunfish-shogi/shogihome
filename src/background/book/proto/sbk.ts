@@ -86,13 +86,9 @@ export interface SBookState {
   /** 後手勝ち数 */
   WonWhite: number;
   /** sfen形式のposition情報 */
-  Position?:
-    | string
-    | undefined;
+  Position?: string | undefined;
   /** コメント */
-  Comment?:
-    | string
-    | undefined;
+  Comment?: string | undefined;
   /** この局面における定跡 */
   Moves: SBookMove[];
   /** 評価値 */
@@ -253,7 +249,9 @@ export const SBookState: MessageFns<SBookState> = {
     }
     if (message.BoardKey !== 0n) {
       if (BigInt.asUintN(64, message.BoardKey) !== message.BoardKey) {
-        throw new globalThis.Error("value provided for field message.BoardKey of type uint64 too large");
+        throw new globalThis.Error(
+          "value provided for field message.BoardKey of type uint64 too large",
+        );
       }
       writer.uint32(16).uint64(message.BoardKey);
     }
@@ -390,8 +388,12 @@ export const SBookState: MessageFns<SBookState> = {
       WonWhite: isSet(object.WonWhite) ? globalThis.Number(object.WonWhite) : 0,
       Position: isSet(object.Position) ? globalThis.String(object.Position) : "",
       Comment: isSet(object.Comment) ? globalThis.String(object.Comment) : "",
-      Moves: globalThis.Array.isArray(object?.Moves) ? object.Moves.map((e: any) => SBookMove.fromJSON(e)) : [],
-      Evals: globalThis.Array.isArray(object?.Evals) ? object.Evals.map((e: any) => SBookEval.fromJSON(e)) : [],
+      Moves: globalThis.Array.isArray(object?.Moves)
+        ? object.Moves.map((e: any) => SBookMove.fromJSON(e))
+        : [],
+      Evals: globalThis.Array.isArray(object?.Evals)
+        ? object.Evals.map((e: any) => SBookEval.fromJSON(e))
+        : [],
     };
   },
 
@@ -574,7 +576,9 @@ export const SBookEval: MessageFns<SBookEval> = {
     }
     if (message.Nodes !== 0n) {
       if (BigInt.asIntN(64, message.Nodes) !== message.Nodes) {
-        throw new globalThis.Error("value provided for field message.Nodes of type int64 too large");
+        throw new globalThis.Error(
+          "value provided for field message.Nodes of type int64 too large",
+        );
       }
       writer.uint32(32).int64(message.Nodes);
     }
@@ -702,14 +706,19 @@ export const SBookEval: MessageFns<SBookEval> = {
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | bigint | undefined;
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends globalThis.Array<infer U>
+    ? globalThis.Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepPartial<U>>
+      : T extends {}
+        ? { [K in keyof T]?: DeepPartial<T[K]> }
+        : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
+export type Exact<P, I extends P> = P extends Builtin
+  ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
 function isSet(value: any): boolean {

@@ -1,12 +1,12 @@
-import { BookMove, BookMoveEx, defaultBookSession } from "@/common/book.js";
+import { BookFormat, BookMove, BookMoveEx, defaultBookSession } from "@/common/book.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
 import api from "@/renderer/ipc/api.js";
 import { useErrorStore } from "./error.js";
 import { useBusyState } from "./busy.js";
+import { useConfirmationStore } from "./confirm.js";
 import { useMessageStore } from "./message.js";
 import { useAppSettings } from "./settings.js";
-import { useConfirmationStore } from "./confirm.js";
 import { BookImportSettings, SourceType } from "@/common/settings/book.js";
 import { t } from "@/common/i18n/index.js";
 import { ImmutableRecord } from "tsshogi";
@@ -55,7 +55,7 @@ export class BookStore {
     this.reloadBookMoves();
   }
 
-  reset() {
+  reset(format?: BookFormat) {
     if (useBusyState().isBusy) {
       return;
     }
@@ -64,7 +64,7 @@ export class BookStore {
       onOk: () => {
         useBusyState().retain();
         api
-          .clearBook(defaultBookSession)
+          .clearBook(defaultBookSession, format)
           .then(() => {
             return this.reloadBookMoves();
           })

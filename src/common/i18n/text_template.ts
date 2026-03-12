@@ -523,6 +523,7 @@ export type Texts = {
   record: string;
   book: string;
   bookInfo: string;
+  resetBook: string;
   loadingMode: string;
   positionCount: string;
   chart: string;

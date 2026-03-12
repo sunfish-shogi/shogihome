@@ -77,11 +77,6 @@ export function toSbkMove(usi: string, color: Color): number {
   const promote = usi.length === 5 && usi[4] === "+" ? 1 : 0;
 
   return (
-    (colorBit << 31) |
-    (promote << 19) |
-    (toFile << 12) |
-    (toRank << 8) |
-    (fromFile << 4) |
-    fromRank
+    (colorBit << 31) | (promote << 19) | (toFile << 12) | (toRank << 8) | (fromFile << 4) | fromRank
   );
 }

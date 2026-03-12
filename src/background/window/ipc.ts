@@ -605,9 +605,9 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise
   return ret;
 });
 
-ipcMain.handle(Background.CLEAR_BOOK, (event, session) => {
+ipcMain.handle(Background.CLEAR_BOOK, (event, session, format?) => {
   validateIPCSender(event.senderFrame);
-  clearBook(session);
+  clearBook(session, format);
 });
 
 ipcMain.handle(

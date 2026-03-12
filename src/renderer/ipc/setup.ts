@@ -300,7 +300,7 @@ export function setup(): void {
         store.showElapsedTimeChartDialog();
         break;
       case MenuEvent.RESET_BOOK:
-        useBookStore().reset();
+        store.showResetBookDialog();
         break;
       case MenuEvent.OPEN_BOOK_FILE:
         useBookStore().openBookFile();

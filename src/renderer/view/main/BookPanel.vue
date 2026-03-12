@@ -65,7 +65,7 @@ const editingData = ref<
 >();
 
 const onResetBook = () => {
-  bookStore.reset();
+  store.showResetBookDialog();
 };
 
 const onOpenBook = () => {

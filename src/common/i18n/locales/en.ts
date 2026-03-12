@@ -530,6 +530,7 @@ export const en: Texts = {
   record: "Record",
   book: "Book",
   bookInfo: "Book Information",
+  resetBook: "Initialize Book",
   loadingMode: "Loading Mode",
   positionCount: "Position Count",
   chart: "Chart",

@@ -530,6 +530,7 @@ export const ja: Texts = {
   record: "棋譜",
   book: "定跡",
   bookInfo: "定跡の情報",
+  resetBook: "定跡の初期化",
   loadingMode: "読み込みモード",
   positionCount: "局面数",
   chart: "グラフ",
