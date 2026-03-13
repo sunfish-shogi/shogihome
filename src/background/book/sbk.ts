@@ -74,14 +74,14 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     const sfen = idToSfen.get(state.Id);
     if (!sfen) continue;
 
-    const scoreFromEval = state.Evals[0]?.EvalutionValue;
-    const depthFromEval = state.Evals[0]?.Depth;
-
     const pos = Position.newBySFEN(sfen);
-    const moves: BookMove[] = state.Moves.flatMap((m) => {
+    const moves: BookMove[] = state.Moves.flatMap((m, i) => {
       const usi = fromSbkMove(m.Move);
       if (!pos || !pos.createMoveByUSI(usi)) return [];
-      return [[usi, undefined, scoreFromEval, depthFromEval, m.Weight || undefined, ""]];
+      const evalEntry = state.Evals[i];
+      return [
+        [usi, undefined, evalEntry?.EvalutionValue, evalEntry?.Depth, m.Weight || undefined, ""],
+      ];
     });
 
     entries.set(sfen, {
@@ -125,30 +125,25 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     const stateId = sfenToId.get(sfen)!;
     const pos = Position.newBySFEN(sfen);
 
-    const sbkMoves: SBookMoveProto[] = entry.moves.flatMap((bookMove) => {
-      const usi = bookMove[IDX_USI];
-      if (!pos) return [];
-      const move = pos.createMoveByUSI(usi);
-      if (!move) return [];
+    const sbkMoves: SBookMoveProto[] = [];
+    const evals: SBookEval[] = [];
+
+    for (const bookMove of entry.moves) {
+      if (!pos) break;
+      const move = pos.createMoveByUSI(bookMove[IDX_USI]);
+      if (!move) continue;
       const nextPos = pos.clone();
       nextPos.doMove(move);
       const nextStateId = sfenToId.get(nextPos.sfen) ?? -1;
-      return [
-        {
-          Move: toSbkMove(move),
-          Evalution: SBookMoveEvalution.None,
-          Weight: bookMove[IDX_COUNT] ?? 0,
-          NextStateId: nextStateId,
-        },
-      ];
-    });
-
-    const evals: SBookEval[] = [];
-    const firstWithScore = entry.moves.find((m) => m[IDX_SCORE] !== undefined);
-    if (firstWithScore) {
+      sbkMoves.push({
+        Move: toSbkMove(move),
+        Evalution: SBookMoveEvalution.None,
+        Weight: bookMove[IDX_COUNT] ?? 0,
+        NextStateId: nextStateId,
+      });
       evals.push({
-        EvalutionValue: firstWithScore[IDX_SCORE] ?? 0,
-        Depth: firstWithScore[IDX_DEPTH] ?? 0,
+        EvalutionValue: bookMove[IDX_SCORE] ?? 0,
+        Depth: bookMove[IDX_DEPTH] ?? 0,
         SelDepth: 0,
         Nodes: 0n,
         Variation: "",
