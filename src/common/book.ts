@@ -1,4 +1,7 @@
-export type BookFormat = "yane2016" | "apery" | "sbk";
+export type BookFormatYane2016 = "yane2016";
+export type BookFormatApery = "apery";
+export type BookFormatSbk = "sbk";
+export type BookFormat = BookFormatYane2016 | BookFormatApery | BookFormatSbk;
 
 export type BookMove = {
   usi: string; // 定跡手

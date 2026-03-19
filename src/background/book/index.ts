@@ -1,5 +1,6 @@
 import fs, { ReadStream } from "node:fs";
 import {
+  BookFormat,
   BookImportSummary,
   BookLoadingOptions,
   BookMove,
@@ -10,7 +11,6 @@ import {
   arrayMoveToCommonBookMove,
   Book,
   BookEntry,
-  BookFormat,
   commonBookMoveToArray,
   IDX_COUNT,
   IDX_USI,

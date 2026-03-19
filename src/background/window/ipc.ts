@@ -122,7 +122,7 @@ import {
   updateBookMove,
   updateBookMoveOrder,
 } from "@/background/book/index.js";
-import { BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
+import { BookFormat, BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
 import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
@@ -605,7 +605,7 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise
   return ret;
 });
 
-ipcMain.handle(Background.CLEAR_BOOK, (event, session, format?) => {
+ipcMain.handle(Background.CLEAR_BOOK, (event, session: number, format?: BookFormat) => {
   validateIPCSender(event.senderFrame);
   clearBook(session, format);
 });
