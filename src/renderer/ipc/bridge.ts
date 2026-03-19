@@ -62,7 +62,7 @@ export interface Bridge {
   openBookAsNewSession(path: string, json: string): Promise<number>;
   closeBookSession(session: number): Promise<void>;
   saveBook(session: number, path: string): Promise<void>;
-  clearBook(session: number): Promise<void>;
+  clearBook(session: number, format?: string): Promise<void>;
   searchBookMoves(session: number, sfen: string): Promise<string>;
   updateBookMove(session: number, sfen: string, move: string): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;

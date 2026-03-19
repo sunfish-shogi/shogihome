@@ -76,7 +76,7 @@ export interface SBookState {
   /** ID */
   Id: number;
   /** 局面ハッシュ */
-  BoardKey: number;
+  BoardKey: bigint;
   /** 持ち駒　手番 */
   HandKey: number;
   /** 対局数 */
@@ -86,13 +86,9 @@ export interface SBookState {
   /** 後手勝ち数 */
   WonWhite: number;
   /** sfen形式のposition情報 */
-  Position?:
-    | string
-    | undefined;
+  Position?: string | undefined;
   /** コメント */
-  Comment?:
-    | string
-    | undefined;
+  Comment?: string | undefined;
   /** この局面における定跡 */
   Moves: SBookMove[];
   /** 評価値 */
@@ -130,7 +126,7 @@ export interface SBookEval {
   Depth: number;
   SelDepth: number;
   /** ノード数 */
-  Nodes: number;
+  Nodes: bigint;
   /** 読み筋 */
   Variation: string;
   /** エンジン名 */
@@ -234,7 +230,7 @@ export const SBook: MessageFns<SBook> = {
 function createBaseSBookState(): SBookState {
   return {
     Id: 0,
-    BoardKey: 0,
+    BoardKey: 0n,
     HandKey: 0,
     Games: 0,
     WonBlack: 0,
@@ -251,7 +247,12 @@ export const SBookState: MessageFns<SBookState> = {
     if (message.Id !== 0) {
       writer.uint32(8).int32(message.Id);
     }
-    if (message.BoardKey !== 0) {
+    if (message.BoardKey !== 0n) {
+      if (BigInt.asUintN(64, message.BoardKey) !== message.BoardKey) {
+        throw new globalThis.Error(
+          "value provided for field message.BoardKey of type uint64 too large",
+        );
+      }
       writer.uint32(16).uint64(message.BoardKey);
     }
     if (message.HandKey !== 0) {
@@ -301,7 +302,7 @@ export const SBookState: MessageFns<SBookState> = {
             break;
           }
 
-          message.BoardKey = longToNumber(reader.uint64());
+          message.BoardKey = reader.uint64() as bigint;
           continue;
         }
         case 3: {
@@ -380,15 +381,19 @@ export const SBookState: MessageFns<SBookState> = {
   fromJSON(object: any): SBookState {
     return {
       Id: isSet(object.Id) ? globalThis.Number(object.Id) : 0,
-      BoardKey: isSet(object.BoardKey) ? globalThis.Number(object.BoardKey) : 0,
+      BoardKey: isSet(object.BoardKey) ? BigInt(object.BoardKey) : 0n,
       HandKey: isSet(object.HandKey) ? globalThis.Number(object.HandKey) : 0,
       Games: isSet(object.Games) ? globalThis.Number(object.Games) : 0,
       WonBlack: isSet(object.WonBlack) ? globalThis.Number(object.WonBlack) : 0,
       WonWhite: isSet(object.WonWhite) ? globalThis.Number(object.WonWhite) : 0,
       Position: isSet(object.Position) ? globalThis.String(object.Position) : "",
       Comment: isSet(object.Comment) ? globalThis.String(object.Comment) : "",
-      Moves: globalThis.Array.isArray(object?.Moves) ? object.Moves.map((e: any) => SBookMove.fromJSON(e)) : [],
-      Evals: globalThis.Array.isArray(object?.Evals) ? object.Evals.map((e: any) => SBookEval.fromJSON(e)) : [],
+      Moves: globalThis.Array.isArray(object?.Moves)
+        ? object.Moves.map((e: any) => SBookMove.fromJSON(e))
+        : [],
+      Evals: globalThis.Array.isArray(object?.Evals)
+        ? object.Evals.map((e: any) => SBookEval.fromJSON(e))
+        : [],
     };
   },
 
@@ -397,8 +402,8 @@ export const SBookState: MessageFns<SBookState> = {
     if (message.Id !== 0) {
       obj.Id = Math.round(message.Id);
     }
-    if (message.BoardKey !== 0) {
-      obj.BoardKey = Math.round(message.BoardKey);
+    if (message.BoardKey !== 0n) {
+      obj.BoardKey = message.BoardKey.toString();
     }
     if (message.HandKey !== 0) {
       obj.HandKey = Math.round(message.HandKey);
@@ -433,7 +438,7 @@ export const SBookState: MessageFns<SBookState> = {
   fromPartial<I extends Exact<DeepPartial<SBookState>, I>>(object: I): SBookState {
     const message = createBaseSBookState();
     message.Id = object.Id ?? 0;
-    message.BoardKey = object.BoardKey ?? 0;
+    message.BoardKey = object.BoardKey ?? 0n;
     message.HandKey = object.HandKey ?? 0;
     message.Games = object.Games ?? 0;
     message.WonBlack = object.WonBlack ?? 0;
@@ -555,7 +560,7 @@ export const SBookMove: MessageFns<SBookMove> = {
 };
 
 function createBaseSBookEval(): SBookEval {
-  return { EvalutionValue: 0, Depth: 0, SelDepth: 0, Nodes: 0, Variation: "", EngineName: "" };
+  return { EvalutionValue: 0, Depth: 0, SelDepth: 0, Nodes: 0n, Variation: "", EngineName: "" };
 }
 
 export const SBookEval: MessageFns<SBookEval> = {
@@ -569,7 +574,12 @@ export const SBookEval: MessageFns<SBookEval> = {
     if (message.SelDepth !== 0) {
       writer.uint32(24).int32(message.SelDepth);
     }
-    if (message.Nodes !== 0) {
+    if (message.Nodes !== 0n) {
+      if (BigInt.asIntN(64, message.Nodes) !== message.Nodes) {
+        throw new globalThis.Error(
+          "value provided for field message.Nodes of type int64 too large",
+        );
+      }
       writer.uint32(32).int64(message.Nodes);
     }
     if (message.Variation !== "") {
@@ -617,7 +627,7 @@ export const SBookEval: MessageFns<SBookEval> = {
             break;
           }
 
-          message.Nodes = longToNumber(reader.int64());
+          message.Nodes = reader.int64() as bigint;
           continue;
         }
         case 5: {
@@ -650,7 +660,7 @@ export const SBookEval: MessageFns<SBookEval> = {
       EvalutionValue: isSet(object.EvalutionValue) ? globalThis.Number(object.EvalutionValue) : 0,
       Depth: isSet(object.Depth) ? globalThis.Number(object.Depth) : 0,
       SelDepth: isSet(object.SelDepth) ? globalThis.Number(object.SelDepth) : 0,
-      Nodes: isSet(object.Nodes) ? globalThis.Number(object.Nodes) : 0,
+      Nodes: isSet(object.Nodes) ? BigInt(object.Nodes) : 0n,
       Variation: isSet(object.Variation) ? globalThis.String(object.Variation) : "",
       EngineName: isSet(object.EngineName) ? globalThis.String(object.EngineName) : "",
     };
@@ -667,8 +677,8 @@ export const SBookEval: MessageFns<SBookEval> = {
     if (message.SelDepth !== 0) {
       obj.SelDepth = Math.round(message.SelDepth);
     }
-    if (message.Nodes !== 0) {
-      obj.Nodes = Math.round(message.Nodes);
+    if (message.Nodes !== 0n) {
+      obj.Nodes = message.Nodes.toString();
     }
     if (message.Variation !== "") {
       obj.Variation = message.Variation;
@@ -687,35 +697,29 @@ export const SBookEval: MessageFns<SBookEval> = {
     message.EvalutionValue = object.EvalutionValue ?? 0;
     message.Depth = object.Depth ?? 0;
     message.SelDepth = object.SelDepth ?? 0;
-    message.Nodes = object.Nodes ?? 0;
+    message.Nodes = object.Nodes ?? 0n;
     message.Variation = object.Variation ?? "";
     message.EngineName = object.EngineName ?? "";
     return message;
   },
 };
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin = Date | Function | Uint8Array | string | number | boolean | bigint | undefined;
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends globalThis.Array<infer U>
+    ? globalThis.Array<DeepPartial<U>>
+    : T extends ReadonlyArray<infer U>
+      ? ReadonlyArray<DeepPartial<U>>
+      : T extends {}
+        ? { [K in keyof T]?: DeepPartial<T[K]> }
+        : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
+export type Exact<P, I extends P> = P extends Builtin
+  ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(int64: { toString(): string }): number {
-  const num = globalThis.Number(int64.toString());
-  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
-    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
-  }
-  return num;
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

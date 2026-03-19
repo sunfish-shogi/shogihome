@@ -66,4 +66,8 @@ export enum MenuEvent {
   LAUNCH_USI_ENGINE = "launchUsiEngine",
   CONNECT_TO_CSA_SERVER = "connectToCsaServer",
   ELAPSED_TIME_CHART = "elapsedTimeChart",
+  RESET_BOOK = "resetBook",
+  OPEN_BOOK_FILE = "openBookFile",
+  SAVE_BOOK_FILE = "saveBookFile",
+  ADD_BOOK_MOVES = "addBookMoves",
 }

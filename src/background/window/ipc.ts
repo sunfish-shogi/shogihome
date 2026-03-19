@@ -579,7 +579,7 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show open-book dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
-    { name: "Book", extensions: ["db", "bin"] },
+    { name: "Book", extensions: ["db", "bin", "sbk"] },
   ]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
@@ -591,10 +591,13 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise
   validateIPCSender(event.senderFrame);
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show save-book dialog");
+  const fmt = getBookFormat(session);
   const filter =
-    getBookFormat(session) === "yane2016"
+    fmt === "yane2016"
       ? { name: "YaneuraOu Book Database", extensions: ["db"] }
-      : { name: "Apery Book", extensions: ["bin"] };
+      : fmt === "apery"
+        ? { name: "Apery Book", extensions: ["bin"] }
+        : { name: "Shogi Book", extensions: ["sbk"] };
   const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
@@ -602,9 +605,9 @@ ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise
   return ret;
 });
 
-ipcMain.handle(Background.CLEAR_BOOK, (event, session) => {
+ipcMain.handle(Background.CLEAR_BOOK, (event, session, format?) => {
   validateIPCSender(event.senderFrame);
-  clearBook(session);
+  clearBook(session, format);
 });
 
 ipcMain.handle(

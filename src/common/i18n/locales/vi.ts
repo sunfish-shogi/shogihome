@@ -539,6 +539,10 @@ export const vi: Texts = {
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
   book: "Định thức",
+  bookInfo: "定跡の情報", // TODO: Translate
+  resetBook: "定跡の初期化", // TODO: Translate
+  loadingMode: "読み込みモード", // TODO: Translate
+  positionCount: "局面数", // TODO: Translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",
