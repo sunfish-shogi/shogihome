@@ -411,7 +411,9 @@ function createMenuTemplate(window: BrowserWindow) {
               if (info.path) {
                 items.push({ text: `${t.file}: ${info.path}` });
               }
-              items.push({ text: `${t.positionCount}: ${info.entryCount}` });
+              if (info.entryCount !== undefined) {
+                items.push({ text: `${t.positionCount}: ${info.entryCount}` });
+              }
               if (info.unsaved) {
                 items.push({ text: t.unsaved });
               }

@@ -161,7 +161,7 @@ export type BookInfo = {
   format: BookFormat;
   type: "in-memory" | "on-the-fly";
   path?: string;
-  entryCount: number;
+  entryCount?: number;
   unsaved: boolean;
 };
 
@@ -171,7 +171,7 @@ export function getBookInfo(session: number): BookInfo {
     format: book.format,
     type: book.type,
     path: book.path,
-    entryCount: book.entries.size,
+    entryCount: book.type === "in-memory" ? book.entries.size : undefined,
     unsaved: !book.saved,
   };
 }
