@@ -3,13 +3,13 @@
     <div class="root">
       <div class="title">{{ t.resetBook }}</div>
       <div class="item">
-        <button @click="reset('yane2016')">やねうら王定跡ファイル (.db)</button>
+        <button @click="reset('yane2016')">{{ t.yane2016BookFile }} (.db)</button>
       </div>
       <div class="item">
-        <button @click="reset('sbk')">ShogiGUI 定跡ファイル (.sbk)</button>
+        <button @click="reset('sbk')">{{ t.shogiGUIBookFile }} (.sbk)</button>
       </div>
       <div class="item">
-        <button @click="reset('apery')">Apery 定跡ファイル (.bin)</button>
+        <button @click="reset('apery')">{{ t.aperyBookFile }} (.bin)</button>
       </div>
       <div class="item">
         <button data-hotkey="Escape" @click="cancel">{{ t.cancel }}</button>

@@ -400,16 +400,16 @@ function createMenuTemplate(window: BrowserWindow) {
               const info = getBookInfo(defaultBookSession);
               const formatLabel =
                 info.format === "yane2016"
-                  ? "YaneuraOu (.db)"
+                  ? `${t.yane2016BookFile} (.db)`
                   : info.format === "apery"
-                    ? "Apery (.bin)"
-                    : "SBK (.sbk)";
+                    ? `${t.aperyBookFile} (.bin)`
+                    : `${t.shogiGUIBookFile} (.sbk)`;
               const items: { text: string }[] = [
                 { text: `${t.format}: ${formatLabel}` },
                 { text: `${t.loadingMode}: ${info.type}` },
               ];
               if (info.path) {
-                items.push({ text: `File: ${info.path}` });
+                items.push({ text: `${t.file}: ${info.path}` });
               }
               items.push({ text: `${t.positionCount}: ${info.entryCount}` });
               if (info.unsaved) {
