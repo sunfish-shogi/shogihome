@@ -15,7 +15,7 @@ import {
   mergeBookEntries,
 } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
-import { SbkMoveEvalution } from "@/common/book.js";
+import { SbkMoveEvaluation } from "@/common/book.js";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
 
@@ -99,7 +99,7 @@ function parseLine(line: string): Line {
         columns[3] === DEPTH_NONE || columns[3] === "" ? undefined : parseInt(columns[3], 10), // depth
         columns[4] ? parseInt(columns[4], 10) : undefined, // counts
         commentIndex < line.length ? line.slice(commentIndex).replace(/^(#|\/\/)/, "") : "", // comment
-        SbkMoveEvalution.None,
+        SbkMoveEvaluation.None,
       ],
     };
   }

@@ -5,7 +5,7 @@
 
 import fs from "node:fs";
 import { stringify } from "yaml";
-import { SBook, SBookMoveEvalution } from "@/background/book/proto/sbk.js";
+import { SBook, SBookMoveEvaluation } from "@/background/book/proto/sbk.js";
 
 const path = process.argv[2];
 if (!path) {
@@ -17,12 +17,12 @@ const data = fs.readFileSync(path);
 
 const raw = SBook.decode(data);
 
-const evalutionNames: Record<number, string> = {
-  [SBookMoveEvalution.None]: "None",
-  [SBookMoveEvalution.Forced]: "Forced",
-  [SBookMoveEvalution.Good]: "Good",
-  [SBookMoveEvalution.Bad]: "Bad",
-  [SBookMoveEvalution.Blunder]: "Blunder",
+const evaluationNames: Record<number, string> = {
+  [SBookMoveEvaluation.None]: "None",
+  [SBookMoveEvaluation.Forced]: "Forced",
+  [SBookMoveEvaluation.Good]: "Good",
+  [SBookMoveEvaluation.Bad]: "Bad",
+  [SBookMoveEvaluation.Blunder]: "Blunder",
 };
 
 const states = raw.BookStates.map((state) => ({
@@ -36,12 +36,12 @@ const states = raw.BookStates.map((state) => ({
   Comment: state.Comment || null,
   Moves: state.Moves.map((m) => ({
     Move: `0x${(m.Move >>> 0).toString(16).padStart(8, "0")}`,
-    Evalution: evalutionNames[m.Evalution] ?? m.Evalution,
+    Evaluation: evaluationNames[m.Evaluation] ?? m.Evaluation,
     Weight: m.Weight,
     NextStateId: m.NextStateId,
   })),
   Evals: state.Evals.map((e) => ({
-    EvalutionValue: e.EvalutionValue,
+    EvaluationValue: e.EvaluationValue,
     Depth: e.Depth,
     SelDepth: e.SelDepth,
     Nodes: e.Nodes.toString(),

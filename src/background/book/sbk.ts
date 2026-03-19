@@ -1,12 +1,17 @@
 import events from "node:events";
 import { Writable } from "node:stream";
 import { Position } from "tsshogi";
-import { SBook, SBookMove as SBookMoveProto, SBookMoveEvalution, SBookState } from "./proto/sbk.js";
+import {
+  SBook,
+  SBookMove as SBookMoveProto,
+  SBookMoveEvaluation,
+  SBookState,
+} from "./proto/sbk.js";
 import {
   BookEntry,
   BookMove,
   IDX_COUNT,
-  IDX_EVALUTION,
+  IDX_EVALUATION,
   IDX_USI,
   SbkBook,
   SbkEval,
@@ -80,11 +85,11 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     const moves: BookMove[] = state.Moves.flatMap((m) => {
       const usi = fromSbkMove(m.Move);
       if (!pos || !pos.createMoveByUSI(usi)) return [];
-      return [[usi, undefined, undefined, undefined, m.Weight || undefined, "", m.Evalution]];
+      return [[usi, undefined, undefined, undefined, m.Weight || undefined, "", m.Evaluation]];
     });
 
     const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
-      EvalutionValue: e.EvalutionValue,
+      EvaluationValue: e.EvaluationValue,
       Depth: e.Depth,
       SelDepth: e.SelDepth,
       Nodes: e.Nodes,
@@ -160,7 +165,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       const nextStateId = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen) ?? -1;
       sbkMoves.push({
         Move: toSbkMove(move),
-        Evalution: bookMove[IDX_EVALUTION] as SBookMoveEvalution,
+        Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
         Weight: bookMove[IDX_COUNT] ?? 0,
         NextStateId: nextStateId,
       });
@@ -178,7 +183,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       Comment: entry.comment || undefined,
       Moves: sbkMoves,
       Evals: (entry.sbkEvals ?? []).map((e) => ({
-        EvalutionValue: e.EvalutionValue,
+        EvaluationValue: e.EvaluationValue,
         Depth: e.Depth,
         SelDepth: e.SelDepth,
         Nodes: e.Nodes,

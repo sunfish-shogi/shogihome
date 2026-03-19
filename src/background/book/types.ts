@@ -3,7 +3,7 @@ import {
   BookFormatSbk,
   BookFormatYane2016,
   BookMove as CommonBookMove,
-  SbkMoveEvalution,
+  SbkMoveEvaluation,
 } from "@/common/book.js";
 
 export type YaneBook = {
@@ -26,7 +26,7 @@ export type SbkBook = {
 export type Book = YaneBook | AperyBook | SbkBook;
 
 export type SbkEval = {
-  EvalutionValue: number;
+  EvaluationValue: number;
   Depth: number;
   SelDepth: number;
   Nodes: bigint;
@@ -54,7 +54,7 @@ export type BookMove = [
   depth: number | undefined,
   count: number | undefined,
   comment: string,
-  evalution: SbkMoveEvalution, // (SBK)
+  evaluation: SbkMoveEvaluation, // (SBK)
 ];
 
 export const IDX_USI = 0;
@@ -63,7 +63,7 @@ export const IDX_SCORE = 2;
 export const IDX_DEPTH = 3;
 export const IDX_COUNT = 4;
 export const IDX_COMMENTS = 5;
-export const IDX_EVALUTION = 6;
+export const IDX_EVALUATION = 6;
 
 export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
   return {
@@ -73,7 +73,7 @@ export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
     depth: move[IDX_DEPTH],
     count: move[IDX_COUNT],
     comment: move[IDX_COMMENTS],
-    evalution: move[IDX_EVALUTION],
+    evaluation: move[IDX_EVALUATION],
   };
 }
 
@@ -85,7 +85,7 @@ export function commonBookMoveToArray(move: CommonBookMove): BookMove {
     move.depth,
     move.count,
     move.comment,
-    move.evalution ?? SbkMoveEvalution.None,
+    move.evaluation ?? SbkMoveEvaluation.None,
   ];
 }
 
@@ -127,7 +127,7 @@ export function mergeBookEntries(
         p[IDX_DEPTH] !== undefined ? p[IDX_DEPTH] : move[IDX_DEPTH],
         p[IDX_COUNT] !== undefined ? p[IDX_COUNT] + (move[IDX_COUNT] || 0) : move[IDX_COUNT],
         p[IDX_COMMENTS] || move[IDX_COMMENTS],
-        p[IDX_EVALUTION],
+        p[IDX_EVALUATION],
       ] as BookMove;
     }
     return move;

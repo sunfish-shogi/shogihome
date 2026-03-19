@@ -69,7 +69,7 @@ message SBookMove
 	required int32 Move = 1;
 
 	// さして評価
-	required SBookMoveEvalution Evalution = 2;
+	required SBookMoveEvaluation Evaluation = 2;
 
 	// 重み
 	required int32 Weight = 3;
@@ -82,7 +82,7 @@ message SBookMove
 message SBookEval
 {
 	// 評価値
-	required int32 EvalutionValue = 1;
+	required int32 EvaluationValue = 1;
 	
 	// 深さ
 	required int32 Depth = 2;
@@ -98,7 +98,7 @@ message SBookEval
 	optional string EngineName = 6;
 }
 
-enum SBookMoveEvalution
+enum SBookMoveEvaluation
 {
     None = 0;    // 未設定
     Forced = 1;  // 絶対手

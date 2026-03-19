@@ -9,7 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "ShogiLib";
 
-export enum SBookMoveEvalution {
+export enum SBookMoveEvaluation {
   /** None - 未設定 */
   None = 0,
   /** Forced - 絶対手 */
@@ -23,43 +23,43 @@ export enum SBookMoveEvalution {
   UNRECOGNIZED = -1,
 }
 
-export function sBookMoveEvalutionFromJSON(object: any): SBookMoveEvalution {
+export function sBookMoveEvaluationFromJSON(object: any): SBookMoveEvaluation {
   switch (object) {
     case 0:
     case "None":
-      return SBookMoveEvalution.None;
+      return SBookMoveEvaluation.None;
     case 1:
     case "Forced":
-      return SBookMoveEvalution.Forced;
+      return SBookMoveEvaluation.Forced;
     case 2:
     case "Good":
-      return SBookMoveEvalution.Good;
+      return SBookMoveEvaluation.Good;
     case 3:
     case "Bad":
-      return SBookMoveEvalution.Bad;
+      return SBookMoveEvaluation.Bad;
     case 4:
     case "Blunder":
-      return SBookMoveEvalution.Blunder;
+      return SBookMoveEvaluation.Blunder;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return SBookMoveEvalution.UNRECOGNIZED;
+      return SBookMoveEvaluation.UNRECOGNIZED;
   }
 }
 
-export function sBookMoveEvalutionToJSON(object: SBookMoveEvalution): string {
+export function sBookMoveEvaluationToJSON(object: SBookMoveEvaluation): string {
   switch (object) {
-    case SBookMoveEvalution.None:
+    case SBookMoveEvaluation.None:
       return "None";
-    case SBookMoveEvalution.Forced:
+    case SBookMoveEvaluation.Forced:
       return "Forced";
-    case SBookMoveEvalution.Good:
+    case SBookMoveEvaluation.Good:
       return "Good";
-    case SBookMoveEvalution.Bad:
+    case SBookMoveEvaluation.Bad:
       return "Bad";
-    case SBookMoveEvalution.Blunder:
+    case SBookMoveEvaluation.Blunder:
       return "Blunder";
-    case SBookMoveEvalution.UNRECOGNIZED:
+    case SBookMoveEvaluation.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -111,7 +111,7 @@ export interface SBookMove {
    */
   Move: number;
   /** さして評価 */
-  Evalution: SBookMoveEvalution;
+  Evaluation: SBookMoveEvaluation;
   /** 重み */
   Weight: number;
   /** 次の局面 */
@@ -121,7 +121,7 @@ export interface SBookMove {
 /** 評価値 */
 export interface SBookEval {
   /** 評価値 */
-  EvalutionValue: number;
+  EvaluationValue: number;
   /** 深さ */
   Depth: number;
   SelDepth: number;
@@ -452,7 +452,7 @@ export const SBookState: MessageFns<SBookState> = {
 };
 
 function createBaseSBookMove(): SBookMove {
-  return { Move: 0, Evalution: 0, Weight: 0, NextStateId: 0 };
+  return { Move: 0, Evaluation: 0, Weight: 0, NextStateId: 0 };
 }
 
 export const SBookMove: MessageFns<SBookMove> = {
@@ -460,8 +460,8 @@ export const SBookMove: MessageFns<SBookMove> = {
     if (message.Move !== 0) {
       writer.uint32(8).int32(message.Move);
     }
-    if (message.Evalution !== 0) {
-      writer.uint32(16).int32(message.Evalution);
+    if (message.Evaluation !== 0) {
+      writer.uint32(16).int32(message.Evaluation);
     }
     if (message.Weight !== 0) {
       writer.uint32(24).int32(message.Weight);
@@ -492,7 +492,7 @@ export const SBookMove: MessageFns<SBookMove> = {
             break;
           }
 
-          message.Evalution = reader.int32() as any;
+          message.Evaluation = reader.int32() as any;
           continue;
         }
         case 3: {
@@ -523,7 +523,7 @@ export const SBookMove: MessageFns<SBookMove> = {
   fromJSON(object: any): SBookMove {
     return {
       Move: isSet(object.Move) ? globalThis.Number(object.Move) : 0,
-      Evalution: isSet(object.Evalution) ? sBookMoveEvalutionFromJSON(object.Evalution) : 0,
+      Evaluation: isSet(object.Evaluation) ? sBookMoveEvaluationFromJSON(object.Evaluation) : 0,
       Weight: isSet(object.Weight) ? globalThis.Number(object.Weight) : 0,
       NextStateId: isSet(object.NextStateId) ? globalThis.Number(object.NextStateId) : 0,
     };
@@ -534,8 +534,8 @@ export const SBookMove: MessageFns<SBookMove> = {
     if (message.Move !== 0) {
       obj.Move = Math.round(message.Move);
     }
-    if (message.Evalution !== 0) {
-      obj.Evalution = sBookMoveEvalutionToJSON(message.Evalution);
+    if (message.Evaluation !== 0) {
+      obj.Evaluation = sBookMoveEvaluationToJSON(message.Evaluation);
     }
     if (message.Weight !== 0) {
       obj.Weight = Math.round(message.Weight);
@@ -552,7 +552,7 @@ export const SBookMove: MessageFns<SBookMove> = {
   fromPartial<I extends Exact<DeepPartial<SBookMove>, I>>(object: I): SBookMove {
     const message = createBaseSBookMove();
     message.Move = object.Move ?? 0;
-    message.Evalution = object.Evalution ?? 0;
+    message.Evaluation = object.Evaluation ?? 0;
     message.Weight = object.Weight ?? 0;
     message.NextStateId = object.NextStateId ?? 0;
     return message;
@@ -560,13 +560,13 @@ export const SBookMove: MessageFns<SBookMove> = {
 };
 
 function createBaseSBookEval(): SBookEval {
-  return { EvalutionValue: 0, Depth: 0, SelDepth: 0, Nodes: 0n, Variation: "", EngineName: "" };
+  return { EvaluationValue: 0, Depth: 0, SelDepth: 0, Nodes: 0n, Variation: "", EngineName: "" };
 }
 
 export const SBookEval: MessageFns<SBookEval> = {
   encode(message: SBookEval, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.EvalutionValue !== 0) {
-      writer.uint32(8).int32(message.EvalutionValue);
+    if (message.EvaluationValue !== 0) {
+      writer.uint32(8).int32(message.EvaluationValue);
     }
     if (message.Depth !== 0) {
       writer.uint32(16).int32(message.Depth);
@@ -603,7 +603,7 @@ export const SBookEval: MessageFns<SBookEval> = {
             break;
           }
 
-          message.EvalutionValue = reader.int32();
+          message.EvaluationValue = reader.int32();
           continue;
         }
         case 2: {
@@ -657,7 +657,9 @@ export const SBookEval: MessageFns<SBookEval> = {
 
   fromJSON(object: any): SBookEval {
     return {
-      EvalutionValue: isSet(object.EvalutionValue) ? globalThis.Number(object.EvalutionValue) : 0,
+      EvaluationValue: isSet(object.EvaluationValue)
+        ? globalThis.Number(object.EvaluationValue)
+        : 0,
       Depth: isSet(object.Depth) ? globalThis.Number(object.Depth) : 0,
       SelDepth: isSet(object.SelDepth) ? globalThis.Number(object.SelDepth) : 0,
       Nodes: isSet(object.Nodes) ? BigInt(object.Nodes) : 0n,
@@ -668,8 +670,8 @@ export const SBookEval: MessageFns<SBookEval> = {
 
   toJSON(message: SBookEval): unknown {
     const obj: any = {};
-    if (message.EvalutionValue !== 0) {
-      obj.EvalutionValue = Math.round(message.EvalutionValue);
+    if (message.EvaluationValue !== 0) {
+      obj.EvaluationValue = Math.round(message.EvaluationValue);
     }
     if (message.Depth !== 0) {
       obj.Depth = Math.round(message.Depth);
@@ -694,7 +696,7 @@ export const SBookEval: MessageFns<SBookEval> = {
   },
   fromPartial<I extends Exact<DeepPartial<SBookEval>, I>>(object: I): SBookEval {
     const message = createBaseSBookEval();
-    message.EvalutionValue = object.EvalutionValue ?? 0;
+    message.EvaluationValue = object.EvaluationValue ?? 0;
     message.Depth = object.Depth ?? 0;
     message.SelDepth = object.SelDepth ?? 0;
     message.Nodes = object.Nodes ?? 0n;
