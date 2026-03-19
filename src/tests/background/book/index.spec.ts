@@ -269,6 +269,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         depth: 20,
         count: 123,
         comment: "yokofu",
+        evalution: 0,
       });
       expect(moves[1]).toEqual({
         usi: "6i7h",
@@ -277,6 +278,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         depth: 19,
         count: 21,
         comment: "",
+        evalution: 0,
       });
     });
 
@@ -303,12 +305,14 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         score: 42,
         count: 123,
         comment: "",
+        evalution: 0,
       });
       expect(moves[1]).toEqual({
         usi: "6i7h",
         score: -30,
         count: 21,
         comment: "",
+        evalution: 0,
       });
     });
   });

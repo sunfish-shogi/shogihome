@@ -160,7 +160,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       const nextStateId = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen) ?? -1;
       sbkMoves.push({
         Move: toSbkMove(move),
-        Evalution: bookMove[IDX_EVALUTION] ?? SBookMoveEvalution.None,
+        Evalution: bookMove[IDX_EVALUTION] as SBookMoveEvalution,
         Weight: bookMove[IDX_COUNT] ?? 0,
         NextStateId: nextStateId,
       });

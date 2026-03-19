@@ -3,6 +3,7 @@ import {
   BookFormatSbk,
   BookFormatYane2016,
   BookMove as CommonBookMove,
+  SbkMoveEvalution,
 } from "@/common/book.js";
 
 export type YaneBook = {
@@ -53,7 +54,7 @@ export type BookMove = [
   depth: number | undefined,
   count: number | undefined,
   comment: string,
-  evalution?: number, // SBookMoveEvalution (SBK)
+  evalution: SbkMoveEvalution, // (SBK)
 ];
 
 export const IDX_USI = 0;
@@ -72,11 +73,20 @@ export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
     depth: move[IDX_DEPTH],
     count: move[IDX_COUNT],
     comment: move[IDX_COMMENTS],
+    evalution: move[IDX_EVALUTION],
   };
 }
 
 export function commonBookMoveToArray(move: CommonBookMove): BookMove {
-  return [move.usi, move.usi2, move.score, move.depth, move.count, move.comment];
+  return [
+    move.usi,
+    move.usi2,
+    move.score,
+    move.depth,
+    move.count,
+    move.comment,
+    move.evalution ?? SbkMoveEvalution.None,
+  ];
 }
 
 export function mergeBookEntries(
@@ -117,6 +127,7 @@ export function mergeBookEntries(
         p[IDX_DEPTH] !== undefined ? p[IDX_DEPTH] : move[IDX_DEPTH],
         p[IDX_COUNT] !== undefined ? p[IDX_COUNT] + (move[IDX_COUNT] || 0) : move[IDX_COUNT],
         p[IDX_COMMENTS] || move[IDX_COMMENTS],
+        p[IDX_EVALUTION],
       ] as BookMove;
     }
     return move;
