@@ -26,7 +26,7 @@ import { CommandHistory, CommandType } from "@/common/advanced/command.js";
 import { Bridge } from "./bridge.js";
 import { TimeStates } from "@/common/game/time.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
-import { BookImportSummary, BookLoadingOptions, BookMove } from "@/common/book.js";
+import { BookFormat, BookImportSummary, BookLoadingOptions, BookMove } from "@/common/book.js";
 import { BookImportSettings } from "@/common/settings/book.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 
@@ -83,7 +83,7 @@ export interface API {
   openBookAsNewSession(path: string, options: BookLoadingOptions): Promise<number>;
   closeBookSession(session: number): Promise<void>;
   saveBook(session: number, path: string): Promise<void>;
-  clearBook(session: number): Promise<void>;
+  clearBook(session: number, format?: BookFormat): Promise<void>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;

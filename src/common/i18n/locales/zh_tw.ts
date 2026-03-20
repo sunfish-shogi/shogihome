@@ -536,6 +536,13 @@ export const zh_tw: Texts = {
   dialogBackdrop: "對話窗背景",
   record: "棋譜",
   book: "定跡",
+  bookInfo: "定跡の情報", // TODO: Translate
+  resetBook: "定跡の初期化", // TODO: Translate
+  yane2016BookFile: "やねうら王定跡ファイル", // TODO: Translate
+  shogiGUIBookFile: "ShogiGUI 定跡ファイル", // TODO: Translate
+  aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
+  loadingMode: "読み込みモード", // TODO: Translate
+  positionCount: "局面数", // TODO: Translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",

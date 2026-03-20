@@ -29,6 +29,7 @@
     <LoadRemoteFileDialog v-if="store.appState === AppState.LOAD_REMOTE_FILE_DIALOG" />
     <ShareDialog v-if="store.appState === AppState.SHARE_DIALOG" />
     <AddBookMovesDialog v-if="store.appState === AppState.ADD_BOOK_MOVES_DIALOG" />
+    <ResetBookDialog v-if="store.appState === AppState.RESET_BOOK_DIALOG" />
     <PieceSetChangeDialog v-if="store.appState === AppState.PIECE_SET_CHANGE_DIALOG" />
     <ResearchDialog v-if="store.researchState === ResearchState.STARTUP_DIALOG" />
     <SearchDuplicatePositionsDialog
@@ -103,6 +104,7 @@ import PieceSetChangeDialog from "./dialog/PieceSetChangeDialog.vue";
 import LoadRemoteFileDialog from "./dialog/LoadRemoteFileDialog.vue";
 import ShareDialog from "./dialog/ShareDialog.vue";
 import AddBookMovesDialog from "./dialog/AddBookMovesDialog.vue";
+import ResetBookDialog from "./dialog/ResetBookDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
 import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";

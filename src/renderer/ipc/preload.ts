@@ -8,6 +8,7 @@ import { LogType, LogLevel } from "@/common/log";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandType } from "@/common/advanced/command";
+import { BookFormat } from "@/common/book";
 
 const api: Bridge = {
   // Core
@@ -153,8 +154,8 @@ const api: Bridge = {
   async showSaveBookDialog(session: number): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session);
   },
-  async clearBook(session: number): Promise<void> {
-    return await ipcRenderer.invoke(Background.CLEAR_BOOK, session);
+  async clearBook(session: number, format?: BookFormat): Promise<void> {
+    return await ipcRenderer.invoke(Background.CLEAR_BOOK, session, format);
   },
   async openBook(session: number, path: string, json: string): Promise<void> {
     await ipcRenderer.invoke(Background.OPEN_BOOK, session, path, json);

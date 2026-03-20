@@ -10,6 +10,7 @@ import {
   IDX_USI,
   mergeBookEntries,
 } from "./types.js";
+import { SbkMoveEvaluation } from "@/common/book.js";
 import { fromAperyMove, toAperyMove } from "./apery_move.js";
 import { hash } from "./apery_zobrist.js";
 
@@ -39,7 +40,7 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMo
   const usi = fromAperyMove(move);
   return {
     hash,
-    bookMove: [usi, undefined, score, undefined, count, ""],
+    bookMove: [usi, undefined, score, undefined, count, "", SbkMoveEvaluation.None],
   };
 }
 

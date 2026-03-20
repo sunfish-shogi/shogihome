@@ -522,6 +522,13 @@ export type Texts = {
   dialogBackdrop: string;
   record: string;
   book: string;
+  bookInfo: string;
+  resetBook: string;
+  yane2016BookFile: string;
+  shogiGUIBookFile: string;
+  aperyBookFile: string;
+  loadingMode: string;
+  positionCount: string;
   chart: string;
   analytics: string;
   controlGroup: string;

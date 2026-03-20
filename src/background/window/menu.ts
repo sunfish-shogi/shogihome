@@ -27,6 +27,8 @@ import {
   sendMessage,
   updateAppSettings,
 } from "@/background/window/ipc.js";
+import { getBookInfo } from "@/background/book/index.js";
+import { defaultBookSession } from "@/common/book.js";
 import { MenuEvent } from "@/common/control/menu.js";
 import { AppState } from "@/common/control/state.js";
 import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help.js";
@@ -381,6 +383,50 @@ function createMenuTemplate(window: BrowserWindow) {
       submenu: [
         menuItem(t.mateSearch, MenuEvent.START_MATE_SEARCH, [AppState.NORMAL], "CmdOrCtrl+M"),
         menuItem(t.stopMateSearch, MenuEvent.STOP_MATE_SEARCH, [AppState.MATE_SEARCH]),
+      ],
+    },
+    {
+      label: t.book,
+      submenu: [
+        menuItem(t.clear, MenuEvent.RESET_BOOK, [AppState.NORMAL]),
+        menuItem(t.open, MenuEvent.OPEN_BOOK_FILE, [AppState.NORMAL]),
+        menuItem(t.saveAs, MenuEvent.SAVE_BOOK_FILE, [AppState.NORMAL]),
+        menuItem(t.addMoves, MenuEvent.ADD_BOOK_MOVES, [AppState.NORMAL]),
+        { type: "separator" },
+        {
+          label: t.bookInfo,
+          click: () => {
+            try {
+              const info = getBookInfo(defaultBookSession);
+              const formatLabel =
+                info.format === "yane2016"
+                  ? `${t.yane2016BookFile} (.db)`
+                  : info.format === "apery"
+                    ? `${t.aperyBookFile} (.bin)`
+                    : `${t.shogiGUIBookFile} (.sbk)`;
+              const items: { text: string }[] = [
+                { text: `${t.format}: ${formatLabel}` },
+                { text: `${t.loadingMode}: ${info.type}` },
+              ];
+              if (info.path) {
+                items.push({ text: `${t.file}: ${info.path}` });
+              }
+              if (info.entryCount !== undefined) {
+                items.push({ text: `${t.positionCount}: ${info.entryCount}` });
+              }
+              if (info.unsaved) {
+                items.push({ text: t.unsaved });
+              }
+              sendMessage({
+                text: t.bookInfo,
+                attachments: [{ type: "list", items }],
+                withCopyButton: true,
+              });
+            } catch (e) {
+              sendError(e instanceof Error ? e : new Error(String(e)));
+            }
+          },
+        },
       ],
     },
     {
