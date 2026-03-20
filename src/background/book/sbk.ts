@@ -129,15 +129,14 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     if (!pos) continue;
     for (const bookMove of entry.moves) {
       const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move) continue;
-      const nextPos = pos.clone();
-      nextPos.doMove(move);
-      const nextSfen = nextPos.sfen;
+      if (!move || !pos.doMove(move)) continue;
+      const nextSfen = pos.sfen;
       if (!sfenToId.has(nextSfen) && !leafSfens.has(nextSfen)) {
         leafSfens.set(nextSfen, nextId++);
       }
       const id = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen)!;
       reachableIds.add(id);
+      pos.undoMove(move);
     }
   }
 
@@ -146,16 +145,14 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   for (const [sfen, entry] of book.entries) {
     const stateId = sfenToId.get(sfen)!;
     const pos = Position.newBySFEN(sfen);
+    if (!pos) continue;
 
     const sbkMoves: SBookMoveProto[] = [];
 
     for (const bookMove of entry.moves) {
-      if (!pos) break;
       const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move) continue;
-      const nextPos = pos.clone();
-      nextPos.doMove(move);
-      const nextSfen = nextPos.sfen;
+      if (!move || !pos.doMove(move)) continue;
+      const nextSfen = pos.sfen;
       const nextStateId = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen) ?? -1;
       sbkMoves.push({
         Move: toSbkMove(move),
@@ -163,6 +160,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         Weight: bookMove[IDX_COUNT] ?? 0,
         NextStateId: nextStateId,
       });
+      pos.undoMove(move);
     }
 
     states.push({
