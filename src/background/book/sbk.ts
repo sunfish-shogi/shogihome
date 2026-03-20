@@ -34,17 +34,12 @@ function normalizeSfen(position: string): string | undefined {
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
 
-  // ID → state のマップを構築
-  const idToState = new Map<number, SBookState>();
-  for (const state of book.BookStates) {
-    idToState.set(state.Id, state);
-  }
-
   // Position フィールドを持つ局面をシードとして BFS で SFEN を伝播させる
+  const idToState = new Map<number, SBookState>();
   const idToSfen = new Map<number, string>();
   const queue: number[] = [];
-
   for (const state of book.BookStates) {
+    idToState.set(state.Id, state);
     if (state.Position) {
       const sfen = normalizeSfen(state.Position);
       if (sfen && !idToSfen.has(state.Id)) {
@@ -67,11 +62,10 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       if (m.NextStateId < 0 || idToSfen.has(m.NextStateId)) continue;
       const usi = fromSbkMove(m.Move);
       const move = pos.createMoveByUSI(usi);
-      if (!move) continue;
-      const nextPos = pos.clone();
-      nextPos.doMove(move);
-      idToSfen.set(m.NextStateId, nextPos.sfen);
+      if (!move || !pos.doMove(move)) continue;
+      idToSfen.set(m.NextStateId, pos.sfen);
       queue.push(m.NextStateId);
+      pos.undoMove(move);
     }
   }
 
