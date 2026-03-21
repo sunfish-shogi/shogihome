@@ -37,7 +37,6 @@ import {
   getBlackPlayerName,
   getWhitePlayerName,
   ImmutableNode,
-  ImmutableRecord,
   Move,
   Record,
   reverseColor,
@@ -500,8 +499,8 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
 
 // 棋譜の終端ノードから勝者を判定する。
 // 引き分けや不明な場合は undefined を返す。
-function getRecordWinner(record: ImmutableRecord): Color | undefined {
-  let lastNode = record.first;
+function getRecordWinner(node: ImmutableNode): Color | undefined {
+  let lastNode = node;
   while (lastNode.next) {
     lastNode = lastNode.next;
   }
@@ -648,8 +647,13 @@ export async function importBookMoves(
           continue;
         }
         hasValidLines = true;
-        const winner = getRecordWinner(record);
+        let winner: Color | undefined;
+        let lastPly = Infinity;
         record.forEach((node) => {
+          if (node.ply <= lastPly) {
+            winner = getRecordWinner(node);
+          }
+          lastPly = node.ply;
           const prev = node.prev;
           if (prev && targetColorSet[prev.nextColor]) {
             importMove(node, prev.sfen, winner);
@@ -691,8 +695,13 @@ export async function importBookMoves(
       }
     }
 
-    const winner = getRecordWinner(record);
+    let winner: Color | undefined;
+    let lastPly = Infinity;
     record.forEach((node) => {
+      if (node.ply <= lastPly) {
+        winner = getRecordWinner(node);
+      }
+      lastPly = node.ply;
       const prev = node.prev;
       if (prev && targetColorSet[prev.nextColor]) {
         importMove(node, prev.sfen, winner);
