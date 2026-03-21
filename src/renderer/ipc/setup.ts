@@ -311,6 +311,15 @@ export function setup(): void {
       case MenuEvent.ADD_BOOK_MOVES:
         store.showAddBookMovesDialog();
         break;
+      case MenuEvent.EXPORT_BOOK_AS_YANE2016:
+        useBookStore().exportBookFile("yane2016");
+        break;
+      case MenuEvent.EXPORT_BOOK_AS_APERY:
+        useBookStore().exportBookFile("apery");
+        break;
+      case MenuEvent.EXPORT_BOOK_AS_SBK:
+        useBookStore().exportBookFile("sbk");
+        break;
     }
   });
 

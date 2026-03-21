@@ -111,6 +111,7 @@ import { openPath } from "@/background/helpers/electron.js";
 import {
   clearBook,
   closeBookSession,
+  exportBook,
   getBookFormat,
   importBookMoves,
   isBookUnsaved,
@@ -587,23 +588,27 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   return ret;
 });
 
-ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise<string> => {
-  validateIPCSender(event.senderFrame);
-  const appSettings = await loadAppSettings();
-  getAppLogger().debug("show save-book dialog");
-  const fmt = getBookFormat(session);
-  const filter =
-    fmt === "yane2016"
-      ? { name: "YaneuraOu Book Database", extensions: ["db"] }
-      : fmt === "apery"
-        ? { name: "Apery Book", extensions: ["bin"] }
-        : { name: "Shogi Book", extensions: ["sbk"] };
-  const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
-  if (ret) {
-    updateAppSettings({ lastBookFilePath: ret });
-  }
-  return ret;
-});
+ipcMain.handle(
+  Background.SHOW_SAVE_BOOK_DIALOG,
+  async (event, session: number, targetFormat?: BookFormat): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    const appSettings = await loadAppSettings();
+    getAppLogger().debug("show save-book dialog");
+    const fmt = targetFormat ?? getBookFormat(session);
+    const filter =
+      fmt === "yane2016"
+        ? { name: "YaneuraOu Book Database", extensions: ["db"] }
+        : fmt === "apery"
+          ? { name: "Apery Book", extensions: ["bin"] }
+          : { name: "Shogi Book", extensions: ["sbk"] };
+    const defaultPath = appSettings.lastBookFilePath.replace(/\.(db|bin|sbk)$/, "");
+    const ret = await showSaveDialog(defaultPath, [filter]);
+    if (ret) {
+      updateAppSettings({ lastBookFilePath: ret });
+    }
+    return ret;
+  },
+);
 
 ipcMain.handle(Background.CLEAR_BOOK, (event, session: number, format?: BookFormat) => {
   validateIPCSender(event.senderFrame);
@@ -644,6 +649,15 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`save book: ${path}`);
     await saveBook(session, path);
+  },
+);
+
+ipcMain.handle(
+  Background.EXPORT_BOOK,
+  async (event, session: number, path: string, targetFormat: BookFormat): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`export book: ${path} as ${targetFormat}`);
+    await exportBook(session, path, targetFormat);
   },
 );
 

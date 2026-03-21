@@ -78,11 +78,12 @@ export interface API {
 
   // Book
   showOpenBookDialog(): Promise<string>;
-  showSaveBookDialog(session: number): Promise<string>;
+  showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string>;
   openBook(session: number, path: string, options: BookLoadingOptions): Promise<void>;
   openBookAsNewSession(path: string, options: BookLoadingOptions): Promise<number>;
   closeBookSession(session: number): Promise<void>;
   saveBook(session: number, path: string): Promise<void>;
+  exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;

@@ -577,6 +577,7 @@ export const zh_tw: Texts = {
   play: "著手",
   edit: "編輯",
   addMoves: "新增該手",
+  export: "エクスポート", // TODO: Translate
   flippedBook: "亦檢索先後逆局面",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
@@ -779,6 +780,9 @@ export const zh_tw: Texts = {
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。", // TODO: Translate
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。", // TODO: Translate
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。", // TODO: Translate
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。", // TODO: Translate
   sourceRecordFileNotSet: "尚未指定棋譜檔案。",
   sourceDirectoryNotSet: "請選擇目錄。",
   minPlyMustBeLessThanMaxPly: "最小手數應小於最大手數。",

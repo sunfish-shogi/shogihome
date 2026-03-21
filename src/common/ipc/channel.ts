@@ -44,6 +44,7 @@ export enum Background {
   OPEN_BOOK_AS_NEW_SESSION = "openBookAsNewSession",
   CLOSE_BOOK_SESSION = "closeBookSession",
   SAVE_BOOK = "saveBook",
+  EXPORT_BOOK = "exportBook",
   SEARCH_BOOK_MOVES = "searchBookMoves",
   UPDATE_BOOK_MOVE = "updateBookMove",
   REMOVE_BOOK_MOVE = "removeBookMove",

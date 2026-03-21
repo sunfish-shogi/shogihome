@@ -272,6 +272,9 @@ export const webAPI: Bridge = {
   async saveBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async exportBook(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async getBookFormat(): Promise<BookFormat> {
     return "yane2016";
   },

@@ -4,6 +4,7 @@ import crypto from "node:crypto";
 import {
   clearBook,
   closeBookSession,
+  exportBook,
   getBookFormat,
   importBookMoves,
   openBook,
@@ -692,6 +693,98 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(mode).toBe("on-the-fly");
       await expect(saveBook(defaultBookSession, path)).rejects.toThrowError(
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
+      );
+    });
+  });
+
+  describe("exportBook", () => {
+    const sfen1 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+    const sfen2 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+
+    it("yane2016 → yane2016 (in-memory)", async () => {
+      await updateBookMove(defaultBookSession, sfen1, {
+        usi: "2g2f",
+        score: 50,
+        depth: 10,
+        count: 1,
+        comment: "",
+      });
+
+      const outPath = path.join(tmpdir, "export-yane-same.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      const output = fs.readFileSync(outPath, "utf-8");
+      expect(output).toContain("2g2f");
+    });
+
+    it("apery → apery (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/apery.bin");
+      await updateBookMove(defaultBookSession, sfen2, {
+        usi: "8c8d",
+        score: 0,
+        count: 1,
+        comment: "",
+      });
+
+      const outPath = path.join(tmpdir, "export-apery-same.bin");
+      await exportBook(defaultBookSession, outPath, "apery");
+
+      expect(fs.readFileSync(outPath, "hex").length).toBeGreaterThan(0);
+    });
+
+    it("yane2016 → sbk: moves preserved", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db");
+      const outPath = path.join(tmpdir, "export-yane-to-sbk.sbk");
+      await exportBook(defaultBookSession, outPath, "sbk");
+
+      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
+      expect(sbk.entries.get(sfen2)?.moves.length).toBeGreaterThan(0);
+    });
+
+    it("yane2016 → yane2016 (on-the-fly): moves preserved", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+        onTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      const outPath = path.join(tmpdir, "export-yane-otf-same.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-copy.db", "utf-8");
+      expect(fs.readFileSync(outPath, "utf-8")).toBe(expected);
+    });
+
+    it("yane2016 (on-the-fly) → sbk: moves preserved", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+        onTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      const outPath = path.join(tmpdir, "export-yane-otf-to-sbk.sbk");
+      await exportBook(defaultBookSession, outPath, "sbk");
+
+      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
+    });
+
+    it("apery → yane2016: throws", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/apery.bin");
+      const outPath = path.join(tmpdir, "export-apery-to-yane.db");
+      await expect(exportBook(defaultBookSession, outPath, "yane2016")).rejects.toThrow();
+    });
+
+    it("wrong extension: throws", async () => {
+      await updateBookMove(defaultBookSession, sfen1, {
+        usi: "2g2f",
+        score: 0,
+        count: 1,
+        comment: "",
+      });
+      // cross-format export to sbk but with wrong .db extension
+      const outPath = path.join(tmpdir, "export-wrong-ext.db");
+      await expect(exportBook(defaultBookSession, outPath, "sbk")).rejects.toThrow(
+        "Invalid file extension",
       );
     });
   });

@@ -70,4 +70,7 @@ export enum MenuEvent {
   OPEN_BOOK_FILE = "openBookFile",
   SAVE_BOOK_FILE = "saveBookFile",
   ADD_BOOK_MOVES = "addBookMoves",
+  EXPORT_BOOK_AS_YANE2016 = "exportBookAsYane2016",
+  EXPORT_BOOK_AS_APERY = "exportBookAsApery",
+  EXPORT_BOOK_AS_SBK = "exportBookAsSbk",
 }

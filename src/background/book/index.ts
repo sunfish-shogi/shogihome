@@ -8,6 +8,7 @@ import {
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
 import {
+  AperyBook,
   arrayMoveToCommonBookMove,
   Book,
   BookEntry,
@@ -15,6 +16,8 @@ import {
   IDX_COUNT,
   IDX_USI,
   mergeBookEntries,
+  SbkBook,
+  YaneBook,
 } from "./types.js";
 import {
   loadYaneuraOuBook,
@@ -354,7 +357,85 @@ export async function saveBook(session: number, path: string) {
         await storeSbkBook(book, file);
         break;
     }
+    if (book.type === "in-memory") {
+      book.path = path;
+    }
     book.saved = true;
+  } finally {
+    file.close();
+  }
+}
+
+export async function exportBook(
+  session: number,
+  path: string,
+  targetFormat: BookFormat,
+): Promise<void> {
+  const expectedExt =
+    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
+  if (!path.endsWith(expectedExt)) {
+    throw new Error("Invalid file extension: " + path);
+  }
+
+  const book = getBook(session);
+
+  if (book.format === targetFormat) {
+    await saveBook(session, path);
+    return;
+  }
+
+  if (book.format === "apery") {
+    throw new Error(t.cannotConvertAperyBookToOtherFormat);
+  }
+
+  // Build a fully merged in-memory book
+  let fullBook: Book;
+  if (book.type === "in-memory") {
+    fullBook = book;
+  } else if (book.format === "yane2016") {
+    const stream = book.file.createReadStream({ encoding: "utf-8", autoClose: false, start: 0 });
+    const base = await loadYaneuraOuBook(stream);
+    for (const [sfen, patch] of book.entries) {
+      const merged = mergeBookEntries(base.entries.get(sfen), patch);
+      if (merged) base.entries.set(sfen, merged);
+    }
+    fullBook = base;
+  } else {
+    throw new Error("On-the-fly mode is not supported for this book format");
+  }
+
+  // fullBook is yane2016 or sbk — both are SFEN-keyed
+  let targetBook: YaneBook | AperyBook | SbkBook;
+  switch (targetFormat) {
+    case "yane2016":
+      targetBook = { format: "yane2016", entries: fullBook.entries };
+      break;
+    case "apery": {
+      const aperyEntries = new Map<bigint, BookEntry>();
+      for (const [sfen, entry] of fullBook.entries) {
+        aperyEntries.set(aperyHash(sfen), entry);
+      }
+      targetBook = { format: "apery", entries: aperyEntries };
+      break;
+    }
+    case "sbk":
+      targetBook = { format: "sbk", entries: fullBook.entries };
+      break;
+  }
+
+  const file = fs.createWriteStream(path);
+  try {
+    switch (targetBook.format) {
+      case "yane2016":
+        await storeYaneuraOuBook(targetBook, file);
+        break;
+      case "apery":
+        await storeAperyBook(targetBook, file);
+        break;
+      case "sbk":
+        await storeSbkBook(targetBook, file);
+        break;
+    }
   } finally {
     file.close();
   }
