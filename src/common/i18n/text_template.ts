@@ -524,6 +524,9 @@ export type Texts = {
   book: string;
   bookInfo: string;
   resetBook: string;
+  moveEvaluation: string;
+  forced: string;
+  goodMove: string;
   yane2016BookFile: string;
   shogiGUIBookFile: string;
   aperyBookFile: string;

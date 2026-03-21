@@ -541,6 +541,9 @@ export const vi: Texts = {
   book: "Định thức",
   bookInfo: "定跡の情報", // TODO: Translate
   resetBook: "定跡の初期化", // TODO: Translate
+  moveEvaluation: "指し手評価", // TODO: Translate
+  forced: "絶対手", // TODO: Translate
+  goodMove: "好手", // TODO: Translate
   yane2016BookFile: "やねうら王定跡ファイル", // TODO: Translate
   shogiGUIBookFile: "ShogiGUI 定跡ファイル", // TODO: Translate
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate

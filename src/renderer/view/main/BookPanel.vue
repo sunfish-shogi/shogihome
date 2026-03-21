@@ -29,6 +29,7 @@
         :depth="editingData.depth"
         :count="editingData.count"
         :comment="editingData.comment"
+        :evaluation="editingData.evaluation"
         @ok="onEditBookMove"
         @cancel="onCancelEditBookMove"
       />
