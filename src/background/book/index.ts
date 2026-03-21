@@ -357,7 +357,9 @@ export async function saveBook(session: number, path: string) {
         await storeSbkBook(book, file);
         break;
     }
-    book.path = path;
+    if (book.type === "in-memory") {
+      book.path = path;
+    }
     book.saved = true;
   } finally {
     file.close();
