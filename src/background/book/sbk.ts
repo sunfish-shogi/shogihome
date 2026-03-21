@@ -27,7 +27,9 @@ function normalizeSfen(position: string): string | undefined {
   }
   // SFEN format: "board color hand moveCount" — normalize moveCount to 1
   const parts = s.split(" ");
-  if (parts.length < 3) return undefined;
+  if (parts.length < 3) {
+    return undefined;
+  }
   return parts.slice(0, 3).join(" ") + " 1";
 }
 
@@ -53,16 +55,24 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     const stateId = queue[head];
     const sfen = idToSfen.get(stateId)!;
     const state = idToState.get(stateId);
-    if (!state) continue;
+    if (!state) {
+      continue;
+    }
 
     const pos = Position.newBySFEN(sfen);
-    if (!pos) continue;
+    if (!pos) {
+      continue;
+    }
 
     for (const m of state.Moves) {
-      if (m.NextStateId < 0 || idToSfen.has(m.NextStateId)) continue;
+      if (m.NextStateId < 0 || idToSfen.has(m.NextStateId)) {
+        continue;
+      }
       const usi = fromSbkMove(m.Move);
       const move = pos.createMoveByUSI(usi);
-      if (!move || !pos.doMove(move)) continue;
+      if (!move || !pos.doMove(move)) {
+        continue;
+      }
       idToSfen.set(m.NextStateId, pos.sfen);
       queue.push(m.NextStateId);
       pos.undoMove(move);
@@ -73,12 +83,16 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const entries = new Map<string, BookEntry>();
   for (const state of book.BookStates) {
     const sfen = idToSfen.get(state.Id);
-    if (!sfen) continue;
+    if (!sfen) {
+      continue;
+    }
 
     const pos = Position.newBySFEN(sfen);
     const moves: BookMove[] = state.Moves.flatMap((m) => {
       const usi = fromSbkMove(m.Move);
-      if (!pos || !pos.createMoveByUSI(usi)) return [];
+      if (!pos || !pos.createMoveByUSI(usi)) {
+        return [];
+      }
       return [[usi, undefined, undefined, undefined, m.Weight || undefined, "", m.Evaluation]];
     });
 
@@ -126,10 +140,14 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   const reachableIds = new Set<number>();
   for (const [sfen, entry] of book.entries) {
     const pos = Position.newBySFEN(sfen);
-    if (!pos) continue;
+    if (!pos) {
+      continue;
+    }
     for (const bookMove of entry.moves) {
       const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move || !pos.doMove(move)) continue;
+      if (!move || !pos.doMove(move)) {
+        continue;
+      }
       const nextSfen = pos.sfen;
       if (!sfenToId.has(nextSfen) && !leafSfens.has(nextSfen)) {
         leafSfens.set(nextSfen, nextId++);
@@ -145,13 +163,17 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   for (const [sfen, entry] of book.entries) {
     const stateId = sfenToId.get(sfen)!;
     const pos = Position.newBySFEN(sfen);
-    if (!pos) continue;
+    if (!pos) {
+      continue;
+    }
 
     const sbkMoves: SBookMoveProto[] = [];
 
     for (const bookMove of entry.moves) {
       const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move || !pos.doMove(move)) continue;
+      if (!move || !pos.doMove(move)) {
+        continue;
+      }
       const nextSfen = pos.sfen;
       const nextStateId = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen) ?? -1;
       sbkMoves.push({

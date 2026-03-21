@@ -187,8 +187,12 @@ export function getBookFormat(session: number): BookFormat {
 }
 
 function getFormatByPath(path: string): "yane2016" | "apery" | "sbk" {
-  if (path.endsWith(".db")) return "yane2016";
-  if (path.endsWith(".sbk")) return "sbk";
+  if (path.endsWith(".db")) {
+    return "yane2016";
+  }
+  if (path.endsWith(".sbk")) {
+    return "sbk";
+  }
   return "apery";
 }
 
@@ -397,7 +401,9 @@ export async function exportBook(
     const base = await loadYaneuraOuBook(stream);
     for (const [sfen, patch] of book.entries) {
       const merged = mergeBookEntries(base.entries.get(sfen), patch);
-      if (merged) base.entries.set(sfen, merged);
+      if (merged) {
+        base.entries.set(sfen, merged);
+      }
     }
     fullBook = base;
   } else {
@@ -586,7 +592,9 @@ function getRecordWinner(node: ImmutableNode): Color | undefined {
     lastNode = lastNode.next;
   }
   const lastMove = lastNode.move;
-  if (lastMove instanceof Move) return undefined;
+  if (lastMove instanceof Move) {
+    return undefined;
+  }
   switch (lastMove.type) {
     case SpecialMoveType.FOUL_WIN:
     case SpecialMoveType.ENTERING_OF_KING:
