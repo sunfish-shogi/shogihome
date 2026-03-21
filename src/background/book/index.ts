@@ -396,18 +396,16 @@ export async function exportBook(
   }
 
   // fullBook is yane2016 or sbk — both are SFEN-keyed
-  const sfenEntries = fullBook.entries;
-
   let targetBook: YaneBook | AperyBook | SbkBook;
   switch (targetFormat) {
     case "yane2016":
       if (!path.endsWith(".db")) throw new Error("Invalid file extension: " + path);
-      targetBook = { format: "yane2016", entries: sfenEntries };
+      targetBook = { format: "yane2016", entries: fullBook.entries };
       break;
     case "apery": {
       if (!path.endsWith(".bin")) throw new Error("Invalid file extension: " + path);
       const aperyEntries = new Map<bigint, BookEntry>();
-      for (const [sfen, entry] of sfenEntries) {
+      for (const [sfen, entry] of fullBook.entries) {
         aperyEntries.set(aperyHash(sfen), entry);
       }
       targetBook = { format: "apery", entries: aperyEntries };
@@ -415,7 +413,7 @@ export async function exportBook(
     }
     case "sbk":
       if (!path.endsWith(".sbk")) throw new Error("Invalid file extension: " + path);
-      targetBook = { format: "sbk", entries: sfenEntries };
+      targetBook = { format: "sbk", entries: fullBook.entries };
       break;
   }
 
