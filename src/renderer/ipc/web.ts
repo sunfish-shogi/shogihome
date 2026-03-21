@@ -257,9 +257,6 @@ export const webAPI: Bridge = {
   async showSaveBookDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
-  async showExportBookDialog(): Promise<string> {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
-  },
   async clearBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },

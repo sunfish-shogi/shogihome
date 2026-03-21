@@ -151,11 +151,8 @@ const api: Bridge = {
   async showOpenBookDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
   },
-  async showSaveBookDialog(session: number): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session);
-  },
-  async showExportBookDialog(session: number, targetFormat: BookFormat): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_EXPORT_BOOK_DIALOG, session, targetFormat);
+  async showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session, targetFormat);
   },
   async clearBook(session: number, format?: BookFormat): Promise<void> {
     return await ipcRenderer.invoke(Background.CLEAR_BOOK, session, format);

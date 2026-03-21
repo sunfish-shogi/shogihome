@@ -58,8 +58,7 @@ export interface Bridge {
 
   // Book
   showOpenBookDialog(): Promise<string>;
-  showSaveBookDialog(session: number): Promise<string>;
-  showExportBookDialog(session: number, targetFormat: BookFormat): Promise<string>;
+  showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string>;
   openBook(session: number, path: string, json: string): Promise<void>;
   openBookAsNewSession(path: string, json: string): Promise<number>;
   closeBookSession(session: number): Promise<void>;

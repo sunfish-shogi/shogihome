@@ -78,8 +78,7 @@ export interface API {
 
   // Book
   showOpenBookDialog(): Promise<string>;
-  showSaveBookDialog(session: number): Promise<string>;
-  showExportBookDialog(session: number, targetFormat: BookFormat): Promise<string>;
+  showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string>;
   openBook(session: number, path: string, options: BookLoadingOptions): Promise<void>;
   openBookAsNewSession(path: string, options: BookLoadingOptions): Promise<number>;
   closeBookSession(session: number): Promise<void>;

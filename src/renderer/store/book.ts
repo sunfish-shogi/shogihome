@@ -133,7 +133,7 @@ export class BookStore {
     const doExport = () => {
       useBusyState().retain();
       api
-        .showExportBookDialog(defaultBookSession, targetFormat)
+        .showSaveBookDialog(defaultBookSession, targetFormat)
         .then(async (path) => {
           if (path) {
             await api.exportBook(defaultBookSession, path, targetFormat);

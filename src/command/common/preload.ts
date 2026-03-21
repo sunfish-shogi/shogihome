@@ -170,9 +170,6 @@ const bridge: Bridge = {
   async showSaveBookDialog(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
-  async showExportBookDialog(): Promise<string> {
-    throw new Error("This feature is not available on command line tool");
-  },
   async clearBook(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
