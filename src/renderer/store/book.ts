@@ -126,6 +126,36 @@ export class BookStore {
       });
   }
 
+  exportBookFile(targetFormat: BookFormat) {
+    if (useBusyState().isBusy) {
+      return;
+    }
+    const doExport = () => {
+      useBusyState().retain();
+      api
+        .showExportBookDialog(defaultBookSession, targetFormat)
+        .then(async (path) => {
+          if (path) {
+            await api.exportBook(defaultBookSession, path, targetFormat);
+          }
+        })
+        .catch((e) => {
+          useErrorStore().add(e);
+        })
+        .finally(() => {
+          useBusyState().release();
+        });
+    };
+    if (targetFormat === "sbk") {
+      useConfirmationStore().show({
+        message: t.memoryShortageOnBookConversionMayLoseUnsavedData,
+        onOk: doExport,
+      });
+    } else {
+      doExport();
+    }
+  }
+
   async updateMove(sfen: string, move: BookMove) {
     useBusyState().retain();
     return api

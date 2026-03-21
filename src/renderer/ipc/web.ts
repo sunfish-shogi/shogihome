@@ -257,6 +257,9 @@ export const webAPI: Bridge = {
   async showSaveBookDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async showExportBookDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async clearBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
@@ -270,6 +273,9 @@ export const webAPI: Bridge = {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async saveBook(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async exportBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async getBookFormat(): Promise<BookFormat> {

@@ -570,6 +570,7 @@ export const ja: Texts = {
   play: "着手",
   edit: "編集",
   addMoves: "指し手追加",
+  export: "エクスポート",
   flippedBook: "反転も検索",
   addBookMoves: "定跡手追加",
   fromCurrentRecord: "現在の棋譜から",
@@ -784,6 +785,9 @@ export const ja: Texts = {
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。",
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。",
   sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
   sourceDirectoryNotSet: "フォルダを選択してください。",
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",

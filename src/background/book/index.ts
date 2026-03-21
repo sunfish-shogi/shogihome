@@ -8,6 +8,7 @@ import {
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
 import {
+  AperyBook,
   arrayMoveToCommonBookMove,
   Book,
   BookEntry,
@@ -15,6 +16,8 @@ import {
   IDX_COUNT,
   IDX_USI,
   mergeBookEntries,
+  SbkBook,
+  YaneBook,
 } from "./types.js";
 import {
   loadYaneuraOuBook,
@@ -355,6 +358,92 @@ export async function saveBook(session: number, path: string) {
         break;
     }
     book.saved = true;
+  } finally {
+    file.close();
+  }
+}
+
+export async function exportBook(
+  session: number,
+  path: string,
+  targetFormat: BookFormat,
+): Promise<void> {
+  const book = getBook(session);
+
+  if (book.format === targetFormat) {
+    await saveBook(session, path);
+    return;
+  }
+
+  // Build a fully merged in-memory book
+  let fullBook: Book;
+  if (book.type === "in-memory") {
+    fullBook = book;
+  } else if (book.format === "yane2016") {
+    const stream = book.file.createReadStream({ encoding: "utf-8", autoClose: false, start: 0 });
+    const base = await loadYaneuraOuBook(stream);
+    for (const [sfen, patch] of book.entries) {
+      const merged = mergeBookEntries(base.entries.get(sfen), patch);
+      if (merged) base.entries.set(sfen, merged);
+    }
+    fullBook = base;
+  } else if (book.format === "apery") {
+    const stream = book.file.createReadStream({
+      autoClose: false,
+      start: 0,
+      highWaterMark: 128 * 1024,
+    });
+    const base = await loadAperyBook(stream);
+    for (const [hash, patch] of book.entries) {
+      const merged = mergeBookEntries(base.entries.get(hash), patch);
+      if (merged) base.entries.set(hash, merged);
+    }
+    fullBook = base;
+  } else {
+    throw new Error("On-the-fly mode is not supported for this book format");
+  }
+
+  if (fullBook.format === "apery") {
+    throw new Error(t.cannotConvertAperyBookToOtherFormat);
+  }
+
+  // fullBook is yane2016 or sbk — both are SFEN-keyed
+  const sfenEntries = fullBook.entries;
+
+  let targetBook: YaneBook | AperyBook | SbkBook;
+  switch (targetFormat) {
+    case "yane2016":
+      if (!path.endsWith(".db")) throw new Error("Invalid file extension: " + path);
+      targetBook = { format: "yane2016", entries: sfenEntries };
+      break;
+    case "apery": {
+      if (!path.endsWith(".bin")) throw new Error("Invalid file extension: " + path);
+      const aperyEntries = new Map<bigint, BookEntry>();
+      for (const [sfen, entry] of sfenEntries) {
+        aperyEntries.set(aperyHash(sfen), entry);
+      }
+      targetBook = { format: "apery", entries: aperyEntries };
+      break;
+    }
+    case "sbk":
+      if (!path.endsWith(".sbk")) throw new Error("Invalid file extension: " + path);
+      targetBook = { format: "sbk", entries: sfenEntries };
+      break;
+  }
+
+  const file = fs.createWriteStream(path);
+  try {
+    switch (targetBook.format) {
+      case "yane2016":
+        await storeYaneuraOuBook(targetBook, file);
+        break;
+      case "apery":
+        await storeAperyBook(targetBook, file);
+        break;
+      case "sbk":
+        await storeSbkBook(targetBook, file);
+        break;
+    }
   } finally {
     file.close();
   }

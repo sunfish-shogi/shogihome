@@ -154,6 +154,9 @@ const api: Bridge = {
   async showSaveBookDialog(session: number): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session);
   },
+  async showExportBookDialog(session: number, targetFormat: BookFormat): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_EXPORT_BOOK_DIALOG, session, targetFormat);
+  },
   async clearBook(session: number, format?: BookFormat): Promise<void> {
     return await ipcRenderer.invoke(Background.CLEAR_BOOK, session, format);
   },
@@ -168,6 +171,9 @@ const api: Bridge = {
   },
   async saveBook(session: number, path: string): Promise<void> {
     return await ipcRenderer.invoke(Background.SAVE_BOOK, session, path);
+  },
+  async exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void> {
+    return await ipcRenderer.invoke(Background.EXPORT_BOOK, session, path, targetFormat);
   },
   async getBookFormat(session: number): Promise<BookFormat> {
     return await ipcRenderer.invoke(Background.GET_BOOK_FORMAT, session);

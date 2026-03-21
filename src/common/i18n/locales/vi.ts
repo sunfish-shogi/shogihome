@@ -580,6 +580,7 @@ export const vi: Texts = {
   play: "Chơi",
   edit: "Sửa",
   addMoves: "Thêm nước đi",
+  export: "エクスポート", // TODO: Translate
   flippedBook: "Sử dụng book lật ngược",
   addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
@@ -790,6 +791,9 @@ export const vi: Texts = {
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。", // TODO: Translate
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。", // TODO: Translate
   sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.",
   sourceDirectoryNotSet: "Vui lòng chọn một tập tin.",
   minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.",

@@ -111,6 +111,7 @@ import { openPath } from "@/background/helpers/electron.js";
 import {
   clearBook,
   closeBookSession,
+  exportBook,
   getBookFormat,
   importBookMoves,
   isBookUnsaved,
@@ -644,6 +645,35 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`save book: ${path}`);
     await saveBook(session, path);
+  },
+);
+
+ipcMain.handle(
+  Background.SHOW_EXPORT_BOOK_DIALOG,
+  async (event, _session: number, targetFormat: BookFormat): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    const appSettings = await loadAppSettings();
+    getAppLogger().debug("show export-book dialog: targetFormat=%s", targetFormat);
+    const filter =
+      targetFormat === "yane2016"
+        ? { name: "YaneuraOu Book Database", extensions: ["db"] }
+        : targetFormat === "apery"
+          ? { name: "Apery Book", extensions: ["bin"] }
+          : { name: "Shogi Book", extensions: ["sbk"] };
+    const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
+    if (ret) {
+      updateAppSettings({ lastBookFilePath: ret });
+    }
+    return ret;
+  },
+);
+
+ipcMain.handle(
+  Background.EXPORT_BOOK,
+  async (event, session: number, path: string, targetFormat: BookFormat): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`export book: ${path} as ${targetFormat}`);
+    await exportBook(session, path, targetFormat);
   },
 );
 

@@ -59,10 +59,12 @@ export interface Bridge {
   // Book
   showOpenBookDialog(): Promise<string>;
   showSaveBookDialog(session: number): Promise<string>;
+  showExportBookDialog(session: number, targetFormat: BookFormat): Promise<string>;
   openBook(session: number, path: string, json: string): Promise<void>;
   openBookAsNewSession(path: string, json: string): Promise<number>;
   closeBookSession(session: number): Promise<void>;
   saveBook(session: number, path: string): Promise<void>;
+  exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
   searchBookMoves(session: number, sfen: string): Promise<string>;

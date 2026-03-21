@@ -570,6 +570,7 @@ export const en: Texts = {
   play: "Play",
   edit: "Edit",
   addMoves: "Add Moves",
+  export: "Export",
   flippedBook: "Flipped Book",
   addBookMoves: "Add Book Moves",
   fromCurrentRecord: "From Current Record",
@@ -782,6 +783,9 @@ export const en: Texts = {
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
   pleaseSpecifyOtherFileName: "Please specify another file name.",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "Memory shortage during book data conversion may cause loss of unsaved data.",
+  cannotConvertAperyBookToOtherFormat: "Apery book cannot be converted to other formats.",
   sourceRecordFileNotSet: "Source record file is not set.",
   sourceDirectoryNotSet: "Source directory is not set.",
   minPlyMustBeLessThanMaxPly: "Min ply must be less than max ply.",

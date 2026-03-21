@@ -391,6 +391,20 @@ function createMenuTemplate(window: BrowserWindow) {
         menuItem(t.clear, MenuEvent.RESET_BOOK, [AppState.NORMAL]),
         menuItem(t.open, MenuEvent.OPEN_BOOK_FILE, [AppState.NORMAL]),
         menuItem(t.saveAs, MenuEvent.SAVE_BOOK_FILE, [AppState.NORMAL]),
+        {
+          label: t.export,
+          submenu: [
+            menuItem(`${t.yane2016BookFile} (.db)`, MenuEvent.EXPORT_BOOK_AS_YANE2016, [
+              AppState.NORMAL,
+            ]),
+            menuItem(`${t.aperyBookFile} (.bin)`, MenuEvent.EXPORT_BOOK_AS_APERY, [
+              AppState.NORMAL,
+            ]),
+            menuItem(`${t.shogiGUIBookFile} (.sbk)`, MenuEvent.EXPORT_BOOK_AS_SBK, [
+              AppState.NORMAL,
+            ]),
+          ],
+        },
         menuItem(t.addMoves, MenuEvent.ADD_BOOK_MOVES, [AppState.NORMAL]),
         { type: "separator" },
         {

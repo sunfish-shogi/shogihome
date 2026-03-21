@@ -563,6 +563,7 @@ export type Texts = {
   play: string;
   edit: string;
   addMoves: string;
+  export: string;
   flippedBook: string;
   addBookMoves: string;
   fromCurrentRecord: string;
@@ -752,6 +753,8 @@ export type Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   cannotOverwriteOnTheFlyBook: string;
   pleaseSpecifyOtherFileName: string;
+  memoryShortageOnBookConversionMayLoseUnsavedData: string;
+  cannotConvertAperyBookToOtherFormat: string;
   sourceRecordFileNotSet: string;
   sourceDirectoryNotSet: string;
   minPlyMustBeLessThanMaxPly: string;
