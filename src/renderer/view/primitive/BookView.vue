@@ -113,12 +113,11 @@ const props = defineProps({
   playable: {
     type: Boolean,
     required: false,
-    default: true,
+    default: false,
   },
   format: {
     type: String as PropType<BookFormat>,
-    required: false,
-    default: "yane2016" as BookFormat,
+    required: true,
   },
 });
 
