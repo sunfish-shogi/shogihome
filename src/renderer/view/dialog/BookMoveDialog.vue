@@ -7,7 +7,7 @@
           <div class="form-item-label">{{ t.move }}</div>
           <span>{{ move }}</span>
         </div>
-        <div class="form-item">
+        <div v-if="props.format !== 'sbk'" class="form-item">
           <div class="form-item-label">{{ t.evaluation }}</div>
           <input
             v-model.number="scoreValue"
@@ -18,7 +18,7 @@
           />
           <ToggleButton v-model:value="enableScore" />
         </div>
-        <div class="form-item">
+        <div v-if="props.format === 'yane2016'" class="form-item">
           <div class="form-item-label">{{ t.depth }}</div>
           <input
             v-model.number="depthValue"
@@ -40,7 +40,7 @@
           />
           <ToggleButton v-model:value="enableCount" />
         </div>
-        <div class="form-item">
+        <div v-if="props.format === 'sbk'" class="form-item">
           <div class="form-item-label">{{ t.moveEvaluation }}</div>
           <select v-model.number="evaluationValue">
             <option :value="SbkMoveEvaluation.None">{{ t.none }}</option>
@@ -50,7 +50,7 @@
             <option :value="SbkMoveEvaluation.Blunder">{{ t.mistake }}</option>
           </select>
         </div>
-        <div class="form-item">
+        <div v-if="props.format === 'yane2016'" class="form-item">
           <div class="form-item-label">{{ t.comments }}</div>
           <textarea v-model="commentValue" />
         </div>
@@ -78,7 +78,7 @@ export type Result = {
 </script>
 
 <script setup lang="ts">
-import { SbkMoveEvaluation } from "@/common/book";
+import { BookFormat, SbkMoveEvaluation } from "@/common/book";
 import { t } from "@/common/i18n";
 import { ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -91,6 +91,7 @@ const props = defineProps<{
   count?: number;
   comment: string;
   evaluation?: SbkMoveEvaluation;
+  format: BookFormat;
 }>();
 
 const emits = defineEmits<{

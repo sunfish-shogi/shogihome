@@ -17,6 +17,7 @@ import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
 import { ProcessArgs } from "@/common/ipc/process";
+import { BookFormat } from "@/common/book.js";
 
 enum STORAGE_KEY {
   APP_SETTINGS = "appSetting",
@@ -270,6 +271,9 @@ export const webAPI: Bridge = {
   },
   async saveBook(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async getBookFormat(): Promise<BookFormat> {
+    return "yane2016";
   },
   async searchBookMoves(): Promise<string> {
     return "[]";

@@ -84,6 +84,7 @@ export interface API {
   closeBookSession(session: number): Promise<void>;
   saveBook(session: number, path: string): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
+  getBookFormat(session: number): Promise<BookFormat>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;
@@ -240,6 +241,9 @@ const api: API = {
   },
 
   // Book
+  async getBookFormat(session: number): Promise<BookFormat> {
+    return await bridge.getBookFormat(session);
+  },
   openBook(session: number, path: string, options: BookLoadingOptions): Promise<void> {
     return bridge.openBook(session, path, JSON.stringify(options));
   },

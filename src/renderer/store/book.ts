@@ -14,6 +14,7 @@ import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 export class BookStore {
   private _moves: BookMoveEx[] = [];
+  private _format: BookFormat = "yane2016";
   private _reactive: UnwrapNestedRefs<BookStore>;
 
   constructor(private record: ImmutableRecord) {
@@ -26,6 +27,10 @@ export class BookStore {
 
   get moves(): BookMoveEx[] {
     return this._moves;
+  }
+
+  get format(): BookFormat {
+    return this._format;
   }
 
   async reloadBookMoves() {
@@ -66,6 +71,7 @@ export class BookStore {
         api
           .clearBook(defaultBookSession, format)
           .then(() => {
+            this._format = format || "yane2016";
             return this.reloadBookMoves();
           })
           .catch((e) => {
@@ -89,6 +95,7 @@ export class BookStore {
         await api.openBook(defaultBookSession, path, {
           onTheFlyThresholdMB: useAppSettings().bookOnTheFlyThresholdMB,
         });
+        this._format = await api.getBookFormat(defaultBookSession);
         await this.reloadBookMoves();
       })
       .catch((e) => {
