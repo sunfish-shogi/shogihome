@@ -146,14 +146,10 @@ export class BookStore {
           useBusyState().release();
         });
     };
-    if (targetFormat === "sbk") {
-      useConfirmationStore().show({
-        message: t.memoryShortageOnBookConversionMayLoseUnsavedData,
-        onOk: doExport,
-      });
-    } else {
-      doExport();
-    }
+    useConfirmationStore().show({
+      message: t.memoryShortageOnBookConversionMayLoseUnsavedData,
+      onOk: doExport,
+    });
   }
 
   async updateMove(sfen: string, move: BookMove) {

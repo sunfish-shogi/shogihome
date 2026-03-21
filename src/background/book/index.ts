@@ -375,6 +375,10 @@ export async function exportBook(
     return;
   }
 
+  if (book.format === "apery") {
+    throw new Error(t.cannotConvertAperyBookToOtherFormat);
+  }
+
   // Build a fully merged in-memory book
   let fullBook: Book;
   if (book.type === "in-memory") {
@@ -387,24 +391,8 @@ export async function exportBook(
       if (merged) base.entries.set(sfen, merged);
     }
     fullBook = base;
-  } else if (book.format === "apery") {
-    const stream = book.file.createReadStream({
-      autoClose: false,
-      start: 0,
-      highWaterMark: 128 * 1024,
-    });
-    const base = await loadAperyBook(stream);
-    for (const [hash, patch] of book.entries) {
-      const merged = mergeBookEntries(base.entries.get(hash), patch);
-      if (merged) base.entries.set(hash, merged);
-    }
-    fullBook = base;
   } else {
     throw new Error("On-the-fly mode is not supported for this book format");
-  }
-
-  if (fullBook.format === "apery") {
-    throw new Error(t.cannotConvertAperyBookToOtherFormat);
   }
 
   // fullBook is yane2016 or sbk — both are SFEN-keyed
