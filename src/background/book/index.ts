@@ -379,6 +379,12 @@ export async function exportBook(
     throw new Error(t.cannotConvertAperyBookToOtherFormat);
   }
 
+  const expectedExt =
+    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
+  if (!path.endsWith(expectedExt)) {
+    throw new Error("Invalid file extension: " + path);
+  }
+
   // Build a fully merged in-memory book
   let fullBook: Book;
   if (book.type === "in-memory") {
@@ -399,11 +405,9 @@ export async function exportBook(
   let targetBook: YaneBook | AperyBook | SbkBook;
   switch (targetFormat) {
     case "yane2016":
-      if (!path.endsWith(".db")) throw new Error("Invalid file extension: " + path);
       targetBook = { format: "yane2016", entries: fullBook.entries };
       break;
     case "apery": {
-      if (!path.endsWith(".bin")) throw new Error("Invalid file extension: " + path);
       const aperyEntries = new Map<bigint, BookEntry>();
       for (const [sfen, entry] of fullBook.entries) {
         aperyEntries.set(aperyHash(sfen), entry);
@@ -412,7 +416,6 @@ export async function exportBook(
       break;
     }
     case "sbk":
-      if (!path.endsWith(".sbk")) throw new Error("Invalid file extension: " + path);
       targetBook = { format: "sbk", entries: fullBook.entries };
       break;
   }
