@@ -371,6 +371,12 @@ export async function exportBook(
   path: string,
   targetFormat: BookFormat,
 ): Promise<void> {
+  const expectedExt =
+    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
+  if (!path.endsWith(expectedExt)) {
+    throw new Error("Invalid file extension: " + path);
+  }
+
   const book = getBook(session);
 
   if (book.format === targetFormat) {
@@ -380,12 +386,6 @@ export async function exportBook(
 
   if (book.format === "apery") {
     throw new Error(t.cannotConvertAperyBookToOtherFormat);
-  }
-
-  const expectedExt =
-    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
-  if (!path.endsWith(expectedExt)) {
-    throw new Error("Invalid file extension: " + path);
   }
 
   // Build a fully merged in-memory book
