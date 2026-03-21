@@ -64,6 +64,12 @@
               <span v-if="entry.percentage !== undefined">({{ entry.percentage }}%)</span>
             </td>
             <td class="text">
+              <span
+                v-if="entry.evaluationLabel"
+                class="in-comment-label"
+                :class="entry.evaluationClass"
+                >{{ entry.evaluationLabel }}</span
+              >
               <span v-if="entry.repetition" class="in-comment-label">{{ t.repetition }}</span>
               <span>{{ entry.comment }}</span>
             </td>
@@ -75,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { BookMoveEx } from "@/common/book";
+import { BookMoveEx, SbkMoveEvaluation } from "@/common/book";
 import { formatMove, ImmutablePosition, Move } from "tsshogi";
 import { computed, onUpdated, PropType, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -118,6 +124,20 @@ const emit = defineEmits<{
   order: [move: Move, order: number];
 }>();
 
+const evaluationLabels: Partial<Record<number, string>> = {
+  [SbkMoveEvaluation.Forced]: t.forced,
+  [SbkMoveEvaluation.Good]: t.goodMove,
+  [SbkMoveEvaluation.Bad]: t.dubious,
+  [SbkMoveEvaluation.Blunder]: t.mistake,
+};
+
+const evaluationClasses: Partial<Record<number, string>> = {
+  [SbkMoveEvaluation.Forced]: "evaluation-forced",
+  [SbkMoveEvaluation.Good]: "evaluation-good",
+  [SbkMoveEvaluation.Bad]: "evaluation-bad",
+  [SbkMoveEvaluation.Blunder]: "evaluation-blunder",
+};
+
 const moveList = computed(() => {
   const list = [];
   let totalCount = 0;
@@ -127,6 +147,8 @@ const moveList = computed(() => {
   for (const entry of props.moves) {
     const move = props.position.createMoveByUSI(entry.usi);
     if (move !== null) {
+      const evaluationLabel = entry.evaluation && evaluationLabels[entry.evaluation];
+      const evaluationClass = entry.evaluation ? evaluationClasses[entry.evaluation] : undefined;
       list.push({
         move,
         usi: entry.usi,
@@ -139,6 +161,8 @@ const moveList = computed(() => {
             : undefined,
         comment: entry.comment,
         repetition: entry.repetition,
+        evaluationLabel,
+        evaluationClass,
       });
     }
   }
@@ -223,5 +247,25 @@ button > .icon {
   box-sizing: border-box;
   border: 1px solid var(--text-separator-color);
   border-radius: 5px;
+}
+.evaluation-forced {
+  color: #fff;
+  background-color: #1976d2;
+  border-color: #004a94;
+}
+.evaluation-good {
+  color: #fff;
+  background-color: #388e3c;
+  border-color: #116d16;
+}
+.evaluation-bad {
+  color: #fff;
+  background-color: #cf6800;
+  border-color: #bc5e00;
+}
+.evaluation-blunder {
+  color: #fff;
+  background-color: #d32f2f;
+  border-color: #b00e0e;
 }
 </style>

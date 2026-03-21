@@ -41,6 +41,16 @@
           <ToggleButton v-model:value="enableCount" />
         </div>
         <div class="form-item">
+          <div class="form-item-label">{{ t.moveEvaluation }}</div>
+          <select v-model.number="evaluationValue">
+            <option :value="SbkMoveEvaluation.None">{{ t.none }}</option>
+            <option :value="SbkMoveEvaluation.Forced">{{ t.forced }}</option>
+            <option :value="SbkMoveEvaluation.Good">{{ t.goodMove }}</option>
+            <option :value="SbkMoveEvaluation.Bad">{{ t.dubious }}</option>
+            <option :value="SbkMoveEvaluation.Blunder">{{ t.mistake }}</option>
+          </select>
+        </div>
+        <div class="form-item">
           <div class="form-item-label">{{ t.comments }}</div>
           <textarea v-model="commentValue" />
         </div>
@@ -63,10 +73,12 @@ export type Result = {
   depth?: number;
   count?: number;
   comment: string;
+  evaluation?: number;
 };
 </script>
 
 <script setup lang="ts">
+import { SbkMoveEvaluation } from "@/common/book";
 import { t } from "@/common/i18n";
 import { ref } from "vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -78,6 +90,7 @@ const props = defineProps<{
   depth?: number;
   count?: number;
   comment: string;
+  evaluation?: SbkMoveEvaluation;
 }>();
 
 const emits = defineEmits<{
@@ -92,13 +105,16 @@ const commentValue = ref(props.comment || "");
 const enableScore = ref(props.score !== undefined);
 const enableDepth = ref(props.depth !== undefined);
 const enableCount = ref(props.count !== undefined);
+const evaluationValue = ref(props.evaluation || SbkMoveEvaluation.None);
 
 const onOk = () => {
+  const evaluation = Number(evaluationValue.value) || undefined;
   emits("ok", {
     score: enableScore.value ? scoreValue.value : undefined,
     depth: enableDepth.value ? depthValue.value : undefined,
     count: enableCount.value ? countValue.value : undefined,
     comment: commentValue.value,
+    evaluation,
   });
 };
 
