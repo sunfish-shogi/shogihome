@@ -37,8 +37,11 @@ import {
   getBlackPlayerName,
   getWhitePlayerName,
   ImmutableNode,
+  ImmutableRecord,
   Move,
   Record,
+  reverseColor,
+  SpecialMoveType,
 } from "tsshogi";
 import { t } from "@/common/i18n/index.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
@@ -495,6 +498,30 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
   book.saved = false;
 }
 
+// 棋譜の終端ノードから勝者を判定する。
+// 引き分けや不明な場合は undefined を返す。
+function getRecordWinner(record: ImmutableRecord): Color | undefined {
+  let lastNode = record.first;
+  while (lastNode.next) {
+    lastNode = lastNode.next;
+  }
+  const lastMove = lastNode.move;
+  if (lastMove instanceof Move) return undefined;
+  switch (lastMove.type) {
+    case SpecialMoveType.FOUL_WIN:
+    case SpecialMoveType.ENTERING_OF_KING:
+      return lastNode.nextColor;
+    case SpecialMoveType.RESIGN:
+    case SpecialMoveType.MATE:
+    case SpecialMoveType.TIMEOUT:
+    case SpecialMoveType.FOUL_LOSE:
+    case SpecialMoveType.TRY:
+      return reverseColor(lastNode.nextColor);
+    default:
+      return undefined;
+  }
+}
+
 export async function importBookMoves(
   session: number,
   settings: BookImportSettings,
@@ -540,7 +567,7 @@ export async function importBookMoves(
   let entryCount = 0;
   let duplicateCount = 0;
 
-  function importMove(node: ImmutableNode, sfen: string) {
+  function importMove(node: ImmutableNode, sfen: string, winner: Color | undefined) {
     if (!(node.move instanceof Move)) {
       return;
     }
@@ -551,10 +578,8 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const entry = retrieveEntry(book, sfen);
-    const bookMoves = entry?.moves || [];
-    const moves = bookMoves.map(arrayMoveToCommonBookMove);
-    const existing = moves.find((move) => move.usi === usi);
+    const bookMoves = (retrieveEntry(book, sfen)?.moves || []).map(arrayMoveToCommonBookMove);
+    const existing = bookMoves.find((move) => move.usi === usi);
     if (existing) {
       duplicateCount++;
     } else {
@@ -563,6 +588,18 @@ export async function importBookMoves(
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
     updateBookMovePatch(book, sfen, bookMove);
+
+    if (book.format === "sbk") {
+      const entry = retrieveEntry(book, sfen);
+      if (entry) {
+        entry.games = (entry.games ?? 0) + 1;
+        if (winner === Color.BLACK) {
+          entry.wonBlack = (entry.wonBlack ?? 0) + 1;
+        } else if (winner === Color.WHITE) {
+          entry.wonWhite = (entry.wonWhite ?? 0) + 1;
+        }
+      }
+    }
   }
 
   for (const path of paths) {
@@ -611,10 +648,11 @@ export async function importBookMoves(
           continue;
         }
         hasValidLines = true;
+        const winner = getRecordWinner(record);
         record.forEach((node) => {
           const prev = node.prev;
           if (prev && targetColorSet[prev.nextColor]) {
-            importMove(node, prev.sfen);
+            importMove(node, prev.sfen, winner);
           }
         });
       }
@@ -653,10 +691,11 @@ export async function importBookMoves(
       }
     }
 
+    const winner = getRecordWinner(record);
     record.forEach((node) => {
       const prev = node.prev;
       if (prev && targetColorSet[prev.nextColor]) {
-        importMove(node, prev.sfen);
+        importMove(node, prev.sfen, winner);
       }
     });
     successFileCount++;
