@@ -31,6 +31,7 @@ import { LogLevel, LogType } from "@/common/log.js";
 import { USIEngine, USIEngineLaunchOptions } from "@/common/settings/usi.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
 import { Language, setLanguage } from "@/common/i18n/index.js";
+import { BookFormat } from "@/common/book.js";
 
 const bridge: Bridge = {
   // Core
@@ -182,6 +183,9 @@ const bridge: Bridge = {
     throw new Error("This feature is not available on command line tool");
   },
   async saveBook(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async getBookFormat(): Promise<BookFormat> {
     throw new Error("This feature is not available on command line tool");
   },
   async searchBookMoves(): Promise<string> {

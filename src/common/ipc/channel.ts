@@ -49,6 +49,7 @@ export enum Background {
   REMOVE_BOOK_MOVE = "removeBookMove",
   UPDATE_BOOK_MOVE_ORDER = "updateBookMoveOrder",
   IMPORT_BOOK_MOVES = "importBookMoves",
+  GET_BOOK_FORMAT = "getBookFormat",
   LOAD_LAYOUT_PROFILE_LIST = "loadLayoutProfileList",
   UPDATE_LAYOUT_PROFILE_LIST = "updateLayoutProfileList",
   CREATE_DESKTOP_SHORTCUT_FOR_LAYOUT_PROFILE = "createDesktopShortcutForLayoutProfile",

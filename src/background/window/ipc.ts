@@ -647,6 +647,11 @@ ipcMain.handle(
   },
 );
 
+ipcMain.handle(Background.GET_BOOK_FORMAT, (event, session: number): BookFormat => {
+  validateIPCSender(event.senderFrame);
+  return getBookFormat(session);
+});
+
 ipcMain.handle(
   Background.SEARCH_BOOK_MOVES,
   async (event, session: number, sfen: string): Promise<string> => {

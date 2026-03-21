@@ -6,6 +6,7 @@
         :position="store.record.position"
         :moves="bookStore.moves"
         :playable="store.isMovableByUser"
+        :format="bookStore.format"
         @play="playBookMove"
         @edit="editBookMove"
         @remove="removeBookMove"
@@ -30,6 +31,7 @@
         :count="editingData.count"
         :comment="editingData.comment"
         :evaluation="editingData.evaluation"
+        :format="bookStore.format"
         @ok="onEditBookMove"
         @cancel="onCancelEditBookMove"
       />
