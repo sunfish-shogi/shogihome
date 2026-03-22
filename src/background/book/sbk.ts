@@ -121,23 +121,9 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 }
 
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
-  // Assign state IDs to book.entries states.
-  const sfenToId = new Map<string, number>();
-  let nextId = 0;
-  for (const sfen of book.entries.keys()) {
-    sfenToId.set(sfen, nextId++);
-  }
-
-  // Discover leaf next-states: positions reachable via moves but not in book.entries.
-  // Also compute reachable state IDs (states that are destinations of any move).
-  // Both are done in a single pass to avoid redundant Position computation.
-  //
-  // BookConv (SBook.cs) always creates a SBookState for every next position, so we must
-  // do the same. BookConv.Load() resolves NextStateId using array index
-  // (book.BookStates[move.NextStateId]), so every referenced Id must have a corresponding
-  // entry at that index in the output array.
-  const leafSfens = new Map<string, number>(); // SFEN → Id for leaf states
-  const reachableIds = new Set<number>();
+  // Phase 1: リーフノードの列挙とエントリー間のエッジの収集
+  const leafSfens = new Set<string>();
+  const bookSuccessors = new Map<string, string[]>();
   for (const [sfen, entry] of book.entries) {
     const pos = Position.newBySFEN(sfen);
     if (!pos) {
@@ -149,51 +135,125 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         continue;
       }
       const nextSfen = pos.sfen;
-      if (!sfenToId.has(nextSfen) && !leafSfens.has(nextSfen)) {
-        leafSfens.set(nextSfen, nextId++);
+      if (book.entries.has(nextSfen)) {
+        // Phase 3 の DFS のためにエッジの Map を構築
+        let succs = bookSuccessors.get(sfen);
+        if (!succs) {
+          succs = [];
+          bookSuccessors.set(sfen, succs);
+        }
+        succs.push(nextSfen);
+      } else if (!leafSfens.has(nextSfen)) {
+        leafSfens.add(nextSfen);
       }
-      const id = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen)!;
-      reachableIds.add(id);
       pos.undoMove(move);
     }
+  }
+
+  // Phase 2: DFS による Root ノードの特定
+  const sfenToRootSfen = new Map<string, string>();
+  for (const sfen of book.entries.keys()) {
+    if (sfenToRootSfen.has(sfen)) {
+      continue; // 訪問済み
+    }
+    const dfsStack: [string, string][] = [];
+    for (const nextSfen of bookSuccessors.get(sfen) ?? []) {
+      dfsStack.push([sfen, nextSfen]);
+    }
+    while (dfsStack.length > 0) {
+      const [rootSfen, nextSfen] = dfsStack.pop()!;
+      if (sfenToRootSfen.has(nextSfen)) {
+        continue; // 訪問済み
+      }
+      if (nextSfen === rootSfen) {
+        continue; // 循環
+      }
+      sfenToRootSfen.set(nextSfen, rootSfen);
+      for (const succSfen of bookSuccessors.get(nextSfen) ?? []) {
+        dfsStack.push([rootSfen, succSfen]);
+      }
+    }
+  }
+  const rootSfens = new Set<string>();
+  for (const sfen of book.entries.keys()) {
+    if (!sfenToRootSfen.has(sfen)) {
+      rootSfens.add(sfen);
+    }
+  }
+
+  // Phase 3: Root からの距離を計算
+  const sfenToDepth = new Map<string, number>();
+  for (const sfen of rootSfens) {
+    const dfsStack: [string, number][] = [];
+    dfsStack.push([sfen, 0]);
+    while (dfsStack.length > 0) {
+      const [curSfen, depth] = dfsStack.pop()!;
+      const prevDepth = sfenToDepth.get(curSfen);
+      if (prevDepth !== undefined && prevDepth <= depth) {
+        continue; // 訪問済みかつより短い距離で到達済み
+      }
+      sfenToDepth.set(curSfen, depth);
+      for (const nextSfen of bookSuccessors.get(curSfen) ?? []) {
+        dfsStack.push([nextSfen, depth + 1]);
+      }
+    }
+  }
+
+  // Phase 4: Root からの距離が近い順に SFEN を並べる
+  const orderedSfens = Array.from(book.entries.keys()).sort((a, b) => {
+    const depthA = sfenToDepth.get(a) ?? Infinity;
+    const depthB = sfenToDepth.get(b) ?? Infinity;
+    if (depthA !== depthB) {
+      return depthA - depthB;
+    }
+    return a < b ? -1 : a === b ? 0 : 1;
+  });
+  const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : a === b ? 0 : 1));
+
+  let newId = 0;
+  const sfenToId = new Map<string, number>();
+  for (const sfen of orderedSfens) {
+    sfenToId.set(sfen, newId++);
+  }
+  for (const sfen of orderedLeafSfens) {
+    sfenToId.set(sfen, newId++);
   }
 
   const states: SBookState[] = [];
 
-  for (const [sfen, entry] of book.entries) {
-    const stateId = sfenToId.get(sfen)!;
+  for (const sfen of orderedSfens) {
+    const entry = book.entries.get(sfen)!;
     const pos = Position.newBySFEN(sfen);
-    if (!pos) {
-      continue;
-    }
-
     const sbkMoves: SBookMoveProto[] = [];
-
-    for (const bookMove of entry.moves) {
-      const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move || !pos.doMove(move)) {
-        continue;
+    if (pos) {
+      for (const bookMove of entry.moves) {
+        const move = pos.createMoveByUSI(bookMove[IDX_USI]);
+        if (!move || !pos.doMove(move)) {
+          continue;
+        }
+        const nextSfen = pos.sfen;
+        const nextStateId = sfenToId.get(nextSfen) ?? -1;
+        sbkMoves.push({
+          Move: toSbkMove(move),
+          Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
+          Weight: bookMove[IDX_COUNT] ?? 0,
+          NextStateId: nextStateId,
+        });
+        pos.undoMove(move);
       }
-      const nextSfen = pos.sfen;
-      const nextStateId = sfenToId.get(nextSfen) ?? leafSfens.get(nextSfen) ?? -1;
-      sbkMoves.push({
-        Move: toSbkMove(move),
-        Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
-        Weight: bookMove[IDX_COUNT] ?? 0,
-        NextStateId: nextStateId,
-      });
-      pos.undoMove(move);
     }
 
     states.push({
-      Id: stateId,
+      Id: sfenToId.get(sfen)!,
+      // ShogiGUI のハッシュ関数が非公開のため BoardKey と HandKey は省略
+      // 定義上は required だが BookConv が 0 を出力しているので問題ないと思われる
       BoardKey: 0n,
       HandKey: 0,
       Games: entry.games ?? 1,
       WonBlack: entry.wonBlack ?? 0,
       WonWhite: entry.wonWhite ?? 0,
-      // Only anchor states (not reachable via NextStateId) need Position.
-      Position: reachableIds.has(stateId) ? undefined : sfen,
+      // 他のエントリーから参照されているノードの Position は省略
+      Position: sfenToRootSfen.has(sfen) ? undefined : sfen,
       Comment: entry.comment || undefined,
       Moves: sbkMoves,
       Evals: (entry.sbkEvals ?? []).map((e) => ({
@@ -210,9 +270,9 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   // Add empty leaf states (reachable next-positions that have no moves of their own).
   // These are required for BookConv compatibility: Load() uses array-index to resolve
   // NextStateId, so every referenced Id must occupy that index in BookStates.
-  for (const [, id] of leafSfens) {
+  for (const sfen of orderedLeafSfens) {
     states.push({
-      Id: id,
+      Id: sfenToId.get(sfen)!,
       BoardKey: 0n,
       HandKey: 0,
       Games: 1,
@@ -224,9 +284,6 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       Evals: [],
     });
   }
-
-  // BookConv resolves NextStateId by array index, so the array must be sorted by Id.
-  states.sort((a, b) => a.Id - b.Id);
 
   const encoded = SBook.encode({
     Author: book.sbkAuthor ?? "",
