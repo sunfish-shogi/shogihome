@@ -481,12 +481,20 @@ const beginDragFromSquare = (
   rank: number,
   pointerId: number,
 ) => {
-  if (!props.allowMove && !props.allowEdit) return;
-  if (state.reservedMove) return;
+  if (!props.allowMove && !props.allowEdit) {
+    return;
+  }
+  if (state.reservedMove) {
+    return;
+  }
   const square = new Square(file, rank);
   const piece = props.position.board.at(square);
-  if (!piece) return;
-  if (!props.allowEdit && piece.color !== props.position.color) return;
+  if (!piece) {
+    return;
+  }
+  if (!props.allowEdit && piece.color !== props.position.color) {
+    return;
+  }
   drag.pending = true;
   drag.pointerId = pointerId;
   drag.source = square;
@@ -505,10 +513,18 @@ const beginDragFromHand = (
   type: PieceType,
   pointerId: number,
 ) => {
-  if (!props.allowMove && !props.allowEdit) return;
-  if (state.reservedMove) return;
-  if (props.position.hand(color).count(type) === 0) return;
-  if (!props.allowEdit && color !== props.position.color) return;
+  if (!props.allowMove && !props.allowEdit) {
+    return;
+  }
+  if (state.reservedMove) {
+    return;
+  }
+  if (props.position.hand(color).count(type) === 0) {
+    return;
+  }
+  if (!props.allowEdit && color !== props.position.color) {
+    return;
+  }
   drag.pending = true;
   drag.pointerId = pointerId;
   drag.source = new Piece(color, type);
@@ -535,7 +551,9 @@ const DRAG_THRESHOLD_SQ = 25; // 5px の2乗
 // .board.operation div は絶対配置の子のみのため getBoundingClientRect() の width/height が 0 になる。
 // そのため rect.right / rect.bottom ではなく boardParams の実寸で範囲チェックする。
 const getSquareFromClientPoint = (clientX: number, clientY: number): Square | null => {
-  if (!boardOpEl.value) return null;
+  if (!boardOpEl.value) {
+    return null;
+  }
   const rect = boardOpEl.value.getBoundingClientRect();
   const ratio = main.value.ratio;
   const localX = clientX - rect.left;
@@ -554,7 +572,9 @@ const getSquareFromClientPoint = (clientX: number, clientY: number): Square | nu
   const topPad = boardParams.topSquarePadding * ratio;
   const xi = Math.floor((localX - leftPad) / squareW);
   const yi = Math.floor((localY - topPad) / squareH);
-  if (xi < 0 || xi > 8 || yi < 0 || yi > 8) return null;
+  if (xi < 0 || xi > 8 || yi < 0 || yi > 8) {
+    return null;
+  }
   const file = config.value.flip ? xi + 1 : 9 - xi;
   const rank = config.value.flip ? 9 - yi : yi + 1;
   return new Square(file, rank);
@@ -579,20 +599,28 @@ const getHandColorFromClientPoint = (clientX: number, clientY: number): Color | 
       handH = handParams.height * ratio;
   }
   const inHand = (el: HTMLElement | null) => {
-    if (!el) return false;
+    if (!el) {
+      return false;
+    }
     const r = el.getBoundingClientRect();
     const lx = clientX - r.left;
     const ly = clientY - r.top;
     return lx >= 0 && lx <= handW && ly >= 0 && ly <= handH;
   };
-  if (inHand(blackHandOpEl.value)) return Color.BLACK;
-  if (inHand(whiteHandOpEl.value)) return Color.WHITE;
+  if (inHand(blackHandOpEl.value)) {
+    return Color.BLACK;
+  }
+  if (inHand(whiteHandOpEl.value)) {
+    return Color.WHITE;
+  }
   return null;
 };
 
 // ドロップを処理
 const completeDrop = (clientX: number, clientY: number) => {
-  if (!drag.active) return;
+  if (!drag.active) {
+    return;
+  }
   const source = drag.source;
   const square = getSquareFromClientPoint(clientX, clientY);
   if (square && source) {
@@ -621,8 +649,12 @@ const completeDrop = (clientX: number, clientY: number) => {
 
 // グローバルポインタイベントハンドラ
 const onGlobalPointerMove = (e: PointerEvent) => {
-  if (e.pointerId !== drag.pointerId) return;
-  if (!drag.pending && !drag.active) return;
+  if (e.pointerId !== drag.pointerId) {
+    return;
+  }
+  if (!drag.pending && !drag.active) {
+    return;
+  }
   drag.ghostX = e.clientX;
   drag.ghostY = e.clientY;
   if (!drag.active) {
@@ -635,7 +667,9 @@ const onGlobalPointerMove = (e: PointerEvent) => {
 };
 
 const onGlobalPointerUp = (e: PointerEvent) => {
-  if (e.pointerId !== drag.pointerId) return;
+  if (e.pointerId !== drag.pointerId) {
+    return;
+  }
   if (drag.active) {
     completeDrop(e.clientX, e.clientY);
   }
@@ -643,7 +677,9 @@ const onGlobalPointerUp = (e: PointerEvent) => {
 };
 
 const onGlobalPointerCancel = (e: PointerEvent) => {
-  if (e.pointerId !== drag.pointerId) return;
+  if (e.pointerId !== drag.pointerId) {
+    return;
+  }
   if (drag.active) {
     resetState();
   }
@@ -652,16 +688,24 @@ const onGlobalPointerCancel = (e: PointerEvent) => {
 
 // 盤上マス：pointerdown
 const onSquarePointerDown = (e: PointerEvent, file: number, rank: number) => {
-  if (e.button !== 0) return; // 左ボタン・タッチのみ
-  if (drag.pending || drag.active) return;
+  if (e.button !== 0) {
+    return;
+  } // 左ボタン・タッチのみ
+  if (drag.pending || drag.active) {
+    return;
+  }
   dragCompletedFlag = false;
   beginDragFromSquare(e.clientX, e.clientY, file, rank, e.pointerId);
 };
 
 // 持ち駒：pointerdown
 const onHandPointerDown = (e: PointerEvent, color: Color, type: PieceType) => {
-  if (e.button !== 0) return; // 左ボタン・タッチのみ
-  if (drag.pending || drag.active) return;
+  if (e.button !== 0) {
+    return;
+  } // 左ボタン・タッチのみ
+  if (drag.pending || drag.active) {
+    return;
+  }
   dragCompletedFlag = false;
   beginDragFromHand(e.clientX, e.clientY, color, type, e.pointerId);
 };

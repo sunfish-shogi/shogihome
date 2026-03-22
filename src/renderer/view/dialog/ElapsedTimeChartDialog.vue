@@ -154,15 +154,21 @@ const buildChart = () => {
     id: "plyIndicator",
     afterDraw(ch: Chart) {
       const ply = selectedPly.value;
-      if (ply <= 0) return;
+      if (ply <= 0) {
+        return;
+      }
       const index = ply - 1;
       let barX: number | null = null;
       let barTopY: number | null = null;
       for (let di = 0; di < ch.data.datasets.length; di++) {
         const value = ch.data.datasets[di].data[index];
-        if (value === null || value === undefined) continue;
+        if (value === null || value === undefined) {
+          continue;
+        }
         const bar = ch.getDatasetMeta(di).data[index];
-        if (!bar) continue;
+        if (!bar) {
+          continue;
+        }
         barX = bar.x;
         barTopY = bar.y;
         break;
@@ -170,11 +176,15 @@ const buildChart = () => {
       if (barX === null) {
         // バーデータがない場合（消費時間が 0 など）はスケールから X 座標を取得する。
         const xScale = ch.scales.x;
-        if (!xScale) return;
+        if (!xScale) {
+          return;
+        }
         barX = xScale.getPixelForValue(index);
         barTopY = ch.chartArea.bottom;
       }
-      if (barX === null || barTopY === null) return;
+      if (barX === null || barTopY === null) {
+        return;
+      }
       const size = 7;
       const ctx = ch.ctx;
       ctx.save();
@@ -248,12 +258,18 @@ const onChartClick = (event: ChartEvent, elements: ActiveElement[]) => {
     index = elements[0].index;
   } else if (chart && event.x !== null) {
     const xScale = chart.scales.x;
-    if (!xScale) return;
+    if (!xScale) {
+      return;
+    }
     const value = xScale.getValueForPixel(event.x);
-    if (value === undefined || value === null) return;
+    if (value === undefined || value === null) {
+      return;
+    }
     index = Math.round(value);
     const maxIndex = (chart.data.labels?.length ?? 1) - 1;
-    if (index < 0 || index > maxIndex) return;
+    if (index < 0 || index > maxIndex) {
+      return;
+    }
   } else {
     return;
   }
