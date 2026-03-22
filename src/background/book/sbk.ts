@@ -1,6 +1,6 @@
 import events from "node:events";
 import { Writable } from "node:stream";
-import { Position } from "tsshogi";
+import { Move, Position } from "tsshogi";
 import {
   SBook,
   SBookMove as SBookMoveProto,
@@ -36,64 +36,34 @@ function normalizeSfen(position: string): string | undefined {
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
 
-  // Position フィールドを持つ局面をシードとして BFS で SFEN を伝播させる
   const idToState = new Map<number, SBookState>();
   const idToSfen = new Map<number, string>();
-  const queue: number[] = [];
+  const rootIds: number[] = [];
   for (const state of book.BookStates) {
     idToState.set(state.Id, state);
     if (state.Position) {
       const sfen = normalizeSfen(state.Position);
       if (sfen && !idToSfen.has(state.Id)) {
         idToSfen.set(state.Id, sfen);
-        queue.push(state.Id);
+        rootIds.push(state.Id);
       }
     }
   }
 
-  for (let head = 0; head < queue.length; head++) {
-    const stateId = queue[head];
-    const sfen = idToSfen.get(stateId)!;
-    const state = idToState.get(stateId);
-    if (!state) {
-      continue;
-    }
-
-    const pos = Position.newBySFEN(sfen);
-    if (!pos) {
-      continue;
-    }
-
-    for (const m of state.Moves) {
-      if (m.NextStateId < 0 || idToSfen.has(m.NextStateId)) {
-        continue;
-      }
-      const usi = fromSbkMove(m.Move);
-      const move = pos.createMoveByUSI(usi);
-      if (!move || !pos.doMove(move)) {
-        continue;
-      }
-      idToSfen.set(m.NextStateId, pos.sfen);
-      queue.push(m.NextStateId);
-      pos.undoMove(move);
-    }
-  }
-
-  // SFEN が確定した局面をエントリーとして登録
   const entries = new Map<string, BookEntry>();
-  for (const state of book.BookStates) {
-    const sfen = idToSfen.get(state.Id);
-    if (!sfen) {
-      continue;
-    }
-
-    const pos = Position.newBySFEN(sfen);
-    const moves: BookMove[] = state.Moves.flatMap((m) => {
-      const usi = fromSbkMove(m.Move);
-      if (!pos || !pos.createMoveByUSI(usi)) {
-        return [];
-      }
-      return [[usi, undefined, undefined, undefined, m.Weight || undefined, "", m.Evaluation]];
+  function addEntry(sfen: string, state: SBookState, moves: Move[]) {
+    const sbkMoves: BookMove[] = state.Moves.flatMap((m, index) => {
+      return [
+        [
+          moves[index].usi,
+          undefined,
+          undefined,
+          undefined,
+          m.Weight || undefined,
+          "",
+          m.Evaluation,
+        ],
+      ];
     });
 
     const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
@@ -108,13 +78,56 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     entries.set(sfen, {
       type: "normal",
       comment: state.Comment ?? "",
-      moves,
+      moves: sbkMoves,
       minPly: 0,
       games: state.Games,
       wonBlack: state.WonBlack,
       wonWhite: state.WonWhite,
       sbkEvals: sbkEvals.length > 0 ? sbkEvals : undefined,
     });
+  }
+
+  for (const rootId of rootIds) {
+    const rootSfen = idToSfen.get(rootId)!;
+    const pos = Position.newBySFEN(rootSfen);
+    if (!pos) {
+      continue;
+    }
+    const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [];
+    const rootState = idToState.get(rootId)!;
+    const moves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
+    stack.push({ state: rootState, moves, index: 0 });
+    addEntry(rootSfen, rootState, moves);
+    while (stack.length > 0) {
+      const frame = stack[stack.length - 1];
+      if (frame.index >= frame.moves.length) {
+        stack.pop();
+        if (frame.lastMove) {
+          pos.undoMove(frame.lastMove);
+        }
+        continue;
+      }
+      const sbkMove = frame.state.Moves[frame.index];
+      const move = frame.moves[frame.index];
+      frame.index++;
+      const nextStateId = sbkMove.NextStateId;
+      if (idToSfen.has(nextStateId)) {
+        continue;
+      }
+      if (!pos.doMove(move, { ignoreValidation: true })) {
+        continue;
+      }
+      const nextState = idToState.get(nextStateId);
+      if (!nextState) {
+        pos.undoMove(move);
+        continue;
+      }
+      const nextSfen = pos.sfen;
+      idToSfen.set(nextStateId, nextSfen);
+      const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
+      stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
+      addEntry(nextSfen, nextState, nextMoves);
+    }
   }
 
   return { format: "sbk", entries, sbkAuthor: book.Author, sbkDescription: book.Description };
