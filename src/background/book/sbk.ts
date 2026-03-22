@@ -206,9 +206,9 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     if (depthA !== depthB) {
       return depthA - depthB;
     }
-    return a < b ? -1 : 1;
+    return a < b ? -1 : a === b ? 0 : 1;
   });
-  const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : 1));
+  const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : a === b ? 0 : 1));
 
   let newId = 0;
   const sfenToId = new Map<string, number>();
