@@ -64,17 +64,15 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       return;
     }
 
-    const sbkMoves: BookMove[] = state.Moves.flatMap((m, index) => {
+    const bookMoves: BookMove[] = state.Moves.map((m, index) => {
       return [
-        [
-          moves[index].usi,
-          undefined,
-          undefined,
-          undefined,
-          m.Weight || undefined,
-          "",
-          m.Evaluation,
-        ],
+        moves[index].usi, // usi
+        undefined, // usi2
+        undefined, // score
+        undefined, // depth
+        m.Weight || undefined, // count
+        "", // comment
+        m.Evaluation, // evaluation
       ];
     });
 
@@ -90,7 +88,7 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     entries.set(sfen, {
       type: "normal",
       comment: state.Comment ?? "",
-      moves: sbkMoves,
+      moves: bookMoves,
       minPly: 0,
       games: state.Games,
       wonBlack: state.WonBlack,
