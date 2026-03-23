@@ -245,7 +245,12 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
           continue;
         }
         const nextSfen = pos.sfen;
-        const nextStateId = sfenToId.get(nextSfen) ?? -1;
+        const nextStateId = sfenToId.get(nextSfen);
+        if (nextStateId === undefined) {
+          // ロジック上は必ず遷移先の ID が存在するのでここに到達することは無い
+          pos.undoMove(move);
+          continue;
+        }
         sbkMoves.push({
           Move: toSbkMove(move),
           Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
