@@ -52,6 +52,18 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 
   const entries = new Map<string, BookEntry>();
   function addEntry(sfen: string, state: SBookState, moves: Move[]) {
+    // 何も情報を持たないリーフノードを除外
+    if (
+      state.Moves.length === 0 &&
+      state.Evals.length === 0 &&
+      !state.Comment &&
+      !state.Games &&
+      !state.WonBlack &&
+      !state.WonWhite
+    ) {
+      return;
+    }
+
     const sbkMoves: BookMove[] = state.Moves.flatMap((m, index) => {
       return [
         [
