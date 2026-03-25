@@ -7,16 +7,9 @@ import {
   SBookMoveEvaluation,
   SBookState,
 } from "./proto/sbk.js";
-import {
-  BookEntry,
-  BookMove,
-  IDX_COUNT,
-  IDX_EVALUATION,
-  IDX_USI,
-  SbkBook,
-  SbkEval,
-} from "./types.js";
+import { BookEntry, SbkBook, SbkEval } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
+import { BookMove } from "@/common/book.js";
 
 function normalizeSfen(position: string): string | undefined {
   let s = position.trim();
@@ -36,15 +29,13 @@ function normalizeSfen(position: string): string | undefined {
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
 
-  const idToState = new Map<number, SBookState>();
-  const idToSfen = new Map<number, string>();
+  const idToSfen: (string | undefined)[] = new Array(book.BookStates.length);
   const rootIds: number[] = [];
   for (const state of book.BookStates) {
-    idToState.set(state.Id, state);
     if (state.Position) {
       const sfen = normalizeSfen(state.Position);
-      if (sfen && !idToSfen.has(state.Id)) {
-        idToSfen.set(state.Id, sfen);
+      if (sfen && idToSfen[state.Id] === undefined) {
+        idToSfen[state.Id] = sfen;
         rootIds.push(state.Id);
       }
     }
@@ -65,15 +56,12 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     }
 
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
-      return [
-        moves[index].usi, // usi
-        undefined, // usi2
-        undefined, // score
-        undefined, // depth
-        m.Weight || undefined, // count
-        "", // comment
-        m.Evaluation, // evaluation
-      ];
+      return {
+        usi: moves[index].usi,
+        count: m.Weight || undefined,
+        comment: "",
+        evaluation: m.Evaluation,
+      };
     });
 
     const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
@@ -98,13 +86,13 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   }
 
   for (const rootId of rootIds) {
-    const rootSfen = idToSfen.get(rootId)!;
+    const rootSfen = idToSfen[rootId]!;
     const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
       continue;
     }
     const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [];
-    const rootState = idToState.get(rootId)!;
+    const rootState = book.BookStates[rootId];
     const moves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
     stack.push({ state: rootState, moves, index: 0 });
     addEntry(rootSfen, rootState, moves);
@@ -121,19 +109,19 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       const move = frame.moves[frame.index];
       frame.index++;
       const nextStateId = sbkMove.NextStateId;
-      if (idToSfen.has(nextStateId)) {
+      if (idToSfen[nextStateId] !== undefined) {
         continue;
       }
       if (!pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
-      const nextState = idToState.get(nextStateId);
+      const nextState = book.BookStates[nextStateId];
       if (!nextState) {
         pos.undoMove(move);
         continue;
       }
       const nextSfen = pos.sfen;
-      idToSfen.set(nextStateId, nextSfen);
+      idToSfen[nextStateId] = nextSfen;
       const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
       stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
       addEntry(nextSfen, nextState, nextMoves);
@@ -169,7 +157,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       const bookMove = frame.bookMoves[frame.index];
       frame.index++;
-      const move = pos.createMoveByUSI(bookMove[IDX_USI]);
+      const move = pos.createMoveByUSI(bookMove.usi);
       if (!move || !pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
@@ -251,8 +239,8 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       const nextStateId = sfenToId.get(nextSfen)!;
       return {
         Move: move,
-        Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
-        Weight: bookMove[IDX_COUNT] ?? 0,
+        Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
+        Weight: bookMove.count ?? 0,
         NextStateId: nextStateId,
       };
     });

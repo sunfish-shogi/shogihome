@@ -1,10 +1,4 @@
-import {
-  BookFormatApery,
-  BookFormatSbk,
-  BookFormatYane2016,
-  BookMove as CommonBookMove,
-  SbkMoveEvaluation,
-} from "@/common/book.js";
+import { BookFormatApery, BookFormatSbk, BookFormatYane2016, BookMove } from "@/common/book.js";
 
 export type YaneBook = {
   format: BookFormatYane2016;
@@ -47,48 +41,6 @@ export type BookEntry = {
 
 export type BookEntryType = "normal" | "patch";
 
-export type BookMove = [
-  usi: string,
-  usi2: string | undefined,
-  score: number | undefined,
-  depth: number | undefined,
-  count: number | undefined,
-  comment: string,
-  evaluation: SbkMoveEvaluation, // (SBK)
-];
-
-export const IDX_USI = 0;
-export const IDX_USI2 = 1;
-export const IDX_SCORE = 2;
-export const IDX_DEPTH = 3;
-export const IDX_COUNT = 4;
-export const IDX_COMMENTS = 5;
-export const IDX_EVALUATION = 6;
-
-export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
-  return {
-    usi: move[IDX_USI],
-    usi2: move[IDX_USI2],
-    score: move[IDX_SCORE],
-    depth: move[IDX_DEPTH],
-    count: move[IDX_COUNT],
-    comment: move[IDX_COMMENTS],
-    evaluation: move[IDX_EVALUATION],
-  };
-}
-
-export function commonBookMoveToArray(move: CommonBookMove): BookMove {
-  return [
-    move.usi,
-    move.usi2,
-    move.score,
-    move.depth,
-    move.count,
-    move.comment,
-    move.evaluation ?? SbkMoveEvaluation.None,
-  ];
-}
-
 export function mergeBookEntries(
   base: BookEntry | undefined,
   patch: BookEntry | undefined,
@@ -111,29 +63,29 @@ export function mergeBookEntries(
 
   const baseMovesMap = new Map<string, BookMove>();
   for (const move of base.moves) {
-    baseMovesMap.set(move[IDX_USI], move);
+    baseMovesMap.set(move.usi, move);
   }
   const patchMovesMap = new Map<string, BookMove>();
   for (const move of patch.moves) {
-    patchMovesMap.set(move[IDX_USI], move);
+    patchMovesMap.set(move.usi, move);
   }
   const moves = base.moves.map((move) => {
-    const p = patchMovesMap.get(move[IDX_USI]);
+    const p = patchMovesMap.get(move.usi);
     if (p) {
-      return [
-        p[IDX_USI],
-        p[IDX_USI2] !== undefined ? p[IDX_USI2] : move[IDX_USI2],
-        p[IDX_SCORE] !== undefined ? p[IDX_SCORE] : move[IDX_SCORE],
-        p[IDX_DEPTH] !== undefined ? p[IDX_DEPTH] : move[IDX_DEPTH],
-        p[IDX_COUNT] !== undefined ? p[IDX_COUNT] + (move[IDX_COUNT] || 0) : move[IDX_COUNT],
-        p[IDX_COMMENTS] || move[IDX_COMMENTS],
-        p[IDX_EVALUATION],
-      ] as BookMove;
+      return {
+        usi: p.usi,
+        usi2: p.usi2 !== undefined ? p.usi2 : move.usi2,
+        score: p.score !== undefined ? p.score : move.score,
+        depth: p.depth !== undefined ? p.depth : move.depth,
+        count: p.count !== undefined ? p.count + (move.count || 0) : move.count,
+        comment: p.comment || move.comment,
+        evaluation: p.evaluation,
+      };
     }
     return move;
   });
   for (const move of patch.moves) {
-    if (!baseMovesMap.has(move[IDX_USI])) {
+    if (!baseMovesMap.has(move.usi)) {
       moves.push(move);
     }
   }

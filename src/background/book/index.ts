@@ -7,18 +7,7 @@ import {
   defaultBookSession,
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
-import {
-  AperyBook,
-  arrayMoveToCommonBookMove,
-  Book,
-  BookEntry,
-  commonBookMoveToArray,
-  IDX_COUNT,
-  IDX_USI,
-  mergeBookEntries,
-  SbkBook,
-  YaneBook,
-} from "./types.js";
+import { AperyBook, Book, BookEntry, mergeBookEntries, SbkBook, YaneBook } from "./types.js";
 import {
   loadYaneuraOuBook,
   mergeYaneuraOuBook,
@@ -461,17 +450,17 @@ export function clearBook(session: number, format?: BookFormat): void {
 export async function searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {
   const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
-  return entry ? entry.moves.map(arrayMoveToCommonBookMove) : [];
+  return entry ? entry.moves : [];
 }
 
 function updateBookEntry(entry: BookEntry, move: BookMove): void {
   for (let i = 0; i < entry.moves.length; i++) {
-    if (entry.moves[i][IDX_USI] === move.usi) {
-      entry.moves[i] = commonBookMoveToArray(move);
+    if (entry.moves[i].usi === move.usi) {
+      entry.moves[i] = move;
       return;
     }
   }
-  entry.moves.push(commonBookMoveToArray(move));
+  entry.moves.push(move);
 }
 
 export async function updateBookMove(session: number, sfen: string, move: BookMove) {
@@ -485,7 +474,7 @@ export async function updateBookMove(session: number, sfen: string, move: BookMo
       book.entries.set(sfen, {
         type: "normal",
         comment: "",
-        moves: [commonBookMoveToArray(move)],
+        moves: [move],
         minPly: 0,
       });
     }
@@ -506,7 +495,7 @@ export async function updateBookMove(session: number, sfen: string, move: BookMo
       book.entries.set(hash, {
         type: "normal",
         comment: "",
-        moves: [commonBookMoveToArray(sanitizedMove)],
+        moves: [sanitizedMove],
         minPly: 0,
       });
     }
@@ -520,7 +509,7 @@ export async function removeBookMove(session: number, sfen: string, usi: string)
   if (!entry) {
     return;
   }
-  entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
+  entry.moves = entry.moves.filter((move) => move.usi !== usi);
   storeEntry(book, sfen, entry);
 }
 
@@ -535,11 +524,11 @@ export async function updateBookMoveOrder(
   if (!entry) {
     return;
   }
-  const move = entry.moves.find((move) => move[IDX_USI] === usi);
+  const move = entry.moves.find((move) => move.usi === usi);
   if (!move) {
     return;
   }
-  entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
+  entry.moves = entry.moves.filter((move) => move.usi !== usi);
   entry.moves.splice(order, 0, move);
   storeEntry(book, sfen, entry);
 }
@@ -553,7 +542,7 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
         comment: "",
-        moves: [commonBookMoveToArray(move)],
+        moves: [move],
         minPly: 0,
       };
       book.entries.set(sfen, entry);
@@ -574,13 +563,13 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
         comment: "",
-        moves: [commonBookMoveToArray(sanitizedMove)],
+        moves: [sanitizedMove],
         minPly: 0,
       };
       book.entries.set(hash, entry);
     }
   }
-  entry.moves.sort((a, b) => (b[IDX_COUNT] || 0) - (a[IDX_COUNT] || 0));
+  entry.moves.sort((a, b) => (b.count || 0) - (a.count || 0));
   book.saved = false;
 }
 
@@ -666,7 +655,7 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const bookMoves = (retrieveEntry(book, sfen)?.moves || []).map(arrayMoveToCommonBookMove);
+    const bookMoves = retrieveEntry(book, sfen)?.moves || [];
     const existing = bookMoves.find((move) => move.usi === usi);
     if (existing) {
       duplicateCount++;
