@@ -146,30 +146,51 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
   // Phase 1: リーフノードの列挙とエントリー間のエッジの収集
   const leafSfens = new Set<string>();
-  const bookSuccessors = new Map<string, string[]>();
-  for (const [sfen, entry] of book.entries) {
-    const pos = Position.newBySFEN(sfen);
+  const sfenToEdges = new Map<string, [BookMove, number, string][]>();
+  for (const [rootSfen, rootEntry] of book.entries) {
+    if (sfenToEdges.has(rootSfen)) {
+      continue; // 訪問済み
+    }
+    const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
       continue;
     }
-    for (const bookMove of entry.moves) {
+    const stack: { sfen: string; bookMoves: BookMove[]; index: number; lastMove?: Move }[] = [
+      { sfen: rootSfen, bookMoves: rootEntry.moves, index: 0 },
+    ];
+    while (stack.length > 0) {
+      const frame = stack[stack.length - 1];
+      if (frame.index >= frame.bookMoves.length) {
+        stack.pop();
+        if (frame.lastMove) {
+          pos.undoMove(frame.lastMove);
+        }
+        continue;
+      }
+      const bookMove = frame.bookMoves[frame.index];
+      frame.index++;
       const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-      if (!move || !pos.doMove(move)) {
+      if (!move || !pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
       const nextSfen = pos.sfen;
-      if (book.entries.has(nextSfen)) {
-        // Phase 3 の DFS のためにエッジの Map を構築
-        let succs = bookSuccessors.get(sfen);
-        if (!succs) {
-          succs = [];
-          bookSuccessors.set(sfen, succs);
-        }
-        succs.push(nextSfen);
-      } else if (!leafSfens.has(nextSfen)) {
-        leafSfens.add(nextSfen);
+      let edges = sfenToEdges.get(frame.sfen);
+      if (!edges) {
+        edges = [];
+        sfenToEdges.set(frame.sfen, edges);
       }
-      pos.undoMove(move);
+      edges.push([bookMove, toSbkMove(move), nextSfen]);
+      if (sfenToEdges.has(nextSfen)) {
+        pos.undoMove(move);
+        continue; // 訪問済み
+      }
+      const nextEntry = book.entries.get(nextSfen);
+      if (!nextEntry) {
+        leafSfens.add(nextSfen);
+        pos.undoMove(move);
+        continue;
+      }
+      stack.push({ sfen: nextSfen, bookMoves: nextEntry.moves, index: 0, lastMove: move });
     }
   }
 
@@ -179,12 +200,12 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     if (sfenToRootSfen.has(sfen)) {
       continue; // 訪問済み
     }
-    const dfsStack: [string, string][] = [];
-    for (const nextSfen of bookSuccessors.get(sfen) ?? []) {
-      dfsStack.push([sfen, nextSfen]);
+    const stack: [string, string][] = [];
+    for (const [, , nextSfen] of sfenToEdges.get(sfen) ?? []) {
+      stack.push([sfen, nextSfen]);
     }
-    while (dfsStack.length > 0) {
-      const [rootSfen, nextSfen] = dfsStack.pop()!;
+    while (stack.length > 0) {
+      const [rootSfen, nextSfen] = stack.pop()!;
       if (sfenToRootSfen.has(nextSfen)) {
         continue; // 訪問済み
       }
@@ -192,8 +213,8 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         continue; // 循環
       }
       sfenToRootSfen.set(nextSfen, rootSfen);
-      for (const succSfen of bookSuccessors.get(nextSfen) ?? []) {
-        dfsStack.push([rootSfen, succSfen]);
+      for (const [, , succSfen] of sfenToEdges.get(nextSfen) ?? []) {
+        stack.push([rootSfen, succSfen]);
       }
     }
   }
@@ -204,32 +225,11 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     }
   }
 
-  // Phase 3: Root からの距離を計算
-  const sfenToDepth = new Map<string, number>();
-  for (const sfen of rootSfens) {
-    const dfsStack: [string, number][] = [];
-    dfsStack.push([sfen, 0]);
-    while (dfsStack.length > 0) {
-      const [curSfen, depth] = dfsStack.pop()!;
-      const prevDepth = sfenToDepth.get(curSfen);
-      if (prevDepth !== undefined && prevDepth <= depth) {
-        continue; // 訪問済みかつより短い距離で到達済み
-      }
-      sfenToDepth.set(curSfen, depth);
-      for (const nextSfen of bookSuccessors.get(curSfen) ?? []) {
-        dfsStack.push([nextSfen, depth + 1]);
-      }
-    }
-  }
-
-  // Phase 4: Root からの距離が近い順に SFEN を並べる
+  // Phase 3: Root -> Internal -> Leaf の順で配置
   const orderedSfens = Array.from(book.entries.keys()).sort((a, b) => {
-    const depthA = sfenToDepth.get(a) ?? Infinity;
-    const depthB = sfenToDepth.get(b) ?? Infinity;
-    if (depthA !== depthB) {
-      return depthA - depthB;
-    }
-    return a < b ? -1 : a === b ? 0 : 1;
+    const aIsRoot = rootSfens.has(a);
+    const bIsRoot = rootSfens.has(b);
+    return aIsRoot === bIsRoot ? (a < b ? -1 : a === b ? 0 : 1) : aIsRoot ? -1 : 1;
   });
   const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : a === b ? 0 : 1));
 
@@ -246,30 +246,16 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
 
   for (const sfen of orderedSfens) {
     const entry = book.entries.get(sfen)!;
-    const pos = Position.newBySFEN(sfen);
-    const sbkMoves: SBookMoveProto[] = [];
-    if (pos) {
-      for (const bookMove of entry.moves) {
-        const move = pos.createMoveByUSI(bookMove[IDX_USI]);
-        if (!move || !pos.doMove(move)) {
-          continue;
-        }
-        const nextSfen = pos.sfen;
-        const nextStateId = sfenToId.get(nextSfen);
-        if (nextStateId === undefined) {
-          // ロジック上は必ず遷移先の ID が存在するのでここに到達することは無い
-          pos.undoMove(move);
-          continue;
-        }
-        sbkMoves.push({
-          Move: toSbkMove(move),
-          Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
-          Weight: bookMove[IDX_COUNT] ?? 0,
-          NextStateId: nextStateId,
-        });
-        pos.undoMove(move);
-      }
-    }
+    const edges = sfenToEdges.get(sfen) ?? [];
+    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => {
+      const nextStateId = sfenToId.get(nextSfen)!;
+      return {
+        Move: move,
+        Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
+        Weight: bookMove[IDX_COUNT] ?? 0,
+        NextStateId: nextStateId,
+      };
+    });
 
     states.push({
       Id: sfenToId.get(sfen)!,
