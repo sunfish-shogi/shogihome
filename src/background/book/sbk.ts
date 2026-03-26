@@ -1,11 +1,12 @@
 import events from "node:events";
 import { Writable } from "node:stream";
 import { Move, Position } from "tsshogi";
+import { BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
-  SBook,
   SBookMove as SBookMoveProto,
   SBookMoveEvaluation,
   SBookState,
+  SBook,
 } from "./proto/sbk.js";
 import { BookEntry, SbkBook, SbkEval } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
@@ -244,22 +245,53 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     sfenToId.set(sfen, newId++);
   }
 
-  const states: SBookState[] = [];
+  // ストリーム書き込みヘルパー: CHUNK_SIZE に達したらフラッシュ
+  const CHUNK_SIZE = 64 * 1024;
+  const pendingChunks: Uint8Array[] = [];
+  let pendingSize = 0;
 
+  async function flush() {
+    if (pendingChunks.length === 0) {
+      return;
+    }
+    const combined = Buffer.concat(pendingChunks);
+    pendingChunks.length = 0;
+    pendingSize = 0;
+    if (!output.write(combined)) {
+      await events.once(output, "drain");
+    }
+  }
+
+  async function writeBytes(bytes: Uint8Array) {
+    pendingChunks.push(bytes);
+    pendingSize += bytes.length;
+    if (pendingSize >= CHUNK_SIZE) {
+      await flush();
+    }
+  }
+
+  // ヘッダー (Author / Description) を書き出す
+  const headerWriter = new BinaryWriter();
+  if (book.sbkAuthor) {
+    headerWriter.uint32(10).string(book.sbkAuthor);
+  }
+  if (book.sbkDescription) {
+    headerWriter.uint32(18).string(book.sbkDescription);
+  }
+  await writeBytes(headerWriter.finish());
+
+  // 内部ノードを 1 件ずつエンコードしてストリームに書き出す
   for (const sfen of orderedSfens) {
     const entry = book.entries.get(sfen)!;
     const edges = sfenToEdges.get(sfen) ?? [];
-    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => {
-      const nextStateId = sfenToId.get(nextSfen)!;
-      return {
-        Move: move,
-        Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
-        Weight: bookMove.count ?? 0,
-        NextStateId: nextStateId,
-      };
-    });
+    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
+      Move: move,
+      Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
+      Weight: bookMove.count ?? 0,
+      NextStateId: sfenToId.get(nextSfen)!,
+    }));
 
-    states.push({
+    const state: SBookState = {
       Id: sfenToId.get(sfen)!,
       // ShogiGUI のハッシュ関数が非公開のため BoardKey と HandKey は省略
       // 定義上は required だが BookConv が 0 を出力しているので問題ないと思われる
@@ -280,14 +312,18 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         Variation: e.Variation ?? "",
         EngineName: e.EngineName ?? "",
       })),
-    });
+    };
+
+    const stateWriter = new BinaryWriter();
+    SBookState.encode(state, stateWriter.uint32(26).fork()).join();
+    await writeBytes(stateWriter.finish());
   }
 
   // Add empty leaf states (reachable next-positions that have no moves of their own).
   // These are required for BookConv compatibility: Load() uses array-index to resolve
   // NextStateId, so every referenced Id must occupy that index in BookStates.
   for (const sfen of orderedLeafSfens) {
-    states.push({
+    const state: SBookState = {
       Id: sfenToId.get(sfen)!,
       BoardKey: 0n,
       HandKey: 0,
@@ -298,17 +334,14 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       Comment: undefined,
       Moves: [],
       Evals: [],
-    });
+    };
+
+    const stateWriter = new BinaryWriter();
+    SBookState.encode(state, stateWriter.uint32(26).fork()).join();
+    await writeBytes(stateWriter.finish());
   }
 
-  const encoded = SBook.encode({
-    Author: book.sbkAuthor ?? "",
-    Description: book.sbkDescription ?? "",
-    BookStates: states,
-  }).finish();
-  if (!output.write(encoded)) {
-    await events.once(output, "drain");
-  }
+  await flush();
   output.end();
   await events.once(output, "finish");
 }
