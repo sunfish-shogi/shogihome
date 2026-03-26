@@ -473,20 +473,19 @@ export async function updateBookMove(session: number, sfen: string, move: BookMo
     } else {
       book.entries.set(sfen, {
         type: "normal",
-        comment: "",
         moves: [move],
-        minPly: 0,
       });
     }
   } else {
-    const sanitizedMove = {
-      score: 0, // required for Apery book
-      count: 0, // required for Apery book
-      ...move,
-      comment: "", // not supported
+    const sanitizedMove: BookMove = {
+      usi: move.usi,
     };
-    delete sanitizedMove.usi2; // not supported
-    delete sanitizedMove.depth; // not supported
+    if (move.score !== undefined) {
+      sanitizedMove.score = move.score;
+    }
+    if (move.count !== undefined) {
+      sanitizedMove.count = move.count;
+    }
     const hash = aperyHash(sfen);
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
@@ -494,9 +493,7 @@ export async function updateBookMove(session: number, sfen: string, move: BookMo
     } else {
       book.entries.set(hash, {
         type: "normal",
-        comment: "",
         moves: [sanitizedMove],
-        minPly: 0,
       });
     }
   }
@@ -541,30 +538,27 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
     } else {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
-        comment: "",
         moves: [move],
-        minPly: 0,
       };
       book.entries.set(sfen, entry);
     }
   } else {
-    const sanitizedMove = {
-      score: 0, // required for Apery book
-      count: 0, // required for Apery book
-      ...move,
-      comment: "", // not supported
+    const sanitizedMove: BookMove = {
+      usi: move.usi,
     };
-    delete sanitizedMove.usi2; // not supported
-    delete sanitizedMove.depth; // not supported
+    if (move.score !== undefined) {
+      sanitizedMove.score = move.score;
+    }
+    if (move.count !== undefined) {
+      sanitizedMove.count = move.count;
+    }
     const hash = aperyHash(sfen);
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
     } else {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
-        comment: "",
         moves: [sanitizedMove],
-        minPly: 0,
       };
       book.entries.set(hash, entry);
     }

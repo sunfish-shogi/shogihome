@@ -304,13 +304,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         usi: "2f2e",
         score: 42,
         count: 123,
-        comment: "",
       });
       expect(moves[1]).toEqual({
         usi: "6i7h",
         score: -30,
         count: 21,
-        comment: "",
       });
     });
   });
