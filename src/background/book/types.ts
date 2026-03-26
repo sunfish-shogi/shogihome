@@ -30,9 +30,9 @@ export type SbkEval = {
 
 export type BookEntry = {
   type: BookEntryType;
-  comment: string; // 局面に対するコメント
   moves: BookMove[]; // この局面に対する定跡手
-  minPly: number; // 初期局面からの手数
+  minPly?: number; // 初期局面からの手数
+  comment?: string; // 局面に対するコメント
   games?: number; // 対局数 (SBK)
   wonBlack?: number; // 先手勝ち数 (SBK)
   wonWhite?: number; // 後手勝ち数 (SBK)
@@ -94,6 +94,6 @@ export function mergeBookEntries(
     type: "normal",
     comment: patch.comment || base.comment,
     moves,
-    minPly: Math.min(base.minPly, patch.minPly),
+    minPly: Math.min(base.minPly ?? 0, patch.minPly ?? 0),
   };
 }

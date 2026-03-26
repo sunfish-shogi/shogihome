@@ -121,11 +121,11 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
           if (current) {
             if (current[1].moves.length === 0) {
               const bookEntry = current[1];
-              bookEntry.comment = appendCommentLine(bookEntry.comment, parsed.comment);
+              bookEntry.comment = appendCommentLine(bookEntry.comment || "", parsed.comment);
             } else {
               const moves = current[1].moves;
               const move = moves[moves.length - 1];
-              move.comment = appendCommentLine(move.comment, parsed.comment);
+              move.comment = appendCommentLine(move.comment || "", parsed.comment);
             }
           }
           break;
@@ -157,7 +157,7 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   const entries: Map<string, BookEntry> = new Map();
   await load(input, async (sfen, entry) => {
     const existing = entries.get(sfen);
-    if (!existing || entry.minPly < existing.minPly) {
+    if (!existing || (entry.minPly ?? 0) < (existing.minPly ?? 0)) {
       entries.set(sfen, entry);
     }
   });

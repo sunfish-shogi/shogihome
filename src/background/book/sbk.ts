@@ -56,12 +56,16 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     }
 
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
-      return {
+      const bookMove: BookMove = {
         usi: moves[index].usi,
-        count: m.Weight || undefined,
-        comment: "",
-        evaluation: m.Evaluation,
       };
+      if (m.Weight) {
+        bookMove.count = m.Weight;
+      }
+      if (m.Evaluation !== SBookMoveEvaluation.None) {
+        bookMove.evaluation = m.Evaluation;
+      }
+      return bookMove;
     });
 
     const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
@@ -73,16 +77,26 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       EngineName: e.EngineName || undefined,
     }));
 
-    entries.set(sfen, {
+    const bookEntry: BookEntry = {
       type: "normal",
-      comment: state.Comment ?? "",
       moves: bookMoves,
-      minPly: 0,
-      games: state.Games,
-      wonBlack: state.WonBlack,
-      wonWhite: state.WonWhite,
-      sbkEvals: sbkEvals.length > 0 ? sbkEvals : undefined,
-    });
+    };
+    if (state.Comment) {
+      bookEntry.comment = state.Comment;
+    }
+    if (state.Games) {
+      bookEntry.games = state.Games;
+    }
+    if (state.WonBlack) {
+      bookEntry.wonBlack = state.WonBlack;
+    }
+    if (state.WonWhite) {
+      bookEntry.wonWhite = state.WonWhite;
+    }
+    if (sbkEvals.length > 0) {
+      bookEntry.sbkEvals = sbkEvals;
+    }
+    entries.set(sfen, bookEntry);
   }
 
   for (const rootId of rootIds) {

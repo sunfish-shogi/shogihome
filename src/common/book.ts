@@ -18,7 +18,7 @@ export type BookMove = {
   score?: number; // 評価値
   depth?: number; // 探索深さ
   count?: number; // 出現回数
-  comment: string; // コメント
+  comment?: string; // コメント
   evaluation?: SbkMoveEvaluation; // 指し手の評価 (SBK)
 };
 
