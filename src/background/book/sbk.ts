@@ -198,7 +198,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   }
 
   // Phase 2: DFS による Root ノードの特定
-  const sfenToRootSfen = new Map<string, string>();
+  const sfenToRootSfen = new Set<string>();
   for (const sfen of book.entries.keys()) {
     if (sfenToRootSfen.has(sfen)) {
       continue; // 訪問済み
@@ -215,7 +215,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       if (nextSfen === rootSfen) {
         continue; // 循環
       }
-      sfenToRootSfen.set(nextSfen, rootSfen);
+      sfenToRootSfen.add(nextSfen);
       for (const [, , succSfen] of sfenToEdges.get(nextSfen) ?? []) {
         stack.push([rootSfen, succSfen]);
       }
