@@ -78,7 +78,7 @@ export function mergeBookEntries(
         score: p.score !== undefined ? p.score : move.score,
         depth: p.depth !== undefined ? p.depth : move.depth,
         count: p.count !== undefined ? p.count + (move.count || 0) : move.count,
-        comment: p.comment || move.comment,
+        comment: p.comment ?? move.comment,
         evaluation: p.evaluation,
       };
     }
@@ -94,6 +94,11 @@ export function mergeBookEntries(
     type: "normal",
     comment: patch.comment || base.comment,
     moves,
-    minPly: Math.min(base.minPly ?? 0, patch.minPly ?? 0),
+    minPly:
+      base.minPly !== undefined
+        ? patch.minPly !== undefined
+          ? Math.min(base.minPly, patch.minPly)
+          : base.minPly
+        : patch.minPly,
   };
 }

@@ -273,7 +273,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       // 定義上は required だが BookConv が 0 を出力しているので問題ないと思われる
       BoardKey: 0n,
       HandKey: 0,
-      Games: entry.games ?? 1,
+      Games: entry.games ?? 0,
       WonBlack: entry.wonBlack ?? 0,
       WonWhite: entry.wonWhite ?? 0,
       // 他のエントリーから参照されているノードの Position は省略
