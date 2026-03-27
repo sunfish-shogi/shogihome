@@ -147,10 +147,13 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 }
 
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
-  // Phase 1: リーフノードの列挙とエントリー間のエッジの収集
+  let newId = 0;
+  const sfenToId = new Map<string, number>();
+  const nonRootSfens = new Set<string>();
   const leafSfens = new Set<string>();
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
   for (const [rootSfen, rootEntry] of book.entries) {
+    sfenToId.set(rootSfen, newId++);
     if (sfenToEdges.has(rootSfen)) {
       continue; // 訪問済み
     }
@@ -176,17 +179,18 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       if (!move || !pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
-      const nextSfen = pos.sfen;
       let edges = sfenToEdges.get(frame.sfen);
       if (!edges) {
         edges = [];
         sfenToEdges.set(frame.sfen, edges);
       }
+      const nextSfen = pos.sfen;
       edges.push([bookMove, toSbkMove(move), nextSfen]);
       if (sfenToEdges.has(nextSfen)) {
         pos.undoMove(move);
         continue; // 訪問済み
       }
+      nonRootSfens.add(nextSfen);
       const nextEntry = book.entries.get(nextSfen);
       if (!nextEntry) {
         leafSfens.add(nextSfen);
@@ -196,56 +200,10 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       stack.push({ sfen: nextSfen, bookMoves: nextEntry.moves, index: 0, lastMove: move });
     }
   }
-
-  // Phase 2: DFS による Root ノードの特定
-  const sfenToRootSfen = new Set<string>();
-  for (const sfen of book.entries.keys()) {
-    if (sfenToRootSfen.has(sfen)) {
-      continue; // 訪問済み
-    }
-    const stack: [string, string][] = [];
-    for (const [, , nextSfen] of sfenToEdges.get(sfen) ?? []) {
-      stack.push([sfen, nextSfen]);
-    }
-    while (stack.length > 0) {
-      const [rootSfen, nextSfen] = stack.pop()!;
-      if (sfenToRootSfen.has(nextSfen)) {
-        continue; // 訪問済み
-      }
-      if (nextSfen === rootSfen) {
-        continue; // 循環
-      }
-      sfenToRootSfen.add(nextSfen);
-      for (const [, , succSfen] of sfenToEdges.get(nextSfen) ?? []) {
-        stack.push([rootSfen, succSfen]);
-      }
-    }
-  }
-  const rootSfens = new Set<string>();
-  for (const sfen of book.entries.keys()) {
-    if (!sfenToRootSfen.has(sfen)) {
-      rootSfens.add(sfen);
-    }
-  }
-
-  // Phase 3: Root -> Internal -> Leaf の順で配置
-  const orderedSfens = Array.from(book.entries.keys()).sort((a, b) => {
-    const aIsRoot = rootSfens.has(a);
-    const bIsRoot = rootSfens.has(b);
-    return aIsRoot === bIsRoot ? (a < b ? -1 : a === b ? 0 : 1) : aIsRoot ? -1 : 1;
-  });
-  const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : a === b ? 0 : 1));
-
-  let newId = 0;
-  const sfenToId = new Map<string, number>();
-  for (const sfen of orderedSfens) {
-    sfenToId.set(sfen, newId++);
-  }
-  for (const sfen of orderedLeafSfens) {
+  for (const sfen of leafSfens) {
     sfenToId.set(sfen, newId++);
   }
 
-  // ストリーム書き込みヘルパー: CHUNK_SIZE に達したらフラッシュ
   const CHUNK_SIZE = 64 * 1024;
   const pendingChunks: Uint8Array[] = [];
   let pendingSize = 0;
@@ -281,8 +239,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   await writeBytes(headerWriter.finish());
 
   // 内部ノードを 1 件ずつエンコードしてストリームに書き出す
-  for (const sfen of orderedSfens) {
-    const entry = book.entries.get(sfen)!;
+  for (const [sfen, entry] of book.entries) {
     const edges = sfenToEdges.get(sfen) ?? [];
     const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
       Move: move,
@@ -301,7 +258,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       WonBlack: entry.wonBlack ?? 0,
       WonWhite: entry.wonWhite ?? 0,
       // 他のエントリーから参照されているノードの Position は省略
-      Position: sfenToRootSfen.has(sfen) ? undefined : sfen,
+      Position: nonRootSfens.has(sfen) ? undefined : sfen,
       Comment: entry.comment || undefined,
       Moves: sbkMoves,
       Evals: (entry.sbkEvals ?? []).map((e) => ({
@@ -322,7 +279,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   // Add empty leaf states (reachable next-positions that have no moves of their own).
   // These are required for BookConv compatibility: Load() uses array-index to resolve
   // NextStateId, so every referenced Id must occupy that index in BookStates.
-  for (const sfen of orderedLeafSfens) {
+  for (const sfen of leafSfens) {
     const state: SBookState = {
       Id: sfenToId.get(sfen)!,
       BoardKey: 0n,
