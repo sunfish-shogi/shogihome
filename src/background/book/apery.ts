@@ -32,7 +32,7 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMo
   const usi = fromAperyMove(move);
   return {
     hash,
-    bookMove: { usi, score, count, comment: "" },
+    bookMove: { usi, score, count },
   };
 }
 
@@ -53,7 +53,7 @@ async function load(
         entry = undefined;
       }
       if (!entry) {
-        entry = { type: "normal", comment: "", moves: [bookMove], minPly: 0 };
+        entry = { type: "normal", moves: [bookMove], minPly: 0 };
         lastHash = hash;
       } else if (!entry.moves.some((m) => m.usi === bookMove.usi)) {
         entry.moves.push(bookMove);
@@ -127,7 +127,6 @@ export async function searchAperyBookMovesOnTheFly(
   }
   return {
     type: "normal",
-    comment: "",
     moves,
     minPly: 0,
   };

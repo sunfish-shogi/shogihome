@@ -74,12 +74,15 @@ export function mergeBookEntries(
     if (p) {
       return {
         usi: p.usi,
-        usi2: p.usi2 !== undefined ? p.usi2 : move.usi2,
-        score: p.score !== undefined ? p.score : move.score,
-        depth: p.depth !== undefined ? p.depth : move.depth,
-        count: p.count !== undefined ? p.count + (move.count || 0) : move.count,
+        usi2: p.usi2 ?? move.usi2,
+        score: p.score ?? move.score,
+        depth: p.depth ?? move.depth,
+        count:
+          p.count !== undefined || move.count !== undefined
+            ? (p.count || 0) + (move.count || 0)
+            : undefined,
         comment: p.comment ?? move.comment,
-        evaluation: p.evaluation,
+        evaluation: p.evaluation ?? move.evaluation,
       };
     }
     return move;
