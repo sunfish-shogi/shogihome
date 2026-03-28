@@ -1,22 +1,16 @@
 import events from "node:events";
 import { Writable } from "node:stream";
 import { Move, Position } from "tsshogi";
+import { BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
-  SBook,
   SBookMove as SBookMoveProto,
   SBookMoveEvaluation,
   SBookState,
+  SBook,
 } from "./proto/sbk.js";
-import {
-  BookEntry,
-  BookMove,
-  IDX_COUNT,
-  IDX_EVALUATION,
-  IDX_USI,
-  SbkBook,
-  SbkEval,
-} from "./types.js";
+import { BookEntry, SbkBook, SbkEval } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
+import { BookMove } from "@/common/book.js";
 
 function normalizeSfen(position: string): string | undefined {
   let s = position.trim();
@@ -36,20 +30,6 @@ function normalizeSfen(position: string): string | undefined {
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
 
-  const idToState = new Map<number, SBookState>();
-  const idToSfen = new Map<number, string>();
-  const rootIds: number[] = [];
-  for (const state of book.BookStates) {
-    idToState.set(state.Id, state);
-    if (state.Position) {
-      const sfen = normalizeSfen(state.Position);
-      if (sfen && !idToSfen.has(state.Id)) {
-        idToSfen.set(state.Id, sfen);
-        rootIds.push(state.Id);
-      }
-    }
-  }
-
   const entries = new Map<string, BookEntry>();
   function addEntry(sfen: string, state: SBookState, moves: Move[]) {
     // 何も情報を持たないリーフノードを除外
@@ -65,15 +45,16 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     }
 
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
-      return [
-        moves[index].usi, // usi
-        undefined, // usi2
-        undefined, // score
-        undefined, // depth
-        m.Weight || undefined, // count
-        "", // comment
-        m.Evaluation, // evaluation
-      ];
+      const bookMove: BookMove = {
+        usi: moves[index].usi,
+      };
+      if (m.Weight) {
+        bookMove.count = m.Weight;
+      }
+      if (m.Evaluation !== SBookMoveEvaluation.None) {
+        bookMove.evaluation = m.Evaluation;
+      }
+      return bookMove;
     });
 
     const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
@@ -85,29 +66,46 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       EngineName: e.EngineName || undefined,
     }));
 
-    entries.set(sfen, {
+    const bookEntry: BookEntry = {
       type: "normal",
-      comment: state.Comment ?? "",
       moves: bookMoves,
-      minPly: 0,
-      games: state.Games,
-      wonBlack: state.WonBlack,
-      wonWhite: state.WonWhite,
-      sbkEvals: sbkEvals.length > 0 ? sbkEvals : undefined,
-    });
+    };
+    if (state.Comment) {
+      bookEntry.comment = state.Comment;
+    }
+    if (state.Games) {
+      bookEntry.games = state.Games;
+    }
+    if (state.WonBlack) {
+      bookEntry.wonBlack = state.WonBlack;
+    }
+    if (state.WonWhite) {
+      bookEntry.wonWhite = state.WonWhite;
+    }
+    if (sbkEvals.length > 0) {
+      bookEntry.sbkEvals = sbkEvals;
+    }
+    entries.set(sfen, bookEntry);
   }
 
-  for (const rootId of rootIds) {
-    const rootSfen = idToSfen.get(rootId)!;
+  const visitedStateIds = new Set<number>();
+  for (const rootState of book.BookStates) {
+    if (!rootState.Position || visitedStateIds.has(rootState.Id)) {
+      continue;
+    }
+    const rootSfen = normalizeSfen(rootState.Position);
+    if (!rootSfen) {
+      continue;
+    }
     const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
       continue;
     }
     const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [];
-    const rootState = idToState.get(rootId)!;
     const moves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
     stack.push({ state: rootState, moves, index: 0 });
     addEntry(rootSfen, rootState, moves);
+    visitedStateIds.add(rootState.Id);
     while (stack.length > 0) {
       const frame = stack[stack.length - 1];
       if (frame.index >= frame.moves.length) {
@@ -121,22 +119,22 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       const move = frame.moves[frame.index];
       frame.index++;
       const nextStateId = sbkMove.NextStateId;
-      if (idToSfen.has(nextStateId)) {
+      if (visitedStateIds.has(nextStateId)) {
         continue;
       }
       if (!pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
-      const nextState = idToState.get(nextStateId);
+      const nextState = book.BookStates[nextStateId];
       if (!nextState) {
         pos.undoMove(move);
         continue;
       }
       const nextSfen = pos.sfen;
-      idToSfen.set(nextStateId, nextSfen);
       const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
       stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
       addEntry(nextSfen, nextState, nextMoves);
+      visitedStateIds.add(nextStateId);
     }
   }
 
@@ -144,17 +142,25 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 }
 
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
-  // Phase 1: リーフノードの列挙とエントリー間のエッジの収集
-  const leafSfens = new Set<string>();
+  // SFEN の記述を最小限にしてデータを削減するためにルートではないノードを列挙する。
+  const nonRootSfens = new Set<string>();
+
+  // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
+
   for (const [rootSfen, rootEntry] of book.entries) {
+    // DFS で訪問したことがある局面はそれ以上調べる必要がない。
+    // ここで訪問済みでないノードはルートノードになる可能性があるが、
+    // 他のノードからの探索がおわるまではルートノードかどうかが確定しない。
     if (sfenToEdges.has(rootSfen)) {
       continue; // 訪問済み
     }
+    // newBySFEN は負荷が高いため、DFS の開始点だけで呼び出して残りは差分計算をする。
     const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
       continue;
     }
+    // ルートノードを特定するためにエッジを経由して到達可能な子ノードを DFS で列挙する。
     const stack: { sfen: string; bookMoves: BookMove[]; index: number; lastMove?: Move }[] = [
       { sfen: rootSfen, bookMoves: rootEntry.moves, index: 0 },
     ];
@@ -169,105 +175,104 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       const bookMove = frame.bookMoves[frame.index];
       frame.index++;
-      const move = pos.createMoveByUSI(bookMove[IDX_USI]);
+      const move = pos.createMoveByUSI(bookMove.usi);
       if (!move || !pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
-      const nextSfen = pos.sfen;
       let edges = sfenToEdges.get(frame.sfen);
       if (!edges) {
         edges = [];
         sfenToEdges.set(frame.sfen, edges);
       }
+      const nextSfen = pos.sfen;
       edges.push([bookMove, toSbkMove(move), nextSfen]);
+      const nextEntry = book.entries.get(nextSfen);
+      if (!nextEntry) {
+        pos.undoMove(move);
+        continue; // エントリーに含まれないリーフノード
+      }
+      if (nextSfen !== rootSfen) {
+        // SFEN を省略してよいノード
+        nonRootSfens.add(nextSfen);
+      }
       if (sfenToEdges.has(nextSfen)) {
         pos.undoMove(move);
         continue; // 訪問済み
-      }
-      const nextEntry = book.entries.get(nextSfen);
-      if (!nextEntry) {
-        leafSfens.add(nextSfen);
-        pos.undoMove(move);
-        continue;
       }
       stack.push({ sfen: nextSfen, bookMoves: nextEntry.moves, index: 0, lastMove: move });
     }
   }
 
-  // Phase 2: DFS による Root ノードの特定
-  const sfenToRootSfen = new Map<string, string>();
-  for (const sfen of book.entries.keys()) {
-    if (sfenToRootSfen.has(sfen)) {
-      continue; // 訪問済み
-    }
-    const stack: [string, string][] = [];
-    for (const [, , nextSfen] of sfenToEdges.get(sfen) ?? []) {
-      stack.push([sfen, nextSfen]);
-    }
-    while (stack.length > 0) {
-      const [rootSfen, nextSfen] = stack.pop()!;
-      if (sfenToRootSfen.has(nextSfen)) {
-        continue; // 訪問済み
-      }
-      if (nextSfen === rootSfen) {
-        continue; // 循環
-      }
-      sfenToRootSfen.set(nextSfen, rootSfen);
-      for (const [, , succSfen] of sfenToEdges.get(nextSfen) ?? []) {
-        stack.push([rootSfen, succSfen]);
-      }
-    }
-  }
-  const rootSfens = new Set<string>();
-  for (const sfen of book.entries.keys()) {
-    if (!sfenToRootSfen.has(sfen)) {
-      rootSfens.add(sfen);
-    }
-  }
-
-  // Phase 3: Root -> Internal -> Leaf の順で配置
-  const orderedSfens = Array.from(book.entries.keys()).sort((a, b) => {
-    const aIsRoot = rootSfens.has(a);
-    const bIsRoot = rootSfens.has(b);
-    return aIsRoot === bIsRoot ? (a < b ? -1 : a === b ? 0 : 1) : aIsRoot ? -1 : 1;
-  });
-  const orderedLeafSfens = Array.from(leafSfens).sort((a, b) => (a < b ? -1 : a === b ? 0 : 1));
-
+  // ノードに ID を割り当てる。
+  // ID は書き出す時の順序と一致しなければならない。
+  // ルートノードを先頭に書かないと ShogiGUI で正しく読み込まれない。
   let newId = 0;
   const sfenToId = new Map<string, number>();
-  for (const sfen of orderedSfens) {
-    sfenToId.set(sfen, newId++);
+  for (const [sfen] of book.entries) {
+    if (!nonRootSfens.has(sfen)) {
+      sfenToId.set(sfen, newId++);
+    }
   }
-  for (const sfen of orderedLeafSfens) {
-    sfenToId.set(sfen, newId++);
+  for (const [sfen] of book.entries) {
+    if (nonRootSfens.has(sfen)) {
+      sfenToId.set(sfen, newId++);
+    }
   }
 
-  const states: SBookState[] = [];
+  // データ全体を一気に encode するとメモリを大量に消費してしまうため、チャンク単位で書き出す。
+  const CHUNK_SIZE = 64 * 1024;
+  const pendingChunks: Uint8Array[] = [];
+  let pendingSize = 0;
 
-  for (const sfen of orderedSfens) {
-    const entry = book.entries.get(sfen)!;
+  async function flush() {
+    if (pendingChunks.length === 0) {
+      return;
+    }
+    const combined = Buffer.concat(pendingChunks);
+    pendingChunks.length = 0;
+    pendingSize = 0;
+    if (!output.write(combined)) {
+      await events.once(output, "drain");
+    }
+  }
+
+  async function writeBytes(bytes: Uint8Array) {
+    pendingChunks.push(bytes);
+    pendingSize += bytes.length;
+    if (pendingSize >= CHUNK_SIZE) {
+      await flush();
+    }
+  }
+
+  const headerWriter = new BinaryWriter();
+  if (book.sbkAuthor) {
+    headerWriter.uint32(10).string(book.sbkAuthor);
+  }
+  if (book.sbkDescription) {
+    headerWriter.uint32(18).string(book.sbkDescription);
+  }
+  await writeBytes(headerWriter.finish());
+
+  async function writeState(sfen: string, entry: BookEntry): Promise<void> {
     const edges = sfenToEdges.get(sfen) ?? [];
-    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => {
-      const nextStateId = sfenToId.get(nextSfen)!;
-      return {
-        Move: move,
-        Evaluation: bookMove[IDX_EVALUATION] as SBookMoveEvaluation,
-        Weight: bookMove[IDX_COUNT] ?? 0,
-        NextStateId: nextStateId,
-      };
-    });
+    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
+      Move: move,
+      Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
+      Weight: bookMove.count ?? 0,
+      NextStateId: sfenToId.get(nextSfen) ?? -1, // 存在しない局面に対して BookConv は -1 を出力している
+    }));
 
-    states.push({
+    const state: SBookState = {
       Id: sfenToId.get(sfen)!,
       // ShogiGUI のハッシュ関数が非公開のため BoardKey と HandKey は省略
       // 定義上は required だが BookConv が 0 を出力しているので問題ないと思われる
       BoardKey: 0n,
       HandKey: 0,
-      Games: entry.games ?? 1,
+      Games: entry.games ?? 0,
       WonBlack: entry.wonBlack ?? 0,
       WonWhite: entry.wonWhite ?? 0,
       // 他のエントリーから参照されているノードの Position は省略
-      Position: sfenToRootSfen.has(sfen) ? undefined : sfen,
+      Position: nonRootSfens.has(sfen) ? undefined : sfen,
       Comment: entry.comment || undefined,
       Moves: sbkMoves,
       Evals: (entry.sbkEvals ?? []).map((e) => ({
@@ -278,35 +283,25 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         Variation: e.Variation ?? "",
         EngineName: e.EngineName ?? "",
       })),
-    });
+    };
+
+    const stateWriter = new BinaryWriter();
+    SBookState.encode(state, stateWriter.uint32(26).fork()).join();
+    await writeBytes(stateWriter.finish());
   }
 
-  // Add empty leaf states (reachable next-positions that have no moves of their own).
-  // These are required for BookConv compatibility: Load() uses array-index to resolve
-  // NextStateId, so every referenced Id must occupy that index in BookStates.
-  for (const sfen of orderedLeafSfens) {
-    states.push({
-      Id: sfenToId.get(sfen)!,
-      BoardKey: 0n,
-      HandKey: 0,
-      Games: 1,
-      WonBlack: 0,
-      WonWhite: 0,
-      Position: undefined, // reachable — BFS from parent will propagate SFEN
-      Comment: undefined,
-      Moves: [],
-      Evals: [],
-    });
+  for (const [sfen, entry] of book.entries) {
+    if (!nonRootSfens.has(sfen)) {
+      await writeState(sfen, entry);
+    }
+  }
+  for (const [sfen, entry] of book.entries) {
+    if (nonRootSfens.has(sfen)) {
+      await writeState(sfen, entry);
+    }
   }
 
-  const encoded = SBook.encode({
-    Author: book.sbkAuthor ?? "",
-    Description: book.sbkDescription ?? "",
-    BookStates: states,
-  }).finish();
-  if (!output.write(encoded)) {
-    await events.once(output, "drain");
-  }
+  await flush();
   output.end();
   await events.once(output, "finish");
 }

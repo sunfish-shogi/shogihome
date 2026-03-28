@@ -72,7 +72,7 @@ export type Result = {
   score?: number;
   depth?: number;
   count?: number;
-  comment: string;
+  comment?: string;
   evaluation?: number;
 };
 </script>
@@ -89,7 +89,7 @@ const props = defineProps<{
   score?: number;
   depth?: number;
   count?: number;
-  comment: string;
+  comment?: string;
   evaluation?: SbkMoveEvaluation;
   format: BookFormat;
 }>();
@@ -114,7 +114,7 @@ const onOk = () => {
     score: enableScore.value ? scoreValue.value : undefined,
     depth: enableDepth.value ? depthValue.value : undefined,
     count: enableCount.value ? countValue.value : undefined,
-    comment: commentValue.value,
+    comment: commentValue.value || undefined,
     evaluation,
   });
 };

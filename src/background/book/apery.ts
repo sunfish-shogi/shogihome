@@ -1,16 +1,8 @@
 import fs from "node:fs";
 import events from "node:events";
 import { Readable, Writable } from "node:stream";
-import {
-  AperyBook,
-  BookEntry,
-  BookMove,
-  IDX_COUNT,
-  IDX_SCORE,
-  IDX_USI,
-  mergeBookEntries,
-} from "./types.js";
-import { SbkMoveEvaluation } from "@/common/book.js";
+import { AperyBook, BookEntry, mergeBookEntries } from "./types.js";
+import { BookMove } from "@/common/book.js";
 import { fromAperyMove, toAperyMove } from "./apery_move.js";
 import { hash } from "./apery_zobrist.js";
 
@@ -25,10 +17,10 @@ import { hash } from "./apery_zobrist.js";
 function encodeEntry(hash: bigint, move: BookMove): Buffer {
   const binary = Buffer.alloc(16);
   binary.writeBigUInt64LE(hash, 0);
-  const aperyMove = toAperyMove(move[IDX_USI]);
+  const aperyMove = toAperyMove(move.usi);
   binary.writeUInt16LE(aperyMove, 8);
-  binary.writeUInt16LE(move[IDX_COUNT] || 0, 10);
-  binary.writeInt32LE(move[IDX_SCORE] || 0, 12);
+  binary.writeUInt16LE(move.count || 0, 10);
+  binary.writeInt32LE(move.score || 0, 12);
   return binary;
 }
 
@@ -40,7 +32,7 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMo
   const usi = fromAperyMove(move);
   return {
     hash,
-    bookMove: [usi, undefined, score, undefined, count, "", SbkMoveEvaluation.None],
+    bookMove: { usi, score, count, comment: "" },
   };
 }
 
@@ -63,7 +55,7 @@ async function load(
       if (!entry) {
         entry = { type: "normal", comment: "", moves: [bookMove], minPly: 0 };
         lastHash = hash;
-      } else if (!entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
+      } else if (!entry.moves.some((m) => m.usi === bookMove.usi)) {
         entry.moves.push(bookMove);
       }
     }
