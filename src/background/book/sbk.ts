@@ -30,18 +30,6 @@ function normalizeSfen(position: string): string | undefined {
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   const book = SBook.decode(data);
 
-  const idToSfen: (string | undefined)[] = new Array(book.BookStates.length);
-  const rootIds: number[] = [];
-  for (const state of book.BookStates) {
-    if (state.Position) {
-      const sfen = normalizeSfen(state.Position);
-      if (sfen && idToSfen[state.Id] === undefined) {
-        idToSfen[state.Id] = sfen;
-        rootIds.push(state.Id);
-      }
-    }
-  }
-
   const entries = new Map<string, BookEntry>();
   function addEntry(sfen: string, state: SBookState, moves: Move[]) {
     // 何も情報を持たないリーフノードを除外
@@ -100,17 +88,24 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     entries.set(sfen, bookEntry);
   }
 
-  for (const rootId of rootIds) {
-    const rootSfen = idToSfen[rootId]!;
+  const visitedStateIds = new Set<number>();
+  for (const rootState of book.BookStates) {
+    if (!rootState.Position || visitedStateIds.has(rootState.Id)) {
+      continue;
+    }
+    const rootSfen = normalizeSfen(rootState.Position);
+    if (!rootSfen) {
+      continue;
+    }
     const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
       continue;
     }
     const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [];
-    const rootState = book.BookStates[rootId];
     const moves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
     stack.push({ state: rootState, moves, index: 0 });
     addEntry(rootSfen, rootState, moves);
+    visitedStateIds.add(rootState.Id);
     while (stack.length > 0) {
       const frame = stack[stack.length - 1];
       if (frame.index >= frame.moves.length) {
@@ -124,7 +119,7 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
       const move = frame.moves[frame.index];
       frame.index++;
       const nextStateId = sbkMove.NextStateId;
-      if (idToSfen[nextStateId] !== undefined) {
+      if (visitedStateIds.has(nextStateId)) {
         continue;
       }
       if (!pos.doMove(move, { ignoreValidation: true })) {
@@ -136,10 +131,10 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
         continue;
       }
       const nextSfen = pos.sfen;
-      idToSfen[nextStateId] = nextSfen;
       const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
       stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
       addEntry(nextSfen, nextState, nextMoves);
+      visitedStateIds.add(nextStateId);
     }
   }
 
