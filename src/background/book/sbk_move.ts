@@ -1,6 +1,4 @@
-import { Color, Move, PieceType, Square, pieceTypeToSFEN } from "tsshogi";
-
-const rankChars = "abcdefghi";
+import { Color, ImmutablePosition, Move, PieceType, Square } from "tsshogi";
 
 // C# Piece enum index (with WhiteFlag stripped) → tsshogi PieceType
 // C# order: Pawn=1, Lance=2, Knight=3, Silver=4, Gold=5, Bishop=6, Rook=7, King=8
@@ -45,7 +43,7 @@ function sbkPieceValue(pt: PieceType, color: Color): number {
   return (pieceTypeToSbkIndex[pt] ?? 0) | (color === Color.WHITE ? 0x10 : 0);
 }
 
-export function fromSbkMove(value: number): string {
+export function fromSbkMove(pos: ImmutablePosition, value: number): Move {
   const fromDan = value & 0xf;
   const fromSuji = (value >>> 4) & 0xf;
   const toDan = (value >>> 8) & 0xf;
@@ -53,16 +51,16 @@ export function fromSbkMove(value: number): string {
   const promote = (value >>> 19) & 1;
   const piece = (value >>> 24) & 0x1f;
 
-  const toStr = toSuji.toString() + rankChars[toDan - 1];
+  const pt = sbkPieceTypeMap[piece & 0x0f];
+  const to = new Square(toSuji, toDan);
 
   if (fromDan === 0 && fromSuji === 0) {
-    // Drop move: strip WhiteFlag (bit 4) to get piece type index
-    const pt = sbkPieceTypeMap[piece & 0x0f];
-    return pieceTypeToSFEN(pt) + "*" + toStr;
+    return new Move(pt, to, false, pos.color, pt, null);
   }
 
-  const fromStr = fromSuji.toString() + rankChars[fromDan - 1];
-  return fromStr + toStr + (promote ? "+" : "");
+  const from = new Square(fromSuji, fromDan);
+  const captured = pos.board.at(to);
+  return new Move(from, to, promote === 1, pos.color, pt, captured && captured.type);
 }
 
 export function toSbkMove(move: Move): number {
