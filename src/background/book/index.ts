@@ -225,6 +225,7 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
   getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
   let file: ReadStream | undefined;
   try {
+    clearBook(session); // メモリ節約のため先にクリアする
     let book: Book;
     switch (getFormatByPath(path)) {
       case "yane2016":
