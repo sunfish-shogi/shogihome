@@ -1,5 +1,7 @@
 import events from "node:events";
 import { Writable } from "node:stream";
+import v8 from "node:v8";
+import { setImmediate as setImmediatePromise } from "node:timers/promises";
 import { Move, Position } from "tsshogi";
 import { BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
@@ -142,6 +144,28 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
 }
 
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
+  // storeSbkBook は巨大な棋譜木を扱う時に CPU を占有しやすいため、
+  // 適度にイベントループへ制御を戻す。
+  const YIELD_INTERVAL = 4096;
+  // 一時データ構築中にヒープが逼迫すると GC ループに入り、
+  // 100% CPU のまま UI が応答不能になるため、OOM 直前で中断する。
+  const MEMORY_CHECK_INTERVAL = 2048;
+  const HEAP_USAGE_ABORT_RATIO = 0.92;
+  let operationCount = 0;
+
+  async function maybeYieldAndCheckMemory() {
+    operationCount++;
+    if (operationCount % YIELD_INTERVAL === 0) {
+      await setImmediatePromise();
+    }
+    if (operationCount % MEMORY_CHECK_INTERVAL === 0) {
+      const { used_heap_size, heap_size_limit } = v8.getHeapStatistics();
+      if (used_heap_size / heap_size_limit >= HEAP_USAGE_ABORT_RATIO) {
+        throw new Error("SBK export aborted: memory pressure is too high.");
+      }
+    }
+  }
+
   // SFEN の記述を最小限にしてデータを削減するためにルートではないノードを列挙する。
   const nonRootSfens = new Set<string>();
 
@@ -175,6 +199,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       const bookMove = frame.bookMoves[frame.index];
       frame.index++;
+      await maybeYieldAndCheckMemory();
       const move = pos.createMoveByUSI(bookMove.usi);
       if (!move || !pos.doMove(move, { ignoreValidation: true })) {
         continue;
@@ -254,6 +279,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   await writeBytes(headerWriter.finish());
 
   async function writeState(sfen: string, entry: BookEntry): Promise<void> {
+    await maybeYieldAndCheckMemory();
     const edges = sfenToEdges.get(sfen) ?? [];
     const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
       Move: move,
