@@ -13,6 +13,7 @@
         @order="updateBookMoveOrder"
       />
       <div class="row control">
+        <span class="format-label">{{ formatLabel }}</span>
         <button @click="onResetBook">{{ t.clear }}</button>
         <button @click="onOpenBook">{{ t.open }}</button>
         <button :disabled="!isBookOperational" @click="onSaveBook">{{ t.saveAs }}</button>
@@ -60,6 +61,19 @@ const bookStore = useBookStore();
 const appSettings = useAppSettings();
 
 const isBookOperational = computed(() => store.appState === AppState.NORMAL);
+
+const formatLabel = computed(() => {
+  switch (bookStore.format) {
+    case "yane2016":
+      return ".db";
+    case "apery":
+      return ".bin";
+    case "sbk":
+      return ".sbk";
+    default:
+      return bookStore.format;
+  }
+});
 const editingData = ref<
   BookMove & {
     sfen: string;
@@ -150,6 +164,7 @@ const onCancelEditBookMove = () => {
   height: 25px;
   font-size: 14px;
   padding: 0 1em;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -158,6 +173,18 @@ const onCancelEditBookMove = () => {
 }
 .control > :not(:first-child) {
   margin-left: 8px;
+}
+.format-label {
+  display: inline-block;
+  color: var(--control-button-color);
+  background-color: var(--control-button-bg-color);
+  padding: 0 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--control-button-border-color);
+  border-radius: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 23px;
 }
 .book-list {
   height: calc(100% - 27px);
