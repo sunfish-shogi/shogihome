@@ -12,6 +12,8 @@ export enum Thema {
   CHERRY_BLOSSOM = "cherry-blossom",
   AUTUMN = "autumn",
   SNOW = "snow",
+  CLASSIC = "classic",
+  BEIGE = "beige",
   DARK_GREEN = "dark-green",
   DARK = "dark",
 }

@@ -214,6 +214,8 @@ export const en: Texts = {
   customImage: "Custom Image",
   autumn: "Autumn",
   snow: "Snow",
+  classic: "Classic",
+  beige: "Beige",
   darkGreen: "Dark Green",
   dark: "Dark",
   boardLayout: "Board Layout",

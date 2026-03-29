@@ -45,6 +45,8 @@
             { label: t.cherryBlossom, value: Thema.CHERRY_BLOSSOM },
             { label: t.autumn, value: Thema.AUTUMN },
             { label: t.snow, value: Thema.SNOW },
+            { label: t.classic, value: Thema.CLASSIC },
+            { label: t.beige, value: Thema.BEIGE },
             { label: t.darkGreen, value: Thema.DARK_GREEN },
             { label: t.dark, value: Thema.DARK },
           ]"

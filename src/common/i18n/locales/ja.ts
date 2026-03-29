@@ -214,6 +214,8 @@ export const ja: Texts = {
   customImage: "カスタム画像",
   autumn: "紅葉",
   snow: "雪",
+  classic: "クラシック",
+  beige: "ベージュ",
   darkGreen: "深緑",
   dark: "ダーク",
   boardLayout: "盤レイアウト",
