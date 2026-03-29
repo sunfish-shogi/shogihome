@@ -209,6 +209,9 @@ export type Texts = {
   customImage: string;
   autumn: string;
   snow: string;
+  classicSilver: string;
+  pastelBeige: string;
+  washiDye: string;
   darkGreen: string;
   dark: string;
   boardLayout: string;

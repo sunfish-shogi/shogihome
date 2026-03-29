@@ -71,6 +71,7 @@ function getColorPalette(thema: Thema): ColorPalette {
       };
     case Thema.DARK_GREEN:
     case Thema.DARK:
+    case Thema.WASHI_DYE:
       return {
         main: "white",
         ticks: "darkgray",
