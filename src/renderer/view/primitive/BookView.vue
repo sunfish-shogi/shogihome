@@ -190,7 +190,6 @@ const moveList = computed(() => {
   background-color: var(--text-bg-color);
 }
 .main {
-  margin-top: 1px;
   overflow-y: auto;
   color: var(--text-color);
   font-size: 0.85em;
