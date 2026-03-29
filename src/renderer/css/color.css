@@ -222,7 +222,7 @@
   --toggle-inactive-color: darkgray;
 }
 
-.classic-silver {
+.classic {
   --main-color: black;
   --main-bg-color: #c2c5cc;
   --shadow-color: rgba(0, 0, 0, 0.45);
@@ -278,7 +278,7 @@
   --toggle-inactive-color: #8d8d8d;
 }
 
-.pastel-beige {
+.beige {
   --main-color: #2f2b26;
   --main-bg-color: #dbc8ad;
   --shadow-color: rgba(0, 0, 0, 0.35);
@@ -332,62 +332,6 @@
   --toggle-knob-color: white;
   --toggle-active-color: #73ba8d;
   --toggle-inactive-color: #9d8f80;
-}
-
-.washi-dye {
-  --main-color: #f2eee8;
-  --main-bg-color: #5e6b75;
-  --shadow-color: rgba(0, 0, 0, 0.45);
-  --tab-color: #f8f5ed;
-  --tab-bg-color: #44515b;
-  --tab-highlight-color: #f8f5ed;
-  --tab-content-bg-color: #647682;
-  --text-color-danger: white;
-  --text-color: #f3f1ec;
-  --text-bg-color: #4b5a65;
-  --text-bg-color-disabled: #7a8790;
-  --text-bg-color-selected: #6d8699;
-  --text-bg-color-warning: #b48d3f;
-  --text-bg-color-danger: #c23636;
-  --text-separator-color: #d2cbc1;
-  --text-dashed-separator-color: #bfb5a9;
-  --input-border-color: #9fa7ab;
-  --chart-bg-color: #4b5a65;
-  --promote-bg-color: #8d4f48;
-  --not-promote-bg-color: #5e6b75;
-  --turn-label-color: #fdf2c9;
-  --turn-label-bg-color: #303b43;
-  --turn-label-border-color: #f4dfb2;
-  --control-button-color: #f8f5ed;
-  --control-button-bg-color: #4c5a64;
-  --control-button-border-color: #39444b;
-  --disabled-control-button-bg-color: #6d747a;
-  --hovered-control-button-bg-color: #60717d;
-  --close-button-bg-color: #ad332b;
-  --hovered-close-button-bg-color: #ca4338;
-  --dialog-color: #f2eee8;
-  --dialog-bg-color: #43515b;
-  --dialog-border-color: #8f9ca6;
-  --info-dialog-color: #f8f5ed;
-  --info-dialog-bg-color: #3f4a53;
-  --info-dialog-border-color: #f8f5ed;
-  --error-dialog-color: white;
-  --error-dialog-bg-color: #aa0000;
-  --error-dialog-border-color: white;
-  --error-dialog-button-color: white;
-  --error-dialog-button-bg-color: #cc7777;
-  --hovered-error-dialog-button-bg-color: #aa5555;
-  --busy-dialog-color: white;
-  --busy-dialog-bg-color: #555;
-  --busy-dialog-border-color: white;
-  --control-shadow-color: black;
-  --selector-color: #f3f1ec;
-  --selector-bg-color: #566672;
-  --pushed-selector-color: #f8f5ed;
-  --pushed-selector-bg-color: #6c4140;
-  --toggle-knob-color: #f8f5ed;
-  --toggle-active-color: #7da972;
-  --toggle-inactive-color: #6a747a;
 }
 
 .dark-green {

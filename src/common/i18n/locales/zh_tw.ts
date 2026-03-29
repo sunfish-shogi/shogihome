@@ -221,9 +221,8 @@ export const zh_tw: Texts = {
   customImage: "自定義圖片",
   autumn: "紅葉",
   snow: "雪",
-  classicSilver: "經典銀色",
-  pastelBeige: "粉彩米色",
-  washiDye: "和風染色",
+  classic: "クラシック", // TODO: Translate
+  beige: "ベージュ", // TODO: Translate
   darkGreen: "深綠",
   dark: "深色主題",
   boardLayout: "棋盤設計",
