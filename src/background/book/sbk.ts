@@ -146,7 +146,10 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   const nonRootSfens = new Set<string>();
 
   // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
-  const sfenToEdges = new Map<string, [BookMove, number, string][]>();
+  const sfenToEdges = new Map<
+    string,
+    { bookMove: BookMove; sbkMove: number; nextSfen: string }[]
+  >();
 
   for (const [rootSfen, rootEntry] of book.entries) {
     // DFS で訪問したことがある局面はそれ以上調べる必要がない。
@@ -185,7 +188,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
         sfenToEdges.set(frame.sfen, edges);
       }
       const nextSfen = pos.sfen;
-      edges.push([bookMove, toSbkMove(move), nextSfen]);
+      edges.push({ bookMove, sbkMove: toSbkMove(move), nextSfen });
       const nextEntry = book.entries.get(nextSfen);
       if (!nextEntry) {
         pos.undoMove(move);
@@ -255,8 +258,8 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
 
   async function writeState(sfen: string, entry: BookEntry): Promise<void> {
     const edges = sfenToEdges.get(sfen) ?? [];
-    const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
-      Move: move,
+    const sbkMoves: SBookMoveProto[] = edges.map(({ bookMove, sbkMove, nextSfen }) => ({
+      Move: sbkMove,
       Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
       Weight: bookMove.count ?? 0,
       NextStateId: sfenToId.get(nextSfen) ?? -1, // 存在しない局面に対して BookConv は -1 を出力している
