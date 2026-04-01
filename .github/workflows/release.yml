@@ -34,6 +34,7 @@ jobs:
         with:
           node-version: lts/*
           cache: "npm"
+      - run: npm install -g npm@latest
       - run: npm version
       - run: npm ci --no-audit --no-fund --prefer-online
       - run: npm run electron:build
