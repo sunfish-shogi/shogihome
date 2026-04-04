@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 import { Move, ImmutablePosition } from "tsshogi";
 import { useStore } from "@/renderer/store";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -55,7 +55,7 @@ import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut"
 
 const store = useStore();
 const appSettings = useAppSettings();
-const boardMaxSize = reactive(new RectSize(200, 500));
+const boardMaxSize = new RectSize(200, 200);
 
 const shortcutKeys = computed(() => getRecordShortcutKeys(appSettings.recordShortcutKeys));
 

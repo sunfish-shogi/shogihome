@@ -57,13 +57,13 @@ const emit = defineEmits<{
 }>();
 
 const canvas = ref<HTMLCanvasElement>();
-let chart: Chart | undefined;
+let chart: Chart;
 
 const style = computed(() =>
   props.size ? { width: `${props.size.width}px`, height: `${props.size.height}px` } : {},
 );
 
-const data = computed(() => {
+const chartData = computed(() => {
   const nodeMap = new Map<number, ImmutableNode>();
   for (const node of props.record.moves) {
     if (node.ply > 0) {
@@ -98,10 +98,58 @@ const data = computed(() => {
   return { labels, blackData, whiteData };
 });
 
-const buildChart = () => {
-  if (!canvas.value) {
+const updateChart = () => {
+  const palette = getColorPalette(props.thema);
+  const { labels, blackData, whiteData } = chartData.value;
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = blackData;
+  chart.data.datasets[0].backgroundColor = palette.blackPlayer;
+  chart.data.datasets[1].data = whiteData;
+  chart.data.datasets[1].backgroundColor = palette.whitePlayer;
+  chart.options.color = palette.main;
+  if (chart.options.scales?.x?.ticks) {
+    chart.options.scales.x.ticks.color = palette.ticks;
+  }
+  if (chart.options.scales?.x?.grid) {
+    chart.options.scales.x.grid.color = palette.grid;
+  }
+  if (chart.options.scales?.y?.ticks) {
+    chart.options.scales.y.ticks.color = palette.ticks;
+  }
+  if (chart.options.scales?.y?.grid) {
+    chart.options.scales.y.grid.color = palette.grid;
+  }
+  if (chart.options.plugins?.legend) {
+    chart.options.plugins.legend.display = !!props.showLegend;
+  }
+  chart.update();
+};
+
+const onChartClick = (event: ChartEvent, elements: ActiveElement[]) => {
+  let index: number;
+  if (elements.length > 0) {
+    index = elements[0].index;
+  } else if (event.x !== null) {
+    const xScale = chart.scales.x;
+    if (!xScale) {
+      return;
+    }
+    const value = xScale.getValueForPixel(event.x);
+    if (value === undefined || value === null) {
+      return;
+    }
+    index = Math.round(value);
+    const maxIndex = (chart.data.labels?.length ?? 1) - 1;
+    if (index < 0 || index > maxIndex) {
+      return;
+    }
+  } else {
     return;
   }
+  emit("clickPly", index + 1);
+};
+
+onMounted(() => {
   const palette = getColorPalette(props.thema);
 
   const plyIndicatorPlugin = {
@@ -146,31 +194,23 @@ const buildChart = () => {
       ctx.lineTo(barX + size, barTopY - size * 2 - 2);
       ctx.lineTo(barX, barTopY - 2);
       ctx.closePath();
-      ctx.fillStyle = palette.selected;
+      ctx.fillStyle = getColorPalette(props.thema).selected;
       ctx.fill();
       ctx.restore();
     },
   };
 
-  const context = canvas.value.getContext("2d", {
+  const context = canvas.value!.getContext("2d", {
     desynchronized: true,
   }) as CanvasRenderingContext2D;
   chart = new Chart(context, {
     type: "bar",
     plugins: [plyIndicatorPlugin],
     data: {
-      labels: data.value.labels,
+      labels: [],
       datasets: [
-        {
-          label: t.sente,
-          data: data.value.blackData,
-          backgroundColor: palette.blackPlayer,
-        },
-        {
-          label: t.gote,
-          data: data.value.whiteData,
-          backgroundColor: palette.whitePlayer,
-        },
+        { label: t.sente, data: [], backgroundColor: palette.blackPlayer },
+        { label: t.gote, data: [], backgroundColor: palette.whitePlayer },
       ],
     },
     options: {
@@ -199,74 +239,23 @@ const buildChart = () => {
       onClick: onChartClick,
     },
   });
-};
 
-const onChartClick = (event: ChartEvent, elements: ActiveElement[]) => {
-  let index: number;
-  if (elements.length > 0) {
-    index = elements[0].index;
-  } else if (chart && event.x !== null) {
-    const xScale = chart.scales.x;
-    if (!xScale) {
-      return;
-    }
-    const value = xScale.getValueForPixel(event.x);
-    if (value === undefined || value === null) {
-      return;
-    }
-    index = Math.round(value);
-    const maxIndex = (chart.data.labels?.length ?? 1) - 1;
-    if (index < 0 || index > maxIndex) {
-      return;
-    }
-  } else {
-    return;
-  }
-  emit("clickPly", index + 1);
-};
+  updateChart();
 
-onMounted(() => {
-  buildChart();
+  watch(
+    () => props.record.current.ply,
+    () => chart.update(),
+  );
+
+  watch(
+    () => [chartData.value, props.thema, props.showLegend] as const,
+    () => updateChart(),
+  );
 });
 
 onBeforeUnmount(() => {
   chart?.destroy();
 });
-
-watch(
-  () => props.record.current.ply,
-  () => {
-    chart?.update();
-  },
-);
-
-watch(
-  () => props.thema,
-  () => {
-    chart?.destroy();
-    chart = undefined;
-    buildChart();
-  },
-);
-
-watch(
-  () => data.value,
-  () => {
-    chart?.destroy();
-    chart = undefined;
-    buildChart();
-  },
-);
-
-watch(
-  () => props.showLegend,
-  (value) => {
-    if (chart?.options.plugins?.legend) {
-      chart.options.plugins.legend.display = !!value;
-      chart.update();
-    }
-  },
-);
 </script>
 
 <style scoped>
