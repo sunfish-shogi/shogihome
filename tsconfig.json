@@ -5,7 +5,7 @@
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "Node10",
+    "moduleResolution": "Bundler",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "sourceMap": true,
