@@ -209,6 +209,14 @@ img.icon {
   margin: 0px;
 }
 
+.title img.icon {
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.3));
+}
+
+.title > div {
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
 img.small-icon {
   width: auto;
   height: 1em;
