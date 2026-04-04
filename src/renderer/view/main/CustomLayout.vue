@@ -69,8 +69,7 @@
         v-else-if="c.type === 'ElapsedTimeChart'"
         :size="c.size"
         :thema="appSettings.thema"
-        :moves="store.record.moves"
-        :selected-ply="store.record.current.ply"
+        :record="store.record"
         :show-legend="!!c.showLegend"
         @click-ply="(ply) => store.changePly(ply)"
       />

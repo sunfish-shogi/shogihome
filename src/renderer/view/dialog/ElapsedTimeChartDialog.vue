@@ -15,8 +15,7 @@
       <div class="chart-area">
         <ElapsedTimeChart
           :thema="appSettings.thema"
-          :moves="store.record.moves"
-          :selected-ply="selectedPly"
+          :record="store.record"
           :show-legend="true"
           @click-ply="(ply) => store.changePly(ply)"
         />
@@ -59,8 +58,6 @@ const appSettings = useAppSettings();
 const boardMaxSize = reactive(new RectSize(200, 500));
 
 const shortcutKeys = computed(() => getRecordShortcutKeys(appSettings.recordShortcutKeys));
-
-const selectedPly = computed(() => store.record.current.ply);
 
 const selectedPosition = computed<ImmutablePosition>(() => store.record.position);
 

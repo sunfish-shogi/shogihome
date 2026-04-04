@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Chart, ActiveElement, ChartEvent } from "chart.js";
-import { Color, ImmutableNode, Move, reverseColor } from "tsshogi";
+import { Color, ImmutableNode, ImmutableRecord, Move, reverseColor } from "tsshogi";
 import { Thema } from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { RectSize } from "@/common/assets/geometry";
@@ -48,8 +48,7 @@ function getColorPalette(thema: Thema): ColorPalette {
 const props = defineProps<{
   size?: RectSize;
   thema: Thema;
-  moves: ImmutableNode[];
-  selectedPly: number;
+  record: ImmutableRecord;
   showLegend?: boolean;
 }>();
 
@@ -64,25 +63,19 @@ const style = computed(() =>
   props.size ? { width: `${props.size.width}px`, height: `${props.size.height}px` } : {},
 );
 
-const buildChart = () => {
-  if (!canvas.value) {
-    return;
-  }
-  const palette = getColorPalette(props.thema);
-
-  const labels: string[] = [];
-  const blackData: (number | null)[] = [];
-  const whiteData: (number | null)[] = [];
-
+const data = computed(() => {
   const nodeMap = new Map<number, ImmutableNode>();
-  for (const node of props.moves) {
+  for (const node of props.record.moves) {
     if (node.ply > 0) {
       nodeMap.set(node.ply, node);
     }
   }
-  const lastPly = props.moves.length > 1 ? props.moves[props.moves.length - 1].ply : 0;
+  const lastPly =
+    props.record.moves.length > 1 ? props.record.moves[props.record.moves.length - 1].ply : 0;
   const maxPly = Math.max(30, lastPly);
-
+  const labels: string[] = [];
+  const blackData: (number | null)[] = [];
+  const whiteData: (number | null)[] = [];
   for (let ply = 1; ply <= maxPly; ply++) {
     labels.push(String(ply));
     const node = nodeMap.get(ply);
@@ -102,11 +95,19 @@ const buildChart = () => {
       whiteData.push(null);
     }
   }
+  return { labels, blackData, whiteData };
+});
+
+const buildChart = () => {
+  if (!canvas.value) {
+    return;
+  }
+  const palette = getColorPalette(props.thema);
 
   const plyIndicatorPlugin = {
     id: "plyIndicator",
     afterDraw(ch: Chart) {
-      const ply = props.selectedPly;
+      const ply = props.record.current.ply;
       if (ply <= 0) {
         return;
       }
@@ -158,16 +159,16 @@ const buildChart = () => {
     type: "bar",
     plugins: [plyIndicatorPlugin],
     data: {
-      labels,
+      labels: data.value.labels,
       datasets: [
         {
           label: t.sente,
-          data: blackData,
+          data: data.value.blackData,
           backgroundColor: palette.blackPlayer,
         },
         {
           label: t.gote,
-          data: whiteData,
+          data: data.value.whiteData,
           backgroundColor: palette.whitePlayer,
         },
       ],
@@ -233,7 +234,7 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => props.selectedPly,
+  () => props.record.current.ply,
   () => {
     chart?.update();
   },
@@ -249,7 +250,7 @@ watch(
 );
 
 watch(
-  () => props.moves,
+  () => data.value,
   () => {
     chart?.destroy();
     chart = undefined;
