@@ -5,13 +5,12 @@
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "Node10",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "outDir": "dist/src",
     "types": ["vitest/globals"],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
