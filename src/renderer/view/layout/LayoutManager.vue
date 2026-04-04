@@ -93,6 +93,7 @@
             <option value="ControlGroup1">{{ t.controlGroup }}1</option>
             <option value="ControlGroup2">{{ t.controlGroup }}2</option>
             <option value="SimpleBoard">{{ t.bookStyleDiagram }}</option>
+            <option value="ElapsedTimeChart">{{ t.elapsedTimeChart }}</option>
           </select>
           <button class="thin" @click="insertCustomProfileComponent">{{ t.insert }}</button>
         </div>
@@ -108,6 +109,7 @@
             <span v-if="component.type === 'ControlGroup1'">{{ t.controlGroup }}1</span>
             <span v-if="component.type === 'ControlGroup2'">{{ t.controlGroup }}2</span>
             <span v-if="component.type === 'SimpleBoard'">{{ t.bookStyleDiagram }}</span>
+            <span v-if="component.type === 'ElapsedTimeChart'">{{ t.elapsedTimeChart }}</span>
           </div>
           <div>
             <span class="property">
@@ -309,6 +311,15 @@
                 @update:value="
                   (value) => updateCustomProfileComponent(index, 'showSuggestionsCount', value)
                 "
+              />
+            </span>
+          </div>
+          <div v-if="component.type === 'ElapsedTimeChart'">
+            <span class="property">
+              <ToggleButton
+                :value="!!component.showLegend"
+                :label="t.legends"
+                @update:value="(value) => updateCustomProfileComponent(index, 'showLegend', value)"
               />
             </span>
           </div>
@@ -641,6 +652,15 @@ const insertCustomProfileComponent = () => {
         top: 0,
         width: 400,
         height: 300,
+      });
+      break;
+    case "ElapsedTimeChart":
+      components.unshift({
+        type,
+        left: 0,
+        top: 0,
+        width: 600,
+        height: 200,
       });
       break;
   }

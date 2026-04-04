@@ -65,6 +65,15 @@
         class="full"
         :group="ControlGroup.Group2"
       />
+      <ElapsedTimeChart
+        v-else-if="c.type === 'ElapsedTimeChart'"
+        :size="c.size"
+        :thema="appSettings.thema"
+        :moves="store.record.moves"
+        :selected-ply="store.record.current.ply"
+        :show-legend="!!c.showLegend"
+        @click-ply="(ply) => store.changePly(ply)"
+      />
       <SimpleBoardView
         v-else-if="c.type === 'SimpleBoard'"
         :max-size="c.size"
@@ -99,6 +108,7 @@ import BoardPane from "./BoardPane.vue";
 import RecordPane from "./RecordPane.vue";
 import EngineAnalytics from "@/renderer/view/tab/EngineAnalytics.vue";
 import EvaluationChart from "@/renderer/view/tab/EvaluationChart.vue";
+import ElapsedTimeChart from "@/renderer/view/primitive/ElapsedTimeChart.vue";
 import ControlPane, { ControlGroup } from "./ControlPane.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
