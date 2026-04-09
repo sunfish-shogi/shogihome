@@ -210,11 +210,11 @@ img.icon {
 }
 
 .title img.icon {
-  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(1px 1px 8px #1f4343);
 }
 
 .title > div {
-  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 8px #1f4343;
 }
 
 img.small-icon {
