@@ -62,7 +62,7 @@
     "dayjs": "^1.11.19",
     "electron-context-menu": "^4.1.2",
     "encoding-japanese": "^2.0.0",
-    "jimp": "^1.6.0",
+    "jimp": "^1.6.1",
     "log4js": "^6.7.0",
     "proper-lockfile": "^4.1.2",
     "semver": "^7.7.4",
