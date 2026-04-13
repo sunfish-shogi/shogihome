@@ -56,8 +56,8 @@ describe("background/book", () => {
         "src/tests/testdata/book/yaneuraou-bom-no-header.db",
       ];
       const patterns = [
-        { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
-        { options: { onTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
+        { options: { yaneOnTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
+        { options: { yaneOnTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
       ];
       for (const pattern of patterns) {
         for (const source of sources) {
@@ -111,7 +111,7 @@ describe("background/book", () => {
       it("invalid", async () => {
         await expect(
           openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou-invalid-header.db", {
-            onTheFlyThresholdMB: 1,
+            yaneOnTheFlyThresholdMB: 1,
           }),
         ).rejects.toThrow("Unsupported book header: #YANEURAOU-DB2016 2.00");
       });
@@ -119,8 +119,8 @@ describe("background/book", () => {
 
     describe("apery.bin", () => {
       const patterns = [
-        { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
-        { options: { onTheFlyThresholdMB: 0.00005 }, mode: "on-the-fly" },
+        { options: { aperyOnTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
+        { options: { aperyOnTheFlyThresholdMB: 0.00005 }, mode: "on-the-fly" },
       ];
       for (const pattern of patterns) {
         it(`mode=${pattern.mode}`, async () => {
@@ -178,6 +178,30 @@ describe("background/book", () => {
             const moves = await searchBookMoves(defaultBookSession, sfen);
             expect(moves).toHaveLength(0);
           }
+        });
+      }
+    });
+
+    describe("shogihome01.sbk", async () => {
+      const patterns = [
+        { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
+        { options: { sbkOnTheFlyThresholdMB: 0.001 }, mode: "on-the-fly" },
+        { options: { forceOnTheFly: true }, mode: "on-the-fly" },
+      ];
+      for (const pattern of patterns) {
+        it(`mode=${pattern.mode} options=${JSON.stringify(pattern.options)}`, async () => {
+          const mode = await openBook(
+            defaultBookSession,
+            "src/tests/testdata/book/shogihome01.sbk",
+            pattern.options,
+          );
+          expect(mode).toBe(pattern.mode);
+
+          const moves = await searchBookMoves(
+            defaultBookSession,
+            "lnsgk2nl/4r1gs1/pPpppp2p/6pR1/9/2P6/P1BPPPP1P/2S1K4/LN1G1GSNL w Pb2p 1",
+          );
+          expect(moves).toHaveLength(2);
         });
       }
     });
@@ -514,7 +538,9 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk");
 
       const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
-      const baseline = loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"));
+      const baseline = await loadSbkBook(
+        fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"),
+      );
       const baselineGames = baseline.entries.get(initialSfen)?.games ?? 0;
       const baselineWonBlack = baseline.entries.get(initialSfen)?.wonBlack ?? 0;
       const baselineWonWhite = baseline.entries.get(initialSfen)?.wonWhite ?? 0;
@@ -538,7 +564,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
       const tempFilePath = path.join(tmpdir, "stats-test.sbk");
       await saveBook(defaultBookSession, tempFilePath);
-      const entry = loadSbkBook(fs.readFileSync(tempFilePath)).entries.get(initialSfen);
+      const entry = (await loadSbkBook(fs.readFileSync(tempFilePath))).entries.get(initialSfen);
       expect(entry?.games).toBe(baselineGames + 3);
       expect(entry?.wonBlack).toBe(baselineWonBlack + 1);
       expect(entry?.wonWhite).toBe(baselineWonWhite + 2);
@@ -548,7 +574,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
   describe("merge", () => {
     it("yaneuraou", async () => {
       const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
-        onTheFlyThresholdMB: 0.0001,
+        yaneOnTheFlyThresholdMB: 0.0001,
       });
       expect(mode).toBe("on-the-fly");
 
@@ -627,7 +653,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
     it("apery", async () => {
       const mode = await openBook(defaultBookSession, "src/tests/testdata/book/apery.bin", {
-        onTheFlyThresholdMB: 0.0001,
+        aperyOnTheFlyThresholdMB: 0.0001,
       });
       expect(mode).toBe("on-the-fly");
 
@@ -683,7 +709,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
     it("forbidOverwrite", async () => {
       const path = "src/tests/testdata/book/yaneuraou.db";
-      const mode = await openBook(defaultBookSession, path, { onTheFlyThresholdMB: 0.0001 });
+      const mode = await openBook(defaultBookSession, path, { yaneOnTheFlyThresholdMB: 0.0001 });
       expect(mode).toBe("on-the-fly");
       await expect(saveBook(defaultBookSession, path)).rejects.toThrowError(
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
@@ -731,14 +757,14 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       const outPath = path.join(tmpdir, "export-yane-to-sbk.sbk");
       await exportBook(defaultBookSession, outPath, "sbk");
 
-      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      const sbk = await loadSbkBook(fs.readFileSync(outPath));
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
       expect(sbk.entries.get(sfen2)?.moves.length).toBeGreaterThan(0);
     });
 
     it("yane2016 → yane2016 (on-the-fly): moves preserved", async () => {
       const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
-        onTheFlyThresholdMB: 0.0001,
+        yaneOnTheFlyThresholdMB: 0.0001,
       });
       expect(mode).toBe("on-the-fly");
 
@@ -751,15 +777,29 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
     it("yane2016 (on-the-fly) → sbk: moves preserved", async () => {
       const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
-        onTheFlyThresholdMB: 0.0001,
+        yaneOnTheFlyThresholdMB: 0.0001,
       });
       expect(mode).toBe("on-the-fly");
 
       const outPath = path.join(tmpdir, "export-yane-otf-to-sbk.sbk");
       await exportBook(defaultBookSession, outPath, "sbk");
 
-      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      const sbk = await loadSbkBook(fs.readFileSync(outPath));
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
+    });
+
+    it("sbk (on-the-fly) → yane2016: moves preserved", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk", {
+        sbkOnTheFlyThresholdMB: 0.001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      const outPath = path.join(tmpdir, "export-sbk-otf-to-yane.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      const mode2 = await openBook(defaultBookSession, outPath);
+      expect(mode2).toBe("in-memory");
+      expect((await searchBookMoves(defaultBookSession, sfen1)).length).toBeGreaterThan(0);
     });
 
     it("apery → yane2016: throws", async () => {

@@ -42,7 +42,12 @@ import {
   searchAperyBookMovesOnTheFly,
   storeAperyBook,
 } from "./apery.js";
-import { loadSbkBook, storeSbkBook } from "./sbk.js";
+import {
+  loadSbkBook,
+  loadSbkBookOnTheFly,
+  searchSbkBookEntryOnTheFly,
+  storeSbkBook,
+} from "./sbk.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
@@ -52,13 +57,18 @@ type InMemoryBook = Book & {
   saved: boolean;
 };
 
-type OnTheFlyBook = Book & {
+type OnTheFlyBook = {
   type: "on-the-fly";
   path: string;
-  file: fs.promises.FileHandle;
-  size: number;
   saved: boolean;
-};
+} & (
+  | ((YaneBook | AperyBook) & {
+      file: fs.promises.FileHandle;
+      size: number;
+      saved: boolean;
+    })
+  | SbkBook
+);
 
 // マージ済みのエントリーを取得する。
 async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
@@ -79,8 +89,19 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
       const base = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
       return mergeBookEntries(base, entry);
     }
-    case "sbk":
-      return book.entries.get(sfen);
+    case "sbk": {
+      const entry = book.entries.get(sfen);
+      if (
+        book.type === "in-memory" ||
+        entry?.type === "normal" ||
+        !book.rawData ||
+        !book.sbkIndex
+      ) {
+        return entry;
+      }
+      const base = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+      return mergeBookEntries(base, entry);
+    }
   }
 }
 
@@ -185,12 +206,14 @@ function getFormatByPath(path: string): "yane2016" | "apery" | "sbk" {
   return "apery";
 }
 
-async function openBookOnTheFly(session: number, path: string, size: number): Promise<void> {
+async function openBookOnTheFly(
+  session: number,
+  path: string,
+  size: number,
+  onProgress?: (progress: number) => void,
+): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
-  if (format === "sbk") {
-    throw new Error("SBK format does not support on-the-fly loading");
-  }
   const file = await fs.promises.open(path, "r");
   try {
     if (
@@ -199,25 +222,32 @@ async function openBookOnTheFly(session: number, path: string, size: number): Pr
     ) {
       throw new Error("Book is not ordered by position"); // FIXME: i18n
     }
+    const common = { path, file, size, saved: true };
+    if (format === "yane2016") {
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        format: "yane2016",
+        entries: new Map<string, BookEntry>(),
+      });
+    } else if (format === "apery") {
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        format: "apery",
+        entries: new Map<bigint, BookEntry>(),
+      });
+    } else {
+      const sbkOnTheFly = await loadSbkBookOnTheFly(path, onProgress);
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        ...sbkOnTheFly,
+      });
+    }
   } catch (e) {
     await file.close();
     throw e;
-  }
-  const common = { path, file, size, saved: true };
-  if (format === "yane2016") {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "yane2016",
-      entries: new Map<string, BookEntry>(),
-    });
-  } else {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "apery",
-      entries: new Map<bigint, BookEntry>(),
-    });
   }
 }
 
@@ -233,8 +263,7 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
         book = await loadYaneuraOuBook(file);
         break;
       case "sbk": {
-        const data = await fs.promises.readFile(path);
-        book = loadSbkBook(data);
+        book = await loadSbkBook(path);
         break;
       }
       default:
@@ -257,6 +286,7 @@ export async function openBook(
   session: number,
   path: string,
   options?: BookLoadingOptions,
+  onProgress?: (progress: number) => void,
 ): Promise<"in-memory" | "on-the-fly"> {
   const stat = await fs.promises.lstat(path);
   if (!stat.isFile()) {
@@ -264,13 +294,26 @@ export async function openBook(
   }
 
   const size = stat.size;
+  const format = getFormatByPath(path);
+
+  let onTheFlyThresholdMB: number | undefined;
+  switch (format) {
+    case "yane2016":
+      onTheFlyThresholdMB = options?.yaneOnTheFlyThresholdMB;
+      break;
+    case "apery":
+      onTheFlyThresholdMB = options?.aperyOnTheFlyThresholdMB;
+      break;
+    case "sbk":
+      onTheFlyThresholdMB = options?.sbkOnTheFlyThresholdMB;
+      break;
+  }
+
   if (
-    getFormatByPath(path) !== "sbk" &&
-    (options?.forceOnTheFly ||
-      (options?.onTheFlyThresholdMB !== undefined &&
-        size > options.onTheFlyThresholdMB * 1024 * 1024))
+    options?.forceOnTheFly ||
+    (onTheFlyThresholdMB !== undefined && size > onTheFlyThresholdMB * 1024 * 1024)
   ) {
-    await openBookOnTheFly(session, path, size);
+    await openBookOnTheFly(session, path, size, onProgress);
     return "on-the-fly";
   } else {
     await openBookInMemory(session, path, size);
@@ -300,9 +343,25 @@ function replaceBook(session: number, newBook: BookHandle) {
   bookFiles.set(session, newBook);
 }
 
-export async function saveBook(session: number, path: string) {
+async function loadMergedSbkBook(book: OnTheFlyBook & { format: "sbk" }): Promise<SbkBook> {
+  const fullBook = await loadSbkBook(book.rawData || book.path);
+  for (const [sfen, patch] of book.entries) {
+    const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
+    if (merged) {
+      fullBook.entries.set(sfen, merged);
+    }
+  }
+  return fullBook;
+}
+
+export async function saveBook(
+  session: number,
+  path: string,
+  onProgress?: (progress: number) => void,
+) {
   const book = getBook(session);
   // on-the-fly の場合は上書きを禁止
+  // SBK の場合は on-the-fly でもメモリにロードしているので上書きも可能であるがルールを統一しておく
   if (book.type === "on-the-fly" && (await exists(path))) {
     const inputRealPath = await fs.promises.realpath(book.path);
     const outputRealPath = await fs.promises.realpath(path);
@@ -348,7 +407,7 @@ export async function saveBook(session: number, path: string) {
         if (!path.endsWith(".sbk")) {
           throw new Error("Invalid file extension: " + path);
         }
-        await storeSbkBook(book, file);
+        await storeSbkBook(book, file, onProgress);
         break;
     }
     if (book.type === "in-memory") {
@@ -364,6 +423,7 @@ export async function exportBook(
   session: number,
   path: string,
   targetFormat: BookFormat,
+  onProgress?: (progress: number) => void,
 ): Promise<void> {
   const expectedExt =
     targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
@@ -374,7 +434,7 @@ export async function exportBook(
   const book = getBook(session);
 
   if (book.format === targetFormat) {
-    await saveBook(session, path);
+    await saveBook(session, path, onProgress);
     return;
   }
 
@@ -400,6 +460,8 @@ export async function exportBook(
         fullBook.entries.set(sfen, merged);
       }
     }
+  } else if (book.format === "sbk") {
+    fullBook = await loadMergedSbkBook(book);
   } else {
     throw new Error("On-the-fly mode is not supported for this book format");
   }
@@ -419,7 +481,12 @@ export async function exportBook(
       break;
     }
     case "sbk":
-      targetBook = { format: "sbk", entries: fullBook.entries };
+      targetBook = {
+        format: "sbk",
+        entries: fullBook.entries,
+        sbkAuthor: fullBook.format === "sbk" ? fullBook.sbkAuthor : undefined,
+        sbkDescription: fullBook.format === "sbk" ? fullBook.sbkDescription : undefined,
+      };
       break;
   }
 
@@ -433,7 +500,7 @@ export async function exportBook(
         await storeAperyBook(targetBook, file);
         break;
       case "sbk":
-        await storeSbkBook(targetBook, file);
+        await storeSbkBook(targetBook, file, onProgress);
         break;
     }
   } finally {
@@ -446,7 +513,7 @@ export function clearBook(session: number, format?: BookFormat): void {
   if (!book) {
     return;
   }
-  if (book.type === "on-the-fly") {
+  if (book.type === "on-the-fly" && book.format !== "sbk") {
     book.file.close();
   }
   bookFiles.set(session, emptyBook(format));

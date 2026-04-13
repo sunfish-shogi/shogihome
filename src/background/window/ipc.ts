@@ -621,7 +621,7 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`open book: ${path}`);
     const options = JSON.parse(json) as BookLoadingOptions;
-    await openBook(session, path, options);
+    await openBook(session, path, options, sendProgress);
   },
 );
 
@@ -648,7 +648,7 @@ ipcMain.handle(
   async (event, session: number, path: string): Promise<void> => {
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`save book: ${path}`);
-    await saveBook(session, path);
+    await saveBook(session, path, sendProgress);
   },
 );
 
@@ -657,7 +657,7 @@ ipcMain.handle(
   async (event, session: number, path: string, targetFormat: BookFormat): Promise<void> => {
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`export book: ${path} as ${targetFormat}`);
-    await exportBook(session, path, targetFormat);
+    await exportBook(session, path, targetFormat, sendProgress);
   },
 );
 
@@ -1102,7 +1102,7 @@ export function openRecord(path: string): void {
   }
 }
 
-export function sendProgress(progress: number): void {
+function sendProgress(progress: number): void {
   mainWindow.webContents.send(Renderer.PROGRESS, progress);
 }
 

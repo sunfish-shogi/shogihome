@@ -93,7 +93,9 @@ export class BookStore {
           return;
         }
         await api.openBook(defaultBookSession, path, {
-          onTheFlyThresholdMB: useAppSettings().bookOnTheFlyThresholdMB,
+          yaneOnTheFlyThresholdMB: useAppSettings().yaneBookOnTheFlyThresholdMB,
+          aperyOnTheFlyThresholdMB: useAppSettings().aperyBookOnTheFlyThresholdMB,
+          sbkOnTheFlyThresholdMB: useAppSettings().sbkOnTheFlyThresholdMB,
         });
         this._format = await api.getBookFormat(defaultBookSession);
         await this.reloadBookMoves();

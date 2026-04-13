@@ -532,8 +532,46 @@
       <!-- On-the-fly 閾値 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.onTheFlyThreshold }}</div>
-        <input v-model.number="update.bookOnTheFlyThresholdMB" type="number" max="512" min="0" />
-        <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+        <table class="subgroup">
+          <tbody>
+            <tr>
+              <td>Yane2016</td>
+              <td>
+                <input
+                  v-model.number="update.yaneBookOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+              </td>
+            </tr>
+            <tr>
+              <td>Apery</td>
+              <td>
+                <input
+                  v-model.number="update.aperyBookOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+              </td>
+            </tr>
+            <tr>
+              <td>SBK</td>
+              <td>
+                <input
+                  v-model.number="update.sbkOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 128) }})</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <!-- USI プロトコル -->
@@ -875,7 +913,9 @@ const update = ref({
   enableUSIFileSpecialMoves: org.enableUSIFileSpecialMoves,
   showPasteDialog: org.showPasteDialog,
   liveDuplicatePositionDetection: org.liveDuplicatePositionDetection,
-  bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
+  yaneBookOnTheFlyThresholdMB: org.yaneBookOnTheFlyThresholdMB,
+  aperyBookOnTheFlyThresholdMB: org.aperyBookOnTheFlyThresholdMB,
+  sbkOnTheFlyThresholdMB: org.sbkOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
   nodeCountFormat: org.nodeCountFormat,
@@ -978,6 +1018,13 @@ const cancel = () => {
   max-width: 590px;
   height: 800px;
   margin-top: 0;
+}
+.subgroup {
+  display: inline-table;
+  border: 0;
+}
+.subgroup td:not(:first-child) {
+  padding-left: 10px;
 }
 input.file-path {
   width: 250px;

@@ -222,7 +222,10 @@ export type AppSettings = {
   liveDuplicatePositionDetection: boolean;
 
   // Opening Book
-  bookOnTheFlyThresholdMB: number;
+  bookOnTheFlyThresholdMB: number; // Deprecated
+  yaneBookOnTheFlyThresholdMB: number;
+  aperyBookOnTheFlyThresholdMB: number;
+  sbkOnTheFlyThresholdMB: number;
   flippedBook: boolean;
 
   // Engine
@@ -380,7 +383,10 @@ export function defaultAppSettings(opt?: {
     enableUSIFileSpecialMoves: false,
     showPasteDialog: true,
     liveDuplicatePositionDetection: true,
-    bookOnTheFlyThresholdMB: 64,
+    bookOnTheFlyThresholdMB: 64, // Deprecated
+    yaneBookOnTheFlyThresholdMB: 64,
+    aperyBookOnTheFlyThresholdMB: 64,
+    sbkOnTheFlyThresholdMB: 16,
     flippedBook: true,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
@@ -430,10 +436,22 @@ export function normalizeAppSettings(
     autoSaveDirectory?: string; // Deprecated
   },
 ): AppSettings {
+  // やねうら王形式と Apery 形式の on-the-fly 閾値の新しい設定が無い場合は古い設定を引き継ぐ。
+  // SBK 形式は新しい設定なので古い設定を引き継がない。
+  if (
+    settings.yaneBookOnTheFlyThresholdMB === undefined &&
+    settings.aperyBookOnTheFlyThresholdMB === undefined &&
+    settings.bookOnTheFlyThresholdMB !== undefined
+  ) {
+    settings.yaneBookOnTheFlyThresholdMB = settings.bookOnTheFlyThresholdMB;
+    settings.aperyBookOnTheFlyThresholdMB = settings.bookOnTheFlyThresholdMB;
+  }
+  // デフォルト設定をベースにマージする。
   const result = {
     ...defaultAppSettings(opt),
     ...settings,
   };
+  // 自動保存先ディレクトリの末尾のスラッシュを削除する。
   result.autoSaveDirectory = removeLastSlash(result.autoSaveDirectory);
   // 旧バージョンでは盤画像に合わせて自動で駒台の色が選ばれていた。
   if (!settings.pieceStandImage) {

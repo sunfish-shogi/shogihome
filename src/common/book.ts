@@ -19,11 +19,14 @@ export type BookMove = {
   depth?: number; // 探索深さ
   count?: number; // 出現回数
   comment?: string; // コメント
-  evaluation?: SbkMoveEvaluation; // 指し手の評価 (SBK)
+  sbkEval?: SbkMoveEvaluation; // SBK の指し手評価
+  sbkId?: number; // SBK State ID
 };
 
 export type BookLoadingOptions = {
-  onTheFlyThresholdMB?: number; // On-the-fly に切り替える閾値(MebiBytes)
+  yaneOnTheFlyThresholdMB?: number; // やねうら王形式を on-the-fly に切り替える閾値(MebiBytes)
+  aperyOnTheFlyThresholdMB?: number; // Apery 形式を on-the-fly に切り替える閾値(MebiBytes)
+  sbkOnTheFlyThresholdMB?: number; // SBK 形式を on-the-fly に切り替える閾値(MebiBytes)
   forceOnTheFly?: boolean; // 強制的に On-the-fly モードにする
 };
 

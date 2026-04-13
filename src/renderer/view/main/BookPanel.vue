@@ -31,7 +31,7 @@
         :depth="editingData.depth"
         :count="editingData.count"
         :comment="editingData.comment"
-        :evaluation="editingData.evaluation"
+        :sbk-eval="editingData.sbkEval"
         :format="bookStore.format"
         @ok="onEditBookMove"
         @cancel="onCancelEditBookMove"
