@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import { PassThrough } from "node:stream";
-import { loadSbkBook, storeSbkBook } from "@/background/book/sbk.js";
+import { loadSbkBook, loadSbkBookOnTheFly, storeSbkBook } from "@/background/book/sbk.js";
 
 describe("background/book/sbk", () => {
   const testCases = [
@@ -10,8 +10,24 @@ describe("background/book/sbk", () => {
     { input: "shogihome02.sbk", expected: "shogihome02.sbk" },
   ];
   for (const { input, expected } of testCases) {
-    it(`${input} → ${expected}`, async () => {
-      const book = loadSbkBook(fs.readFileSync(`src/tests/testdata/book/${input}`));
+    it(`in-memory: ${input} → ${expected}`, async () => {
+      const book = await loadSbkBook(fs.readFileSync(`src/tests/testdata/book/${input}`));
+
+      const pass = new PassThrough();
+      const chunks: Buffer[] = [];
+      pass.on("data", (chunk: Buffer) => chunks.push(chunk));
+      const finished = new Promise<void>((resolve) => pass.on("finish", resolve));
+
+      await storeSbkBook(book, pass);
+      await finished;
+
+      const outputHex = Buffer.concat(chunks).toString("hex");
+      const expectedHex = fs.readFileSync(`src/tests/testdata/book/${expected}`).toString("hex");
+      expect(outputHex).toBe(expectedHex);
+    });
+
+    it(`on-the-fly: ${input} → ${expected}`, async () => {
+      const book = await loadSbkBookOnTheFly(`src/tests/testdata/book/${input}`);
 
       const pass = new PassThrough();
       const chunks: Buffer[] = [];
