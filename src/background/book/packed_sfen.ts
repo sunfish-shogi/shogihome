@@ -15,6 +15,7 @@ type ParsedPiece = {
 
 const STANDARD_SFEN = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 const PIECE_ORDER: NonKingPieceType[] = ["P", "L", "N", "S", "G", "B", "R"];
+const HAND_SFEN_ORDER: NonKingPieceType[] = ["R", "B", "G", "S", "N", "L", "P"];
 const BOARD_PIECE_TOTAL: Record<NonKingPieceType, number> = {
   P: 18,
   L: 4,
@@ -57,6 +58,17 @@ const BOARD_CHAR_TO_PIECE: Record<string, PieceType> = {
   k: "K",
 };
 
+const BOARD_DECODE_TABLE = new Map<string, NonKingPieceType | "E">(
+  Object.entries(BOARD_HUFFMAN).map(([piece, h]) => [`${h.bits}:${h.code}`, piece as NonKingPieceType | "E"]),
+);
+
+const HAND_DECODE_TABLE = new Map<string, NonKingPieceType>(
+  PIECE_ORDER.map((piece) => {
+    const h = BOARD_HUFFMAN[piece];
+    return [`${h.bits - 1}:${h.code >> 1}`, piece];
+  }),
+);
+
 class BitWriter {
   private cursor = 0;
   readonly bytes = new Uint8Array(32);
@@ -75,6 +87,36 @@ class BitWriter {
     for (let i = 0; i < bits; i++) {
       this.writeBit((value >> i) & 1);
     }
+  }
+
+  get bitLength(): number {
+    return this.cursor;
+  }
+}
+
+class BitReader {
+  private cursor = 0;
+  readonly bytes: Uint8Array;
+
+  constructor(data: Uint8Array) {
+    this.bytes = data;
+  }
+
+  readBit(): number {
+    if (this.cursor >= this.bytes.length * 8) {
+      throw new Error("Packed SFEN underflow: no more bits");
+    }
+    const bit = (this.bytes[this.cursor >> 3] >> (this.cursor & 7)) & 1;
+    this.cursor++;
+    return bit;
+  }
+
+  readBits(bits: number): number {
+    let value = 0;
+    for (let i = 0; i < bits; i++) {
+      value |= this.readBit() << i;
+    }
+    return value;
   }
 
   get bitLength(): number {
@@ -266,6 +308,91 @@ function writePieceBoxPiece(writer: BitWriter, type: NonKingPieceType): void {
   }
 }
 
+function readBoardPiece(reader: BitReader): ParsedPiece | undefined {
+  let code = 0;
+  for (let bits = 1; bits <= 6; bits++) {
+    code |= reader.readBit() << (bits - 1);
+    const type = BOARD_DECODE_TABLE.get(`${bits}:${code}`);
+    if (!type) {
+      continue;
+    }
+    if (type === "E") {
+      return undefined;
+    }
+
+    const promoted = type !== "G" ? reader.readBit() === 1 : false;
+    const color: Color = reader.readBit() === 0 ? "b" : "w";
+    return { type, color, promoted };
+  }
+  throw new Error("Invalid packed sfen: cannot decode board piece");
+}
+
+function readHandPiece(reader: BitReader): ParsedPiece {
+  let code = 0;
+  for (let bits = 1; bits <= 6; bits++) {
+    code |= reader.readBit() << (bits - 1);
+    const type = HAND_DECODE_TABLE.get(`${bits}:${code}`);
+    if (!type) {
+      continue;
+    }
+
+    const promoted = type !== "G" ? reader.readBit() === 1 : false;
+    const color: Color = reader.readBit() === 0 ? "b" : "w";
+    return { type, color, promoted };
+  }
+  throw new Error("Invalid packed sfen: cannot decode hand/piece-box piece");
+}
+
+function pieceToBoardChar(piece: ParsedPiece): string {
+  const ch = piece.color === "b" ? piece.type : piece.type.toLowerCase();
+  if (!piece.promoted) {
+    return ch;
+  }
+  return `+${ch}`;
+}
+
+function boardToSFEN(board: (ParsedPiece | undefined)[]): string {
+  const ranks: string[] = [];
+  for (let rank = 0; rank < 9; rank++) {
+    let row = "";
+    let empty = 0;
+    for (let file = 0; file < 9; file++) {
+      const piece = board[rank * 9 + file];
+      if (!piece) {
+        empty++;
+        continue;
+      }
+      if (empty > 0) {
+        row += String(empty);
+        empty = 0;
+      }
+      row += pieceToBoardChar(piece);
+    }
+    if (empty > 0) {
+      row += String(empty);
+    }
+    ranks.push(row);
+  }
+  return ranks.join("/");
+}
+
+function handsToSFEN(hands: Record<Color, Record<NonKingPieceType, number>>): string {
+  let text = "";
+  for (const color of ["b", "w"] as const) {
+    for (const type of HAND_SFEN_ORDER) {
+      const count = hands[color][type];
+      if (!count) {
+        continue;
+      }
+      if (count > 1) {
+        text += String(count);
+      }
+      text += color === "b" ? type : type.toLowerCase();
+    }
+  }
+  return text || "-";
+}
+
 export function packSfenToPackedSfen(sfen: string): Uint8Array {
   const normalized = normalizeInputSFEN(sfen);
   const [boardPart, turnPart, handsPart] = normalized.split(/\s+/, 4);
@@ -311,4 +438,54 @@ export function packSfenToPackedSfen(sfen: string): Uint8Array {
     throw new Error(`Invalid packed sfen bit length: ${writer.bitLength}`);
   }
   return writer.bytes;
+}
+
+export function unpackPackedSfenToSfen(packedSfen: Uint8Array, ply: number = 1): string {
+  if (packedSfen.length < 32) {
+    throw new Error(`Packed SFEN requires 32 bytes but got ${packedSfen.length}`);
+  }
+  const reader = new BitReader(packedSfen.slice(0, 32));
+  const board: (ParsedPiece | undefined)[] = Array.from({ length: 81 }, () => undefined);
+
+  const turn: Color = reader.readBit() === 0 ? "b" : "w";
+
+  for (const color of ["b", "w"] as const) {
+    const sq = reader.readBits(7);
+    if (sq === 81) {
+      continue;
+    }
+    if (sq < 0 || sq >= 81) {
+      throw new Error(`Invalid packed sfen: king square out of range (${sq})`);
+    }
+    if (board[sq]) {
+      throw new Error(`Invalid packed sfen: duplicated king square (${sq})`);
+    }
+    board[sq] = { type: "K", color, promoted: false };
+  }
+
+  for (let sq = 0; sq < 81; sq++) {
+    if (board[sq]?.type === "K") {
+      continue;
+    }
+    board[sq] = readBoardPiece(reader);
+  }
+
+  const hands: Record<Color, Record<NonKingPieceType, number>> = {
+    b: createNonKingCountMap(),
+    w: createNonKingCountMap(),
+  };
+
+  while (reader.bitLength < 256) {
+    const piece = readHandPiece(reader);
+    if (piece.promoted) {
+      continue; // piece-box marker
+    }
+    hands[piece.color][piece.type as NonKingPieceType]++;
+  }
+
+  if (reader.bitLength !== 256) {
+    throw new Error(`Invalid packed sfen bit length: ${reader.bitLength}`);
+  }
+
+  return `${boardToSFEN(board)} ${turn} ${handsToSFEN(hands)} ${ply}`;
 }
