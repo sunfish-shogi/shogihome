@@ -1,6 +1,7 @@
 import events from "node:events";
+import fs from "node:fs";
 import { Writable } from "node:stream";
-import { Move, Position } from "tsshogi";
+import { ImmutablePosition, Move, Position } from "tsshogi";
 import { BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
   SBookMove as SBookMoveProto,
@@ -11,8 +12,25 @@ import {
 import { BookEntry, SbkBook, SbkEval } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
 import { BookMove } from "@/common/book.js";
+import { packPositionToPackedSfen, packSfenToPackedSfen } from "./packed_sfen.js";
 
-function normalizeSfen(position: string): string | undefined {
+export type SbkOnTheFlyIndex = {
+  table: ArrayBuffer;
+  rowCount: number;
+  firstNonZeroRow: number;
+};
+
+export type SbkOnTheFlyBuildResult = {
+  index: SbkOnTheFlyIndex;
+  sbkAuthor?: string;
+  sbkDescription?: string;
+};
+
+const SBK_ON_THE_FLY_ROW_SIZE = 37; // 32 bytes packed-sfen + 39-bit offset + 1-bit root
+const SBK_ON_THE_FLY_OFFSET_BITS = 39n;
+const SBK_ON_THE_FLY_OFFSET_MASK = (1n << SBK_ON_THE_FLY_OFFSET_BITS) - 1n;
+
+export function normalizeSfen(position: string): string | undefined {
   let s = position.trim();
   if (s.startsWith("position sfen ")) {
     s = s.slice("position sfen ".length);
@@ -25,6 +43,481 @@ function normalizeSfen(position: string): string | undefined {
     return undefined;
   }
   return parts.slice(0, 3).join(" ") + " 1";
+}
+
+function readVarint(data: Uint8Array, offset: number): [value: number, nextOffset: number] {
+  let value = 0;
+  let shift = 0;
+  for (let i = 0; i < 10; i++) {
+    if (offset >= data.length) {
+      throw new Error("Invalid protobuf: unexpected EOF while reading varint");
+    }
+    const byte = data[offset++];
+    value += (byte & 0x7f) * 2 ** shift;
+    if ((byte & 0x80) === 0) {
+      return [value, offset];
+    }
+    shift += 7;
+  }
+  throw new Error("Invalid protobuf: varint is too long");
+}
+
+function skipField(data: Uint8Array, offset: number, wireType: number): number {
+  switch (wireType) {
+    case 0: {
+      const [, next] = readVarint(data, offset);
+      return next;
+    }
+    case 1:
+      return offset + 8;
+    case 2: {
+      const [length, next] = readVarint(data, offset);
+      return next + length;
+    }
+    case 5:
+      return offset + 4;
+    default:
+      throw new Error(`Unsupported protobuf wire type: ${wireType}`);
+  }
+}
+
+function scanSBookTopLevel(data: Uint8Array): {
+  stateCount: number;
+  sbkAuthor?: string;
+  sbkDescription?: string;
+} {
+  let stateCount = 0;
+  let sbkAuthor: string | undefined;
+  let sbkDescription: string | undefined;
+  let offset = 0;
+  while (offset < data.length) {
+    const [tag, next] = readVarint(data, offset);
+    offset = next;
+    if (tag === 0) {
+      break;
+    }
+    const field = tag >>> 3;
+    const wireType = tag & 0x7;
+
+    if ((field === 1 || field === 2) && wireType === 2) {
+      const [length, textOffset] = readVarint(data, offset);
+      const end = textOffset + length;
+      if (end > data.length) {
+        throw new Error("Invalid protobuf: truncated field payload");
+      }
+      const text = Buffer.from(data.subarray(textOffset, end)).toString("utf-8");
+      if (field === 1) {
+        sbkAuthor = text;
+      } else {
+        sbkDescription = text;
+      }
+      offset = end;
+      continue;
+    }
+    if (field === 3 && wireType === 2) {
+      const [stateLength, stateOffset] = readVarint(data, offset);
+      offset = stateOffset + stateLength;
+      if (offset > data.length) {
+        throw new Error("Invalid protobuf: truncated SBookState payload");
+      }
+      stateCount++;
+      continue;
+    }
+    offset = skipField(data, offset, wireType);
+  }
+  return { stateCount, sbkAuthor, sbkDescription };
+}
+
+function writeRowMetadata(view: Uint8Array, rowOffset: number, fileOffset: number, root: boolean) {
+  if (fileOffset < 0 || BigInt(fileOffset) > SBK_ON_THE_FLY_OFFSET_MASK) {
+    throw new Error(`SBK offset out of range: ${fileOffset}`);
+  }
+  let value = BigInt(fileOffset) & SBK_ON_THE_FLY_OFFSET_MASK;
+  if (root) {
+    value |= 1n << SBK_ON_THE_FLY_OFFSET_BITS;
+  }
+  for (let i = 0; i < 5; i++) {
+    view[rowOffset + 32 + i] = Number((value >> BigInt(i * 8)) & 0xffn);
+  }
+}
+
+function readRowOffset(view: Uint8Array, row: number): number {
+  const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
+  let value = 0n;
+  for (let i = 0; i < 5; i++) {
+    value |= BigInt(view[rowOffset + 32 + i]) << BigInt(i * 8);
+  }
+  return Number(value & SBK_ON_THE_FLY_OFFSET_MASK);
+}
+
+function compareRowPacked(view: Uint8Array, row: number, packedSfen: Uint8Array): number {
+  const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
+  for (let i = 0; i < 32; i++) {
+    const diff = view[rowOffset + i] - packedSfen[i];
+    if (diff !== 0) {
+      return diff;
+    }
+  }
+  return 0;
+}
+
+function swapRows(view: Uint8Array, rowA: number, rowB: number, tempRow: Uint8Array): void {
+  if (rowA === rowB) {
+    return;
+  }
+  const offsetA = rowA * SBK_ON_THE_FLY_ROW_SIZE;
+  const offsetB = rowB * SBK_ON_THE_FLY_ROW_SIZE;
+  tempRow.set(view.subarray(offsetA, offsetA + SBK_ON_THE_FLY_ROW_SIZE));
+  view.copyWithin(offsetA, offsetB, offsetB + SBK_ON_THE_FLY_ROW_SIZE);
+  view.set(tempRow, offsetB);
+}
+
+function sortRowsByPacked(view: Uint8Array, rowCount: number): void {
+  if (rowCount <= 1) {
+    return;
+  }
+  const ranges: number[] = [0, rowCount - 1];
+  const pivot = new Uint8Array(32);
+  const tempRow = new Uint8Array(SBK_ON_THE_FLY_ROW_SIZE);
+
+  while (ranges.length > 0) {
+    const right = ranges.pop() as number;
+    const left = ranges.pop() as number;
+    if (left >= right) {
+      continue;
+    }
+    const pivotIndex = left + Math.floor((right - left) / 2);
+    const pivotOffset = pivotIndex * SBK_ON_THE_FLY_ROW_SIZE;
+    pivot.set(view.subarray(pivotOffset, pivotOffset + 32));
+
+    let i = left;
+    let j = right;
+    while (i <= j) {
+      while (compareRowPacked(view, i, pivot) < 0) {
+        i++;
+      }
+      while (compareRowPacked(view, j, pivot) > 0) {
+        j--;
+      }
+      if (i <= j) {
+        swapRows(view, i, j, tempRow);
+        i++;
+        j--;
+      }
+    }
+
+    if (left < j && i < right) {
+      const leftLength = j - left;
+      const rightLength = right - i;
+      if (leftLength > rightLength) {
+        ranges.push(left, j, i, right);
+      } else {
+        ranges.push(i, right, left, j);
+      }
+    } else if (left < j) {
+      ranges.push(left, j);
+    } else if (i < right) {
+      ranges.push(i, right);
+    }
+  }
+}
+
+function isPackedZeroRow(view: Uint8Array, row: number): boolean {
+  const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
+  for (let i = 0; i < 32; i++) {
+    if (view[rowOffset + i] !== 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isVisited(visitedBits: Uint8Array, stateIndex: number): boolean {
+  const bit = 1 << (stateIndex & 7);
+  return (visitedBits[stateIndex >> 3] & bit) !== 0;
+}
+
+function setVisited(visitedBits: Uint8Array, stateIndex: number): void {
+  const bit = 1 << (stateIndex & 7);
+  visitedBits[stateIndex >> 3] |= bit;
+}
+
+function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | undefined {
+  if (
+    state.Moves.length === 0 &&
+    state.Evals.length === 0 &&
+    !state.Comment &&
+    !state.Games &&
+    !state.WonBlack &&
+    !state.WonWhite
+  ) {
+    return;
+  }
+  const pos = Position.newBySFEN(sfen);
+  if (!pos) {
+    return;
+  }
+  const moves = state.Moves.map((m) => fromSbkMove(pos, m.Move));
+  const bookMoves: BookMove[] = state.Moves.map((m, index) => {
+    const move: BookMove = {
+      usi: moves[index].usi,
+    };
+    if (m.Weight) {
+      move.count = m.Weight;
+    }
+    if (m.Evaluation !== SBookMoveEvaluation.None) {
+      move.evaluation = m.Evaluation;
+    }
+    return move;
+  });
+
+  const sbkEvals: SbkEval[] = state.Evals.map((e) => ({
+    EvaluationValue: e.EvaluationValue,
+    Depth: e.Depth,
+    SelDepth: e.SelDepth,
+    Nodes: e.Nodes,
+    Variation: e.Variation || undefined,
+    EngineName: e.EngineName || undefined,
+  }));
+
+  const bookEntry: BookEntry = {
+    type: "normal",
+    moves: bookMoves,
+  };
+  if (state.Comment) {
+    bookEntry.comment = state.Comment;
+  }
+  if (state.Games) {
+    bookEntry.games = state.Games;
+  }
+  if (state.WonBlack) {
+    bookEntry.wonBlack = state.WonBlack;
+  }
+  if (state.WonWhite) {
+    bookEntry.wonWhite = state.WonWhite;
+  }
+  if (sbkEvals.length > 0) {
+    bookEntry.sbkEvals = sbkEvals;
+  }
+  return bookEntry;
+}
+
+function decodeStateAt(data: Uint8Array, stateTagOffset: number): SBookState {
+  const [tag, afterTag] = readVarint(data, stateTagOffset);
+  if (tag !== 26) {
+    throw new Error(`Invalid SBookState tag: ${tag}`);
+  }
+  const [payloadLength, payloadOffset] = readVarint(data, afterTag);
+  const end = payloadOffset + payloadLength;
+  if (end > data.length) {
+    throw new Error("Invalid sbk: truncated SBookState payload");
+  }
+  return SBookState.decode(data.subarray(payloadOffset, end));
+}
+
+function buildStateOffsetTable(data: Uint8Array, view: Uint8Array, rowCount: number): void {
+  let offset = 0;
+  let row = 0;
+  while (offset < data.length) {
+    const tagOffset = offset;
+    const [tag, next] = readVarint(data, offset);
+    offset = next;
+    if (tag === 0) {
+      break;
+    }
+    const field = tag >>> 3;
+    const wireType = tag & 0x7;
+    if (field === 3 && wireType === 2) {
+      const [stateLength, payloadOffset] = readVarint(data, offset);
+      if (row >= rowCount) {
+        throw new Error("Invalid sbk: state count mismatch");
+      }
+      const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
+      writeRowMetadata(view, rowOffset, tagOffset, false);
+      offset = payloadOffset + stateLength;
+      if (offset > data.length) {
+        throw new Error("Invalid sbk: truncated SBookState payload");
+      }
+      row++;
+      continue;
+    }
+    offset = skipField(data, offset, wireType);
+  }
+  if (row !== rowCount) {
+    throw new Error("Invalid sbk: failed to build state offset table");
+  }
+}
+
+function setPackedSfenForRow(view: Uint8Array, row: number, position: ImmutablePosition): void {
+  try {
+    view.set(packPositionToPackedSfen(position), row * SBK_ON_THE_FLY_ROW_SIZE);
+  } catch {
+    // ignore invalid sfen for packed conversion
+  }
+}
+
+function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCount: number): void {
+  const visitedBits = new Uint8Array(Math.ceil(stateCount / 8));
+
+  for (let rootIndex = 0; rootIndex < stateCount; rootIndex++) {
+    if (isVisited(visitedBits, rootIndex)) {
+      continue;
+    }
+    const rootOffset = readRowOffset(view, rootIndex);
+    const rootState = decodeStateAt(data, rootOffset);
+    if (!rootState.Position) {
+      continue;
+    }
+    const rootSfen = normalizeSfen(rootState.Position);
+    if (!rootSfen) {
+      continue;
+    }
+    const pos = Position.newBySFEN(rootSfen);
+    if (!pos) {
+      continue;
+    }
+
+    const rootMoves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
+    const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [
+      { state: rootState, moves: rootMoves, index: 0 },
+    ];
+    setPackedSfenForRow(view, rootIndex, pos);
+    setVisited(visitedBits, rootIndex);
+
+    while (stack.length > 0) {
+      const frame = stack[stack.length - 1];
+      if (frame.index >= frame.moves.length) {
+        stack.pop();
+        if (frame.lastMove) {
+          pos.undoMove(frame.lastMove);
+        }
+        continue;
+      }
+      const sbkMove = frame.state.Moves[frame.index];
+      const move = frame.moves[frame.index];
+      frame.index++;
+
+      const nextStateIndex = sbkMove.NextStateId;
+      if (
+        nextStateIndex < 0 ||
+        nextStateIndex >= stateCount ||
+        isVisited(visitedBits, nextStateIndex)
+      ) {
+        continue;
+      }
+      if (!pos.doMove(move, { ignoreValidation: true })) {
+        continue;
+      }
+      const nextStateOffset = readRowOffset(view, nextStateIndex);
+      const nextState = decodeStateAt(data, nextStateOffset);
+      setPackedSfenForRow(view, nextStateIndex, pos);
+      const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
+      stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
+      setVisited(visitedBits, nextStateIndex);
+    }
+  }
+}
+
+export function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
+  const { stateCount } = scanSBookTopLevel(rawData);
+  const table = new ArrayBuffer(stateCount * SBK_ON_THE_FLY_ROW_SIZE);
+  const view = new Uint8Array(table);
+
+  buildStateOffsetTable(rawData, view, stateCount);
+  fillPackedSfenByTraversal(rawData, view, stateCount);
+  sortRowsByPacked(view, stateCount);
+
+  let firstNonZeroRow = 0;
+  while (firstNonZeroRow < stateCount && isPackedZeroRow(view, firstNonZeroRow)) {
+    firstNonZeroRow++;
+  }
+  return {
+    table,
+    rowCount: stateCount,
+    firstNonZeroRow,
+  };
+}
+
+export function buildSbkOnTheFly(rawData: Uint8Array): SbkOnTheFlyBuildResult {
+  const { sbkAuthor, sbkDescription } = scanSBookTopLevel(rawData);
+  return {
+    index: buildSbkOnTheFlyIndex(rawData),
+    sbkAuthor,
+    sbkDescription,
+  };
+}
+
+async function readExact(
+  file: fs.promises.FileHandle,
+  buffer: Buffer,
+  offset: number,
+  length: number,
+  position: number,
+): Promise<void> {
+  let total = 0;
+  while (total < length) {
+    const { bytesRead } = await file.read(buffer, offset + total, length - total, position + total);
+    if (bytesRead === 0) {
+      throw new Error("Unexpected EOF");
+    }
+    total += bytesRead;
+  }
+}
+
+async function decodeStateAtFile(
+  file: fs.promises.FileHandle,
+  stateTagOffset: number,
+): Promise<SBookState> {
+  const header = Buffer.alloc(20);
+  const { bytesRead } = await file.read(header, 0, header.length, stateTagOffset);
+  if (bytesRead <= 0) {
+    throw new Error("Unexpected EOF while reading SBK state header");
+  }
+  const [tag, afterTag] = readVarint(header, 0);
+  if (tag !== 26) {
+    throw new Error(`Invalid SBookState tag: ${tag}`);
+  }
+  const [payloadLength, afterLength] = readVarint(header, afterTag);
+  const payload = Buffer.alloc(payloadLength);
+  await readExact(file, payload, 0, payloadLength, stateTagOffset + afterLength);
+  return SBookState.decode(payload);
+}
+
+export async function searchSbkBookEntryOnTheFly(
+  sfen: string,
+  file: fs.promises.FileHandle,
+  index: SbkOnTheFlyIndex,
+): Promise<BookEntry | undefined> {
+  const normalized = normalizeSfen(sfen);
+  if (!normalized) {
+    return;
+  }
+  let packed: Uint8Array;
+  try {
+    packed = packSfenToPackedSfen(normalized);
+  } catch {
+    return;
+  }
+
+  const view = new Uint8Array(index.table);
+  let left = index.firstNonZeroRow;
+  let right = index.rowCount;
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    const cmp = compareRowPacked(view, mid, packed);
+    if (cmp < 0) {
+      left = mid + 1;
+    } else {
+      right = mid;
+    }
+  }
+  if (left >= index.rowCount || compareRowPacked(view, left, packed) !== 0) {
+    return;
+  }
+
+  const offset = readRowOffset(view, left);
+  const state = await decodeStateAtFile(file, offset);
+  return buildBookEntryFromState(state, normalized);
 }
 
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {

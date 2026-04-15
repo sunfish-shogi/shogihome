@@ -1,3 +1,5 @@
+import { Color as TsColor, ImmutablePosition, PieceType as TsPieceType, Square } from "tsshogi";
+
 type PieceType = "P" | "L" | "N" | "S" | "G" | "B" | "R" | "K";
 type NonKingPieceType = Exclude<PieceType, "K">;
 type Color = "b" | "w";
@@ -59,7 +61,10 @@ const BOARD_CHAR_TO_PIECE: Record<string, PieceType> = {
 };
 
 const BOARD_DECODE_TABLE = new Map<string, NonKingPieceType | "E">(
-  Object.entries(BOARD_HUFFMAN).map(([piece, h]) => [`${h.bits}:${h.code}`, piece as NonKingPieceType | "E"]),
+  Object.entries(BOARD_HUFFMAN).map(([piece, h]) => [
+    `${h.bits}:${h.code}`,
+    piece as NonKingPieceType | "E",
+  ]),
 );
 
 const HAND_DECODE_TABLE = new Map<string, NonKingPieceType>(
@@ -308,6 +313,68 @@ function writePieceBoxPiece(writer: BitWriter, type: NonKingPieceType): void {
   }
 }
 
+function convertTsColor(color: TsColor): Color {
+  return color === TsColor.BLACK ? "b" : "w";
+}
+
+function convertTsPieceType(type: TsPieceType): { type: PieceType; promoted: boolean } {
+  switch (type) {
+    case TsPieceType.PAWN:
+      return { type: "P", promoted: false };
+    case TsPieceType.PROM_PAWN:
+      return { type: "P", promoted: true };
+    case TsPieceType.LANCE:
+      return { type: "L", promoted: false };
+    case TsPieceType.PROM_LANCE:
+      return { type: "L", promoted: true };
+    case TsPieceType.KNIGHT:
+      return { type: "N", promoted: false };
+    case TsPieceType.PROM_KNIGHT:
+      return { type: "N", promoted: true };
+    case TsPieceType.SILVER:
+      return { type: "S", promoted: false };
+    case TsPieceType.PROM_SILVER:
+      return { type: "S", promoted: true };
+    case TsPieceType.GOLD:
+      return { type: "G", promoted: false };
+    case TsPieceType.BISHOP:
+      return { type: "B", promoted: false };
+    case TsPieceType.HORSE:
+      return { type: "B", promoted: true };
+    case TsPieceType.ROOK:
+      return { type: "R", promoted: false };
+    case TsPieceType.DRAGON:
+      return { type: "R", promoted: true };
+    case TsPieceType.KING:
+      return { type: "K", promoted: false };
+  }
+}
+
+function getHandsFromPosition(
+  position: ImmutablePosition,
+): Record<Color, Record<NonKingPieceType, number>> {
+  return {
+    b: {
+      P: position.blackHand.count(TsPieceType.PAWN),
+      L: position.blackHand.count(TsPieceType.LANCE),
+      N: position.blackHand.count(TsPieceType.KNIGHT),
+      S: position.blackHand.count(TsPieceType.SILVER),
+      G: position.blackHand.count(TsPieceType.GOLD),
+      B: position.blackHand.count(TsPieceType.BISHOP),
+      R: position.blackHand.count(TsPieceType.ROOK),
+    },
+    w: {
+      P: position.whiteHand.count(TsPieceType.PAWN),
+      L: position.whiteHand.count(TsPieceType.LANCE),
+      N: position.whiteHand.count(TsPieceType.KNIGHT),
+      S: position.whiteHand.count(TsPieceType.SILVER),
+      G: position.whiteHand.count(TsPieceType.GOLD),
+      B: position.whiteHand.count(TsPieceType.BISHOP),
+      R: position.whiteHand.count(TsPieceType.ROOK),
+    },
+  };
+}
+
 function readBoardPiece(reader: BitReader): ParsedPiece | undefined {
   let code = 0;
   for (let bits = 1; bits <= 6; bits++) {
@@ -428,6 +495,56 @@ export function packSfenToPackedSfen(sfen: string): Uint8Array {
     }
   }
 
+  for (const type of PIECE_ORDER) {
+    for (let i = 0; i < pieceBoxCounts[type]; i++) {
+      writePieceBoxPiece(writer, type);
+    }
+  }
+
+  if (writer.bitLength !== 256) {
+    throw new Error(`Invalid packed sfen bit length: ${writer.bitLength}`);
+  }
+  return writer.bytes;
+}
+
+export function packPositionToPackedSfen(position: ImmutablePosition): Uint8Array {
+  const writer = new BitWriter();
+  const boardCounts = createNonKingCountMap();
+  const hands = getHandsFromPosition(position);
+
+  writer.writeBit(position.color === TsColor.BLACK ? 0 : 1);
+  const blackKing = position.board.findKing(TsColor.BLACK);
+  const whiteKing = position.board.findKing(TsColor.WHITE);
+  writer.writeBits(blackKing ? blackKing.index : 81, 7);
+  writer.writeBits(whiteKing ? whiteKing.index : 81, 7);
+
+  for (let i = 0; i < 81; i++) {
+    const piece = position.board.at(Square.all[i]);
+    if (!piece) {
+      writeBoardPiece(writer, undefined);
+      continue;
+    }
+    const converted = convertTsPieceType(piece.type);
+    if (converted.type === "K") {
+      continue;
+    }
+    boardCounts[converted.type]++;
+    writeBoardPiece(writer, {
+      type: converted.type,
+      color: convertTsColor(piece.color),
+      promoted: converted.promoted,
+    });
+  }
+
+  for (const color of ["b", "w"] as const) {
+    for (const type of PIECE_ORDER) {
+      for (let i = 0; i < hands[color][type]; i++) {
+        writeHandPiece(writer, type, color);
+      }
+    }
+  }
+
+  const pieceBoxCounts = computePieceBoxCounts(boardCounts, hands);
   for (const type of PIECE_ORDER) {
     for (let i = 0; i < pieceBoxCounts[type]; i++) {
       writePieceBoxPiece(writer, type);
