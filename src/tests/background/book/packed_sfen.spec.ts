@@ -1,4 +1,9 @@
-import { packSfenToPackedSfen, unpackPackedSfenToSfen } from "@/background/book/packed_sfen.js";
+import {
+  packPositionToPackedSfen,
+  packSfenToPackedSfen,
+  unpackPackedSfenToSfen,
+} from "@/background/book/packed_sfen.js";
+import { Position } from "tsshogi";
 
 describe("background/book/packed_sfen", () => {
   it("packs startpos sfen", () => {
@@ -37,5 +42,16 @@ describe("background/book/packed_sfen", () => {
     const sfen = "4k4/9/9/9/9/9/9/9/4K4 b - 1";
     const packed = packSfenToPackedSfen(sfen);
     expect(unpackPackedSfenToSfen(packed)).toBe(sfen);
+  });
+
+  it("packs from immutable position as same as sfen", () => {
+    const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPP1/1B5R1/LNSGKGSNL b P 1";
+    const pos = Position.newBySFEN(sfen);
+    if (!pos) {
+      throw new Error("failed to create position for test");
+    }
+    const fromSfen = packSfenToPackedSfen(sfen);
+    const fromPosition = packPositionToPackedSfen(pos);
+    expect(Buffer.from(fromPosition).toString("hex")).toBe(Buffer.from(fromSfen).toString("hex"));
   });
 });
