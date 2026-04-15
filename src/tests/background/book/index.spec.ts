@@ -182,6 +182,51 @@ describe("background/book", () => {
       }
     });
 
+    describe("shogihome01.sbk", () => {
+      const patterns = [
+        { options: { onTheFlyThresholdMB: 999 }, mode: "on-the-fly" },
+        { options: { onTheFlyThresholdMB: 0.00001 }, mode: "on-the-fly" },
+        { options: { forceOnTheFly: true }, mode: "on-the-fly" },
+      ];
+      for (const pattern of patterns) {
+        it(`mode=${pattern.mode} options=${JSON.stringify(pattern.options)}`, async () => {
+          const baseline = loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"));
+          const sample = Array.from(baseline.entries).find(([, entry]) => entry.moves.length > 0);
+          if (!sample) {
+            throw new Error("No searchable SBK entry found in fixture");
+          }
+          const [sampleSfen, sampleEntry] = sample;
+
+          const mode = await openBook(
+            defaultBookSession,
+            "src/tests/testdata/book/shogihome01.sbk",
+            pattern.options,
+          );
+          expect(mode).toBe("on-the-fly");
+
+          const moves = await searchBookMoves(defaultBookSession, sampleSfen);
+          expect(moves.length).toBe(sampleEntry.moves.length);
+        });
+      }
+
+      it("calls fs.promises.readFile when opening sbk on-the-fly", async () => {
+        const readFileSpy = vi.spyOn(fs.promises, "readFile");
+        try {
+          const mode = await openBook(
+            defaultBookSession,
+            "src/tests/testdata/book/shogihome01.sbk",
+            {
+              onTheFlyThresholdMB: 999,
+            },
+          );
+          expect(mode).toBe("on-the-fly");
+          expect(readFileSpy).toHaveBeenCalled();
+        } finally {
+          readFileSpy.mockRestore();
+        }
+      });
+    });
+
     it("newSession", async () => {
       const usedSessions = new Set<number>();
       for (let i = 0; i < 3; i++) {
@@ -760,6 +805,20 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
       const sbk = loadSbkBook(fs.readFileSync(outPath));
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
+    });
+
+    it("sbk (on-the-fly) → yane2016: moves preserved", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk", {
+        onTheFlyThresholdMB: 999,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      const outPath = path.join(tmpdir, "export-sbk-otf-to-yane.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      const mode2 = await openBook(defaultBookSession, outPath);
+      expect(mode2).toBe("in-memory");
+      expect((await searchBookMoves(defaultBookSession, sfen1)).length).toBeGreaterThan(0);
     });
 
     it("apery → yane2016: throws", async () => {
