@@ -13,7 +13,7 @@ if (`v${packageJson.version}` !== version) {
 
 function createArchive(outputPath, globPattern) {
   return new Promise((resolve, reject) => {
-    const output = fs.createWriteStream(outputPath).on("error", reject);
+    const output = fs.createWriteStream(outputPath).on("error", reject).on("finish", resolve);
     const archive = archiver
       .create("zip")
       .on("warning", function (err) {
@@ -23,8 +23,7 @@ function createArchive(outputPath, globPattern) {
           reject(err);
         }
       })
-      .on("error", reject)
-      .on("finish", resolve);
+      .on("error", reject);
     archive.pipe(output);
     archive.glob(globPattern, { cwd: "dist" });
     archive.file("LICENSE", { name: "LICENSE.txt" });
@@ -32,7 +31,7 @@ function createArchive(outputPath, globPattern) {
       name: "third-party-licenses.html",
     });
     archive.glob("third-party-licenses/*.txt", { cwd: "docs" });
-    archive.finalize();
+    archive.finalize().catch(reject);
   });
 }
 
