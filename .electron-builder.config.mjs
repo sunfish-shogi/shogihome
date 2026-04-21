@@ -81,6 +81,7 @@ const config = {
     target: ["AppImage", "deb"],
     executableName: "shogihome",
     icon: "public/favicon.png",
+    maintainer: "Kubo Ryosuke <sunfish-shogi@users.noreply.github.com>",
     fileAssociations: [
       { name: "KIF", ext: "kif" },
       { name: "KIFU", ext: "kifu" },
