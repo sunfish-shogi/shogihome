@@ -42,7 +42,7 @@ jobs:
       - name: Test --add-engine command
         timeout-minutes: 1
         run: |
-          xvfb-run -a ./dist/linux-unpacked/electron-shogi \
+          xvfb-run -a ./dist/linux-unpacked/shogihome \
             --no-sandbox \
             --add-engine \
             ./scripts/dummy-usi-engine "Dummy Engine" \
