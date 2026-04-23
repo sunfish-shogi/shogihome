@@ -799,4 +799,5 @@ export type Texts = {
   memoryUsageExceedsNPercent(n: number): string;
   memoryUsageIsLessThanNPercent(n: number): string;
   totalUSIHashExceedsNPercentOfMemory(n: number): string;
+  heapUsageExceedsNGBMayHang(gb: number): string;
 };

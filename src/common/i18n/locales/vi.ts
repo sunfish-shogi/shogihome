@@ -876,4 +876,7 @@ export const vi: Texts = {
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `Tổng USI_HASH vượt quá ${n}% RAM.`;
   },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
+  },
 };
