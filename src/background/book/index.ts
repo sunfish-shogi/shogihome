@@ -43,7 +43,7 @@ import {
   storeAperyBook,
 } from "./apery.js";
 import {
-  buildSbkOnTheFlyIndex,
+  buildSbkOnTheFly,
   loadSbkBook,
   searchSbkBookEntryOnTheFly,
   SbkOnTheFlyIndex,
@@ -94,7 +94,7 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
       if (!book.sbkIndex) {
         throw new Error("SBK index is not initialized");
       }
-      const base = await searchSbkBookEntryOnTheFly(sfen, book.sbkIndex);
+      const base = await searchSbkBookEntryOnTheFly(sfen, book.file, book.sbkIndex);
       return mergeBookEntries(base, entry);
     }
   }
@@ -212,36 +212,37 @@ async function openBookOnTheFly(session: number, path: string, size: number): Pr
     ) {
       throw new Error("Book is not ordered by position"); // FIXME: i18n
     }
+    const common = { path, file, size, saved: true };
+    if (format === "yane2016") {
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        format: "yane2016",
+        entries: new Map<string, BookEntry>(),
+      });
+    } else if (format === "apery") {
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        format: "apery",
+        entries: new Map<bigint, BookEntry>(),
+      });
+    } else {
+      const sbkRawData = await fs.promises.readFile(path);
+      const sbkOnTheFly = buildSbkOnTheFly(sbkRawData);
+      replaceBook(session, {
+        ...common,
+        type: "on-the-fly",
+        format: "sbk",
+        entries: new Map<string, BookEntry>(),
+        sbkAuthor: sbkOnTheFly.sbkAuthor,
+        sbkDescription: sbkOnTheFly.sbkDescription,
+        sbkIndex: sbkOnTheFly.index,
+      });
+    }
   } catch (e) {
     await file.close();
     throw e;
-  }
-  const common = { path, file, size, saved: true };
-  if (format === "yane2016") {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "yane2016",
-      entries: new Map<string, BookEntry>(),
-    });
-  } else if (format === "apery") {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "apery",
-      entries: new Map<bigint, BookEntry>(),
-    });
-  } else {
-    const sbkIndex = buildSbkOnTheFlyIndex(await fs.promises.readFile(path));
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "sbk",
-      entries: new Map<string, BookEntry>(),
-      sbkAuthor: sbkIndex.sbkAuthor,
-      sbkDescription: sbkIndex.sbkDescription,
-      sbkIndex,
-    });
   }
 }
 

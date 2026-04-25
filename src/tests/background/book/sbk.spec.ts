@@ -167,11 +167,16 @@ describe("background/book/sbk", () => {
 
     const index = buildSbkOnTheFlyIndex(buffer);
     expect(index.firstNonZeroRow).toBeLessThan(index.rowCount);
+    const file = await fs.promises.open(fixturePath, "r");
 
-    for (const target of normalizedTargets) {
-      const expectedMoves = baselineByNormalized.get(target) ?? [];
-      const actual = await searchSbkBookEntryOnTheFly(target, index);
-      expect(actual?.moves.map((move) => move.usi) ?? []).toEqual(expectedMoves);
+    try {
+      for (const target of normalizedTargets) {
+        const expectedMoves = baselineByNormalized.get(target) ?? [];
+        const actual = await searchSbkBookEntryOnTheFly(target, file, index);
+        expect(actual?.moves.map((move) => move.usi) ?? []).toEqual(expectedMoves);
+      }
+    } finally {
+      await file.close();
     }
   });
 });

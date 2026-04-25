@@ -1,4 +1,5 @@
 import events from "node:events";
+import fs from "node:fs";
 import { Writable } from "node:stream";
 import { ImmutablePosition, Move, Position } from "tsshogi";
 import { BinaryWriter } from "@bufbuild/protobuf/wire";
@@ -15,9 +16,12 @@ import { packPositionToPackedSfen, packSfenToPackedSfen } from "./packed_sfen.js
 
 export type SbkOnTheFlyIndex = {
   table: ArrayBuffer;
-  rawData: Uint8Array;
   rowCount: number;
   firstNonZeroRow: number;
+};
+
+export type SbkOnTheFlyBuildResult = {
+  index: SbkOnTheFlyIndex;
   sbkAuthor?: string;
   sbkDescription?: string;
 };
@@ -298,59 +302,6 @@ function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | u
   return bookEntry;
 }
 
-function mergeEntriesAtSamePosition(
-  lhs: BookEntry | undefined,
-  rhs: BookEntry | undefined,
-): BookEntry | undefined {
-  if (!lhs) {
-    return rhs;
-  }
-  if (!rhs) {
-    return lhs;
-  }
-  const moveMap = new Map<string, BookMove>();
-  for (const move of lhs.moves) {
-    moveMap.set(move.usi, { ...move });
-  }
-  for (const move of rhs.moves) {
-    const current = moveMap.get(move.usi);
-    if (!current) {
-      moveMap.set(move.usi, { ...move });
-      continue;
-    }
-    moveMap.set(move.usi, {
-      usi: move.usi,
-      usi2: move.usi2 ?? current.usi2,
-      score: move.score ?? current.score,
-      depth: move.depth ?? current.depth,
-      count:
-        move.count !== undefined || current.count !== undefined
-          ? (move.count || 0) + (current.count || 0)
-          : undefined,
-      comment: move.comment ?? current.comment,
-      evaluation: move.evaluation ?? current.evaluation,
-    });
-  }
-  return {
-    type: "normal",
-    moves: Array.from(moveMap.values()),
-    comment: rhs.comment || lhs.comment,
-    games:
-      lhs.games !== undefined || rhs.games !== undefined
-        ? (lhs.games || 0) + (rhs.games || 0)
-        : undefined,
-    wonBlack:
-      lhs.wonBlack !== undefined || rhs.wonBlack !== undefined
-        ? (lhs.wonBlack || 0) + (rhs.wonBlack || 0)
-        : undefined,
-    wonWhite:
-      lhs.wonWhite !== undefined || rhs.wonWhite !== undefined
-        ? (lhs.wonWhite || 0) + (rhs.wonWhite || 0)
-        : undefined,
-    sbkEvals: rhs.sbkEvals || lhs.sbkEvals,
-  };
-}
-
 function decodeStateAt(data: Uint8Array, stateTagOffset: number): SBookState {
   const [tag, afterTag] = readVarint(data, stateTagOffset);
   if (tag !== 26) {
@@ -467,9 +418,8 @@ function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCoun
   }
 }
 
-export function buildSbkOnTheFlyIndex(data: Buffer | Uint8Array): SbkOnTheFlyIndex {
-  const rawData = data instanceof Uint8Array ? data : new Uint8Array(data);
-  const { stateCount, sbkAuthor, sbkDescription } = scanSBookTopLevel(rawData);
+export function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
+  const { stateCount } = scanSBookTopLevel(rawData);
   const table = new ArrayBuffer(stateCount * SBK_ON_THE_FLY_ROW_SIZE);
   const view = new Uint8Array(table);
 
@@ -483,16 +433,59 @@ export function buildSbkOnTheFlyIndex(data: Buffer | Uint8Array): SbkOnTheFlyInd
   }
   return {
     table,
-    rawData,
     rowCount: stateCount,
     firstNonZeroRow,
+  };
+}
+
+export function buildSbkOnTheFly(rawData: Uint8Array): SbkOnTheFlyBuildResult {
+  const { sbkAuthor, sbkDescription } = scanSBookTopLevel(rawData);
+  return {
+    index: buildSbkOnTheFlyIndex(rawData),
     sbkAuthor,
     sbkDescription,
   };
 }
 
+async function readExact(
+  file: fs.promises.FileHandle,
+  buffer: Buffer,
+  offset: number,
+  length: number,
+  position: number,
+): Promise<void> {
+  let total = 0;
+  while (total < length) {
+    const { bytesRead } = await file.read(buffer, offset + total, length - total, position + total);
+    if (bytesRead === 0) {
+      throw new Error("Unexpected EOF");
+    }
+    total += bytesRead;
+  }
+}
+
+async function decodeStateAtFile(
+  file: fs.promises.FileHandle,
+  stateTagOffset: number,
+): Promise<SBookState> {
+  const header = Buffer.alloc(20);
+  const { bytesRead } = await file.read(header, 0, header.length, stateTagOffset);
+  if (bytesRead <= 0) {
+    throw new Error("Unexpected EOF while reading SBK state header");
+  }
+  const [tag, afterTag] = readVarint(header, 0);
+  if (tag !== 26) {
+    throw new Error(`Invalid SBookState tag: ${tag}`);
+  }
+  const [payloadLength, afterLength] = readVarint(header, afterTag);
+  const payload = Buffer.alloc(payloadLength);
+  await readExact(file, payload, 0, payloadLength, stateTagOffset + afterLength);
+  return SBookState.decode(payload);
+}
+
 export async function searchSbkBookEntryOnTheFly(
   sfen: string,
+  file: fs.promises.FileHandle,
   index: SbkOnTheFlyIndex,
 ): Promise<BookEntry | undefined> {
   const normalized = normalizeSfen(sfen);
@@ -522,14 +515,9 @@ export async function searchSbkBookEntryOnTheFly(
     return;
   }
 
-  let merged: BookEntry | undefined;
-  for (let row = left; row < index.rowCount && compareRowPacked(view, row, packed) === 0; row++) {
-    const offset = readRowOffset(view, row);
-    const state = decodeStateAt(index.rawData, offset);
-    const entry = buildBookEntryFromState(state, normalized);
-    merged = mergeEntriesAtSamePosition(merged, entry);
-  }
-  return merged;
+  const offset = readRowOffset(view, left);
+  const state = await decodeStateAtFile(file, offset);
+  return buildBookEntryFromState(state, normalized);
 }
 
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
