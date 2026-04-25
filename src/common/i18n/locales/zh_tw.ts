@@ -864,4 +864,7 @@ export const zh_tw: Texts = {
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
   },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
+  },
 };

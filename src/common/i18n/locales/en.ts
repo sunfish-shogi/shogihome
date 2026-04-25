@@ -870,4 +870,7 @@ export const en: Texts = {
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `The total USI_Hash exceeds ${n}% of memory.`;
   },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `Memory usage has exceeded ${gb} GB. If the upward trend continues, the app may hang.`;
+  },
 };
