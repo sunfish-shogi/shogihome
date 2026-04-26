@@ -50,7 +50,9 @@
     <div v-show="tab === Tab.Floodgate" class="form-group warning">
       <div class="note">
         Floodgate の仕様変更により外部ビューアー向けの対局リストが廃止されました。
-        アップデートがある場合は ShogiHome のリリースノートでお知らせします。
+        アップデートがある場合は ShogiHome のリリースノートでお知らせします。 Due to a specification
+        change in Floodgate, the game list for external viewers has been discontinued. If there are
+        any updates, they will be announced in the ShogiHome release notes.
       </div>
       <!--
       <div v-for="(game, index) in filteredFloodgateGames" :key="game.id">
