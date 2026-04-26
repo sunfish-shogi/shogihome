@@ -4,6 +4,7 @@ import { getAppLogger } from "@/background/log.js";
 import ejpn from "encoding-japanese";
 import { RateLimiter, WindowRule } from "./limiter.js";
 import { isTest } from "@/background/proc/env.js";
+import { getAppVersion } from "@/background/helpers/electron.js";
 const convert = ejpn.convert;
 
 const domainLimiter = new Map<string, RateLimiter>();
@@ -42,7 +43,7 @@ export async function fetch(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const get = url.startsWith("http://") ? http.get : https.get;
     getAppLogger().debug(`fetch remote file: ${url}`);
-    const req = get(url);
+    const req = get(url, { headers: { "User-Agent": `ShogiHome/${getAppVersion()}` } });
     req.setTimeout(5000, () => {
       reject(new Error(`request timeout: ${url}`));
       req.destroy();
