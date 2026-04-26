@@ -1,5 +1,10 @@
 [
   {
+    "name": "WCSC 36",
+    "year": 2026,
+    "url": "https://www.computer-shogi.org/live/wcsc36/list.txt"
+  },
+  {
     "name": "WCSC 35",
     "year": 2025,
     "url": "https://sunfish-shogi.github.io/shogihome/wcsc/game-list35.txt"
