@@ -21,6 +21,7 @@
       <div class="note">{{ t.redirectNotSupported }}</div>
     </div>
     <!-- Floodgate -->
+    <!--
     <div v-show="tab === Tab.Floodgate" class="header row align-center">
       <div class="filter row align-center">
         <div class="player-name-filter row align-center">
@@ -45,7 +46,13 @@
       </div>
       <button class="reload" @click="updateFloodgateGameList()">{{ t.reload }}</button>
     </div>
-    <div v-show="tab === Tab.Floodgate" class="form-group game-list">
+    -->
+    <div v-show="tab === Tab.Floodgate" class="form-group warning">
+      <div class="note">
+        Floodgate の仕様変更により外部ビューアー向けの対局リストが廃止されました。
+        アップデートがある場合は ShogiHome のリリースノートでお知らせします。
+      </div>
+      <!--
       <div v-for="(game, index) in filteredFloodgateGames" :key="game.id">
         <hr v-if="index !== 0" />
         <div class="game-list-entry row" :class="{ playing: game.playing }">
@@ -97,6 +104,7 @@
           </div>
         </div>
       </div>
+      -->
     </div>
     <!-- WCSC -->
     <div v-show="tab === Tab.WCSC" class="header row align-center">
@@ -149,13 +157,13 @@
 <script lang="ts">
 enum Tab {
   URL = "url",
-  Floodgate = "floodgate",
+  Floodgate = "floodgate", // Deprecated
   WCSC = "wcsc",
 }
 const localStorageLastTabKey = "LoadRemoteFileDialog.lastTab";
 const localStorageLastURLKey = "LoadRemoteFileDialog.lastURL";
-const localStorageLastFloodgatePlayerNameKey = "LoadRemoteFileDialog.lastFloodgatePlayerName";
-const localStorageLastFloodgateMinRateKey = "LoadRemoteFileDialog.lastFloodgateMinRate";
+//const localStorageLastFloodgatePlayerNameKey = "LoadRemoteFileDialog.lastFloodgatePlayerName";
+//const localStorageLastFloodgateMinRateKey = "LoadRemoteFileDialog.lastFloodgateMinRate";
 const localStorageLastWCSCEditionKey = "LoadRemoteFileDialog.lastWCSCEdition";
 const localStorageLastWCSCSearchWordKey = "LoadRemoteFileDialog.lastWCSCSearchWord";
 </script>
@@ -168,11 +176,6 @@ import api, { isNative } from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import {
-  Game as FloodgateGame,
-  listLatestGames as listFloodgateLatestGames,
-  listPlayers as listFloodgatePlayers,
-} from "@/renderer/external/floodgate";
-import {
   Edition as WCSCEdition,
   Game as WCSCGame,
   listEditions as listWCSCEditions,
@@ -180,66 +183,61 @@ import {
 } from "@/renderer/external/wcsc";
 import DialogFrame from "./DialogFrame.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
-import { getDateTimeString } from "@/common/helpers/datetime";
-import dayjs from "dayjs";
-import { useAppSettings } from "@/renderer/store/settings";
-import { Color } from "tsshogi";
 import { floodgateTopURL } from "@/common/links/floodgate";
 import { csaTopURL } from "@/common/links/csa";
 
 const store = useStore();
 const busyState = useBusyState();
-const appSettings = useAppSettings();
 const tab = ref(Tab.URL);
 const url = ref("");
-const floodgatePlayerName = ref("");
-const floodgateMinRate = ref(0);
-const floodgateWinner = ref<Color | "all" | "other">("all");
-const floodgateGames = ref<FloodgateGame[]>([]);
-const floodgatePlayerRateMap = ref<Map<string, number> | null>(null);
+//const floodgatePlayerName = ref("");
+//const floodgateMinRate = ref(0);
+//const floodgateWinner = ref<Color | "all" | "other">("all");
+//const floodgateGames = ref<FloodgateGame[]>([]);
+//const floodgatePlayerRateMap = ref<Map<string, number> | null>(null);
 const wcscEdition = ref("");
 const wcscSearchWord = ref("");
 const wcscEditions = ref([] as WCSCEdition[]);
 const wcscGames = ref<WCSCGame[]>([]);
 
-async function updateFloodgateGameList() {
-  try {
-    busyState.retain();
-    floodgateGames.value = await listFloodgateLatestGames();
-    if (floodgateGames.value.length > 0 && !floodgatePlayerRateMap.value) {
-      const players = await listFloodgatePlayers();
-      floodgatePlayerRateMap.value = new Map(players.map((player) => [player.name, player.rate]));
-    }
-  } catch (e) {
-    useErrorStore().add(e);
-  } finally {
-    busyState.release();
-  }
-}
+//async function updateFloodgateGameList() {
+//  try {
+//    busyState.retain();
+//    floodgateGames.value = await listFloodgateLatestGames();
+//    if (floodgateGames.value.length > 0 && !floodgatePlayerRateMap.value) {
+//      const players = await listFloodgatePlayers();
+//      floodgatePlayerRateMap.value = new Map(players.map((player) => [player.name, player.rate]));
+//    }
+//  } catch (e) {
+//    useErrorStore().add(e);
+//  } finally {
+//    busyState.release();
+//  }
+//}
 
-const filteredFloodgateGames = computed(() => {
-  const name = floodgatePlayerName.value.toLowerCase();
-  return floodgateGames.value.filter((game) => {
-    if (
-      name &&
-      !game.blackName.toLowerCase().includes(name) &&
-      !game.whiteName.toLowerCase().includes(name)
-    ) {
-      return false;
-    }
-    if (floodgateMinRate.value > 0) {
-      const blackRate = floodgatePlayerRateMap.value?.get(game.blackName) || 0;
-      const whiteRate = floodgatePlayerRateMap.value?.get(game.whiteName) || 0;
-      if (blackRate < floodgateMinRate.value || whiteRate < floodgateMinRate.value) {
-        return false;
-      }
-    }
-    if (floodgateWinner.value !== "all" && floodgateWinner.value !== (game.winner || "other")) {
-      return false;
-    }
-    return true;
-  });
-});
+//const filteredFloodgateGames = computed(() => {
+//  const name = floodgatePlayerName.value.toLowerCase();
+//  return floodgateGames.value.filter((game) => {
+//    if (
+//      name &&
+//      !game.blackName.toLowerCase().includes(name) &&
+//      !game.whiteName.toLowerCase().includes(name)
+//    ) {
+//      return false;
+//    }
+//    if (floodgateMinRate.value > 0) {
+//      const blackRate = floodgatePlayerRateMap.value?.get(game.blackName) || 0;
+//      const whiteRate = floodgatePlayerRateMap.value?.get(game.whiteName) || 0;
+//      if (blackRate < floodgateMinRate.value || whiteRate < floodgateMinRate.value) {
+//        return false;
+//      }
+//    }
+//    if (floodgateWinner.value !== "all" && floodgateWinner.value !== (game.winner || "other")) {
+//      return false;
+//    }
+//    return true;
+//  });
+//});
 
 async function updateWCSCGameList() {
   try {
@@ -273,9 +271,10 @@ const filteredWCSCGames = computed(() => {
 });
 
 function onUpdateTab(newTab: Tab) {
-  if (newTab === Tab.Floodgate && floodgateGames.value.length === 0) {
-    updateFloodgateGameList();
-  } else if (newTab === Tab.WCSC && wcscGames.value.length === 0) {
+  //if (newTab === Tab.Floodgate && floodgateGames.value.length === 0) {
+  //  updateFloodgateGameList();
+  //} else
+  if (newTab === Tab.WCSC && wcscGames.value.length === 0) {
     updateWCSCGameList();
   }
 }
@@ -287,8 +286,8 @@ function open(url: string) {
   }
   localStorage.setItem(localStorageLastTabKey, tab.value);
   localStorage.setItem(localStorageLastURLKey, url);
-  localStorage.setItem(localStorageLastFloodgatePlayerNameKey, floodgatePlayerName.value);
-  localStorage.setItem(localStorageLastFloodgateMinRateKey, String(floodgateMinRate.value));
+  //localStorage.setItem(localStorageLastFloodgatePlayerNameKey, floodgatePlayerName.value);
+  //localStorage.setItem(localStorageLastFloodgateMinRateKey, String(floodgateMinRate.value));
   localStorage.setItem(localStorageLastWCSCEditionKey, wcscEdition.value);
   localStorage.setItem(localStorageLastWCSCSearchWordKey, wcscSearchWord.value);
   store.closeModalDialog();
@@ -304,13 +303,16 @@ onMounted(async () => {
   try {
     tab.value = (localStorage.getItem(localStorageLastTabKey) || tab.value) as Tab;
     url.value = localStorage.getItem(localStorageLastURLKey) || url.value;
-    floodgatePlayerName.value =
-      localStorage.getItem(localStorageLastFloodgatePlayerNameKey) || floodgatePlayerName.value;
-    floodgateMinRate.value =
-      Number(localStorage.getItem(localStorageLastFloodgateMinRateKey)) || floodgateMinRate.value;
+    //floodgatePlayerName.value =
+    //  localStorage.getItem(localStorageLastFloodgatePlayerNameKey) || floodgatePlayerName.value;
+    //floodgateMinRate.value =
+    //  Number(localStorage.getItem(localStorageLastFloodgateMinRateKey)) || floodgateMinRate.value;
     wcscEdition.value = localStorage.getItem(localStorageLastWCSCEditionKey) || wcscEdition.value;
     wcscSearchWord.value =
       localStorage.getItem(localStorageLastWCSCSearchWordKey) || wcscSearchWord.value;
+    if (tab.value === Tab.Floodgate) {
+      tab.value = Tab.URL; // Floodgate tab is deprecated
+    }
     if (!isNative()) {
       return;
     }
