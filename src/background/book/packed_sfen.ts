@@ -15,7 +15,6 @@ type ParsedPiece = {
   promoted: boolean;
 };
 
-const STANDARD_SFEN = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
 const PIECE_ORDER: NonKingPieceType[] = ["P", "L", "N", "S", "G", "B", "R"];
 const HAND_SFEN_ORDER: NonKingPieceType[] = ["R", "B", "G", "S", "N", "L", "P"];
 const BOARD_PIECE_TOTAL: Record<NonKingPieceType, number> = {
@@ -127,20 +126,6 @@ class BitReader {
   get bitLength(): number {
     return this.cursor;
   }
-}
-
-function normalizeInputSFEN(input: string): string {
-  const trimmed = input.trim();
-  if (trimmed === "startpos" || trimmed === "position startpos") {
-    return STANDARD_SFEN;
-  }
-  if (trimmed.startsWith("position sfen ")) {
-    return trimmed.slice("position sfen ".length);
-  }
-  if (trimmed.startsWith("sfen ")) {
-    return trimmed.slice("sfen ".length);
-  }
-  return trimmed;
 }
 
 function createNonKingCountMap(): Record<NonKingPieceType, number> {
@@ -461,8 +446,7 @@ function handsToSFEN(hands: Record<Color, Record<NonKingPieceType, number>>): st
 }
 
 export function packSfenToPackedSfen(sfen: string): Uint8Array {
-  const normalized = normalizeInputSFEN(sfen);
-  const [boardPart, turnPart, handsPart] = normalized.split(/\s+/, 4);
+  const [boardPart, turnPart, handsPart] = sfen.split(/\s+/, 4);
   if (!boardPart || !turnPart || !handsPart) {
     throw new Error(`Invalid SFEN: ${sfen}`);
   }
