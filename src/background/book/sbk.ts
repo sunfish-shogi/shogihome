@@ -30,21 +30,6 @@ const SBK_ON_THE_FLY_ROW_SIZE = 37; // 32 bytes packed-sfen + 39-bit offset + 1-
 const SBK_ON_THE_FLY_OFFSET_BITS = 39n;
 const SBK_ON_THE_FLY_OFFSET_MASK = (1n << SBK_ON_THE_FLY_OFFSET_BITS) - 1n;
 
-export function normalizeSfen(position: string): string | undefined {
-  let s = position.trim();
-  if (s.startsWith("position sfen ")) {
-    s = s.slice("position sfen ".length);
-  } else if (s.startsWith("sfen ")) {
-    s = s.slice("sfen ".length);
-  }
-  // SFEN format: "board color hand moveCount" — normalize moveCount to 1
-  const parts = s.split(" ");
-  if (parts.length < 3) {
-    return undefined;
-  }
-  return parts.slice(0, 3).join(" ") + " 1";
-}
-
 function readVarint(data: Uint8Array, offset: number): [value: number, nextOffset: number] {
   let value = 0;
   let shift = 0;
@@ -368,11 +353,7 @@ function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCoun
     if (!rootState.Position) {
       continue;
     }
-    const rootSfen = normalizeSfen(rootState.Position);
-    if (!rootSfen) {
-      continue;
-    }
-    const pos = Position.newBySFEN(rootSfen);
+    const pos = Position.newBySFEN(rootState.Position);
     if (!pos) {
       continue;
     }
@@ -488,13 +469,9 @@ export async function searchSbkBookEntryOnTheFly(
   file: fs.promises.FileHandle,
   index: SbkOnTheFlyIndex,
 ): Promise<BookEntry | undefined> {
-  const normalized = normalizeSfen(sfen);
-  if (!normalized) {
-    return;
-  }
   let packed: Uint8Array;
   try {
-    packed = packSfenToPackedSfen(normalized);
+    packed = packSfenToPackedSfen(sfen);
   } catch {
     return;
   }
@@ -517,7 +494,7 @@ export async function searchSbkBookEntryOnTheFly(
 
   const offset = readRowOffset(view, left);
   const state = await decodeStateAtFile(file, offset);
-  return buildBookEntryFromState(state, normalized);
+  return buildBookEntryFromState(state, sfen);
 }
 
 export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
@@ -586,18 +563,14 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
     if (!rootState.Position || visitedStateIds.has(rootState.Id)) {
       continue;
     }
-    const rootSfen = normalizeSfen(rootState.Position);
-    if (!rootSfen) {
-      continue;
-    }
-    const pos = Position.newBySFEN(rootSfen);
+    const pos = Position.newBySFEN(rootState.Position);
     if (!pos) {
       continue;
     }
     const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [];
     const moves = rootState.Moves.map((m) => fromSbkMove(pos, m.Move));
     stack.push({ state: rootState, moves, index: 0 });
-    addEntry(rootSfen, rootState, moves);
+    addEntry(rootState.Position, rootState, moves);
     visitedStateIds.add(rootState.Id);
     while (stack.length > 0) {
       const frame = stack[stack.length - 1];

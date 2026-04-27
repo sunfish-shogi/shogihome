@@ -5,7 +5,6 @@ import { Move, Position } from "tsshogi";
 import {
   buildSbkOnTheFlyIndex,
   loadSbkBook,
-  normalizeSfen,
   searchSbkBookEntryOnTheFly,
   storeSbkBook,
 } from "@/background/book/sbk.js";
@@ -113,11 +112,7 @@ function createLoopSbkBuffer(): {
   );
   return {
     buffer,
-    normalizedTargets: [
-      normalizeSfen(startSfen) as string,
-      normalizeSfen(sfen1) as string,
-      normalizeSfen(sfen2) as string,
-    ],
+    normalizedTargets: [startSfen, sfen1, sfen2],
   };
 }
 
@@ -155,12 +150,8 @@ describe("background/book/sbk", () => {
     const baseline = loadSbkBook(buffer);
     const baselineByNormalized = new Map<string, string[]>();
     for (const [sfen, entry] of baseline.entries) {
-      const normalized = normalizeSfen(sfen);
-      if (!normalized) {
-        continue;
-      }
       baselineByNormalized.set(
-        normalized,
+        sfen,
         entry.moves.map((move) => move.usi),
       );
     }
