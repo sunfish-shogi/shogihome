@@ -225,9 +225,7 @@ img.small-icon {
 }
 
 .slides {
-  margin: 3em 0 3em 0;
-  padding: 3em 0 3em 0;
-  background: linear-gradient(180deg, #f0f0f0, 5%, white);
+  margin-top: 5em;
 }
 
 .row {
