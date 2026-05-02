@@ -97,6 +97,19 @@ export function mergeBookEntries(
     type: "normal",
     comment: patch.comment || base.comment,
     moves,
+    games:
+      base.games !== undefined || patch.games !== undefined
+        ? (base.games || 0) + (patch.games || 0)
+        : undefined,
+    wonBlack:
+      base.wonBlack !== undefined || patch.wonBlack !== undefined
+        ? (base.wonBlack || 0) + (patch.wonBlack || 0)
+        : undefined,
+    wonWhite:
+      base.wonWhite !== undefined || patch.wonWhite !== undefined
+        ? (base.wonWhite || 0) + (patch.wonWhite || 0)
+        : undefined,
+    sbkEvals: patch.sbkEvals || base.sbkEvals,
     minPly:
       base.minPly !== undefined
         ? patch.minPly !== undefined
