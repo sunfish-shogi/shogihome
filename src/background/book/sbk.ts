@@ -9,22 +9,14 @@ import {
   SBookState,
   SBook,
 } from "./proto/sbk.js";
-import { BookEntry, SbkBook, SbkEval } from "./types.js";
+import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyIndex } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
 import { BookMove } from "@/common/book.js";
-import { packPositionToPackedSfen, packSfenToPackedSfen } from "./packed_sfen.js";
-
-export type SbkOnTheFlyIndex = {
-  table: ArrayBuffer;
-  rowCount: number;
-  firstNonZeroRow: number;
-};
-
-export type SbkOnTheFlyBuildResult = {
-  index: SbkOnTheFlyIndex;
-  sbkAuthor?: string;
-  sbkDescription?: string;
-};
+import {
+  packPositionToPackedSfen,
+  packSfenToPackedSfen,
+  unpackPackedSfenToSfen,
+} from "./packed_sfen.js";
 
 const SBK_ON_THE_FLY_ROW_SIZE = 37; // 32 bytes packed-sfen + 39-bit offset + 1-bit root
 const SBK_ON_THE_FLY_OFFSET_BITS = 39n;
@@ -113,7 +105,7 @@ function scanSBookTopLevel(data: Uint8Array): {
   return { stateCount, sbkAuthor, sbkDescription };
 }
 
-function writeRowMetadata(view: Uint8Array, rowOffset: number, fileOffset: number, root: boolean) {
+function writeRowMetadata(table: Uint8Array, rowOffset: number, fileOffset: number, root: boolean) {
   if (fileOffset < 0 || BigInt(fileOffset) > SBK_ON_THE_FLY_OFFSET_MASK) {
     throw new Error(`SBK offset out of range: ${fileOffset}`);
   }
@@ -122,23 +114,29 @@ function writeRowMetadata(view: Uint8Array, rowOffset: number, fileOffset: numbe
     value |= 1n << SBK_ON_THE_FLY_OFFSET_BITS;
   }
   for (let i = 0; i < 5; i++) {
-    view[rowOffset + 32 + i] = Number((value >> BigInt(i * 8)) & 0xffn);
+    table[rowOffset + 32 + i] = Number((value >> BigInt(i * 8)) & 0xffn);
   }
 }
 
-function readRowOffset(view: Uint8Array, row: number): number {
+function readSfenAtRow(table: Uint8Array, row: number): string {
+  const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
+  const packedSfen = table.subarray(rowOffset, rowOffset + 32);
+  return unpackPackedSfenToSfen(packedSfen);
+}
+
+function readRowOffset(table: Uint8Array, row: number): number {
   const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
   let value = 0n;
   for (let i = 0; i < 5; i++) {
-    value |= BigInt(view[rowOffset + 32 + i]) << BigInt(i * 8);
+    value |= BigInt(table[rowOffset + 32 + i]) << BigInt(i * 8);
   }
   return Number(value & SBK_ON_THE_FLY_OFFSET_MASK);
 }
 
-function compareRowPacked(view: Uint8Array, row: number, packedSfen: Uint8Array): number {
+function compareRowPacked(table: Uint8Array, row: number, packedSfen: Uint8Array): number {
   const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
   for (let i = 0; i < 32; i++) {
-    const diff = view[rowOffset + i] - packedSfen[i];
+    const diff = table[rowOffset + i] - packedSfen[i];
     if (diff !== 0) {
       return diff;
     }
@@ -146,18 +144,18 @@ function compareRowPacked(view: Uint8Array, row: number, packedSfen: Uint8Array)
   return 0;
 }
 
-function swapRows(view: Uint8Array, rowA: number, rowB: number, tempRow: Uint8Array): void {
+function swapRows(table: Uint8Array, rowA: number, rowB: number, tempRow: Uint8Array): void {
   if (rowA === rowB) {
     return;
   }
   const offsetA = rowA * SBK_ON_THE_FLY_ROW_SIZE;
   const offsetB = rowB * SBK_ON_THE_FLY_ROW_SIZE;
-  tempRow.set(view.subarray(offsetA, offsetA + SBK_ON_THE_FLY_ROW_SIZE));
-  view.copyWithin(offsetA, offsetB, offsetB + SBK_ON_THE_FLY_ROW_SIZE);
-  view.set(tempRow, offsetB);
+  tempRow.set(table.subarray(offsetA, offsetA + SBK_ON_THE_FLY_ROW_SIZE));
+  table.copyWithin(offsetA, offsetB, offsetB + SBK_ON_THE_FLY_ROW_SIZE);
+  table.set(tempRow, offsetB);
 }
 
-function sortRowsByPacked(view: Uint8Array, rowCount: number): void {
+function sortRowsByPacked(table: Uint8Array, rowCount: number): void {
   if (rowCount <= 1) {
     return;
   }
@@ -173,19 +171,19 @@ function sortRowsByPacked(view: Uint8Array, rowCount: number): void {
     }
     const pivotIndex = left + Math.floor((right - left) / 2);
     const pivotOffset = pivotIndex * SBK_ON_THE_FLY_ROW_SIZE;
-    pivot.set(view.subarray(pivotOffset, pivotOffset + 32));
+    pivot.set(table.subarray(pivotOffset, pivotOffset + 32));
 
     let i = left;
     let j = right;
     while (i <= j) {
-      while (compareRowPacked(view, i, pivot) < 0) {
+      while (compareRowPacked(table, i, pivot) < 0) {
         i++;
       }
-      while (compareRowPacked(view, j, pivot) > 0) {
+      while (compareRowPacked(table, j, pivot) > 0) {
         j--;
       }
       if (i <= j) {
-        swapRows(view, i, j, tempRow);
+        swapRows(table, i, j, tempRow);
         i++;
         j--;
       }
@@ -207,10 +205,10 @@ function sortRowsByPacked(view: Uint8Array, rowCount: number): void {
   }
 }
 
-function isPackedZeroRow(view: Uint8Array, row: number): boolean {
+function isPackedZeroRow(table: Uint8Array, row: number): boolean {
   const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
   for (let i = 0; i < 32; i++) {
-    if (view[rowOffset + i] !== 0) {
+    if (table[rowOffset + i] !== 0) {
       return false;
     }
   }
@@ -300,7 +298,7 @@ function decodeStateAt(data: Uint8Array, stateTagOffset: number): SBookState {
   return SBookState.decode(data.subarray(payloadOffset, end));
 }
 
-function buildStateOffsetTable(data: Uint8Array, view: Uint8Array, rowCount: number): void {
+function buildStateOffsetTable(data: Uint8Array, table: Uint8Array, rowCount: number): void {
   let offset = 0;
   let row = 0;
   while (offset < data.length) {
@@ -318,7 +316,7 @@ function buildStateOffsetTable(data: Uint8Array, view: Uint8Array, rowCount: num
         throw new Error("Invalid sbk: state count mismatch");
       }
       const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
-      writeRowMetadata(view, rowOffset, tagOffset, false);
+      writeRowMetadata(table, rowOffset, tagOffset, false);
       offset = payloadOffset + stateLength;
       if (offset > data.length) {
         throw new Error("Invalid sbk: truncated SBookState payload");
@@ -333,22 +331,22 @@ function buildStateOffsetTable(data: Uint8Array, view: Uint8Array, rowCount: num
   }
 }
 
-function setPackedSfenForRow(view: Uint8Array, row: number, position: ImmutablePosition): void {
+function setPackedSfenForRow(table: Uint8Array, row: number, position: ImmutablePosition): void {
   try {
-    view.set(packPositionToPackedSfen(position), row * SBK_ON_THE_FLY_ROW_SIZE);
+    table.set(packPositionToPackedSfen(position), row * SBK_ON_THE_FLY_ROW_SIZE);
   } catch {
     // ignore invalid sfen for packed conversion
   }
 }
 
-function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCount: number): void {
+function fillPackedSfenByTraversal(data: Uint8Array, table: Uint8Array, stateCount: number): void {
   const visitedBits = new Uint8Array(Math.ceil(stateCount / 8));
 
   for (let rootIndex = 0; rootIndex < stateCount; rootIndex++) {
     if (isVisited(visitedBits, rootIndex)) {
       continue;
     }
-    const rootOffset = readRowOffset(view, rootIndex);
+    const rootOffset = readRowOffset(table, rootIndex);
     const rootState = decodeStateAt(data, rootOffset);
     if (!rootState.Position) {
       continue;
@@ -362,7 +360,7 @@ function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCoun
     const stack: { state: SBookState; moves: Move[]; index: number; lastMove?: Move }[] = [
       { state: rootState, moves: rootMoves, index: 0 },
     ];
-    setPackedSfenForRow(view, rootIndex, pos);
+    setPackedSfenForRow(table, rootIndex, pos);
     setVisited(visitedBits, rootIndex);
 
     while (stack.length > 0) {
@@ -389,9 +387,9 @@ function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCoun
       if (!pos.doMove(move, { ignoreValidation: true })) {
         continue;
       }
-      const nextStateOffset = readRowOffset(view, nextStateIndex);
+      const nextStateOffset = readRowOffset(table, nextStateIndex);
       const nextState = decodeStateAt(data, nextStateOffset);
-      setPackedSfenForRow(view, nextStateIndex, pos);
+      setPackedSfenForRow(table, nextStateIndex, pos);
       const nextMoves = nextState.Moves.map((m) => fromSbkMove(pos, m.Move));
       stack.push({ state: nextState, moves: nextMoves, index: 0, lastMove: move });
       setVisited(visitedBits, nextStateIndex);
@@ -399,17 +397,16 @@ function fillPackedSfenByTraversal(data: Uint8Array, view: Uint8Array, stateCoun
   }
 }
 
-export function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
+function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
   const { stateCount } = scanSBookTopLevel(rawData);
-  const table = new ArrayBuffer(stateCount * SBK_ON_THE_FLY_ROW_SIZE);
-  const view = new Uint8Array(table);
+  const table = new Uint8Array(stateCount * SBK_ON_THE_FLY_ROW_SIZE);
 
-  buildStateOffsetTable(rawData, view, stateCount);
-  fillPackedSfenByTraversal(rawData, view, stateCount);
-  sortRowsByPacked(view, stateCount);
+  buildStateOffsetTable(rawData, table, stateCount);
+  fillPackedSfenByTraversal(rawData, table, stateCount);
+  sortRowsByPacked(table, stateCount);
 
   let firstNonZeroRow = 0;
-  while (firstNonZeroRow < stateCount && isPackedZeroRow(view, firstNonZeroRow)) {
+  while (firstNonZeroRow < stateCount && isPackedZeroRow(table, firstNonZeroRow)) {
     firstNonZeroRow++;
   }
   return {
@@ -419,54 +416,35 @@ export function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
   };
 }
 
-export function buildSbkOnTheFly(rawData: Uint8Array): SbkOnTheFlyBuildResult {
+export async function loadSbkBookOnTheFly(path: string): Promise<SbkBook> {
+  const rawData = await fs.promises.readFile(path);
   const { sbkAuthor, sbkDescription } = scanSBookTopLevel(rawData);
   return {
-    index: buildSbkOnTheFlyIndex(rawData),
+    format: "sbk",
+    entries: new Map<string, BookEntry>(),
+    sbkIndex: buildSbkOnTheFlyIndex(rawData),
     sbkAuthor,
     sbkDescription,
+    rawData,
   };
 }
 
-async function readExact(
-  file: fs.promises.FileHandle,
-  buffer: Buffer,
-  offset: number,
-  length: number,
-  position: number,
-): Promise<void> {
-  let total = 0;
-  while (total < length) {
-    const { bytesRead } = await file.read(buffer, offset + total, length - total, position + total);
-    if (bytesRead === 0) {
-      throw new Error("Unexpected EOF");
-    }
-    total += bytesRead;
-  }
-}
-
-async function decodeStateAtFile(
-  file: fs.promises.FileHandle,
-  stateTagOffset: number,
-): Promise<SBookState> {
-  const header = Buffer.alloc(20);
-  const { bytesRead } = await file.read(header, 0, header.length, stateTagOffset);
-  if (bytesRead <= 0) {
-    throw new Error("Unexpected EOF while reading SBK state header");
-  }
-  const [tag, afterTag] = readVarint(header, 0);
+async function decodeStateAtFile(data: Uint8Array, stateTagOffset: number): Promise<SBookState> {
+  const [tag, afterTag] = readVarint(data, stateTagOffset);
   if (tag !== 26) {
     throw new Error(`Invalid SBookState tag: ${tag}`);
   }
-  const [payloadLength, afterLength] = readVarint(header, afterTag);
-  const payload = Buffer.alloc(payloadLength);
-  await readExact(file, payload, 0, payloadLength, stateTagOffset + afterLength);
+  const [payloadLength, afterLength] = readVarint(data, afterTag);
+  const payload = data.subarray(
+    stateTagOffset + afterLength,
+    stateTagOffset + afterLength + payloadLength,
+  );
   return SBookState.decode(payload);
 }
 
 export async function searchSbkBookEntryOnTheFly(
   sfen: string,
-  file: fs.promises.FileHandle,
+  data: Uint8Array,
   index: SbkOnTheFlyIndex,
 ): Promise<BookEntry | undefined> {
   let packed: Uint8Array;
@@ -476,24 +454,23 @@ export async function searchSbkBookEntryOnTheFly(
     return;
   }
 
-  const view = new Uint8Array(index.table);
   let left = index.firstNonZeroRow;
   let right = index.rowCount;
   while (left < right) {
     const mid = Math.floor((left + right) / 2);
-    const cmp = compareRowPacked(view, mid, packed);
+    const cmp = compareRowPacked(index.table, mid, packed);
     if (cmp < 0) {
       left = mid + 1;
     } else {
       right = mid;
     }
   }
-  if (left >= index.rowCount || compareRowPacked(view, left, packed) !== 0) {
+  if (left >= index.rowCount || compareRowPacked(index.table, left, packed) !== 0) {
     return;
   }
 
-  const offset = readRowOffset(view, left);
-  const state = await decodeStateAtFile(file, offset);
+  const offset = readRowOffset(index.table, left);
+  const state = await decodeStateAtFile(data, offset);
   return buildBookEntryFromState(state, sfen);
 }
 
@@ -607,6 +584,45 @@ export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
   return { format: "sbk", entries, sbkAuthor: book.Author, sbkDescription: book.Description };
 }
 
+async function eachEntry(
+  book: SbkBook,
+  callback: (sfen: string, entry: BookEntry) => Promise<void> | void,
+): Promise<void> {
+  // in-memory
+  for (const [sfen, entry] of book.entries) {
+    if (entry.type === "patch" && book.rawData && book.sbkIndex) {
+      const baseEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+      if (baseEntry) {
+        const mergedEntry = mergeBookEntries(baseEntry, entry);
+        if (mergedEntry) {
+          await callback(sfen, mergedEntry);
+          continue;
+        }
+      }
+    }
+    await callback(sfen, entry);
+  }
+
+  // on-the-fly
+  if (!book.rawData || !book.sbkIndex) {
+    return;
+  }
+  for (let index = book.sbkIndex.firstNonZeroRow; index < book.sbkIndex.rowCount; index++) {
+    const offset = readRowOffset(book.sbkIndex.table, index);
+    const state = await decodeStateAtFile(book.rawData, offset);
+    if (!state.Position) {
+      state.Position = readSfenAtRow(book.sbkIndex.table, index);
+    }
+    if (book.entries.has(state.Position)) {
+      continue; // skip entries that are already loaded in memory, to avoid duplicates and reduce file reads
+    }
+    const entry = buildBookEntryFromState(state, state.Position);
+    if (entry) {
+      await callback(state.Position, entry);
+    }
+  }
+}
+
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
   // SFEN の記述を最小限にしてデータを削減するためにルートではないノードを列挙する。
   const nonRootSfens = new Set<string>();
@@ -614,17 +630,17 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
 
-  for (const [rootSfen, rootEntry] of book.entries) {
+  await eachEntry(book, (rootSfen, rootEntry) => {
     // DFS で訪問したことがある局面はそれ以上調べる必要がない。
     // ここで訪問済みでないノードはルートノードになる可能性があるが、
     // 他のノードからの探索がおわるまではルートノードかどうかが確定しない。
     if (sfenToEdges.has(rootSfen)) {
-      continue; // 訪問済み
+      return; // 訪問済み
     }
     // newBySFEN は負荷が高いため、DFS の開始点だけで呼び出して残りは差分計算をする。
     const pos = Position.newBySFEN(rootSfen);
     if (!pos) {
-      continue;
+      return;
     }
     // ルートノードを特定するためにエッジを経由して到達可能な子ノードを DFS で列挙する。
     const stack: { sfen: string; bookMoves: BookMove[]; index: number; lastMove?: Move }[] = [
@@ -652,7 +668,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       const nextSfen = pos.sfen;
       edges.push([bookMove, toSbkMove(move), nextSfen]);
-      const nextEntry = book.entries.get(nextSfen);
+      const nextEntry = book.entries.get(nextSfen); // FIXME
       if (!nextEntry) {
         pos.undoMove(move);
         continue; // エントリーに含まれないリーフノード
@@ -667,23 +683,23 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       stack.push({ sfen: nextSfen, bookMoves: nextEntry.moves, index: 0, lastMove: move });
     }
-  }
+  });
 
   // ノードに ID を割り当てる。
   // ID は書き出す時の順序と一致しなければならない。
   // ルートノードを先頭に書かないと ShogiGUI で正しく読み込まれない。
   let newId = 0;
   const sfenToId = new Map<string, number>();
-  for (const [sfen] of book.entries) {
+  await eachEntry(book, (sfen) => {
     if (!nonRootSfens.has(sfen)) {
       sfenToId.set(sfen, newId++);
     }
-  }
-  for (const [sfen] of book.entries) {
+  });
+  await eachEntry(book, (sfen) => {
     if (nonRootSfens.has(sfen)) {
       sfenToId.set(sfen, newId++);
     }
-  }
+  });
 
   // データ全体を一気に encode するとメモリを大量に消費してしまうため、チャンク単位で書き出す。
   const CHUNK_SIZE = 64 * 1024;
@@ -756,16 +772,16 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     await writeBytes(stateWriter.finish());
   }
 
-  for (const [sfen, entry] of book.entries) {
+  await eachEntry(book, async (sfen, entry) => {
     if (!nonRootSfens.has(sfen)) {
       await writeState(sfen, entry);
     }
-  }
-  for (const [sfen, entry] of book.entries) {
+  });
+  await eachEntry(book, async (sfen, entry) => {
     if (nonRootSfens.has(sfen)) {
       await writeState(sfen, entry);
     }
-  }
+  });
 
   await flush();
   output.end();

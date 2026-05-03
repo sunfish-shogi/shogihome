@@ -43,10 +43,9 @@ import {
   storeAperyBook,
 } from "./apery.js";
 import {
-  buildSbkOnTheFly,
   loadSbkBook,
+  loadSbkBookOnTheFly,
   searchSbkBookEntryOnTheFly,
-  SbkOnTheFlyIndex,
   storeSbkBook,
 } from "./sbk.js";
 
@@ -58,14 +57,18 @@ type InMemoryBook = Book & {
   saved: boolean;
 };
 
-type OnTheFlyBook = Book & {
+type OnTheFlyBook = {
   type: "on-the-fly";
   path: string;
-  file: fs.promises.FileHandle;
-  size: number;
   saved: boolean;
-  sbkIndex?: SbkOnTheFlyIndex;
-};
+} & (
+  | ((YaneBook | AperyBook) & {
+      file: fs.promises.FileHandle;
+      size: number;
+      saved: boolean;
+    })
+  | SbkBook
+);
 
 // マージ済みのエントリーを取得する。
 async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
@@ -88,13 +91,15 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
     }
     case "sbk": {
       const entry = book.entries.get(sfen);
-      if (book.type === "in-memory" || entry?.type === "normal") {
+      if (
+        book.type === "in-memory" ||
+        entry?.type === "normal" ||
+        !book.rawData ||
+        !book.sbkIndex
+      ) {
         return entry;
       }
-      if (!book.sbkIndex) {
-        throw new Error("SBK index is not initialized");
-      }
-      const base = await searchSbkBookEntryOnTheFly(sfen, book.file, book.sbkIndex);
+      const base = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
       return mergeBookEntries(base, entry);
     }
   }
@@ -228,16 +233,11 @@ async function openBookOnTheFly(session: number, path: string, size: number): Pr
         entries: new Map<bigint, BookEntry>(),
       });
     } else {
-      const sbkRawData = await fs.promises.readFile(path);
-      const sbkOnTheFly = buildSbkOnTheFly(sbkRawData);
+      const sbkOnTheFly = await loadSbkBookOnTheFly(path);
       replaceBook(session, {
         ...common,
         type: "on-the-fly",
-        format: "sbk",
-        entries: new Map<string, BookEntry>(),
-        sbkAuthor: sbkOnTheFly.sbkAuthor,
-        sbkDescription: sbkOnTheFly.sbkDescription,
-        sbkIndex: sbkOnTheFly.index,
+        ...sbkOnTheFly,
       });
     }
   } catch (e) {
@@ -290,6 +290,7 @@ export async function openBook(
 
   const size = stat.size;
   const format = getFormatByPath(path);
+  // TODO: SBK の閾値設定を別で用意する
   if (
     format === "sbk" ||
     options?.forceOnTheFly ||
@@ -326,14 +327,14 @@ function replaceBook(session: number, newBook: BookHandle) {
 }
 
 async function loadMergedSbkBook(book: OnTheFlyBook & { format: "sbk" }): Promise<SbkBook> {
-  const base = loadSbkBook(await fs.promises.readFile(book.path));
+  const fullBook = loadSbkBook(await fs.promises.readFile(book.path));
   for (const [sfen, patch] of book.entries) {
-    const merged = mergeBookEntries(base.entries.get(sfen), patch);
+    const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
     if (merged) {
-      base.entries.set(sfen, merged);
+      fullBook.entries.set(sfen, merged);
     }
   }
-  return base;
+  return fullBook;
 }
 
 export async function saveBook(session: number, path: string) {
@@ -384,11 +385,7 @@ export async function saveBook(session: number, path: string) {
         if (!path.endsWith(".sbk")) {
           throw new Error("Invalid file extension: " + path);
         }
-        if (book.type === "in-memory") {
-          await storeSbkBook(book, file);
-        } else {
-          await storeSbkBook(await loadMergedSbkBook(book), file);
-        }
+        await storeSbkBook(book, file);
         break;
     }
     if (book.type === "in-memory") {
@@ -489,7 +486,7 @@ export function clearBook(session: number, format?: BookFormat): void {
   if (!book) {
     return;
   }
-  if (book.type === "on-the-fly") {
+  if (book.type === "on-the-fly" && book.format !== "sbk") {
     book.file.close();
   }
   bookFiles.set(session, emptyBook(format));
