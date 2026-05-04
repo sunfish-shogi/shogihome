@@ -182,7 +182,7 @@ describe("background/book", () => {
       }
     });
 
-    describe("shogihome01.sbk", () => {
+    describe("shogihome01.sbk", async () => {
       const patterns = [
         { options: { onTheFlyThresholdMB: 999 }, mode: "on-the-fly" },
         { options: { onTheFlyThresholdMB: 0.00001 }, mode: "on-the-fly" },
@@ -190,7 +190,9 @@ describe("background/book", () => {
       ];
       for (const pattern of patterns) {
         it(`mode=${pattern.mode} options=${JSON.stringify(pattern.options)}`, async () => {
-          const baseline = loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"));
+          const baseline = await loadSbkBook(
+            fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"),
+          );
           const sample = Array.from(baseline.entries).find(([, entry]) => entry.moves.length > 0);
           if (!sample) {
             throw new Error("No searchable SBK entry found in fixture");
@@ -559,7 +561,9 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk");
 
       const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
-      const baseline = loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"));
+      const baseline = await loadSbkBook(
+        fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"),
+      );
       const baselineGames = baseline.entries.get(initialSfen)?.games ?? 0;
       const baselineWonBlack = baseline.entries.get(initialSfen)?.wonBlack ?? 0;
       const baselineWonWhite = baseline.entries.get(initialSfen)?.wonWhite ?? 0;
@@ -583,7 +587,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
       const tempFilePath = path.join(tmpdir, "stats-test.sbk");
       await saveBook(defaultBookSession, tempFilePath);
-      const entry = loadSbkBook(fs.readFileSync(tempFilePath)).entries.get(initialSfen);
+      const entry = (await loadSbkBook(fs.readFileSync(tempFilePath))).entries.get(initialSfen);
       expect(entry?.games).toBe(baselineGames + 3);
       expect(entry?.wonBlack).toBe(baselineWonBlack + 1);
       expect(entry?.wonWhite).toBe(baselineWonWhite + 2);
@@ -776,7 +780,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       const outPath = path.join(tmpdir, "export-yane-to-sbk.sbk");
       await exportBook(defaultBookSession, outPath, "sbk");
 
-      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      const sbk = await loadSbkBook(fs.readFileSync(outPath));
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
       expect(sbk.entries.get(sfen2)?.moves.length).toBeGreaterThan(0);
     });
@@ -803,7 +807,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       const outPath = path.join(tmpdir, "export-yane-otf-to-sbk.sbk");
       await exportBook(defaultBookSession, outPath, "sbk");
 
-      const sbk = loadSbkBook(fs.readFileSync(outPath));
+      const sbk = await loadSbkBook(fs.readFileSync(outPath));
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
     });
 

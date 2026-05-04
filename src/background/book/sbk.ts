@@ -471,7 +471,10 @@ export async function searchSbkBookEntryOnTheFly(
   return buildBookEntryFromState(state, sfen);
 }
 
-export function loadSbkBook(data: Buffer | Uint8Array): SbkBook {
+export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<SbkBook> {
+  if (typeof data === "string") {
+    data = await fs.promises.readFile(data);
+  }
   const book = SBook.decode(data);
 
   const entries = new Map<string, BookEntry>();
@@ -627,7 +630,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
 
-  await eachEntry(book, (rootSfen, rootEntry) => {
+  await eachEntry(book, async (rootSfen, rootEntry) => {
     // DFS で訪問したことがある局面はそれ以上調べる必要がない。
     // ここで訪問済みでないノードはルートノードになる可能性があるが、
     // 他のノードからの探索がおわるまではルートノードかどうかが確定しない。
@@ -665,7 +668,10 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       }
       const nextSfen = pos.sfen;
       edges.push([bookMove, toSbkMove(move), nextSfen]);
-      const nextEntry = book.entries.get(nextSfen); // FIXME
+      const nextEntry =
+        book.rawData && book.sbkIndex
+          ? await searchSbkBookEntryOnTheFly(nextSfen, book.rawData, book.sbkIndex)
+          : book.entries.get(nextSfen);
       if (!nextEntry) {
         pos.undoMove(move);
         continue; // エントリーに含まれないリーフノード

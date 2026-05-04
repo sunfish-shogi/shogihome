@@ -11,7 +11,7 @@ describe("background/book/sbk", () => {
   ];
   for (const { input, expected } of testCases) {
     it(`in-memory: ${input} → ${expected}`, async () => {
-      const book = loadSbkBook(fs.readFileSync(`src/tests/testdata/book/${input}`));
+      const book = await loadSbkBook(fs.readFileSync(`src/tests/testdata/book/${input}`));
 
       const pass = new PassThrough();
       const chunks: Buffer[] = [];
@@ -26,10 +26,8 @@ describe("background/book/sbk", () => {
       expect(outputHex).toBe(expectedHex);
     });
 
-    /*
     it(`on-the-fly: ${input} → ${expected}`, async () => {
-      const rawData = await fs.promises.readFile(`src/tests/testdata/book/${input}`);
-      const book = loadSbkBookOnTheFly(rawData);
+      const book = await loadSbkBookOnTheFly(`src/tests/testdata/book/${input}`);
 
       const pass = new PassThrough();
       const chunks: Buffer[] = [];
@@ -43,6 +41,5 @@ describe("background/book/sbk", () => {
       const expectedHex = fs.readFileSync(`src/tests/testdata/book/${expected}`).toString("hex");
       expect(outputHex).toBe(expectedHex);
     });
-    */
   }
 });

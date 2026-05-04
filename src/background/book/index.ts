@@ -258,8 +258,7 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
         book = await loadYaneuraOuBook(file);
         break;
       case "sbk": {
-        const data = await fs.promises.readFile(path);
-        book = loadSbkBook(data);
+        book = await loadSbkBook(path);
         break;
       }
       default:
@@ -327,7 +326,7 @@ function replaceBook(session: number, newBook: BookHandle) {
 }
 
 async function loadMergedSbkBook(book: OnTheFlyBook & { format: "sbk" }): Promise<SbkBook> {
-  const fullBook = loadSbkBook(await fs.promises.readFile(book.path));
+  const fullBook = await loadSbkBook(book.rawData || book.path);
   for (const [sfen, patch] of book.entries) {
     const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
     if (merged) {
