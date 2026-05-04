@@ -434,11 +434,8 @@ async function decodeStateAtFile(data: Uint8Array, stateTagOffset: number): Prom
   if (tag !== 26) {
     throw new Error(`Invalid SBookState tag: ${tag}`);
   }
-  const [payloadLength, afterLength] = readVarint(data, afterTag);
-  const payload = data.subarray(
-    stateTagOffset + afterLength,
-    stateTagOffset + afterLength + payloadLength,
-  );
+  const [payloadLength, payloadOffset] = readVarint(data, afterTag);
+  const payload = data.subarray(payloadOffset, payloadOffset + payloadLength);
   return SBookState.decode(payload);
 }
 
