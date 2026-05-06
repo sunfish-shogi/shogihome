@@ -47,7 +47,7 @@ export type CSAGameSettings = {
   searchCommentFormat: SearchCommentFormat;
 };
 
-export function defaultCSAServerSettings(): CSAServerSettings {
+function defaultCSAServerSettings(): CSAServerSettings {
   return {
     protocolVersion: CSAProtocolVersion.V121_FLOODGATE,
     host: "",
