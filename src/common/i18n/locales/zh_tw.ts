@@ -661,6 +661,8 @@ export const zh_tw: Texts = {
     "若您的引擎不支援該指令，可能會有預期外之行為發生。",
   someLogsDisabled: "部份 log 已被無效化。",
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。", // TODO: Translate
   pleaseEnableLogsAndRestart: "請在程式設定中開啟紀錄並重新啟動本程式。",
   hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。", // TODO: Translate
   hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。", // TODO: Translate

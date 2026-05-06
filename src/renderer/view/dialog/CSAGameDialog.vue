@@ -167,6 +167,11 @@
           />
           <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(30, 7200) }})</div>
         </div>
+        <div v-if="!blankLinePing" class="form-group warning">
+          <div class="note">
+            {{ t.blankLinePingRecommendedToPreventTimeout }}
+          </div>
+        </div>
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.saveHistory }}</div>
           <ToggleButton v-model:value="saveHistory" />
@@ -457,7 +462,7 @@ const hwaEnabled = computed(() => {
 </script>
 
 <style scoped>
-.form-group {
+.form-group:not(.warning) {
   min-width: 510px;
 }
 input.number {
