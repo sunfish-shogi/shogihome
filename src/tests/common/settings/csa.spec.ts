@@ -208,6 +208,7 @@ describe("settings/csa", () => {
           port: 1234,
           id: "test-user",
           tcpKeepalive: { initialDelay: 10 },
+          blankLinePing: { initialDelay: 40, interval: 40 },
         },
       ],
       autoFlip: false,

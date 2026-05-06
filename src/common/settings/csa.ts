@@ -57,6 +57,10 @@ export function defaultCSAServerSettings(): CSAServerSettings {
     tcpKeepalive: {
       initialDelay: 10,
     },
+    blankLinePing: {
+      initialDelay: 40,
+      interval: 40,
+    },
   };
 }
 
@@ -246,6 +250,10 @@ export function emptySecureCSAServerSettings(): SecureCSAServerSettings {
     id: "",
     tcpKeepalive: {
       initialDelay: 10,
+    },
+    blankLinePing: {
+      initialDelay: 40,
+      interval: 40,
     },
   };
 }
