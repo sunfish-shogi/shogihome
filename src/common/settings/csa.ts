@@ -242,7 +242,7 @@ export type SecureCSAServerSettings = {
   blankLinePing?: BlankLinePingSettings;
 };
 
-export function emptySecureCSAServerSettings(): SecureCSAServerSettings {
+function emptySecureCSAServerSettings(): SecureCSAServerSettings {
   return {
     protocolVersion: CSAProtocolVersion.V121_FLOODGATE,
     host: "",
@@ -250,10 +250,6 @@ export function emptySecureCSAServerSettings(): SecureCSAServerSettings {
     id: "",
     tcpKeepalive: {
       initialDelay: 10,
-    },
-    blankLinePing: {
-      initialDelay: 40,
-      interval: 40,
     },
   };
 }
