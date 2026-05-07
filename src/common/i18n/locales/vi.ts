@@ -666,6 +666,8 @@ export const vi: Texts = {
     "Phần mềm của bạn có thể báo lỗi nếu không hỗ trợ cài đặt này.",
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。", // TODO: Translate
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
   hwaEnabled: "Đã bật gia tốc phần cứng (HWA).",
   hwaIsNotRecommendedForLongGames: "Vui lòng tắt HWA nếu ván cờ kéo dài.",

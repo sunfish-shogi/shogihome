@@ -657,6 +657,8 @@ export const ja: Texts = {
     "エンジンがこのオプションに対応していない場合、予期しない動作を引き起こす可能性があります。",
   someLogsDisabled: "一部のログが無効になっています。",
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
   hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。",
   hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。",

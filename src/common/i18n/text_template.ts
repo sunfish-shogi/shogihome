@@ -644,6 +644,7 @@ export type Texts = {
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior: string;
   someLogsDisabled: string;
   logsRecommendedForCSAProtocol: string;
+  blankLinePingRecommendedToPreventTimeout: string;
   pleaseEnableLogsAndRestart: string;
   hwaEnabled: string;
   hwaIsNotRecommendedForLongGames: string;

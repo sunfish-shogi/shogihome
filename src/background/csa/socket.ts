@@ -11,6 +11,7 @@ type SocketHandlers = {
 
 type SocketOptions = {
   keepaliveInitialDelay: number;
+  noDelay: boolean;
 };
 
 export class Socket {
@@ -21,7 +22,7 @@ export class Socket {
     host: string,
     port: number,
     handlers: SocketHandlers,
-    options: SocketOptions = { keepaliveInitialDelay: 0 },
+    options: SocketOptions = { keepaliveInitialDelay: 0, noDelay: true },
   ) {
     this.socket = net
       .createConnection(
@@ -32,6 +33,7 @@ export class Socket {
         handlers.onConnect,
       )
       .setKeepAlive(true, options.keepaliveInitialDelay * 1e3)
+      .setNoDelay(options.noDelay)
       .on("error", handlers.onError)
       .on("end", handlers.onFIN)
       .on("close", (hadError) => {

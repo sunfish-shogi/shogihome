@@ -657,6 +657,8 @@ export const en: Texts = {
     "If your engine does not support the options, it may cause unexpected behavior.",
   someLogsDisabled: "Some log settings are disabled.",
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
+  blankLinePingRecommendedToPreventTimeout:
+    "It is recommended to enable Blank Line Ping to prevent connection timeout.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
   hwaEnabled: "HWA(Hardware Acceleration) Enabled",
   hwaIsNotRecommendedForLongGames: "HWA is not recommended for long games.",
