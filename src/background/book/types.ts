@@ -15,16 +15,17 @@ export type SbkBook = {
   entries: Map<string, BookEntry>;
   sbkAuthor?: string;
   sbkDescription?: string;
-  sbkIndex?: SbkOnTheFlyIndex;
+  sbkIndex?: SbkOnTheFlyLUT;
   rawData?: Uint8Array;
 };
 
 export type Book = YaneBook | AperyBook | SbkBook;
 
-export type SbkOnTheFlyIndex = {
+export type SbkOnTheFlyLUT = {
   table: Uint8Array;
   rowCount: number;
   firstNonZeroRow: number;
+  indexToOffset: Uint32Array;
 };
 
 export type SbkEval = {

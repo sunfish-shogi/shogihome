@@ -9,7 +9,7 @@ import {
   SBookState,
   SBook,
 } from "./proto/sbk.js";
-import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyIndex } from "./types.js";
+import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyLUT } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
 import { BookMove } from "@/common/book.js";
 import {
@@ -18,9 +18,7 @@ import {
   unpackPackedSfenToSfen,
 } from "./packed_sfen.js";
 
-const SBK_ON_THE_FLY_ROW_SIZE = 37; // 32 bytes packed-sfen + 39-bit offset + 1-bit root
-const SBK_ON_THE_FLY_OFFSET_BITS = 39n;
-const SBK_ON_THE_FLY_OFFSET_MASK = (1n << SBK_ON_THE_FLY_OFFSET_BITS) - 1n;
+const SBK_ON_THE_FLY_ROW_SIZE = 36; // 32 bytes packed-sfen + 32-bit offset
 
 function readVarint(data: Uint8Array, offset: number): [value: number, nextOffset: number] {
   let value = 0;
@@ -105,16 +103,9 @@ function scanSBookTopLevel(data: Uint8Array): {
   return { stateCount, sbkAuthor, sbkDescription };
 }
 
-function writeRowMetadata(table: Uint8Array, rowOffset: number, fileOffset: number, root: boolean) {
-  if (fileOffset < 0 || BigInt(fileOffset) > SBK_ON_THE_FLY_OFFSET_MASK) {
-    throw new Error(`SBK offset out of range: ${fileOffset}`);
-  }
-  let value = BigInt(fileOffset) & SBK_ON_THE_FLY_OFFSET_MASK;
-  if (root) {
-    value |= 1n << SBK_ON_THE_FLY_OFFSET_BITS;
-  }
-  for (let i = 0; i < 5; i++) {
-    table[rowOffset + 32 + i] = Number((value >> BigInt(i * 8)) & 0xffn);
+function writeRowMetadata(table: Uint8Array, rowOffset: number, fileOffset: number) {
+  for (let i = 0; i < 4; i++) {
+    table[rowOffset + 32 + i] = (fileOffset >> (i * 8)) & 0xff;
   }
 }
 
@@ -126,11 +117,12 @@ function readSfenAtRow(table: Uint8Array, row: number): string {
 
 function readRowOffset(table: Uint8Array, row: number): number {
   const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
-  let value = 0n;
-  for (let i = 0; i < 5; i++) {
-    value |= BigInt(table[rowOffset + 32 + i]) << BigInt(i * 8);
-  }
-  return Number(value & SBK_ON_THE_FLY_OFFSET_MASK);
+  const value =
+    table[rowOffset + 32] |
+    (table[rowOffset + 33] << 8) |
+    (table[rowOffset + 34] << 16) |
+    (table[rowOffset + 35] << 24);
+  return value;
 }
 
 function compareRowPacked(table: Uint8Array, row: number, packedSfen: Uint8Array): number {
@@ -243,6 +235,7 @@ function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | u
   const bookMoves: BookMove[] = state.Moves.map((m) => {
     const move: BookMove = {
       usi: fromSbkMove(pos, m.Move).usi,
+      sbkIndex: m.NextStateId,
     };
     if (m.Weight) {
       move.count = m.Weight;
@@ -315,7 +308,7 @@ function buildStateOffsetTable(data: Uint8Array, table: Uint8Array, rowCount: nu
         throw new Error("Invalid sbk: state count mismatch");
       }
       const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
-      writeRowMetadata(table, rowOffset, tagOffset, false);
+      writeRowMetadata(table, rowOffset, tagOffset);
       offset = payloadOffset + stateLength;
       if (offset > data.length) {
         throw new Error("Invalid sbk: truncated SBookState payload");
@@ -396,12 +389,16 @@ function fillPackedSfenByTraversal(data: Uint8Array, table: Uint8Array, stateCou
   }
 }
 
-function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
+function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyLUT {
   const { stateCount } = scanSBookTopLevel(rawData);
   const table = new Uint8Array(stateCount * SBK_ON_THE_FLY_ROW_SIZE);
+  const indexToOffset = new Uint32Array(stateCount);
 
   buildStateOffsetTable(rawData, table, stateCount);
   fillPackedSfenByTraversal(rawData, table, stateCount);
+  for (let i = 0; i < stateCount; i++) {
+    indexToOffset[i] = readRowOffset(table, i);
+  }
   sortRowsByPacked(table, stateCount);
 
   let firstNonZeroRow = 0;
@@ -412,6 +409,7 @@ function buildSbkOnTheFlyIndex(rawData: Uint8Array): SbkOnTheFlyIndex {
     table,
     rowCount: stateCount,
     firstNonZeroRow,
+    indexToOffset,
   };
 }
 
@@ -441,7 +439,8 @@ async function decodeStateAtFile(data: Uint8Array, stateTagOffset: number): Prom
 export async function searchSbkBookEntryOnTheFly(
   sfen: string,
   data: Uint8Array,
-  index: SbkOnTheFlyIndex,
+  index: SbkOnTheFlyLUT,
+  stateIdHint?: number,
 ): Promise<BookEntry | undefined> {
   let packed: Uint8Array;
   try {
@@ -450,22 +449,27 @@ export async function searchSbkBookEntryOnTheFly(
     return;
   }
 
-  let left = index.firstNonZeroRow;
-  let right = index.rowCount;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    const cmp = compareRowPacked(index.table, mid, packed);
-    if (cmp < 0) {
-      left = mid + 1;
-    } else {
-      right = mid;
+  let offset: number;
+  if (stateIdHint !== undefined && stateIdHint >= 0 && stateIdHint < index.rowCount) {
+    offset = index.indexToOffset[stateIdHint];
+  } else {
+    let left = index.firstNonZeroRow;
+    let right = index.rowCount;
+    while (left < right) {
+      const mid = Math.floor((left + right) / 2);
+      const cmp = compareRowPacked(index.table, mid, packed);
+      if (cmp < 0) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
     }
-  }
-  if (left >= index.rowCount || compareRowPacked(index.table, left, packed) !== 0) {
-    return;
+    if (left >= index.rowCount || compareRowPacked(index.table, left, packed) !== 0) {
+      return;
+    }
+    offset = readRowOffset(index.table, left);
   }
 
-  const offset = readRowOffset(index.table, left);
   const state = await decodeStateAtFile(data, offset);
   return buildBookEntryFromState(state, sfen);
 }
@@ -493,6 +497,7 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
       const bookMove: BookMove = {
         usi: moves[index].usi,
+        sbkIndex: m.NextStateId,
       };
       if (m.Weight) {
         bookMove.count = m.Weight;
@@ -669,7 +674,12 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       edges.push([bookMove, toSbkMove(move), nextSfen]);
       const nextEntry =
         book.rawData && book.sbkIndex
-          ? await searchSbkBookEntryOnTheFly(nextSfen, book.rawData, book.sbkIndex)
+          ? await searchSbkBookEntryOnTheFly(
+              nextSfen,
+              book.rawData,
+              book.sbkIndex,
+              bookMove.sbkIndex,
+            )
           : book.entries.get(nextSfen);
       if (!nextEntry) {
         pos.undoMove(move);

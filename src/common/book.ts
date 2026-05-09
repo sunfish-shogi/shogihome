@@ -20,7 +20,7 @@ export type BookMove = {
   count?: number; // 出現回数
   comment?: string; // コメント
   sbkEval?: SbkMoveEvaluation; // SBK の指し手評価
-  sbkOffset?: number; // SBK ファイル内のオフセット
+  sbkIndex?: number; // SBK ファイル内のインデックス
 };
 
 export type BookLoadingOptions = {
