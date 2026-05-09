@@ -98,20 +98,20 @@ export function useDraggableDialog(containerRef: Ref<HTMLElement | undefined>) {
     let newX = translateStartX + (event.clientX - dragStartX);
     let newY = translateStartY + (event.clientY - dragStartY);
 
-    const newLeft = naturalRect.left + newX;
     const newRight = naturalRect.right + newX;
-    const newTop = naturalRect.top + newY;
     const newBottom = naturalRect.bottom + newY;
 
-    if (newLeft < 0) {
-      newX -= newLeft;
-    } else if (newRight > window.innerWidth) {
+    if (newRight > window.innerWidth) {
       newX -= newRight - window.innerWidth;
     }
-    if (newTop < 0) {
-      newY -= newTop;
-    } else if (newBottom > window.innerHeight) {
+    if (naturalRect.left + newX < 0) {
+      newX = -naturalRect.left;
+    }
+    if (newBottom > window.innerHeight) {
       newY -= newBottom - window.innerHeight;
+    }
+    if (naturalRect.top + newY < 0) {
+      newY = -naturalRect.top;
     }
 
     translate.x = newX;
@@ -126,8 +126,36 @@ export function useDraggableDialog(containerRef: Ref<HTMLElement | undefined>) {
     document.removeEventListener("mouseup", onMouseUp);
   }
 
+  function clampTranslate(): void {
+    const container = containerRef.value;
+    if (!container) {
+      return;
+    }
+    const rect = container.getBoundingClientRect();
+    let dx = 0;
+    if (rect.right > window.innerWidth) {
+      dx -= rect.right - window.innerWidth;
+    }
+    if (rect.left + dx < 0) {
+      dx = -rect.left;
+    }
+    translate.x += dx;
+
+    let dy = 0;
+    if (rect.bottom > window.innerHeight) {
+      dy -= rect.bottom - window.innerHeight;
+    }
+    if (rect.top + dy < 0) {
+      dy = -rect.top;
+    }
+    translate.y += dy;
+  }
+
+  window.addEventListener("resize", clampTranslate);
+
   onBeforeUnmount(() => {
     onMouseUp();
+    window.removeEventListener("resize", clampTranslate);
   });
 
   return { dragStyle, onDragMouseDown };
