@@ -142,6 +142,9 @@
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.blankLinePing }}</div>
           <ToggleButton v-model:value="blankLinePing" />
+          <button class="thin auxiliary" @click="aboutQualityOfCsaProtocol">
+            <Icon :icon="IconType.HELP" />
+          </button>
         </div>
         <div v-show="blankLinePing" class="form-item">
           <div class="form-item-label-wide">{{ t.blankLinePingInitialDelay }}</div>
@@ -166,6 +169,11 @@
             max="7200"
           />
           <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(30, 7200) }})</div>
+        </div>
+        <div v-if="!blankLinePing" class="form-group warning">
+          <div class="note">
+            {{ t.blankLinePingRecommendedToPreventTimeout }}
+          </div>
         </div>
         <div class="form-item">
           <div class="form-item-label-wide">{{ t.saveHistory }}</div>
@@ -265,6 +273,7 @@ import {
   officialCSAServerDomain,
 } from "@/common/game/csa";
 import DialogFrame from "./DialogFrame.vue";
+import { qualityOfCsaProtocolSettingWikiPageURL } from "@/common/links/github";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -454,10 +463,14 @@ const hwaEnabled = computed(() => {
   const appSettings = useAppSettings();
   return appSettings.enableHardwareAcceleration;
 });
+
+const aboutQualityOfCsaProtocol = () => {
+  api.openWebBrowser(qualityOfCsaProtocolSettingWikiPageURL);
+};
 </script>
 
 <style scoped>
-.form-group {
+.form-group:not(.warning) {
   min-width: 510px;
 }
 input.number {
@@ -471,5 +484,10 @@ input.number {
 }
 .main-buttons button {
   line-height: 150%;
+}
+button.auxiliary {
+  margin-left: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>

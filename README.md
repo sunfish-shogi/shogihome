@@ -72,6 +72,10 @@ GitHub アカウントをお持ちでない場合は [送信フォーム](https:
 
 開発の進捗状況は [プロジェクトボード](https://github.com/users/sunfish-shogi/projects/1/views/1) を参照してください。
 
+## セキュリティ
+
+ShogiHome を自分でビルドする場合は [ShogiHome の開発をするときのセキュリティ](https://note.com/ryosuke_kubo/n/n790345a2b9aa) をお読みください。
+
 ## 開発
 
 ### 必要なもの

@@ -8,6 +8,7 @@ import { LogType, LogLevel } from "@/common/log";
 import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandType } from "@/common/advanced/command";
+import { BookFormat } from "@/common/book";
 
 const api: Bridge = {
   // Core
@@ -150,11 +151,11 @@ const api: Bridge = {
   async showOpenBookDialog(): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_OPEN_BOOK_DIALOG);
   },
-  async showSaveBookDialog(session: number): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session);
+  async showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_BOOK_DIALOG, session, targetFormat);
   },
-  async clearBook(session: number): Promise<void> {
-    return await ipcRenderer.invoke(Background.CLEAR_BOOK, session);
+  async clearBook(session: number, format?: BookFormat): Promise<void> {
+    return await ipcRenderer.invoke(Background.CLEAR_BOOK, session, format);
   },
   async openBook(session: number, path: string, json: string): Promise<void> {
     await ipcRenderer.invoke(Background.OPEN_BOOK, session, path, json);
@@ -167,6 +168,12 @@ const api: Bridge = {
   },
   async saveBook(session: number, path: string): Promise<void> {
     return await ipcRenderer.invoke(Background.SAVE_BOOK, session, path);
+  },
+  async exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void> {
+    return await ipcRenderer.invoke(Background.EXPORT_BOOK, session, path, targetFormat);
+  },
+  async getBookFormat(session: number): Promise<BookFormat> {
+    return await ipcRenderer.invoke(Background.GET_BOOK_FORMAT, session);
   },
   async searchBookMoves(session: number, sfen: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, session, sfen);

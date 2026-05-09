@@ -1,8 +1,4 @@
-import { BookMove as CommonBookMove } from "@/common/book.js";
-
-export type BookFormatYane2016 = "yane2016";
-export type BookFormatApery = "apery";
-export type BookFormat = BookFormatYane2016 | BookFormatApery;
+import { BookFormatApery, BookFormatSbk, BookFormatYane2016, BookMove } from "@/common/book.js";
 
 export type YaneBook = {
   format: BookFormatYane2016;
@@ -14,47 +10,36 @@ export type AperyBook = {
   entries: Map<bigint, BookEntry>;
 };
 
-export type Book = YaneBook | AperyBook;
+export type SbkBook = {
+  format: BookFormatSbk;
+  entries: Map<string, BookEntry>;
+  sbkAuthor?: string;
+  sbkDescription?: string;
+};
+
+export type Book = YaneBook | AperyBook | SbkBook;
+
+export type SbkEval = {
+  EvaluationValue: number;
+  Depth: number;
+  SelDepth: number;
+  Nodes: bigint;
+  Variation?: string;
+  EngineName?: string;
+};
 
 export type BookEntry = {
   type: BookEntryType;
-  comment: string; // 局面に対するコメント
   moves: BookMove[]; // この局面に対する定跡手
-  minPly: number; // 初期局面からの手数
+  minPly?: number; // 初期局面からの手数
+  comment?: string; // 局面に対するコメント
+  games?: number; // 対局数 (SBK)
+  wonBlack?: number; // 先手勝ち数 (SBK)
+  wonWhite?: number; // 後手勝ち数 (SBK)
+  sbkEvals?: SbkEval[]; // エンジン解析結果 (SBK)
 };
 
 export type BookEntryType = "normal" | "patch";
-
-export type BookMove = [
-  usi: string,
-  usi2: string | undefined,
-  score: number | undefined,
-  depth: number | undefined,
-  count: number | undefined,
-  comment: string,
-];
-
-export const IDX_USI = 0;
-export const IDX_USI2 = 1;
-export const IDX_SCORE = 2;
-export const IDX_DEPTH = 3;
-export const IDX_COUNT = 4;
-export const IDX_COMMENTS = 5;
-
-export function arrayMoveToCommonBookMove(move: BookMove): CommonBookMove {
-  return {
-    usi: move[IDX_USI],
-    usi2: move[IDX_USI2],
-    score: move[IDX_SCORE],
-    depth: move[IDX_DEPTH],
-    count: move[IDX_COUNT],
-    comment: move[IDX_COMMENTS],
-  };
-}
-
-export function commonBookMoveToArray(move: CommonBookMove): BookMove {
-  return [move.usi, move.usi2, move.score, move.depth, move.count, move.comment];
-}
 
 export function mergeBookEntries(
   base: BookEntry | undefined,
@@ -78,28 +63,32 @@ export function mergeBookEntries(
 
   const baseMovesMap = new Map<string, BookMove>();
   for (const move of base.moves) {
-    baseMovesMap.set(move[IDX_USI], move);
+    baseMovesMap.set(move.usi, move);
   }
   const patchMovesMap = new Map<string, BookMove>();
   for (const move of patch.moves) {
-    patchMovesMap.set(move[IDX_USI], move);
+    patchMovesMap.set(move.usi, move);
   }
   const moves = base.moves.map((move) => {
-    const p = patchMovesMap.get(move[IDX_USI]);
+    const p = patchMovesMap.get(move.usi);
     if (p) {
-      return [
-        p[IDX_USI],
-        p[IDX_USI2] !== undefined ? p[IDX_USI2] : move[IDX_USI2],
-        p[IDX_SCORE] !== undefined ? p[IDX_SCORE] : move[IDX_SCORE],
-        p[IDX_DEPTH] !== undefined ? p[IDX_DEPTH] : move[IDX_DEPTH],
-        p[IDX_COUNT] !== undefined ? p[IDX_COUNT] + (move[IDX_COUNT] || 0) : move[IDX_COUNT],
-        p[IDX_COMMENTS] || move[IDX_COMMENTS],
-      ] as BookMove;
+      return {
+        usi: p.usi,
+        usi2: p.usi2 ?? move.usi2,
+        score: p.score ?? move.score,
+        depth: p.depth ?? move.depth,
+        count:
+          p.count !== undefined || move.count !== undefined
+            ? (p.count || 0) + (move.count || 0)
+            : undefined,
+        comment: p.comment ?? move.comment,
+        evaluation: p.evaluation ?? move.evaluation,
+      };
     }
     return move;
   });
   for (const move of patch.moves) {
-    if (!baseMovesMap.has(move[IDX_USI])) {
+    if (!baseMovesMap.has(move.usi)) {
       moves.push(move);
     }
   }
@@ -108,6 +97,11 @@ export function mergeBookEntries(
     type: "normal",
     comment: patch.comment || base.comment,
     moves,
-    minPly: Math.min(base.minPly, patch.minPly),
+    minPly:
+      base.minPly !== undefined
+        ? patch.minPly !== undefined
+          ? Math.min(base.minPly, patch.minPly)
+          : base.minPly
+        : patch.minPly,
   };
 }

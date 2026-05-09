@@ -101,3 +101,8 @@ When new UI strings are added during feature development, they are written in Ja
 ```bash
 npx vitest run src/tests/path/to/test.spec.ts
 ```
+
+## Specification Documents
+
+- Consolidate format and behavior specifications under the `specs/` directory.
+- When adding new technical specifications, create or update Markdown files in `specs/`.

@@ -209,6 +209,14 @@ img.icon {
   margin: 0px;
 }
 
+.title img.icon {
+  filter: drop-shadow(1px 1px 8px #1f4343);
+}
+
+.title > div {
+  text-shadow: 1px 1px 8px #1f4343;
+}
+
 img.small-icon {
   width: auto;
   height: 1em;
@@ -217,9 +225,7 @@ img.small-icon {
 }
 
 .slides {
-  margin: 3em 0 3em 0;
-  padding: 3em 0 3em 0;
-  background: linear-gradient(180deg, #f0f0f0, 5%, white);
+  margin-top: 5em;
 }
 
 .row {

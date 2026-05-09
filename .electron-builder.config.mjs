@@ -78,7 +78,10 @@ const config = {
     },
   },
   linux: {
-    target: "AppImage",
+    target: ["AppImage", "deb"],
+    executableName: "shogihome",
+    icon: "public/favicon.png",
+    maintainer: "Kubo Ryosuke <sunfish-shogi@users.noreply.github.com>",
     fileAssociations: [
       { name: "KIF", ext: "kif" },
       { name: "KIFU", ext: "kifu" },
@@ -87,6 +90,9 @@ const config = {
       { name: "CSA", ext: "csa" },
       { name: "JKF", ext: "jkf" },
     ],
+  },
+  deb: {
+    packageName: "shogihome",
   },
   publish: null,
 

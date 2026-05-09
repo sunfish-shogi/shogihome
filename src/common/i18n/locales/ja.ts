@@ -214,6 +214,8 @@ export const ja: Texts = {
   customImage: "カスタム画像",
   autumn: "紅葉",
   snow: "雪",
+  classic: "クラシック",
+  beige: "ベージュ",
   darkGreen: "深緑",
   dark: "ダーク",
   boardLayout: "盤レイアウト",
@@ -529,6 +531,16 @@ export const ja: Texts = {
   dialogBackdrop: "ダイアログ表示中の暗転",
   record: "棋譜",
   book: "定跡",
+  bookInfo: "定跡の情報",
+  resetBook: "定跡の初期化",
+  moveEvaluation: "指し手評価",
+  forced: "絶対手",
+  goodMove: "好手",
+  yane2016BookFile: "やねうら王定跡ファイル",
+  shogiGUIBookFile: "ShogiGUI 定跡ファイル",
+  aperyBookFile: "Apery 定跡ファイル",
+  loadingMode: "読み込みモード",
+  positionCount: "局面数",
   chart: "グラフ",
   analytics: "解析",
   controlGroup: "メニュー",
@@ -560,6 +572,7 @@ export const ja: Texts = {
   play: "着手",
   edit: "編集",
   addMoves: "指し手追加",
+  export: "エクスポート",
   flippedBook: "反転も検索",
   addBookMoves: "定跡手追加",
   fromCurrentRecord: "現在の棋譜から",
@@ -644,6 +657,8 @@ export const ja: Texts = {
     "エンジンがこのオプションに対応していない場合、予期しない動作を引き起こす可能性があります。",
   someLogsDisabled: "一部のログが無効になっています。",
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
   hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。",
   hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。",
@@ -774,6 +789,9 @@ export const ja: Texts = {
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。",
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。",
   sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
   sourceDirectoryNotSet: "フォルダを選択してください。",
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",
@@ -853,5 +871,8 @@ export const ja: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `USI_Hash の合計が全メモリの${n}%を超えています。`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`;
   },
 };

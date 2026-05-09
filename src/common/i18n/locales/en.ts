@@ -214,6 +214,8 @@ export const en: Texts = {
   customImage: "Custom Image",
   autumn: "Autumn",
   snow: "Snow",
+  classic: "Classic",
+  beige: "Beige",
   darkGreen: "Dark Green",
   dark: "Dark",
   boardLayout: "Board Layout",
@@ -529,6 +531,16 @@ export const en: Texts = {
   dialogBackdrop: "Dialog Backdrop",
   record: "Record",
   book: "Book",
+  bookInfo: "Book Information",
+  resetBook: "Initialize Book",
+  moveEvaluation: "Move Evaluation",
+  forced: "Forced",
+  goodMove: "Good",
+  yane2016BookFile: "YaneuraOu Book File",
+  shogiGUIBookFile: "ShogiGUI Book File",
+  aperyBookFile: "Apery Book File",
+  loadingMode: "Loading Mode",
+  positionCount: "Position Count",
   chart: "Chart",
   analytics: "Analytics",
   controlGroup: "Control Group",
@@ -560,6 +572,7 @@ export const en: Texts = {
   play: "Play",
   edit: "Edit",
   addMoves: "Add Moves",
+  export: "Export",
   flippedBook: "Flipped Book",
   addBookMoves: "Add Book Moves",
   fromCurrentRecord: "From Current Record",
@@ -644,6 +657,8 @@ export const en: Texts = {
     "If your engine does not support the options, it may cause unexpected behavior.",
   someLogsDisabled: "Some log settings are disabled.",
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
+  blankLinePingRecommendedToPreventTimeout:
+    "It is recommended to enable Blank Line Ping to prevent connection timeout.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
   hwaEnabled: "HWA(Hardware Acceleration) Enabled",
   hwaIsNotRecommendedForLongGames: "HWA is not recommended for long games.",
@@ -772,6 +787,9 @@ export const en: Texts = {
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
   pleaseSpecifyOtherFileName: "Please specify another file name.",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "Memory shortage during book data conversion may cause loss of unsaved data.",
+  cannotConvertAperyBookToOtherFormat: "Apery book cannot be converted to other formats.",
   sourceRecordFileNotSet: "Source record file is not set.",
   sourceDirectoryNotSet: "Source directory is not set.",
   minPlyMustBeLessThanMaxPly: "Min ply must be less than max ply.",
@@ -853,5 +871,8 @@ export const en: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `The total USI_Hash exceeds ${n}% of memory.`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `Memory usage has exceeded ${gb} GB. If the upward trend continues, the app may hang.`;
   },
 };

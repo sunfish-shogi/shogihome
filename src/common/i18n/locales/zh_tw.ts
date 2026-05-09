@@ -221,6 +221,8 @@ export const zh_tw: Texts = {
   customImage: "自定義圖片",
   autumn: "紅葉",
   snow: "雪",
+  classic: "クラシック", // TODO: Translate
+  beige: "ベージュ", // TODO: Translate
   darkGreen: "深綠",
   dark: "深色主題",
   boardLayout: "棋盤設計",
@@ -536,6 +538,16 @@ export const zh_tw: Texts = {
   dialogBackdrop: "對話窗背景",
   record: "棋譜",
   book: "定跡",
+  bookInfo: "定跡の情報", // TODO: Translate
+  resetBook: "定跡の初期化", // TODO: Translate
+  moveEvaluation: "指し手評価", // TODO: Translate
+  forced: "絶対手", // TODO: Translate
+  goodMove: "好手", // TODO: Translate
+  yane2016BookFile: "やねうら王定跡ファイル", // TODO: Translate
+  shogiGUIBookFile: "ShogiGUI 定跡ファイル", // TODO: Translate
+  aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
+  loadingMode: "読み込みモード", // TODO: Translate
+  positionCount: "局面数", // TODO: Translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",
@@ -567,6 +579,7 @@ export const zh_tw: Texts = {
   play: "著手",
   edit: "編輯",
   addMoves: "新增該手",
+  export: "エクスポート", // TODO: Translate
   flippedBook: "亦檢索先後逆局面",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
@@ -648,6 +661,8 @@ export const zh_tw: Texts = {
     "若您的引擎不支援該指令，可能會有預期外之行為發生。",
   someLogsDisabled: "部份 log 已被無效化。",
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。", // TODO: Translate
   pleaseEnableLogsAndRestart: "請在程式設定中開啟紀錄並重新啟動本程式。",
   hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。", // TODO: Translate
   hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。", // TODO: Translate
@@ -769,6 +784,9 @@ export const zh_tw: Texts = {
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。", // TODO: Translate
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。", // TODO: Translate
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。", // TODO: Translate
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。", // TODO: Translate
   sourceRecordFileNotSet: "尚未指定棋譜檔案。",
   sourceDirectoryNotSet: "請選擇目錄。",
   minPlyMustBeLessThanMaxPly: "最小手數應小於最大手數。",
@@ -847,5 +865,8 @@ export const zh_tw: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `USI_Hash の合計が全メモリの${n}%を超えています。`; // TODO: Translate
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
   },
 };

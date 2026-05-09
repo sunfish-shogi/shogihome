@@ -88,6 +88,11 @@ type SimpleBoard = {
   bookmark?: boolean;
 };
 
+type ElapsedTimeChart = {
+  type: "ElapsedTimeChart";
+  showLegend?: boolean;
+};
+
 export type UIComponent = UIComponentCommon &
   (
     | Board
@@ -100,6 +105,7 @@ export type UIComponent = UIComponentCommon &
     | ControlGroup1
     | ControlGroup2
     | SimpleBoard
+    | ElapsedTimeChart
   );
 
 export enum DialogPosition {

@@ -1,12 +1,12 @@
-import { BookMove, BookMoveEx, defaultBookSession } from "@/common/book.js";
+import { BookFormat, BookMove, BookMoveEx, defaultBookSession } from "@/common/book.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
 import api from "@/renderer/ipc/api.js";
 import { useErrorStore } from "./error.js";
 import { useBusyState } from "./busy.js";
+import { useConfirmationStore } from "./confirm.js";
 import { useMessageStore } from "./message.js";
 import { useAppSettings } from "./settings.js";
-import { useConfirmationStore } from "./confirm.js";
 import { BookImportSettings, SourceType } from "@/common/settings/book.js";
 import { t } from "@/common/i18n/index.js";
 import { ImmutableRecord } from "tsshogi";
@@ -14,6 +14,7 @@ import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 export class BookStore {
   private _moves: BookMoveEx[] = [];
+  private _format: BookFormat = "yane2016";
   private _reactive: UnwrapNestedRefs<BookStore>;
 
   constructor(private record: ImmutableRecord) {
@@ -26,6 +27,10 @@ export class BookStore {
 
   get moves(): BookMoveEx[] {
     return this._moves;
+  }
+
+  get format(): BookFormat {
+    return this._format;
   }
 
   async reloadBookMoves() {
@@ -55,7 +60,7 @@ export class BookStore {
     this.reloadBookMoves();
   }
 
-  reset() {
+  reset(format?: BookFormat) {
     if (useBusyState().isBusy) {
       return;
     }
@@ -64,8 +69,9 @@ export class BookStore {
       onOk: () => {
         useBusyState().retain();
         api
-          .clearBook(defaultBookSession)
+          .clearBook(defaultBookSession, format)
           .then(() => {
+            this._format = format || "yane2016";
             return this.reloadBookMoves();
           })
           .catch((e) => {
@@ -89,6 +95,7 @@ export class BookStore {
         await api.openBook(defaultBookSession, path, {
           onTheFlyThresholdMB: useAppSettings().bookOnTheFlyThresholdMB,
         });
+        this._format = await api.getBookFormat(defaultBookSession);
         await this.reloadBookMoves();
       })
       .catch((e) => {
@@ -117,6 +124,32 @@ export class BookStore {
       .finally(() => {
         useBusyState().release();
       });
+  }
+
+  exportBookFile(targetFormat: BookFormat) {
+    if (useBusyState().isBusy) {
+      return;
+    }
+    const doExport = () => {
+      useBusyState().retain();
+      api
+        .showSaveBookDialog(defaultBookSession, targetFormat)
+        .then(async (path) => {
+          if (path) {
+            await api.exportBook(defaultBookSession, path, targetFormat);
+          }
+        })
+        .catch((e) => {
+          useErrorStore().add(e);
+        })
+        .finally(() => {
+          useBusyState().release();
+        });
+    };
+    useConfirmationStore().show({
+      message: t.memoryShortageOnBookConversionMayLoseUnsavedData,
+      onOk: doExport,
+    });
   }
 
   async updateMove(sfen: string, move: BookMove) {

@@ -6,12 +6,14 @@
         :position="store.record.position"
         :moves="bookStore.moves"
         :playable="store.isMovableByUser"
+        :format="bookStore.format"
         @play="playBookMove"
         @edit="editBookMove"
         @remove="removeBookMove"
         @order="updateBookMoveOrder"
       />
       <div class="row control">
+        <span class="format-label">{{ formatLabel }}</span>
         <button @click="onResetBook">{{ t.clear }}</button>
         <button @click="onOpenBook">{{ t.open }}</button>
         <button :disabled="!isBookOperational" @click="onSaveBook">{{ t.saveAs }}</button>
@@ -29,6 +31,8 @@
         :depth="editingData.depth"
         :count="editingData.count"
         :comment="editingData.comment"
+        :evaluation="editingData.evaluation"
+        :format="bookStore.format"
         @ok="onEditBookMove"
         @cancel="onCancelEditBookMove"
       />
@@ -57,6 +61,19 @@ const bookStore = useBookStore();
 const appSettings = useAppSettings();
 
 const isBookOperational = computed(() => store.appState === AppState.NORMAL);
+
+const formatLabel = computed(() => {
+  switch (bookStore.format) {
+    case "yane2016":
+      return ".db";
+    case "apery":
+      return ".bin";
+    case "sbk":
+      return ".sbk";
+    default:
+      return bookStore.format;
+  }
+});
 const editingData = ref<
   BookMove & {
     sfen: string;
@@ -65,7 +82,7 @@ const editingData = ref<
 >();
 
 const onResetBook = () => {
-  bookStore.reset();
+  store.showResetBookDialog();
 };
 
 const onOpenBook = () => {
@@ -147,6 +164,7 @@ const onCancelEditBookMove = () => {
   height: 25px;
   font-size: 14px;
   padding: 0 1em;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -155,6 +173,18 @@ const onCancelEditBookMove = () => {
 }
 .control > :not(:first-child) {
   margin-left: 8px;
+}
+.format-label {
+  display: inline-block;
+  color: var(--control-button-color);
+  background-color: var(--control-button-bg-color);
+  padding: 0 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--control-button-border-color);
+  border-radius: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+  line-height: 23px;
 }
 .book-list {
   height: calc(100% - 27px);

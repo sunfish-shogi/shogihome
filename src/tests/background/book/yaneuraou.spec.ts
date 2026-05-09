@@ -21,8 +21,8 @@ describe("background/book/yaneuraou", () => {
           type: "normal",
           comment: "",
           moves: [
-            ["4e4f", "9c9d", 120, 40, 2, ""],
-            ["6e6f", "6g6h", -32, 32, 0, ""],
+            { usi: "4e4f", usi2: "9c9d", score: 120, depth: 40, count: 2, comment: "" },
+            { usi: "6e6f", usi2: "6g6h", score: -32, depth: 32, count: 0, comment: "" },
           ],
           minPly: 78,
         },
@@ -30,15 +30,15 @@ describe("background/book/yaneuraou", () => {
           type: "normal",
           comment: "",
           moves: [
-            ["4e7h+", undefined, 540, 38, 1, ""],
-            ["2d8d", undefined, 140, 36, 1, ""],
+            { usi: "4e7h+", usi2: undefined, score: 540, depth: 38, count: 1, comment: "" },
+            { usi: "2d8d", usi2: undefined, score: 140, depth: 36, count: 1, comment: "" },
           ],
           minPly: 64,
         },
         "+B3g3l/5rgk1/pB+P1ppn1p/n4spp1/1G1SP3P/K2P5/1+pS3P2/P2+l+r4/LNP6 b SNL2Pg2p 1": {
           type: "normal",
           comment: "",
-          moves: [["9f9e", "8g7g", 0, 32, 1, ""]],
+          moves: [{ usi: "9f9e", usi2: "8g7g", score: 0, depth: 32, count: 1, comment: "" }],
           minPly: 0,
         },
       });
