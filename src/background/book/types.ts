@@ -90,7 +90,7 @@ export function mergeBookEntries(
             ? (p.count || 0) + (move.count || 0)
             : undefined,
         comment: p.comment ?? move.comment,
-        evaluation: p.evaluation ?? move.evaluation,
+        sbkEval: p.sbkEval ?? move.sbkEval,
       };
     }
     return move;

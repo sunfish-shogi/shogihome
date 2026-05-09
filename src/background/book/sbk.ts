@@ -240,16 +240,15 @@ function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | u
   if (!pos) {
     return;
   }
-  const moves = state.Moves.map((m) => fromSbkMove(pos, m.Move));
-  const bookMoves: BookMove[] = state.Moves.map((m, index) => {
+  const bookMoves: BookMove[] = state.Moves.map((m) => {
     const move: BookMove = {
-      usi: moves[index].usi,
+      usi: fromSbkMove(pos, m.Move).usi,
     };
     if (m.Weight) {
       move.count = m.Weight;
     }
     if (m.Evaluation !== SBookMoveEvaluation.None) {
-      move.evaluation = m.Evaluation;
+      move.sbkEval = m.Evaluation;
     }
     return move;
   });
@@ -499,7 +498,7 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
         bookMove.count = m.Weight;
       }
       if (m.Evaluation !== SBookMoveEvaluation.None) {
-        bookMove.evaluation = m.Evaluation;
+        bookMove.sbkEval = m.Evaluation;
       }
       return bookMove;
     });
@@ -742,7 +741,7 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     const edges = sfenToEdges.get(sfen) ?? [];
     const sbkMoves: SBookMoveProto[] = edges.map(([bookMove, move, nextSfen]) => ({
       Move: move,
-      Evaluation: bookMove.evaluation || SBookMoveEvaluation.None,
+      Evaluation: bookMove.sbkEval || SBookMoveEvaluation.None,
       Weight: bookMove.count ?? 0,
       NextStateId: sfenToId.get(nextSfen) ?? -1, // 存在しない局面に対して BookConv は -1 を出力している
     }));
