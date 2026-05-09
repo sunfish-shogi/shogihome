@@ -1,5 +1,5 @@
 <template>
-  <dialog ref="dialog" class="message-box">
+  <dialog ref="dialog" class="message-box" :style="dragStyle" @mousedown="onDragMouseDown">
     <div class="message-area">
       <Icon :icon="IconType.ERROR" />
       <div class="column">
@@ -30,20 +30,24 @@
 import { t } from "@/common/i18n";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
+import { useDraggableDialog } from "@/renderer/helpers/draggable";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useErrorStore } from "@/renderer/store/error";
+
 const store = useErrorStore();
-const dialog = ref();
+const dialog = ref<HTMLDialogElement>();
+
+const { dragStyle, onDragMouseDown } = useDraggableDialog(dialog);
 
 onMounted(() => {
-  showModalDialog(dialog.value, onClose);
-  installHotKeyForDialog(dialog.value);
+  showModalDialog(dialog.value!, onClose);
+  installHotKeyForDialog(dialog.value!);
 });
 
 onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
+  uninstallHotKeyForDialog(dialog.value!);
 });
 
 const copyMessage = () => {

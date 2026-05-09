@@ -140,6 +140,7 @@ dialog.message-box {
   color: var(--info-dialog-color);
   background-color: var(--info-dialog-bg-color);
   border: 3px solid var(--info-dialog-border-color);
+  cursor: default;
 }
 
 dialog.message-box .message-area {
