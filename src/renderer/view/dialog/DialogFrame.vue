@@ -1,6 +1,12 @@
 <template>
   <dialog ref="dialog">
-    <div class="frame" :class="{ limited }">
+    <div
+      ref="frame"
+      class="frame"
+      :class="{ limited }"
+      :style="dragStyle"
+      @mousedown="onDragMouseDown"
+    >
       <slot />
     </div>
   </dialog>
@@ -9,9 +15,11 @@
 <script setup lang="ts">
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { showModalDialog } from "@/renderer/helpers/dialog";
+import { useDraggableDialog } from "@/renderer/helpers/draggable";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
-const dialog = ref();
+const dialog = ref<HTMLDialogElement>();
+const frame = ref<HTMLElement>();
 
 defineProps<{
   limited?: boolean;
@@ -21,13 +29,15 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
+const { dragStyle, onDragMouseDown } = useDraggableDialog(frame);
+
 onMounted(() => {
-  showModalDialog(dialog.value, () => emit("cancel"));
-  installHotKeyForDialog(dialog.value);
+  showModalDialog(dialog.value!, () => emit("cancel"));
+  installHotKeyForDialog(dialog.value!);
 });
 
 onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
+  uninstallHotKeyForDialog(dialog.value!);
 });
 </script>
 
@@ -62,7 +72,9 @@ dialog {
   border: 1px solid var(--dialog-border-color);
   border-radius: 10px 10px 10px 10px;
   padding: 15px;
+  cursor: default;
 }
+
 .frame.limited {
   max-width: 100%;
   max-height: 100%;
