@@ -590,21 +590,23 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
 
 async function eachEntry(
   book: SbkBook,
-  callback: (sfen: string, entry: BookEntry) => Promise<void> | void,
+  packedSfenOrderToSfen: string[],
+  callback: (sfen: string, getEntry: () => Promise<BookEntry | undefined>) => Promise<void> | void,
 ): Promise<void> {
   // in-memory
   for (const [sfen, entry] of book.entries) {
-    if (entry.type === "patch" && book.rawData && book.sbkIndex) {
-      const baseEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
-      if (baseEntry) {
-        const mergedEntry = mergeBookEntries(baseEntry, entry);
-        if (mergedEntry) {
-          await callback(sfen, mergedEntry);
-          continue;
+    await callback(sfen, async () => {
+      if (entry.type === "patch" && book.rawData && book.sbkIndex) {
+        const baseEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+        if (baseEntry) {
+          const mergedEntry = mergeBookEntries(baseEntry, entry);
+          if (mergedEntry) {
+            return mergedEntry;
+          }
         }
       }
-    }
-    await callback(sfen, entry);
+      return entry;
+    });
   }
 
   // on-the-fly
@@ -612,29 +614,38 @@ async function eachEntry(
     return;
   }
   for (let index = book.sbkIndex.firstNonZeroRow; index < book.sbkIndex.rowCount; index++) {
-    const offset = readRowOffset(book.sbkIndex.table, index);
-    const state = await decodeStateAtFile(book.rawData, offset);
-    if (!state.Position) {
-      state.Position = readSfenAtRow(book.sbkIndex.table, index);
-    }
-    if (book.entries.has(state.Position)) {
+    const sfen = packedSfenOrderToSfen[index];
+    if (book.entries.has(sfen)) {
       continue; // skip entries that are already loaded in memory, to avoid duplicates and reduce file reads
     }
-    const entry = buildBookEntryFromState(state, state.Position);
-    if (entry) {
-      await callback(state.Position, entry);
-    }
+    const sbkIndex = book.sbkIndex;
+    const rawData = book.rawData;
+    await callback(sfen, async () => {
+      const offset = readRowOffset(sbkIndex.table, index);
+      const state = await decodeStateAtFile(rawData, offset);
+      return buildBookEntryFromState(state, sfen);
+    });
   }
 }
 
 export async function storeSbkBook(book: SbkBook, output: Writable): Promise<void> {
+  // Packed SFEN から SFEN を復元するコストを抑えるために、SBKファイルのインデクスから SFEN への変換テーブルを作成する。
+  const packedSfenOrderToSfen = new Array<string>(book.sbkIndex ? book.sbkIndex.rowCount : 0);
+  if (book.sbkIndex) {
+    for (let i = 0; i < book.sbkIndex.rowCount; i++) {
+      packedSfenOrderToSfen[i] = readSfenAtRow(book.sbkIndex.table, i);
+    }
+  }
+
   // SFEN の記述を最小限にしてデータを削減するためにルートではないノードを列挙する。
   const nonRootSfens = new Set<string>();
 
   // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
 
-  await eachEntry(book, async (rootSfen, rootEntry) => {
+  let totalEntryCount = 0;
+  await eachEntry(book, packedSfenOrderToSfen, async (rootSfen, getRootEntry) => {
+    totalEntryCount++;
     // DFS で訪問したことがある局面はそれ以上調べる必要がない。
     // ここで訪問済みでないノードはルートノードになる可能性があるが、
     // 他のノードからの探索がおわるまではルートノードかどうかが確定しない。
@@ -647,6 +658,10 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
       return;
     }
     // ルートノードを特定するためにエッジを経由して到達可能な子ノードを DFS で列挙する。
+    const rootEntry = await getRootEntry();
+    if (!rootEntry) {
+      return;
+    }
     const stack: { sfen: string; bookMoves: BookMove[]; index: number; lastMove?: Move }[] = [
       { sfen: rootSfen, bookMoves: rootEntry.moves, index: 0 },
     ];
@@ -702,12 +717,12 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
   // ルートノードを先頭に書かないと ShogiGUI で正しく読み込まれない。
   let newId = 0;
   const sfenToId = new Map<string, number>();
-  await eachEntry(book, (sfen) => {
+  await eachEntry(book, packedSfenOrderToSfen, (sfen) => {
     if (!nonRootSfens.has(sfen)) {
       sfenToId.set(sfen, newId++);
     }
   });
-  await eachEntry(book, (sfen) => {
+  await eachEntry(book, packedSfenOrderToSfen, (sfen) => {
     if (nonRootSfens.has(sfen)) {
       sfenToId.set(sfen, newId++);
     }
@@ -784,14 +799,21 @@ export async function storeSbkBook(book: SbkBook, output: Writable): Promise<voi
     await writeBytes(stateWriter.finish());
   }
 
-  await eachEntry(book, async (sfen, entry) => {
+  await eachEntry(book, packedSfenOrderToSfen, async (sfen, getEntry) => {
     if (!nonRootSfens.has(sfen)) {
-      await writeState(sfen, entry);
+      const entry = await getEntry();
+      if (entry) {
+        await writeState(sfen, entry);
+      }
     }
   });
-  await eachEntry(book, async (sfen, entry) => {
+
+  await eachEntry(book, packedSfenOrderToSfen, async (sfen, getEntry) => {
     if (nonRootSfens.has(sfen)) {
-      await writeState(sfen, entry);
+      const entry = await getEntry();
+      if (entry) {
+        await writeState(sfen, entry);
+      }
     }
   });
 
