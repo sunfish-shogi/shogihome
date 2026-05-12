@@ -202,7 +202,7 @@
         height: ghostPieceSize.height + 'px',
         transform: 'translate(-50%, -50%)',
         'pointer-events': 'none',
-        'z-index': '9999',
+        'z-index': '1000000',
       }"
     >
       <img :src="drag.pieceImagePath" style="width: 100%; height: 100%" draggable="false" />
