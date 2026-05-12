@@ -197,6 +197,7 @@ export type AppSettings = {
 
   // Board View
   boardFlipping: boolean;
+  enableDragAndDrop: boolean;
 
   // Tab View
   tabPaneType: TabPaneType;
@@ -360,6 +361,7 @@ export function defaultAppSettings(opt?: {
     clockSoundTarget: ClockSoundTarget.ONLY_USER,
     recordShortcutKeys: RecordShortcutKeys.VERTICAL,
     boardFlipping: false,
+    enableDragAndDrop: true,
     tabPaneType: TabPaneType.DOUBLE_V2,
     tab: Tab.RECORD_INFO,
     tab2: Tab.CHART,

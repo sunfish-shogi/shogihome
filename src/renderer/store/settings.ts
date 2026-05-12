@@ -132,6 +132,9 @@ class AppSettingsStore {
   get boardFlipping(): boolean {
     return this.merged.boardFlipping;
   }
+  get enableDragAndDrop(): boolean {
+    return this.merged.enableDragAndDrop;
+  }
   get tabPaneType(): TabPaneType {
     return this.merged.tabPaneType;
   }

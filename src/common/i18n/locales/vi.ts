@@ -253,6 +253,7 @@ export const vi: Texts = {
   centeredHorizontal: "Ngang, căn giữa",
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",
   promoteFirstHorizontal: "Ngang, ưu tiên phong cấp",
+  enableDragAndDrop: "駒のドラッグ操作", // TODO: Translate
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",

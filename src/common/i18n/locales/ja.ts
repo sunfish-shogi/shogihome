@@ -243,6 +243,7 @@ export const ja: Texts = {
   centeredHorizontal: "水平・中央寄せ",
   promoteFirstVertical: "垂直・成優先",
   promoteFirstHorizontal: "水平・成優先",
+  enableDragAndDrop: "駒のドラッグ操作",
   showFileAndRank: "段・筋を表示",
   showLeftControls: "左側操作ボタンを表示",
   showRightControls: "右側操作ボタンを表示",
