@@ -243,6 +243,7 @@ export const en: Texts = {
   centeredHorizontal: "Centered Horizontal",
   promoteFirstVertical: "Promote First Vertical",
   promoteFirstHorizontal: "Promote First Horizontal",
+  enableDragAndDrop: "Drag & Drop",
   showFileAndRank: "Show File & Rank",
   showLeftControls: "Show Left Controls",
   showRightControls: "Show Right Controls",

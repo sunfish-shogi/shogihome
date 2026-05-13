@@ -238,6 +238,7 @@ export type Texts = {
   centeredHorizontal: string;
   promoteFirstVertical: string;
   promoteFirstHorizontal: string;
+  enableDragAndDrop: string;
   showFileAndRank: string;
   showLeftControls: string;
   showRightControls: string;

@@ -358,6 +358,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
   },
+  enableDragAndDrop: {
+    type: Boolean,
+    required: false,
+    default: true,
+  },
   blackPlayerName: {
     type: String,
     required: false,
@@ -481,6 +486,9 @@ const beginDragFromSquare = (
   rank: number,
   pointerId: number,
 ) => {
+  if (!props.enableDragAndDrop) {
+    return;
+  }
   if (!props.allowMove && !props.allowEdit) {
     return;
   }
@@ -513,6 +521,9 @@ const beginDragFromHand = (
   type: PieceType,
   pointerId: number,
 ) => {
+  if (!props.enableDragAndDrop) {
+    return;
+  }
   if (!props.allowMove && !props.allowEdit) {
     return;
   }
