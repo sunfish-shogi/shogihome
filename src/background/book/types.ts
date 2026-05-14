@@ -15,9 +15,18 @@ export type SbkBook = {
   entries: Map<string, BookEntry>;
   sbkAuthor?: string;
   sbkDescription?: string;
+  sbkIndex?: SbkOnTheFlyLUT;
+  rawData?: Uint8Array;
 };
 
 export type Book = YaneBook | AperyBook | SbkBook;
+
+export type SbkOnTheFlyLUT = {
+  table: Uint8Array;
+  rowCount: number;
+  firstNonZeroRow: number;
+  indexToOffset: Uint32Array;
+};
 
 export type SbkEval = {
   EvaluationValue: number;
@@ -82,7 +91,7 @@ export function mergeBookEntries(
             ? (p.count || 0) + (move.count || 0)
             : undefined,
         comment: p.comment ?? move.comment,
-        evaluation: p.evaluation ?? move.evaluation,
+        sbkEval: p.sbkEval ?? move.sbkEval,
       };
     }
     return move;
@@ -97,6 +106,19 @@ export function mergeBookEntries(
     type: "normal",
     comment: patch.comment || base.comment,
     moves,
+    games:
+      base.games !== undefined || patch.games !== undefined
+        ? (base.games || 0) + (patch.games || 0)
+        : undefined,
+    wonBlack:
+      base.wonBlack !== undefined || patch.wonBlack !== undefined
+        ? (base.wonBlack || 0) + (patch.wonBlack || 0)
+        : undefined,
+    wonWhite:
+      base.wonWhite !== undefined || patch.wonWhite !== undefined
+        ? (base.wonWhite || 0) + (patch.wonWhite || 0)
+        : undefined,
+    sbkEvals: patch.sbkEvals || base.sbkEvals,
     minPly:
       base.minPly !== undefined
         ? patch.minPly !== undefined

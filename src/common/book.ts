@@ -19,7 +19,8 @@ export type BookMove = {
   depth?: number; // 探索深さ
   count?: number; // 出現回数
   comment?: string; // コメント
-  evaluation?: SbkMoveEvaluation; // 指し手の評価 (SBK)
+  sbkEval?: SbkMoveEvaluation; // SBK の指し手評価
+  sbkIndex?: number; // SBK ファイル内のインデックス
 };
 
 export type BookLoadingOptions = {

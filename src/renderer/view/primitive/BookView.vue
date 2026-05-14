@@ -151,8 +151,8 @@ const moveList = computed(() => {
   for (const entry of props.moves) {
     const move = props.position.createMoveByUSI(entry.usi);
     if (move !== null) {
-      const evaluationLabel = entry.evaluation && evaluationLabels[entry.evaluation];
-      const evaluationClass = entry.evaluation ? evaluationClasses[entry.evaluation] : undefined;
+      const evaluationLabel = entry.sbkEval && evaluationLabels[entry.sbkEval];
+      const evaluationClass = entry.sbkEval ? evaluationClasses[entry.sbkEval] : undefined;
       list.push({
         move,
         usi: entry.usi,
