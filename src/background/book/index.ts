@@ -378,35 +378,39 @@ export async function exportBook(
     return;
   }
 
+  // Apery 形式は独自のハッシュ値がキーになっており局面を復元できない場合があるため
+  // ShogiHome では他の形式への変換をサポートしない
+  // NOTE: BookConv の場合は平手初期局面から到達可能な局面のみを変換対象としている
   if (book.format === "apery") {
     throw new Error(t.cannotConvertAperyBookToOtherFormat);
   }
 
-  // Build a fully merged in-memory book
+  // インメモリに全てのデータを取り込む
+  // 形式ごとにソートキーが異なるためストリーミングは実装コストが高い
+  // メモリを多量に消費するがどうしても必要になるまでストリーミングには対応しない
   let fullBook: Book;
   if (book.type === "in-memory") {
     fullBook = book;
   } else if (book.format === "yane2016") {
     const stream = book.file.createReadStream({ encoding: "utf-8", autoClose: false, start: 0 });
-    const base = await loadYaneuraOuBook(stream);
+    fullBook = await loadYaneuraOuBook(stream);
     for (const [sfen, patch] of book.entries) {
-      const merged = mergeBookEntries(base.entries.get(sfen), patch);
+      const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
       if (merged) {
-        base.entries.set(sfen, merged);
+        fullBook.entries.set(sfen, merged);
       }
     }
-    fullBook = base;
   } else {
     throw new Error("On-the-fly mode is not supported for this book format");
   }
 
-  // fullBook is yane2016 or sbk — both are SFEN-keyed
   let targetBook: YaneBook | AperyBook | SbkBook;
   switch (targetFormat) {
     case "yane2016":
       targetBook = { format: "yane2016", entries: fullBook.entries };
       break;
     case "apery": {
+      // Apery の場合のみ独自のハッシュ関数を使用するため bigint をキーに持つ Map を再構築する
       const aperyEntries = new Map<bigint, BookEntry>();
       for (const [sfen, entry] of fullBook.entries) {
         aperyEntries.set(aperyHash(sfen), entry);
