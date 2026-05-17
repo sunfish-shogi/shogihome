@@ -862,6 +862,10 @@ async function storeSbkBookOnTheFly(
       SBookState.encode(state, stateWriter.uint32(26).fork()).join();
       await writeBytes(stateWriter.finish());
     }
+
+    await flush();
+    output.end();
+    await events.once(output, "finish");
   } finally {
     // Packed-SFEN 順に戻す
     sortRowsByPackedSfen(book.sbkIndex.table, book.sbkIndex.rowCount);
