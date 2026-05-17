@@ -20,6 +20,7 @@ export type BookMove = {
   count?: number; // 出現回数
   comment?: string; // コメント
   sbkEval?: SbkMoveEvaluation; // SBK の指し手評価
+  sbkId?: number; // SBK State ID
 };
 
 export type BookLoadingOptions = {

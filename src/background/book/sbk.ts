@@ -144,13 +144,13 @@ function swapRows(table: Uint32Array, rowA: number, rowB: number, tempRow: Uint3
 function sortRows(
   table: Uint32Array,
   rowCount: number,
-  compare: (table: Uint32Array, row: number, pivot: Uint32Array) => number,
+  compare: (row: number, pivot: Uint32Array) => number,
 ): void {
   if (rowCount <= 1) {
     return;
   }
   const ranges: number[] = [0, rowCount - 1];
-  const pivot = new Uint32Array(8);
+  const pivot = new Uint32Array(9);
   const tempRow = new Uint32Array(SBK_ON_THE_FLY_ROW_SIZE);
 
   while (ranges.length > 0) {
@@ -161,15 +161,15 @@ function sortRows(
     }
     const pivotIndex = left + Math.floor((right - left) / 2);
     const pivotOffset = pivotIndex * SBK_ON_THE_FLY_ROW_SIZE;
-    pivot.set(table.subarray(pivotOffset, pivotOffset + 8));
+    pivot.set(table.subarray(pivotOffset, pivotOffset + 9));
 
     let i = left;
     let j = right;
     while (i <= j) {
-      while (compare(table, i, pivot) < 0) {
+      while (compare(i, pivot) < 0) {
         i++;
       }
-      while (compare(table, j, pivot) > 0) {
+      while (compare(j, pivot) > 0) {
         j--;
       }
       if (i <= j) {
@@ -196,11 +196,11 @@ function sortRows(
 }
 
 function sortRowsByPackedSfen(table: Uint32Array, rowCount: number): void {
-  sortRows(table, rowCount, compareRowPacked);
+  sortRows(table, rowCount, (row, pivot) => compareRowPacked(table, row, pivot));
 }
 
 function sortRowsByOffset(table: Uint32Array, rowCount: number): void {
-  sortRows(table, rowCount, (table, row, pivot) => {
+  sortRows(table, rowCount, (row, pivot) => {
     const offset = readRowOffset(table, row);
     const pivotOffset = readRowOffset(pivot, 0);
     if (offset === pivotOffset) {
@@ -248,6 +248,7 @@ function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | u
   const bookMoves: BookMove[] = state.Moves.map((m) => {
     const move: BookMove = {
       usi: fromSbkMove(pos, m.Move).usi,
+      sbkId: m.NextStateId,
     };
     if (m.Weight) {
       move.count = m.Weight;
@@ -520,6 +521,7 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
       const bookMove: BookMove = {
         usi: moves[index].usi,
+        sbkId: m.NextStateId,
       };
       if (m.Weight) {
         bookMove.count = m.Weight;
@@ -749,33 +751,43 @@ async function storeSbkBookOnTheFly(
     // 局面と usi に対して遷移先の ID を解決する
     const sfenAndUsiToNextId = new Map<string, Map<string, number>>();
     for (const [sfen, entry] of book.entries) {
-      const pos = Position.newBySFEN(sfen);
-      if (!pos) {
-        continue;
-      }
       const usiToNextId = new Map<string, number>();
-      for (const bookMove of entry.moves) {
-        const move = pos.createMoveByUSI(bookMove.usi);
-        if (!move) {
-          continue;
-        }
-        if (!pos.doMove(move, { ignoreValidation: true })) {
-          continue;
-        }
-        const nextSfen = pos.sfen;
-        let nextId = newSfenToId.get(nextSfen);
-        if (nextId === undefined) {
-          const row = searchOnTheFlyRow(nextSfen, book.sbkIndex);
-          if (row !== undefined) {
-            const offset = readRowOffset(book.sbkIndex.table, row);
-            const state = await decodeStateAtFile(book.rawData, offset);
-            nextId = state.Id;
+      const sbkEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+      if (sbkEntry) {
+        for (const bookMove of sbkEntry.moves) {
+          if (bookMove.sbkId !== undefined && bookMove.sbkId >= 0) {
+            usiToNextId.set(bookMove.usi, bookMove.sbkId);
           }
         }
-        if (typeof nextId === "number") {
-          usiToNextId.set(bookMove.usi, nextId);
+      }
+      const pos = Position.newBySFEN(sfen);
+      if (pos) {
+        for (const bookMove of entry.moves) {
+          if (usiToNextId.has(bookMove.usi)) {
+            continue;
+          }
+          const move = pos.createMoveByUSI(bookMove.usi);
+          if (!move) {
+            continue;
+          }
+          if (!pos.doMove(move, { ignoreValidation: true })) {
+            continue;
+          }
+          const nextSfen = pos.sfen;
+          let nextId = newSfenToId.get(nextSfen);
+          if (nextId === undefined) {
+            const row = searchOnTheFlyRow(nextSfen, book.sbkIndex);
+            if (row !== undefined) {
+              const offset = readRowOffset(book.sbkIndex.table, row);
+              const state = await decodeStateAtFile(book.rawData, offset);
+              nextId = state.Id;
+            }
+          }
+          if (typeof nextId === "number") {
+            usiToNextId.set(bookMove.usi, nextId);
+          }
+          pos.undoMove(move);
         }
-        pos.undoMove(move);
       }
       sfenAndUsiToNextId.set(sfen, usiToNextId);
     }
@@ -853,7 +865,7 @@ async function storeSbkBookOnTheFly(
     // Set の反復順序は毎回同じであることが保証されるため ID の割り当てと書き出しの順序が一致する
     for (const sfen of newSfens) {
       const id = newSfenToId.get(sfen) as number;
-      const entry = book.entries.get(sfen)!;
+      const entry = book.entries.get(sfen) || { type: "normal", moves: [] };
       const withPosition = rootSfens.has(sfen);
       const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
       const state = entryToSbkState(id, entry, sfen, usiToNextId, withPosition);
