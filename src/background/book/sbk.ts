@@ -1,13 +1,14 @@
 import events from "node:events";
 import fs from "node:fs";
 import { Writable } from "node:stream";
-import { ImmutablePosition, Move, Position } from "tsshogi";
+import { ImmutablePosition, InitialPositionSFEN, Move, Position } from "tsshogi";
 import { BinaryWriter } from "@bufbuild/protobuf/wire";
 import {
   SBookMove as SBookMoveProto,
   SBookMoveEvaluation,
   SBookState,
   SBook,
+  SBookMove,
 } from "./proto/sbk.js";
 import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyLUT } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
@@ -247,7 +248,6 @@ function buildBookEntryFromState(state: SBookState, sfen: string): BookEntry | u
   const bookMoves: BookMove[] = state.Moves.map((m) => {
     const move: BookMove = {
       usi: fromSbkMove(pos, m.Move).usi,
-      sbkIndex: m.NextStateId,
     };
     if (m.Weight) {
       move.count = m.Weight;
@@ -352,9 +352,16 @@ function fillPackedSfenByTraversal(data: Uint8Array, table: Uint32Array, stateCo
     }
     const rootOffset = readRowOffset(table, rootIndex);
     const rootState = decodeStateAt(data, rootOffset);
+
+    // Position を持たない State は他の State からの遷移により解決される
+    // ただし、BookConv の実装では先頭の State が Position を持たない場合に平手初期局面とみなしているのでそれに倣う
     if (!rootState.Position) {
-      continue;
+      if (rootIndex !== 0) {
+        continue;
+      }
+      rootState.Position = InitialPositionSFEN.STANDARD;
     }
+
     const pos = Position.newBySFEN(rootState.Position);
     if (!pos) {
       continue;
@@ -448,40 +455,39 @@ async function decodeStateAtFile(data: Uint8Array, stateTagOffset: number): Prom
   return SBookState.decode(payload);
 }
 
-export async function searchSbkBookEntryOnTheFly(
-  sfen: string,
-  data: Uint8Array,
-  index: SbkOnTheFlyLUT,
-  stateIdHint?: number,
-): Promise<BookEntry | undefined> {
+function searchOnTheFlyRow(sfen: string, index: SbkOnTheFlyLUT): number | undefined {
   let packed: Uint32Array;
   try {
     packed = packSfenToPackedSfen(sfen);
   } catch {
     return;
   }
-
-  let offset: number;
-  if (stateIdHint !== undefined && stateIdHint >= 0 && stateIdHint < index.rowCount) {
-    offset = index.indexToOffset[stateIdHint];
-  } else {
-    let left = index.firstNonZeroRow;
-    let right = index.rowCount;
-    while (left < right) {
-      const mid = Math.floor((left + right) / 2);
-      const cmp = compareRowPacked(index.table, mid, packed);
-      if (cmp < 0) {
-        left = mid + 1;
-      } else {
-        right = mid;
-      }
+  let left = index.firstNonZeroRow;
+  let right = index.rowCount;
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    const cmp = compareRowPacked(index.table, mid, packed);
+    if (cmp < 0) {
+      left = mid + 1;
+    } else {
+      right = mid;
     }
-    if (left >= index.rowCount || compareRowPacked(index.table, left, packed) !== 0) {
-      return;
-    }
-    offset = readRowOffset(index.table, left);
   }
+  if (left < index.rowCount && compareRowPacked(index.table, left, packed) === 0) {
+    return left;
+  }
+}
 
+export async function searchSbkBookEntryOnTheFly(
+  sfen: string,
+  data: Uint8Array,
+  index: SbkOnTheFlyLUT,
+): Promise<BookEntry | undefined> {
+  const row = searchOnTheFlyRow(sfen, index);
+  if (row === undefined) {
+    return;
+  }
+  const offset = readRowOffset(index.table, row);
   const state = await decodeStateAtFile(data, offset);
   return buildBookEntryFromState(state, sfen);
 }
@@ -491,6 +497,11 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
     data = await fs.promises.readFile(data);
   }
   const book = SBook.decode(data);
+
+  // BookConv の実装では先頭の State が Position を持たない場合に平手初期局面とみなしているのでそれに倣う
+  if (book.BookStates.length > 0 && !book.BookStates[0].Position) {
+    book.BookStates[0].Position = InitialPositionSFEN.STANDARD;
+  }
 
   const entries = new Map<string, BookEntry>();
   function addEntry(sfen: string, state: SBookState, moves: Move[]) {
@@ -509,7 +520,6 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
     const bookMoves: BookMove[] = state.Moves.map((m, index) => {
       const bookMove: BookMove = {
         usi: moves[index].usi,
-        sbkIndex: m.NextStateId,
       };
       if (m.Weight) {
         bookMove.count = m.Weight;
@@ -600,56 +610,257 @@ export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<S
   return { format: "sbk", entries, sbkAuthor: book.Author, sbkDescription: book.Description };
 }
 
-async function eachEntry(
-  book: SbkBook,
-  packedSfenOrderToSfen: string[],
-  callback: (sfen: string, getEntry: () => Promise<BookEntry | undefined>) => Promise<void> | void,
-): Promise<void> {
-  // in-memory
-  for (const [sfen, entry] of book.entries) {
-    await callback(sfen, async () => {
-      if (entry.type === "patch" && book.rawData && book.sbkIndex) {
-        const baseEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
-        if (baseEntry) {
-          const mergedEntry = mergeBookEntries(baseEntry, entry);
-          if (mergedEntry) {
-            return mergedEntry;
-          }
-        }
+function entryToSbkState(
+  id: number,
+  entry: BookEntry,
+  sfen: string,
+  usiToNextId: Map<string, number>,
+  withPosition: boolean,
+): SBookState {
+  const pos = Position.newBySFEN(sfen);
+  const sbkMoves: SBookMove[] = [];
+  if (pos) {
+    for (const bookMove of entry.moves) {
+      const move = pos.createMoveByUSI(bookMove.usi);
+      if (!move) {
+        continue;
       }
-      return entry;
-    });
-  }
-
-  // on-the-fly
-  if (!book.rawData || !book.sbkIndex) {
-    return;
-  }
-  for (let index = book.sbkIndex.firstNonZeroRow; index < book.sbkIndex.rowCount; index++) {
-    const sfen = packedSfenOrderToSfen[index];
-    if (book.entries.has(sfen)) {
-      continue; // skip entries that are already loaded in memory, to avoid duplicates and reduce file reads
+      const sbkMove: SBookMove = {
+        Move: toSbkMove(move),
+        Evaluation: bookMove.sbkEval || SBookMoveEvaluation.None,
+        Weight: bookMove.count ?? 0,
+        NextStateId: usiToNextId.get(bookMove.usi) ?? -1,
+      };
+      sbkMoves.push(sbkMove);
     }
-    const sbkIndex = book.sbkIndex;
-    const rawData = book.rawData;
-    await callback(sfen, async () => {
-      const offset = readRowOffset(sbkIndex.table, index);
-      const state = await decodeStateAtFile(rawData, offset);
-      return buildBookEntryFromState(state, sfen);
-    });
   }
+  return {
+    Id: id,
+    // ShogiGUI のハッシュ関数が非公開のため BoardKey と HandKey は省略
+    // 定義上は required だが BookConv が 0 を出力しているので問題ないと思われる
+    BoardKey: 0n,
+    HandKey: 0,
+    Games: entry.games ?? 0,
+    WonBlack: entry.wonBlack ?? 0,
+    WonWhite: entry.wonWhite ?? 0,
+    Position: withPosition ? sfen : "",
+    Comment: entry.comment || undefined,
+    Moves: sbkMoves,
+    Evals: (entry.sbkEvals ?? []).map((e) => ({
+      EvaluationValue: e.EvaluationValue,
+      Depth: e.Depth,
+      SelDepth: e.SelDepth,
+      Nodes: e.Nodes,
+      Variation: e.Variation ?? "",
+      EngineName: e.EngineName ?? "",
+    })),
+  };
 }
 
 async function storeSbkBookOnTheFly(
   book: Required<Pick<SbkBook, "rawData" | "sbkIndex">> & SbkBook,
   output: Writable,
 ): Promise<void> {
+  if (!book.rawData || !book.sbkIndex) {
+    throw new Error("rawData and sbkIndex are required to store sbk book on the fly");
+  }
+
   try {
+    // in-memory 内で遷移元が存在する局面
+    const inMemoryRef = new Set<string>();
+
+    // 元の SBK に存在しない局面
+    const newSfens = new Set<string>();
+
+    // 新たにルートになる局面
+    const rootSfens = new Set<string>();
+
+    for (const [sfen, entry] of book.entries) {
+      const pos = Position.newBySFEN(sfen);
+      if (!pos) {
+        continue; // ShogiHome で生成した SFEN がパースできないのはおかしいので例外を投げた方が良いかもしれない
+      }
+
+      // 遷移先の局面を列挙する
+      for (const bookMove of entry.moves) {
+        const move = pos.createMoveByUSI(bookMove.usi);
+        if (!move) {
+          continue; // ShogiHome で生成した USI がパースできないのはおかしいので例外を投げた方が良いかもしれない
+        }
+        if (!pos.doMove(move, { ignoreValidation: true })) {
+          continue; // ShogiHome で生成した USI が非合法手なのはおかしいので例外を投げた方が良いかもしれない
+        }
+        inMemoryRef.add(pos.sfen);
+        pos.undoMove(move);
+      }
+
+      // 元の SBK を検索する
+      const sbkEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+
+      // 元の SBK に存在しない局面
+      if (!sbkEntry) {
+        newSfens.add(sfen);
+        continue;
+      }
+
+      // 元の SBK にあったが in-memory では削除された指し手
+      const removedMoves = sbkEntry.moves.filter((m) => {
+        return !entry.moves.some((bm) => bm.usi === m.usi);
+      });
+      for (const bookMove of removedMoves) {
+        const move = pos.createMoveByUSI(bookMove.usi);
+        if (!move) {
+          continue;
+        }
+        if (!pos.doMove(move, { ignoreValidation: true })) {
+          continue;
+        }
+        // 遷移元の指し手が削除された場合はルート局面として扱う
+        // 実際には他の遷移元が存在する可能性があるが遷移元の厳密な特定は負荷が高いため SFEN を記述する形で妥協する
+        rootSfens.add(pos.sfen);
+        pos.undoMove(move);
+      }
+    }
+
+    // in-memory の参照先が元の SBK に存在しない場合はは newSfens に追加
+    for (const sfen of inMemoryRef) {
+      if (newSfens.has(sfen)) {
+        continue;
+      }
+      if (searchOnTheFlyRow(sfen, book.sbkIndex) === undefined) {
+        newSfens.add(sfen);
+      }
+    }
+
+    // in-memory で遷移元が存在せず、かつ元の SBK にも存在しない局面はルート局面として扱う
+    for (const [sfen] of book.entries) {
+      if (!inMemoryRef.has(sfen) && newSfens.has(sfen)) {
+        rootSfens.add(sfen);
+      }
+    }
+
+    // 新しい SFEN に ID を割り当てる
+    const newSfenToId = new Map<string, number>();
+    let nextId = book.sbkIndex.rowCount;
+    for (const sfen of newSfens) {
+      newSfenToId.set(sfen, nextId++);
+    }
+
+    // 局面と usi に対して遷移先の ID を解決する
+    const sfenAndUsiToNextId = new Map<string, Map<string, number>>();
+    for (const [sfen, entry] of book.entries) {
+      const pos = Position.newBySFEN(sfen);
+      if (!pos) {
+        continue;
+      }
+      const usiToNextId = new Map<string, number>();
+      for (const bookMove of entry.moves) {
+        const move = pos.createMoveByUSI(bookMove.usi);
+        if (!move) {
+          continue;
+        }
+        if (!pos.doMove(move, { ignoreValidation: true })) {
+          continue;
+        }
+        const nextSfen = pos.sfen;
+        let nextId = newSfenToId.get(nextSfen);
+        if (nextId === undefined) {
+          const row = searchOnTheFlyRow(nextSfen, book.sbkIndex);
+          if (row !== undefined) {
+            const offset = readRowOffset(book.sbkIndex.table, row);
+            const state = await decodeStateAtFile(book.rawData, offset);
+            nextId = state.Id;
+          }
+        }
+        if (typeof nextId === "number") {
+          usiToNextId.set(bookMove.usi, nextId);
+        }
+        pos.undoMove(move);
+      }
+      sfenAndUsiToNextId.set(sfen, usiToNextId);
+    }
+
     // 書き出し中のみオフセット順に整列する
     sortRowsByOffset(book.sbkIndex.table, book.sbkIndex.rowCount);
 
-    // ルート局面を決定する
-    for (const [sfen, entry] of book.entries) {
+    // データ全体を一気に encode するとメモリを大量に消費してしまうため、チャンク単位で書き出す。
+    const CHUNK_SIZE = 64 * 1024;
+    const pendingChunks: Uint8Array[] = [];
+    let pendingSize = 0;
+
+    async function flush() {
+      if (pendingChunks.length === 0) {
+        return;
+      }
+      const combined = Buffer.concat(pendingChunks);
+      pendingChunks.length = 0;
+      pendingSize = 0;
+      if (!output.write(combined)) {
+        await events.once(output, "drain");
+      }
+    }
+
+    async function writeBytes(bytes: Uint8Array) {
+      pendingChunks.push(bytes);
+      pendingSize += bytes.length;
+      if (pendingSize >= CHUNK_SIZE) {
+        await flush();
+      }
+    }
+
+    const headerWriter = new BinaryWriter();
+    if (book.sbkAuthor) {
+      headerWriter.uint32(10).string(book.sbkAuthor);
+    }
+    if (book.sbkDescription) {
+      headerWriter.uint32(18).string(book.sbkDescription);
+    }
+    await writeBytes(headerWriter.finish());
+
+    // 元の SBK に存在する局面を書き出す
+    for (let id = 0; id < book.sbkIndex.rowCount; id++) {
+      const sfen = readSfenAtRow(book.sbkIndex.table, id);
+      const patch = book.entries.get(sfen);
+      let state: SBookState;
+      if (!patch) {
+        // 元の SBK を変更無しで書き出す
+        const offset = readRowOffset(book.sbkIndex.table, id);
+        state = await decodeStateAtFile(book.rawData, offset);
+      } else if (patch.type === "normal") {
+        // in-memory のデータを書き出す
+        const withPosition = rootSfens.has(sfen);
+        const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
+        state = entryToSbkState(id, patch, sfen, usiToNextId, withPosition);
+      } else {
+        // 元の SBK にパッチを当てて書き出す
+        const offset = readRowOffset(book.sbkIndex.table, id);
+        state = await decodeStateAtFile(book.rawData, offset);
+        const baseEntry = buildBookEntryFromState(state, sfen);
+        const entry = mergeBookEntries(baseEntry, patch);
+        if (entry) {
+          const withPosition = !!state.Position || rootSfens.has(sfen);
+          const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
+          state = entryToSbkState(id, entry, sfen, usiToNextId, withPosition);
+        }
+      }
+
+      const stateWriter = new BinaryWriter();
+      SBookState.encode(state, stateWriter.uint32(26).fork()).join();
+      await writeBytes(stateWriter.finish());
+    }
+
+    // 新たに追加された局面を書き出す
+    // Set の反復順序は毎回同じであることが保証されるため ID の割り当てと書き出しの順序が一致する
+    for (const sfen of newSfens) {
+      const id = newSfenToId.get(sfen) as number;
+      const entry = book.entries.get(sfen)!;
+      const withPosition = rootSfens.has(sfen);
+      const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
+      const state = entryToSbkState(id, entry, sfen, usiToNextId, withPosition);
+
+      const stateWriter = new BinaryWriter();
+      SBookState.encode(state, stateWriter.uint32(26).fork()).join();
+      await writeBytes(stateWriter.finish());
     }
   } finally {
     // Packed-SFEN 順に戻す
@@ -663,6 +874,9 @@ async function storeSbkBookFromInMemoryMap(book: SbkBook, output: Writable): Pro
 
   // 局面と指し手のデコードの負荷が高いため、DFS の過程で局面と指し手を列挙しておく。
   const sfenToEdges = new Map<string, [BookMove, number, string][]>();
+
+  // リーフノード
+  const leafSfens = new Set<string>();
 
   // 変更があったノードのマップを構築する。
   // SFEN の読み取りコストを削減するために DFS で探索する。
@@ -706,8 +920,11 @@ async function storeSbkBookFromInMemoryMap(book: SbkBook, output: Writable): Pro
       edges.push([bookMove, toSbkMove(move), nextSfen]);
       const nextEntry = book.entries.get(nextSfen);
       if (!nextEntry) {
+        // エントリーに含まれないリーフノード
+        // SBK の場合は出力に含める
         pos.undoMove(move);
-        continue; // エントリーに含まれないリーフノード
+        leafSfens.add(nextSfen);
+        continue;
       }
       if (nextSfen !== rootSfen) {
         // SFEN を省略してよいノード
@@ -735,6 +952,9 @@ async function storeSbkBookFromInMemoryMap(book: SbkBook, output: Writable): Pro
     if (nonRootSfens.has(sfen)) {
       sfenToId.set(sfen, newId++);
     }
+  }
+  for (const sfen of leafSfens) {
+    sfenToId.set(sfen, newId++);
   }
 
   // データ全体を一気に encode するとメモリを大量に消費してしまうため、チャンク単位で書き出す。
@@ -777,7 +997,9 @@ async function storeSbkBookFromInMemoryMap(book: SbkBook, output: Writable): Pro
       Move: move,
       Evaluation: bookMove.sbkEval || SBookMoveEvaluation.None,
       Weight: bookMove.count ?? 0,
-      NextStateId: sfenToId.get(nextSfen) ?? -1, // 存在しない局面に対して BookConv は -1 を出力している
+      // 存在しない局面に対して BookConv は -1 を出力している
+      // ただし、リーフノードを全て書き出しているので -1 が使われることはないはず
+      NextStateId: sfenToId.get(nextSfen) ?? -1,
     }));
 
     const state: SBookState = {
@@ -813,11 +1035,13 @@ async function storeSbkBookFromInMemoryMap(book: SbkBook, output: Writable): Pro
       await writeState(sfen, entry);
     }
   }
-
   for (const [sfen, entry] of book.entries) {
     if (nonRootSfens.has(sfen)) {
       await writeState(sfen, entry);
     }
+  }
+  for (const sfen of leafSfens) {
+    await writeState(sfen, { type: "normal", moves: [] });
   }
 
   await flush();
