@@ -9,10 +9,22 @@
       @mousedown.left.prevent="onBodyMouseDown($event, i)"
     >
       <span class="comp-label">{{ labelOf(comp.type) }}</span>
-      <div class="handle nw" @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-nw')" />
-      <div class="handle ne" @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-ne')" />
-      <div class="handle sw" @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-sw')" />
-      <div class="handle se" @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-se')" />
+      <div
+        class="handle nw"
+        @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-nw')"
+      />
+      <div
+        class="handle ne"
+        @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-ne')"
+      />
+      <div
+        class="handle sw"
+        @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-sw')"
+      />
+      <div
+        class="handle se"
+        @mousedown.left.prevent.stop="onHandleMouseDown($event, i, 'resize-se')"
+      />
     </div>
   </div>
 </template>
@@ -119,7 +131,9 @@ function onHandleMouseDown(e: MouseEvent, i: number, op: DragOp) {
 
 function onDocMouseMove(e: MouseEvent) {
   const d = dragging.value;
-  if (!d) return;
+  if (!d) {
+    return;
+  }
 
   // Mouse delta is in display pixels (SCALE space); divide by SCALE to get actual coordinates.
   const dx = (e.clientX - d.startX) / SCALE;
