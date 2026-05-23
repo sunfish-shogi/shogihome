@@ -564,7 +564,7 @@
                 <input
                   v-model.number="update.sbkOnTheFlyThresholdMB"
                   type="number"
-                  max="512"
+                  max="128"
                   min="0"
                 />
                 <div class="form-item-small-label">MB ({{ t.between(0, 128) }})</div>

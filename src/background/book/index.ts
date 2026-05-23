@@ -65,7 +65,6 @@ type OnTheFlyBook = {
   | ((YaneBook | AperyBook) & {
       file: fs.promises.FileHandle;
       size: number;
-      saved: boolean;
     })
   | SbkBook
 );
@@ -214,35 +213,40 @@ async function openBookOnTheFly(
 ): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
+  const common = { type: "on-the-fly", path, saved: true } as const;
+
+  if (format === "sbk") {
+    const sbkOnTheFly = await loadSbkBookOnTheFly(path, onProgress);
+    replaceBook(session, {
+      ...common,
+      ...sbkOnTheFly,
+    });
+    return;
+  }
+
   const file = await fs.promises.open(path, "r");
   try {
-    if (
-      format === "yane2016" &&
-      !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
-    ) {
-      throw new Error("Book is not ordered by position"); // FIXME: i18n
-    }
-    const common = { path, file, size, saved: true };
     if (format === "yane2016") {
+      const ordered = await validateBookPositionOrdering(
+        file.createReadStream({ autoClose: false }),
+      );
+      if (!ordered) {
+        throw new Error("Book is not ordered by position"); // FIXME: i18n
+      }
       replaceBook(session, {
         ...common,
-        type: "on-the-fly",
         format: "yane2016",
+        file,
+        size,
         entries: new Map<string, BookEntry>(),
       });
-    } else if (format === "apery") {
-      replaceBook(session, {
-        ...common,
-        type: "on-the-fly",
-        format: "apery",
-        entries: new Map<bigint, BookEntry>(),
-      });
     } else {
-      const sbkOnTheFly = await loadSbkBookOnTheFly(path, onProgress);
       replaceBook(session, {
         ...common,
-        type: "on-the-fly",
-        ...sbkOnTheFly,
+        format: "apery",
+        file,
+        size,
+        entries: new Map<bigint, BookEntry>(),
       });
     }
   } catch (e) {

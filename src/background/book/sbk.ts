@@ -41,12 +41,18 @@ function skipField(data: Uint8Array, offset: number, wireType: number): number {
       return next;
     }
     case 1:
+      if (offset + 8 > data.length) {
+        throw new Error("Invalid protobuf: truncated 64-bit field");
+      }
       return offset + 8;
     case 2: {
       const [length, next] = readVarint(data, offset);
       return next + length;
     }
     case 5:
+      if (offset + 4 > data.length) {
+        throw new Error("Invalid protobuf: truncated 32-bit field");
+      }
       return offset + 4;
     default:
       throw new Error(`Unsupported protobuf wire type: ${wireType}`);
@@ -928,6 +934,7 @@ async function storeSbkBookFromInMemoryMap(
   let visited = 0;
   let written = 0;
   let progress = 0;
+  const total = book.entries.size + leafSfens.size;
 
   // 変更があったノードのマップを構築する。
   // SFEN の読み取りコストを削減するために DFS で探索する。
@@ -991,7 +998,7 @@ async function storeSbkBookFromInMemoryMap(
     visited++;
     if (onProgress) {
       const prev = progress;
-      progress = Math.floor((visited / book.entries.size) * 300) / 1000;
+      progress = Math.floor((visited / total) * 300) / 1000;
       if (progress > prev) {
         onProgress(progress);
       }

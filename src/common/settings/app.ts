@@ -436,6 +436,10 @@ export function normalizeAppSettings(
     autoSaveDirectory?: string; // Deprecated
   },
 ): AppSettings {
+  // 旧バージョンでは On-the-fly の最大値が 4096 だったが 512 に変更した。
+  if (settings.bookOnTheFlyThresholdMB > 512) {
+    settings.bookOnTheFlyThresholdMB = 512;
+  }
   // やねうら王形式と Apery 形式の on-the-fly 閾値の新しい設定が無い場合は古い設定を引き継ぐ。
   // SBK 形式は新しい設定なので古い設定を引き継がない。
   if (
@@ -489,8 +493,6 @@ export function normalizeAppSettings(
         break;
     }
   }
-  // 旧バージョンでは On-the-fly の最大値が 4096 だったが 512 に変更した。
-  result.bookOnTheFlyThresholdMB = Math.min(Math.max(result.bookOnTheFlyThresholdMB, 0), 512);
   // 旧バージョンの USI 棋譜では resign のみに対応していた。
   if (settings.enableUSIFileSpecialMoves === undefined) {
     result.enableUSIFileSpecialMoves = result.enableUSIFileResign;
