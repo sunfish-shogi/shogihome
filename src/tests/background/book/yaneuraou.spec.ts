@@ -62,7 +62,7 @@ describe("background/book/yaneuraou", () => {
     });
   });
 
-  describe("validateBookPositionOrdering", async () => {
+  describe("validateBookPositionOrdering", () => {
     it("ordered", async () => {
       const input = Readable.from([
         "#YANEURAOU-DB2016 1.00\n",
