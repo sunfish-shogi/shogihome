@@ -292,7 +292,7 @@ export const en: Texts = {
   manageEngines: "Manage Engines",
   flipBoard: "Flip Board",
   elapsedTimeChart: "Elapsed Time Chart",
-  shortcutKeys: "Shortcut Keys",
+  controls: "Controls",
   useUpDownToMove1Ply: "Use ↑/↓ to Move 1 Ply",
   useLeftRightToMove1Ply: "Use ←/→ to Move 1 Ply",
   file: "File",

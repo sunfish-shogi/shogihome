@@ -302,7 +302,7 @@ export const vi: Texts = {
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
   elapsedTimeChart: "Biểu đồ thời gian",
-  shortcutKeys: "Phím tắt",
+  controls: "操作", // TODO: Translate
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",

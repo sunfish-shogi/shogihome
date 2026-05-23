@@ -248,35 +248,6 @@
         />
         <div class="form-item-small-label">%</div>
       </div>
-      <!-- 成・不成の表示 -->
-      <div class="form-item">
-        <div class="form-item-label-wide">
-          {{ t.promotionSelector }}
-        </div>
-        <HorizontalSelector
-          v-model:value="update.promotionSelectorStyle"
-          class="selector"
-          :items="[
-            {
-              label: t.centeredHorizontal,
-              value: PromotionSelectorStyle.HORIZONTAL,
-            },
-            {
-              label: t.promoteFirstVertical,
-              value: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
-            },
-            {
-              label: t.promoteFirstHorizontal,
-              value: PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT,
-            },
-          ]"
-        />
-      </div>
-      <!-- ドラッグ＆ドロップ -->
-      <div class="form-item">
-        <div class="form-item-label-wide">{{ t.enableDragAndDrop }}</div>
-        <ToggleButton v-model:value="update.enableDragAndDrop" />
-      </div>
       <!-- 段・筋の表示 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -372,8 +343,37 @@
         />
       </div>
     </div>
-    <!-- ショートカット -->
-    <div v-show="selectedTab === 'shortcuts'" class="form-group scroll settings">
+    <!-- 操作 -->
+    <div v-show="selectedTab === 'controls'" class="form-group scroll settings">
+      <!-- ドラッグ＆ドロップ -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.enableDragAndDrop }}</div>
+        <ToggleButton v-model:value="update.enableDragAndDrop" />
+      </div>
+      <!-- 成・不成の表示 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">
+          {{ t.promotionSelector }}
+        </div>
+        <HorizontalSelector
+          v-model:value="update.promotionSelectorStyle"
+          class="selector"
+          :items="[
+            {
+              label: t.centeredHorizontal,
+              value: PromotionSelectorStyle.HORIZONTAL,
+            },
+            {
+              label: t.promoteFirstVertical,
+              value: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
+            },
+            {
+              label: t.promoteFirstHorizontal,
+              value: PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT,
+            },
+          ]"
+        />
+      </div>
       <!-- 棋譜 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.record }}</div>
@@ -858,7 +858,7 @@ const selectedTab = ref("view");
 const tabItems = computed(() => [
   { label: t.view, value: "view" },
   { label: t.sounds, value: "sounds" },
-  { label: t.shortcutKeys, value: "shortcuts" },
+  { label: t.controls, value: "controls" },
   { label: t.record, value: "record" },
   ...(!isMobileWebApp()
     ? [
