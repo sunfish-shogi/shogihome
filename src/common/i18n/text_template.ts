@@ -285,7 +285,7 @@ export type Texts = {
   manageEngines: string;
   flipBoard: string;
   elapsedTimeChart: string;
-  shortcutKeys: string;
+  controls: string;
   useUpDownToMove1Ply: string;
   useLeftRightToMove1Ply: string;
   file: string;

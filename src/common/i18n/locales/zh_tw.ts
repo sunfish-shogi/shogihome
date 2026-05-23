@@ -299,7 +299,7 @@ export const zh_tw: Texts = {
   manageEngines: "引擎設定",
   flipBoard: "盤面反轉",
   elapsedTimeChart: "消費時間圖表",
-  shortcutKeys: "快捷鍵",
+  controls: "操作", // TODO: Translate
   useUpDownToMove1Ply: "使用↑/↓鍵移動1手",
   useLeftRightToMove1Ply: "使用←/→鍵移動1手",
   file: "檔案",
