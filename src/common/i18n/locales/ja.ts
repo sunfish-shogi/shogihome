@@ -555,6 +555,7 @@ export const ja: Texts = {
   removeCurrentProfile: "現在のプロファイルを削除",
   exportProfileToClipboard: "プロファイルをクリップボードに出力",
   importProfileFromClipboard: "クリップボードからプロファイルを取り込む",
+  editLayoutWithDragAndDrop: "ドラッグで編集",
   profileExportedToClipboard: "プロファイルをクリップボードに出力しました。",
   profileImported: "プロファイルを取り込みました。",
   failedToImportProfile: "プロファイルの取り込みに失敗しました。",

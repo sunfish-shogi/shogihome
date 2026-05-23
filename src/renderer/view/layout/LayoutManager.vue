@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="dragging-mode-toggle">
-            <ToggleButton v-model:value="draggingMode" label="ドラッグで編集" />
+            <ToggleButton v-model:value="draggingMode" :label="t.editLayoutWithDragAndDrop" />
           </div>
         </div>
         <div v-if="!draggingMode" class="row">
