@@ -182,7 +182,7 @@ describe("background/book", () => {
       }
     });
 
-    describe("shogihome01.sbk", async () => {
+    describe("shogihome01.sbk", () => {
       const patterns = [
         { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
         { options: { sbkOnTheFlyThresholdMB: 0.001 }, mode: "on-the-fly" },
@@ -402,7 +402,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     expect(moves[2].usi).toBe("3g3f");
   });
 
-  describe("importBookMoves", async () => {
+  describe("importBookMoves", () => {
     const patterns = [
       {
         title: "directory",

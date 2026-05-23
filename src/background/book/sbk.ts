@@ -934,7 +934,6 @@ async function storeSbkBookFromInMemoryMap(
   let visited = 0;
   let written = 0;
   let progress = 0;
-  const total = book.entries.size + leafSfens.size;
 
   // 変更があったノードのマップを構築する。
   // SFEN の読み取りコストを削減するために DFS で探索する。
@@ -998,7 +997,7 @@ async function storeSbkBookFromInMemoryMap(
     visited++;
     if (onProgress) {
       const prev = progress;
-      progress = Math.floor((visited / total) * 300) / 1000;
+      progress = Math.floor((visited / book.entries.size) * 300) / 1000;
       if (progress > prev) {
         onProgress(progress);
       }
@@ -1034,6 +1033,8 @@ async function storeSbkBookFromInMemoryMap(
   if (!output.write(headerWriter.finish())) {
     await events.once(output, "drain");
   }
+
+  const total = book.entries.size + leafSfens.size;
 
   async function writeState(sfen: string, entry: BookEntry): Promise<void> {
     const edges = sfenToEdges.get(sfen) ?? [];
@@ -1078,7 +1079,7 @@ async function storeSbkBookFromInMemoryMap(
     written++;
     if (onProgress) {
       const prev = progress;
-      progress = 0.3 + Math.floor((written / book.entries.size) * 700) / 1000;
+      progress = 0.3 + Math.floor((written / total) * 700) / 1000;
       if (progress > prev) {
         onProgress(progress);
       }
