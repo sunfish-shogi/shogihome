@@ -555,6 +555,7 @@ export const en: Texts = {
   removeCurrentProfile: "Remove Current Profile",
   exportProfileToClipboard: "Export Profile to Clipboard",
   importProfileFromClipboard: "Import Profile from Clipboard",
+  editLayoutWithDragAndDrop: "Edit with Drag and Drop",
   profileExportedToClipboard: "Profile exported to clipboard.",
   profileImported: "Profile imported.",
   failedToImportProfile: "Failed to import profile.",

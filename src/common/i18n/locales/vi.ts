@@ -565,6 +565,7 @@ export const vi: Texts = {
   removeCurrentProfile: "Xóa cài đặt hiện tại",
   exportProfileToClipboard: "Sao chép cài đặt",
   importProfileFromClipboard: "Dán cài đặt",
+  editLayoutWithDragAndDrop: "ドラッグで編集", // TODO: Translate
   profileExportedToClipboard: "Đã xuất cài đặt.",
   profileImported: "Đã nhập cài đặt.",
   failedToImportProfile: "Nhập cài đặt thất bại.",
