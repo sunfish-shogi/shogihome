@@ -11,12 +11,14 @@ ShogiHome is a cross-platform GUI application for Japanese chess (Shogi). It sup
 ```bash
 # Development
 npm run electron:serve    # Electron app with hot reload
+npm run electron:preview  # Electron app from compiled output (no hot reload, faster startup)
 npm run serve             # Web app dev server (http://localhost:5173, add ?mobile for mobile view)
 
 # Testing
 npm test                  # Run unit tests
 npm run coverage          # Generate coverage report
 npm run test:ui           # Interactive Vitest UI
+npm run bench             # Run benchmarks
 
 # Building
 npm run electron:build    # Electron installer
@@ -52,18 +54,25 @@ src/
 
 Renderer and background communicate via IPC through the preload script:
 
-- `src/renderer/ipc/preload.ts` - Exposes safe API to renderer
+- `src/renderer/ipc/bridge.ts` - TypeScript interface defining the full API surface
+- `src/renderer/ipc/preload.ts` - Electron implementation (uses `ipcRenderer`)
+- `src/renderer/ipc/web.ts` - Web/PWA implementation
+- `src/renderer/ipc/api.ts` - Runtime selector; renderer code imports only from here
 - Request-response pattern for all cross-process communication
 
 ### Key Directories
 
 - `src/renderer/view/` - Vue components
-- `src/renderer/store/` - Vue 3 Composition API state management
+- `src/renderer/store/` - Vue 3 Composition API state management (app-wide)
 - `src/background/usi/` - USI engine communication
 - `src/background/csa/` - CSA protocol support
 - `src/common/i18n/` - Internationalization (ja, en, zh_tw, vi)
 - `src/common/settings/` - App/game/research settings types
 - `src/tests/` - Unit tests with mock data in `testdata/`
+
+Some view subdirectories have their own co-located `store.ts` for view-local state (e.g., `src/renderer/layout/store.ts`). These follow the same `reactive(this)` class pattern as the global stores.
+
+All non-relative imports use the `@/` alias, which maps to `src/`.
 
 ### Translation Policy (IMPORTANT for AI tools)
 
