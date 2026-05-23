@@ -94,8 +94,8 @@ function labelOf(type: UIComponent["type"]): string {
 function rectStyle(comp: UIComponent, i: number) {
   // Smaller components get a higher z-index so they naturally appear in front of larger ones.
   // The actively dragged component always wins with a very high z-index.
-  const zIndex =
-    dragging.value?.index === i ? 10000 : Math.round(1_000_000 / (comp.width * comp.height));
+  const area = Math.max(1, comp.width) * Math.max(1, comp.height);
+  const zIndex = dragging.value?.index === i ? 10000 : Math.round(1_000_000 / area);
   return {
     left: `${comp.left * SCALE}px`,
     top: `${comp.top * SCALE}px`,
