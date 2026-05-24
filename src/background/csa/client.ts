@@ -155,6 +155,10 @@ export class Client {
       this.settings.port,
     );
     this._state = State.CONNECTING;
+    const socketOptions = {
+      keepaliveInitialDelay: this.settings.tcpKeepalive.initialDelay,
+      noDelay: true,
+    };
     this.socket = new Socket(
       this.settings.host,
       this.settings.port,
@@ -165,9 +169,7 @@ export class Client {
         onClose: this.onClose.bind(this),
         onRead: this.onRead.bind(this),
       },
-      {
-        keepaliveInitialDelay: this.settings.tcpKeepalive.initialDelay,
-      },
+      socketOptions,
     );
   }
 

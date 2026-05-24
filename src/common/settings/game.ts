@@ -204,9 +204,6 @@ export function validateGameSettings(gameSettings: GameSettings): Error | undefi
   if (!gameSettings.sprtEnabled && gameSettings.parallelism > gameSettings.repeat) {
     return new Error(t.parallelismMustLessThanOrEqualToRepeats);
   }
-  if (gameSettings.parallelism > 10) {
-    return new Error("Parallelism must be 10 or less.");
-  }
   if (gameSettings.sprtEnabled) {
     if (containsHuman) {
       return new Error("SPRT cannot be used with human players.");

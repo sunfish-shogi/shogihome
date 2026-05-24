@@ -210,13 +210,7 @@
           </div>
           <div class="form-item">
             <div class="form-item-label">{{ t.parallelism }}</div>
-            <input
-              v-model.number="gameSettings.parallelism"
-              class="number"
-              type="number"
-              min="1"
-              max="10"
-            />
+            <input v-model.number="gameSettings.parallelism" class="number" type="number" min="1" />
           </div>
           <div class="form-item">
             <div class="form-item-label">{{ t.jishogi }}</div>

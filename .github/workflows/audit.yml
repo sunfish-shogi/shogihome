@@ -15,10 +15,11 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: lts/*
           cache: "npm"
+      - run: npm install -g npm@latest
       - run: npm version
       - run: |
           STABLE_TAG=$(cat docs/release.json | jq -r .stable.tag)

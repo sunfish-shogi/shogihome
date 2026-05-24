@@ -214,6 +214,8 @@ export const en: Texts = {
   customImage: "Custom Image",
   autumn: "Autumn",
   snow: "Snow",
+  classic: "Classic",
+  beige: "Beige",
   darkGreen: "Dark Green",
   dark: "Dark",
   boardLayout: "Board Layout",
@@ -241,6 +243,7 @@ export const en: Texts = {
   centeredHorizontal: "Centered Horizontal",
   promoteFirstVertical: "Promote First Vertical",
   promoteFirstHorizontal: "Promote First Horizontal",
+  enableDragAndDrop: "Drag & Drop",
   showFileAndRank: "Show File & Rank",
   showLeftControls: "Show Left Controls",
   showRightControls: "Show Right Controls",
@@ -289,7 +292,7 @@ export const en: Texts = {
   manageEngines: "Manage Engines",
   flipBoard: "Flip Board",
   elapsedTimeChart: "Elapsed Time Chart",
-  shortcutKeys: "Shortcut Keys",
+  controls: "Controls",
   useUpDownToMove1Ply: "Use ↑/↓ to Move 1 Ply",
   useLeftRightToMove1Ply: "Use ←/→ to Move 1 Ply",
   file: "File",
@@ -552,6 +555,7 @@ export const en: Texts = {
   removeCurrentProfile: "Remove Current Profile",
   exportProfileToClipboard: "Export Profile to Clipboard",
   importProfileFromClipboard: "Import Profile from Clipboard",
+  editLayoutWithDragAndDrop: "Edit with Drag and Drop",
   profileExportedToClipboard: "Profile exported to clipboard.",
   profileImported: "Profile imported.",
   failedToImportProfile: "Failed to import profile.",
@@ -655,6 +659,8 @@ export const en: Texts = {
     "If your engine does not support the options, it may cause unexpected behavior.",
   someLogsDisabled: "Some log settings are disabled.",
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
+  blankLinePingRecommendedToPreventTimeout:
+    "It is recommended to enable Blank Line Ping to prevent connection timeout.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
   hwaEnabled: "HWA(Hardware Acceleration) Enabled",
   hwaIsNotRecommendedForLongGames: "HWA is not recommended for long games.",
@@ -867,5 +873,8 @@ export const en: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `The total USI_Hash exceeds ${n}% of memory.`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `Memory usage has exceeded ${gb} GB. If the upward trend continues, the app may hang.`;
   },
 };

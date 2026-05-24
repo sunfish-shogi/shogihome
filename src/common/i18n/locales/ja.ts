@@ -214,6 +214,8 @@ export const ja: Texts = {
   customImage: "カスタム画像",
   autumn: "紅葉",
   snow: "雪",
+  classic: "クラシック",
+  beige: "ベージュ",
   darkGreen: "深緑",
   dark: "ダーク",
   boardLayout: "盤レイアウト",
@@ -241,6 +243,7 @@ export const ja: Texts = {
   centeredHorizontal: "水平・中央寄せ",
   promoteFirstVertical: "垂直・成優先",
   promoteFirstHorizontal: "水平・成優先",
+  enableDragAndDrop: "駒のドラッグ操作",
   showFileAndRank: "段・筋を表示",
   showLeftControls: "左側操作ボタンを表示",
   showRightControls: "右側操作ボタンを表示",
@@ -289,7 +292,7 @@ export const ja: Texts = {
   manageEngines: "エンジン設定",
   flipBoard: "盤面反転",
   elapsedTimeChart: "消費時間チャート",
-  shortcutKeys: "ショートカットキー",
+  controls: "操作",
   useUpDownToMove1Ply: "↑/↓キーで1手移動",
   useLeftRightToMove1Ply: "←/→キーで1手移動",
   file: "ファイル",
@@ -552,6 +555,7 @@ export const ja: Texts = {
   removeCurrentProfile: "現在のプロファイルを削除",
   exportProfileToClipboard: "プロファイルをクリップボードに出力",
   importProfileFromClipboard: "クリップボードからプロファイルを取り込む",
+  editLayoutWithDragAndDrop: "ドラッグで編集",
   profileExportedToClipboard: "プロファイルをクリップボードに出力しました。",
   profileImported: "プロファイルを取り込みました。",
   failedToImportProfile: "プロファイルの取り込みに失敗しました。",
@@ -655,6 +659,8 @@ export const ja: Texts = {
     "エンジンがこのオプションに対応していない場合、予期しない動作を引き起こす可能性があります。",
   someLogsDisabled: "一部のログが無効になっています。",
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
   hwaEnabled: "HWA(ハードウェアアクセラレーション)が有効です。",
   hwaIsNotRecommendedForLongGames: "長時間の対局ではHWAの無効化を推奨します。",
@@ -867,5 +873,8 @@ export const ja: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `USI_Hash の合計が全メモリの${n}%を超えています。`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`;
   },
 };

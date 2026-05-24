@@ -224,6 +224,8 @@ export const vi: Texts = {
   customImage: "Ảnh tùy chọn",
   autumn: "Mùa thu",
   snow: "Tuyết rơi",
+  classic: "クラシック", // TODO: Translate
+  beige: "ベージュ", // TODO: Translate
   darkGreen: "Xanh lá đậm",
   dark: "Tối",
   boardLayout: "Bố cục bàn cờ",
@@ -251,6 +253,7 @@ export const vi: Texts = {
   centeredHorizontal: "Ngang, căn giữa",
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",
   promoteFirstHorizontal: "Ngang, ưu tiên phong cấp",
+  enableDragAndDrop: "駒のドラッグ操作", // TODO: Translate
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",
@@ -299,7 +302,7 @@ export const vi: Texts = {
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
   elapsedTimeChart: "Biểu đồ thời gian",
-  shortcutKeys: "Phím tắt",
+  controls: "操作", // TODO: Translate
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",
@@ -562,6 +565,7 @@ export const vi: Texts = {
   removeCurrentProfile: "Xóa cài đặt hiện tại",
   exportProfileToClipboard: "Sao chép cài đặt",
   importProfileFromClipboard: "Dán cài đặt",
+  editLayoutWithDragAndDrop: "ドラッグで編集", // TODO: Translate
   profileExportedToClipboard: "Đã xuất cài đặt.",
   profileImported: "Đã nhập cài đặt.",
   failedToImportProfile: "Nhập cài đặt thất bại.",
@@ -664,6 +668,8 @@ export const vi: Texts = {
     "Phần mềm của bạn có thể báo lỗi nếu không hỗ trợ cài đặt này.",
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。", // TODO: Translate
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
   hwaEnabled: "Đã bật gia tốc phần cứng (HWA).",
   hwaIsNotRecommendedForLongGames: "Vui lòng tắt HWA nếu ván cờ kéo dài.",
@@ -873,5 +879,8 @@ export const vi: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `Tổng USI_HASH vượt quá ${n}% RAM.`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
   },
 };

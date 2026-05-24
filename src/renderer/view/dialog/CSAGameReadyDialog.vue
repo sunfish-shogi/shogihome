@@ -1,5 +1,5 @@
 <template>
-  <dialog ref="dialog" class="message-box">
+  <dialog ref="dialog" class="message-box" :style="dragStyle" @mousedown="onDragMouseDown">
     <div class="message-area">
       <Icon :icon="IconType.BUSY" />
       <div class="message">
@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
+import { useDraggableDialog } from "@/renderer/helpers/draggable";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
@@ -51,17 +52,19 @@ import { PromptTarget } from "@/common/advanced/prompt";
 import { useErrorStore } from "@/renderer/store/error";
 
 const store = useStore();
-const dialog = ref();
+const dialog = ref<HTMLDialogElement>();
 const remainingSeconds = ref(0);
 let remainingTimer = 0;
 
+const { dragStyle, onDragMouseDown } = useDraggableDialog(dialog);
+
 onMounted(() => {
-  showModalDialog(dialog.value);
-  installHotKeyForDialog(dialog.value);
+  showModalDialog(dialog.value!);
+  installHotKeyForDialog(dialog.value!);
 });
 
 onBeforeUnmount(() => {
-  uninstallHotKeyForDialog(dialog.value);
+  uninstallHotKeyForDialog(dialog.value!);
   window.clearInterval(remainingTimer);
 });
 

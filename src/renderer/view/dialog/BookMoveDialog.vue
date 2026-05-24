@@ -42,7 +42,7 @@
         </div>
         <div v-if="props.format === 'sbk'" class="form-item">
           <div class="form-item-label">{{ t.moveEvaluation }}</div>
-          <select v-model.number="evaluationValue">
+          <select v-model.number="sbkEvalValue">
             <option :value="SbkMoveEvaluation.None">{{ t.none }}</option>
             <option :value="SbkMoveEvaluation.Forced">{{ t.forced }}</option>
             <option :value="SbkMoveEvaluation.Good">{{ t.goodMove }}</option>
@@ -73,7 +73,7 @@ export type Result = {
   depth?: number;
   count?: number;
   comment?: string;
-  evaluation?: number;
+  sbkEval?: number;
 };
 </script>
 
@@ -90,7 +90,7 @@ const props = defineProps<{
   depth?: number;
   count?: number;
   comment?: string;
-  evaluation?: SbkMoveEvaluation;
+  sbkEval?: SbkMoveEvaluation;
   format: BookFormat;
 }>();
 
@@ -106,16 +106,15 @@ const commentValue = ref(props.comment || "");
 const enableScore = ref(props.score !== undefined);
 const enableDepth = ref(props.depth !== undefined);
 const enableCount = ref(props.count !== undefined);
-const evaluationValue = ref(props.evaluation || SbkMoveEvaluation.None);
+const sbkEvalValue = ref(props.sbkEval || SbkMoveEvaluation.None);
 
 const onOk = () => {
-  const evaluation = Number(evaluationValue.value) || undefined;
   emits("ok", {
     score: enableScore.value ? scoreValue.value : undefined,
     depth: enableDepth.value ? depthValue.value : undefined,
     count: enableCount.value ? countValue.value : undefined,
     comment: commentValue.value || undefined,
-    evaluation,
+    sbkEval: sbkEvalValue.value || undefined,
   });
 };
 

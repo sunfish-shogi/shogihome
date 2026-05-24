@@ -45,6 +45,8 @@
             { label: t.cherryBlossom, value: Thema.CHERRY_BLOSSOM },
             { label: t.autumn, value: Thema.AUTUMN },
             { label: t.snow, value: Thema.SNOW },
+            { label: t.classic, value: Thema.CLASSIC },
+            { label: t.beige, value: Thema.BEIGE },
             { label: t.darkGreen, value: Thema.DARK_GREEN },
             { label: t.dark, value: Thema.DARK },
           ]"
@@ -246,30 +248,6 @@
         />
         <div class="form-item-small-label">%</div>
       </div>
-      <!-- 成・不成の表示 -->
-      <div class="form-item">
-        <div class="form-item-label-wide">
-          {{ t.promotionSelector }}
-        </div>
-        <HorizontalSelector
-          v-model:value="update.promotionSelectorStyle"
-          class="selector"
-          :items="[
-            {
-              label: t.centeredHorizontal,
-              value: PromotionSelectorStyle.HORIZONTAL,
-            },
-            {
-              label: t.promoteFirstVertical,
-              value: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
-            },
-            {
-              label: t.promoteFirstHorizontal,
-              value: PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT,
-            },
-          ]"
-        />
-      </div>
       <!-- 段・筋の表示 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -365,8 +343,37 @@
         />
       </div>
     </div>
-    <!-- ショートカット -->
-    <div v-show="selectedTab === 'shortcuts'" class="form-group scroll settings">
+    <!-- 操作 -->
+    <div v-show="selectedTab === 'controls'" class="form-group scroll settings">
+      <!-- ドラッグ＆ドロップ -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.enableDragAndDrop }}</div>
+        <ToggleButton v-model:value="update.enableDragAndDrop" />
+      </div>
+      <!-- 成・不成の表示 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">
+          {{ t.promotionSelector }}
+        </div>
+        <HorizontalSelector
+          v-model:value="update.promotionSelectorStyle"
+          class="selector"
+          :items="[
+            {
+              label: t.centeredHorizontal,
+              value: PromotionSelectorStyle.HORIZONTAL,
+            },
+            {
+              label: t.promoteFirstVertical,
+              value: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
+            },
+            {
+              label: t.promoteFirstHorizontal,
+              value: PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT,
+            },
+          ]"
+        />
+      </div>
       <!-- 棋譜 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.record }}</div>
@@ -525,8 +532,46 @@
       <!-- On-the-fly 閾値 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.onTheFlyThreshold }}</div>
-        <input v-model.number="update.bookOnTheFlyThresholdMB" type="number" max="512" min="0" />
-        <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+        <table class="subgroup">
+          <tbody>
+            <tr>
+              <td>Yane2016</td>
+              <td>
+                <input
+                  v-model.number="update.yaneBookOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+              </td>
+            </tr>
+            <tr>
+              <td>Apery</td>
+              <td>
+                <input
+                  v-model.number="update.aperyBookOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+              </td>
+            </tr>
+            <tr>
+              <td>SBK</td>
+              <td>
+                <input
+                  v-model.number="update.sbkOnTheFlyThresholdMB"
+                  type="number"
+                  max="128"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 128) }})</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <!-- USI プロトコル -->
@@ -813,7 +858,7 @@ const selectedTab = ref("view");
 const tabItems = computed(() => [
   { label: t.view, value: "view" },
   { label: t.sounds, value: "sounds" },
-  { label: t.shortcutKeys, value: "shortcuts" },
+  { label: t.controls, value: "controls" },
   { label: t.record, value: "record" },
   ...(!isMobileWebApp()
     ? [
@@ -847,6 +892,7 @@ const update = ref({
   pieceStandOpacity: Math.round(org.pieceStandOpacity * 100),
   recordOpacity: Math.round(org.recordOpacity * 100),
   promotionSelectorStyle: org.promotionSelectorStyle,
+  enableDragAndDrop: org.enableDragAndDrop,
   boardLabelType: org.boardLabelType,
   leftSideControlType: org.leftSideControlType,
   rightSideControlType: org.rightSideControlType,
@@ -867,7 +913,9 @@ const update = ref({
   enableUSIFileSpecialMoves: org.enableUSIFileSpecialMoves,
   showPasteDialog: org.showPasteDialog,
   liveDuplicatePositionDetection: org.liveDuplicatePositionDetection,
-  bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
+  yaneBookOnTheFlyThresholdMB: org.yaneBookOnTheFlyThresholdMB,
+  aperyBookOnTheFlyThresholdMB: org.aperyBookOnTheFlyThresholdMB,
+  sbkOnTheFlyThresholdMB: org.sbkOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
   nodeCountFormat: org.nodeCountFormat,
@@ -970,6 +1018,13 @@ const cancel = () => {
   max-width: 590px;
   height: 800px;
   margin-top: 0;
+}
+.subgroup {
+  display: inline-table;
+  border: 0;
+}
+.subgroup td:not(:first-child) {
+  padding-left: 10px;
 }
 input.file-path {
   width: 250px;

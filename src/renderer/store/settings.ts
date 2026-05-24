@@ -132,6 +132,9 @@ class AppSettingsStore {
   get boardFlipping(): boolean {
     return this.merged.boardFlipping;
   }
+  get enableDragAndDrop(): boolean {
+    return this.merged.enableDragAndDrop;
+  }
   get tabPaneType(): TabPaneType {
     return this.merged.tabPaneType;
   }
@@ -188,8 +191,18 @@ class AppSettingsStore {
   get liveDuplicatePositionDetection(): boolean {
     return this.merged.liveDuplicatePositionDetection;
   }
+  // Deprecated
   get bookOnTheFlyThresholdMB(): number {
     return this.merged.bookOnTheFlyThresholdMB;
+  }
+  get yaneBookOnTheFlyThresholdMB(): number {
+    return this.merged.yaneBookOnTheFlyThresholdMB;
+  }
+  get aperyBookOnTheFlyThresholdMB(): number {
+    return this.merged.aperyBookOnTheFlyThresholdMB;
+  }
+  get sbkOnTheFlyThresholdMB(): number {
+    return this.merged.sbkOnTheFlyThresholdMB;
   }
   get flippedBook(): boolean {
     return this.merged.flippedBook;

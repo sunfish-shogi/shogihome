@@ -10,7 +10,7 @@ describe("usi/metadata", () => {
     fs.mkdirSync(tmpdir, { recursive: true });
   });
 
-  describe("without extension", async () => {
+  describe("without extension", () => {
     const testCases = [
       // native binary
       {
@@ -49,7 +49,7 @@ describe("usi/metadata", () => {
     }
   });
 
-  describe("with extension", async () => {
+  describe("with extension", () => {
     const testCases = [
       { path: "/path/to/engine.exe", isShellScript: false },
       { path: "/path/to/engine.py", isShellScript: false },
