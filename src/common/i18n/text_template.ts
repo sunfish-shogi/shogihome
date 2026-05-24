@@ -209,6 +209,8 @@ export type Texts = {
   customImage: string;
   autumn: string;
   snow: string;
+  classic: string;
+  beige: string;
   darkGreen: string;
   dark: string;
   boardLayout: string;
@@ -236,6 +238,7 @@ export type Texts = {
   centeredHorizontal: string;
   promoteFirstVertical: string;
   promoteFirstHorizontal: string;
+  enableDragAndDrop: string;
   showFileAndRank: string;
   showLeftControls: string;
   showRightControls: string;
@@ -282,7 +285,7 @@ export type Texts = {
   manageEngines: string;
   flipBoard: string;
   elapsedTimeChart: string;
-  shortcutKeys: string;
+  controls: string;
   useUpDownToMove1Ply: string;
   useLeftRightToMove1Ply: string;
   file: string;
@@ -522,6 +525,16 @@ export type Texts = {
   dialogBackdrop: string;
   record: string;
   book: string;
+  bookInfo: string;
+  resetBook: string;
+  moveEvaluation: string;
+  forced: string;
+  goodMove: string;
+  yane2016BookFile: string;
+  shogiGUIBookFile: string;
+  aperyBookFile: string;
+  loadingMode: string;
+  positionCount: string;
   chart: string;
   analytics: string;
   controlGroup: string;
@@ -535,6 +548,7 @@ export type Texts = {
   removeCurrentProfile: string;
   exportProfileToClipboard: string;
   importProfileFromClipboard: string;
+  editLayoutWithDragAndDrop: string;
   profileExportedToClipboard: string;
   profileImported: string;
   failedToImportProfile: string;
@@ -553,6 +567,7 @@ export type Texts = {
   play: string;
   edit: string;
   addMoves: string;
+  export: string;
   flippedBook: string;
   addBookMoves: string;
   fromCurrentRecord: string;
@@ -631,6 +646,7 @@ export type Texts = {
   ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior: string;
   someLogsDisabled: string;
   logsRecommendedForCSAProtocol: string;
+  blankLinePingRecommendedToPreventTimeout: string;
   pleaseEnableLogsAndRestart: string;
   hwaEnabled: string;
   hwaIsNotRecommendedForLongGames: string;
@@ -742,6 +758,8 @@ export type Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   cannotOverwriteOnTheFlyBook: string;
   pleaseSpecifyOtherFileName: string;
+  memoryShortageOnBookConversionMayLoseUnsavedData: string;
+  cannotConvertAperyBookToOtherFormat: string;
   sourceRecordFileNotSet: string;
   sourceDirectoryNotSet: string;
   minPlyMustBeLessThanMaxPly: string;
@@ -784,4 +802,5 @@ export type Texts = {
   memoryUsageExceedsNPercent(n: number): string;
   memoryUsageIsLessThanNPercent(n: number): string;
   totalUSIHashExceedsNPercentOfMemory(n: number): string;
+  heapUsageExceedsNGBMayHang(gb: number): string;
 };

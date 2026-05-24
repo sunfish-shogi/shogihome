@@ -1,0 +1,887 @@
+V1
+#sub:第36回世界コンピュータ将棋選手権
+第36回世界コンピュータ将棋選手権,決勝7回戦 ponkotsu - AobaZero 20260505161025
+第36回世界コンピュータ将棋選手権,決勝7回戦 ponkotsu - AobaZero 20260505161025
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF7_7-900-5F%2Bponkotsu%2BAobaZero%2B20260505161025.csa
+第36回世界コンピュータ将棋選手権,決勝7回戦 水匠 - 六角堂狸 20260505161024
+第36回世界コンピュータ将棋選手権,決勝7回戦 水匠 - 六角堂狸 20260505161024
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF7_5-900-5F%2Bsuisho%2Btanuki%2B20260505161024.csa
+第36回世界コンピュータ将棋選手権,決勝7回戦 dlshogi - 奏乗 20260505161022
+第36回世界コンピュータ将棋選手権,決勝7回戦 dlshogi - 奏乗 20260505161022
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF7_3-900-5F%2Bdlshogi%2Bsojo%2B20260505161022.csa
+第36回世界コンピュータ将棋選手権,決勝7回戦 Ryfamate - 氷彗 20260505161020
+第36回世界コンピュータ将棋選手権,決勝7回戦 Ryfamate - 氷彗 20260505161020
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF7_1-900-5F%2BRyfamate%2Bhisui%2B20260505161020.csa
+第36回世界コンピュータ将棋選手権,決勝6回戦 AobaZero - 六角堂狸 20260505150549
+第36回世界コンピュータ将棋選手権,決勝6回戦 AobaZero - 六角堂狸 20260505150549
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF6_6-900-5F%2BAobaZero%2Btanuki%2B20260505150549.csa
+第36回世界コンピュータ将棋選手権,決勝6回戦 ponkotsu - 水匠 20260505150548
+第36回世界コンピュータ将棋選手権,決勝6回戦 ponkotsu - 水匠 20260505150548
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF6_5-900-5F%2Bponkotsu%2Bsuisho%2B20260505150548.csa
+第36回世界コンピュータ将棋選手権,決勝6回戦 氷彗 - 奏乗 20260505150546
+第36回世界コンピュータ将棋選手権,決勝6回戦 氷彗 - 奏乗 20260505150546
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF6_2-900-5F%2Bhisui%2Bsojo%2B20260505150546.csa
+第36回世界コンピュータ将棋選手権,決勝6回戦 Ryfamate - dlshogi 20260505150544
+第36回世界コンピュータ将棋選手権,決勝6回戦 Ryfamate - dlshogi 20260505150544
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF6_1-900-5F%2BRyfamate%2Bdlshogi%2B20260505150544.csa
+第36回世界コンピュータ将棋選手権,決勝5回戦 AobaZero - 水匠 20260505140019
+第36回世界コンピュータ将棋選手権,決勝5回戦 AobaZero - 水匠 20260505140019
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF5_5-900-5F%2BAobaZero%2Bsuisho%2B20260505140019.csa
+第36回世界コンピュータ将棋選手権,決勝5回戦 六角堂狸 - ponkotsu 20260505140017
+第36回世界コンピュータ将棋選手権,決勝5回戦 六角堂狸 - ponkotsu 20260505140017
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF5_6-900-5F%2Btanuki%2Bponkotsu%2B20260505140017.csa
+第36回世界コンピュータ将棋選手権,決勝5回戦 奏乗 - Ryfamate 20260505140015
+第36回世界コンピュータ将棋選手権,決勝5回戦 奏乗 - Ryfamate 20260505140015
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF5_1-900-5F%2Bsojo%2BRyfamate%2B20260505140015.csa
+第36回世界コンピュータ将棋選手権,決勝5回戦 氷彗 - dlshogi 20260505140013
+第36回世界コンピュータ将棋選手権,決勝5回戦 氷彗 - dlshogi 20260505140013
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF5_2-900-5F%2Bhisui%2Bdlshogi%2B20260505140013.csa
+第36回世界コンピュータ将棋選手権,決勝4回戦 水匠 - Ryfamate 20260505125521
+第36回世界コンピュータ将棋選手権,決勝4回戦 水匠 - Ryfamate 20260505125521
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF4_1-900-5F%2Bsuisho%2BRyfamate%2B20260505125521.csa
+第36回世界コンピュータ将棋選手権,決勝4回戦 奏乗 - AobaZero 20260505125519
+第36回世界コンピュータ将棋選手権,決勝4回戦 奏乗 - AobaZero 20260505125519
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF4_4-900-5F%2Bsojo%2BAobaZero%2B20260505125519.csa
+第36回世界コンピュータ将棋選手権,決勝4回戦 dlshogi - ponkotsu 20260505125517
+第36回世界コンピュータ将棋選手権,決勝4回戦 dlshogi - ponkotsu 20260505125517
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF4_3-900-5F%2Bdlshogi%2Bponkotsu%2B20260505125517.csa
+第36回世界コンピュータ将棋選手権,決勝4回戦 六角堂狸 - 氷彗 20260505125515
+第36回世界コンピュータ将棋選手権,決勝4回戦 六角堂狸 - 氷彗 20260505125515
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF4_2-900-5F%2Btanuki%2Bhisui%2B20260505125515.csa
+第36回世界コンピュータ将棋選手権,決勝3回戦 ponkotsu - 奏乗 20260505115030
+第36回世界コンピュータ将棋選手権,決勝3回戦 ponkotsu - 奏乗 20260505115030
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF3_4-900-5F%2Bponkotsu%2Bsojo%2B20260505115030.csa
+第36回世界コンピュータ将棋選手権,決勝3回戦 Ryfamate - 六角堂狸 20260505115020
+第36回世界コンピュータ将棋選手権,決勝3回戦 Ryfamate - 六角堂狸 20260505115020
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF3_1-900-5F%2BRyfamate%2Btanuki%2B20260505115020.csa
+第36回世界コンピュータ将棋選手権,決勝3回戦 dlshogi - AobaZero 20260505115016
+第36回世界コンピュータ将棋選手権,決勝3回戦 dlshogi - AobaZero 20260505115016
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF3_3-900-5F%2Bdlshogi%2BAobaZero%2B20260505115016.csa
+第36回世界コンピュータ将棋選手権,決勝3回戦 水匠 - 氷彗 20260505115013
+第36回世界コンピュータ将棋選手権,決勝3回戦 水匠 - 氷彗 20260505115013
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF3_2-900-5F%2Bsuisho%2Bhisui%2B20260505115013.csa
+第36回世界コンピュータ将棋選手権,決勝2回戦 奏乗 - 六角堂狸 20260505103520
+第36回世界コンピュータ将棋選手権,決勝2回戦 奏乗 - 六角堂狸 20260505103520
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF2_4-900-5F%2Bsojo%2Btanuki%2B20260505103520.csa
+第36回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - ponkotsu 20260505103519
+第36回世界コンピュータ将棋選手権,決勝2回戦 Ryfamate - ponkotsu 20260505103519
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF2_1-900-5F%2BRyfamate%2Bponkotsu%2B20260505103519.csa
+第36回世界コンピュータ将棋選手権,決勝2回戦 dlshogi - 水匠 20260505103517
+第36回世界コンピュータ将棋選手権,決勝2回戦 dlshogi - 水匠 20260505103517
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF2_3-900-5F%2Bdlshogi%2Bsuisho%2B20260505103517.csa
+第36回世界コンピュータ将棋選手権,決勝2回戦 氷彗 - AobaZero 20260505103515
+第36回世界コンピュータ将棋選手権,決勝2回戦 氷彗 - AobaZero 20260505103515
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF2_2-900-5F%2Bhisui%2BAobaZero%2B20260505103515.csa
+第36回世界コンピュータ将棋選手権,決勝1回戦 奏乗 - 水匠 20260505093057
+第36回世界コンピュータ将棋選手権,決勝1回戦 奏乗 - 水匠 20260505093057
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF1_4-900-5F%2Bsojo%2Bsuisho%2B20260505093057.csa
+第36回世界コンピュータ将棋選手権,決勝1回戦 六角堂狸 - dlshogi 20260505093055
+第36回世界コンピュータ将棋選手権,決勝1回戦 六角堂狸 - dlshogi 20260505093055
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF1_3-900-5F%2Btanuki%2Bdlshogi%2B20260505093055.csa
+第36回世界コンピュータ将棋選手権,決勝1回戦 氷彗 - ponkotsu 20260505093054
+第36回世界コンピュータ将棋選手権,決勝1回戦 氷彗 - ponkotsu 20260505093054
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF1_2-900-5F%2Bhisui%2Bponkotsu%2B20260505093054.csa
+第36回世界コンピュータ将棋選手権,決勝1回戦 AobaZero - Ryfamate 20260505093050
+第36回世界コンピュータ将棋選手権,決勝1回戦 AobaZero - Ryfamate 20260505093050
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BF1_1-900-5F%2BAobaZero%2BRyfamate%2B20260505093050.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 四七八将棋 - タンゴ 20260504185033
+第36回世界コンピュータ将棋選手権,二次予選9回戦 四七八将棋 - タンゴ 20260504185033
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_21-900-5F%2B478shogi%2BTango%2B20260504185033.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 nshogi - GABEL 20260504185032
+第36回世界コンピュータ将棋選手権,二次予選9回戦 nshogi - GABEL 20260504185032
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_17-900-5F%2Bnshogi%2BGABEL%2B20260504185032.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Sinfonietta - W@nderER 20260504185030
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Sinfonietta - W@nderER 20260504185030
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_7-900-5F%2BSinfonietta%2Bwanderer%2B20260504185030.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - Gokaku 20260504185029
+第36回世界コンピュータ将棋選手権,二次予選9回戦 習甦 - Gokaku 20260504185029
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_15-900-5F%2BShueso%2BGokaku%2B20260504185029.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 あすとら将棋 - HoneyWaffle 20260504185027
+第36回世界コンピュータ将棋選手権,二次予選9回戦 あすとら将棋 - HoneyWaffle 20260504185027
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_9-900-5F%2BAsutora%2BHoneyWaffle%2B20260504185027.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - こだぬき 20260504185025
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Ari Shogi and フレンズ - こだぬき 20260504185025
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_12-900-5F%2Barishogi%2Bkodanuki%2B20260504185025.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 芽生将棋 - 東横将棋 20260504185024
+第36回世界コンピュータ将棋選手権,二次予選9回戦 芽生将棋 - 東横将棋 20260504185024
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_19-900-5F%2BMebae%2BToyoko%2B20260504185024.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラとうさぎ将棋 - ponkotsu 20260504185022
+第36回世界コンピュータ将棋選手権,二次予選9回戦 名人コブラとうさぎ将棋 - ponkotsu 20260504185022
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_10-900-5F%2Bcobra%2Bponkotsu%2B20260504185022.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - ねね将棋 20260504185020
+第36回世界コンピュータ将棋選手権,二次予選9回戦 二番絞り - ねね将棋 20260504185020
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_18-900-5F%2Bnibanshibori%2Bnene%2B20260504185020.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 水匠 - やねうら王 with GTNET 20260504185018
+第36回世界コンピュータ将棋選手権,二次予選9回戦 水匠 - やねうら王 with GTNET 20260504185018
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_1-900-5F%2Bsuisho%2Byaneuraou%2B20260504185018.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 AobaZero - 奏乗 20260504185015
+第36回世界コンピュータ将棋選手権,二次予選9回戦 AobaZero - 奏乗 20260504185015
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_6-900-5F%2BAobaZero%2Bsojo%2B20260504185015.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 六角堂狸 - dlshogi 20260504185012
+第36回世界コンピュータ将棋選手権,二次予選9回戦 六角堂狸 - dlshogi 20260504185012
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_2-900-5F%2Btanuki%2Bdlshogi%2B20260504185012.csa
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - 氷彗 20260504185010
+第36回世界コンピュータ将棋選手権,二次予選9回戦 Ryfamate - 氷彗 20260504185010
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU9_4-900-5F%2BRyfamate%2Bhisui%2B20260504185010.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 東横将棋 - GABEL 20260504174135
+第36回世界コンピュータ将棋選手権,二次予選8回戦 東横将棋 - GABEL 20260504174135
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_19_2-900-5F%2BToyoko%2BGABEL%2B20260504174135.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 Ryfamate - ponkotsu 20260504173752
+第36回世界コンピュータ将棋選手権,二次予選8回戦 Ryfamate - ponkotsu 20260504173752
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_4-900-5F%2BRyfamate%2Bponkotsu%2B20260504173752.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 JHBR - 四七八将棋 20260504173742
+第36回世界コンピュータ将棋選手権,二次予選8回戦 JHBR - 四七八将棋 20260504173742
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_21-900-5F%2Bjhbr%2B478shogi%2B20260504173742.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 タンゴ - Sinfonietta 20260504173741
+第36回世界コンピュータ将棋選手権,二次予選8回戦 タンゴ - Sinfonietta 20260504173741
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_7-900-5F%2BTango%2BSinfonietta%2B20260504173741.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 こだぬき - nshogi 20260504173739
+第36回世界コンピュータ将棋選手権,二次予選8回戦 こだぬき - nshogi 20260504173739
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_17-900-5F%2Bkodanuki%2Bnshogi%2B20260504173739.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 習甦 - 芽生将棋 20260504173737
+第36回世界コンピュータ将棋選手権,二次予選8回戦 習甦 - 芽生将棋 20260504173737
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_15-900-5F%2BShueso%2BMebae%2B20260504173737.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 Gokaku - あすとら将棋 20260504173736
+第36回世界コンピュータ将棋選手権,二次予選8回戦 Gokaku - あすとら将棋 20260504173736
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_9-900-5F%2BGokaku%2BAsutora%2B20260504173736.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 名人コブラとうさぎ将棋 - Ari Shogi and フレンズ 20260504173732
+第36回世界コンピュータ将棋選手権,二次予選8回戦 名人コブラとうさぎ将棋 - Ari Shogi and フレンズ 20260504173732
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_12-900-5F%2Bcobra%2Barishogi%2B20260504173732.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - ねね将棋 20260504173731
+第36回世界コンピュータ将棋選手権,二次予選8回戦 HoneyWaffle - ねね将棋 20260504173731
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_11-900-5F%2BHoneyWaffle%2Bnene%2B20260504173731.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 六角堂狸 - 二番絞り 20260504173729
+第36回世界コンピュータ将棋選手権,二次予選8回戦 六角堂狸 - 二番絞り 20260504173729
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_2-900-5F%2Btanuki%2Bnibanshibori%2B20260504173729.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 dlshogi - やねうら王 with GTNET 20260504173728
+第36回世界コンピュータ将棋選手権,二次予選8回戦 dlshogi - やねうら王 with GTNET 20260504173728
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_3-900-5F%2Bdlshogi%2Byaneuraou%2B20260504173728.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 AobaZero - 水匠 20260504173726
+第36回世界コンピュータ将棋選手権,二次予選8回戦 AobaZero - 水匠 20260504173726
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_1-900-5F%2BAobaZero%2Bsuisho%2B20260504173726.csa
+第36回世界コンピュータ将棋選手権,二次予選8回戦 氷彗 - 奏乗 20260504173723
+第36回世界コンピュータ将棋選手権,二次予選8回戦 氷彗 - 奏乗 20260504173723
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU8_6-900-5F%2Bhisui%2Bsojo%2B20260504173723.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 Gokaku - JHBR 20260504163039
+第36回世界コンピュータ将棋選手権,二次予選7回戦 Gokaku - JHBR 20260504163039
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_28-900-5F%2BGokaku%2Bjhbr%2B20260504163039.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 W@nderER - 芽生将棋 20260504163038
+第36回世界コンピュータ将棋選手権,二次予選7回戦 W@nderER - 芽生将棋 20260504163038
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_24-900-5F%2Bwanderer%2BMebae%2B20260504163038.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 四七八将棋 20260504163036
+第36回世界コンピュータ将棋選手権,二次予選7回戦 nshogi - 四七八将棋 20260504163036
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_17-900-5F%2Bnshogi%2B478shogi%2B20260504163036.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 GABEL - Sinfonietta 20260504163035
+第36回世界コンピュータ将棋選手権,二次予選7回戦 GABEL - Sinfonietta 20260504163035
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_7-900-5F%2BGABEL%2BSinfonietta%2B20260504163035.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 こだぬき - AobaZero 20260504163033
+第36回世界コンピュータ将棋選手権,二次予選7回戦 こだぬき - AobaZero 20260504163033
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_8-900-5F%2Bkodanuki%2BAobaZero%2B20260504163033.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - あすとら将棋 20260504163032
+第36回世界コンピュータ将棋選手権,二次予選7回戦 二番絞り - あすとら将棋 20260504163032
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_9-900-5F%2Bnibanshibori%2BAsutora%2B20260504163032.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 習甦 20260504163030
+第36回世界コンピュータ将棋選手権,二次予選7回戦 東横将棋 - 習甦 20260504163030
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_15-900-5F%2BToyoko%2BShueso%2B20260504163030.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - Ari Shogi and フレンズ 20260504163028
+第36回世界コンピュータ将棋選手権,二次予選7回戦 HoneyWaffle - Ari Shogi and フレンズ 20260504163028
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_11-900-5F%2BHoneyWaffle%2Barishogi%2B20260504163028.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 やねうら王 with GTNET - 名人コブラとうさぎ将棋 20260504163025
+第36回世界コンピュータ将棋選手権,二次予選7回戦 やねうら王 with GTNET - 名人コブラとうさぎ将棋 20260504163025
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_5-900-5F%2Byaneuraou%2Bcobra%2B20260504163025.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 Ryfamate - ねね将棋 20260504163023
+第36回世界コンピュータ将棋選手権,二次予選7回戦 Ryfamate - ねね将棋 20260504163023
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_4-900-5F%2BRyfamate%2Bnene%2B20260504163023.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - 六角堂狸 20260504163020
+第36回世界コンピュータ将棋選手権,二次予選7回戦 ponkotsu - 六角堂狸 20260504163020
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_2-900-5F%2Bponkotsu%2Btanuki%2B20260504163020.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 奏乗 - 水匠 20260504163018
+第36回世界コンピュータ将棋選手権,二次予選7回戦 奏乗 - 水匠 20260504163018
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_1-900-5F%2Bsojo%2Bsuisho%2B20260504163018.csa
+第36回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi - 氷彗 20260504163014
+第36回世界コンピュータ将棋選手権,二次予選7回戦 dlshogi - 氷彗 20260504163014
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU7_3-900-5F%2Bdlshogi%2Bhisui%2B20260504163014.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 GABEL - Gokaku 20260504153326
+第36回世界コンピュータ将棋選手権,二次予選6回戦 GABEL - Gokaku 20260504153326
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_26_2-900-5F%2BGABEL%2BGokaku%2B20260504153326.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 奏乗 - Ryfamate 20260504152738
+第36回世界コンピュータ将棋選手権,二次予選6回戦 奏乗 - Ryfamate 20260504152738
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_4-900-5F%2Bsojo%2BRyfamate%2B20260504152738.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Daigorilla - HoneyWaffle 20260504152736
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Daigorilla - HoneyWaffle 20260504152736
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_11-900-5F%2BDaigorilla%2BHoneyWaffle%2B20260504152736.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 芽生将棋 - タンゴ 20260504152551
+第36回世界コンピュータ将棋選手権,二次予選6回戦 芽生将棋 - タンゴ 20260504152551
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_24-900-5F%2BMebae%2BTango%2B20260504152551.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 JHBR - W@nderER 20260504152549
+第36回世界コンピュータ将棋選手権,二次予選6回戦 JHBR - W@nderER 20260504152549
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_27-900-5F%2Bjhbr%2Bwanderer%2B20260504152549.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - nshogi 20260504152547
+第36回世界コンピュータ将棋選手権,二次予選6回戦 AobaZero - nshogi 20260504152547
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_8-900-5F%2BAobaZero%2Bnshogi%2B20260504152547.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Sinfonietta - こだぬき 20260504152545
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Sinfonietta - こだぬき 20260504152545
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_7-900-5F%2BSinfonietta%2Bkodanuki%2B20260504152545.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi and フレンズ - 四七八将棋 20260504152543
+第36回世界コンピュータ将棋選手権,二次予選6回戦 Ari Shogi and フレンズ - 四七八将棋 20260504152543
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_12-900-5F%2Barishogi%2B478shogi%2B20260504152543.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 あすとら将棋 - やねうら王 with GTNET 20260504152541
+第36回世界コンピュータ将棋選手権,二次予選6回戦 あすとら将棋 - やねうら王 with GTNET 20260504152541
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_5-900-5F%2BAsutora%2Byaneuraou%2B20260504152541.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 二番絞り - ponkotsu 20260504152539
+第36回世界コンピュータ将棋選手権,二次予選6回戦 二番絞り - ponkotsu 20260504152539
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_10-900-5F%2Bnibanshibori%2Bponkotsu%2B20260504152539.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - 東横将棋 20260504152537
+第36回世界コンピュータ将棋選手権,二次予選6回戦 ねね将棋 - 東横将棋 20260504152537
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_19-900-5F%2Bnene%2BToyoko%2B20260504152537.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 dlshogi - 習甦 20260504152534
+第36回世界コンピュータ将棋選手権,二次予選6回戦 dlshogi - 習甦 20260504152534
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_3-900-5F%2Bdlshogi%2BShueso%2B20260504152534.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 水匠 - 六角堂狸 20260504152531
+第36回世界コンピュータ将棋選手権,二次予選6回戦 水匠 - 六角堂狸 20260504152531
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_1-900-5F%2Bsuisho%2Btanuki%2B20260504152531.csa
+第36回世界コンピュータ将棋選手権,二次予選6回戦 氷彗 - 名人コブラとうさぎ将棋 20260504152528
+第36回世界コンピュータ将棋選手権,二次予選6回戦 氷彗 - 名人コブラとうさぎ将棋 20260504152528
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU6_14-900-5F%2Bhisui%2Bcobra%2B20260504152528.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 Daigorilla - GABEL 20260504142519
+第36回世界コンピュータ将棋選手権,二次予選5回戦 Daigorilla - GABEL 20260504142519
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_13-900-5F%2BDaigorilla%2BGABEL%2B20260504142519.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 タンゴ - JHBR 20260504142228
+第36回世界コンピュータ将棋選手権,二次予選5回戦 タンゴ - JHBR 20260504142228
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_29-900-5F%2BTango%2Bjhbr%2B20260504142228.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 HoneyWaffle - 芽生将棋 20260504142227
+第36回世界コンピュータ将棋選手権,二次予選5回戦 HoneyWaffle - 芽生将棋 20260504142227
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_11-900-5F%2BHoneyWaffle%2BMebae%2B20260504142227.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 四七八将棋 - W@nderER 20260504142225
+第36回世界コンピュータ将棋選手権,二次予選5回戦 四七八将棋 - W@nderER 20260504142225
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_21-900-5F%2B478shogi%2Bwanderer%2B20260504142225.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 ponkotsu - Sinfonietta 20260504142223
+第36回世界コンピュータ将棋選手権,二次予選5回戦 ponkotsu - Sinfonietta 20260504142223
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_7-900-5F%2Bponkotsu%2BSinfonietta%2B20260504142223.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 こだぬき - 二番絞り 20260504142221
+第36回世界コンピュータ将棋選手権,二次予選5回戦 こだぬき - 二番絞り 20260504142221
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_18-900-5F%2Bkodanuki%2Bnibanshibori%2B20260504142221.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - AobaZero 20260504142220
+第36回世界コンピュータ将棋選手権,二次予選5回戦 あすとら将棋 - AobaZero 20260504142220
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_8-900-5F%2BAsutora%2BAobaZero%2B20260504142220.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 with GTNET - Gokaku 20260504142217
+第36回世界コンピュータ将棋選手権,二次予選5回戦 やねうら王 with GTNET - Gokaku 20260504142217
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_5-900-5F%2Byaneuraou%2BGokaku%2B20260504142217.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi - nshogi 20260504142215
+第36回世界コンピュータ将棋選手権,二次予選5回戦 dlshogi - nshogi 20260504142215
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_3-900-5F%2Bdlshogi%2Bnshogi%2B20260504142215.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 Ari Shogi and フレンズ - 奏乗 20260504142214
+第36回世界コンピュータ将棋選手権,二次予選5回戦 Ari Shogi and フレンズ - 奏乗 20260504142214
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_6-900-5F%2Barishogi%2Bsojo%2B20260504142214.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 ねね将棋 - 水匠 20260504142212
+第36回世界コンピュータ将棋選手権,二次予選5回戦 ねね将棋 - 水匠 20260504142212
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_1-900-5F%2Bnene%2Bsuisho%2B20260504142212.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラとうさぎ将棋 - 東横将棋 20260504142210
+第36回世界コンピュータ将棋選手権,二次予選5回戦 名人コブラとうさぎ将棋 - 東横将棋 20260504142210
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_14-900-5F%2Bcobra%2BToyoko%2B20260504142210.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 氷彗 - 習甦 20260504142208
+第36回世界コンピュータ将棋選手権,二次予選5回戦 氷彗 - 習甦 20260504142208
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_15-900-5F%2Bhisui%2BShueso%2B20260504142208.csa
+第36回世界コンピュータ将棋選手権,二次予選5回戦 六角堂狸 - Ryfamate 20260504142204
+第36回世界コンピュータ将棋選手権,二次予選5回戦 六角堂狸 - Ryfamate 20260504142204
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU5_2-900-5F%2Btanuki%2BRyfamate%2B20260504142204.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 習甦 - Ari Shogi and フレンズ 20260504131637
+第36回世界コンピュータ将棋選手権,二次予選4回戦 習甦 - Ari Shogi and フレンズ 20260504131637
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_12-900-5F%2BShueso%2Barishogi%2B20260504131637.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 nshogi - 芽生将棋 20260504131239
+第36回世界コンピュータ将棋選手権,二次予選4回戦 nshogi - 芽生将棋 20260504131239
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_17-900-5F%2Bnshogi%2BMebae%2B20260504131239.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 タンゴ - Gokaku 20260504131059
+第36回世界コンピュータ将棋選手権,二次予選4回戦 タンゴ - Gokaku 20260504131059
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_28-900-5F%2BTango%2BGokaku%2B20260504131059.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 GABEL - JHBR 20260504131057
+第36回世界コンピュータ将棋選手権,二次予選4回戦 GABEL - JHBR 20260504131057
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_26-900-5F%2BGABEL%2Bjhbr%2B20260504131057.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 HoneyWaffle - こだぬき 20260504131056
+第36回世界コンピュータ将棋選手権,二次予選4回戦 HoneyWaffle - こだぬき 20260504131056
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_11-900-5F%2BHoneyWaffle%2Bkodanuki%2B20260504131056.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 あすとら将棋 - W@nderER 20260504131054
+第36回世界コンピュータ将棋選手権,二次予選4回戦 あすとら将棋 - W@nderER 20260504131054
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_9-900-5F%2BAsutora%2Bwanderer%2B20260504131054.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 AobaZero - 四七八将棋 20260504131052
+第36回世界コンピュータ将棋選手権,二次予選4回戦 AobaZero - 四七八将棋 20260504131052
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_8-900-5F%2BAobaZero%2B478shogi%2B20260504131052.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 二番絞り - Daigorilla 20260504131050
+第36回世界コンピュータ将棋選手権,二次予選4回戦 二番絞り - Daigorilla 20260504131050
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_13-900-5F%2Bnibanshibori%2BDaigorilla%2B20260504131050.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 奏乗 20260504131048
+第36回世界コンピュータ将棋選手権,二次予選4回戦 東横将棋 - 奏乗 20260504131048
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_6-900-5F%2BToyoko%2Bsojo%2B20260504131048.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - やねうら王 with GTNET 20260504131047
+第36回世界コンピュータ将棋選手権,二次予選4回戦 ねね将棋 - やねうら王 with GTNET 20260504131047
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_5-900-5F%2Bnene%2Byaneuraou%2B20260504131047.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - ponkotsu 20260504131044
+第36回世界コンピュータ将棋選手権,二次予選4回戦 水匠 - ponkotsu 20260504131044
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_1-900-5F%2Bsuisho%2Bponkotsu%2B20260504131044.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 Sinfonietta - 名人コブラとうさぎ将棋 20260504131043
+第36回世界コンピュータ将棋選手権,二次予選4回戦 Sinfonietta - 名人コブラとうさぎ将棋 20260504131043
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_7-900-5F%2BSinfonietta%2Bcobra%2B20260504131043.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 六角堂狸 - 氷彗 20260504131038
+第36回世界コンピュータ将棋選手権,二次予選4回戦 六角堂狸 - 氷彗 20260504131038
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_2-900-5F%2Btanuki%2Bhisui%2B20260504131038.csa
+第36回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - dlshogi 20260504131033
+第36回世界コンピュータ将棋選手権,二次予選4回戦 Ryfamate - dlshogi 20260504131033
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU4_3-900-5F%2BRyfamate%2Bdlshogi%2B20260504131033.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 with GTNET - Ryfamate 20260504115727
+第36回世界コンピュータ将棋選手権,二次予選3回戦 やねうら王 with GTNET - Ryfamate 20260504115727
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_4-900-5F%2Byaneuraou%2BRyfamate%2B20260504115727.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 東横将棋 - 六角堂狸 20260504115540
+第36回世界コンピュータ将棋選手権,二次予選3回戦 東横将棋 - 六角堂狸 20260504115540
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_2-900-5F%2BToyoko%2Btanuki%2B20260504115540.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 W@nderER - GABEL 20260504115458
+第36回世界コンピュータ将棋選手権,二次予選3回戦 W@nderER - GABEL 20260504115458
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_26-900-5F%2Bwanderer%2BGABEL%2B20260504115458.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 JHBR - HoneyWaffle 20260504114934
+第36回世界コンピュータ将棋選手権,二次予選3回戦 JHBR - HoneyWaffle 20260504114934
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_11-900-5F%2Bjhbr%2BHoneyWaffle%2B20260504114934.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 ponkotsu - 芽生将棋 20260504114323
+第36回世界コンピュータ将棋選手権,二次予選3回戦 ponkotsu - 芽生将棋 20260504114323
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_10-900-5F%2Bponkotsu%2BMebae%2B20260504114323.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 AobaZero - 二番絞り 20260504114120
+第36回世界コンピュータ将棋選手権,二次予選3回戦 AobaZero - 二番絞り 20260504114120
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_8-900-5F%2BAobaZero%2Bnibanshibori%2B20260504114120.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 四七八将棋 - Sinfonietta 20260504114117
+第36回世界コンピュータ将棋選手権,二次予選3回戦 四七八将棋 - Sinfonietta 20260504114117
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_7-900-5F%2B478shogi%2BSinfonietta%2B20260504114117.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 氷彗 - 水匠 20260504113836
+第36回世界コンピュータ将棋選手権,二次予選3回戦 氷彗 - 水匠 20260504113836
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_1-900-5F%2Bhisui%2Bsuisho%2B20260504113836.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 Gokaku - こだぬき 20260504113828
+第36回世界コンピュータ将棋選手権,二次予選3回戦 Gokaku - こだぬき 20260504113828
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_25-900-5F%2BGokaku%2Bkodanuki%2B20260504113828.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラとうさぎ将棋 - Daigorilla 20260504113417
+第36回世界コンピュータ将棋選手権,二次予選3回戦 名人コブラとうさぎ将棋 - Daigorilla 20260504113417
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_13-900-5F%2Bcobra%2BDaigorilla%2B20260504113417.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 Ari Shogi and フレンズ - ねね将棋 20260504113327
+第36回世界コンピュータ将棋選手権,二次予選3回戦 Ari Shogi and フレンズ - ねね将棋 20260504113327
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_12-900-5F%2Barishogi%2Bnene%2B20260504113327.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 奏乗 - dlshogi 20260504112948
+第36回世界コンピュータ将棋選手権,二次予選3回戦 奏乗 - dlshogi 20260504112948
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_3-900-5F%2Bsojo%2Bdlshogi%2B20260504112948.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 タンゴ - あすとら将棋 20260504112804
+第36回世界コンピュータ将棋選手権,二次予選3回戦 タンゴ - あすとら将棋 20260504112804
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_9-900-5F%2BTango%2BAsutora%2B20260504112804.csa
+第36回世界コンピュータ将棋選手権,二次予選3回戦 習甦 - nshogi 20260504112740
+第36回世界コンピュータ将棋選手権,二次予選3回戦 習甦 - nshogi 20260504112740
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU3_15-900-5F%2BShueso%2Bnshogi%2B20260504112740.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 四七八将棋 - GABEL 20260504110005
+第36回世界コンピュータ将棋選手権,二次予選2回戦 四七八将棋 - GABEL 20260504110005
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_21-900-5F%2B478shogi%2BGABEL%2B20260504110005.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 やねうら王 with GTNET - ponkotsu 20260504110001
+第36回世界コンピュータ将棋選手権,二次予選2回戦 やねうら王 with GTNET - ponkotsu 20260504110001
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_5-900-5F%2Byaneuraou%2Bponkotsu%2B20260504110001.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 W@nderER - 東横将棋 20260504105938
+第36回世界コンピュータ将棋選手権,二次予選2回戦 W@nderER - 東横将棋 20260504105938
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_19-900-5F%2Bwanderer%2BToyoko%2B20260504105938.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - Ryfamate 20260504105630
+第36回世界コンピュータ将棋選手権,二次予選2回戦 HoneyWaffle - Ryfamate 20260504105630
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_4-900-5F%2BHoneyWaffle%2BRyfamate%2B20260504105630.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Sinfonietta - AobaZero 20260504105259
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Sinfonietta - AobaZero 20260504105259
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_7-900-5F%2BSinfonietta%2BAobaZero%2B20260504105259.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 芽生将棋 - ねね将棋 20260504105253
+第36回世界コンピュータ将棋選手権,二次予選2回戦 芽生将棋 - ねね将棋 20260504105253
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_23-900-5F%2BMebae%2Bnene%2B20260504105253.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 こだぬき - 氷彗 20260504104920
+第36回世界コンピュータ将棋選手権,二次予選2回戦 こだぬき - 氷彗 20260504104920
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_22-900-5F%2Bkodanuki%2Bhisui%2B20260504104920.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - 奏乗 20260504104915
+第36回世界コンピュータ将棋選手権,二次予選2回戦 あすとら将棋 - 奏乗 20260504104915
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_6-900-5F%2BAsutora%2Bsojo%2B20260504104915.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - タンゴ 20260504104544
+第36回世界コンピュータ将棋選手権,二次予選2回戦 習甦 - タンゴ 20260504104544
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_15-900-5F%2BShueso%2BTango%2B20260504104544.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 六角堂狸 - Daigorilla 20260504104452
+第36回世界コンピュータ将棋選手権,二次予選2回戦 六角堂狸 - Daigorilla 20260504104452
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_2-900-5F%2Btanuki%2BDaigorilla%2B20260504104452.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 nshogi - JHBR 20260504104418
+第36回世界コンピュータ将棋選手権,二次予選2回戦 nshogi - JHBR 20260504104418
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_17-900-5F%2Bnshogi%2Bjhbr%2B20260504104418.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - 名人コブラとうさぎ将棋 20260504104025
+第36回世界コンピュータ将棋選手権,二次予選2回戦 水匠 - 名人コブラとうさぎ将棋 20260504104025
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_1-900-5F%2Bsuisho%2Bcobra%2B20260504104025.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Gokaku - 二番絞り 20260504103701
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Gokaku - 二番絞り 20260504103701
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_18-900-5F%2BGokaku%2Bnibanshibori%2B20260504103701.csa
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Ari Shogi and フレンズ - dlshogi 20260504103651
+第36回世界コンピュータ将棋選手権,二次予選2回戦 Ari Shogi and フレンズ - dlshogi 20260504103651
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU2_3-900-5F%2Barishogi%2Bdlshogi%2B20260504103651.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - 四七八将棋 20260504100151
+第36回世界コンピュータ将棋選手権,二次予選1回戦 ponkotsu - 四七八将棋 20260504100151
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_10-900-5F%2Bponkotsu-test%2B478shogi%2B20260504100151.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラとうさぎ将棋 - 習甦 20260504100058
+第36回世界コンピュータ将棋選手権,二次予選1回戦 名人コブラとうさぎ将棋 - 習甦 20260504100058
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_14-900-5F%2Bcobra%2BShueso%2B20260504100058.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 Daigorilla - nshogi 20260504100056
+第36回世界コンピュータ将棋選手権,二次予選1回戦 Daigorilla - nshogi 20260504100056
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_13-900-5F%2BDaigorilla%2Bnshogi%2B20260504100056.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 二番絞り - Ari Shogi and フレンズ 20260504100054
+第36回世界コンピュータ将棋選手権,二次予選1回戦 二番絞り - Ari Shogi and フレンズ 20260504100054
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_12-900-5F%2Bnibanshibori%2Barishogi%2B20260504100054.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 東横将棋 - HoneyWaffle 20260504100052
+第36回世界コンピュータ将棋選手権,二次予選1回戦 東横将棋 - HoneyWaffle 20260504100052
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_11-900-5F%2BToyoko%2BHoneyWaffle%2B20260504100052.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 氷彗 - あすとら将棋 20260504100045
+第36回世界コンピュータ将棋選手権,二次予選1回戦 氷彗 - あすとら将棋 20260504100045
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_9-900-5F%2Bhisui%2BAsutora%2B20260504100045.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 ねね将棋 - AobaZero 20260504100044
+第36回世界コンピュータ将棋選手権,二次予選1回戦 ねね将棋 - AobaZero 20260504100044
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_8-900-5F%2Bnene%2BAobaZero%2B20260504100044.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 芽生将棋 - Sinfonietta 20260504100042
+第36回世界コンピュータ将棋選手権,二次予選1回戦 芽生将棋 - Sinfonietta 20260504100042
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_7-900-5F%2BMebae%2BSinfonietta%2B20260504100042.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 奏乗 - こだぬき 20260504100040
+第36回世界コンピュータ将棋選手権,二次予選1回戦 奏乗 - こだぬき 20260504100040
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_6-900-5F%2Bsojo%2Bkodanuki%2B20260504100040.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 GABEL - やねうら王 with GTNET 20260504100038
+第36回世界コンピュータ将棋選手権,二次予選1回戦 GABEL - やねうら王 with GTNET 20260504100038
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_5-900-5F%2BGABEL%2Byaneuraou%2B20260504100038.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 Ryfamate - W@nderER 20260504100037
+第36回世界コンピュータ将棋選手権,二次予選1回戦 Ryfamate - W@nderER 20260504100037
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_4-900-5F%2BRyfamate%2Bwanderer%2B20260504100037.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 dlshogi - Gokaku 20260504100035
+第36回世界コンピュータ将棋選手権,二次予選1回戦 dlshogi - Gokaku 20260504100035
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_3-900-5F%2Bdlshogi%2BGokaku%2B20260504100035.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 JHBR - 六角堂狸 20260504100033
+第36回世界コンピュータ将棋選手権,二次予選1回戦 JHBR - 六角堂狸 20260504100033
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_2-900-5F%2Bjhbr%2Btanuki%2B20260504100033.csa
+第36回世界コンピュータ将棋選手権,二次予選1回戦 水匠 - タンゴ 20260504100029
+第36回世界コンピュータ将棋選手権,二次予選1回戦 水匠 - タンゴ 20260504100029
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BU1_1-900-5F%2Bsuisho%2BTango%2B20260504100029.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 山田将棋 - komadokun 20260503180225
+第36回世界コンピュータ将棋選手権,一次予選8回戦 山田将棋 - komadokun 20260503180225
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_34-900-5F%2Byamadashogi%2Bkomadokun%2B20260503180225.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - きふわらぷりー 20260503180103
+第36回世界コンピュータ将棋選手権,一次予選8回戦 あうあう将棋 - きふわらぷりー 20260503180103
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_43-900-5F%2Bauaushogi%2Bkifuwarabe%2B20260503180103.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 隠岐 - こまあそび 20260503180058
+第36回世界コンピュータ将棋選手権,一次予選8回戦 隠岐 - こまあそび 20260503180058
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_41-900-5F%2Boki%2Bkomaasobi%2B20260503180058.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 まったりゆうちゃん - TMOQ 20260503180056
+第36回世界コンピュータ将棋選手権,一次予選8回戦 まったりゆうちゃん - TMOQ 20260503180056
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_45-900-5F%2BMattariYuuchan%2BTMOQ%2B20260503180056.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 元気もりもりニンニクパワー - Kuro651 20260503180054
+第36回世界コンピュータ将棋選手権,一次予選8回戦 元気もりもりニンニクパワー - Kuro651 20260503180054
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_130-900-5F%2BNinniku%2BKuro651%2B20260503180054.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 Dainagon - tiger 20260503180052
+第36回世界コンピュータ将棋選手権,一次予選8回戦 Dainagon - tiger 20260503180052
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_1003-900-5F%2BDainagon%2Btiger_usiagent%2B20260503180052.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 65537 - 重-KASANE- 20260503180049
+第36回世界コンピュータ将棋選手権,一次予選8回戦 65537 - 重-KASANE- 20260503180049
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_27-900-5F%2Brokugogosannnana%2Bkasane%2B20260503180049.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ねびゅら - 爆裂駒拾太郎 20260503180047
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ねびゅら - 爆裂駒拾太郎 20260503180047
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_38-900-5F%2Bnebula%2Bbakuretsu%2B20260503180047.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - いちびん 20260503180046
+第36回世界コンピュータ将棋選手権,一次予選8回戦 きのあ将棋 - いちびん 20260503180046
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_22-900-5F%2Bqinoa%2Bichibin%2B20260503180046.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 カツ丼将棋 - Argp 20260503180043
+第36回世界コンピュータ将棋選手権,一次予選8回戦 カツ丼将棋 - Argp 20260503180043
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_29-900-5F%2Bkatsudon%2Bargo%2B20260503180043.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ザ・グレートウシジマ - なのは 20260503180040
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ザ・グレートウシジマ - なのは 20260503180040
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_26-900-5F%2BUsizima%2BNanoha2026%2B20260503180040.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 タンゴ - etude12 20260503180038
+第36回世界コンピュータ将棋選手権,一次予選8回戦 タンゴ - etude12 20260503180038
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_24-900-5F%2BTango%2Betude15%2B20260503180038.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 Gokaku - はるか 20260503180036
+第36回世界コンピュータ将棋選手権,一次予選8回戦 Gokaku - はるか 20260503180036
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_32-900-5F%2BGokaku%2BHaruka%2B20260503180036.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 JHBR - こだぬき 20260503180034
+第36回世界コンピュータ将棋選手権,一次予選8回戦 JHBR - こだぬき 20260503180034
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_242-900-5F%2Bjhbr%2Bkodanuki%2B20260503180034.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 手抜き - GABEL 20260503180033
+第36回世界コンピュータ将棋選手権,一次予選8回戦 手抜き - GABEL 20260503180033
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_31-900-5F%2Btenuki%2BGABEL%2B20260503180033.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 芽生将棋 - 名探偵 Qhapaq！ 20260503180031
+第36回世界コンピュータ将棋選手権,一次予選8回戦 芽生将棋 - 名探偵 Qhapaq！ 20260503180031
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_21-900-5F%2BMebae%2Bqhapaq%2B20260503180031.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ねね将棋 - W@nderER 20260503180029
+第36回世界コンピュータ将棋選手権,一次予選8回戦 ねね将棋 - W@nderER 20260503180029
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_23-900-5F%2Bnene%2Bwanderer%2B20260503180029.csa
+第36回世界コンピュータ将棋選手権,一次予選8回戦 四七八将棋 - 氷彗 20260503180027
+第36回世界コンピュータ将棋選手権,一次予選8回戦 四七八将棋 - 氷彗 20260503180027
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL8_409-900-5F%2B478shogi%2Bhisui%2B20260503180027.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 komadokun - etude12 20260503165608
+第36回世界コンピュータ将棋選手権,一次予選7回戦 komadokun - etude12 20260503165608
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_44-900-5F%2Bkomadokun%2Betude15%2B20260503165608.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - Kuro651 20260503165435
+第36回世界コンピュータ将棋選手権,一次予選7回戦 あうあう将棋 - Kuro651 20260503165435
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_43-900-5F%2Bauaushogi%2BKuro651%2B20260503165435.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 きふわらぷりー - まったりゆうちゃん 20260503165433
+第36回世界コンピュータ将棋選手権,一次予選7回戦 きふわらぷりー - まったりゆうちゃん 20260503165433
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_48-900-5F%2Bkifuwarabe%2BMattariYuuchan%2B20260503165433.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - はるか 20260503165431
+第36回世界コンピュータ将棋選手権,一次予選7回戦 こまあそび - はるか 20260503165431
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_40-900-5F%2Bkomaasobi%2BHaruka%2B20260503165431.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 重-KASANE- - なり金将棋 20260503165429
+第36回世界コンピュータ将棋選手権,一次予選7回戦 重-KASANE- - なり金将棋 20260503165429
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_39-900-5F%2Bkasane%2Bnarikin%2B20260503165429.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 tiger - 隠岐 20260503165428
+第36回世界コンピュータ将棋選手権,一次予選7回戦 tiger - 隠岐 20260503165428
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_42-900-5F%2Btiger_usiagent%2Boki%2B20260503165428.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 TMOQ - 山田将棋 20260503165426
+第36回世界コンピュータ将棋選手権,一次予選7回戦 TMOQ - 山田将棋 20260503165426
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_34-900-5F%2BTMOQ%2Byamadashogi%2B20260503165426.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 なのは - 65537 20260503165424
+第36回世界コンピュータ将棋選手権,一次予選7回戦 なのは - 65537 20260503165424
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_26-900-5F%2BNanoha2026%2Brokugogosannnana%2B20260503165424.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 手抜き - ねびゅら 20260503165422
+第36回世界コンピュータ将棋選手権,一次予選7回戦 手抜き - ねびゅら 20260503165422
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_31-900-5F%2Btenuki%2Bnebula%2B20260503165422.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 爆裂駒拾太郎 20260503165420
+第36回世界コンピュータ将棋選手権,一次予選7回戦 カツ丼将棋 - 爆裂駒拾太郎 20260503165420
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_35-900-5F%2Bkatsudon%2Bbakuretsu%2B20260503165420.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 Dainagon - Gokaku 20260503165418
+第36回世界コンピュータ将棋選手権,一次予選7回戦 Dainagon - Gokaku 20260503165418
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_32-900-5F%2BDainagon%2BGokaku%2B20260503165418.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 名探偵 Qhapaq！ - ザ・グレートウシジマ 20260503165416
+第36回世界コンピュータ将棋選手権,一次予選7回戦 名探偵 Qhapaq！ - ザ・グレートウシジマ 20260503165416
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_21-900-5F%2Bqhapaq%2BUsizima%2B20260503165416.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 きのあ将棋 - JHBR 20260503165414
+第36回世界コンピュータ将棋選手権,一次予選7回戦 きのあ将棋 - JHBR 20260503165414
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_33-900-5F%2Bqinoa%2Bjhbr%2B20260503165414.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 Argp - GABEL 20260503165413
+第36回世界コンピュータ将棋選手権,一次予選7回戦 Argp - GABEL 20260503165413
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_29-900-5F%2Bargo%2BGABEL%2B20260503165413.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 こだぬき - いちびん 20260503165411
+第36回世界コンピュータ将棋選手権,一次予選7回戦 こだぬき - いちびん 20260503165411
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_22-900-5F%2Bkodanuki%2Bichibin%2B20260503165411.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 W@nderER - タンゴ 20260503165409
+第36回世界コンピュータ将棋選手権,一次予選7回戦 W@nderER - タンゴ 20260503165409
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_23-900-5F%2Bwanderer%2BTango%2B20260503165409.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 四七八将棋 - ねね将棋 20260503165407
+第36回世界コンピュータ将棋選手権,一次予選7回戦 四七八将棋 - ねね将棋 20260503165407
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_118-900-5F%2B478shogi%2Bnene%2B20260503165407.csa
+第36回世界コンピュータ将棋選手権,一次予選7回戦 氷彗 - 芽生将棋 20260503165403
+第36回世界コンピュータ将棋選手権,一次予選7回戦 氷彗 - 芽生将棋 20260503165403
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL7_28-900-5F%2Bhisui%2BMebae%2B20260503165403.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 はるか - まったりゆうちゃん 20260503154939
+第36回世界コンピュータ将棋選手権,一次予選6回戦 はるか - まったりゆうちゃん 20260503154939
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_40-900-5F%2BHaruka%2BMattariYuuchan%2B20260503154939.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 元気もりもりニンニクパワー - TMOQ 20260503154938
+第36回世界コンピュータ将棋選手権,一次予選6回戦 元気もりもりニンニクパワー - TMOQ 20260503154938
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_45-900-5F%2BNinniku%2BTMOQ%2B20260503154938.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 あうあう将棋 - 重-KASANE- 20260503154936
+第36回世界コンピュータ将棋選手権,一次予選6回戦 あうあう将棋 - 重-KASANE- 20260503154936
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_43-900-5F%2Bauaushogi%2Bkasane%2B20260503154936.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 爆裂駒拾太郎 - なり金将棋 20260503154934
+第36回世界コンピュータ将棋選手権,一次予選6回戦 爆裂駒拾太郎 - なり金将棋 20260503154934
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_38-900-5F%2Bbakuretsu%2Bnarikin%2B20260503154934.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 こまあそび - 手抜き 20260503154933
+第36回世界コンピュータ将棋選手権,一次予選6回戦 こまあそび - 手抜き 20260503154933
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_31-900-5F%2Bkomaasobi%2Btenuki%2B20260503154933.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 Dainagon - 山田将棋 20260503154932
+第36回世界コンピュータ将棋選手権,一次予選6回戦 Dainagon - 山田将棋 20260503154932
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_34-900-5F%2BDainagon%2Byamadashogi%2B20260503154932.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 隠岐 - komadokun 20260503154930
+第36回世界コンピュータ将棋選手権,一次予選6回戦 隠岐 - komadokun 20260503154930
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_42-900-5F%2Boki%2Bkomadokun%2B20260503154930.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 ねびゅら - Kuro651 20260503154929
+第36回世界コンピュータ将棋選手権,一次予選6回戦 ねびゅら - Kuro651 20260503154929
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_951-900-5F%2Bnebula%2BKuro651%2B20260503154929.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 65537 - きのあ将棋 20260503154927
+第36回世界コンピュータ将棋選手権,一次予選6回戦 65537 - きのあ将棋 20260503154927
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_27-900-5F%2Brokugogosannnana%2Bqinoa%2B20260503154927.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 etude12 - JHBR 20260503154926
+第36回世界コンピュータ将棋選手権,一次予選6回戦 etude12 - JHBR 20260503154926
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_46-900-5F%2Betude15%2Bjhbr%2B20260503154926.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 タンゴ - なのは 20260503154924
+第36回世界コンピュータ将棋選手権,一次予選6回戦 タンゴ - なのは 20260503154924
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_24-900-5F%2BTango%2BNanoha2026%2B20260503154924.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 カツ丼将棋 - ザ・グレートウシジマ 20260503154923
+第36回世界コンピュータ将棋選手権,一次予選6回戦 カツ丼将棋 - ザ・グレートウシジマ 20260503154923
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_30-900-5F%2Bkatsudon%2BUsizima%2B20260503154923.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 tiger - Argp 20260503154922
+第36回世界コンピュータ将棋選手権,一次予選6回戦 tiger - Argp 20260503154922
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_29-900-5F%2Btiger_usiagent%2Bargo%2B20260503154922.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 W@nderER - Gokaku 20260503154920
+第36回世界コンピュータ将棋選手権,一次予選6回戦 W@nderER - Gokaku 20260503154920
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_23-900-5F%2Bwanderer%2BGokaku%2B20260503154920.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 いちびん - GABEL 20260503154918
+第36回世界コンピュータ将棋選手権,一次予選6回戦 いちびん - GABEL 20260503154918
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_22-900-5F%2Bichibin%2BGABEL%2B20260503154918.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 こだぬき - ねね将棋 20260503154916
+第36回世界コンピュータ将棋選手権,一次予選6回戦 こだぬき - ねね将棋 20260503154916
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_118-900-5F%2Bkodanuki%2Bnene%2B20260503154916.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 氷彗 - 名探偵 Qhapaq！ 20260503154915
+第36回世界コンピュータ将棋選手権,一次予選6回戦 氷彗 - 名探偵 Qhapaq！ 20260503154915
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_21-900-5F%2Bhisui%2Bqhapaq%2B20260503154915.csa
+第36回世界コンピュータ将棋選手権,一次予選6回戦 芽生将棋 - 四七八将棋 20260503154913
+第36回世界コンピュータ将棋選手権,一次予選6回戦 芽生将棋 - 四七八将棋 20260503154913
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL6_28-900-5F%2BMebae%2B478shogi%2B20260503154913.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - 手抜き 20260503145750
+第36回世界コンピュータ将棋選手権,一次予選5回戦 JHBR - 手抜き 20260503145750
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_31_2-900-5F%2Bjhbr%2Btenuki%2B20260503145750.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 なのは - 隠岐 20260503144940
+第36回世界コンピュータ将棋選手権,一次予選5回戦 なのは - 隠岐 20260503144940
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_26_2-900-5F%2BNanoha2026%2Boki%2B20260503144940.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 きふわらぷりー - 元気もりもりニンニクパワー 20260503144820
+第36回世界コンピュータ将棋選手権,一次予選5回戦 きふわらぷりー - 元気もりもりニンニクパワー 20260503144820
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_48_2-900-5F%2Bkifuwarabe%2BNinniku%2B20260503144820.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 まったりゆうちゃん - 爆裂駒拾太郎 20260503144819
+第36回世界コンピュータ将棋選手権,一次予選5回戦 まったりゆうちゃん - 爆裂駒拾太郎 20260503144819
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_38_2-900-5F%2BMattariYuuchan%2Bbakuretsu%2B20260503144819.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 tiger - 重-KASANE- 20260503144817
+第36回世界コンピュータ将棋選手権,一次予選5回戦 tiger - 重-KASANE- 20260503144817
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_1003_2-900-5F%2Btiger_usiagent%2Bkasane%2B20260503144817.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - あうあう将棋 20260503144815
+第36回世界コンピュータ将棋選手権,一次予選5回戦 こまあそび - あうあう将棋 20260503144815
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_41_2-900-5F%2Bkomaasobi%2Bauaushogi%2B20260503144815.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 はるか - Dainagon 20260503144813
+第36回世界コンピュータ将棋選手権,一次予選5回戦 はるか - Dainagon 20260503144813
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_40_2-900-5F%2BHaruka%2BDainagon%2B20260503144813.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 TMOQ - ねびゅら 20260503144811
+第36回世界コンピュータ将棋選手権,一次予選5回戦 TMOQ - ねびゅら 20260503144811
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_45_2-900-5F%2BTMOQ%2Bnebula%2B20260503144811.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 komadokun - カツ丼将棋 20260503144756
+第36回世界コンピュータ将棋選手権,一次予選5回戦 komadokun - カツ丼将棋 20260503144756
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_35_2-900-5F%2Bkomadokun%2Bkatsudon%2B20260503144756.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 山田将棋 - 65537 20260503144753
+第36回世界コンピュータ将棋選手権,一次予選5回戦 山田将棋 - 65537 20260503144753
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_27_2-900-5F%2Byamadashogi%2Brokugogosannnana%2B20260503144753.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 ザ・グレートウシジマ - なり金将棋 20260503144751
+第36回世界コンピュータ将棋選手権,一次予選5回戦 ザ・グレートウシジマ - なり金将棋 20260503144751
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_30_2-900-5F%2BUsizima%2Bnarikin%2B20260503144751.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 名探偵 Qhapaq！ - いちびん 20260503144748
+第36回世界コンピュータ将棋選手権,一次予選5回戦 名探偵 Qhapaq！ - いちびん 20260503144748
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_21_2-900-5F%2Bqhapaq%2Bichibin%2B20260503144748.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 Argp - W@nderER 20260503144746
+第36回世界コンピュータ将棋選手権,一次予選5回戦 Argp - W@nderER 20260503144746
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_23_2-900-5F%2Bargo%2Bwanderer%2B20260503144746.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 etude12 - きのあ将棋 20260503144744
+第36回世界コンピュータ将棋選手権,一次予選5回戦 etude12 - きのあ将棋 20260503144744
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_33_2-900-5F%2Betude15%2Bqinoa%2B20260503144744.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 Gokaku - ねね将棋 20260503144742
+第36回世界コンピュータ将棋選手権,一次予選5回戦 Gokaku - ねね将棋 20260503144742
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_32_2-900-5F%2BGokaku%2Bnene%2B20260503144742.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 氷彗 - タンゴ 20260503144740
+第36回世界コンピュータ将棋選手権,一次予選5回戦 氷彗 - タンゴ 20260503144740
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_24_2-900-5F%2Bhisui%2BTango%2B20260503144740.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 GABEL - 四七八将棋 20260503144738
+第36回世界コンピュータ将棋選手権,一次予選5回戦 GABEL - 四七八将棋 20260503144738
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_1001_2-900-5F%2BGABEL%2B478shogi%2B20260503144738.csa
+第36回世界コンピュータ将棋選手権,一次予選5回戦 芽生将棋 - こだぬき 20260503144734
+第36回世界コンピュータ将棋選手権,一次予選5回戦 芽生将棋 - こだぬき 20260503144734
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL5_28_2-900-5F%2BMebae%2Bkodanuki%2B20260503144734.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - あうあう将棋 20260503135706
+第36回世界コンピュータ将棋選手権,一次予選4回戦 手抜き - あうあう将棋 20260503135706
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_31_2-900-5F%2Btenuki%2Bauaushogi%2B20260503135706.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Dainagon - 元気もりもりニンニクパワー 20260503135101
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Dainagon - 元気もりもりニンニクパワー 20260503135101
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_130-900-5F%2BDainagon%2BNinniku%2B20260503135101.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Kuro651 - 重-KASANE- 20260503135100
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Kuro651 - 重-KASANE- 20260503135100
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_951-900-5F%2BKuro651%2Bkasane%2B20260503135100.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - 爆裂駒拾太郎 20260503135058
+第36回世界コンピュータ将棋選手権,一次予選4回戦 山田将棋 - 爆裂駒拾太郎 20260503135058
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_34-900-5F%2Byamadashogi%2Bbakuretsu%2B20260503135058.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 JHBR - ねびゅら 20260503135057
+第36回世界コンピュータ将棋選手権,一次予選4回戦 JHBR - ねびゅら 20260503135057
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_242-900-5F%2Bjhbr%2Bnebula%2B20260503135057.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - はるか 20260503135055
+第36回世界コンピュータ将棋選手権,一次予選4回戦 カツ丼将棋 - はるか 20260503135055
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_35-900-5F%2Bkatsudon%2BHaruka%2B20260503135055.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 なり金将棋 - こまあそび 20260503135053
+第36回世界コンピュータ将棋選手権,一次予選4回戦 なり金将棋 - こまあそび 20260503135053
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_39-900-5F%2Bnarikin%2Bkomaasobi%2B20260503135053.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - tiger 20260503135052
+第36回世界コンピュータ将棋選手権,一次予選4回戦 きのあ将棋 - tiger 20260503135052
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_33-900-5F%2Bqinoa%2Btiger_usiagent%2B20260503135052.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 隠岐 - きふわらぷりー 20260503135048
+第36回世界コンピュータ将棋選手権,一次予選4回戦 隠岐 - きふわらぷりー 20260503135048
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_42-900-5F%2Boki%2Bkifuwarabe%2B20260503135048.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 W@nderER - komadokun 20260503135046
+第36回世界コンピュータ将棋選手権,一次予選4回戦 W@nderER - komadokun 20260503135046
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_23-900-5F%2Bwanderer%2Bkomadokun%2B20260503135046.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Gokaku - なのは 20260503135044
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Gokaku - なのは 20260503135044
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_26-900-5F%2BGokaku%2BNanoha2026%2B20260503135044.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Argp - 65537 20260503135043
+第36回世界コンピュータ将棋選手権,一次予選4回戦 Argp - 65537 20260503135043
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_27-900-5F%2Bargo%2Brokugogosannnana%2B20260503135043.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 タンゴ - まったりゆうちゃん 20260503135041
+第36回世界コンピュータ将棋選手権,一次予選4回戦 タンゴ - まったりゆうちゃん 20260503135041
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_24-900-5F%2BTango%2BMattariYuuchan%2B20260503135041.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 ねね将棋 - 氷彗 20260503135039
+第36回世界コンピュータ将棋選手権,一次予選4回戦 ねね将棋 - 氷彗 20260503135039
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_118-900-5F%2Bnene%2Bhisui%2B20260503135039.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 芽生将棋 - etude12 20260503135037
+第36回世界コンピュータ将棋選手権,一次予選4回戦 芽生将棋 - etude12 20260503135037
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_28-900-5F%2BMebae%2Betude15%2B20260503135037.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 こだぬき - 名探偵 Qhapaq！ 20260503135035
+第36回世界コンピュータ将棋選手権,一次予選4回戦 こだぬき - 名探偵 Qhapaq！ 20260503135035
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_21-900-5F%2Bkodanuki%2Bqhapaq%2B20260503135035.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 四七八将棋 - いちびん 20260503135032
+第36回世界コンピュータ将棋選手権,一次予選4回戦 四七八将棋 - いちびん 20260503135032
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_22-900-5F%2B478shogi%2Bichibin%2B20260503135032.csa
+第36回世界コンピュータ将棋選手権,一次予選4回戦 ザ・グレートウシジマ - GABEL 20260503135029
+第36回世界コンピュータ将棋選手権,一次予選4回戦 ザ・グレートウシジマ - GABEL 20260503135029
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL4_30-900-5F%2BUsizima%2BGABEL%2B20260503135029.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 四七八将棋 - ザ・グレートウシジマ 20260503122230
+第36回世界コンピュータ将棋選手権,一次予選3回戦 四七八将棋 - ザ・グレートウシジマ 20260503122230
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_30-900-5F%2B478shogi%2BUsizima%2B20260503122230.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 氷彗 - きのあ将棋 20260503122220
+第36回世界コンピュータ将棋選手権,一次予選3回戦 氷彗 - きのあ将棋 20260503122220
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_33-900-5F%2Bhisui%2Bqinoa%2B20260503122220.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 Kuro651 - Argp 20260503121719
+第36回世界コンピュータ将棋選手権,一次予選3回戦 Kuro651 - Argp 20260503121719
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_29-900-5F%2BKuro651%2Bargo%2B20260503121719.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 まったりゆうちゃん - 手抜き 20260503121427
+第36回世界コンピュータ将棋選手権,一次予選3回戦 まったりゆうちゃん - 手抜き 20260503121427
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_31-900-5F%2BMattariYuuchan%2Btenuki%2B20260503121427.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 ねびゅら - Dainagon 20260503120645
+第36回世界コンピュータ将棋選手権,一次予選3回戦 ねびゅら - Dainagon 20260503120645
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_1002-900-5F%2Bnebula%2BDainagon%2B20260503120645.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 元気もりもりニンニクパワー - W@nderER 20260503120630
+第36回世界コンピュータ将棋選手権,一次予選3回戦 元気もりもりニンニクパワー - W@nderER 20260503120630
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_23-900-5F%2BNinniku%2Bwanderer%2B20260503120630.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 TMOQ - こまあそび 20260503120623
+第36回世界コンピュータ将棋選手権,一次予選3回戦 TMOQ - こまあそび 20260503120623
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_41-900-5F%2BTMOQ%2Bkomaasobi%2B20260503120623.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 なのは - 芽生将棋 20260503120556
+第36回世界コンピュータ将棋選手権,一次予選3回戦 なのは - 芽生将棋 20260503120556
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_26-900-5F%2BNanoha2026%2BMebae%2B20260503120556.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 名探偵 Qhapaq！ - Gokaku 20260503120546
+第36回世界コンピュータ将棋選手権,一次予選3回戦 名探偵 Qhapaq！ - Gokaku 20260503120546
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_21-900-5F%2Bqhapaq%2BGokaku%2B20260503120546.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 etude12 - 隠岐 20260503120518
+第36回世界コンピュータ将棋選手権,一次予選3回戦 etude12 - 隠岐 20260503120518
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_42-900-5F%2Betude15%2Boki%2B20260503120518.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - ねね将棋 20260503120501
+第36回世界コンピュータ将棋選手権,一次予選3回戦 爆裂駒拾太郎 - ねね将棋 20260503120501
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_38-900-5F%2Bbakuretsu%2Bnene%2B20260503120501.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 65537 - こだぬき 20260503120426
+第36回世界コンピュータ将棋選手権,一次予選3回戦 65537 - こだぬき 20260503120426
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_27-900-5F%2Brokugogosannnana%2Bkodanuki%2B20260503120426.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 重-KASANE- - JHBR 20260503115635
+第36回世界コンピュータ将棋選手権,一次予選3回戦 重-KASANE- - JHBR 20260503115635
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_242-900-5F%2Bkasane%2Bjhbr%2B20260503115635.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 あうあう将棋 - なり金将棋 20260503115621
+第36回世界コンピュータ将棋選手権,一次予選3回戦 あうあう将棋 - なり金将棋 20260503115621
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_39-900-5F%2Bauaushogi%2Bnarikin%2B20260503115621.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - きふわらぷりー 20260503115602
+第36回世界コンピュータ将棋選手権,一次予選3回戦 カツ丼将棋 - きふわらぷりー 20260503115602
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_35-900-5F%2Bkatsudon%2Bkifuwarabe%2B20260503115602.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 タンゴ - tiger 20260503115549
+第36回世界コンピュータ将棋選手権,一次予選3回戦 タンゴ - tiger 20260503115549
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_24-900-5F%2BTango%2Btiger_usiagent%2B20260503115549.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 GABEL - 山田将棋 20260503115503
+第36回世界コンピュータ将棋選手権,一次予選3回戦 GABEL - 山田将棋 20260503115503
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_34-900-5F%2BGABEL%2Byamadashogi%2B20260503115503.csa
+第36回世界コンピュータ将棋選手権,一次予選3回戦 komadokun - はるか 20260503115452
+第36回世界コンピュータ将棋選手権,一次予選3回戦 komadokun - はるか 20260503115452
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL3_40-900-5F%2Bkomadokun%2BHaruka%2B20260503115452.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Kuro651 - まったりゆうちゃん 20260503113521
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Kuro651 - まったりゆうちゃん 20260503113521
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_234-900-5F%2BKuro651%2BMattariYuuchan%2B20260503113521.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 GABEL - komadokun 20260503113342
+第36回世界コンピュータ将棋選手権,一次予選2回戦 GABEL - komadokun 20260503113342
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_44-900-5F%2BGABEL%2Bkomadokun%2B20260503113342.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Dainagon - etude12 20260503113323
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Dainagon - etude12 20260503113323
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_46-900-5F%2BDainagon%2Betude15%2B20260503113323.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - W@nderER 20260503113239
+第36回世界コンピュータ将棋選手権,一次予選2回戦 こまあそび - W@nderER 20260503113239
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_23-900-5F%2Bkomaasobi%2Bwanderer%2B20260503113239.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - ザ・グレートウシジマ 20260503113123
+第36回世界コンピュータ将棋選手権,一次予選2回戦 きのあ将棋 - ザ・グレートウシジマ 20260503113123
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_30-900-5F%2Bqinoa%2BUsizima%2B20260503113123.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Gokaku - 手抜き 20260503113023
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Gokaku - 手抜き 20260503113023
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_31-900-5F%2BGokaku%2Btenuki%2B20260503113023.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 氷彗 - JHBR 20260503112945
+第36回世界コンピュータ将棋選手権,一次予選2回戦 氷彗 - JHBR 20260503112945
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_242-900-5F%2Bhisui%2Bjhbr%2B20260503112945.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - ねびゅら 20260503112230
+第36回世界コンピュータ将棋選手権,一次予選2回戦 ねね将棋 - ねびゅら 20260503112230
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_118-900-5F%2Bnene%2Bnebula%2B20260503112230.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 こだぬき - TMOQ 20260503112211
+第36回世界コンピュータ将棋選手権,一次予選2回戦 こだぬき - TMOQ 20260503112211
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_45-900-5F%2Bkodanuki%2BTMOQ%2B20260503112211.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 芽生将棋 - カツ丼将棋 20260503112144
+第36回世界コンピュータ将棋選手権,一次予選2回戦 芽生将棋 - カツ丼将棋 20260503112144
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_28-900-5F%2BMebae%2Bkatsudon%2B20260503112144.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 なり金将棋 - なのは 20260503112039
+第36回世界コンピュータ将棋選手権,一次予選2回戦 なり金将棋 - なのは 20260503112039
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_26-900-5F%2Bnarikin%2BNanoha2026%2B20260503112039.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 はるか - タンゴ 20260503112011
+第36回世界コンピュータ将棋選手権,一次予選2回戦 はるか - タンゴ 20260503112011
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_24-900-5F%2BHaruka%2BTango%2B20260503112011.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 いちびん - 隠岐 20260503111945
+第36回世界コンピュータ将棋選手権,一次予選2回戦 いちびん - 隠岐 20260503111945
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_22-900-5F%2Bichibin%2Boki%2B20260503111945.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 tiger - きふわらぷりー 20260503111940
+第36回世界コンピュータ将棋選手権,一次予選2回戦 tiger - きふわらぷりー 20260503111940
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_48-900-5F%2Btiger_usiagent%2Bkifuwarabe%2B20260503111940.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 元気もりもりニンニクパワー - 四七八将棋 20260503111309
+第36回世界コンピュータ将棋選手権,一次予選2回戦 元気もりもりニンニクパワー - 四七八将棋 20260503111309
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_130-900-5F%2BNinniku%2B478shogi%2B20260503111309.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Argp - 山田将棋 20260503111234
+第36回世界コンピュータ将棋選手権,一次予選2回戦 Argp - 山田将棋 20260503111234
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_29-900-5F%2Bargo%2Byamadashogi%2B20260503111234.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 爆裂駒拾太郎 - 65537 20260503111208
+第36回世界コンピュータ将棋選手権,一次予選2回戦 爆裂駒拾太郎 - 65537 20260503111208
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_27-900-5F%2Bbakuretsu%2Brokugogosannnana%2B20260503111208.csa
+第36回世界コンピュータ将棋選手権,一次予選2回戦 重-KASANE- - 名探偵 Qhapaq！ 20260503111117
+第36回世界コンピュータ将棋選手権,一次予選2回戦 重-KASANE- - 名探偵 Qhapaq！ 20260503111117
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL2_21-900-5F%2Bkasane%2Bqhapaq%2B20260503111117.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 はるか - TMOQ 20260503105639
+第36回世界コンピュータ将棋選手権,一次予選1回戦 はるか - TMOQ 20260503105639
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_40_2-900-5F%2BHaruka%2BTMOQ%2B20260503105639.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ねびゅら - 芽生将棋 20260503104555
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ねびゅら - 芽生将棋 20260503104555
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_28-900-5F%2Bnebula%2BMebae%2B20260503104555.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 なのは - Dainagon 20260503104315
+第36回世界コンピュータ将棋選手権,一次予選1回戦 なのは - Dainagon 20260503104315
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_26-900-5F%2BNanoha2026%2BDainagon%2B20260503104315.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 隠岐 - あうあう将棋 20260503104301
+第36回世界コンピュータ将棋選手権,一次予選1回戦 隠岐 - あうあう将棋 20260503104301
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_42-900-5F%2Boki%2Bauaushogi%2B20260503104301.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 komadokun - こまあそび 20260503104258
+第36回世界コンピュータ将棋選手権,一次予選1回戦 komadokun - こまあそび 20260503104258
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_41-900-5F%2Bkomadokun%2Bkomaasobi%2B20260503104258.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 etude12 - なり金将棋 20260503104254
+第36回世界コンピュータ将棋選手権,一次予選1回戦 etude12 - なり金将棋 20260503104254
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_39-900-5F%2Betude15%2Bnarikin%2B20260503104254.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 きふわらぷりー - 爆裂駒拾太郎 20260503104252
+第36回世界コンピュータ将棋選手権,一次予選1回戦 きふわらぷりー - 爆裂駒拾太郎 20260503104252
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_38-900-5F%2Bkifuwarabe%2Bbakuretsu%2B20260503104252.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ねね将棋 - カツ丼将棋 20260503104248
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ねね将棋 - カツ丼将棋 20260503104248
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_35-900-5F%2Bnene%2Bkatsudon%2B20260503104248.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 山田将棋 - 元気もりもりニンニクパワー 20260503104243
+第36回世界コンピュータ将棋選手権,一次予選1回戦 山田将棋 - 元気もりもりニンニクパワー 20260503104243
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_34-900-5F%2Byamadashogi%2BNinniku%2B20260503104243.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 まったりゆうちゃん - きのあ将棋 20260503104240
+第36回世界コンピュータ将棋選手権,一次予選1回戦 まったりゆうちゃん - きのあ将棋 20260503104240
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_33-900-5F%2BMattariYuuchan%2Bqinoa%2B20260503104240.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 JHBR - Gokaku 20260503104238
+第36回世界コンピュータ将棋選手権,一次予選1回戦 JHBR - Gokaku 20260503104238
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_32-900-5F%2Bjhbr%2BGokaku%2B20260503104238.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 手抜き - 氷彗 20260503104235
+第36回世界コンピュータ将棋選手権,一次予選1回戦 手抜き - 氷彗 20260503104235
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_31-900-5F%2Btenuki%2Bhisui%2B20260503104235.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ザ・グレートウシジマ - Kuro651 20260503104225
+第36回世界コンピュータ将棋選手権,一次予選1回戦 ザ・グレートウシジマ - Kuro651 20260503104225
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_30-900-5F%2BUsizima%2BKuro651%2B20260503104225.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 四七八将棋 - Argp 20260503104206
+第36回世界コンピュータ将棋選手権,一次予選1回戦 四七八将棋 - Argp 20260503104206
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_29-900-5F%2B478shogi%2Bargo%2B20260503104206.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 65537 - tiger 20260503104122
+第36回世界コンピュータ将棋選手権,一次予選1回戦 65537 - tiger 20260503104122
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_27-900-5F%2Brokugogosannnana%2Btiger_usiagent%2B20260503104122.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 タンゴ - こだぬき 20260503104113
+第36回世界コンピュータ将棋選手権,一次予選1回戦 タンゴ - こだぬき 20260503104113
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_24-900-5F%2BTango%2Bkodanuki%2B20260503104113.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 W@nderER - GABEL 20260503104109
+第36回世界コンピュータ将棋選手権,一次予選1回戦 W@nderER - GABEL 20260503104109
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_23-900-5F%2Bwanderer%2BGABEL%2B20260503104109.csa
+第36回世界コンピュータ将棋選手権,一次予選1回戦 いちびん - 重-KASANE- 20260503104104
+第36回世界コンピュータ将棋選手権,一次予選1回戦 いちびん - 重-KASANE- 20260503104104
+https://www.computer-shogi.org/live/wcsc36/kifu/WCSC36%2BL1_22-900-5F%2Bichibin%2Bkasane%2B20260503104104.csa

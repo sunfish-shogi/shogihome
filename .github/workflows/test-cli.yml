@@ -16,10 +16,11 @@ jobs:
     steps:
       # Setup
       - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: lts/*
           cache: "npm"
+      - run: npm install -g npm@latest
       - run: npm version
       - run: npm ci --no-audit --no-fund
       - run: npm -g i tsx
@@ -41,7 +42,7 @@ jobs:
       - name: Test --add-engine command
         timeout-minutes: 1
         run: |
-          xvfb-run -a ./dist/linux-unpacked/electron-shogi \
+          xvfb-run -a ./dist/linux-unpacked/shogihome \
             --no-sandbox \
             --add-engine \
             ./scripts/dummy-usi-engine "Dummy Engine" \

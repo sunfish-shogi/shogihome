@@ -27,6 +27,7 @@
       :mobile="isMobileWebApp()"
       :allow-move="store.isMovableByUser"
       :allow-edit="store.appState === AppState.POSITION_EDITING"
+      :enable-drag-and-drop="appSettings.enableDragAndDrop"
       :black-player-name="blackPlayerName"
       :white-player-name="whitePlayerName"
       :black-player-time="clock?.black.time"

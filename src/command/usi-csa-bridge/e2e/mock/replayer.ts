@@ -13,7 +13,9 @@ export function parseScript(filePath: string) {
   const steps: Step[] = [];
   for (const [i, line0] of lines.entries()) {
     const line = line0.trim();
-    if (!line || line.startsWith("#")) continue;
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
     const m = /^(send|recv)\s*:(.*)$/.exec(line);
     if (!m) {
       throw new Error(

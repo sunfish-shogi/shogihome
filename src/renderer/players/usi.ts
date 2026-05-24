@@ -214,18 +214,18 @@ export class USIPlayer implements Player {
         }
       }
       // 最善手を返却
+      const bestMove = bookMoves[0];
+      const move = this.position.createMoveByUSI(bestMove.usi);
+      if (!move) {
+        api.log(
+          LogLevel.ERROR,
+          `Failed to search book moves: invalid move from book: ${bestMove.usi}`,
+        );
+        return false;
+      }
       const searchHandler = this.searchHandler;
       this.clearHandlers();
       if (searchHandler) {
-        const bestMove = bookMoves[0];
-        const move = this.position.createMoveByUSI(bestMove.usi);
-        if (!move) {
-          api.log(
-            LogLevel.ERROR,
-            `Failed to search book moves: invalid move from book: ${bestMove.usi}`,
-          );
-          return false;
-        }
         searchHandler.onMove(move);
       }
       return true;

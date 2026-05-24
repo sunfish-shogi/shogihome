@@ -15,6 +15,8 @@ const maxPVLengthTitle =
   "%E8%AA%AD%E3%81%BF%E7%AD%8B%E8%A1%A8%E7%A4%BA%E6%89%8B%E6%95%B0%E3%81%AE%E5%88%B6%E9%99%90";
 const disableHWASettingTitle =
   "HWA%E7%84%A1%E5%8A%B9%E5%8C%96%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3";
+const qualityOfCsaProtocolTitle =
+  "https://github.com/sunfish-shogi/shogihome/wiki/CSA%E3%83%97%E3%83%AD%E3%83%88%E3%82%B3%E3%83%AB%E3%81%AE%E5%AE%89%E5%AE%9A%E6%80%A7%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E8%A8%AD%E5%AE%9A";
 
 export const websiteURL = `https://${ghioDomain}/${ghRepository}/`;
 export const thirdPartyLicenseURL = `https://${ghioDomain}/${ghRepository}/third-party-licenses.html`;
@@ -23,6 +25,7 @@ export const howToUseWikiPageURL = `${wikiPageBaseURL}${howToUseTitle}`;
 export const fileNameTemplateWikiPageURL = `${wikiPageBaseURL}${fileNameTemplateTitle}`;
 export const maxPVLengthSettingWikiPageURL = `${wikiPageBaseURL}${maxPVLengthTitle}`;
 export const disableHWASettingWikiPageURL = `${wikiPageBaseURL}${disableHWASettingTitle}`;
+export const qualityOfCsaProtocolSettingWikiPageURL = qualityOfCsaProtocolTitle;
 export const licenseURL = `https://${ghDomain}/${ghAccount}/${ghRepository}/blob/main/LICENSE`;
 export const wcscGameListsURL = `https://${ghioDomain}/${ghRepository}/wcsc/game-lists.json`;
 export const floodgateResourcesURL = `https://${ghioDomain}/${ghRepository}/floodgate/resources.json`;

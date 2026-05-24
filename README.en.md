@@ -61,6 +61,10 @@ If not, please send messages through the [Web Form](https://form.run/@sunfish-sh
 
 You can see the development progress at [Project Board](https://github.com/users/sunfish-shogi/projects/1/views/1).
 
+## Security
+
+If you build ShogiHome yourself, please read [Security for ShogiHome Development](https://note.com/ryosuke_kubo/n/n790345a2b9aa).
+
 ## Development
 
 ### Requirements

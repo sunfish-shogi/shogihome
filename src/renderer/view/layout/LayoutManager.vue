@@ -29,24 +29,29 @@
         </div>
       </div>
       <div v-if="customProfile" class="custom-profile column grow scroll">
-        <div class="column">
-          <input
-            class="profile-name"
-            :value="customProfile.name"
-            @input="(e) => updateCustomProfileProp('name', inputEventToString(e))"
-          />
-          <div class="uri row">
-            <span>URI:</span>
-            <span>{{ customProfile.uri }}</span>
-            <button @click="copyProfileURI">
-              <Icon :icon="IconType.COPY" />
-            </button>
+        <div class="row">
+          <div class="column">
+            <input
+              class="profile-name"
+              :value="customProfile.name"
+              @input="(e) => updateCustomProfileProp('name', inputEventToString(e))"
+            />
+            <div class="uri row">
+              <span>URI:</span>
+              <span>{{ customProfile.uri }}</span>
+              <button @click="copyProfileURI">
+                <Icon :icon="IconType.COPY" />
+              </button>
+            </div>
+            <div class="row">
+              <button @click="createDesktopShortcut">{{ t.createDesktopShortcut }}</button>
+            </div>
           </div>
-          <div class="row">
-            <button @click="createDesktopShortcut">{{ t.createDesktopShortcut }}</button>
+          <div class="dragging-mode-toggle">
+            <ToggleButton v-model:value="draggingMode" :label="t.editLayoutWithDragAndDrop" />
           </div>
         </div>
-        <div class="row">
+        <div v-if="!draggingMode" class="row">
           <span class="key">{{ t.dialogPosition }}:</span>
           <HorizontalSelector
             :value="customProfile.dialogPosition || DialogPosition.CENTER"
@@ -58,7 +63,7 @@
             @update:value="(value) => updateCustomProfileProp('dialogPosition', value)"
           />
         </div>
-        <div class="row">
+        <div v-if="!draggingMode" class="row">
           <ToggleButton
             class="color-toggle"
             :value="!!customProfile.backgroundColor"
@@ -93,289 +98,328 @@
             <option value="ControlGroup1">{{ t.controlGroup }}1</option>
             <option value="ControlGroup2">{{ t.controlGroup }}2</option>
             <option value="SimpleBoard">{{ t.bookStyleDiagram }}</option>
+            <option value="ElapsedTimeChart">{{ t.elapsedTimeChart }}</option>
           </select>
           <button class="thin" @click="insertCustomProfileComponent">{{ t.insert }}</button>
         </div>
-        <div v-for="(component, index) of customProfile.components" :key="index" class="component">
-          <div class="name">
-            <span v-if="component.type === 'Board'">{{ t.board }}</span>
-            <span v-if="component.type === 'Record'">{{ t.record }}</span>
-            <span v-if="component.type === 'Book'">{{ t.book }}</span>
-            <span v-if="component.type === 'Chart'">{{ t.chart }}</span>
-            <span v-if="component.type === 'Analytics'">{{ t.analytics }}</span>
-            <span v-if="component.type === 'Comment'">{{ t.comments }}</span>
-            <span v-if="component.type === 'RecordInfo'">{{ t.recordProperties }}</span>
-            <span v-if="component.type === 'ControlGroup1'">{{ t.controlGroup }}1</span>
-            <span v-if="component.type === 'ControlGroup2'">{{ t.controlGroup }}2</span>
-            <span v-if="component.type === 'SimpleBoard'">{{ t.bookStyleDiagram }}</span>
-          </div>
-          <div>
-            <span class="property">
-              <span class="key">{{ t.left }}:</span>
-              <input
-                class="value"
-                type="number"
-                :value="component.left"
-                @input="(e) => updateCustomProfileComponent(index, 'left', inputEventToNumber(e))"
-              />
-            </span>
-            <span class="property">
-              <span class="key">{{ t.top }}:</span>
-              <input
-                class="value"
-                type="number"
-                :value="component.top"
-                @input="(e) => updateCustomProfileComponent(index, 'top', inputEventToNumber(e))"
-              />
-            </span>
-            <span class="property">
-              <span class="key">{{ t.width }}:</span>
-              <input
-                class="value"
-                type="number"
-                :value="component.width"
-                @input="(e) => updateCustomProfileComponent(index, 'width', inputEventToNumber(e))"
-              />
-            </span>
-            <span class="property">
-              <span class="key">{{ t.height }}:</span>
-              <input
-                class="value"
-                type="number"
-                :value="component.height"
-                @input="(e) => updateCustomProfileComponent(index, 'height', inputEventToNumber(e))"
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'Board'">
-            <span class="property">
-              <ToggleButton
-                :value="!!component.rightControlBox"
-                :label="t.rightControlBox"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'rightControlBox', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.leftControlBox"
-                :label="t.leftControlBox"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'leftControlBox', value)
-                "
-              />
-            </span>
-            <span>
-              <HorizontalSelector
-                :value="component.layoutType || BoardLayoutType.STANDARD"
-                :items="[
-                  { label: t.standard, value: BoardLayoutType.STANDARD },
-                  { label: t.compact, value: BoardLayoutType.COMPACT },
-                  { label: t.portrait, value: BoardLayoutType.PORTRAIT },
-                ]"
-                @update:value="(value) => updateCustomProfileComponent(index, 'layoutType', value)"
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'Record'">
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showCommentColumn"
-                :label="t.comments"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showCommentColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showElapsedTimeColumn"
-                :label="t.elapsedTime"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showElapsedTimeColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.topControlBox"
-                :label="t.topControlBox"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'topControlBox', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.branches"
-                :label="t.branches"
-                @update:value="(value) => updateCustomProfileComponent(index, 'branches', value)"
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'Chart'">
-            <span class="property">
-              <HorizontalSelector
-                :value="component.chartType"
-                :items="[
-                  { label: t.rawScore, value: EvaluationChartType.RAW },
-                  { label: t.estimatedWinRate, value: EvaluationChartType.WIN_RATE },
-                ]"
-                @update:value="(value) => updateCustomProfileComponent(index, 'chartType', value)"
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showLegend"
-                :label="t.legends"
-                @update:value="(value) => updateCustomProfileComponent(index, 'showLegend', value)"
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'Analytics'">
-            <span class="property">
-              <ToggleButton
-                :value="!!component.historyMode"
-                :label="t.historyMode"
-                @update:value="(value) => updateCustomProfileComponent(index, 'historyMode', value)"
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showHeader"
-                :label="t.headers"
-                @update:value="(value) => updateCustomProfileComponent(index, 'showHeader', value)"
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showTimeColumn"
-                :label="t.elapsedTime"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showTimeColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showMultiPvColumn"
-                :label="t.rank"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showMultiPvColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showDepthColumn"
-                :label="t.depth"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showDepthColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showNodesColumn"
-                :label="t.nodes"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showNodesColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showScoreColumn"
-                :label="t.score"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showScoreColumn', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showPlayButton"
-                :label="t.playButton"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showPlayButton', value)
-                "
-              />
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showSuggestionsCount"
-                :label="t.suggestionsCount"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showSuggestionsCount', value)
-                "
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'Comment'">
-            <span class="property">
-              <ToggleButton
-                :value="!!component.showBookmark"
-                :label="t.bookmark"
-                @update:value="
-                  (value) => updateCustomProfileComponent(index, 'showBookmark', value)
-                "
-              />
-            </span>
-          </div>
-          <div v-if="component.type === 'SimpleBoard'">
-            <span class="property">
-              <span class="key">{{ t.weight }}:</span>
-              <HorizontalSelector
-                :value="component.fontWeight || '400'"
-                :items="[
-                  { label: t.thin, value: PositionImageFontWeight.W400 },
-                  { label: t.bold, value: PositionImageFontWeight.W400X },
-                  { label: t.extraBold, value: PositionImageFontWeight.W700X },
-                ]"
-                @update:value="(value) => updateCustomProfileComponent(index, 'fontWeight', value)"
-              />
-            </span>
-            <span class="property">
-              <span class="key">{{ t.size }}:</span>
-              <input
-                class="value"
-                type="number"
-                min="0"
-                max="200"
-                :value="component.fontScale || 100"
-                @input="
-                  (e) => updateCustomProfileComponent(index, 'fontScale', inputEventToNumber(e))
-                "
-              />
-              <span>%</span>
-            </span>
-            <span class="property">
-              <ToggleButton
-                :value="!!component.bookmark"
-                :label="t.bookmark"
-                @update:value="(value) => updateCustomProfileComponent(index, 'bookmark', value)"
-              />
-            </span>
-          </div>
-          <div>
-            <button
-              v-if="index !== 0"
-              class="thin"
-              @click="() => moveCustomProfileComponentUp(index)"
-            >
-              ↑ {{ t.bringForward }}
-            </button>
-            <button
-              v-if="index !== customProfile.components.length - 1"
-              class="thin"
-              @click="() => moveCustomProfileComponentDown(index)"
-            >
-              ↓ {{ t.sendBackward }}
-            </button>
-            <button class="thin" @click="() => removeCustomProfileComponent(index)">
-              {{ t.remove }}
-            </button>
+        <div v-if="draggingMode" class="grow">
+          <DragEditor
+            :components="customProfile.components"
+            @update-component="onDragEditorUpdate"
+          />
+        </div>
+        <div v-else>
+          <div
+            v-for="(component, index) of customProfile.components"
+            :key="index"
+            class="component"
+          >
+            <div class="name">
+              <span v-if="component.type === 'Board'">{{ t.board }}</span>
+              <span v-if="component.type === 'Record'">{{ t.record }}</span>
+              <span v-if="component.type === 'Book'">{{ t.book }}</span>
+              <span v-if="component.type === 'Chart'">{{ t.chart }}</span>
+              <span v-if="component.type === 'Analytics'">{{ t.analytics }}</span>
+              <span v-if="component.type === 'Comment'">{{ t.comments }}</span>
+              <span v-if="component.type === 'RecordInfo'">{{ t.recordProperties }}</span>
+              <span v-if="component.type === 'ControlGroup1'">{{ t.controlGroup }}1</span>
+              <span v-if="component.type === 'ControlGroup2'">{{ t.controlGroup }}2</span>
+              <span v-if="component.type === 'SimpleBoard'">{{ t.bookStyleDiagram }}</span>
+              <span v-if="component.type === 'ElapsedTimeChart'">{{ t.elapsedTimeChart }}</span>
+            </div>
+            <div>
+              <span class="property">
+                <span class="key">{{ t.left }}:</span>
+                <input
+                  class="value"
+                  type="number"
+                  :value="component.left"
+                  @input="(e) => updateCustomProfileComponent(index, 'left', inputEventToNumber(e))"
+                />
+              </span>
+              <span class="property">
+                <span class="key">{{ t.top }}:</span>
+                <input
+                  class="value"
+                  type="number"
+                  :value="component.top"
+                  @input="(e) => updateCustomProfileComponent(index, 'top', inputEventToNumber(e))"
+                />
+              </span>
+              <span class="property">
+                <span class="key">{{ t.width }}:</span>
+                <input
+                  class="value"
+                  type="number"
+                  :value="component.width"
+                  @input="
+                    (e) => updateCustomProfileComponent(index, 'width', inputEventToNumber(e))
+                  "
+                />
+              </span>
+              <span class="property">
+                <span class="key">{{ t.height }}:</span>
+                <input
+                  class="value"
+                  type="number"
+                  :value="component.height"
+                  @input="
+                    (e) => updateCustomProfileComponent(index, 'height', inputEventToNumber(e))
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'Board'">
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.rightControlBox"
+                  :label="t.rightControlBox"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'rightControlBox', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.leftControlBox"
+                  :label="t.leftControlBox"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'leftControlBox', value)
+                  "
+                />
+              </span>
+              <span>
+                <HorizontalSelector
+                  :value="component.layoutType || BoardLayoutType.STANDARD"
+                  :items="[
+                    { label: t.standard, value: BoardLayoutType.STANDARD },
+                    { label: t.compact, value: BoardLayoutType.COMPACT },
+                    { label: t.portrait, value: BoardLayoutType.PORTRAIT },
+                  ]"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'layoutType', value)
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'Record'">
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showCommentColumn"
+                  :label="t.comments"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showCommentColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showElapsedTimeColumn"
+                  :label="t.elapsedTime"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showElapsedTimeColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.topControlBox"
+                  :label="t.topControlBox"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'topControlBox', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.branches"
+                  :label="t.branches"
+                  @update:value="(value) => updateCustomProfileComponent(index, 'branches', value)"
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'Chart'">
+              <span class="property">
+                <HorizontalSelector
+                  :value="component.chartType"
+                  :items="[
+                    { label: t.rawScore, value: EvaluationChartType.RAW },
+                    { label: t.estimatedWinRate, value: EvaluationChartType.WIN_RATE },
+                  ]"
+                  @update:value="(value) => updateCustomProfileComponent(index, 'chartType', value)"
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showLegend"
+                  :label="t.legends"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showLegend', value)
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'Analytics'">
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.historyMode"
+                  :label="t.historyMode"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'historyMode', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showHeader"
+                  :label="t.headers"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showHeader', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showTimeColumn"
+                  :label="t.elapsedTime"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showTimeColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showMultiPvColumn"
+                  :label="t.rank"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showMultiPvColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showDepthColumn"
+                  :label="t.depth"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showDepthColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showNodesColumn"
+                  :label="t.nodes"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showNodesColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showScoreColumn"
+                  :label="t.score"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showScoreColumn', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showPlayButton"
+                  :label="t.playButton"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showPlayButton', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showSuggestionsCount"
+                  :label="t.suggestionsCount"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showSuggestionsCount', value)
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'ElapsedTimeChart'">
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showLegend"
+                  :label="t.legends"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showLegend', value)
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'Comment'">
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showBookmark"
+                  :label="t.bookmark"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showBookmark', value)
+                  "
+                />
+              </span>
+            </div>
+            <div v-if="component.type === 'SimpleBoard'">
+              <span class="property">
+                <span class="key">{{ t.weight }}:</span>
+                <HorizontalSelector
+                  :value="component.fontWeight || '400'"
+                  :items="[
+                    { label: t.thin, value: PositionImageFontWeight.W400 },
+                    { label: t.bold, value: PositionImageFontWeight.W400X },
+                    { label: t.extraBold, value: PositionImageFontWeight.W700X },
+                  ]"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'fontWeight', value)
+                  "
+                />
+              </span>
+              <span class="property">
+                <span class="key">{{ t.size }}:</span>
+                <input
+                  class="value"
+                  type="number"
+                  min="0"
+                  max="200"
+                  :value="component.fontScale || 100"
+                  @input="
+                    (e) => updateCustomProfileComponent(index, 'fontScale', inputEventToNumber(e))
+                  "
+                />
+                <span>%</span>
+              </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.bookmark"
+                  :label="t.bookmark"
+                  @update:value="(value) => updateCustomProfileComponent(index, 'bookmark', value)"
+                />
+              </span>
+            </div>
+            <div>
+              <button
+                v-if="index !== 0"
+                class="thin"
+                @click="() => moveCustomProfileComponentUp(index)"
+              >
+                ↑ {{ t.bringForward }}
+              </button>
+              <button
+                v-if="index !== customProfile.components.length - 1"
+                class="thin"
+                @click="() => moveCustomProfileComponentDown(index)"
+              >
+                ↓ {{ t.sendBackward }}
+              </button>
+              <button class="thin" @click="() => removeCustomProfileComponent(index)">
+                {{ t.remove }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -412,6 +456,7 @@ import ConfirmDialog from "@/renderer/view/dialog/ConfirmDialog.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons.js";
 import api from "@/renderer/ipc/api";
+import DragEditor from "@/renderer/view/layout/DragEditor.vue";
 
 const appSettings = useAppSettings();
 const messageStore = useMessageStore();
@@ -419,6 +464,7 @@ const errorStore = useErrorStore();
 const confirmation = useConfirmationStore();
 const store = useStore();
 const newComponentType = ref();
+const draggingMode = ref(false);
 
 const customProfile = computed(() =>
   store.customLayoutProfiles.find((profile) => profile.uri === store.currentProfileURI),
@@ -552,6 +598,25 @@ const removeCustomProfileComponent = (index: number) => {
   });
 };
 
+const onDragEditorUpdate = (
+  index: number,
+  left: number,
+  top: number,
+  width: number,
+  height: number,
+) => {
+  const profile = getCurrentProfile();
+  if (!profile) {
+    return;
+  }
+  store.updateCustomProfile(store.currentProfileURI, {
+    ...profile,
+    components: profile.components.map((component, i) =>
+      i !== index ? component : { ...component, left, top, width, height },
+    ),
+  });
+};
+
 const insertCustomProfileComponent = () => {
   const profile = getCurrentProfile();
   if (!profile) {
@@ -643,6 +708,15 @@ const insertCustomProfileComponent = () => {
         height: 300,
       });
       break;
+    case "ElapsedTimeChart":
+      components.unshift({
+        type,
+        left: 0,
+        top: 0,
+        width: 600,
+        height: 200,
+      });
+      break;
   }
   store.updateCustomProfile(store.currentProfileURI, { ...profile, components });
 };
@@ -693,8 +767,14 @@ button {
 .uri .icon {
   width: 16px;
 }
+.uri span {
+  white-space: nowrap;
+}
 .uri > *:not(:last-child) {
   margin-right: 5px;
+}
+.dragging-mode-toggle {
+  margin-left: 20px;
 }
 .component {
   border: 1px solid var(--dialog-border-color);

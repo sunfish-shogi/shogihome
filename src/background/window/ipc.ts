@@ -111,6 +111,7 @@ import { openPath } from "@/background/helpers/electron.js";
 import {
   clearBook,
   closeBookSession,
+  exportBook,
   getBookFormat,
   importBookMoves,
   isBookUnsaved,
@@ -122,7 +123,7 @@ import {
   updateBookMove,
   updateBookMoveOrder,
 } from "@/background/book/index.js";
-import { BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
+import { BookFormat, BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
 import { Message } from "@/common/message.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
@@ -579,7 +580,7 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   const appSettings = await loadAppSettings();
   getAppLogger().debug("show open-book dialog");
   const ret = await showOpenDialog(["openFile"], appSettings.lastBookFilePath, [
-    { name: "Book", extensions: ["db", "bin"] },
+    { name: "Book", extensions: ["db", "bin", "sbk"] },
   ]);
   if (ret) {
     updateAppSettings({ lastBookFilePath: ret });
@@ -587,24 +588,31 @@ ipcMain.handle(Background.SHOW_OPEN_BOOK_DIALOG, async (event): Promise<string> 
   return ret;
 });
 
-ipcMain.handle(Background.SHOW_SAVE_BOOK_DIALOG, async (event, session): Promise<string> => {
-  validateIPCSender(event.senderFrame);
-  const appSettings = await loadAppSettings();
-  getAppLogger().debug("show save-book dialog");
-  const filter =
-    getBookFormat(session) === "yane2016"
-      ? { name: "YaneuraOu Book Database", extensions: ["db"] }
-      : { name: "Apery Book", extensions: ["bin"] };
-  const ret = await showSaveDialog(appSettings.lastBookFilePath, [filter]);
-  if (ret) {
-    updateAppSettings({ lastBookFilePath: ret });
-  }
-  return ret;
-});
+ipcMain.handle(
+  Background.SHOW_SAVE_BOOK_DIALOG,
+  async (event, session: number, targetFormat?: BookFormat): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    const appSettings = await loadAppSettings();
+    getAppLogger().debug("show save-book dialog");
+    const fmt = targetFormat ?? getBookFormat(session);
+    const filter =
+      fmt === "yane2016"
+        ? { name: "YaneuraOu Book Database", extensions: ["db"] }
+        : fmt === "apery"
+          ? { name: "Apery Book", extensions: ["bin"] }
+          : { name: "Shogi Book", extensions: ["sbk"] };
+    const defaultPath = appSettings.lastBookFilePath.replace(/\.(db|bin|sbk)$/, "");
+    const ret = await showSaveDialog(defaultPath, [filter]);
+    if (ret) {
+      updateAppSettings({ lastBookFilePath: ret });
+    }
+    return ret;
+  },
+);
 
-ipcMain.handle(Background.CLEAR_BOOK, (event, session) => {
+ipcMain.handle(Background.CLEAR_BOOK, (event, session: number, format?: BookFormat) => {
   validateIPCSender(event.senderFrame);
-  clearBook(session);
+  clearBook(session, format);
 });
 
 ipcMain.handle(
@@ -613,7 +621,7 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`open book: ${path}`);
     const options = JSON.parse(json) as BookLoadingOptions;
-    await openBook(session, path, options);
+    await openBook(session, path, options, sendProgress);
   },
 );
 
@@ -640,9 +648,23 @@ ipcMain.handle(
   async (event, session: number, path: string): Promise<void> => {
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`save book: ${path}`);
-    await saveBook(session, path);
+    await saveBook(session, path, sendProgress);
   },
 );
+
+ipcMain.handle(
+  Background.EXPORT_BOOK,
+  async (event, session: number, path: string, targetFormat: BookFormat): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug(`export book: ${path} as ${targetFormat}`);
+    await exportBook(session, path, targetFormat, sendProgress);
+  },
+);
+
+ipcMain.handle(Background.GET_BOOK_FORMAT, (event, session: number): BookFormat => {
+  validateIPCSender(event.senderFrame);
+  return getBookFormat(session);
+});
 
 ipcMain.handle(
   Background.SEARCH_BOOK_MOVES,
@@ -1080,7 +1102,7 @@ export function openRecord(path: string): void {
   }
 }
 
-export function sendProgress(progress: number): void {
+function sendProgress(progress: number): void {
   mainWindow.webContents.send(Renderer.PROGRESS, progress);
 }
 

@@ -117,7 +117,9 @@ function mle(pdfhat: PDF, elo: number): PDF {
   for (let iter = 0; iter < 16; iter++) {
     const { mean: mu, variance } = pdfStats(pdf);
     const sigma = Math.sqrt(variance);
-    if (sigma < 1e-15) break;
+    if (sigma < 1e-15) {
+      break;
+    }
 
     // φ_i(P) = a_i - μ_ref - (1/2) * t* * σ * (1 + ((a_i - μ)/σ)²)  [section 4.1]
     const phi = pdf.map(
@@ -126,7 +128,9 @@ function mle(pdfhat: PDF, elo: number): PDF {
 
     const u = Math.min(...phi);
     const v = Math.max(...phi);
-    if (u * v >= 0) break;
+    if (u * v >= 0) {
+      break;
+    }
 
     // Solve Σ p̂_i * φ_i / (1 + θ * φ_i) = 0 for θ ∈ (-1/v, -1/u)  [equation 4.9]
     const eps = 1e-9;
@@ -140,7 +144,9 @@ function mle(pdfhat: PDF, elo: number): PDF {
     const newPdf: PDF = pdfhat.map(([val, pi], i) => [val, pi / (1 + theta * phi[i])]);
     const diff = newPdf.reduce((s, [, p], i) => s + Math.abs(p - pdf[i][1]), 0);
     pdf = newPdf;
-    if (diff < 1e-10) break;
+    if (diff < 1e-10) {
+      break;
+    }
   }
 
   return pdf;

@@ -77,4 +77,9 @@ export default defineConfigWithVueTs([
   },
   prettierConfig,
   vuePrettierConfig,
+  {
+    rules: {
+      curly: ["error", "all"],
+    },
+  },
 ]);

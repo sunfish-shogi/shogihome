@@ -16,6 +16,7 @@ import { checkUpdates } from "@/background/version.js";
 import { setupMenu } from "@/background/window/menu.js";
 import { t } from "@/common/i18n/index.js";
 import { ghioDomain } from "@/common/links/github.js";
+import { startHeapMonitor } from "@/background/window/heap_monitor.js";
 
 export function createWindow(onClosed: () => void) {
   let settings = loadWindowSettings();
@@ -84,6 +85,9 @@ export function createWindow(onClosed: () => void) {
   }
 
   win.once("ready-to-show", () => {
+    const stopHeapMonitor = startHeapMonitor((message) => sendError(new Error(message)));
+    win.once("closed", stopHeapMonitor);
+
     // レンダラー側の準備ができたら uncaughtException はレンダラーへ送る。
     process.on("uncaughtException", (e, origin) => {
       // ホストの解決ができない場合に uncaughtException が発生する。

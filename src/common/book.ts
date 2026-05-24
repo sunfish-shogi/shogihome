@@ -1,14 +1,32 @@
+export const SbkMoveEvaluation = {
+  None: 0,
+  Forced: 1,
+  Good: 2,
+  Bad: 3,
+  Blunder: 4,
+} as const;
+export type SbkMoveEvaluation = number;
+
+export type BookFormatYane2016 = "yane2016";
+export type BookFormatApery = "apery";
+export type BookFormatSbk = "sbk";
+export type BookFormat = BookFormatYane2016 | BookFormatApery | BookFormatSbk;
+
 export type BookMove = {
   usi: string; // 定跡手
   usi2?: string; // 相手の応手
   score?: number; // 評価値
   depth?: number; // 探索深さ
   count?: number; // 出現回数
-  comment: string; // コメント
+  comment?: string; // コメント
+  sbkEval?: SbkMoveEvaluation; // SBK の指し手評価
+  sbkId?: number; // SBK State ID
 };
 
 export type BookLoadingOptions = {
-  onTheFlyThresholdMB?: number; // On-the-fly に切り替える閾値(MebiBytes)
+  yaneOnTheFlyThresholdMB?: number; // やねうら王形式を on-the-fly に切り替える閾値(MebiBytes)
+  aperyOnTheFlyThresholdMB?: number; // Apery 形式を on-the-fly に切り替える閾値(MebiBytes)
+  sbkOnTheFlyThresholdMB?: number; // SBK 形式を on-the-fly に切り替える閾値(MebiBytes)
   forceOnTheFly?: boolean; // 強制的に On-the-fly モードにする
 };
 

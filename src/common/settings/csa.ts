@@ -47,7 +47,7 @@ export type CSAGameSettings = {
   searchCommentFormat: SearchCommentFormat;
 };
 
-export function defaultCSAServerSettings(): CSAServerSettings {
+function defaultCSAServerSettings(): CSAServerSettings {
   return {
     protocolVersion: CSAProtocolVersion.V121_FLOODGATE,
     host: "",
@@ -56,6 +56,10 @@ export function defaultCSAServerSettings(): CSAServerSettings {
     password: "",
     tcpKeepalive: {
       initialDelay: 10,
+    },
+    blankLinePing: {
+      initialDelay: 40,
+      interval: 40,
     },
   };
 }
@@ -238,7 +242,7 @@ export type SecureCSAServerSettings = {
   blankLinePing?: BlankLinePingSettings;
 };
 
-export function emptySecureCSAServerSettings(): SecureCSAServerSettings {
+function emptySecureCSAServerSettings(): SecureCSAServerSettings {
   return {
     protocolVersion: CSAProtocolVersion.V121_FLOODGATE,
     host: "",

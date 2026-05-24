@@ -1,21 +1,13 @@
 import fs, { ReadStream } from "node:fs";
 import {
+  BookFormat,
   BookImportSummary,
   BookLoadingOptions,
   BookMove,
   defaultBookSession,
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
-import {
-  arrayMoveToCommonBookMove,
-  Book,
-  BookEntry,
-  BookFormat,
-  commonBookMoveToArray,
-  IDX_COUNT,
-  IDX_USI,
-  mergeBookEntries,
-} from "./types.js";
+import { AperyBook, Book, BookEntry, mergeBookEntries, SbkBook, YaneBook } from "./types.js";
 import {
   loadYaneuraOuBook,
   mergeYaneuraOuBook,
@@ -39,6 +31,8 @@ import {
   ImmutableNode,
   Move,
   Record,
+  reverseColor,
+  SpecialMoveType,
 } from "tsshogi";
 import { t } from "@/common/i18n/index.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
@@ -48,21 +42,32 @@ import {
   searchAperyBookMovesOnTheFly,
   storeAperyBook,
 } from "./apery.js";
+import {
+  loadSbkBook,
+  loadSbkBookOnTheFly,
+  searchSbkBookEntryOnTheFly,
+  storeSbkBook,
+} from "./sbk.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
 type InMemoryBook = Book & {
   type: "in-memory";
+  path?: string;
   saved: boolean;
 };
 
-type OnTheFlyBook = Book & {
+type OnTheFlyBook = {
   type: "on-the-fly";
   path: string;
-  file: fs.promises.FileHandle;
-  size: number;
   saved: boolean;
-};
+} & (
+  | ((YaneBook | AperyBook) & {
+      file: fs.promises.FileHandle;
+      size: number;
+    })
+  | SbkBook
+);
 
 // マージ済みのエントリーを取得する。
 async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
@@ -83,6 +88,19 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
       const base = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
       return mergeBookEntries(base, entry);
     }
+    case "sbk": {
+      const entry = book.entries.get(sfen);
+      if (
+        book.type === "in-memory" ||
+        entry?.type === "normal" ||
+        !book.rawData ||
+        !book.sbkIndex
+      ) {
+        return entry;
+      }
+      const base = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
+      return mergeBookEntries(base, entry);
+    }
   }
 }
 
@@ -90,6 +108,7 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
 function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
   switch (book.format) {
     case "yane2016":
+    case "sbk":
       return book.entries.get(sfen);
     case "apery":
       return book.entries.get(aperyHash(sfen));
@@ -99,6 +118,7 @@ function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
 function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   switch (book.format) {
     case "yane2016":
+    case "sbk":
       book.entries.set(sfen, entry);
       break;
     case "apery":
@@ -108,13 +128,30 @@ function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   book.saved = false;
 }
 
-function emptyBook(): BookHandle {
-  return {
-    type: "in-memory",
-    format: "yane2016",
-    entries: new Map<string, BookEntry>(),
-    saved: true,
-  };
+function emptyBook(format: BookFormat = "yane2016"): BookHandle {
+  switch (format) {
+    case "apery":
+      return {
+        type: "in-memory",
+        format: "apery",
+        entries: new Map<bigint, BookEntry>(),
+        saved: true,
+      };
+    case "sbk":
+      return {
+        type: "in-memory",
+        format: "sbk",
+        entries: new Map<string, BookEntry>(),
+        saved: true,
+      };
+    default:
+      return {
+        type: "in-memory",
+        format: "yane2016",
+        entries: new Map<string, BookEntry>(),
+        saved: true,
+      };
+  }
 }
 
 const bookFiles = new Map<number, BookHandle>();
@@ -134,45 +171,87 @@ export function isBookUnsaved(session: number): boolean {
   return !book.saved;
 }
 
+export type BookInfo = {
+  format: BookFormat;
+  type: "in-memory" | "on-the-fly";
+  path?: string;
+  entryCount?: number;
+  unsaved: boolean;
+};
+
+export function getBookInfo(session: number): BookInfo {
+  const book = getBook(session);
+  return {
+    format: book.format,
+    type: book.type,
+    path: book.path,
+    entryCount: book.type === "in-memory" ? book.entries.size : undefined,
+    unsaved: !book.saved,
+  };
+}
+
 export function getBookFormat(session: number): BookFormat {
   const book = getBook(session);
   return book.format;
 }
 
-function getFormatByPath(path: string): "yane2016" | "apery" {
-  return path.endsWith(".db") ? "yane2016" : "apery";
+function getFormatByPath(path: string): "yane2016" | "apery" | "sbk" {
+  if (path.endsWith(".db")) {
+    return "yane2016";
+  }
+  if (path.endsWith(".sbk")) {
+    return "sbk";
+  }
+  return "apery";
 }
 
-async function openBookOnTheFly(session: number, path: string, size: number): Promise<void> {
+async function openBookOnTheFly(
+  session: number,
+  path: string,
+  size: number,
+  onProgress?: (progress: number) => void,
+): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
+  const common = { type: "on-the-fly", path, saved: true } as const;
+
+  if (format === "sbk") {
+    const sbkOnTheFly = await loadSbkBookOnTheFly(path, onProgress);
+    replaceBook(session, {
+      ...common,
+      ...sbkOnTheFly,
+    });
+    return;
+  }
+
   const file = await fs.promises.open(path, "r");
   try {
-    if (
-      format === "yane2016" &&
-      !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
-    ) {
-      throw new Error("Book is not ordered by position"); // FIXME: i18n
+    if (format === "yane2016") {
+      const ordered = await validateBookPositionOrdering(
+        file.createReadStream({ autoClose: false }),
+      );
+      if (!ordered) {
+        throw new Error("Book is not ordered by position"); // FIXME: i18n
+      }
+      replaceBook(session, {
+        ...common,
+        format: "yane2016",
+        file,
+        size,
+        entries: new Map<string, BookEntry>(),
+      });
+    } else {
+      replaceBook(session, {
+        ...common,
+        format: "apery",
+        file,
+        size,
+        entries: new Map<bigint, BookEntry>(),
+      });
     }
   } catch (e) {
     await file.close();
     throw e;
-  }
-  const common = { path, file, size, saved: true };
-  if (format === "yane2016") {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "yane2016",
-      entries: new Map<string, BookEntry>(),
-    });
-  } else {
-    replaceBook(session, {
-      ...common,
-      type: "on-the-fly",
-      format: "apery",
-      entries: new Map<bigint, BookEntry>(),
-    });
   }
 }
 
@@ -180,19 +259,25 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
   getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
   let file: ReadStream | undefined;
   try {
+    clearBook(session); // メモリ節約のため先にクリアする
     let book: Book;
     switch (getFormatByPath(path)) {
       case "yane2016":
         file = fs.createReadStream(path, "utf-8");
         book = await loadYaneuraOuBook(file);
         break;
-      case "apery":
+      case "sbk": {
+        book = await loadSbkBook(path);
+        break;
+      }
+      default:
         file = fs.createReadStream(path, { highWaterMark: 128 * 1024 });
         book = await loadAperyBook(file);
         break;
     }
     replaceBook(session, {
       type: "in-memory",
+      path,
       saved: true,
       ...book,
     });
@@ -205,6 +290,7 @@ export async function openBook(
   session: number,
   path: string,
   options?: BookLoadingOptions,
+  onProgress?: (progress: number) => void,
 ): Promise<"in-memory" | "on-the-fly"> {
   const stat = await fs.promises.lstat(path);
   if (!stat.isFile()) {
@@ -212,11 +298,26 @@ export async function openBook(
   }
 
   const size = stat.size;
+  const format = getFormatByPath(path);
+
+  let onTheFlyThresholdMB: number | undefined;
+  switch (format) {
+    case "yane2016":
+      onTheFlyThresholdMB = options?.yaneOnTheFlyThresholdMB;
+      break;
+    case "apery":
+      onTheFlyThresholdMB = options?.aperyOnTheFlyThresholdMB;
+      break;
+    case "sbk":
+      onTheFlyThresholdMB = options?.sbkOnTheFlyThresholdMB;
+      break;
+  }
+
   if (
     options?.forceOnTheFly ||
-    (options?.onTheFlyThresholdMB !== undefined && size > options.onTheFlyThresholdMB * 1024 * 1024)
+    (onTheFlyThresholdMB !== undefined && size > onTheFlyThresholdMB * 1024 * 1024)
   ) {
-    await openBookOnTheFly(session, path, size);
+    await openBookOnTheFly(session, path, size, onProgress);
     return "on-the-fly";
   } else {
     await openBookInMemory(session, path, size);
@@ -246,9 +347,25 @@ function replaceBook(session: number, newBook: BookHandle) {
   bookFiles.set(session, newBook);
 }
 
-export async function saveBook(session: number, path: string) {
+async function loadMergedSbkBook(book: OnTheFlyBook & { format: "sbk" }): Promise<SbkBook> {
+  const fullBook = await loadSbkBook(book.rawData || book.path);
+  for (const [sfen, patch] of book.entries) {
+    const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
+    if (merged) {
+      fullBook.entries.set(sfen, merged);
+    }
+  }
+  return fullBook;
+}
+
+export async function saveBook(
+  session: number,
+  path: string,
+  onProgress?: (progress: number) => void,
+) {
   const book = getBook(session);
   // on-the-fly の場合は上書きを禁止
+  // SBK の場合は on-the-fly でもメモリにロードしているので上書きも可能であるがルールを統一しておく
   if (book.type === "on-the-fly" && (await exists(path))) {
     const inputRealPath = await fs.promises.realpath(book.path);
     const outputRealPath = await fs.promises.realpath(path);
@@ -290,6 +407,15 @@ export async function saveBook(session: number, path: string) {
           await mergeAperyBook(input, book, file);
         }
         break;
+      case "sbk":
+        if (!path.endsWith(".sbk")) {
+          throw new Error("Invalid file extension: " + path);
+        }
+        await storeSbkBook(book, file, onProgress);
+        break;
+    }
+    if (book.type === "in-memory") {
+      book.path = path;
     }
     book.saved = true;
   } finally {
@@ -297,57 +423,145 @@ export async function saveBook(session: number, path: string) {
   }
 }
 
-export function clearBook(session: number): void {
+export async function exportBook(
+  session: number,
+  path: string,
+  targetFormat: BookFormat,
+  onProgress?: (progress: number) => void,
+): Promise<void> {
+  const expectedExt =
+    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
+  if (!path.endsWith(expectedExt)) {
+    throw new Error("Invalid file extension: " + path);
+  }
+
+  const book = getBook(session);
+
+  if (book.format === targetFormat) {
+    await saveBook(session, path, onProgress);
+    return;
+  }
+
+  // Apery 形式は独自のハッシュ値がキーになっており局面を復元できない場合があるため
+  // ShogiHome では他の形式への変換をサポートしない
+  // NOTE: BookConv の場合は平手初期局面から到達可能な局面のみを変換対象としている
+  if (book.format === "apery") {
+    throw new Error(t.cannotConvertAperyBookToOtherFormat);
+  }
+
+  // インメモリに全てのデータを取り込む
+  // 形式ごとにソートキーが異なるためストリーミングは実装コストが高い
+  // メモリを多量に消費するがどうしても必要になるまでストリーミングには対応しない
+  let fullBook: Book;
+  if (book.type === "in-memory") {
+    fullBook = book;
+  } else if (book.format === "yane2016") {
+    const stream = book.file.createReadStream({ encoding: "utf-8", autoClose: false, start: 0 });
+    fullBook = await loadYaneuraOuBook(stream);
+    for (const [sfen, patch] of book.entries) {
+      const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
+      if (merged) {
+        fullBook.entries.set(sfen, merged);
+      }
+    }
+  } else if (book.format === "sbk") {
+    fullBook = await loadMergedSbkBook(book);
+  } else {
+    throw new Error("On-the-fly mode is not supported for this book format");
+  }
+
+  let targetBook: YaneBook | AperyBook | SbkBook;
+  switch (targetFormat) {
+    case "yane2016":
+      targetBook = { format: "yane2016", entries: fullBook.entries };
+      break;
+    case "apery": {
+      // Apery の場合のみ独自のハッシュ関数を使用するため bigint をキーに持つ Map を再構築する
+      const aperyEntries = new Map<bigint, BookEntry>();
+      for (const [sfen, entry] of fullBook.entries) {
+        aperyEntries.set(aperyHash(sfen), entry);
+      }
+      targetBook = { format: "apery", entries: aperyEntries };
+      break;
+    }
+    case "sbk":
+      targetBook = {
+        format: "sbk",
+        entries: fullBook.entries,
+        sbkAuthor: fullBook.format === "sbk" ? fullBook.sbkAuthor : undefined,
+        sbkDescription: fullBook.format === "sbk" ? fullBook.sbkDescription : undefined,
+      };
+      break;
+  }
+
+  const file = fs.createWriteStream(path);
+  try {
+    switch (targetBook.format) {
+      case "yane2016":
+        await storeYaneuraOuBook(targetBook, file);
+        break;
+      case "apery":
+        await storeAperyBook(targetBook, file);
+        break;
+      case "sbk":
+        await storeSbkBook(targetBook, file, onProgress);
+        break;
+    }
+  } finally {
+    file.close();
+  }
+}
+
+export function clearBook(session: number, format?: BookFormat): void {
   const book = bookFiles.get(session);
   if (!book) {
     return;
   }
-  if (book.type === "on-the-fly") {
+  if (book.type === "on-the-fly" && book.format !== "sbk") {
     book.file.close();
   }
-  bookFiles.set(session, emptyBook());
+  bookFiles.set(session, emptyBook(format));
 }
 
 export async function searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {
   const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
-  return entry ? entry.moves.map(arrayMoveToCommonBookMove) : [];
+  return entry ? entry.moves : [];
 }
 
 function updateBookEntry(entry: BookEntry, move: BookMove): void {
   for (let i = 0; i < entry.moves.length; i++) {
-    if (entry.moves[i][IDX_USI] === move.usi) {
-      entry.moves[i] = commonBookMoveToArray(move);
+    if (entry.moves[i].usi === move.usi) {
+      entry.moves[i] = move;
       return;
     }
   }
-  entry.moves.push(commonBookMoveToArray(move));
+  entry.moves.push(move);
 }
 
 export async function updateBookMove(session: number, sfen: string, move: BookMove) {
   const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
-  if (book.format === "yane2016") {
+  if (book.format === "yane2016" || book.format === "sbk") {
     if (entry) {
       updateBookEntry(entry, move);
       book.entries.set(sfen, entry);
     } else {
       book.entries.set(sfen, {
         type: "normal",
-        comment: "",
-        moves: [commonBookMoveToArray(move)],
-        minPly: 0,
+        moves: [move],
       });
     }
   } else {
-    const sanitizedMove = {
-      score: 0, // required for Apery book
-      count: 0, // required for Apery book
-      ...move,
-      comment: "", // not supported
+    const sanitizedMove: BookMove = {
+      usi: move.usi,
     };
-    delete sanitizedMove.usi2; // not supported
-    delete sanitizedMove.depth; // not supported
+    if (move.score !== undefined) {
+      sanitizedMove.score = move.score;
+    }
+    if (move.count !== undefined) {
+      sanitizedMove.count = move.count;
+    }
     const hash = aperyHash(sfen);
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
@@ -355,9 +569,7 @@ export async function updateBookMove(session: number, sfen: string, move: BookMo
     } else {
       book.entries.set(hash, {
         type: "normal",
-        comment: "",
-        moves: [commonBookMoveToArray(sanitizedMove)],
-        minPly: 0,
+        moves: [sanitizedMove],
       });
     }
   }
@@ -370,7 +582,7 @@ export async function removeBookMove(session: number, sfen: string, usi: string)
   if (!entry) {
     return;
   }
-  entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
+  entry.moves = entry.moves.filter((move) => move.usi !== usi);
   storeEntry(book, sfen, entry);
 }
 
@@ -385,53 +597,76 @@ export async function updateBookMoveOrder(
   if (!entry) {
     return;
   }
-  const move = entry.moves.find((move) => move[IDX_USI] === usi);
+  const move = entry.moves.find((move) => move.usi === usi);
   if (!move) {
     return;
   }
-  entry.moves = entry.moves.filter((move) => move[IDX_USI] !== usi);
+  entry.moves = entry.moves.filter((move) => move.usi !== usi);
   entry.moves.splice(order, 0, move);
   storeEntry(book, sfen, entry);
 }
 
 function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
   let entry = retrieveEntry(book, sfen);
-  if (book.format === "yane2016") {
+  if (book.format === "yane2016" || book.format === "sbk") {
     if (entry) {
       updateBookEntry(entry, move);
     } else {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
-        comment: "",
-        moves: [commonBookMoveToArray(move)],
-        minPly: 0,
+        moves: [move],
       };
       book.entries.set(sfen, entry);
     }
   } else {
-    const sanitizedMove = {
-      score: 0, // required for Apery book
-      count: 0, // required for Apery book
-      ...move,
-      comment: "", // not supported
+    const sanitizedMove: BookMove = {
+      usi: move.usi,
     };
-    delete sanitizedMove.usi2; // not supported
-    delete sanitizedMove.depth; // not supported
+    if (move.score !== undefined) {
+      sanitizedMove.score = move.score;
+    }
+    if (move.count !== undefined) {
+      sanitizedMove.count = move.count;
+    }
     const hash = aperyHash(sfen);
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
     } else {
       entry = {
         type: book.type === "in-memory" ? "normal" : "patch",
-        comment: "",
-        moves: [commonBookMoveToArray(sanitizedMove)],
-        minPly: 0,
+        moves: [sanitizedMove],
       };
       book.entries.set(hash, entry);
     }
   }
-  entry.moves.sort((a, b) => (b[IDX_COUNT] || 0) - (a[IDX_COUNT] || 0));
+  entry.moves.sort((a, b) => (b.count || 0) - (a.count || 0));
   book.saved = false;
+}
+
+// 棋譜の終端ノードから勝者を判定する。
+// 引き分けや不明な場合は undefined を返す。
+function getRecordWinner(node: ImmutableNode): Color | undefined {
+  let lastNode = node;
+  while (lastNode.next) {
+    lastNode = lastNode.next;
+  }
+  const lastMove = lastNode.move;
+  if (lastMove instanceof Move) {
+    return undefined;
+  }
+  switch (lastMove.type) {
+    case SpecialMoveType.FOUL_WIN:
+    case SpecialMoveType.ENTERING_OF_KING:
+      return lastNode.nextColor;
+    case SpecialMoveType.RESIGN:
+    case SpecialMoveType.MATE:
+    case SpecialMoveType.TIMEOUT:
+    case SpecialMoveType.FOUL_LOSE:
+    case SpecialMoveType.TRY:
+      return reverseColor(lastNode.nextColor);
+    default:
+      return undefined;
+  }
 }
 
 export async function importBookMoves(
@@ -479,7 +714,7 @@ export async function importBookMoves(
   let entryCount = 0;
   let duplicateCount = 0;
 
-  function importMove(node: ImmutableNode, sfen: string) {
+  function importMove(node: ImmutableNode, sfen: string, winner: Color | undefined) {
     if (!(node.move instanceof Move)) {
       return;
     }
@@ -490,10 +725,8 @@ export async function importBookMoves(
     }
 
     const usi = node.move.usi;
-    const entry = retrieveEntry(book, sfen);
-    const bookMoves = entry?.moves || [];
-    const moves = bookMoves.map(arrayMoveToCommonBookMove);
-    const existing = moves.find((move) => move.usi === usi);
+    const bookMoves = retrieveEntry(book, sfen)?.moves || [];
+    const existing = bookMoves.find((move) => move.usi === usi);
     if (existing) {
       duplicateCount++;
     } else {
@@ -502,6 +735,18 @@ export async function importBookMoves(
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
     updateBookMovePatch(book, sfen, bookMove);
+
+    if (book.format === "sbk") {
+      const entry = retrieveEntry(book, sfen);
+      if (entry) {
+        entry.games = (entry.games ?? 0) + 1;
+        if (winner === Color.BLACK) {
+          entry.wonBlack = (entry.wonBlack ?? 0) + 1;
+        } else if (winner === Color.WHITE) {
+          entry.wonWhite = (entry.wonWhite ?? 0) + 1;
+        }
+      }
+    }
   }
 
   for (const path of paths) {
@@ -550,10 +795,16 @@ export async function importBookMoves(
           continue;
         }
         hasValidLines = true;
+        let winner: Color | undefined;
+        let lastPly = Infinity;
         record.forEach((node) => {
+          if (node.ply <= lastPly) {
+            winner = getRecordWinner(node);
+          }
+          lastPly = node.ply;
           const prev = node.prev;
           if (prev && targetColorSet[prev.nextColor]) {
-            importMove(node, prev.sfen);
+            importMove(node, prev.sfen, winner);
           }
         });
       }
@@ -592,10 +843,16 @@ export async function importBookMoves(
       }
     }
 
+    let winner: Color | undefined;
+    let lastPly = Infinity;
     record.forEach((node) => {
+      if (node.ply <= lastPly) {
+        winner = getRecordWinner(node);
+      }
+      lastPly = node.ply;
       const prev = node.prev;
       if (prev && targetColorSet[prev.nextColor]) {
-        importMove(node, prev.sfen);
+        importMove(node, prev.sfen, winner);
       }
     });
     successFileCount++;

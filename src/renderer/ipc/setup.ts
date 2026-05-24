@@ -30,6 +30,7 @@ import { useErrorStore } from "@/renderer/store/error.js";
 import { useBusyState } from "@/renderer/store/busy.js";
 import { useConfirmationStore } from "@/renderer/store/confirm.js";
 import { useMessageStore } from "@/renderer/store/message.js";
+import { useBookStore } from "@/renderer/store/book.js";
 
 export function setup(): void {
   const store = useStore();
@@ -297,6 +298,27 @@ export function setup(): void {
         break;
       case MenuEvent.ELAPSED_TIME_CHART:
         store.showElapsedTimeChartDialog();
+        break;
+      case MenuEvent.RESET_BOOK:
+        store.showResetBookDialog();
+        break;
+      case MenuEvent.OPEN_BOOK_FILE:
+        useBookStore().openBookFile();
+        break;
+      case MenuEvent.SAVE_BOOK_FILE:
+        useBookStore().saveBookFile();
+        break;
+      case MenuEvent.ADD_BOOK_MOVES:
+        store.showAddBookMovesDialog();
+        break;
+      case MenuEvent.EXPORT_BOOK_AS_YANE2016:
+        useBookStore().exportBookFile("yane2016");
+        break;
+      case MenuEvent.EXPORT_BOOK_AS_APERY:
+        useBookStore().exportBookFile("apery");
+        break;
+      case MenuEvent.EXPORT_BOOK_AS_SBK:
+        useBookStore().exportBookFile("sbk");
         break;
     }
   });

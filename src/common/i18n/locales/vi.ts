@@ -224,6 +224,8 @@ export const vi: Texts = {
   customImage: "Ảnh tùy chọn",
   autumn: "Mùa thu",
   snow: "Tuyết rơi",
+  classic: "クラシック", // TODO: Translate
+  beige: "ベージュ", // TODO: Translate
   darkGreen: "Xanh lá đậm",
   dark: "Tối",
   boardLayout: "Bố cục bàn cờ",
@@ -251,6 +253,7 @@ export const vi: Texts = {
   centeredHorizontal: "Ngang, căn giữa",
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",
   promoteFirstHorizontal: "Ngang, ưu tiên phong cấp",
+  enableDragAndDrop: "駒のドラッグ操作", // TODO: Translate
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",
@@ -299,7 +302,7 @@ export const vi: Texts = {
   manageEngines: "Quản lý phần mềm",
   flipBoard: "Xoay bàn cờ",
   elapsedTimeChart: "Biểu đồ thời gian",
-  shortcutKeys: "Phím tắt",
+  controls: "操作", // TODO: Translate
   useUpDownToMove1Ply: "Tiến/lùi nước bằng phím ↑/↓",
   useLeftRightToMove1Ply: "Tiến/lùi nước bằng phím ←/→",
   file: "Tệp",
@@ -539,6 +542,16 @@ export const vi: Texts = {
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
   book: "Định thức",
+  bookInfo: "定跡の情報", // TODO: Translate
+  resetBook: "定跡の初期化", // TODO: Translate
+  moveEvaluation: "指し手評価", // TODO: Translate
+  forced: "絶対手", // TODO: Translate
+  goodMove: "好手", // TODO: Translate
+  yane2016BookFile: "やねうら王定跡ファイル", // TODO: Translate
+  shogiGUIBookFile: "ShogiGUI 定跡ファイル", // TODO: Translate
+  aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
+  loadingMode: "読み込みモード", // TODO: Translate
+  positionCount: "局面数", // TODO: Translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",
@@ -552,6 +565,7 @@ export const vi: Texts = {
   removeCurrentProfile: "Xóa cài đặt hiện tại",
   exportProfileToClipboard: "Sao chép cài đặt",
   importProfileFromClipboard: "Dán cài đặt",
+  editLayoutWithDragAndDrop: "ドラッグで編集", // TODO: Translate
   profileExportedToClipboard: "Đã xuất cài đặt.",
   profileImported: "Đã nhập cài đặt.",
   failedToImportProfile: "Nhập cài đặt thất bại.",
@@ -570,6 +584,7 @@ export const vi: Texts = {
   play: "Chơi",
   edit: "Sửa",
   addMoves: "Thêm nước đi",
+  export: "エクスポート", // TODO: Translate
   flippedBook: "Sử dụng book lật ngược",
   addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
@@ -653,6 +668,8 @@ export const vi: Texts = {
     "Phần mềm của bạn có thể báo lỗi nếu không hỗ trợ cài đặt này.",
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
+  blankLinePingRecommendedToPreventTimeout:
+    "接続のタイムアウトを防止するために、空行 Ping を有効にすることを推奨します。", // TODO: Translate
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
   hwaEnabled: "Đã bật gia tốc phần cứng (HWA).",
   hwaIsNotRecommendedForLongGames: "Vui lòng tắt HWA nếu ván cờ kéo dài.",
@@ -780,6 +797,9 @@ export const vi: Texts = {
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
+  memoryShortageOnBookConversionMayLoseUnsavedData:
+    "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。", // TODO: Translate
+  cannotConvertAperyBookToOtherFormat: "Apery 定跡は他の形式に変換できません。", // TODO: Translate
   sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.",
   sourceDirectoryNotSet: "Vui lòng chọn một tập tin.",
   minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.",
@@ -859,5 +879,8 @@ export const vi: Texts = {
   },
   totalUSIHashExceedsNPercentOfMemory(n: number): string {
     return `Tổng USI_HASH vượt quá ${n}% RAM.`;
+  },
+  heapUsageExceedsNGBMayHang(gb: number): string {
+    return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
   },
 };
