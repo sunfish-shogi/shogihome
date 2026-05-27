@@ -19,7 +19,7 @@ import { loadSbkBook } from "@/background/book/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book.js";
 import { createTestAperyBookFile } from "@/tests/mock/book.js";
-import { defaultBookSession } from "@/common/book";
+import { defaultBookSession, SbkMoveEvaluation } from "@/common/book";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
 
@@ -182,7 +182,7 @@ describe("background/book", () => {
       }
     });
 
-    describe("shogihome01.sbk", () => {
+    describe("shogigui01-copy.sbk", () => {
       const patterns = [
         { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
         { options: { sbkOnTheFlyThresholdMB: 0.001 }, mode: "on-the-fly" },
@@ -192,7 +192,7 @@ describe("background/book", () => {
         it(`mode=${pattern.mode} options=${JSON.stringify(pattern.options)}`, async () => {
           const mode = await openBook(
             defaultBookSession,
-            "src/tests/testdata/book/shogihome01.sbk",
+            "src/tests/testdata/book/shogigui01-copy.sbk",
             pattern.options,
           );
           expect(mode).toBe(pattern.mode);
@@ -535,11 +535,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
   describe("importBookMoves - SBK specific", () => {
     it("SBK games/wonBlack/wonWhite updated on import", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk");
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk");
 
       const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
       const baseline = await loadSbkBook(
-        fs.readFileSync("src/tests/testdata/book/shogihome01.sbk"),
+        fs.readFileSync("src/tests/testdata/book/shogigui01-copy.sbk"),
       );
       const baselineGames = baseline.entries.get(initialSfen)?.games ?? 0;
       const baselineWonBlack = baseline.entries.get(initialSfen)?.wonBlack ?? 0;
@@ -707,6 +707,56 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(output2).toBe(expected);
     });
 
+    it("SBK", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk", {
+        sbkOnTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1B7/LNSGKGSNL w Pp 1",
+        { usi: "2b8h+" },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1B7/LNSGKGSNL w Pp 1",
+        { usi: "2b8h+", count: 5 },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r7/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1+b7/LNSGKGSNL b Pbp 1",
+        { usi: "7i8h" },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r7/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1+b7/LNSGKGSNL b Pbp 1",
+        { usi: "7i8h", count: 4, sbkEval: SbkMoveEvaluation.Forced },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r7/p1ppppb1p/6pR1/1p7/2P6/PP1PPPP1P/1S7/LN1GKGSNL b BPp 1",
+        { usi: "2d2h" },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r7/p1ppppb1p/6pR1/1p7/2P6/PP1PPPP1P/1S7/LN1GKGSNL b BPp 1",
+        { usi: "2d2h", count: 3, sbkEval: SbkMoveEvaluation.Good },
+      );
+
+      const mergeFilePath = path.join(tmpdir, "merge.sbk");
+      await saveBook(defaultBookSession, mergeFilePath);
+      const output = fs.readFileSync(mergeFilePath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/sbk-merge.sbk", "hex");
+      expect(output).toBe(expected);
+
+      // 2回目の書き込みを検査する
+      const mergeFilePath2 = path.join(tmpdir, "merge2.sbk");
+      await saveBook(defaultBookSession, mergeFilePath2);
+      const output2 = fs.readFileSync(mergeFilePath2, "hex");
+      expect(output2).toBe(expected);
+    });
+
     it("forbidOverwrite", async () => {
       const path = "src/tests/testdata/book/yaneuraou.db";
       const mode = await openBook(defaultBookSession, path, { yaneOnTheFlyThresholdMB: 0.0001 });
@@ -789,9 +839,13 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     });
 
     it("sbk (on-the-fly) → yane2016: moves preserved", async () => {
-      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/shogihome01.sbk", {
-        sbkOnTheFlyThresholdMB: 0.001,
-      });
+      const mode = await openBook(
+        defaultBookSession,
+        "src/tests/testdata/book/shogigui01-copy.sbk",
+        {
+          sbkOnTheFlyThresholdMB: 0.001,
+        },
+      );
       expect(mode).toBe("on-the-fly");
 
       const outPath = path.join(tmpdir, "export-sbk-otf-to-yane.db");

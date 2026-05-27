@@ -5,10 +5,10 @@ import { loadSbkBook, loadSbkBookOnTheFly, storeSbkBook } from "@/background/boo
 describe("background/book/sbk", () => {
   describe("copy via in-memory", () => {
     const testCases = [
-      { input: "shogigui01.sbk", expected: "shogihome01.sbk" },
-      { input: "shogigui02.sbk", expected: "shogihome02.sbk" },
-      { input: "shogihome01.sbk", expected: "shogihome01.sbk" },
-      { input: "shogihome02.sbk", expected: "shogihome02.sbk" },
+      { input: "shogigui01.sbk", expected: "shogigui01-copy.sbk" },
+      { input: "shogigui02.sbk", expected: "shogigui02-copy.sbk" },
+      { input: "shogigui01-copy.sbk", expected: "shogigui01-copy.sbk" },
+      { input: "shogigui02-copy.sbk", expected: "shogigui02-copy.sbk" },
     ];
     for (const { input, expected } of testCases) {
       it(`${input} → ${expected}`, async () => {
@@ -31,10 +31,10 @@ describe("background/book/sbk", () => {
 
   describe("copy via on-the-fly", () => {
     const testCases = [
-      { input: "shogigui01.sbk", expected: "shogihome01-otf.sbk" },
-      { input: "shogigui02.sbk", expected: "shogihome02-otf.sbk" },
-      { input: "shogihome01-otf.sbk", expected: "shogihome01-otf.sbk" },
-      { input: "shogihome02-otf.sbk", expected: "shogihome02-otf.sbk" },
+      { input: "shogigui01.sbk", expected: "shogigui01-copy-otf.sbk" },
+      { input: "shogigui02.sbk", expected: "shogigui02-copy-otf.sbk" },
+      { input: "shogigui01-copy-otf.sbk", expected: "shogigui01-copy-otf.sbk" },
+      { input: "shogigui02-copy-otf.sbk", expected: "shogigui02-copy-otf.sbk" },
     ];
     for (const { input, expected } of testCases) {
       it(`${input} → ${expected}`, async () => {
