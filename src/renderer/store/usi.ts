@@ -183,10 +183,15 @@ type USIUpdate = {
   ponderMove?: Move;
 };
 
+// 局面の変更直後は素早く表示するため 50ms、それ以外は 500ms。
+const updateDelayOnPositionChangeMs = 50;
+const updateDelayMs = 500;
+
 export class USIMonitor {
   private _sessions: USIPlayerMonitor[] = [];
   private updateQueue: USIUpdate[] = [];
   private timeoutHandle?: number;
+  private timeoutDelay = updateDelayMs;
 
   get sessions(): USIPlayerMonitor[] {
     return this._sessions;
@@ -200,6 +205,8 @@ export class USIMonitor {
     maxPVLength: number,
     ponderMove?: Move,
   ): void {
+    const session = this._sessions.find((s) => s.sessionID === sessionID);
+    const isPositionChange = !session || session.sfen !== position.sfen;
     this.updateQueue.push({
       sessionID,
       sfen: position.sfen,
@@ -208,11 +215,15 @@ export class USIMonitor {
       maxPVLength,
       ponderMove,
     });
-    // 高頻度でコマンドが送られてくると描画が追いつかないので、一定時間ごとに反映する。
-    if (!this.timeoutHandle) {
-      this.timeoutHandle = window.setTimeout(() => {
-        this.dequeue();
-      }, 500);
+    // 高頻度でコマンドが送られてくると描画が追いつかないので画面への反映を遅延させる
+    if (
+      !this.timeoutHandle ||
+      (isPositionChange && this.timeoutDelay > updateDelayOnPositionChangeMs)
+    ) {
+      clearTimeout(this.timeoutHandle);
+      const delay = isPositionChange ? updateDelayOnPositionChangeMs : updateDelayMs;
+      this.timeoutHandle = window.setTimeout(() => this.dequeue(), delay);
+      this.timeoutDelay = delay;
     }
   }
 
