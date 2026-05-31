@@ -20,7 +20,7 @@
   "scripts": {
     "audit:scripts": "tsx scripts/audit-scripts.ts",
     "install:esbuild": "npm run audit:scripts && node node_modules/esbuild/install.js",
-    "install:electron": "npm run audit:scripts && node node_modules/electron/install.js",
+    "install:electron": "npx install-electron --no",
     "compile": "npm run install:esbuild && vite build",
     "serve": "npm run install:esbuild && vite -c vite.config-pwa.mts",
     "build": "npm run install:esbuild && vite build -c vite.config-pwa.mts --outDir docs/webapp",
@@ -90,7 +90,7 @@
     "archiver": "^7.0.1",
     "concurrently": "^9.0.1",
     "depcheck": "^1.4.7",
-    "electron": "^41.1.0",
+    "electron": "^42.2.0",
     "electron-builder": "^26.8.1",
     "electron-devtools-installer": "^4.0.0",
     "eslint": "^9.39.2",

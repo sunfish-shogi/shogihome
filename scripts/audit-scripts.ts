@@ -15,7 +15,6 @@ function checkPackageJson(packageJsonPath: string) {
 
   switch (name) {
     // These packages have install.js scripts
-    case "electron":
     case "esbuild":
       if (!scripts?.postinstall) {
         throw new Error(`Package ${name}@${version} is missing postinstall scripts`);
