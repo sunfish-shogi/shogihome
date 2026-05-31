@@ -200,7 +200,11 @@ app.whenReady().then(() => {
   app.dock?.setMenu(dockMenu);
 
   session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
-    validateHTTPRequest(details.method, details.url);
+    // Electron 42.2.0 以降では検査後に発行しなおした net.fetch のリクエストも入ってくるようになったため
+    // webContentsId が存在する場合のみ URL を検査する。
+    if (details.webContentsId !== undefined) {
+      validateHTTPRequest(details.method, details.url);
+    }
     callback({});
   });
 
