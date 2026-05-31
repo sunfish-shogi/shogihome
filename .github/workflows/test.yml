@@ -16,7 +16,9 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: lts/*
+          # Do not use Node.js v24.16.0 or later
+          # See: https://github.com/electron/electron/issues/51619
+          node-version: v24.15.0
           cache: "npm"
       - run: npm install -g npm@latest
       - run: npm version
