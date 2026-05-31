@@ -382,7 +382,7 @@ export class USIPlayer implements Player {
     }, 500);
   }
 
-  private flushUSIInfo() {
+  flushUSIInfo() {
     if (this.usiInfoTimeout) {
       clearTimeout(this.usiInfoTimeout);
       this.usiInfoTimeout = undefined;

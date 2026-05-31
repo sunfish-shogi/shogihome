@@ -180,6 +180,7 @@ export class AnalysisManager {
 
   private setTimer(): void {
     this.timerHandle = window.setTimeout(() => {
+      this.researcher?.flushUSIInfo();
       this.onResult();
       this.searchNextPosition();
     }, this.settings.perMoveCriteria.maxSeconds * 1e3);

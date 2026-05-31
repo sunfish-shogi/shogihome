@@ -119,7 +119,7 @@ export class ResearchManager {
   updatePosition(record: ImmutableRecord) {
     // 反映を遅延させるので同期済みフラグを下ろす。
     this.synced = false;
-    // 200ms 以内に複数回更新されたら最後の 1 回だけを処理する。
+    // 100ms 以内に複数回更新されたら最後の 1 回だけを処理する。
     this.lazyPositionUpdate.after(() => {
       // 初期化処理が終わっていない場合は何もしない。
       if (!this.ready) {
@@ -140,7 +140,7 @@ export class ResearchManager {
       this.synced = true;
       // 一時停止からの再開のために棋譜を覚えておく。
       this.record = record;
-    }, 200);
+    }, 100);
   }
 
   isPaused(sessionID: number): boolean {
