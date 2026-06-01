@@ -154,6 +154,66 @@ describe("game/start_position", () => {
     ).rejects.toThrow("No available positions in the list.");
   });
 
+  it("StartPositionList/ply", async () => {
+    mockAPI.loadSFENFile.mockImplementation(async () => [
+      "position startpos moves 2g2f 3c3d 7g7f",
+      "position startpos moves 7g7f 8c8d 2g2f",
+    ]);
+    const list = new StartPositionList();
+
+    // ply=1 → goto(0) → initial position (no moves)
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+        ply: 1,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos");
+    expect(list.next()).toBe("position startpos");
+
+    // ply=2 → goto(1) → one move
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+        ply: 2,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f");
+    expect(list.next()).toBe("position startpos moves 7g7f");
+
+    // ply=3 → goto(2) → two moves
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+        ply: 3,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d");
+    expect(list.next()).toBe("position startpos moves 7g7f 8c8d");
+
+    // ply beyond record length → clamped to full record
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+        ply: 100,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+    expect(list.next()).toBe("position startpos moves 7g7f 8c8d 2g2f");
+  });
+
   it("StartPositionList/invalid", async () => {
     mockAPI.loadSFENFile.mockImplementation(async () => [
       "position startpos moves 2g2f 3c3d 7g7f",

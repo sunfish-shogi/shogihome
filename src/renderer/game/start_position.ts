@@ -19,6 +19,7 @@ export class StartPositionList {
     swapPlayers: boolean;
     order: "sequential" | "shuffle";
     maxGames: number;
+    ply?: number;
   }): Promise<void> {
     // load SFEN file
     const usiList = await api.loadSFENFile(params.filePath);
@@ -43,7 +44,7 @@ export class StartPositionList {
       }
     }
 
-    // validate USI
+    // validate USI and extract position at specified ply
     if (usiList.length === 0) {
       throw new Error("No available positions in the list.");
     }
@@ -51,6 +52,10 @@ export class StartPositionList {
       const record = Record.newByUSI(usiList[i]);
       if (!(record instanceof Record)) {
         throw record;
+      }
+      if (params.ply !== undefined) {
+        record.goto(params.ply - 1);
+        usiList[i] = record.getUSI();
       }
     }
 

@@ -37,6 +37,7 @@ export async function buildGameCoordinator(params: {
       swapPlayers: settings.swapPlayers,
       order: settings.startPositionListOrder,
       maxGames: maxGames,
+      ply: settings.startPositionListPly,
     });
   } else if (settings.startPosition === "sfen") {
     startPositionUSI = settings.startPositionSFEN;
