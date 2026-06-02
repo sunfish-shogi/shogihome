@@ -145,6 +145,30 @@ describe("settings/game", () => {
     expect(validateGameSettings(settings)).toBeUndefined();
   });
 
+  it("validateGameSettings/startPositionListPly-valid", () => {
+    expect(
+      validateGameSettings({ ...baseGameSettings(), startPositionListPly: undefined }),
+    ).toBeUndefined();
+    expect(
+      validateGameSettings({ ...baseGameSettings(), startPositionListPly: 1 }),
+    ).toBeUndefined();
+    expect(
+      validateGameSettings({ ...baseGameSettings(), startPositionListPly: 100 }),
+    ).toBeUndefined();
+  });
+
+  it("validateGameSettings/startPositionListPly-invalid", () => {
+    const check = (ply: unknown) =>
+      validateGameSettings({
+        ...baseGameSettings(),
+        startPositionListPly: ply as number,
+      });
+    expect(check(0)?.message).toBe("Start position list ply must be a positive integer.");
+    expect(check(-1)?.message).toBe("Start position list ply must be a positive integer.");
+    expect(check(0.5)?.message).toBe("Start position list ply must be a positive integer.");
+    expect(check("")?.message).toBe("Start position list ply must be a positive integer.");
+  });
+
   it("validateGameSettings/sfen-invalid", () => {
     const settings: GameSettings = {
       ...baseGameSettings(),

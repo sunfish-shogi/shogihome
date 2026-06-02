@@ -73,6 +73,7 @@ export type LinearGameSettings = Omit<SingleGameSettings, "startPosition"> & {
   startPosition: GameStartPositionType; // v1.21.0 から undefined を廃止
   startPositionListFile: string;
   startPositionListOrder: "sequential" | "shuffle";
+  startPositionListPly?: number;
   repeat: number;
   swapPlayers: boolean;
   sprtEnabled: boolean;
@@ -200,6 +201,12 @@ export function validateGameSettings(gameSettings: GameSettings): Error | undefi
     if (!(record instanceof Record)) {
       return record;
     }
+  }
+  if (
+    gameSettings.startPositionListPly !== undefined &&
+    (!Number.isInteger(gameSettings.startPositionListPly) || gameSettings.startPositionListPly < 1)
+  ) {
+    return new Error("Start position list ply must be a positive integer.");
   }
   if (!gameSettings.sprtEnabled && gameSettings.parallelism > gameSettings.repeat) {
     return new Error(t.parallelismMustLessThanOrEqualToRepeats);
