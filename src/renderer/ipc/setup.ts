@@ -30,6 +30,7 @@ import { useErrorStore } from "@/renderer/store/error.js";
 import { useBusyState } from "@/renderer/store/busy.js";
 import { useConfirmationStore } from "@/renderer/store/confirm.js";
 import { useMessageStore } from "@/renderer/store/message.js";
+import { useNotificationStore } from "@/renderer/store/notification.js";
 import { useBookStore } from "@/renderer/store/book.js";
 
 export function setup(): void {
@@ -71,6 +72,9 @@ export function setup(): void {
   });
   bridge.onSendMessage((json: string) => {
     useMessageStore().enqueue(JSON.parse(json));
+  });
+  bridge.onSendNotification((message: string, url?: string) => {
+    useNotificationStore().add(message, url);
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bridge.onMenuEvent((event: MenuEvent, ...args: any[]) => {

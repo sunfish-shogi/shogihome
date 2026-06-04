@@ -96,6 +96,7 @@ export enum Renderer {
   CLOSE = "close",
   SEND_ERROR = "sendError",
   SEND_MESSAGE = "sendMessage",
+  SEND_NOTIFICATION = "sendNotification",
   MENU_EVENT = "menuEvent",
   UPDATE_APP_SETTINGS = "updateAppSettings",
   OPEN_RECORD = "openRecord",

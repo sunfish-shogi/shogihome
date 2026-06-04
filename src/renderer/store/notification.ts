@@ -3,6 +3,7 @@ import { reactive, UnwrapNestedRefs } from "vue";
 export type NotificationEntry = {
   id: number;
   message: string;
+  url?: string;
 };
 
 let nextId = 1;
@@ -14,8 +15,8 @@ export class NotificationStore {
     return this._entries;
   }
 
-  add(message: string): void {
-    this._entries.push({ id: nextId++, message });
+  add(message: string, url?: string): void {
+    this._entries.push({ id: nextId++, message, url });
   }
 
   dismiss(id: number): void {

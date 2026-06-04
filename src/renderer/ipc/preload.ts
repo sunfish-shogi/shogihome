@@ -36,6 +36,11 @@ const api: Bridge = {
       callback(json);
     });
   },
+  onSendNotification(callback: (message: string, url?: string) => void): void {
+    ipcRenderer.on(Renderer.SEND_NOTIFICATION, (_, message, url) => {
+      callback(message, url);
+    });
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onMenuEvent(callback: (event: MenuEvent, ...args: any[]) => void): void {
     ipcRenderer.on(Renderer.MENU_EVENT, (_, event, ...args) => callback(event, ...args));

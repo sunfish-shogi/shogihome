@@ -52,6 +52,9 @@ export const webAPI: Bridge = {
   onSendMessage(): void {
     // Do Nothing
   },
+  onSendNotification(): void {
+    // Do Nothing
+  },
   onMenuEvent(): void {
     // Do Nothing
   },

@@ -25,6 +25,7 @@ import {
   onUpdateAppState,
   sendError,
   sendMessage,
+  sendNotification,
   updateAppSettings,
 } from "@/background/window/ipc.js";
 import { getBookInfo } from "@/background/book/index.js";
@@ -690,6 +691,12 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.reloadCustomPieceImage,
           click: () => {
             refreshCustomPieceImages(updateAppSettings).catch(sendError);
+          },
+        },
+        {
+          label: t.notificationTest,
+          click: () => {
+            sendNotification(t.thisIsTestNotification);
           },
         },
         {

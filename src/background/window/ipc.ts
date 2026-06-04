@@ -1081,6 +1081,10 @@ export function sendMessage(message: Message): void {
   mainWindow.webContents.send(Renderer.SEND_MESSAGE, JSON.stringify(message));
 }
 
+export function sendNotification(message: string, url?: string): void {
+  mainWindow.webContents.send(Renderer.SEND_NOTIFICATION, message, url);
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function onMenuEvent(event: MenuEvent, ...args: any[]): void {
   mainWindow.webContents.send(Renderer.MENU_EVENT, event, ...args);
