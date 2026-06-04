@@ -123,6 +123,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("安定版 v1.0.4 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/stable");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
@@ -147,6 +148,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.1.1 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
@@ -287,6 +289,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("安定版 v1.1.1 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/stable");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
@@ -311,6 +314,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.2.0 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
@@ -335,6 +339,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.2.0 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
@@ -359,6 +364,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.1.1 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
   });
@@ -378,6 +384,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.1.1 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
   });
@@ -397,6 +404,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.1.1 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
   });

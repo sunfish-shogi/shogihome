@@ -99,7 +99,7 @@ function suggestUpdate(
   }
 }
 
-export async function checkUpdates(notify: (message: string) => void) {
+export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
   // check new release
