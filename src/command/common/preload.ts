@@ -53,6 +53,9 @@ const bridge: Bridge = {
   onSendMessage(): void {
     // Do Nothing
   },
+  onSendNotification(): void {
+    // Do Nothing
+  },
   onMenuEvent(): void {
     // Do Nothing
   },
@@ -401,9 +404,6 @@ const bridge: Bridge = {
     return false;
   },
   async getVersionStatus(): Promise<string> {
-    throw new Error("This feature is not available on command line tool");
-  },
-  sendTestNotification(): void {
     throw new Error("This feature is not available on command line tool");
   },
   getPathForFile() {

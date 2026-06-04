@@ -100,7 +100,6 @@ import {
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { isSupportedRecordFilePath } from "@/background/file/extensions.js";
 import { readStatus as readVersionStatus } from "@/background/version.js";
-import { sendTestNotification } from "./debug.js";
 import { SessionStates } from "@/common/advanced/monitor.js";
 import { createCommandWindow } from "./prompt.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -1031,11 +1030,6 @@ ipcMain.handle(Background.GET_VERSION_STATUS, async (event) => {
   return JSON.stringify(await readVersionStatus());
 });
 
-ipcMain.on(Background.SEND_TEST_NOTIFICATION, (event) => {
-  validateIPCSender(event.senderFrame);
-  sendTestNotification();
-});
-
 ipcMain.on(Background.OPEN_LOG_FILE, (event, logType: LogType) => {
   validateIPCSender(event.senderFrame);
   openPath(getLogFilePath(logType));
@@ -1085,6 +1079,10 @@ export function sendError(e: Error): void {
 
 export function sendMessage(message: Message): void {
   mainWindow.webContents.send(Renderer.SEND_MESSAGE, JSON.stringify(message));
+}
+
+export function sendNotification(message: string, url?: string): void {
+  mainWindow.webContents.send(Renderer.SEND_NOTIFICATION, message, url);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

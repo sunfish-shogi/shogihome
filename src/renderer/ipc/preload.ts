@@ -36,6 +36,11 @@ const api: Bridge = {
       callback(json);
     });
   },
+  onSendNotification(callback: (message: string, url?: string) => void): void {
+    ipcRenderer.on(Renderer.SEND_NOTIFICATION, (_, message, url) => {
+      callback(message, url);
+    });
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onMenuEvent(callback: (event: MenuEvent, ...args: any[]) => void): void {
     ipcRenderer.on(Renderer.MENU_EVENT, (_, event, ...args) => callback(event, ...args));
@@ -417,9 +422,6 @@ const api: Bridge = {
   },
   async getVersionStatus(): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_VERSION_STATUS);
-  },
-  sendTestNotification(): void {
-    ipcRenderer.send(Background.SEND_TEST_NOTIFICATION);
   },
   getPathForFile(file: File): string {
     return webUtils.getPathForFile(file);

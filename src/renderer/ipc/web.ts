@@ -52,6 +52,9 @@ export const webAPI: Bridge = {
   onSendMessage(): void {
     // Do Nothing
   },
+  onSendNotification(): void {
+    // Do Nothing
+  },
   onMenuEvent(): void {
     // Do Nothing
   },
@@ -492,9 +495,6 @@ export const webAPI: Bridge = {
   },
   async getVersionStatus(): Promise<string> {
     return JSON.stringify({} as VersionStatus);
-  },
-  sendTestNotification(): void {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   getPathForFile(file: File): string {
     return file.name;

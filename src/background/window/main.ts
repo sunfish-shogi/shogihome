@@ -5,6 +5,7 @@ import {
   onClose,
   openRecord,
   sendError,
+  sendNotification,
   setupIPC,
 } from "@/background/window/ipc.js";
 import { loadWindowSettings, saveWindowSettings } from "@/background/settings.js";
@@ -110,7 +111,7 @@ export function createWindow(onClosed: () => void) {
       openRecord(path);
     });
 
-    checkUpdates().catch((e) => {
+    checkUpdates(sendNotification).catch((e) => {
       getAppLogger().error(`${t.failedToCheckUpdates}: ${e}`);
     });
   });

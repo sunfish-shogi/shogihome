@@ -722,17 +722,6 @@
         <div class="form-item-label-wide">{{ t.stable }}</div>
         {{ versionStatus.knownReleases?.stable.version ?? t.unknown }}
       </div>
-      <div class="form-item">
-        <div class="form-item-label-wide">{{ t.notification }}</div>
-        <button class="thin" @click="sendTestNotification">{{ t.notificationTest }}</button>
-      </div>
-      <div class="form-group warning">
-        <div class="note">
-          {{ t.whenNewVersionIsAvailableItWillBeNotified }}
-          {{ t.pleaseCheckMessageThisIsTestNotificationByAboveButton }}
-          {{ t.ifNotWorkYouShouldAllowNotificationOnOSSetting }}
-        </div>
-      </div>
     </div>
     <!-- 開発者向け -->
     <div
@@ -995,14 +984,6 @@ const whatIsMaxPVLengthSetting = () => {
 
 const aboutDisableHWASetting = () => {
   api.openWebBrowser(disableHWASettingWikiPageURL);
-};
-
-const sendTestNotification = () => {
-  try {
-    api.sendTestNotification();
-  } catch (e) {
-    useErrorStore().add(e);
-  }
 };
 
 const cancel = () => {

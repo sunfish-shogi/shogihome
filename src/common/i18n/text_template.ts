@@ -657,9 +657,6 @@ export type Texts = {
   floodgatePasswordShouldStartWithGameName: string;
   thisIsNotFloodgateOfficialGameName: string;
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue: string;
-  whenNewVersionIsAvailableItWillBeNotified: string;
-  pleaseCheckMessageThisIsTestNotificationByAboveButton: string;
-  ifNotWorkYouShouldAllowNotificationOnOSSetting: string;
   translationHelpNeeded: string;
   restartRequiredAfterLocaleChange: string;
   createDesktopShortcut: string;

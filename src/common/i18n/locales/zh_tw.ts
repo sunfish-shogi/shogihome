@@ -677,11 +677,6 @@ export const zh_tw: Texts = {
   thisIsNotFloodgateOfficialGameName: "這不是Floodgate官方之對局名稱。",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "密碼可能不符合Floodgate之要求。您仍要繼續嗎？",
-  whenNewVersionIsAvailableItWillBeNotified: "將會在新版本發布時進行通知。",
-  pleaseCheckMessageThisIsTestNotificationByAboveButton:
-    "上方按鈕會發送「這是測試用的通知。」的通知訊息。",
-  ifNotWorkYouShouldAllowNotificationOnOSSetting:
-    "若無法顯示，請在使用的作業系統中許可本程式的通知。",
   translationHelpNeeded: "我們正在招募翻譯人員。",
   restartRequiredAfterLocaleChange: "更改語言後，請重新啟動本程式。",
   createDesktopShortcut: "デスクトップにショートカットを作成", // TODO: Translate

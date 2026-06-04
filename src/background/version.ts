@@ -8,7 +8,7 @@ import { fetch } from "@/background/helpers/http.js";
 import * as semver from "semver";
 import { t } from "@/common/i18n/index.js";
 import { getAppLogger } from "@/background/log.js";
-import { getAppVersion, showNotification } from "@/background/helpers/electron.js";
+import { getAppVersion } from "@/background/helpers/electron.js";
 import { ghRepository, ghioDomain } from "@/common/links/github.js";
 import { writeFileAtomic } from "./file/atomic.js";
 import { getAppPath } from "./proc/path-electron.js";
@@ -54,7 +54,11 @@ async function writeStatus(last: VersionStatus) {
   await writeFileAtomic(statusFilePath, JSON.stringify(last, null, " "));
 }
 
-function suggestUpdate(releases: Releases, last: VersionStatus) {
+function suggestUpdate(
+  releases: Releases,
+  last: VersionStatus,
+  notify: (message: string, url?: string) => void,
+) {
   const current = semver.clean(getAppVersion());
   if (!current) {
     throw new Error("failed to get current app version");
@@ -81,7 +85,7 @@ function suggestUpdate(releases: Releases, last: VersionStatus) {
   const stableNotInstalled = semver.gt(stable, current);
   if (stablePreferred && stableUpdated && stableNotInstalled) {
     getAppLogger().info(`new stable version released: ${stable}`);
-    showNotification(t.shogiHome, t.stableVersionReleased("v" + stable));
+    notify(t.stableVersionReleased("v" + stable), releases.stable.link);
     return;
   }
 
@@ -90,12 +94,12 @@ function suggestUpdate(releases: Releases, last: VersionStatus) {
   const latestNotInstalled = semver.gt(latest, current);
   if (latestPreferred && latestUpdated && latestNotInstalled) {
     getAppLogger().info(`new latest version released: ${latest}`);
-    showNotification(t.shogiHome, t.latestVersionReleased("v" + latest));
+    notify(t.latestVersionReleased("v" + latest), releases.latest.link);
     return;
   }
 }
 
-export async function checkUpdates() {
+export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
   // check new release
@@ -106,7 +110,7 @@ export async function checkUpdates() {
     getAppLogger().debug(`check new release`);
     const releases = JSON.parse(await fetch(getReleaseURL())) as Releases;
     getAppLogger().debug(`release info fetched: ${JSON.stringify(releases)}}`);
-    suggestUpdate(releases, last);
+    suggestUpdate(releases, last, notify);
     last.knownReleases = {
       ...releases,
       downloadedMs: Date.now(),

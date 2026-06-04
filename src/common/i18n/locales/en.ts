@@ -673,11 +673,6 @@ export const en: Texts = {
   thisIsNotFloodgateOfficialGameName: "This is not Floodgate official game name.",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "Your password does not meet Floodgate's requirements. Do you still want to continue?",
-  whenNewVersionIsAvailableItWillBeNotified: "When new version is available, it will be notified.",
-  pleaseCheckMessageThisIsTestNotificationByAboveButton:
-    'Please check the message "This is test notification." by above button.',
-  ifNotWorkYouShouldAllowNotificationOnOSSetting:
-    "If it does not work, you should allow notification on OS setting.",
   translationHelpNeeded: "We'd like your help to translate.",
   restartRequiredAfterLocaleChange: "You should restart this app to change the language.",
   createDesktopShortcut: "Create desktop shortcut",

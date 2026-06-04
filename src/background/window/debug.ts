@@ -1,5 +1,3 @@
-import { t } from "@/common/i18n/index.js";
-import { Notification } from "electron";
 import { loadAppSettings } from "@/background/settings.js";
 import { cropPieceImage } from "@/background/image/cropper.js";
 import { AppSettingsUpdate, PieceImageType } from "@/common/settings/app.js";
@@ -18,11 +16,4 @@ export async function refreshCustomPieceImages(
   onUpdateAppSettings({
     croppedPieceImageQuery: `updated=${Date.now()}`,
   });
-}
-
-export function sendTestNotification() {
-  new Notification({
-    title: t.shogiHome,
-    body: t.thisIsTestNotification,
-  }).show();
 }
