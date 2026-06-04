@@ -234,6 +234,7 @@ export const zh_tw: Texts = {
   singleKanjiGothicPiece: "一文字駒（黑體）",
   singleKanjiDarkPiece: "一文字駒（深色）",
   singleKanjiGothicDarkPiece: "一文字駒（黑體・深色）",
+  twoKanjiPiece: "二文字駒", // TODO: Translate
   imageHasMarginsRemoveForLargerDisplay: "圖片含有透明邊界（去除後圖片會略為放大）",
   backgroundImage: "背景圖片",
   board: "棋盤",

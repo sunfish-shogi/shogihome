@@ -227,6 +227,7 @@ export const ja: Texts = {
   singleKanjiGothicPiece: "一文字駒（ゴシック体）",
   singleKanjiDarkPiece: "一文字駒（ダーク）",
   singleKanjiGothicDarkPiece: "一文字駒（ゴシック体・ダーク）",
+  twoKanjiPiece: "二文字駒",
   imageHasMarginsRemoveForLargerDisplay: "画像に余白が含まれている（除去して大きく表示）",
   backgroundImage: "背景画像",
   board: "盤",

@@ -103,6 +103,7 @@
                 label: t.singleKanjiGothicDarkPiece,
                 value: PieceImageType.HITOMOJI_GOTHIC_DARK,
               },
+              { label: t.twoKanjiPiece, value: PieceImageType.FUTAMOJI },
               { label: t.customImage, value: PieceImageType.CUSTOM_IMAGE },
             ].filter((item) => !isMobileWebApp() || item.value !== PieceImageType.CUSTOM_IMAGE)
           "

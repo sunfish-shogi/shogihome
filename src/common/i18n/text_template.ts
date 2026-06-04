@@ -222,6 +222,7 @@ export type Texts = {
   singleKanjiGothicPiece: string;
   singleKanjiDarkPiece: string;
   singleKanjiGothicDarkPiece: string;
+  twoKanjiPiece: string;
   imageHasMarginsRemoveForLargerDisplay: string;
   backgroundImage: string;
   board: string;
