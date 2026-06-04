@@ -41,7 +41,7 @@ import { openCacheDirectory } from "@/background/image/cache.js";
 import { refreshCustomPieceImages } from "./debug.js";
 import { LogType } from "@/common/log.js";
 import { createLayoutManagerWindow } from "./layout.js";
-import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github.js";
+import { licenseURL, thirdPartyLicenseURL, websiteURL } from "@/common/links/github.js";
 import { materialIconsGuideURL } from "@/common/links/google.js";
 import { openPath } from "@/background/helpers/electron.js";
 import { createMonitorWindow } from "./monitor.js";
@@ -695,9 +695,20 @@ function createMenuTemplate(window: BrowserWindow) {
         },
         {
           label: t.notificationTest,
-          click: () => {
-            sendNotification(t.thisIsTestNotification);
-          },
+          submenu: [
+            {
+              label: "Message Only",
+              click: () => {
+                sendNotification(t.thisIsTestNotification);
+              },
+            },
+            {
+              label: "Message with URL",
+              click: () => {
+                sendNotification(t.thisIsTestNotification, websiteURL);
+              },
+            },
+          ],
         },
         {
           type: "separator",
