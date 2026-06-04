@@ -34,7 +34,7 @@ const store = useNotificationStore();
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 999999;
   pointer-events: none;
   max-width: calc(100vw - 32px);
   width: max-content;
