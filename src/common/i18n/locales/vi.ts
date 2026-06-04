@@ -682,11 +682,6 @@ export const vi: Texts = {
   thisIsNotFloodgateOfficialGameName: "Đây không phải tên một ván đấu Floodgate chính thức.",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "Mật khẩu của bạn không đạt điều kiện của Floodgate. Bạn vẫn muốn tiếp tục chứ?",
-  whenNewVersionIsAvailableItWillBeNotified: "Sẽ có thông báo khi có phiên bản mới.",
-  pleaseCheckMessageThisIsTestNotificationByAboveButton:
-    'Vui lòng thử tin nhắn "Đây là thông báo thử." bằng nút trên.',
-  ifNotWorkYouShouldAllowNotificationOnOSSetting:
-    "Nếu nó không hoạt động, vui lòng cho phép thông báo trong tùy chọn hệ điều hành.",
   translationHelpNeeded: "Chúng tôi cần bạn giúp đỡ phiên dịch.",
   restartRequiredAfterLocaleChange: "Khởi động lại ứng dụng để áp dụng ngôn ngữ.",
   createDesktopShortcut: "Tạo lối tắt trên desktop",

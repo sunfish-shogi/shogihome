@@ -37,7 +37,7 @@ import { InitialPositionSFEN } from "tsshogi";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { chromiumLicensePath, electronLicensePath } from "@/background/proc/path.js";
 import { openCacheDirectory } from "@/background/image/cache.js";
-import { refreshCustomPieceImages, sendTestNotification } from "./debug.js";
+import { refreshCustomPieceImages } from "./debug.js";
 import { LogType } from "@/common/log.js";
 import { createLayoutManagerWindow } from "./layout.js";
 import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github.js";
@@ -691,10 +691,6 @@ function createMenuTemplate(window: BrowserWindow) {
           click: () => {
             refreshCustomPieceImages(updateAppSettings).catch(sendError);
           },
-        },
-        {
-          label: t.notificationTest,
-          click: sendTestNotification,
         },
         {
           type: "separator",

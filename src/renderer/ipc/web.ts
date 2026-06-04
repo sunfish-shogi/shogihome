@@ -493,9 +493,6 @@ export const webAPI: Bridge = {
   async getVersionStatus(): Promise<string> {
     return JSON.stringify({} as VersionStatus);
   },
-  sendTestNotification(): void {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
-  },
   getPathForFile(file: File): string {
     return file.name;
   },

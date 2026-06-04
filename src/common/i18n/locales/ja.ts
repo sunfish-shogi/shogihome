@@ -675,11 +675,6 @@ export const ja: Texts = {
   thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。",
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
     "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？",
-  whenNewVersionIsAvailableItWillBeNotified: "新しいバージョンが利用可能になると通知されます。",
-  pleaseCheckMessageThisIsTestNotificationByAboveButton:
-    "上のボタンで「これは通知のテストです。」というメッセージを確認してください。",
-  ifNotWorkYouShouldAllowNotificationOnOSSetting:
-    "表示されない場合はOSの設定で通知を許可してください。",
   translationHelpNeeded: "翻訳の改善にご協力ください。",
   restartRequiredAfterLocaleChange: "言語の変更には再起動が必要です。",
   createDesktopShortcut: "デスクトップにショートカットを作成",

@@ -418,9 +418,6 @@ const api: Bridge = {
   async getVersionStatus(): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_VERSION_STATUS);
   },
-  sendTestNotification(): void {
-    ipcRenderer.send(Background.SEND_TEST_NOTIFICATION);
-  },
   getPathForFile(file: File): string {
     return webUtils.getPathForFile(file);
   },

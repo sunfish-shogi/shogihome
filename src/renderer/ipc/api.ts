@@ -152,7 +152,6 @@ export interface API {
   getMachineSpec(): Promise<MachineSpec>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<VersionStatus>;
-  sendTestNotification(): void;
   getPathForFile(file: File): string;
 }
 
