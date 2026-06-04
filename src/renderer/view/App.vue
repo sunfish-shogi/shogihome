@@ -60,6 +60,8 @@
       @close="store.closePVPreviewDialog()"
     />
     <ParallelGameViewer v-if="store.appState === AppState.PARALLEL_GAME" />
+    <!-- アプリ内通知 -->
+    <NotificationOverlay />
     <!-- PCブラウザの場合のみライセンスへの遷移が無いので、画面の隅にボタンを表示する。 -->
     <button v-if="!isNative() && !isMobileWebApp()" class="copyright" @click="openCopyright">
       &copy;
@@ -108,6 +110,7 @@ import ResetBookDialog from "./dialog/ResetBookDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
 import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
+import NotificationOverlay from "./overlay/NotificationOverlay.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
 import { useErrorStore } from "@/renderer/store/error";
