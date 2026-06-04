@@ -237,6 +237,7 @@ export const vi: Texts = {
   singleKanjiGothicPiece: "Nhất tự (Gothic)",
   singleKanjiDarkPiece: "Nhất tự (Tối)",
   singleKanjiGothicDarkPiece: "Nhất tự (Gothic, Tối)",
+  twoKanjiPiece: "二文字駒", // TODO: Translate
   imageHasMarginsRemoveForLargerDisplay: "Ảnh có lề (loại bỏ để hiển thị lớn hơn)",
   backgroundImage: "Ảnh nền",
   board: "Bàn cờ",

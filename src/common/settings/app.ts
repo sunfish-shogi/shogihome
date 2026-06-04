@@ -31,6 +31,7 @@ export enum PieceImageType {
   HITOMOJI_DARK = "hitomojiDark",
   HITOMOJI_GOTHIC = "hitomojiGothic",
   HITOMOJI_GOTHIC_DARK = "hitomojiGothicDark",
+  FUTAMOJI = "futamoji",
   CUSTOM_IMAGE = "custom-image",
 }
 
@@ -567,6 +568,8 @@ export function getPieceImageURLTemplate(settings: AppSettings): string {
       return "./piece/hitomoji_gothic/${piece}.png";
     case PieceImageType.HITOMOJI_GOTHIC_DARK:
       return "./piece/hitomoji_gothic_dark/${piece}.png";
+    case PieceImageType.FUTAMOJI:
+      return "./piece/futamoji/${piece}.png";
     case PieceImageType.CUSTOM_IMAGE:
       if (settings.croppedPieceImageBaseURL) {
         const query = settings.croppedPieceImageQuery ? `?${settings.croppedPieceImageQuery}` : "";

@@ -46,6 +46,13 @@ describe("settings/app", () => {
     expect(
       getPieceImageURLTemplate({
         ...defaultAppSettings(),
+        pieceImage: PieceImageType.FUTAMOJI,
+      }),
+    ).toBe("./piece/futamoji/${piece}.png");
+
+    expect(
+      getPieceImageURLTemplate({
+        ...defaultAppSettings(),
         pieceImage: PieceImageType.CUSTOM_IMAGE,
         pieceImageFileURL: "/home/user/pictures/piece.png",
         croppedPieceImageBaseURL: "file:///home/user/.cache/piece",
