@@ -6,6 +6,7 @@ permissions:
 on:
   schedule:
     - cron: "0 0 * * 2,6" # Every Tuesday and Saturday at 09:00 JST
+  workflow_dispatch:
 
 jobs:
   build:
