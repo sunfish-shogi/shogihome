@@ -590,6 +590,7 @@ export const ja: Texts = {
   blackPlayerOnly: "先手のみ",
   whitePlayerOnly: "後手のみ",
   filterByName: "名前でフィルタ",
+  importScoreFromComment: "コメントから評価値を取り込む",
   enterPartOfPlayerNameHere: "ここに対局者名の一部を入力",
   freq: "出現頻度",
   frequency: "出現頻度",

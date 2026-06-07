@@ -10,6 +10,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 10,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeUndefined();
     expect(
@@ -20,6 +21,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 10,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeInstanceOf(Error);
     expect(
@@ -30,6 +32,7 @@ describe("settings/book", () => {
         minPly: 20,
         maxPly: 10,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeInstanceOf(Error);
     expect(
@@ -41,6 +44,7 @@ describe("settings/book", () => {
         maxPly: 10,
         playerCriteria: PlayerCriteria.FILTER_BY_NAME,
         playerName: "player",
+        importScore: true,
       }),
     ).toBeUndefined();
     expect(
@@ -51,6 +55,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 10,
         playerCriteria: PlayerCriteria.FILTER_BY_NAME,
+        importScore: true,
       }),
     ).toBeInstanceOf(Error);
     expect(
@@ -61,6 +66,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeUndefined();
     expect(
@@ -71,6 +77,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeUndefined();
     expect(
@@ -81,6 +88,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeUndefined();
     expect(
@@ -91,6 +99,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeInstanceOf(Error);
     expect(
@@ -101,6 +110,7 @@ describe("settings/book", () => {
         minPly: 0,
         maxPly: 100,
         playerCriteria: PlayerCriteria.ALL,
+        importScore: true,
       }),
     ).toBeInstanceOf(Error);
   });

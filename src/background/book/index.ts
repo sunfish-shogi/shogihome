@@ -736,7 +736,7 @@ export async function importBookMoves(
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
 
-    if (node.comment) {
+    if (settings.importScore && node.comment) {
       const customData = parseComment(node.comment);
       // parseComment は先手基準の評価値を返すので手番視点に変換する
       const sign = node.prev?.nextColor === Color.WHITE ? -1 : 1;

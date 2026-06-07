@@ -111,6 +111,12 @@
           :placeholder="t.enterPartOfPlayerNameHere"
         />
       </div>
+      <div
+        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
+        class="form-item row"
+      >
+        <ToggleButton v-model:value="settings.importScore" :label="t.importScoreFromComment" />
+      </div>
     </div>
     <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
       <button class="import" @click="importMoves">{{ t.import }}</button>
@@ -136,6 +142,7 @@ import { BookMove } from "@/common/book";
 import { IconType } from "@/renderer/assets/icons";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import api from "@/renderer/ipc/api";
 import {
   defaultBookImportSettings,

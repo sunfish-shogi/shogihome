@@ -600,6 +600,7 @@ export const vi: Texts = {
   blackPlayerOnly: "Chỉ Tiên",
   whitePlayerOnly: "Chỉ Hậu",
   filterByName: "Lọc bằng tên",
+  importScoreFromComment: "コメントから評価値を取り込む", // TODO: Translate
   enterPartOfPlayerNameHere: "Nhập một phần tên kỳ thủ",
   freq: "Tần suất",
   frequency: "Tần suất xuất hiện",
