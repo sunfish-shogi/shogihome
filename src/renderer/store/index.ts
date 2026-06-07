@@ -27,10 +27,9 @@ import { reactive, UnwrapNestedRefs } from "vue";
 import { defaultGameSettings, GameSettings } from "@/common/settings/game.js";
 import { ClockSoundTarget, Tab, TextDecodingRule } from "@/common/settings/app.js";
 import { beepShort, beepUnlimited, playPieceBeat, stopBeep } from "@/renderer/devices/audio.js";
+import { SearchInfoSenderType, SearchInfo as SearchInfoParam } from "@/common/record/types.js";
 import {
   RecordManager,
-  SearchInfoSenderType,
-  SearchInfo as SearchInfoParam,
   ChangePositionHandler,
   UpdateCustomDataHandler,
   PieceSet,

@@ -1,7 +1,7 @@
 import api, { API } from "@/renderer/ipc/api.js";
 import { exportKI2, ImmutablePosition, InitialPositionSFEN, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store/index.js";
-import { RecordCustomData } from "@/renderer/record/manager.js";
+import { RecordCustomData } from "@/common/record/types.js";
 import * as audio from "@/renderer/devices/audio.js";
 import { gameSettings10m30s } from "@/tests/mock/game.js";
 import { GameManager } from "@/renderer/game/game.js";
