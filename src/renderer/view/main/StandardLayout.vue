@@ -24,11 +24,17 @@
               :right-control-type="appSettings.rightSideControlType"
               @resize="onBoardPaneResize"
             />
-            <RecordPane
-              :style="recordPaneStyle"
-              :show-comment="appSettings.showCommentInRecordView"
-              :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
-            />
+            <div :style="recordPaneStyle" class="column">
+              <RecordPane
+                class="record-area"
+                :show-comment="appSettings.showCommentInRecordView"
+                :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
+                :show-top-control="!isConsecutiveGame"
+                :show-bottom-control="!isConsecutiveGame"
+                :show-branches="!isConsecutiveGame"
+              />
+              <ConsecutiveGameProgress v-if="isConsecutiveGame" />
+            </div>
           </div>
           <button
             v-if="!isBottomPaneVisible"
@@ -112,6 +118,9 @@ import { t } from "@/common/i18n";
 import { reactive, onMounted, onUnmounted, computed, ref } from "vue";
 import BoardPane from "./BoardPane.vue";
 import RecordPane, { minWidth as minRecordWidth } from "./RecordPane.vue";
+import ConsecutiveGameProgress from "./ConsecutiveGameProgress.vue";
+import { useStore } from "@/renderer/store";
+import { AppState } from "@/common/control/state.js";
 import TabPane, { headerHeight as tabHeaderHeight } from "./TabPane.vue";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import ControlPane, { ControlGroup } from "./ControlPane.vue";
@@ -132,7 +141,12 @@ const splitterWidth = 8;
 const margin = 10;
 const lazyUpdateDelay = 100;
 
+const store = useStore();
 const appSettings = useAppSettings();
+
+const isConsecutiveGame = computed(
+  () => store.appState === AppState.GAME && store.gameSettings.repeat >= 2,
+);
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
 const topPaneHeightPercentage = ref(appSettings.topPaneHeightPercentage);
 const bottomLeftPaneWidthPercentage = ref(appSettings.bottomLeftPaneWidthPercentage);
@@ -308,6 +322,10 @@ const tabPaneSize2a = computed(
 </style>
 
 <style scoped>
+.record-area {
+  flex: 1 1 0;
+  min-height: 0;
+}
 .shadow-bottom {
   box-shadow: 0px 6px 6px -3px var(--shadow-color);
 }
