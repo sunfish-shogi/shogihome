@@ -61,6 +61,32 @@ function parseKShogiPlayerScoreComment(line: string): number | undefined {
   return matched ? Number(matched[1]) : undefined;
 }
 
+function parsePlayerDepthComment(line: string): number | undefined {
+  const matched = /^\*深さ=([0-9]+)/.exec(line);
+  return matched ? Number(matched[1]) : undefined;
+}
+
+function parseResearchDepthComment(line: string): number | undefined {
+  const matched = /^#深さ=([0-9]+)/.exec(line);
+  return matched ? Number(matched[1]) : undefined;
+}
+
+function parseShogiGUIPlayerDepthComment(line: string): number | undefined {
+  if (!/^\*対局 /.test(line)) {
+    return undefined;
+  }
+  const matched = / 深さ ([0-9]+)/.exec(line);
+  return matched ? Number(matched[1]) : undefined;
+}
+
+function parseShogiGUIAnalysisDepthComment(line: string): number | undefined {
+  if (!/^\*解析 /.test(line)) {
+    return undefined;
+  }
+  const matched = / 深さ ([0-9]+)/.exec(line);
+  return matched ? Number(matched[1]) : undefined;
+}
+
 export function parseComment(comment: string, base: RecordCustomData = {}): RecordCustomData {
   const data = { ...base };
   const lines = comment.split("\n");
@@ -98,6 +124,21 @@ export function parseComment(comment: string, base: RecordCustomData = {}): Reco
       data.researchInfo = {
         ...data.researchInfo,
         score: researchScore,
+      };
+    }
+    const playerDepth = parsePlayerDepthComment(line) ?? parseShogiGUIPlayerDepthComment(line);
+    if (playerDepth !== undefined) {
+      data.playerSearchInfo = {
+        ...data.playerSearchInfo,
+        depth: playerDepth,
+      };
+    }
+    const researchDepth =
+      parseResearchDepthComment(line) ?? parseShogiGUIAnalysisDepthComment(line);
+    if (researchDepth !== undefined) {
+      data.researchInfo = {
+        ...data.researchInfo,
+        depth: researchDepth,
       };
     }
   }
