@@ -565,6 +565,21 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     ).toEqual([{ usi: "5a4b", count: 3, score: 30000, comment: "" }]);
   });
 
+  it("importBookMoves - importScore: false", async () => {
+    await importBookMoves(defaultBookSession, {
+      ...defaultBookImportSettings(),
+      sourceType: SourceType.DIRECTORY,
+      sourceDirectory: "src/tests/testdata/book/source-with-score",
+      importScore: false,
+    });
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P6/PP1PPPPPP/1B1R5/LNSGKGSNL b - 1",
+      ),
+    ).toEqual([{ usi: "6g6f", count: 3, comment: "" }]);
+  });
+
   it("importBookMoves - SBK specific", async () => {
     await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk");
 
