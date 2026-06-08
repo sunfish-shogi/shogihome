@@ -739,7 +739,7 @@ export async function importBookMoves(
     if (settings.importScore && node.comment) {
       const customData = parseComment(node.comment);
       // parseComment は先手基準の評価値を返すので手番視点に変換する
-      const sign = node.prev?.nextColor === Color.WHITE ? -1 : 1;
+      const sign = node.move.color === Color.WHITE ? -1 : 1;
       // 評価値を持つ候補のうち既存より読みが深いもので bookMove を更新する
       for (const info of [
         customData.playerSearchInfo,
