@@ -27,17 +27,17 @@ function parseResearchMateScoreComment(line: string): number | undefined {
 }
 
 function parsePlayerScoreComment(line: string): number | undefined {
-  const matched = /^\*評価値=([+-]?[.0-9]+)/.exec(line);
+  const matched = /^\*評価値=([+-]?[0-9]+(?:\.[0-9]+)?)/.exec(line);
   return matched ? Number(matched[1]) : undefined;
 }
 
 function parseResearchScoreComment(line: string): number | undefined {
-  const matched = /^#評価値=([+-]?[.0-9]+)/.exec(line);
+  const matched = /^#評価値=([+-]?[0-9]+(?:\.[0-9]+)?)/.exec(line);
   return matched ? Number(matched[1]) : undefined;
 }
 
 function parseFloodgateScoreComment(line: string): number | undefined {
-  const matched = /^\* *([+-]?[.0-9]+)/.exec(line);
+  const matched = /^\* *([+-]?[0-9]+(?:\.[0-9]+)?)/.exec(line);
   return matched ? Number(matched[1]) : undefined;
 }
 
