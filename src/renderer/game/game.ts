@@ -19,7 +19,8 @@ import {
   Square,
 } from "tsshogi";
 import { CommentBehavior } from "@/common/settings/comment.js";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
+import { SearchInfoSenderType } from "@/common/record/types.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 import { Clock } from "./clock.js";
 import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder.js";
 import { GameResult } from "@/common/game/result.js";

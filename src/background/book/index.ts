@@ -35,6 +35,7 @@ import {
   SpecialMoveType,
 } from "tsshogi";
 import { t } from "@/common/i18n/index.js";
+import { parseComment } from "@/common/record/comment.js";
 import { hash as aperyHash } from "./apery_zobrist.js";
 import {
   loadAperyBook,
@@ -734,6 +735,31 @@ export async function importBookMoves(
     }
     const bookMove = existing || { usi, comment: "" };
     bookMove.count = (bookMove.count || 0) + 1;
+
+    if (settings.importScore && node.comment) {
+      const customData = parseComment(node.comment);
+      // parseComment は先手基準の評価値を返すので手番視点に変換する
+      const sign = node.move.color === Color.WHITE ? -1 : 1;
+      // 評価値を持つ候補のうち既存より読みが深いもので bookMove を更新する
+      for (const info of [
+        customData.playerSearchInfo,
+        customData.opponentSearchInfo,
+        customData.researchInfo,
+        customData.researchInfo2,
+        customData.researchInfo3,
+        customData.researchInfo4,
+      ]) {
+        if (info?.score === undefined && info?.mate === undefined) {
+          continue;
+        }
+        if (bookMove.score === undefined || (info.depth ?? -1) > (bookMove.depth ?? -1)) {
+          bookMove.score =
+            info.mate !== undefined ? (info.mate > 0 ? 30000 : -30000) * sign : info.score! * sign;
+          bookMove.depth = info.depth;
+        }
+      }
+    }
+
     updateBookMovePatch(book, sfen, bookMove);
 
     if (book.format === "sbk") {

@@ -23,7 +23,8 @@ import {
 } from "tsshogi";
 import { Clock } from "./clock.js";
 import { CommentBehavior } from "@/common/settings/comment.js";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
+import { SearchInfoSenderType } from "@/common/record/types.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 import { t } from "@/common/i18n/index.js";
 import { GameResult } from "@/common/game/result.js";
 import { USIPlayer } from "@/renderer/players/usi.js";

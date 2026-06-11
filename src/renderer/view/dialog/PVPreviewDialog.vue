@@ -89,7 +89,7 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { EvaluationViewFrom, getPieceImageURLTemplate } from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
-import { SearchInfoSenderType } from "@/renderer/record/manager";
+import { SearchInfoSenderType } from "@/common/record/types";
 import { CommentBehavior } from "@/common/settings/comment";
 import { AppState } from "@/common/control/state";
 import { useMessageStore } from "@/renderer/store/message";

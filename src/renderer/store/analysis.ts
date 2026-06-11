@@ -4,8 +4,9 @@ import { AnalysisSettings, defaultAnalysisSettings } from "@/common/settings/ana
 import { AppSettings } from "@/common/settings/app.js";
 import { USIEngine } from "@/common/settings/usi.js";
 import { Color, Move, reverseColor } from "tsshogi";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
-import { scoreToPercentage } from "@/renderer/record/score.js";
+import { SearchInfoSenderType } from "@/common/record/types.js";
+import { RecordManager } from "@/renderer/record/manager.js";
+import { scoreToPercentage } from "@/common/record/score.js";
 import { useAppSettings } from "./settings.js";
 import { t } from "@/common/i18n/index.js";
 

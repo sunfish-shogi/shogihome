@@ -533,42 +533,87 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     }
   });
 
-  describe("importBookMoves - SBK specific", () => {
-    it("SBK games/wonBlack/wonWhite updated on import", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk");
-
-      const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
-      const baseline = await loadSbkBook(
-        fs.readFileSync("src/tests/testdata/book/shogigui01-copy.sbk"),
-      );
-      const baselineGames = baseline.entries.get(initialSfen)?.games ?? 0;
-      const baselineWonBlack = baseline.entries.get(initialSfen)?.wonBlack ?? 0;
-      const baselineWonWhite = baseline.entries.get(initialSfen)?.wonWhite ?? 0;
-
-      // 7g7f 3c3d の後は先手番 → 先手が投了 → 後手勝ち (×2)
-      // 7g7f 3c3d 2g2f の後は後手番 → 後手が投了 → 先手勝ち (×1)
-      const sfenPath = path.join(tmpdir, "import-stats-test.sfen");
-      fs.writeFileSync(
-        sfenPath,
-        "position startpos moves 7g7f 3c3d resign\n" +
-          "position startpos moves 7g7f 3c3d resign\n" +
-          "position startpos moves 7g7f 3c3d 2g2f resign\n",
-      );
-
-      await importBookMoves(defaultBookSession, {
-        ...defaultBookImportSettings(),
-        sourceType: SourceType.FILE,
-        sourceRecordFile: sfenPath,
-        maxPly: 1, // 初期局面からの 7g7f だけを取り込む
-      });
-
-      const tempFilePath = path.join(tmpdir, "stats-test.sbk");
-      await saveBook(defaultBookSession, tempFilePath);
-      const entry = (await loadSbkBook(fs.readFileSync(tempFilePath))).entries.get(initialSfen);
-      expect(entry?.games).toBe(baselineGames + 3);
-      expect(entry?.wonBlack).toBe(baselineWonBlack + 1);
-      expect(entry?.wonWhite).toBe(baselineWonWhite + 2);
+  it("importBookMoves - with score and depth", async () => {
+    await importBookMoves(defaultBookSession, {
+      ...defaultBookImportSettings(),
+      sourceType: SourceType.DIRECTORY,
+      sourceDirectory: "src/tests/testdata/book/source-with-score",
     });
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P6/PP1PPPPPP/1B1R5/LNSGKGSNL b - 1",
+      ),
+    ).toEqual([{ usi: "6g6f", count: 3, depth: 31, score: -72, comment: "" }]);
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2PP5/PP2PPPPP/1B1R5/LNSGKGSNL w - 1",
+      ),
+    ).toEqual([{ usi: "8d8e", count: 3, depth: 21, score: 97, comment: "" }]);
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R5/LNSGKGSNL b - 1",
+      ),
+    ).toEqual([{ usi: "1g1f", count: 3, score: 30000, comment: "" }]);
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP4P/PPB1PPPP1/3R5/LNSGKGSNL w - 1",
+      ),
+    ).toEqual([{ usi: "5a4b", count: 3, score: 30000, comment: "" }]);
+  });
+
+  it("importBookMoves - importScore: false", async () => {
+    await importBookMoves(defaultBookSession, {
+      ...defaultBookImportSettings(),
+      sourceType: SourceType.DIRECTORY,
+      sourceDirectory: "src/tests/testdata/book/source-with-score",
+      importScore: false,
+    });
+    expect(
+      await searchBookMoves(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P6/PP1PPPPPP/1B1R5/LNSGKGSNL b - 1",
+      ),
+    ).toEqual([{ usi: "6g6f", count: 3, comment: "" }]);
+  });
+
+  it("importBookMoves - SBK specific", async () => {
+    await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk");
+
+    const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+    const baseline = await loadSbkBook(
+      fs.readFileSync("src/tests/testdata/book/shogigui01-copy.sbk"),
+    );
+    const baselineGames = baseline.entries.get(initialSfen)?.games ?? 0;
+    const baselineWonBlack = baseline.entries.get(initialSfen)?.wonBlack ?? 0;
+    const baselineWonWhite = baseline.entries.get(initialSfen)?.wonWhite ?? 0;
+
+    // 7g7f 3c3d の後は先手番 → 先手が投了 → 後手勝ち (×2)
+    // 7g7f 3c3d 2g2f の後は後手番 → 後手が投了 → 先手勝ち (×1)
+    const sfenPath = path.join(tmpdir, "import-stats-test.sfen");
+    fs.writeFileSync(
+      sfenPath,
+      "position startpos moves 7g7f 3c3d resign\n" +
+        "position startpos moves 7g7f 3c3d resign\n" +
+        "position startpos moves 7g7f 3c3d 2g2f resign\n",
+    );
+
+    await importBookMoves(defaultBookSession, {
+      ...defaultBookImportSettings(),
+      sourceType: SourceType.FILE,
+      sourceRecordFile: sfenPath,
+      maxPly: 1, // 初期局面からの 7g7f だけを取り込む
+    });
+
+    const tempFilePath = path.join(tmpdir, "stats-test.sbk");
+    await saveBook(defaultBookSession, tempFilePath);
+    const entry = (await loadSbkBook(fs.readFileSync(tempFilePath))).entries.get(initialSfen);
+    expect(entry?.games).toBe(baselineGames + 3);
+    expect(entry?.wonBlack).toBe(baselineWonBlack + 1);
+    expect(entry?.wonWhite).toBe(baselineWonWhite + 2);
   });
 
   describe("merge", () => {

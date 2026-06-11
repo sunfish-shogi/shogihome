@@ -597,6 +597,7 @@ export const zh_tw: Texts = {
   blackPlayerOnly: "僅先手",
   whitePlayerOnly: "僅後手",
   filterByName: "使用名稱過濾",
+  importScoreFromComment: "コメントから評価値を取り込む", // TODO: Translate
   enterPartOfPlayerNameHere: "輸入對局者名稱",
   freq: "出現次數",
   frequency: "出現次數",

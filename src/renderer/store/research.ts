@@ -3,7 +3,7 @@ import { USIPlayer } from "@/renderer/players/usi.js";
 import { SearchInfo } from "@/renderer/players/player.js";
 import { ImmutableRecord } from "tsshogi";
 import { MultiPV, USIEngine, USIMultiPV } from "@/common/settings/usi.js";
-import { SearchInfoSenderType } from "@/renderer/record/manager.js";
+import { SearchInfoSenderType } from "@/common/record/types.js";
 import { useAppSettings } from "./settings.js";
 import { Lazy } from "@/common/helpers/lazy.js";
 

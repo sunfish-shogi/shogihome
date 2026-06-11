@@ -590,6 +590,7 @@ export const en: Texts = {
   blackPlayerOnly: "Black Player Only",
   whitePlayerOnly: "White Player Only",
   filterByName: "Filter by Name",
+  importScoreFromComment: "Import scores from comments",
   enterPartOfPlayerNameHere: "Enter part of player name here",
   freq: "Freq.",
   frequency: "Frequency",

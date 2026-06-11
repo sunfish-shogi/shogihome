@@ -13,7 +13,8 @@ import {
   specialMove,
 } from "tsshogi";
 import { SCORE_MATE_INFINITE } from "@/common/game/usi.js";
-import { RecordManager, SearchInfoSenderType } from "@/renderer/record/manager.js";
+import { SearchInfoSenderType } from "@/common/record/types.js";
+import { RecordManager } from "@/renderer/record/manager.js";
 
 describe("record/manager", () => {
   it("new", () => {
