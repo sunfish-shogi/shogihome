@@ -165,8 +165,8 @@ function restoreCustomData(record: Record): void {
         };
       }
       const playerScore =
-        parsePlayerScoreComment(line) ||
-        parseFloodgateScoreComment(line) ||
+        parsePlayerScoreComment(line) ??
+        parseFloodgateScoreComment(line) ??
         parseShogiGUIPlayerScoreComment(line);
       if (playerScore !== undefined) {
         data.playerSearchInfo = {
@@ -175,9 +175,9 @@ function restoreCustomData(record: Record): void {
         };
       }
       const researchScore =
-        parseResearchScoreComment(line) ||
-        parseShogiGUIAnalysisScoreComment(line) ||
-        parseKishinAnalyticsScoreComment(line) ||
+        parseResearchScoreComment(line) ??
+        parseShogiGUIAnalysisScoreComment(line) ??
+        parseKishinAnalyticsScoreComment(line) ??
         parseKShogiPlayerScoreComment(line);
       if (researchScore !== undefined) {
         data.researchInfo = {
