@@ -106,8 +106,8 @@ export function parseComment(comment: string, base: RecordCustomData = {}): Reco
       };
     }
     const playerScore =
-      parsePlayerScoreComment(line) ||
-      parseFloodgateScoreComment(line) ||
+      parsePlayerScoreComment(line) ??
+      parseFloodgateScoreComment(line) ??
       parseShogiGUIPlayerScoreComment(line);
     if (playerScore !== undefined) {
       data.playerSearchInfo = {
@@ -116,9 +116,9 @@ export function parseComment(comment: string, base: RecordCustomData = {}): Reco
       };
     }
     const researchScore =
-      parseResearchScoreComment(line) ||
-      parseShogiGUIAnalysisScoreComment(line) ||
-      parseKishinAnalyticsScoreComment(line) ||
+      parseResearchScoreComment(line) ??
+      parseShogiGUIAnalysisScoreComment(line) ??
+      parseKishinAnalyticsScoreComment(line) ??
       parseKShogiPlayerScoreComment(line);
     if (researchScore !== undefined) {
       data.researchInfo = {
