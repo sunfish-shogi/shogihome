@@ -37,6 +37,13 @@ export function defaultBookImportSettings(): BookImportSettings {
   };
 }
 
+export function normalizeBookImportSettings(settings: BookImportSettings): BookImportSettings {
+  return {
+    ...defaultBookImportSettings(),
+    ...settings,
+  };
+}
+
 export function validateBookImportSettings(settings: BookImportSettings): Error | undefined {
   if (settings.sourceType === SourceType.FILE) {
     if (!settings.sourceRecordFile) {

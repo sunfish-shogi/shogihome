@@ -45,7 +45,11 @@ import {
 import { exists } from "./helpers/file.js";
 import { emptyLayoutProfileList, LayoutProfileList } from "@/common/settings/layout.js";
 import { openPath } from "./helpers/electron.js";
-import { BookImportSettings, defaultBookImportSettings } from "@/common/settings/book.js";
+import {
+  BookImportSettings,
+  defaultBookImportSettings,
+  normalizeBookImportSettings,
+} from "@/common/settings/book.js";
 import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic.js";
 import { getAppPath } from "./proc/path-electron.js";
 
@@ -293,5 +297,7 @@ export async function loadBookImportSettings(): Promise<BookImportSettings> {
   if (!(await exists(bookImportSettingsPath))) {
     return defaultBookImportSettings();
   }
-  return JSON.parse(await fs.promises.readFile(bookImportSettingsPath, "utf8"));
+  return normalizeBookImportSettings(
+    JSON.parse(await fs.promises.readFile(bookImportSettingsPath, "utf8")),
+  );
 }
