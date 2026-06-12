@@ -594,6 +594,7 @@ const cancel = () => {
 .option-list {
   width: 740px;
   height: calc(100vh - 250px);
+  padding-bottom: 25px;
   max-height: 800px;
   overflow: auto;
 }
