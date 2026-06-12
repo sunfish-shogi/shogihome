@@ -24,11 +24,12 @@
               <span v-if="move.score !== undefined">{{ t.score }} {{ move.score }}</span>
             </td>
             <td v-if="move.type === 'move'">
-              <button v-if="!move.exists" class="thin" @click="registerMove(move)">
-                {{ t.register }}
-              </button>
-              <button v-else-if="move.scoreUpdatable" class="thin" @click="updateScore(move)">
-                {{ t.update }}
+              <button
+                v-if="!move.exists || move.scoreUpdatable"
+                class="thin"
+                @click="registerMove(move)"
+              >
+                {{ move.exists ? t.update : t.register }}
               </button>
             </td>
             <td v-if="move.type === 'move'">
@@ -244,15 +245,6 @@ const registerMove = (move: InMemoryMove) => {
     depth: move.depth,
   });
   move.exists = true;
-  move.scoreUpdatable = false;
-};
-
-const updateScore = (move: InMemoryMove) => {
-  bookStore.updateMove(move.sfen, {
-    ...move.book,
-    score: move.score,
-    depth: move.depth,
-  });
   move.scoreUpdatable = false;
 };
 
