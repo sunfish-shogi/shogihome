@@ -243,22 +243,26 @@ const onClose = () => {
   store.closeModalDialog();
 };
 
-const registerAllMoves = () => {
+const registerAllMoves = async () => {
   for (const item of inMemoryList.value) {
     if (item.type === "move" && (!item.exists || item.scoreUpdatable)) {
-      registerMove(item);
+      await registerMove(item);
     }
   }
 };
 
-const registerMove = (move: InMemoryMove) => {
-  bookStore.updateMove(move.sfen, {
-    ...move.book,
-    score: move.score,
-    depth: move.depth,
-  });
-  move.exists = true;
-  move.scoreUpdatable = false;
+const registerMove = async (move: InMemoryMove) => {
+  try {
+    await bookStore.updateMove(move.sfen, {
+      ...move.book,
+      score: move.score,
+      depth: move.depth,
+    });
+    move.exists = true;
+    move.scoreUpdatable = false;
+  } catch (e) {
+    errorStore.add(e);
+  }
 };
 
 const selectDirectory = async () => {
