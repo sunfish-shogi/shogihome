@@ -17,7 +17,15 @@
       </div>
       <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
         <tbody>
-          <tr v-for="move of inMemoryList" :key="move.ply">
+          <tr
+            v-for="move of inMemoryList"
+            :key="move.ply"
+            :ref="
+              (el) => {
+                if (move.type === 'move' && move.last && el) currentMoveRow = el as HTMLElement;
+              }
+            "
+          >
             <td v-if="move.type === 'move'">{{ move.ply }}</td>
             <td v-if="move.type === 'move'">{{ move.text }}</td>
             <td v-if="move.type === 'move'">
@@ -136,7 +144,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
-import { onMounted, ref } from "vue";
+import { nextTick, onMounted, ref } from "vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
@@ -180,6 +188,7 @@ const errorStore = useErrorStore();
 const busyState = useBusyState();
 const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
+let currentMoveRow: HTMLElement | undefined;
 
 const setupInMemoryList = async () => {
   const nodes: { node: ImmutableNode; sfen: string }[] = [];
@@ -229,6 +238,8 @@ onMounted(async () => {
   try {
     await setupInMemoryList();
     settings.value = await api.loadBookImportSettings();
+    await nextTick();
+    currentMoveRow?.scrollIntoView({ block: "center" });
   } catch (e) {
     errorStore.add(e);
     store.destroyModalDialog();
