@@ -591,7 +591,9 @@ export const zh_tw: Texts = {
   noMoves: "沒有棋步。",
   register: "登錄",
   update: "更新",
-  registerAll: "全て登録", // TODO: Translate
+  importAll: "全て反映", // TODO: Translate
+  doYouWantToImportAllMoves: "全ての手を反映しますか？", // TODO: Translate
+  importedMoves: (n: number) => `${n}手を定跡に反映しました。`, // TODO: Translate
   currentMove: "目前棋步",
   branchFrom: (n: number) => `自${n}手目分岐`,
   allPlayers: "所有對局者",

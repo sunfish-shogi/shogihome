@@ -113,7 +113,7 @@
       </div>
     </div>
     <div v-show="activeTab === 'memory' && inMemoryList.length">
-      <button class="register-all" @click="registerAllMoves">{{ t.registerAll }}</button>
+      <button class="register-all" @click="registerAllMoves">{{ t.importAll }}</button>
     </div>
     <div v-show="activeTab === 'directory' || activeTab === 'file'">
       <button class="import" @click="importMoves">{{ t.import }}</button>
@@ -152,6 +152,8 @@ type Tab = "memory" | "file" | "directory";
 const STORAGE_KEY = "addBookMovesDialog:tab";
 import DialogFrame from "./DialogFrame.vue";
 import { RecordFileFormat, getStandardRecordFileFormats } from "@/common/file/record";
+import { useConfirmationStore } from "@/renderer/store/confirm.js";
+import { useMessageStore } from "@/renderer/store/message.js";
 
 type InMemoryMove = {
   type: "move";
@@ -243,12 +245,22 @@ const onClose = () => {
   store.closeModalDialog();
 };
 
-const registerAllMoves = async () => {
-  for (const item of inMemoryList.value) {
-    if (item.type === "move" && (!item.exists || item.scoreUpdatable)) {
-      await registerMove(item);
-    }
-  }
+const registerAllMoves = () => {
+  useConfirmationStore().show({
+    message: t.doYouWantToImportAllMoves,
+    onOk: async () => {
+      let added = 0;
+      for (const item of inMemoryList.value) {
+        if (item.type === "move" && (!item.exists || item.scoreUpdatable)) {
+          await registerMove(item);
+          added++;
+        }
+      }
+      useMessageStore().enqueue({
+        text: t.importedMoves(added),
+      });
+    },
+  });
 };
 
 const registerMove = async (move: InMemoryMove) => {
