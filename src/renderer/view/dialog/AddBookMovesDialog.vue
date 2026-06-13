@@ -18,8 +18,8 @@
       <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
         <tbody>
           <tr
-            v-for="move of inMemoryList"
-            :key="move.ply"
+            v-for="(move, index) of inMemoryList"
+            :key="index"
             :ref="
               (el) => {
                 if (move.type === 'move' && move.last && el) currentMoveRow = el as HTMLElement;
