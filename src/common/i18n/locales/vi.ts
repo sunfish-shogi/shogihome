@@ -594,6 +594,9 @@ export const vi: Texts = {
   noMoves: "Không tìm thấy nước đi.",
   register: "Đăng ký",
   update: "Cập nhật",
+  importAll: "全て反映", // TODO: Translate
+  doYouWantToImportAllMoves: "全ての手を反映しますか？", // TODO: Translate
+  importedMoves: (n: number) => `${n}手を定跡に反映しました。`, // TODO: Translate
   currentMove: "Nước hiện tại",
   branchFrom: (n: number) => `Phân nhánh từ nước thứ ${n}`,
   allPlayers: "Tất cả kỳ thủ",

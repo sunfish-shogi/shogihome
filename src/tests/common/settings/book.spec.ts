@@ -108,17 +108,6 @@ describe("settings/book", () => {
         importScore: true,
       }),
     ).toBeInstanceOf(Error);
-    expect(
-      validateBookImportSettings({
-        sourceType: SourceType.MEMORY,
-        sourceDirectory: "",
-        sourceRecordFile: "",
-        minPly: 0,
-        maxPly: 100,
-        playerCriteria: PlayerCriteria.ALL,
-        importScore: true,
-      }),
-    ).toBeInstanceOf(Error);
   });
 
   it("normalizeBookImportSettings", () => {
