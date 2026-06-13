@@ -56,6 +56,8 @@ export function validateBookImportSettings(settings: BookImportSettings): Error 
     if (!settings.sourceDirectory) {
       return new Error(t.sourceDirectoryNotSet);
     }
+  } else {
+    return new Error("invalid source type");
   }
 
   if (settings.minPly < 0) {
