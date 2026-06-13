@@ -577,6 +577,7 @@ export type Texts = {
   noMoves: string;
   register: string;
   update: string;
+  registerAll: string;
   currentMove: string;
   branchFrom(n: number): string;
   allPlayers: string;

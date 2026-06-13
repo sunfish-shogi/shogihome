@@ -584,6 +584,7 @@ export const ja: Texts = {
   noMoves: "指し手がありません。",
   register: "登録",
   update: "更新",
+  registerAll: "全て登録",
   currentMove: "現在の手",
   branchFrom: (n: number) => `${n}手目から分岐`,
   allPlayers: "全ての対局者",

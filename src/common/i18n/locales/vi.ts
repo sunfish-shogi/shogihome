@@ -594,6 +594,7 @@ export const vi: Texts = {
   noMoves: "Không tìm thấy nước đi.",
   register: "Đăng ký",
   update: "Cập nhật",
+  registerAll: "全て登録", // TODO: Translate
   currentMove: "Nước hiện tại",
   branchFrom: (n: number) => `Phân nhánh từ nước thứ ${n}`,
   allPlayers: "Tất cả kỳ thủ",

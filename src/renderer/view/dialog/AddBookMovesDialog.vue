@@ -119,6 +119,9 @@
         <ToggleButton v-model:value="settings.importScore" :label="t.importScoreFromComment" />
       </div>
     </div>
+    <div v-show="settings.sourceType === 'memory' && inMemoryList.length">
+      <button class="register-all" @click="registerAllMoves">{{ t.registerAll }}</button>
+    </div>
     <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
       <button class="import" @click="importMoves">{{ t.import }}</button>
     </div>
@@ -238,6 +241,14 @@ const onClose = () => {
   store.closeModalDialog();
 };
 
+const registerAllMoves = () => {
+  for (const item of inMemoryList.value) {
+    if (item.type === "move" && (!item.exists || item.scoreUpdatable)) {
+      registerMove(item);
+    }
+  }
+};
+
 const registerMove = (move: InMemoryMove) => {
   bookStore.updateMove(move.sfen, {
     ...move.book,
@@ -311,6 +322,7 @@ table.move-list td.branch {
 input.small {
   width: 50px;
 }
+button.register-all,
 button.import {
   width: 100%;
 }

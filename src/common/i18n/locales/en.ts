@@ -584,6 +584,7 @@ export const en: Texts = {
   noMoves: "No Moves",
   register: "Register",
   update: "Update",
+  registerAll: "Register All",
   currentMove: "Current Move",
   branchFrom: (n: number) => `Branch from ${n}th Move`,
   allPlayers: "All Players",
