@@ -102,7 +102,7 @@
     "jsdom": "^29.0.2",
     "license-checker": "^25.0.1",
     "prettier": "^3.8.3",
-    "terser-webpack-plugin": "^5.3.15",
+    "terser-webpack-plugin": "^5.6.1",
     "ts-loader": "^9.5.2",
     "ts-proto": "^2.11.4",
     "tsc-alias": "^1.7.0",
