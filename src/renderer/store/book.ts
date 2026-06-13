@@ -7,7 +7,7 @@ import { useBusyState } from "./busy.js";
 import { useConfirmationStore } from "./confirm.js";
 import { useMessageStore } from "./message.js";
 import { useAppSettings } from "./settings.js";
-import { BookImportSettings, SourceType } from "@/common/settings/book.js";
+import { BookImportSettings } from "@/common/settings/book.js";
 import { t } from "@/common/i18n/index.js";
 import { ImmutableRecord } from "tsshogi";
 import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
@@ -159,11 +159,6 @@ export class BookStore {
     return api
       .updateBookMove(defaultBookSession, sfen, move)
       .then(() => this.reloadBookMoves())
-      .then(async () => {
-        const settings = await api.loadBookImportSettings();
-        settings.sourceType = SourceType.MEMORY;
-        await api.saveBookImportSettings(settings);
-      })
       .finally(() => {
         useBusyState().release();
       });

@@ -2,7 +2,6 @@ import { detectRecordFileFormatByPath } from "@/common/file/record.js";
 import { t } from "@/common/i18n/index.js";
 
 export enum SourceType {
-  MEMORY = "memory",
   DIRECTORY = "directory",
   FILE = "file",
 }
@@ -27,7 +26,7 @@ export type BookImportSettings = {
 
 export function defaultBookImportSettings(): BookImportSettings {
   return {
-    sourceType: SourceType.MEMORY,
+    sourceType: SourceType.FILE,
     sourceDirectory: "",
     sourceRecordFile: "",
     minPly: 0,
@@ -57,8 +56,6 @@ export function validateBookImportSettings(settings: BookImportSettings): Error 
     if (!settings.sourceDirectory) {
       return new Error(t.sourceDirectoryNotSet);
     }
-  } else {
-    return new Error("invalid source type");
   }
 
   if (settings.minPly < 0) {

@@ -3,19 +3,19 @@
     <div class="title">{{ t.addBookMoves }}</div>
     <div>
       <HorizontalSelector
-        v-model:value="settings.sourceType"
+        v-model:value="activeTab"
         :items="[
-          { value: SourceType.MEMORY, label: t.fromCurrentRecord },
-          { value: SourceType.FILE, label: t.fromFile },
-          { value: SourceType.DIRECTORY, label: t.fromDirectory },
+          { value: 'memory', label: t.fromCurrentRecord },
+          { value: 'file', label: t.fromFile },
+          { value: 'directory', label: t.fromDirectory },
         ]"
       />
     </div>
     <div class="form-group scroll">
-      <div v-show="settings.sourceType === 'memory' && !inMemoryList.length">
+      <div v-show="activeTab === 'memory' && !inMemoryList.length">
         {{ t.noMoves }}
       </div>
-      <table v-show="settings.sourceType === 'memory' && inMemoryList.length" class="move-list">
+      <table v-show="activeTab === 'memory' && inMemoryList.length" class="move-list">
         <tbody>
           <tr
             v-for="(move, index) of inMemoryList"
@@ -49,7 +49,7 @@
           </tr>
         </tbody>
       </table>
-      <div v-show="settings.sourceType === 'directory'" class="form-item row">
+      <div v-show="activeTab === 'directory'" class="form-item row">
         <input v-model="settings.sourceDirectory" class="grow" type="text" />
         <button class="thin" @click="selectDirectory()">
           {{ t.select }}
@@ -58,16 +58,13 @@
           <Icon :icon="IconType.OPEN_FOLDER" />
         </button>
       </div>
-      <div v-show="settings.sourceType === 'file'" class="form-item row">
+      <div v-show="activeTab === 'file'" class="form-item row">
         <input v-model="settings.sourceRecordFile" class="grow" type="text" />
         <button class="thin" @click="selectRecordFile()">
           {{ t.select }}
         </button>
       </div>
-      <div
-        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-        class="form-item row"
-      >
+      <div v-show="activeTab === 'directory' || activeTab === 'file'" class="form-item row">
         <span>{{ t.fromPrefix }}</span>
         <input
           v-model.number="settings.minPly"
@@ -79,10 +76,7 @@
         />
         <span>{{ t.plySuffix }}{{ t.fromSuffix }}</span>
       </div>
-      <div
-        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-        class="form-item row"
-      >
+      <div v-show="activeTab === 'directory' || activeTab === 'file'" class="form-item row">
         <span>{{ t.toPrefix }}</span>
         <input
           v-model.number="settings.maxPly"
@@ -94,10 +88,7 @@
         />
         <span>{{ t.plySuffix }}{{ t.toSuffix }}</span>
       </div>
-      <div
-        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-        class="form-item row"
-      >
+      <div v-show="activeTab === 'directory' || activeTab === 'file'" class="form-item row">
         <HorizontalSelector
           v-model:value="settings.playerCriteria"
           :items="[
@@ -108,10 +99,7 @@
           ]"
         />
       </div>
-      <div
-        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-        class="form-item row"
-      >
+      <div v-show="activeTab === 'directory' || activeTab === 'file'" class="form-item row">
         <input
           v-show="settings.playerCriteria === 'filterByName'"
           v-model="settings.playerName"
@@ -120,17 +108,14 @@
           :placeholder="t.enterPartOfPlayerNameHere"
         />
       </div>
-      <div
-        v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'"
-        class="form-item row"
-      >
+      <div v-show="activeTab === 'directory' || activeTab === 'file'" class="form-item row">
         <ToggleButton v-model:value="settings.importScore" :label="t.importScoreFromComment" />
       </div>
     </div>
-    <div v-show="settings.sourceType === 'memory' && inMemoryList.length">
+    <div v-show="activeTab === 'memory' && inMemoryList.length">
       <button class="register-all" @click="registerAllMoves">{{ t.registerAll }}</button>
     </div>
-    <div v-show="settings.sourceType === 'directory' || settings.sourceType === 'file'">
+    <div v-show="activeTab === 'directory' || activeTab === 'file'">
       <button class="import" @click="importMoves">{{ t.import }}</button>
     </div>
     <div class="main-buttons">
@@ -144,7 +129,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { Color, formatMove, ImmutableNode, Move, Position } from "tsshogi";
 import { useBookStore } from "@/renderer/store/book";
@@ -162,6 +147,9 @@ import {
   SourceType,
   validateBookImportSettings,
 } from "@/common/settings/book";
+
+type Tab = "memory" | "file" | "directory";
+const STORAGE_KEY = "addBookMovesDialog:tab";
 import DialogFrame from "./DialogFrame.vue";
 import { RecordFileFormat, getStandardRecordFileFormats } from "@/common/file/record";
 
@@ -186,6 +174,9 @@ const store = useStore();
 const bookStore = useBookStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
+const activeTab = ref<Tab>((localStorage.getItem(STORAGE_KEY) as Tab) ?? "memory");
+watch(activeTab, (tab) => localStorage.setItem(STORAGE_KEY, tab));
+
 const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
 let currentMoveRow: HTMLElement | undefined;
@@ -306,6 +297,7 @@ const selectRecordFile = async () => {
 };
 
 const importMoves = () => {
+  settings.value.sourceType = activeTab.value as SourceType;
   const error = validateBookImportSettings(settings.value);
   if (error) {
     useErrorStore().add(error);
