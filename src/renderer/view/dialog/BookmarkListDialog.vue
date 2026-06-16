@@ -1,7 +1,7 @@
 <template>
   <DialogFrame @cancel="onClose">
     <div class="title">{{ t.bookmarkList }}</div>
-    <div>
+    <div class="bookmark-list">
       <div v-for="bookmark of bookmarks" :key="bookmark" class="bookmark">
         <button :disabled="isJumpDisabled" @click="onSelectBookmark(bookmark)">
           {{ bookmark }}
@@ -41,12 +41,17 @@ const onSelectBookmark = (bookmark: string) => {
 </script>
 
 <style scoped>
+.bookmark-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: calc(100vw - 3px - 2em - 32px);
+}
 .bookmark {
   text-align: left;
-  margin: 10px 0;
 }
 .bookmark > button {
-  width: 200px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
