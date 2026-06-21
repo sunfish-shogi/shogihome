@@ -400,9 +400,7 @@ export async function mergeYbbBook(
 
     while (baseIdx < baseRecordCount || patchIdx < sortedPatches.length) {
       let cmp: number;
-      let basePacked: Uint8Array | undefined;
       let baseMovesOffset = 0;
-      let basePly = 1;
       let baseMoveCount = 0;
 
       if (baseIdx >= baseRecordCount) {
@@ -412,54 +410,54 @@ export async function mergeYbbBook(
       } else {
         const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
         await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
-        basePacked = new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32).slice();
         const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
         baseMovesOffset = Number(baseView.getBigUint64(32, true));
-        basePly = baseView.getUint16(40, true);
         baseMoveCount = baseView.getUint16(42, true);
-        cmp = comparePackedSfen(basePacked, sortedPatches[patchIdx].packedBytes);
+        cmp = comparePackedSfen(
+          new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32),
+          sortedPatches[patchIdx].packedBytes,
+        );
       }
 
       if (cmp < 0) {
-        // base only
-        if (!basePacked) {
+        // base only — recBuf already contains the full record
+        if (baseIdx >= baseRecordCount) {
+          throw new Error("unreachable");
+        }
+        if (baseMoveCount === 0 && baseMovesOffset === 0 && cmp === -1) {
+          // patchIdx >= sortedPatches.length case: recBuf not yet read
           const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
           await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
-          basePacked = new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32).slice();
           const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
           baseMovesOffset = Number(baseView.getBigUint64(32, true));
-          basePly = baseView.getUint16(40, true);
           baseMoveCount = baseView.getUint16(42, true);
         }
-        // Read base moves and rewrite (may need format conversion if entry size changed)
-        const baseMoveBuf = Buffer.alloc(baseMoveCount * baseEntrySize);
-        await baseFile.read(
-          baseMoveBuf,
-          0,
-          baseMoveBuf.length,
-          baseMovesAreaStart + baseMovesOffset,
-        );
-        const moves = readMoves(baseMoveBuf, baseMoveCount, baseEntrySize);
 
-        const outRec = Buffer.alloc(RECORD_SIZE);
-        outRec.set(basePacked, 0);
-        const outView = new DataView(outRec.buffer, outRec.byteOffset);
-        outView.setBigUint64(32, BigInt(movesPos - movesStart), true);
-        outView.setUint16(40, basePly, true);
-        outView.setUint16(42, moves.length, true);
-        await output.write(outRec, 0, RECORD_SIZE, indexPos);
+        // Overwrite only moves_offset in recBuf, then write as-is
+        const recView = new DataView(recBuf.buffer, recBuf.byteOffset);
+        recView.setBigUint64(32, BigInt(movesPos - movesStart), true);
+        await output.write(recBuf, 0, RECORD_SIZE, indexPos);
 
-        const outMoves = Buffer.alloc(moves.length * outputEntrySize);
-        for (let i = 0; i < moves.length; i++) {
-          const off = i * outputEntrySize;
-          outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
-          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
-          if (outputHasDepth) {
-            outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
+        const movesSize = baseMoveCount * baseEntrySize;
+        const baseMoveBuf = Buffer.alloc(movesSize);
+        await baseFile.read(baseMoveBuf, 0, movesSize, baseMovesAreaStart + baseMovesOffset);
+
+        if (baseEntrySize === outputEntrySize) {
+          await output.write(baseMoveBuf, 0, movesSize, movesPos);
+          movesPos += movesSize;
+        } else {
+          const outMoves = Buffer.alloc(baseMoveCount * outputEntrySize);
+          for (let i = 0; i < baseMoveCount; i++) {
+            baseMoveBuf.copy(
+              outMoves,
+              i * outputEntrySize,
+              i * baseEntrySize,
+              i * baseEntrySize + baseEntrySize,
+            );
           }
+          await output.write(outMoves, 0, outMoves.length, movesPos);
+          movesPos += outMoves.length;
         }
-        await output.write(outMoves, 0, outMoves.length, movesPos);
-        movesPos += outMoves.length;
         indexPos += RECORD_SIZE;
         baseIdx++;
       } else if (cmp > 0) {
@@ -504,13 +502,11 @@ export async function mergeYbbBook(
         const merged = mergeBookEntries(baseEntry, patch.entry) || { type: "normal", moves: [] };
         const moves = merged.moves;
 
-        const outRec = Buffer.alloc(RECORD_SIZE);
-        outRec.set(basePacked!, 0);
-        const outView = new DataView(outRec.buffer, outRec.byteOffset);
+        // reuse recBuf which has packed_sfen and ply from the base record
+        const outView = new DataView(recBuf.buffer, recBuf.byteOffset);
         outView.setBigUint64(32, BigInt(movesPos - movesStart), true);
-        outView.setUint16(40, basePly, true);
         outView.setUint16(42, moves.length, true);
-        await output.write(outRec, 0, RECORD_SIZE, indexPos);
+        await output.write(recBuf, 0, RECORD_SIZE, indexPos);
 
         const outMoves = Buffer.alloc(moves.length * outputEntrySize);
         for (let i = 0; i < moves.length; i++) {
