@@ -1,0 +1,534 @@
+import fs from "node:fs";
+import { BookEntry, YbbBook, mergeBookEntries } from "./types.js";
+import { BookMove } from "@/common/book.js";
+import { sfenToPackedSfen, packedSfenToSfen } from "./packed_sfen.js";
+import { toYaneMove16, fromYaneMove16 } from "./yane_move.js";
+
+const MAGIC = "YANE-BINBOOK-V1\0";
+const INDEX_HEADER_SIZE = 32; // magic(16) + record_count(8) + flags(8)
+const RECORD_SIZE = 44; // packed_sfen(32) + moves_offset(8) + ply(2) + move_count(2)
+const MOVE_ENTRY_SIZE_V0 = 4; // move16(2) + eval(2)
+const MOVE_ENTRY_SIZE_V1 = 6; // move16(2) + eval(2) + depth(2)
+const MATE_SCORE_BASE = 32000;
+
+function moveEntrySize(flags: bigint): number {
+  return (flags & 1n) === 1n ? MOVE_ENTRY_SIZE_V1 : MOVE_ENTRY_SIZE_V0;
+}
+
+function packedSfenFromBuffer(buf: Buffer | Uint8Array, offset: number): Uint32Array {
+  const words = new Uint32Array(8);
+  const view = new DataView(buf.buffer, buf.byteOffset + offset, 32);
+  for (let i = 0; i < 8; i++) {
+    words[i] = view.getUint32(i * 4, true);
+  }
+  return words;
+}
+
+function comparePackedSfen(a: Uint8Array, b: Uint8Array): number {
+  for (let i = 0; i < 32; i++) {
+    if (a[i] !== b[i]) {
+      return a[i] - b[i];
+    }
+  }
+  return 0;
+}
+
+function packedSfenToBytes(words: Uint32Array): Uint8Array {
+  return new Uint8Array(words.buffer, words.byteOffset, 32);
+}
+
+function evalToScore(evalValue: number): number | undefined {
+  if (evalValue === 0x7fff) {
+    return undefined;
+  }
+  if (evalValue >= MATE_SCORE_BASE - 100) {
+    return 30000;
+  }
+  if (evalValue <= -(MATE_SCORE_BASE - 100)) {
+    return -30000;
+  }
+  return evalValue;
+}
+
+function scoreToEval(score: number | undefined): number {
+  if (score === undefined) {
+    return 0x7fff;
+  }
+  if (score >= 30000) {
+    return MATE_SCORE_BASE;
+  }
+  if (score <= -30000) {
+    return -MATE_SCORE_BASE;
+  }
+  return score;
+}
+
+function readMoves(buf: Buffer, moveCount: number, entrySize: number): BookMove[] {
+  const moves: BookMove[] = [];
+  for (let i = 0; i < moveCount; i++) {
+    const off = i * entrySize;
+    const move16 = buf.readUInt16LE(off);
+    const evalValue = buf.readInt16LE(off + 2);
+    const depth = entrySize >= MOVE_ENTRY_SIZE_V1 ? buf.readUInt16LE(off + 4) : undefined;
+    const usi = fromYaneMove16(move16);
+    const score = evalToScore(evalValue);
+    const move: BookMove = { usi };
+    if (score !== undefined) {
+      move.score = score;
+    }
+    if (depth !== undefined && depth > 0) {
+      move.depth = depth;
+    }
+    moves.push(move);
+  }
+  return moves;
+}
+
+export async function loadYbbBook(path: string): Promise<YbbBook> {
+  const data = await fs.promises.readFile(path);
+  const magic = data.toString("ascii", 0, 16);
+  if (magic !== MAGIC) {
+    throw new Error(`Invalid YBB magic: ${magic}`);
+  }
+  const view = new DataView(data.buffer, data.byteOffset);
+  const recordCount = view.getBigUint64(16, true);
+  const flags = view.getBigUint64(24, true);
+  const entrySize = moveEntrySize(flags);
+  const movesAreaStart = INDEX_HEADER_SIZE + Number(recordCount) * RECORD_SIZE;
+  const entries = new Map<string, BookEntry>();
+
+  for (let i = 0n; i < recordCount; i++) {
+    const recOff = INDEX_HEADER_SIZE + Number(i) * RECORD_SIZE;
+    const packedSfen = packedSfenFromBuffer(data, recOff);
+    const movesRelOffset = Number(view.getBigUint64(recOff + 32, true));
+    const ply = view.getUint16(recOff + 40, true);
+    const moveCount = view.getUint16(recOff + 42, true);
+    const sfen = packedSfenToSfen(packedSfen, ply || 1);
+    const movesAbsOffset = movesAreaStart + movesRelOffset;
+    const movesBuf = data.subarray(movesAbsOffset, movesAbsOffset + moveCount * entrySize);
+    const moves = readMoves(movesBuf, moveCount, entrySize);
+    entries.set(sfen, { type: "normal", moves });
+  }
+
+  return { format: "ybb", entries };
+}
+
+export type YbbOnTheFly = {
+  format: "ybb";
+  file: fs.promises.FileHandle;
+  size: number;
+  recordCount: bigint;
+  flags: bigint;
+  entries: Map<string, BookEntry>;
+};
+
+export async function openYbbBookOnTheFly(path: string): Promise<YbbOnTheFly> {
+  const file = await fs.promises.open(path, "r");
+  try {
+    const stat = await file.stat();
+    const headerBuf = Buffer.alloc(INDEX_HEADER_SIZE);
+    await file.read(headerBuf, 0, INDEX_HEADER_SIZE, 0);
+    const magic = headerBuf.toString("ascii", 0, 16);
+    if (magic !== MAGIC) {
+      throw new Error(`Invalid YBB magic: ${magic}`);
+    }
+    const view = new DataView(headerBuf.buffer, headerBuf.byteOffset);
+    const recordCount = view.getBigUint64(16, true);
+    const flags = view.getBigUint64(24, true);
+    return {
+      format: "ybb",
+      file,
+      size: stat.size,
+      recordCount,
+      flags,
+      entries: new Map<string, BookEntry>(),
+    };
+  } catch (e) {
+    await file.close();
+    throw e;
+  }
+}
+
+export async function searchYbbBookMovesOnTheFly(
+  sfen: string,
+  file: fs.promises.FileHandle,
+  recordCount: bigint,
+  flags: bigint,
+): Promise<BookEntry | undefined> {
+  if (recordCount === 0n) {
+    return undefined;
+  }
+  const target = sfenToPackedSfen(sfen);
+  const targetBytes = packedSfenToBytes(target);
+  const entrySize = moveEntrySize(flags);
+  const movesAreaStart = INDEX_HEADER_SIZE + Number(recordCount) * RECORD_SIZE;
+  const recBuf = Buffer.alloc(RECORD_SIZE);
+
+  let lo = 0n;
+  let hi = recordCount - 1n;
+  while (lo <= hi) {
+    const mid = (lo + hi) / 2n;
+    const offset = INDEX_HEADER_SIZE + Number(mid) * RECORD_SIZE;
+    await file.read(recBuf, 0, RECORD_SIZE, offset);
+    const cmp = comparePackedSfen(
+      new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32),
+      targetBytes,
+    );
+    if (cmp === 0) {
+      const view = new DataView(recBuf.buffer, recBuf.byteOffset);
+      const movesRelOffset = Number(view.getBigUint64(32, true));
+      const moveCount = view.getUint16(42, true);
+      if (moveCount === 0) {
+        return { type: "normal", moves: [] };
+      }
+      const movesBuf = Buffer.alloc(moveCount * entrySize);
+      await file.read(movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
+      const moves = readMoves(movesBuf, moveCount, entrySize);
+      return { type: "normal", moves };
+    } else if (cmp < 0) {
+      lo = mid + 1n;
+    } else {
+      if (mid === 0n) {
+        break;
+      }
+      hi = mid - 1n;
+    }
+  }
+  return undefined;
+}
+
+export async function loadYbbBookFull(
+  file: fs.promises.FileHandle,
+  recordCount: bigint,
+  flags: bigint,
+): Promise<Map<string, BookEntry>> {
+  const entrySize = moveEntrySize(flags);
+  const movesAreaStart = INDEX_HEADER_SIZE + Number(recordCount) * RECORD_SIZE;
+  const entries = new Map<string, BookEntry>();
+  const recBuf = Buffer.alloc(RECORD_SIZE);
+
+  for (let i = 0n; i < recordCount; i++) {
+    const recOff = INDEX_HEADER_SIZE + Number(i) * RECORD_SIZE;
+    await file.read(recBuf, 0, RECORD_SIZE, recOff);
+    const packedSfen = packedSfenFromBuffer(recBuf, 0);
+    const view = new DataView(recBuf.buffer, recBuf.byteOffset);
+    const movesRelOffset = Number(view.getBigUint64(32, true));
+    const ply = view.getUint16(40, true);
+    const moveCount = view.getUint16(42, true);
+    const sfen = packedSfenToSfen(packedSfen, ply || 1);
+    if (moveCount > 0) {
+      const movesBuf = Buffer.alloc(moveCount * entrySize);
+      await file.read(movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
+      const moves = readMoves(movesBuf, moveCount, entrySize);
+      entries.set(sfen, { type: "normal", moves });
+    }
+  }
+  return entries;
+}
+
+type SortedEntry = {
+  packedBytes: Uint8Array;
+  sfen: string;
+};
+
+export async function storeYbbBook(
+  entries: Map<string, BookEntry>,
+  outputPath: string,
+): Promise<void> {
+  const sorted: SortedEntry[] = [];
+  let hasDepth = false;
+
+  for (const [sfen, entry] of entries) {
+    if (entry.moves.length === 0) {
+      continue;
+    }
+    const packed = sfenToPackedSfen(sfen);
+    sorted.push({ packedBytes: packedSfenToBytes(packed), sfen });
+    if (!hasDepth) {
+      for (const m of entry.moves) {
+        if (m.depth !== undefined && m.depth > 0) {
+          hasDepth = true;
+          break;
+        }
+      }
+    }
+  }
+
+  sorted.sort((a, b) => comparePackedSfen(a.packedBytes, b.packedBytes));
+
+  const flags = hasDepth ? 1n : 0n;
+  const entrySize = hasDepth ? MOVE_ENTRY_SIZE_V1 : MOVE_ENTRY_SIZE_V0;
+  const recordCount = BigInt(sorted.length);
+  const movesStart = INDEX_HEADER_SIZE + sorted.length * RECORD_SIZE;
+
+  const output = await fs.promises.open(outputPath, "w");
+  try {
+    const headerBuf = Buffer.alloc(INDEX_HEADER_SIZE);
+    headerBuf.write(MAGIC, 0, 16, "ascii");
+    const headerView = new DataView(headerBuf.buffer, headerBuf.byteOffset);
+    headerView.setBigUint64(16, recordCount, true);
+    headerView.setBigUint64(24, flags, true);
+    await output.write(headerBuf, 0, INDEX_HEADER_SIZE, 0);
+
+    let indexPos = INDEX_HEADER_SIZE;
+    let movesPos = movesStart;
+
+    for (const item of sorted) {
+      const entry = entries.get(item.sfen)!;
+      const moveCount = entry.moves.length;
+
+      const recBuf = Buffer.alloc(RECORD_SIZE);
+      recBuf.set(item.packedBytes, 0);
+      const recView = new DataView(recBuf.buffer, recBuf.byteOffset);
+      recView.setBigUint64(32, BigInt(movesPos - movesStart), true);
+      const sfenParts = item.sfen.split(/\s+/);
+      const ply = parseInt(sfenParts[3], 10) || 1;
+      recView.setUint16(40, ply, true);
+      recView.setUint16(42, moveCount, true);
+      await output.write(recBuf, 0, RECORD_SIZE, indexPos);
+      indexPos += RECORD_SIZE;
+
+      const movesBuf = Buffer.alloc(moveCount * entrySize);
+      for (let i = 0; i < moveCount; i++) {
+        const m = entry.moves[i];
+        const off = i * entrySize;
+        movesBuf.writeUInt16LE(toYaneMove16(m.usi), off);
+        movesBuf.writeInt16LE(scoreToEval(m.score), off + 2);
+        if (hasDepth) {
+          movesBuf.writeUInt16LE(m.depth ?? 0, off + 4);
+        }
+      }
+      await output.write(movesBuf, 0, movesBuf.length, movesPos);
+      movesPos += movesBuf.length;
+    }
+  } finally {
+    await output.close();
+  }
+}
+
+type SortedPatch = {
+  packedBytes: Uint8Array;
+  sfen: string;
+  entry: BookEntry;
+};
+
+export async function mergeYbbBook(
+  baseFile: fs.promises.FileHandle,
+  baseRecordCount: bigint,
+  baseFlags: bigint,
+  patches: Map<string, BookEntry>,
+  outputPath: string,
+): Promise<void> {
+  const sortedPatches: SortedPatch[] = [];
+  for (const [sfen, entry] of patches) {
+    const packed = sfenToPackedSfen(sfen);
+    sortedPatches.push({ packedBytes: packedSfenToBytes(packed), sfen, entry });
+  }
+  sortedPatches.sort((a, b) => comparePackedSfen(a.packedBytes, b.packedBytes));
+
+  const baseEntrySize = moveEntrySize(baseFlags);
+  const baseMovesAreaStart = INDEX_HEADER_SIZE + Number(baseRecordCount) * RECORD_SIZE;
+  const recBuf = Buffer.alloc(RECORD_SIZE);
+
+  // Pass 1: count output records and determine flags
+  let outputRecordCount = 0n;
+  let outputHasDepth = (baseFlags & 1n) === 1n;
+  let baseIdx = 0n;
+  let patchIdx = 0;
+
+  while (baseIdx < baseRecordCount || patchIdx < sortedPatches.length) {
+    let cmp: number;
+    if (baseIdx >= baseRecordCount) {
+      cmp = 1;
+    } else if (patchIdx >= sortedPatches.length) {
+      cmp = -1;
+    } else {
+      const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
+      await baseFile.read(recBuf, 0, 32, baseOff);
+      cmp = comparePackedSfen(
+        new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32),
+        sortedPatches[patchIdx].packedBytes,
+      );
+    }
+
+    if (cmp < 0) {
+      baseIdx++;
+    } else if (cmp > 0) {
+      if (!outputHasDepth) {
+        for (const m of sortedPatches[patchIdx].entry.moves) {
+          if (m.depth !== undefined && m.depth > 0) {
+            outputHasDepth = true;
+            break;
+          }
+        }
+      }
+      patchIdx++;
+    } else {
+      if (!outputHasDepth) {
+        for (const m of sortedPatches[patchIdx].entry.moves) {
+          if (m.depth !== undefined && m.depth > 0) {
+            outputHasDepth = true;
+            break;
+          }
+        }
+      }
+      baseIdx++;
+      patchIdx++;
+    }
+    outputRecordCount++;
+  }
+
+  const outputFlags = outputHasDepth ? 1n : 0n;
+  const outputEntrySize = outputHasDepth ? MOVE_ENTRY_SIZE_V1 : MOVE_ENTRY_SIZE_V0;
+  const movesStart = INDEX_HEADER_SIZE + Number(outputRecordCount) * RECORD_SIZE;
+
+  // Write header
+  const output = await fs.promises.open(outputPath, "w");
+  try {
+    const headerBuf = Buffer.alloc(INDEX_HEADER_SIZE);
+    headerBuf.write(MAGIC, 0, 16, "ascii");
+    const headerView = new DataView(headerBuf.buffer, headerBuf.byteOffset);
+    headerView.setBigUint64(16, outputRecordCount, true);
+    headerView.setBigUint64(24, outputFlags, true);
+    await output.write(headerBuf, 0, INDEX_HEADER_SIZE, 0);
+
+    // Pass 2: interleaved index + moves write
+    let indexPos = INDEX_HEADER_SIZE;
+    let movesPos = movesStart;
+    baseIdx = 0n;
+    patchIdx = 0;
+
+    while (baseIdx < baseRecordCount || patchIdx < sortedPatches.length) {
+      let cmp: number;
+      let basePacked: Uint8Array | undefined;
+      let baseMovesOffset = 0;
+      let basePly = 1;
+      let baseMoveCount = 0;
+
+      if (baseIdx >= baseRecordCount) {
+        cmp = 1;
+      } else if (patchIdx >= sortedPatches.length) {
+        cmp = -1;
+      } else {
+        const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
+        await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
+        basePacked = new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32).slice();
+        const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
+        baseMovesOffset = Number(baseView.getBigUint64(32, true));
+        basePly = baseView.getUint16(40, true);
+        baseMoveCount = baseView.getUint16(42, true);
+        cmp = comparePackedSfen(basePacked, sortedPatches[patchIdx].packedBytes);
+      }
+
+      if (cmp < 0) {
+        // base only
+        if (!basePacked) {
+          const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
+          await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
+          basePacked = new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32).slice();
+          const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
+          baseMovesOffset = Number(baseView.getBigUint64(32, true));
+          basePly = baseView.getUint16(40, true);
+          baseMoveCount = baseView.getUint16(42, true);
+        }
+        // Read base moves and rewrite (may need format conversion if entry size changed)
+        const baseMoveBuf = Buffer.alloc(baseMoveCount * baseEntrySize);
+        await baseFile.read(
+          baseMoveBuf,
+          0,
+          baseMoveBuf.length,
+          baseMovesAreaStart + baseMovesOffset,
+        );
+        const moves = readMoves(baseMoveBuf, baseMoveCount, baseEntrySize);
+
+        const outRec = Buffer.alloc(RECORD_SIZE);
+        outRec.set(basePacked, 0);
+        const outView = new DataView(outRec.buffer, outRec.byteOffset);
+        outView.setBigUint64(32, BigInt(movesPos - movesStart), true);
+        outView.setUint16(40, basePly, true);
+        outView.setUint16(42, moves.length, true);
+        await output.write(outRec, 0, RECORD_SIZE, indexPos);
+
+        const outMoves = Buffer.alloc(moves.length * outputEntrySize);
+        for (let i = 0; i < moves.length; i++) {
+          const off = i * outputEntrySize;
+          outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
+          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
+          if (outputHasDepth) {
+            outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
+          }
+        }
+        await output.write(outMoves, 0, outMoves.length, movesPos);
+        movesPos += outMoves.length;
+        indexPos += RECORD_SIZE;
+        baseIdx++;
+      } else if (cmp > 0) {
+        // patch only
+        const patch = sortedPatches[patchIdx];
+        const moves = patch.entry.moves;
+        const outRec = Buffer.alloc(RECORD_SIZE);
+        outRec.set(patch.packedBytes, 0);
+        const outView = new DataView(outRec.buffer, outRec.byteOffset);
+        outView.setBigUint64(32, BigInt(movesPos - movesStart), true);
+        const sfenParts = patch.sfen.split(/\s+/);
+        const ply = parseInt(sfenParts[3], 10) || 1;
+        outView.setUint16(40, ply, true);
+        outView.setUint16(42, moves.length, true);
+        await output.write(outRec, 0, RECORD_SIZE, indexPos);
+
+        const outMoves = Buffer.alloc(moves.length * outputEntrySize);
+        for (let i = 0; i < moves.length; i++) {
+          const off = i * outputEntrySize;
+          outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
+          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
+          if (outputHasDepth) {
+            outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
+          }
+        }
+        await output.write(outMoves, 0, outMoves.length, movesPos);
+        movesPos += outMoves.length;
+        indexPos += RECORD_SIZE;
+        patchIdx++;
+      } else {
+        // both: merge
+        const patch = sortedPatches[patchIdx];
+        const baseMoveBuf = Buffer.alloc(baseMoveCount * baseEntrySize);
+        await baseFile.read(
+          baseMoveBuf,
+          0,
+          baseMoveBuf.length,
+          baseMovesAreaStart + baseMovesOffset,
+        );
+        const baseMoves = readMoves(baseMoveBuf, baseMoveCount, baseEntrySize);
+        const baseEntry: BookEntry = { type: "normal", moves: baseMoves };
+        const merged = mergeBookEntries(baseEntry, patch.entry) || { type: "normal", moves: [] };
+        const moves = merged.moves;
+
+        const outRec = Buffer.alloc(RECORD_SIZE);
+        outRec.set(basePacked!, 0);
+        const outView = new DataView(outRec.buffer, outRec.byteOffset);
+        outView.setBigUint64(32, BigInt(movesPos - movesStart), true);
+        outView.setUint16(40, basePly, true);
+        outView.setUint16(42, moves.length, true);
+        await output.write(outRec, 0, RECORD_SIZE, indexPos);
+
+        const outMoves = Buffer.alloc(moves.length * outputEntrySize);
+        for (let i = 0; i < moves.length; i++) {
+          const off = i * outputEntrySize;
+          outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
+          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
+          if (outputHasDepth) {
+            outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
+          }
+        }
+        await output.write(outMoves, 0, outMoves.length, movesPos);
+        movesPos += outMoves.length;
+        indexPos += RECORD_SIZE;
+        baseIdx++;
+        patchIdx++;
+      }
+    }
+  } finally {
+    await output.close();
+  }
+}

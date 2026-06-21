@@ -49,6 +49,15 @@ import {
   searchSbkBookEntryOnTheFly,
   storeSbkBook,
 } from "./sbk.js";
+import {
+  loadYbbBook,
+  loadYbbBookFull,
+  mergeYbbBook,
+  openYbbBookOnTheFly,
+  searchYbbBookMovesOnTheFly,
+  storeYbbBook,
+  YbbOnTheFly,
+} from "./ybb.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook;
 
@@ -68,6 +77,7 @@ type OnTheFlyBook = {
       size: number;
     })
   | SbkBook
+  | YbbOnTheFly
 );
 
 // マージ済みのエントリーを取得する。
@@ -102,6 +112,14 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
       const base = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
       return mergeBookEntries(base, entry);
     }
+    case "ybb": {
+      const entry = book.entries.get(sfen);
+      if (book.type === "in-memory" || entry?.type === "normal") {
+        return entry;
+      }
+      const base = await searchYbbBookMovesOnTheFly(sfen, book.file, book.recordCount, book.flags);
+      return mergeBookEntries(base, entry);
+    }
   }
 }
 
@@ -110,6 +128,7 @@ function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
   switch (book.format) {
     case "yane2016":
     case "sbk":
+    case "ybb":
       return book.entries.get(sfen);
     case "apery":
       return book.entries.get(aperyHash(sfen));
@@ -120,6 +139,7 @@ function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   switch (book.format) {
     case "yane2016":
     case "sbk":
+    case "ybb":
       book.entries.set(sfen, entry);
       break;
     case "apery":
@@ -142,6 +162,13 @@ function emptyBook(format: BookFormat = "yane2016"): BookHandle {
       return {
         type: "in-memory",
         format: "sbk",
+        entries: new Map<string, BookEntry>(),
+        saved: true,
+      };
+    case "ybb":
+      return {
+        type: "in-memory",
+        format: "ybb",
         entries: new Map<string, BookEntry>(),
         saved: true,
       };
@@ -196,12 +223,15 @@ export function getBookFormat(session: number): BookFormat {
   return book.format;
 }
 
-function getFormatByPath(path: string): "yane2016" | "apery" | "sbk" {
+function getFormatByPath(path: string): "yane2016" | "apery" | "sbk" | "ybb" {
   if (path.endsWith(".db")) {
     return "yane2016";
   }
   if (path.endsWith(".sbk")) {
     return "sbk";
+  }
+  if (path.endsWith(".ybb")) {
+    return "ybb";
   }
   return "apery";
 }
@@ -221,6 +251,15 @@ async function openBookOnTheFly(
     replaceBook(session, {
       ...common,
       ...sbkOnTheFly,
+    });
+    return;
+  }
+
+  if (format === "ybb") {
+    const ybbOnTheFly = await openYbbBookOnTheFly(path);
+    replaceBook(session, {
+      ...common,
+      ...ybbOnTheFly,
     });
     return;
   }
@@ -267,10 +306,12 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
         file = fs.createReadStream(path, "utf-8");
         book = await loadYaneuraOuBook(file);
         break;
-      case "sbk": {
+      case "sbk":
         book = await loadSbkBook(path);
         break;
-      }
+      case "ybb":
+        book = await loadYbbBook(path);
+        break;
       default:
         file = fs.createReadStream(path, { highWaterMark: 128 * 1024 });
         book = await loadAperyBook(file);
@@ -311,6 +352,9 @@ export async function openBook(
       break;
     case "sbk":
       onTheFlyThresholdMB = options?.sbkOnTheFlyThresholdMB;
+      break;
+    case "ybb":
+      onTheFlyThresholdMB = options?.ybbOnTheFlyThresholdMB;
       break;
   }
 
@@ -375,6 +419,22 @@ export async function saveBook(
     }
   }
 
+  if (book.format === "ybb") {
+    if (!path.endsWith(".ybb")) {
+      throw new Error("Invalid file extension: " + path);
+    }
+    if (book.type === "in-memory") {
+      await storeYbbBook(book.entries, path);
+    } else {
+      await mergeYbbBook(book.file, book.recordCount, book.flags, book.entries, path);
+    }
+    if (book.type === "in-memory") {
+      book.path = path;
+    }
+    book.saved = true;
+    return;
+  }
+
   const file = fs.createWriteStream(path, "utf-8");
   try {
     switch (book.format) {
@@ -430,8 +490,13 @@ export async function exportBook(
   targetFormat: BookFormat,
   onProgress?: (progress: number) => void,
 ): Promise<void> {
-  const expectedExt =
-    targetFormat === "yane2016" ? ".db" : targetFormat === "apery" ? ".bin" : ".sbk";
+  const extMap: { [K in BookFormat]: string } = {
+    yane2016: ".db",
+    apery: ".bin",
+    sbk: ".sbk",
+    ybb: ".ybb",
+  };
+  const expectedExt = extMap[targetFormat];
   if (!path.endsWith(expectedExt)) {
     throw new Error("Invalid file extension: " + path);
   }
@@ -467,19 +532,32 @@ export async function exportBook(
     }
   } else if (book.format === "sbk") {
     fullBook = await loadMergedSbkBook(book);
+  } else if (book.format === "ybb") {
+    const base = await loadYbbBookFull(book.file, book.recordCount, book.flags);
+    for (const [sfen, patch] of book.entries) {
+      const merged = mergeBookEntries(base.get(sfen), patch);
+      if (merged) {
+        base.set(sfen, merged);
+      }
+    }
+    fullBook = { format: "ybb", entries: base };
   } else {
     throw new Error("On-the-fly mode is not supported for this book format");
+  }
+
+  if (targetFormat === "ybb") {
+    await storeYbbBook(fullBook.entries as Map<string, BookEntry>, path);
+    return;
   }
 
   let targetBook: YaneBook | AperyBook | SbkBook;
   switch (targetFormat) {
     case "yane2016":
-      targetBook = { format: "yane2016", entries: fullBook.entries };
+      targetBook = { format: "yane2016", entries: fullBook.entries as Map<string, BookEntry> };
       break;
     case "apery": {
-      // Apery の場合のみ独自のハッシュ関数を使用するため bigint をキーに持つ Map を再構築する
       const aperyEntries = new Map<bigint, BookEntry>();
-      for (const [sfen, entry] of fullBook.entries) {
+      for (const [sfen, entry] of fullBook.entries as Map<string, BookEntry>) {
         aperyEntries.set(aperyHash(sfen), entry);
       }
       targetBook = { format: "apery", entries: aperyEntries };
@@ -488,7 +566,7 @@ export async function exportBook(
     case "sbk":
       targetBook = {
         format: "sbk",
-        entries: fullBook.entries,
+        entries: fullBook.entries as Map<string, BookEntry>,
         sbkAuthor: fullBook.format === "sbk" ? fullBook.sbkAuthor : undefined,
         sbkDescription: fullBook.format === "sbk" ? fullBook.sbkDescription : undefined,
       };
@@ -519,7 +597,9 @@ export function clearBook(session: number, format?: BookFormat): void {
     return;
   }
   if (book.type === "on-the-fly" && book.format !== "sbk") {
-    book.file.close();
+    if ("file" in book) {
+      book.file.close();
+    }
   }
   bookFiles.set(session, emptyBook(format));
 }
@@ -543,7 +623,7 @@ function updateBookEntry(entry: BookEntry, move: BookMove): void {
 export async function updateBookMove(session: number, sfen: string, move: BookMove) {
   const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
-  if (book.format === "yane2016" || book.format === "sbk") {
+  if (book.format === "yane2016" || book.format === "sbk" || book.format === "ybb") {
     if (entry) {
       updateBookEntry(entry, move);
       book.entries.set(sfen, entry);
@@ -609,7 +689,7 @@ export async function updateBookMoveOrder(
 
 function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
   let entry = retrieveEntry(book, sfen);
-  if (book.format === "yane2016" || book.format === "sbk") {
+  if (book.format === "yane2016" || book.format === "sbk" || book.format === "ybb") {
     if (entry) {
       updateBookEntry(entry, move);
     } else {

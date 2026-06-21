@@ -548,6 +548,18 @@
               </td>
             </tr>
             <tr>
+              <td>YBB</td>
+              <td>
+                <input
+                  v-model.number="update.ybbOnTheFlyThresholdMB"
+                  type="number"
+                  max="512"
+                  min="0"
+                />
+                <div class="form-item-small-label">MB ({{ t.between(0, 512) }})</div>
+              </td>
+            </tr>
+            <tr>
               <td>Apery</td>
               <td>
                 <input
@@ -906,6 +918,7 @@ const update = ref({
   yaneBookOnTheFlyThresholdMB: org.yaneBookOnTheFlyThresholdMB,
   aperyBookOnTheFlyThresholdMB: org.aperyBookOnTheFlyThresholdMB,
   sbkOnTheFlyThresholdMB: org.sbkOnTheFlyThresholdMB,
+  ybbOnTheFlyThresholdMB: org.ybbOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
   nodeCountFormat: org.nodeCountFormat,
