@@ -66,6 +66,8 @@ const formatLabel = computed(() => {
   switch (bookStore.format) {
     case "yane2016":
       return ".db";
+    case "ybb":
+      return ".ybb";
     case "apery":
       return ".bin";
     case "sbk":

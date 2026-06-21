@@ -398,6 +398,7 @@ function createMenuTemplate(window: BrowserWindow) {
             menuItem(`${t.yane2016BookFile} (.db)`, MenuEvent.EXPORT_BOOK_AS_YANE2016, [
               AppState.NORMAL,
             ]),
+            menuItem(`${t.ybbBookFile} (.ybb)`, MenuEvent.EXPORT_BOOK_AS_YBB, [AppState.NORMAL]),
             menuItem(`${t.aperyBookFile} (.bin)`, MenuEvent.EXPORT_BOOK_AS_APERY, [
               AppState.NORMAL,
             ]),
@@ -416,9 +417,11 @@ function createMenuTemplate(window: BrowserWindow) {
               const formatLabel =
                 info.format === "yane2016"
                   ? `${t.yane2016BookFile} (.db)`
-                  : info.format === "apery"
-                    ? `${t.aperyBookFile} (.bin)`
-                    : `${t.shogiGUIBookFile} (.sbk)`;
+                  : info.format === "ybb"
+                    ? `${t.ybbBookFile} (.ybb)`
+                    : info.format === "apery"
+                      ? `${t.aperyBookFile} (.bin)`
+                      : `${t.shogiGUIBookFile} (.sbk)`;
               const items: { text: string }[] = [
                 { text: `${t.format}: ${formatLabel}` },
                 { text: `${t.loadingMode}: ${info.type}` },

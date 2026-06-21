@@ -539,6 +539,7 @@ export const ja: Texts = {
   forced: "絶対手",
   goodMove: "好手",
   yane2016BookFile: "やねうら王定跡ファイル",
+  ybbBookFile: "やねうら王バイナリ定跡ファイル",
   shogiGUIBookFile: "ShogiGUI 定跡ファイル",
   aperyBookFile: "Apery 定跡ファイル",
   loadingMode: "読み込みモード",

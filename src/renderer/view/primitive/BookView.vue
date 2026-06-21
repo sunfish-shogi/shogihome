@@ -12,7 +12,9 @@
             <td class="menu">{{ t.edit }}</td>
             <td class="menu">{{ t.remove }}</td>
             <td v-if="props.format !== 'sbk'" class="number">{{ t.score }}</td>
-            <td v-if="props.format === 'yane2016'" class="number">{{ t.depth }}</td>
+            <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
+              {{ t.depth }}
+            </td>
             <td class="number">{{ t.freq }}</td>
             <td class="number"></td>
             <td v-if="props.format !== 'apery'" class="text">{{ t.comments }}</td>
@@ -54,7 +56,7 @@
             <td v-if="props.format !== 'sbk'" class="number">
               <span>{{ entry.score }}</span>
             </td>
-            <td v-if="props.format === 'yane2016'" class="number">
+            <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
               <span>{{ entry.depth }}</span>
             </td>
             <td class="number">

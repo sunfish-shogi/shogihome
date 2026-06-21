@@ -318,6 +318,9 @@ export function setup(): void {
       case MenuEvent.EXPORT_BOOK_AS_YANE2016:
         useBookStore().exportBookFile("yane2016");
         break;
+      case MenuEvent.EXPORT_BOOK_AS_YBB:
+        useBookStore().exportBookFile("ybb");
+        break;
       case MenuEvent.EXPORT_BOOK_AS_APERY:
         useBookStore().exportBookFile("apery");
         break;
