@@ -59,6 +59,20 @@ const BOARD_CHAR_TO_PIECE: Record<string, PieceType> = {
   k: "K",
 };
 
+// YaneuraOu: index = (file-1)*9 + (rank-1), file-major order
+// tsshogi:   index = (rank-1)*9 + (9-file), rank-major order
+function tsIndexToYaneIndex(tsIndex: number): number {
+  const file = 9 - (tsIndex % 9);
+  const rank = Math.trunc(tsIndex / 9) + 1;
+  return (file - 1) * 9 + (rank - 1);
+}
+
+function yaneIndexToTsIndex(yaneIndex: number): number {
+  const file = Math.trunc(yaneIndex / 9) + 1;
+  const rank = (yaneIndex % 9) + 1;
+  return (rank - 1) * 9 + (9 - file);
+}
+
 const BOARD_DECODE_TABLE = new Map<string, NonKingPieceType | "E">(
   Object.entries(BOARD_HUFFMAN).map(([piece, h]) => [
     `${h.bits}:${h.code}`,
@@ -197,11 +211,11 @@ function parseBoard(boardPart: string): {
         if (promoted) {
           throw new Error("Invalid SFEN board: king cannot be promoted");
         }
-        const square = rankIndex * 9 + fileIndex;
+        const tsIndex = rankIndex * 9 + fileIndex;
         if (kings[color] !== 81) {
           throw new Error(`Invalid SFEN board: duplicate ${color} king`);
         }
-        kings[color] = square;
+        kings[color] = tsIndexToYaneIndex(tsIndex);
       } else {
         if (type === "G" && promoted) {
           throw new Error("Invalid SFEN board: gold cannot be promoted");
@@ -479,7 +493,8 @@ export function sfenToPackedSfen(sfen: string): Uint32Array {
   writer.writeBits(kings.b, 7);
   writer.writeBits(kings.w, 7);
 
-  for (const piece of board) {
+  for (let yane = 0; yane < 81; yane++) {
+    const piece = board[yaneIndexToTsIndex(yane)];
     if (piece?.type === "K") {
       continue;
     }
@@ -514,11 +529,11 @@ export function positionToPackedSfen(position: ImmutablePosition): Uint32Array {
   writer.writeBit(position.color === TsColor.BLACK ? 0 : 1);
   const blackKing = position.board.findKing(TsColor.BLACK);
   const whiteKing = position.board.findKing(TsColor.WHITE);
-  writer.writeBits(blackKing ? blackKing.index : 81, 7);
-  writer.writeBits(whiteKing ? whiteKing.index : 81, 7);
+  writer.writeBits(blackKing ? tsIndexToYaneIndex(blackKing.index) : 81, 7);
+  writer.writeBits(whiteKing ? tsIndexToYaneIndex(whiteKing.index) : 81, 7);
 
-  for (let i = 0; i < 81; i++) {
-    const piece = position.board.at(Square.all[i]);
+  for (let yane = 0; yane < 81; yane++) {
+    const piece = position.board.at(Square.all[yaneIndexToTsIndex(yane)]);
     if (!piece) {
       writeBoardPiece(writer, undefined);
       continue;
@@ -566,24 +581,26 @@ export function packedSfenToSfen(packedSfen: Uint32Array, ply: number = 1): stri
   const turn: Color = reader.readBit() === 0 ? "b" : "w";
 
   for (const color of ["b", "w"] as const) {
-    const sq = reader.readBits(7);
-    if (sq === 81) {
+    const yaneSq = reader.readBits(7);
+    if (yaneSq === 81) {
       continue;
     }
-    if (sq < 0 || sq >= 81) {
-      throw new Error(`Invalid packed sfen: king square out of range (${sq})`);
+    if (yaneSq < 0 || yaneSq >= 81) {
+      throw new Error(`Invalid packed sfen: king square out of range (${yaneSq})`);
     }
-    if (board[sq]) {
-      throw new Error(`Invalid packed sfen: duplicated king square (${sq})`);
+    const tsSq = yaneIndexToTsIndex(yaneSq);
+    if (board[tsSq]) {
+      throw new Error(`Invalid packed sfen: duplicated king square (${yaneSq})`);
     }
-    board[sq] = { type: "K", color, promoted: false };
+    board[tsSq] = { type: "K", color, promoted: false };
   }
 
-  for (let sq = 0; sq < 81; sq++) {
-    if (board[sq]?.type === "K") {
+  for (let yane = 0; yane < 81; yane++) {
+    const tsSq = yaneIndexToTsIndex(yane);
+    if (board[tsSq]?.type === "K") {
       continue;
     }
-    board[sq] = readBoardPiece(reader);
+    board[tsSq] = readBoardPiece(reader);
   }
 
   const hands: Record<Color, Record<NonKingPieceType, number>> = {
