@@ -3,17 +3,13 @@
     <TransitionGroup name="notification" tag="div" class="notification-stack">
       <div v-for="entry in store.entries" :key="entry.id" class="notification-item">
         <Icon :icon="IconType.INFO" class="icon" />
-        <button
-          v-if="entry.url"
-          class="message message-link"
-          @click="api.openWebBrowser(entry.url!)"
-        >
+        <span v-if="entry.url" class="message message-link" @click="api.openWebBrowser(entry.url!)">
           {{ entry.message }}
-        </button>
+        </span>
         <span v-else class="message">{{ entry.message }}</span>
-        <button class="close-button" @click="store.dismiss(entry.id)">
+        <span class="close-button" @click="store.dismiss(entry.id)">
           <Icon :icon="IconType.CLOSE" class="close-icon" />
-        </button>
+        </span>
       </div>
     </TransitionGroup>
   </div>
@@ -78,44 +74,38 @@ const store = useNotificationStore();
 }
 
 .message-link {
-  background: transparent;
-  border: none;
-  color: inherit;
+  color: var(--info-dialog-color);
+  background-color: var(--info-dialog-bg-color);
   cursor: pointer;
-  text-align: left;
   padding: 0;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .message-link:hover {
-  filter: brightness(1.15);
+  filter: brightness(1.3);
+  font-weight: bold;
 }
 
 .close-button {
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 28px;
   height: 28px;
   padding: 0;
-  border: none;
   border-radius: 4px;
-  background: transparent;
-  color: var(--info-dialog-color);
+  background-color: var(--info-dialog-bg-color);
   cursor: pointer;
-  opacity: 0.7;
 }
 
 .close-button:hover {
-  opacity: 1;
-  filter: brightness(1.2);
+  filter: brightness(1.3);
 }
 
 .close-button .close-icon {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .notification-enter-active,
