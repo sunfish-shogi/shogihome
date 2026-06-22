@@ -11,6 +11,21 @@ const MOVE_ENTRY_SIZE_V0 = 4; // move16(2) + eval(2)
 const MOVE_ENTRY_SIZE_V1 = 6; // move16(2) + eval(2) + depth(2)
 const MATE_SCORE_BASE = 32000;
 
+async function readExact(
+  file: fs.promises.FileHandle,
+  buf: Buffer,
+  offset: number,
+  length: number,
+  position: number,
+): Promise<void> {
+  const { bytesRead } = await file.read(buf, offset, length, position);
+  if (bytesRead !== length) {
+    throw new Error(
+      `YBB read error: expected ${length} bytes at offset ${position}, got ${bytesRead}`,
+    );
+  }
+}
+
 function moveEntrySize(flags: bigint): number {
   return (flags & 1n) === 1n ? MOVE_ENTRY_SIZE_V1 : MOVE_ENTRY_SIZE_V0;
 }
@@ -103,11 +118,11 @@ export async function loadYbbBook(path: string): Promise<YbbBook> {
     const movesRelOffset = Number(view.getBigUint64(recOff + 32, true));
     const ply = view.getUint16(recOff + 40, true);
     const moveCount = view.getUint16(recOff + 42, true);
-    const sfen = packedSfenToSfen(packedSfen, ply || 1);
+    const sfen = packedSfenToSfen(packedSfen, 1);
     const movesAbsOffset = movesAreaStart + movesRelOffset;
     const movesBuf = data.subarray(movesAbsOffset, movesAbsOffset + moveCount * entrySize);
     const moves = readMoves(movesBuf, moveCount, entrySize);
-    entries.set(sfen, { type: "normal", moves });
+    entries.set(sfen, { type: "normal", moves, minPly: ply || undefined });
   }
 
   return { format: "ybb", entries };
@@ -127,7 +142,7 @@ export async function openYbbBookOnTheFly(path: string): Promise<YbbOnTheFly> {
   try {
     const stat = await file.stat();
     const headerBuf = Buffer.alloc(INDEX_HEADER_SIZE);
-    await file.read(headerBuf, 0, INDEX_HEADER_SIZE, 0);
+    await readExact(file, headerBuf, 0, INDEX_HEADER_SIZE, 0);
     const magic = headerBuf.toString("ascii", 0, 16);
     if (magic !== MAGIC) {
       throw new Error(`Invalid YBB magic: ${magic}`);
@@ -169,7 +184,7 @@ export async function searchYbbBookMovesOnTheFly(
   while (lo <= hi) {
     const mid = (lo + hi) / 2n;
     const offset = INDEX_HEADER_SIZE + Number(mid) * RECORD_SIZE;
-    await file.read(recBuf, 0, RECORD_SIZE, offset);
+    await readExact(file, recBuf, 0, RECORD_SIZE, offset);
     const cmp = comparePackedSfen(
       new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32),
       targetBytes,
@@ -182,7 +197,7 @@ export async function searchYbbBookMovesOnTheFly(
         return { type: "normal", moves: [] };
       }
       const movesBuf = Buffer.alloc(moveCount * entrySize);
-      await file.read(movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
+      await readExact(file, movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
       const moves = readMoves(movesBuf, moveCount, entrySize);
       return { type: "normal", moves };
     } else if (cmp < 0) {
@@ -209,18 +224,18 @@ export async function loadYbbBookFull(
 
   for (let i = 0n; i < recordCount; i++) {
     const recOff = INDEX_HEADER_SIZE + Number(i) * RECORD_SIZE;
-    await file.read(recBuf, 0, RECORD_SIZE, recOff);
+    await readExact(file, recBuf, 0, RECORD_SIZE, recOff);
     const packedSfen = packedSfenFromBuffer(recBuf, 0);
     const view = new DataView(recBuf.buffer, recBuf.byteOffset);
     const movesRelOffset = Number(view.getBigUint64(32, true));
     const ply = view.getUint16(40, true);
     const moveCount = view.getUint16(42, true);
-    const sfen = packedSfenToSfen(packedSfen, ply || 1);
+    const sfen = packedSfenToSfen(packedSfen, 1);
     if (moveCount > 0) {
       const movesBuf = Buffer.alloc(moveCount * entrySize);
-      await file.read(movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
+      await readExact(file, movesBuf, 0, movesBuf.length, movesAreaStart + movesRelOffset);
       const moves = readMoves(movesBuf, moveCount, entrySize);
-      entries.set(sfen, { type: "normal", moves });
+      entries.set(sfen, { type: "normal", moves, minPly: ply || undefined });
     }
   }
   return entries;
@@ -288,9 +303,7 @@ export async function storeYbbBook(
       recBuf.set(item.packedBytes, 0);
       const recView = new DataView(recBuf.buffer, recBuf.byteOffset);
       recView.setBigUint64(32, BigInt(movesPos - movesStart), true);
-      const sfenParts = item.sfen.split(/\s+/);
-      const ply = parseInt(sfenParts[3], 10) || 1;
-      recView.setUint16(40, ply, true);
+      recView.setUint16(40, entry.minPly || 1, true);
       recView.setUint16(42, moveCount, true);
       await output.write(recBuf, 0, RECORD_SIZE, indexPos);
       indexPos += RECORD_SIZE;
@@ -365,7 +378,7 @@ export async function mergeYbbBook(
       cmp = -1;
     } else {
       const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
-      await baseFile.read(recBuf, 0, 32, baseOff);
+      await readExact(baseFile, recBuf, 0, 32, baseOff);
       cmp = comparePackedSfen(
         new Uint8Array(recBuf.buffer, recBuf.byteOffset, 32),
         sortedPatches[patchIdx].packedBytes,
@@ -421,7 +434,7 @@ export async function mergeYbbBook(
         cmp = -1;
       } else {
         const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
-        await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
+        await readExact(baseFile, recBuf, 0, RECORD_SIZE, baseOff);
         const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
         baseMovesOffset = Number(baseView.getBigUint64(32, true));
         baseMoveCount = baseView.getUint16(42, true);
@@ -439,7 +452,7 @@ export async function mergeYbbBook(
         if (baseMoveCount === 0 && baseMovesOffset === 0 && cmp === -1) {
           // patchIdx >= sortedPatches.length case: recBuf not yet read
           const baseOff = INDEX_HEADER_SIZE + Number(baseIdx) * RECORD_SIZE;
-          await baseFile.read(recBuf, 0, RECORD_SIZE, baseOff);
+          await readExact(baseFile, recBuf, 0, RECORD_SIZE, baseOff);
           const baseView = new DataView(recBuf.buffer, recBuf.byteOffset);
           baseMovesOffset = Number(baseView.getBigUint64(32, true));
           baseMoveCount = baseView.getUint16(42, true);
@@ -452,7 +465,7 @@ export async function mergeYbbBook(
 
         const movesSize = baseMoveCount * baseEntrySize;
         const baseMoveBuf = Buffer.alloc(movesSize);
-        await baseFile.read(baseMoveBuf, 0, movesSize, baseMovesAreaStart + baseMovesOffset);
+        await readExact(baseFile, baseMoveBuf, 0, movesSize, baseMovesAreaStart + baseMovesOffset);
 
         if (baseEntrySize === outputEntrySize) {
           await output.write(baseMoveBuf, 0, movesSize, movesPos);
@@ -503,7 +516,8 @@ export async function mergeYbbBook(
         // both: merge
         const patch = sortedPatches[patchIdx];
         const baseMoveBuf = Buffer.alloc(baseMoveCount * baseEntrySize);
-        await baseFile.read(
+        await readExact(
+          baseFile,
           baseMoveBuf,
           0,
           baseMoveBuf.length,

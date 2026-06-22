@@ -50,7 +50,7 @@
             <option :value="SbkMoveEvaluation.Blunder">{{ t.mistake }}</option>
           </select>
         </div>
-        <div v-if="props.format === 'yane2016' || props.format === 'ybb'" class="form-item">
+        <div v-if="props.format === 'yane2016'" class="form-item">
           <div class="form-item-label">{{ t.comments }}</div>
           <textarea v-model="commentValue" />
         </div>

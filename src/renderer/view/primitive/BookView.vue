@@ -17,7 +17,7 @@
             </td>
             <td class="number">{{ t.freq }}</td>
             <td class="number"></td>
-            <td v-if="props.format !== 'apery'" class="text">{{ t.comments }}</td>
+            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">{{ t.comments }}</td>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +65,7 @@
             <td class="number small">
               <span v-if="entry.percentage !== undefined">({{ entry.percentage }}%)</span>
             </td>
-            <td v-if="props.format !== 'apery'" class="text">
+            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">
               <span
                 v-if="entry.evaluationLabel"
                 class="in-comment-label"
