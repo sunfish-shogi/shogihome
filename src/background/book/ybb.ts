@@ -234,6 +234,7 @@ type SortedEntry = {
 export async function storeYbbBook(
   entries: Map<string, BookEntry>,
   outputPath: string,
+  onProgress?: (progress: number) => void,
 ): Promise<void> {
   const sorted: SortedEntry[] = [];
   let hasDepth = false;
@@ -254,6 +255,7 @@ export async function storeYbbBook(
     }
   }
 
+  onProgress?.(0.1);
   sorted.sort((a, b) => comparePackedSfen(a.packedBytes, b.packedBytes));
 
   const flags = hasDepth ? 1n : 0n;
@@ -272,8 +274,13 @@ export async function storeYbbBook(
 
     let indexPos = INDEX_HEADER_SIZE;
     let movesPos = movesStart;
+    const total = sorted.length;
 
-    for (const item of sorted) {
+    for (let idx = 0; idx < total; idx++) {
+      if (onProgress && idx % 10000 === 0) {
+        onProgress(0.2 + (0.8 * idx) / total);
+      }
+      const item = sorted[idx];
       const entry = entries.get(item.sfen)!;
       const moveCount = entry.moves.length;
 
@@ -318,6 +325,7 @@ export async function mergeYbbBook(
   baseFlags: bigint,
   patches: Map<string, BookEntry>,
   outputPath: string,
+  onProgress?: (progress: number) => void,
 ): Promise<void> {
   const sortedPatches: SortedPatch[] = [];
   for (const [sfen, entry] of patches) {
@@ -330,13 +338,26 @@ export async function mergeYbbBook(
   const baseMovesAreaStart = INDEX_HEADER_SIZE + Number(baseRecordCount) * RECORD_SIZE;
   const recBuf = Buffer.alloc(RECORD_SIZE);
 
-  // Pass 1: count output records and determine flags
-  let outputRecordCount = 0n;
   let outputHasDepth = (baseFlags & 1n) === 1n;
+  if (!outputHasDepth) {
+    for (const p of sortedPatches) {
+      if (p.entry.moves.some((m) => m.depth !== undefined && m.depth > 0)) {
+        outputHasDepth = true;
+        break;
+      }
+    }
+  }
+
+  // Pass 1: count output records
+  const pass1Total = Number(baseRecordCount) + sortedPatches.length;
+  let outputRecordCount = 0n;
   let baseIdx = 0n;
   let patchIdx = 0;
 
   while (baseIdx < baseRecordCount || patchIdx < sortedPatches.length) {
+    if (onProgress && Number(outputRecordCount) % 10000 === 0) {
+      onProgress((0.1 * Number(outputRecordCount)) / pass1Total);
+    }
     let cmp: number;
     if (baseIdx >= baseRecordCount) {
       cmp = 1;
@@ -354,33 +375,20 @@ export async function mergeYbbBook(
     if (cmp < 0) {
       baseIdx++;
     } else if (cmp > 0) {
-      if (!outputHasDepth) {
-        for (const m of sortedPatches[patchIdx].entry.moves) {
-          if (m.depth !== undefined && m.depth > 0) {
-            outputHasDepth = true;
-            break;
-          }
-        }
-      }
       patchIdx++;
     } else {
-      if (!outputHasDepth) {
-        for (const m of sortedPatches[patchIdx].entry.moves) {
-          if (m.depth !== undefined && m.depth > 0) {
-            outputHasDepth = true;
-            break;
-          }
-        }
-      }
       baseIdx++;
       patchIdx++;
     }
     outputRecordCount++;
   }
 
+  onProgress?.(0.1);
+
   const outputFlags = outputHasDepth ? 1n : 0n;
   const outputEntrySize = outputHasDepth ? MOVE_ENTRY_SIZE_V1 : MOVE_ENTRY_SIZE_V0;
   const movesStart = INDEX_HEADER_SIZE + Number(outputRecordCount) * RECORD_SIZE;
+  const outputTotal = Number(outputRecordCount);
 
   // Write header
   const output = await fs.promises.open(outputPath, "w");
@@ -397,8 +405,12 @@ export async function mergeYbbBook(
     let movesPos = movesStart;
     baseIdx = 0n;
     patchIdx = 0;
+    let outputWritten = 0;
 
     while (baseIdx < baseRecordCount || patchIdx < sortedPatches.length) {
+      if (onProgress && outputWritten % 10000 === 0) {
+        onProgress(0.1 + (0.9 * outputWritten) / outputTotal);
+      }
       let cmp: number;
       let baseMovesOffset = 0;
       let baseMoveCount = 0;
@@ -523,6 +535,7 @@ export async function mergeYbbBook(
         baseIdx++;
         patchIdx++;
       }
+      outputWritten++;
     }
   } finally {
     await output.close();

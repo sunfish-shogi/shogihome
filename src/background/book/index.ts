@@ -424,9 +424,9 @@ export async function saveBook(
       throw new Error("Invalid file extension: " + path);
     }
     if (book.type === "in-memory") {
-      await storeYbbBook(book.entries, path);
+      await storeYbbBook(book.entries, path, onProgress);
     } else {
-      await mergeYbbBook(book.file, book.recordCount, book.flags, book.entries, path);
+      await mergeYbbBook(book.file, book.recordCount, book.flags, book.entries, path, onProgress);
     }
     if (book.type === "in-memory") {
       book.path = path;
@@ -546,7 +546,7 @@ export async function exportBook(
   }
 
   if (targetFormat === "ybb") {
-    await storeYbbBook(fullBook.entries as Map<string, BookEntry>, path);
+    await storeYbbBook(fullBook.entries as Map<string, BookEntry>, path, onProgress);
     return;
   }
 
