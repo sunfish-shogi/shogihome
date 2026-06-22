@@ -4,6 +4,12 @@ import { BookMove } from "@/common/book.js";
 import { sfenToPackedSfen, packedSfenToSfen } from "./packed_sfen.js";
 import { toYaneMove16, fromYaneMove16 } from "./yane_move.js";
 
+const IS_LITTLE_ENDIAN = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1;
+
+if (!IS_LITTLE_ENDIAN) {
+  throw new Error("Big-endian platforms are not supported");
+}
+
 const MAGIC = "YANE-BINBOOK-V1\0";
 const INDEX_HEADER_SIZE = 32; // magic(16) + record_count(8) + flags(8)
 const RECORD_SIZE = 44; // packed_sfen(32) + moves_offset(8) + ply(2) + move_count(2)
