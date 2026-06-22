@@ -17,7 +17,9 @@
             </td>
             <td class="number">{{ t.freq }}</td>
             <td class="number"></td>
-            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">{{ t.comments }}</td>
+            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">
+              {{ t.comments }}
+            </td>
           </tr>
         </thead>
         <tbody>
