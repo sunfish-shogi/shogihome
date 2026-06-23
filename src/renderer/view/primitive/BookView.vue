@@ -15,8 +15,8 @@
             <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
               {{ t.depth }}
             </td>
-            <td class="number">{{ t.freq }}</td>
-            <td class="number"></td>
+            <td v-if="props.format !== 'ybb'" class="number">{{ t.freq }}</td>
+            <td v-if="props.format !== 'ybb'" class="number"></td>
             <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">
               {{ t.comments }}
             </td>
@@ -61,10 +61,10 @@
             <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
               <span>{{ entry.depth }}</span>
             </td>
-            <td class="number">
+            <td v-if="props.format !== 'ybb'" class="number">
               <span>{{ entry.count }}</span>
             </td>
-            <td class="number small">
+            <td v-if="props.format !== 'ybb'" class="number small">
               <span v-if="entry.percentage !== undefined">({{ entry.percentage }}%)</span>
             </td>
             <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">

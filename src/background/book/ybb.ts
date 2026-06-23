@@ -58,10 +58,7 @@ function packedSfenToBytes(words: Uint32Array): Uint8Array {
   return new Uint8Array(words.buffer, words.byteOffset, 32);
 }
 
-function evalToScore(evalValue: number): number | undefined {
-  if (evalValue === 0x7fff) {
-    return undefined;
-  }
+function evalToScore(evalValue: number): number {
   if (evalValue >= MATE_SCORE_BASE - 100) {
     return 30000;
   }
@@ -73,7 +70,7 @@ function evalToScore(evalValue: number): number | undefined {
 
 function scoreToEval(score: number | undefined): number {
   if (score === undefined) {
-    return 0x7fff;
+    return 0;
   }
   if (score >= 30000) {
     return MATE_SCORE_BASE;
@@ -93,10 +90,7 @@ function readMoves(buf: Buffer, moveCount: number, entrySize: number): BookMove[
     const depth = entrySize >= MOVE_ENTRY_SIZE_V1 ? buf.readUInt16LE(off + 4) : undefined;
     const usi = fromYaneMove16(move16);
     const score = evalToScore(evalValue);
-    const move: BookMove = { usi };
-    if (score !== undefined) {
-      move.score = score;
-    }
+    const move: BookMove = { usi, score };
     if (depth !== undefined && depth > 0) {
       move.depth = depth;
     }

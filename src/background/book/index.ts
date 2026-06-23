@@ -622,6 +622,7 @@ function updateBookEntry(entry: BookEntry, move: BookMove): void {
 
 export async function updateBookMove(session: number, sfen: string, move: BookMove) {
   const book = getBook(session);
+  applyFormatDefaults(book.format, move);
   const entry = await retrieveMergedEntry(book, sfen);
   if (book.format === "yane2016" || book.format === "sbk" || book.format === "ybb") {
     if (entry) {
@@ -687,7 +688,21 @@ export async function updateBookMoveOrder(
   storeEntry(book, sfen, entry);
 }
 
+function applyFormatDefaults(format: BookFormat, move: BookMove): void {
+  if (format === "apery" || format === "ybb") {
+    if (move.score === undefined) {
+      move.score = 0;
+    }
+  }
+  if (format === "apery") {
+    if (move.count === undefined) {
+      move.count = 0;
+    }
+  }
+}
+
 function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
+  applyFormatDefaults(book.format, move);
   let entry = retrieveEntry(book, sfen);
   if (book.format === "yane2016" || book.format === "sbk" || book.format === "ybb") {
     if (entry) {
