@@ -53,7 +53,7 @@ async function load(
         entry = undefined;
       }
       if (!entry) {
-        entry = { type: "normal", moves: [bookMove], minPly: 0 };
+        entry = { type: "normal", moves: [bookMove] };
         lastHash = hash;
       } else if (!entry.moves.some((m) => m.usi === bookMove.usi)) {
         entry.moves.push(bookMove);
@@ -128,7 +128,6 @@ export async function searchAperyBookMovesOnTheFly(
   return {
     type: "normal",
     moves,
-    minPly: 0,
   };
 }
 

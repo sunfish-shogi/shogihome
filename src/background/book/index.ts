@@ -857,9 +857,13 @@ export async function importBookMoves(
 
     updateBookMovePatch(book, sfen, bookMove);
 
-    if (book.format === "sbk") {
-      const entry = retrieveEntry(book, sfen);
-      if (entry) {
+    const entry = retrieveEntry(book, sfen);
+    if (entry) {
+      const ply = node.ply;
+      if (entry.minPly === undefined || ply < entry.minPly) {
+        entry.minPly = ply;
+      }
+      if (book.format === "sbk") {
         entry.games = (entry.games ?? 0) + 1;
         if (winner === Color.BLACK) {
           entry.wonBlack = (entry.wonBlack ?? 0) + 1;

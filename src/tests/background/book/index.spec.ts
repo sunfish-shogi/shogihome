@@ -881,17 +881,17 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await updateBookMove(
         defaultBookSession,
         "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 1",
-        { usi: "3c3d", score: -123, depth: 41, count: 57 },
+        { usi: "3c3d", score: -123, depth: 41 },
       );
       await updateBookMove(
         defaultBookSession,
         "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1",
-        { usi: "7g7f", depth: 39, count: 41 },
+        { usi: "7g7f", depth: 39 },
       );
       await updateBookMove(
         defaultBookSession,
         "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-        { usi: "2h7h", score: 43, depth: 55, count: 96 },
+        { usi: "2h7h", score: 43 },
       );
 
       const mergeFilePath = path.join(tmpdir, "merge.ybb");
