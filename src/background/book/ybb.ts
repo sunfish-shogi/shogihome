@@ -15,7 +15,6 @@ const INDEX_HEADER_SIZE = 32; // magic(16) + record_count(8) + flags(8)
 const RECORD_SIZE = 44; // packed_sfen(32) + moves_offset(8) + ply(2) + move_count(2)
 const MOVE_ENTRY_SIZE_V0 = 4; // move16(2) + eval(2)
 const MOVE_ENTRY_SIZE_V1 = 6; // move16(2) + eval(2) + depth(2)
-const MATE_SCORE_BASE = 32000;
 
 async function readExact(
   file: fs.promises.FileHandle,
@@ -58,38 +57,14 @@ function packedSfenToBytes(words: Uint32Array): Uint8Array {
   return new Uint8Array(words.buffer, words.byteOffset, 32);
 }
 
-function evalToScore(evalValue: number): number {
-  if (evalValue >= MATE_SCORE_BASE - 100) {
-    return 30000;
-  }
-  if (evalValue <= -(MATE_SCORE_BASE - 100)) {
-    return -30000;
-  }
-  return evalValue;
-}
-
-function scoreToEval(score: number | undefined): number {
-  if (score === undefined) {
-    return 0;
-  }
-  if (score >= 30000) {
-    return MATE_SCORE_BASE;
-  }
-  if (score <= -30000) {
-    return -MATE_SCORE_BASE;
-  }
-  return score;
-}
-
 function readMoves(buf: Buffer, moveCount: number, entrySize: number): BookMove[] {
   const moves: BookMove[] = [];
   for (let i = 0; i < moveCount; i++) {
     const off = i * entrySize;
     const move16 = buf.readUInt16LE(off);
-    const evalValue = buf.readInt16LE(off + 2);
+    const score = buf.readInt16LE(off + 2);
     const depth = entrySize >= MOVE_ENTRY_SIZE_V1 ? buf.readUInt16LE(off + 4) : undefined;
     const usi = fromYaneMove16(move16);
-    const score = evalToScore(evalValue);
     const move: BookMove = { usi, score };
     if (depth !== undefined && depth > 0) {
       move.depth = depth;
@@ -314,7 +289,7 @@ export async function storeYbbBook(
         const m = entry.moves[i];
         const off = i * entrySize;
         movesBuf.writeUInt16LE(toYaneMove16(m.usi), off);
-        movesBuf.writeInt16LE(scoreToEval(m.score), off + 2);
+        movesBuf.writeInt16LE(m.score ?? 0, off + 2);
         if (hasDepth) {
           movesBuf.writeUInt16LE(m.depth ?? 0, off + 4);
         }
@@ -502,7 +477,7 @@ export async function mergeYbbBook(
         for (let i = 0; i < moves.length; i++) {
           const off = i * outputEntrySize;
           outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
-          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
+          outMoves.writeInt16LE(moves[i].score ?? 0, off + 2);
           if (outputHasDepth) {
             outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
           }
@@ -542,7 +517,7 @@ export async function mergeYbbBook(
         for (let i = 0; i < moves.length; i++) {
           const off = i * outputEntrySize;
           outMoves.writeUInt16LE(toYaneMove16(moves[i].usi), off);
-          outMoves.writeInt16LE(scoreToEval(moves[i].score), off + 2);
+          outMoves.writeInt16LE(moves[i].score ?? 0, off + 2);
           if (outputHasDepth) {
             outMoves.writeUInt16LE(moves[i].depth ?? 0, off + 4);
           }

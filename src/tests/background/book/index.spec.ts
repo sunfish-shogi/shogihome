@@ -626,13 +626,13 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         defaultBookSession,
         "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R5/LNSGKGSNL b - 1",
       ),
-    ).toEqual([{ usi: "1g1f", count: 3, score: 30000, comment: "" }]);
+    ).toEqual([{ usi: "1g1f", count: 3, score: 32000, comment: "" }]);
     expect(
       await searchBookMoves(
         defaultBookSession,
         "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP4P/PPB1PPPP1/3R5/LNSGKGSNL w - 1",
       ),
-    ).toEqual([{ usi: "5a4b", count: 3, score: 30000, comment: "" }]);
+    ).toEqual([{ usi: "5a4b", count: 3, score: 32000, comment: "" }]);
   });
 
   it("importBookMoves - importScore: false", async () => {

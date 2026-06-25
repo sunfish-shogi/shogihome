@@ -849,7 +849,7 @@ export async function importBookMoves(
         }
         if (bookMove.score === undefined || (info.depth ?? -1) > (bookMove.depth ?? -1)) {
           bookMove.score =
-            info.mate !== undefined ? (info.mate > 0 ? 30000 : -30000) * sign : info.score! * sign;
+            info.mate !== undefined ? (info.mate > 0 ? 32000 : -32000) * sign : info.score! * sign;
           bookMove.depth = info.depth;
         }
       }
