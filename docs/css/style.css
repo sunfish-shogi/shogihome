@@ -149,7 +149,7 @@ li {
 ul.faq {
   margin-left: auto;
   margin-right: auto;
-  width: min(90vw, 110vh, 1400px);
+  width: min(90vw, 110vh, 1000px);
   text-align: left;
 }
 
@@ -164,25 +164,25 @@ ul.faq li li {
 .long-text {
   margin-left: auto;
   margin-right: auto;
-  width: min(90vw, 110vh, 1400px);
+  width: min(90vw, 110vh, 1000px);
   text-align: left;
 }
 
 .images {
   margin: 2em auto 2em auto;
-  width: min(90vw, 110vh);
+  width: min(90vw, 110vh, 1200px);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 img {
-  width: max(min(40vw, 50vh), min(80vw, 50vh));
+  width: min(max(min(40vw, 50vh), min(80vw, 50vh)), 500px);
   margin: min(1vw, 1vh);
 }
 
 img.wide {
-  width: max(min(80vw, 80vh), min(80vw, 80vh));
+  width: min(max(min(80vw, 80vh), min(80vw, 80vh)), 800px);
 }
 
 img.border {
