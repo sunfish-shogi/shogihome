@@ -1,0 +1,1 @@
+var e=class{func;timeout;after(e,t){this.func=e,!this.timeout&&(this.timeout=setTimeout(this.invoke.bind(this),t))}invoke(){this.func?.(),this.clear()}clear(){this.timeout&&=(clearTimeout(this.timeout),void 0),this.func=void 0}},t=function(e){return e.CSA=`csa`,e.USI=`usi`,e}({});export{e as n,t};
