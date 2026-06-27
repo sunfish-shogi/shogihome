@@ -108,7 +108,7 @@ button {
   vertical-align: middle;
 }
 .bookmark {
-  max-width: 250px;
+  width: 200px;
   margin-right: 5px;
 }
 </style>
