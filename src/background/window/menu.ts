@@ -556,30 +556,6 @@ function createMenuTemplate(window: BrowserWindow) {
       label: t.folders,
       submenu: [
         {
-          label: t.app,
-          click: () => {
-            openPath(path.dirname(getAppPath("exe"))).catch(sendError);
-          },
-        },
-        {
-          label: t.settings,
-          click: () => {
-            openSettingsDirectory().catch(sendError);
-          },
-        },
-        {
-          label: t.log,
-          click: () => {
-            openPath(getRootLogDir()).catch(sendError);
-          },
-        },
-        {
-          label: t.cache,
-          click: () => {
-            openCacheDirectory().catch(sendError);
-          },
-        },
-        {
           label: `${t.autoSaving} (Local)`,
           click: () => {
             openAutoSaveDirectory().catch(sendError);
@@ -590,6 +566,38 @@ function createMenuTemplate(window: BrowserWindow) {
           click: () => {
             openAutoSaveDirectoryForCSA().catch(sendError);
           },
+        },
+        {
+          type: "separator",
+        },
+        {
+          label: t.forDevelopers,
+          submenu: [
+            {
+              label: t.app,
+              click: () => {
+                openPath(path.dirname(getAppPath("exe"))).catch(sendError);
+              },
+            },
+            {
+              label: t.settings,
+              click: () => {
+                openSettingsDirectory().catch(sendError);
+              },
+            },
+            {
+              label: t.log,
+              click: () => {
+                openPath(getRootLogDir()).catch(sendError);
+              },
+            },
+            {
+              label: t.cache,
+              click: () => {
+                openCacheDirectory().catch(sendError);
+              },
+            },
+          ],
         },
       ],
     },
