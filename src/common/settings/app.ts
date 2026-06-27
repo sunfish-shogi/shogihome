@@ -227,6 +227,7 @@ export type AppSettings = {
   yaneBookOnTheFlyThresholdMB: number;
   aperyBookOnTheFlyThresholdMB: number;
   sbkOnTheFlyThresholdMB: number;
+  ybbOnTheFlyThresholdMB: number;
   flippedBook: boolean;
 
   // Engine
@@ -388,6 +389,7 @@ export function defaultAppSettings(opt?: {
     yaneBookOnTheFlyThresholdMB: 64,
     aperyBookOnTheFlyThresholdMB: 64,
     sbkOnTheFlyThresholdMB: 16,
+    ybbOnTheFlyThresholdMB: 64,
     flippedBook: true,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,

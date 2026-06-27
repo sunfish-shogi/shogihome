@@ -532,6 +532,7 @@ export type Texts = {
   forced: string;
   goodMove: string;
   yane2016BookFile: string;
+  ybbBookFile: string;
   shogiGUIBookFile: string;
   aperyBookFile: string;
   loadingMode: string;

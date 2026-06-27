@@ -96,6 +96,7 @@ export class BookStore {
           yaneOnTheFlyThresholdMB: useAppSettings().yaneBookOnTheFlyThresholdMB,
           aperyOnTheFlyThresholdMB: useAppSettings().aperyBookOnTheFlyThresholdMB,
           sbkOnTheFlyThresholdMB: useAppSettings().sbkOnTheFlyThresholdMB,
+          ybbOnTheFlyThresholdMB: useAppSettings().ybbOnTheFlyThresholdMB,
         });
         this._format = await api.getBookFormat(defaultBookSession);
         await this.reloadBookMoves();

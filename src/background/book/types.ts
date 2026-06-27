@@ -1,4 +1,10 @@
-import { BookFormatApery, BookFormatSbk, BookFormatYane2016, BookMove } from "@/common/book.js";
+import {
+  BookFormatApery,
+  BookFormatSbk,
+  BookFormatYane2016,
+  BookFormatYbb,
+  BookMove,
+} from "@/common/book.js";
 
 export type YaneBook = {
   format: BookFormatYane2016;
@@ -19,7 +25,12 @@ export type SbkBook = {
   rawData?: Uint8Array;
 };
 
-export type Book = YaneBook | AperyBook | SbkBook;
+export type YbbBook = {
+  format: BookFormatYbb;
+  entries: Map<string, BookEntry>;
+};
+
+export type Book = YaneBook | AperyBook | SbkBook | YbbBook;
 
 export type SbkOnTheFlyLUT = {
   table: Uint32Array;

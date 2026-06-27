@@ -6,6 +6,9 @@
         <button @click="reset('yane2016')">{{ t.yane2016BookFile }} (.db)</button>
       </div>
       <div class="item">
+        <button @click="reset('ybb')">{{ t.ybbBookFile }} (.ybb)</button>
+      </div>
+      <div class="item">
         <button @click="reset('sbk')">{{ t.shogiGUIBookFile }} (.sbk)</button>
       </div>
       <div class="item">

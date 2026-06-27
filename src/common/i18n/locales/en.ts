@@ -539,6 +539,7 @@ export const en: Texts = {
   forced: "Forced",
   goodMove: "Good",
   yane2016BookFile: "YaneuraOu Book File",
+  ybbBookFile: "YaneuraOu Binary Book File",
   shogiGUIBookFile: "ShogiGUI Book File",
   aperyBookFile: "Apery Book File",
   loadingMode: "Loading Mode",

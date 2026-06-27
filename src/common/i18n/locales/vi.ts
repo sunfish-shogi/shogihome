@@ -549,6 +549,7 @@ export const vi: Texts = {
   forced: "絶対手", // TODO: Translate
   goodMove: "好手", // TODO: Translate
   yane2016BookFile: "やねうら王定跡ファイル", // TODO: Translate
+  ybbBookFile: "やねうら王バイナリ定跡ファイル", // TODO: Translate
   shogiGUIBookFile: "ShogiGUI 定跡ファイル", // TODO: Translate
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate

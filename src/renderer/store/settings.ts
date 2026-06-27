@@ -204,6 +204,9 @@ class AppSettingsStore {
   get sbkOnTheFlyThresholdMB(): number {
     return this.merged.sbkOnTheFlyThresholdMB;
   }
+  get ybbOnTheFlyThresholdMB(): number {
+    return this.merged.ybbOnTheFlyThresholdMB;
+  }
   get flippedBook(): boolean {
     return this.merged.flippedBook;
   }

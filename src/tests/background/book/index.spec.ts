@@ -182,6 +182,50 @@ describe("background/book", () => {
       }
     });
 
+    describe("yaneuraou.ybb", () => {
+      const patterns = [
+        { options: { ybbOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
+        { options: { ybbOnTheFlyThresholdMB: 0.0001 }, mode: "on-the-fly" },
+      ];
+      for (const pattern of patterns) {
+        it(`mode=${pattern.mode}`, async () => {
+          const mode = await openBook(
+            defaultBookSession,
+            "src/tests/testdata/book/yaneuraou.ybb",
+            pattern.options,
+          );
+          expect(mode).toBe(pattern.mode);
+
+          const moves = await searchBookMoves(
+            defaultBookSession,
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+          );
+          expect(moves).toHaveLength(5);
+          expect(moves[0].usi).toBe("2g2f");
+          expect(moves[0].score).toBe(63);
+          expect(moves[0].depth).toBe(27);
+          expect(moves[1].usi).toBe("7g7f");
+          expect(moves[1].score).toBe(20);
+          expect(moves[1].depth).toBe(25);
+          expect(moves[2].usi).toBe("5g5f");
+          expect(moves[3].usi).toBe("2h7h");
+          expect(moves[4].usi).toBe("3g3f");
+
+          const moves2 = await searchBookMoves(
+            defaultBookSession,
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+          );
+          expect(moves2).toHaveLength(3);
+
+          const moves3 = await searchBookMoves(
+            defaultBookSession,
+            "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
+          );
+          expect(moves3).toHaveLength(0);
+        });
+      }
+    });
+
     describe("shogigui01-copy.sbk", () => {
       const patterns = [
         { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
@@ -306,6 +350,23 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       });
     });
 
+    it("ybb", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb");
+      const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+      await updateBookMove(defaultBookSession, sfen, {
+        usi: "2g2f",
+        score: 100,
+        depth: 30,
+        count: 999,
+      });
+      const moves = await searchBookMoves(defaultBookSession, sfen);
+      expect(moves).toHaveLength(5);
+      expect(moves[0].usi).toBe("2g2f");
+      expect(moves[0].score).toBe(100);
+      expect(moves[0].depth).toBe(30);
+      expect(moves[0].count).toBe(999);
+    });
+
     it("apery", async () => {
       await openBook(defaultBookSession, "src/tests/testdata/book/apery.bin");
       const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
@@ -353,6 +414,15 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await saveBook(defaultBookSession, copyFilePath);
       const output = fs.readFileSync(copyFilePath, "hex");
       const expected = fs.readFileSync("src/tests/testdata/book/apery.bin", "hex");
+      expect(output).toBe(expected);
+    });
+
+    it("ybb", async () => {
+      const copyFilePath = path.join(tmpdir, "copy.ybb");
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb");
+      await saveBook(defaultBookSession, copyFilePath);
+      const output = fs.readFileSync(copyFilePath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou.ybb", "hex");
       expect(output).toBe(expected);
     });
 
@@ -556,13 +626,13 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         defaultBookSession,
         "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R5/LNSGKGSNL b - 1",
       ),
-    ).toEqual([{ usi: "1g1f", count: 3, score: 30000, comment: "" }]);
+    ).toEqual([{ usi: "1g1f", count: 3, score: 32000, comment: "" }]);
     expect(
       await searchBookMoves(
         defaultBookSession,
         "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP4P/PPB1PPPP1/3R5/LNSGKGSNL w - 1",
       ),
-    ).toEqual([{ usi: "5a4b", count: 3, score: 30000, comment: "" }]);
+    ).toEqual([{ usi: "5a4b", count: 3, score: 32000, comment: "" }]);
   });
 
   it("importBookMoves - importScore: false", async () => {
@@ -683,14 +753,14 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         "3c3d",
       );
 
-      const mergeFilePath = path.join(tmpdir, "mverge.db");
+      const mergeFilePath = path.join(tmpdir, "merge.db");
       await saveBook(defaultBookSession, mergeFilePath);
       const output = fs.readFileSync(mergeFilePath, "utf-8");
       const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-merge.db", "utf-8");
       expect(output).toBe(expected);
 
       // 2回目の書き込みを検査する
-      const mergeFilePath2 = path.join(tmpdir, "mverge2.db");
+      const mergeFilePath2 = path.join(tmpdir, "merge2.db");
       await saveBook(defaultBookSession, mergeFilePath2);
       const output2 = fs.readFileSync(mergeFilePath2, "utf-8");
       expect(output2).toBe(expected);
@@ -802,11 +872,40 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(output2).toBe(expected);
     });
 
+    it("ybb", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb", {
+        ybbOnTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 1",
+        { usi: "3c3d", score: -123, depth: 41 },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1",
+        { usi: "7g7f", depth: 39 },
+      );
+      await updateBookMove(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+        { usi: "2h7h", score: 43 },
+      );
+
+      const mergeFilePath = path.join(tmpdir, "merge.ybb");
+      await saveBook(defaultBookSession, mergeFilePath);
+      const output = fs.readFileSync(mergeFilePath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-edit.ybb", "hex");
+      expect(output).toBe(expected);
+    });
+
     it("forbidOverwrite", async () => {
       const path = "src/tests/testdata/book/yaneuraou.db";
       const mode = await openBook(defaultBookSession, path, { yaneOnTheFlyThresholdMB: 0.0001 });
       expect(mode).toBe("on-the-fly");
-      await expect(saveBook(defaultBookSession, path)).rejects.toThrowError(
+      await expect(saveBook(defaultBookSession, path)).rejects.toThrow(
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
       );
     });
@@ -919,6 +1018,45 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await expect(exportBook(defaultBookSession, outPath, "sbk")).rejects.toThrow(
         "Invalid file extension",
       );
+    });
+
+    it("yaneuraou.db (in-memory) → ybb", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db");
+      const outPath = path.join(tmpdir, "export-from-db.ybb");
+      await exportBook(defaultBookSession, outPath, "ybb");
+      const output = fs.readFileSync(outPath, "hex");
+      const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou.ybb", "hex");
+      expect(output).toBe(expected);
+    });
+
+    it("yaneuraou.ybb (in-memory) → db", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb");
+      expect(mode).toBe("in-memory");
+      const outPath = path.join(tmpdir, "export-from-ybb.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      expect(await openBook(defaultBookSession, outPath)).toBe("in-memory");
+      const moves = await searchBookMoves(defaultBookSession, sfen1);
+      expect(moves).toHaveLength(5);
+      expect(moves[0].usi).toBe("2g2f");
+      expect(moves[0].score).toBe(63);
+      expect(moves[0].depth).toBe(27);
+    });
+
+    it("yaneuraou.ybb (on-the-fly) → db", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb", {
+        ybbOnTheFlyThresholdMB: 0.0001,
+      });
+      expect(mode).toBe("on-the-fly");
+      const outPath = path.join(tmpdir, "export-from-ybb.db");
+      await exportBook(defaultBookSession, outPath, "yane2016");
+
+      expect(await openBook(defaultBookSession, outPath)).toBe("in-memory");
+      const moves = await searchBookMoves(defaultBookSession, sfen1);
+      expect(moves).toHaveLength(5);
+      expect(moves[0].usi).toBe("2g2f");
+      expect(moves[0].score).toBe(63);
+      expect(moves[0].depth).toBe(27);
     });
   });
 });

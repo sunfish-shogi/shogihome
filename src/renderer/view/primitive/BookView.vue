@@ -12,10 +12,14 @@
             <td class="menu">{{ t.edit }}</td>
             <td class="menu">{{ t.remove }}</td>
             <td v-if="props.format !== 'sbk'" class="number">{{ t.score }}</td>
-            <td v-if="props.format === 'yane2016'" class="number">{{ t.depth }}</td>
-            <td class="number">{{ t.freq }}</td>
-            <td class="number"></td>
-            <td v-if="props.format !== 'apery'" class="text">{{ t.comments }}</td>
+            <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
+              {{ t.depth }}
+            </td>
+            <td v-if="props.format !== 'ybb'" class="number">{{ t.freq }}</td>
+            <td v-if="props.format !== 'ybb'" class="number"></td>
+            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">
+              {{ t.comments }}
+            </td>
           </tr>
         </thead>
         <tbody>
@@ -54,16 +58,16 @@
             <td v-if="props.format !== 'sbk'" class="number">
               <span>{{ entry.score }}</span>
             </td>
-            <td v-if="props.format === 'yane2016'" class="number">
+            <td v-if="props.format === 'yane2016' || props.format === 'ybb'" class="number">
               <span>{{ entry.depth }}</span>
             </td>
-            <td class="number">
+            <td v-if="props.format !== 'ybb'" class="number">
               <span>{{ entry.count }}</span>
             </td>
-            <td class="number small">
+            <td v-if="props.format !== 'ybb'" class="number small">
               <span v-if="entry.percentage !== undefined">({{ entry.percentage }}%)</span>
             </td>
-            <td v-if="props.format !== 'apery'" class="text">
+            <td v-if="props.format !== 'apery' && props.format !== 'ybb'" class="text">
               <span
                 v-if="entry.evaluationLabel"
                 class="in-comment-label"

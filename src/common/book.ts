@@ -10,7 +10,8 @@ export type SbkMoveEvaluation = number;
 export type BookFormatYane2016 = "yane2016";
 export type BookFormatApery = "apery";
 export type BookFormatSbk = "sbk";
-export type BookFormat = BookFormatYane2016 | BookFormatApery | BookFormatSbk;
+export type BookFormatYbb = "ybb";
+export type BookFormat = BookFormatYane2016 | BookFormatApery | BookFormatSbk | BookFormatYbb;
 
 export type BookMove = {
   usi: string; // 定跡手
@@ -27,6 +28,7 @@ export type BookLoadingOptions = {
   yaneOnTheFlyThresholdMB?: number; // やねうら王形式を on-the-fly に切り替える閾値(MebiBytes)
   aperyOnTheFlyThresholdMB?: number; // Apery 形式を on-the-fly に切り替える閾値(MebiBytes)
   sbkOnTheFlyThresholdMB?: number; // SBK 形式を on-the-fly に切り替える閾値(MebiBytes)
+  ybbOnTheFlyThresholdMB?: number; // YBB 形式を on-the-fly に切り替える閾値(MebiBytes)
   forceOnTheFly?: boolean; // 強制的に On-the-fly モードにする
 };
 

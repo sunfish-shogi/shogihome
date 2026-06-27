@@ -16,9 +16,9 @@
             type="number"
             :readonly="!enableScore"
           />
-          <ToggleButton v-model:value="enableScore" />
+          <ToggleButton v-if="scoreOptional" v-model:value="enableScore" />
         </div>
-        <div v-if="props.format === 'yane2016'" class="form-item">
+        <div v-if="props.format === 'yane2016' || props.format === 'ybb'" class="form-item">
           <div class="form-item-label">{{ t.depth }}</div>
           <input
             v-model.number="depthValue"
@@ -29,7 +29,7 @@
           />
           <ToggleButton v-model:value="enableDepth" />
         </div>
-        <div class="form-item">
+        <div v-if="props.format !== 'ybb'" class="form-item">
           <div class="form-item-label">{{ t.frequency }}</div>
           <input
             v-model.number="countValue"
@@ -38,7 +38,7 @@
             type="number"
             :readonly="!enableCount"
           />
-          <ToggleButton v-model:value="enableCount" />
+          <ToggleButton v-if="countOptional" v-model:value="enableCount" />
         </div>
         <div v-if="props.format === 'sbk'" class="form-item">
           <div class="form-item-label">{{ t.moveEvaluation }}</div>
@@ -99,13 +99,16 @@ const emits = defineEmits<{
   cancel: [];
 }>();
 
+const scoreOptional = props.format !== "apery" && props.format !== "ybb";
+const countOptional = props.format !== "apery";
+
 const scoreValue = ref(props.score || 0);
 const depthValue = ref(props.depth || 0);
 const countValue = ref(props.count || 0);
 const commentValue = ref(props.comment || "");
-const enableScore = ref(props.score !== undefined);
+const enableScore = ref(scoreOptional ? props.score !== undefined : true);
 const enableDepth = ref(props.depth !== undefined);
-const enableCount = ref(props.count !== undefined);
+const enableCount = ref(countOptional ? props.count !== undefined : true);
 const sbkEvalValue = ref(props.sbkEval || SbkMoveEvaluation.None);
 
 const onOk = () => {
