@@ -47,11 +47,10 @@ const onSelectBookmark = (bookmark: string) => {
   gap: 10px;
   max-width: calc(100vw - 3px - 2em - 32px);
 }
-.bookmark {
-  text-align: left;
-}
 .bookmark > button {
   width: 100%;
+  min-width: 150px;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
