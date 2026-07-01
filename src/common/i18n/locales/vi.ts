@@ -213,8 +213,9 @@ export const vi: Texts = {
   changePieceSet: "Tăng giảm quân",
   setAllPiecesToStandardCounts: "Đặt lại số lượng quân",
   setAllPiecesToZero: "Đặt tất cả số quân thành 0",
-  blackHandPieceStand: "先手の駒台", // TODO: Translate
-  whiteHandPieceStand: "後手の駒台", // TODO: Translate
+  addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
+  addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
+  addToBoard: "盤に追加", // TODO: Translate
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",

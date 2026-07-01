@@ -198,8 +198,9 @@ export type Texts = {
   changePieceSet: string;
   setAllPiecesToStandardCounts: string;
   setAllPiecesToZero: string;
-  blackHandPieceStand: string;
-  whiteHandPieceStand: string;
+  addToBlackHandPieceStand: string;
+  addToWhiteHandPieceStand: string;
+  addToBoard: string;
   appSettings: string;
   language: string;
   theme: string;

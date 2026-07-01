@@ -210,8 +210,9 @@ export const zh_tw: Texts = {
   changePieceSet: "調整棋駒數",
   setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
   setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
-  blackHandPieceStand: "先手の駒台", // TODO: Translate
-  whiteHandPieceStand: "後手の駒台", // TODO: Translate
+  addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
+  addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
+  addToBoard: "盤に追加", // TODO: Translate
   appSettings: "程式設定",
   language: "語言",
   theme: "主題",

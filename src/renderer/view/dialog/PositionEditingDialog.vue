@@ -25,47 +25,13 @@
           :position="position"
           :allow-edit="true"
           :allow-move="false"
-          :enable-drag-and-drop="appSettings.enableDragAndDrop"
+          :enable-drag-and-drop="false"
           :hide-clock="true"
           :drop-shadows="false"
           @edit="onEdit"
         />
       </div>
       <div class="controls column">
-        <div class="form-group">
-          <div class="title">{{ t.copy }} / {{ t.paste }}</div>
-          <div class="row">
-            <button class="thin" @click="onCopySFEN">
-              <Icon :icon="IconType.COPY" />
-              <span>{{ t.asSFEN }}</span>
-            </button>
-            <button class="thin" @click="onCopyBOD">
-              <Icon :icon="IconType.COPY" />
-              <span>{{ t.asBOD }}</span>
-            </button>
-            <button class="thin" @click="onPaste">
-              <Icon :icon="IconType.PASTE" />
-              <span>{{ t.paste }}</span>
-            </button>
-          </div>
-        </div>
-        <div class="form-group">
-          <button class="wide" @click="isInitialPositionMenuVisible = true">
-            <Icon :icon="IconType.GAME" />
-            <span>{{ t.initializePosition }}</span>
-          </button>
-          <InitialPositionMenu
-            v-if="isInitialPositionMenuVisible"
-            @select="onSelectPreset"
-            @close="isInitialPositionMenuVisible = false"
-          />
-        </div>
-        <div class="form-group">
-          <button class="wide" @click="onChangeTurn">
-            <Icon :icon="IconType.SWAP" />
-            <span>{{ t.changeTurn }}</span>
-          </button>
-        </div>
         <div class="form-group">
           <div class="title">{{ t.changePieceSet }}</div>
           <div class="list row wrap">
@@ -84,15 +50,42 @@
           <HorizontalSelector
             v-model:value="destination"
             :items="[
-              { label: t.blackHandPieceStand, value: 'blackHand' },
-              { label: t.whiteHandPieceStand, value: 'whiteHand' },
-              { label: t.board, value: 'board' },
+              { label: t.addToBlackHandPieceStand, value: 'blackHand' },
+              { label: t.addToWhiteHandPieceStand, value: 'whiteHand' },
+              { label: t.addToBoard, value: 'board' },
             ]"
           />
           <button class="bulk thin" @click="setStandardCounts">
             {{ t.setAllPiecesToStandardCounts }}
           </button>
           <button class="bulk thin" @click="setAllZero">{{ t.setAllPiecesToZero }}</button>
+        </div>
+        <div class="form-group">
+          <button class="wide" @click="isInitialPositionMenuVisible = true">
+            <Icon :icon="IconType.REFRESH" />
+            <span>{{ t.initializePosition }}</span>
+          </button>
+          <InitialPositionMenu
+            v-if="isInitialPositionMenuVisible"
+            @select="onSelectPreset"
+            @close="isInitialPositionMenuVisible = false"
+          />
+          <button class="wide" @click="onChangeTurn">
+            <Icon :icon="IconType.SWAP" />
+            <span>{{ t.changeTurn }}</span>
+          </button>
+          <button class="wide" @click="onCopySFEN">
+            <Icon :icon="IconType.COPY" />
+            <span>{{ t.asSFEN }}</span>
+          </button>
+          <button class="wide" @click="onCopyBOD">
+            <Icon :icon="IconType.COPY" />
+            <span>{{ t.asBOD }}</span>
+          </button>
+          <button class="wide" @click="onPaste">
+            <Icon :icon="IconType.PASTE" />
+            <span>{{ t.paste }}</span>
+          </button>
         </div>
       </div>
     </div>
@@ -144,7 +137,7 @@ const appSettings = useAppSettings();
 
 const position = ref(store.record.position.clone());
 const isInitialPositionMenuVisible = ref(false);
-const destination = ref<PieceStandDestination>("board");
+const destination = ref<PieceStandDestination>("blackHand");
 
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
 const updateWindowSize = () => {
@@ -270,7 +263,7 @@ const onCancel = () => {
   margin-right: 15px;
 }
 .controls {
-  width: 300px;
+  width: 400px;
 }
 .form-group {
   margin-bottom: 0.8em;
