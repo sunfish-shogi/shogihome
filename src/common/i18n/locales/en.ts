@@ -198,13 +198,13 @@ export const en: Texts = {
   appearanceCount: "Appearance Count",
   showList: "Show List",
   setupPosition: "Setup Position",
-  startPositionSetup: "Start Position Setup",
-  completePositionSetup: "Complete Setup",
   changeTurn: "Change Turn",
   initializePosition: "Initialize Position",
   changePieceSet: "Change Piece Set",
   setAllPiecesToStandardCounts: "Set All Pieces to Standard Counts",
   setAllPiecesToZero: "Set All Pieces to Zero",
+  blackHandPieceStand: "Black's Piece Stand",
+  whiteHandPieceStand: "White's Piece Stand",
   appSettings: "Preferences",
   language: "Languages",
   theme: "Theme",
@@ -689,7 +689,6 @@ export const en: Texts = {
   areYouSureWantToRequestQuit:
     "You have possibility to be loser. Are you sure you want to request quit?",
   areYouSureWantToClearRecord: "Are you sure you want to clear record?",
-  areYouSureWantToDiscardPosition: "Are you sure you want to discard the position?",
   areYouSureWantToOpenFileInsteadOfCurrentRecord:
     "Are you sure you want to open the file instead of current record?",
   areYouSureWantToClearHistory: "Are you sure you want to clear history?",

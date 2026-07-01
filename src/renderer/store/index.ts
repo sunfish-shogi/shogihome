@@ -4,7 +4,6 @@ import {
   exportCSA,
   ImmutableRecord,
   Move,
-  PositionChange,
   formatSpecialMove,
   exportKIF,
   RecordMetadataKey,
@@ -32,7 +31,6 @@ import {
   RecordManager,
   ChangePositionHandler,
   UpdateCustomDataHandler,
-  PieceSet,
   UpdateTreeHandler,
 } from "@/renderer/record/manager.js";
 import { GameManager } from "@/renderer/game/game.js";
@@ -1124,64 +1122,38 @@ class Store {
     this.recordManager.appendMove({ move: specialMoveType });
   }
 
-  startPositionEditing(): void {
+  showPositionEditingDialog(): void {
     if (this.appState !== AppState.NORMAL) {
+      return;
+    }
+    this._appState = AppState.POSITION_EDITING_DIALOG;
+  }
+
+  closePositionEditingDialog(position?: ImmutablePosition): void {
+    if (this.appState !== AppState.POSITION_EDITING_DIALOG) {
+      return;
+    }
+    if (!position) {
+      this._appState = AppState.NORMAL;
       return;
     }
     this.showConfirmation({
       message: t.areYouSureWantToClearRecord,
       onOk: () => {
-        this._appState = AppState.POSITION_EDITING;
-        this.recordManager.resetByCurrentPosition();
+        this.recordManager.resetByPosition(position);
+        this._appState = AppState.NORMAL;
       },
     });
   }
 
-  endPositionEditing(): void {
-    if (this.appState === AppState.POSITION_EDITING) {
-      this._appState = AppState.NORMAL;
-    }
-  }
-
   initializePositionBySFEN(sfen: string): void {
-    if (this.appState === AppState.NORMAL || this.appState === AppState.POSITION_EDITING) {
+    if (this.appState === AppState.NORMAL) {
       this.showConfirmation({
-        message:
-          this.appState === AppState.NORMAL
-            ? t.areYouSureWantToClearRecord
-            : t.areYouSureWantToDiscardPosition,
+        message: t.areYouSureWantToClearRecord,
         onOk: () => {
           this.recordManager.resetBySFEN(sfen);
         },
       });
-    }
-  }
-
-  changeTurn(): void {
-    if (this.appState == AppState.POSITION_EDITING) {
-      this.recordManager.swapNextTurn();
-    }
-  }
-
-  showPieceSetChangeDialog() {
-    if (this.appState === AppState.POSITION_EDITING) {
-      this._appState = AppState.PIECE_SET_CHANGE_DIALOG;
-    }
-  }
-
-  closePieceSetChangeDialog(pieceSet?: PieceSet) {
-    if (this.appState !== AppState.PIECE_SET_CHANGE_DIALOG) {
-      return;
-    }
-    if (pieceSet) {
-      this.recordManager.changePieceSet(pieceSet);
-    }
-    this._appState = AppState.POSITION_EDITING;
-  }
-
-  editPosition(change: PositionChange): void {
-    if (this.appState === AppState.POSITION_EDITING) {
-      this.recordManager.changePosition(change);
     }
   }
 

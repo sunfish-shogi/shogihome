@@ -205,13 +205,13 @@ export const zh_tw: Texts = {
   appearanceCount: "出現数", // TODO: Translate
   showList: "一覧を表示", // TODO: Translate
   setupPosition: "編輯局面",
-  startPositionSetup: "開始編輯局面",
-  completePositionSetup: "結束編輯局面",
   changeTurn: "變更手番",
   initializePosition: "初始化局面",
   changePieceSet: "調整棋駒數",
   setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
   setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
+  blackHandPieceStand: "先手の駒台", // TODO: Translate
+  whiteHandPieceStand: "後手の駒台", // TODO: Translate
   appSettings: "程式設定",
   language: "語言",
   theme: "主題",
@@ -692,7 +692,6 @@ export const zh_tw: Texts = {
   areYouSureWantToQuitGames: "要中斷連續對局嗎？",
   areYouSureWantToRequestQuit: "若提出中斷要求，可能會被判負。請問您要繼續嗎？",
   areYouSureWantToClearRecord: "將會刪除現在的棋譜。請問您要繼續嗎？",
-  areYouSureWantToDiscardPosition: "將不會保存現在的局面。請問您要繼續嗎？",
   areYouSureWantToOpenFileInsteadOfCurrentRecord:
     "會將現在的棋譜關閉並開啟別的檔案，請問您要繼續嗎？",
   areYouSureWantToClearHistory: "將清除紀錄。請問您要繼續嗎？",

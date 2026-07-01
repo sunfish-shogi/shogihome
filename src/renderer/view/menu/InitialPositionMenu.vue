@@ -71,21 +71,20 @@ import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
-import { useStore } from "@/renderer/store";
 import { InitialPositionSFEN } from "tsshogi";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 
 const emit = defineEmits<{
   close: [];
+  select: [sfen: string];
 }>();
 
-const store = useStore();
 const dialog = ref();
 const onClose = () => {
   emit("close");
 };
 const onPush = (sfen: string) => {
-  store.initializePositionBySFEN(sfen);
+  emit("select", sfen);
   emit("close");
 };
 onMounted(() => {

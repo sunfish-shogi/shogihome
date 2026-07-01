@@ -34,7 +34,6 @@ import { MenuEvent } from "@/common/control/menu.js";
 import { AppState } from "@/common/control/state.js";
 import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help.js";
 import { t } from "@/common/i18n/index.js";
-import { InitialPositionSFEN } from "tsshogi";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { chromiumLicensePath, electronLicensePath } from "@/background/proc/path.js";
 import { openCacheDirectory } from "@/background/image/cache.js";
@@ -229,108 +228,7 @@ function createMenuTemplate(window: BrowserWindow) {
           AppState.NORMAL,
         ]),
         { type: "separator" },
-        menuItem(t.startPositionSetup, MenuEvent.START_POSITION_EDITING, [AppState.NORMAL]),
-        menuItem(t.completePositionSetup, MenuEvent.END_POSITION_EDITING, [
-          AppState.POSITION_EDITING,
-        ]),
-        menuItem(t.changeTurn, MenuEvent.CHANGE_TURN, [AppState.POSITION_EDITING]),
-        {
-          label: t.initializePosition,
-          submenu: [
-            menuItem(
-              t.noHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.STANDARD,
-            ),
-            menuItem(
-              t.lanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_LANCE,
-            ),
-            menuItem(
-              t.rightLanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_RIGHT_LANCE,
-            ),
-            menuItem(
-              t.bishopHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_BISHOP,
-            ),
-            menuItem(
-              t.rookHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_ROOK,
-            ),
-            menuItem(
-              t.rookLanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_ROOK_LANCE,
-            ),
-            menuItem(
-              t.twoPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_2PIECES,
-            ),
-            menuItem(
-              t.fourPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_4PIECES,
-            ),
-            menuItem(
-              t.sixPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_6PIECES,
-            ),
-            menuItem(
-              t.eightPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_8PIECES,
-            ),
-            menuItem(
-              t.tenPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_10PIECES,
-            ),
-            menuItem(
-              t.tsumeShogi,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.TSUME_SHOGI,
-            ),
-            menuItem(
-              t.doubleKingTsumeShogi,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.TSUME_SHOGI_2KINGS,
-            ),
-          ],
-        },
-        menuItem(t.changePieceSet, MenuEvent.CHANGE_PIECE_SET, [AppState.POSITION_EDITING]),
+        menuItem(t.setupPosition, MenuEvent.START_POSITION_EDITING, [AppState.NORMAL]),
         // NOTE:
         //   Mac ではこれらのショートカットがメニューに無いとテキスト編集時のショートカット操作ができない。
         //   https://github.com/sunfish-shogi/shogihome/issues/694

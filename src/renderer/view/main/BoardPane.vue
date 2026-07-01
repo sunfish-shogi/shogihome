@@ -26,7 +26,6 @@
       :hide-clock="store.appState !== AppState.GAME && store.appState !== AppState.CSA_GAME"
       :mobile="isMobileWebApp()"
       :allow-move="store.isMovableByUser"
-      :allow-edit="store.appState === AppState.POSITION_EDITING"
       :enable-drag-and-drop="appSettings.enableDragAndDrop"
       :black-player-name="blackPlayerName"
       :white-player-name="whitePlayerName"
@@ -37,7 +36,6 @@
       :drop-shadows="!isMobileWebApp()"
       @resize="onResize"
       @move="onMove"
-      @edit="onEdit"
     >
       <template #right-control>
         <ControlPane
@@ -61,7 +59,7 @@
 import { t } from "@/common/i18n";
 import { computed, PropType } from "vue";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
-import { Move, PositionChange, getBlackPlayerName, getWhitePlayerName } from "tsshogi";
+import { Move, getBlackPlayerName, getWhitePlayerName } from "tsshogi";
 import { RectSize } from "@/common/assets/geometry.js";
 import { useStore } from "@/renderer/store";
 import ControlPane, { ControlGroup } from "@/renderer/view/main/ControlPane.vue";
@@ -117,10 +115,6 @@ const onMove = (move: Move) => {
   } else {
     store.doMove(move);
   }
-};
-
-const onEdit = (change: PositionChange) => {
-  store.editPosition(change);
 };
 
 const lastMove = computed(() => {
