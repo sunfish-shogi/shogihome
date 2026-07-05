@@ -19,6 +19,7 @@
   "type": "module",
   "scripts": {
     "audit:scripts": "tsx scripts/audit-scripts.ts",
+    "verify:lockfile": "node scripts/verify-lockfile.mjs",
     "install:esbuild": "npm run audit:scripts && node node_modules/esbuild/install.js",
     "install:electron": "npx install-electron --no",
     "compile": "npm run install:esbuild && vite build",

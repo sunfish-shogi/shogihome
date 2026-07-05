@@ -22,6 +22,8 @@ jobs:
           cache: "npm"
       - run: npm install -g npm@latest
       - run: npm version
+      - name: Verify package-lock.json integrity
+        run: node scripts/verify-lockfile.mjs
       - run: npm ci --no-audit --no-fund
       - run: npm run lint
       - run: npm run docs
