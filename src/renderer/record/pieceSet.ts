@@ -53,7 +53,17 @@ export function applyPieceSet(
     .forEach(([key, update]) => {
       const pieceType = key as PieceType;
       for (let u = 0; u < update; u++) {
-        if (pieceType === PieceType.KING || destination === "board") {
+        if (pieceType === PieceType.KING) {
+          const hasBlackKing = Square.all.some(
+            (square) =>
+              position.board.at(square)?.type === PieceType.KING &&
+              position.board.at(square)?.color === Color.BLACK,
+          );
+          const square = Square.all.find((square) => !position.board.at(square));
+          if (square) {
+            position.board.set(square, new Piece(hasBlackKing ? Color.WHITE : Color.BLACK, pieceType));
+          }
+        } else if (destination === "board") {
           const square = Square.all.find((square) => !position.board.at(square));
           if (square) {
             position.board.set(square, new Piece(Color.BLACK, pieceType));

@@ -208,6 +208,7 @@ export class RecordManager {
 
   resetByPosition(position: ImmutablePosition): void {
     this.clearRecord(position);
+    this._unsaved = true;
   }
 
   private parseRecordData(data: string, type?: RecordFormatType): Record | Error {

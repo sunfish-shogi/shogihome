@@ -83,7 +83,7 @@ describe("record/manager", () => {
       "lnsgkgsnl/7b1/pppppp1pp/6p2/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
     );
     expect(recordManager.record.moves).toHaveLength(1);
-    expect(recordManager.unsaved).toBeFalsy();
+    expect(recordManager.unsaved).toBeTruthy();
     expect(recordManager.positionCounts.size).toBe(1);
     expect(
       recordManager.positionCounts.get(

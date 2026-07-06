@@ -1,4 +1,11 @@
-import { InitialPositionSFEN, PieceType, Position, Square, countExistingPieces } from "tsshogi";
+import {
+  Color,
+  InitialPositionSFEN,
+  PieceType,
+  Position,
+  Square,
+  countExistingPieces,
+} from "tsshogi";
 import { applyPieceSet } from "@/renderer/record/pieceSet.js";
 
 describe("record/pieceSet", () => {
@@ -68,5 +75,28 @@ describe("record/pieceSet", () => {
     expect(countExistingPieces(position).king).toBe(1);
     const onBoard = Square.all.some((square) => position.board.at(square)?.type === PieceType.KING);
     expect(onBoard).toBe(true);
+  });
+
+  it("applyPieceSet/two kings get different colors", () => {
+    const position = Position.newBySFEN(InitialPositionSFEN.EMPTY) as Position;
+    // 玉が1枚も無い局面から一気に2枚へ増やしても、先手玉と後手玉が1枚ずつになるべき。
+    applyPieceSet(
+      position,
+      { king: 2, rook: 0, bishop: 0, gold: 0, silver: 0, knight: 0, lance: 0, pawn: 0 },
+      "blackHand",
+    );
+    expect(countExistingPieces(position).king).toBe(2);
+    const hasBlackKing = Square.all.some(
+      (square) =>
+        position.board.at(square)?.type === PieceType.KING &&
+        position.board.at(square)?.color === Color.BLACK,
+    );
+    const hasWhiteKing = Square.all.some(
+      (square) =>
+        position.board.at(square)?.type === PieceType.KING &&
+        position.board.at(square)?.color === Color.WHITE,
+    );
+    expect(hasBlackKing).toBe(true);
+    expect(hasWhiteKing).toBe(true);
   });
 });
