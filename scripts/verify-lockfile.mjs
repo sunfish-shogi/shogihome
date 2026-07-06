@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Verifies that every package in package-lock.json is fetched from the official npm registry.
 //
 // This guards against a supply-chain attack where a PR rewrites the "resolved" URL of an
@@ -59,7 +60,9 @@ function main() {
     );
   }
 
-  console.log(`OK: ${checked} package(s) in package-lock.json resolve to ${TRUSTED_RESOLVED_PREFIX}`);
+  console.log(
+    `OK: ${checked} package(s) in package-lock.json resolve to ${TRUSTED_RESOLVED_PREFIX}`,
+  );
 }
 
 main();
