@@ -61,7 +61,10 @@ export function applyPieceSet(
           );
           const square = Square.all.find((square) => !position.board.at(square));
           if (square) {
-            position.board.set(square, new Piece(hasBlackKing ? Color.WHITE : Color.BLACK, pieceType));
+            position.board.set(
+              square,
+              new Piece(hasBlackKing ? Color.WHITE : Color.BLACK, pieceType),
+            );
           }
         } else if (destination === "board") {
           const square = Square.all.find((square) => !position.board.at(square));
