@@ -22,7 +22,7 @@
           :board-label-type="appSettings.boardLabelType"
           :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
           :king-piece-type="appSettings.kingPieceType"
-          :max-size="maxSize"
+          :max-size="boardMaxSize"
           :position="position"
           :allow-edit="true"
           :allow-move="false"
@@ -30,6 +30,14 @@
           :hide-clock="true"
           :drop-shadows="false"
           @edit="onEdit"
+        />
+        <HorizontalSelector
+          v-model:value="boardSizeLevel"
+          :items="[
+            { label: 'Small', value: 'small' },
+            { label: 'Medium', value: 'medium' },
+            { label: 'Large', value: 'large' },
+          ]"
         />
       </div>
       <div class="controls column">
@@ -125,7 +133,7 @@ import { BoardLayoutType } from "@/common/settings/layout";
 import { getPieceImageURLTemplate } from "@/common/settings/app";
 import { fileURLToCustomSchemeURL } from "@/common/url";
 import { inputEventToNumber } from "@/renderer/helpers/form";
-import { applyPieceSet, PieceSet, PieceStandDestination } from "@/renderer/record/pieceSet";
+import { applyPieceSet, PieceAdditionDestination, PieceSet } from "@/renderer/record/pieceSet";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
 import DialogFrame from "./DialogFrame.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
@@ -143,8 +151,9 @@ const ghostTeleportTarget = computed(() => dialogFrame.value?.dialog ?? "body");
 
 const position = ref(store.record.position.clone());
 const isInitialPositionMenuVisible = ref(false);
-const destination = ref<PieceStandDestination>("blackHand");
+const destination = ref<PieceAdditionDestination>(appSettings.pieceAdditionDestination);
 
+const boardSizeLevel = ref<"small" | "medium" | "large">(appSettings.positionEditingBoardSizeLevel);
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
 const updateWindowSize = () => {
   windowSize.width = window.innerWidth;
@@ -152,9 +161,17 @@ const updateWindowSize = () => {
 };
 onMounted(() => window.addEventListener("resize", updateWindowSize));
 onBeforeUnmount(() => window.removeEventListener("resize", updateWindowSize));
-const maxSize = computed(
-  () => new RectSize(Math.min(windowSize.width * 0.5, 450), Math.max(windowSize.height - 100, 450)),
-);
+const boardMaxSize = computed(() => {
+  const ratio = {
+    small: 0.6,
+    medium: 0.8,
+    large: 1,
+  }[boardSizeLevel.value];
+  return new RectSize(
+    Math.min(windowSize.width * 0.5, 500) * ratio,
+    Math.max(windowSize.height - 140, 500) * ratio,
+  );
+});
 
 const pieceTypes = [
   PieceType.KING,
@@ -252,11 +269,20 @@ const onPaste = async () => {
   useErrorStore().add(new Error(t.failedToDetectRecordFormat));
 };
 
+const saveDialogSettings = () => {
+  appSettings.updateAppSettings({
+    pieceAdditionDestination: destination.value,
+    positionEditingBoardSizeLevel: boardSizeLevel.value,
+  });
+};
+
 const onOk = () => {
+  saveDialogSettings();
   store.closePositionEditingDialog(position.value);
 };
 
 const onCancel = () => {
+  saveDialogSettings();
   store.closePositionEditingDialog();
 };
 </script>

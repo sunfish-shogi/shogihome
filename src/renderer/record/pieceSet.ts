@@ -11,12 +11,12 @@ export type PieceSet = {
   king: number;
 };
 
-export type PieceStandDestination = "board" | "blackHand" | "whiteHand";
+export type PieceAdditionDestination = "board" | "blackHand" | "whiteHand";
 
 export function applyPieceSet(
   position: Position,
   pieceSet: PieceSet,
-  destination: PieceStandDestination,
+  destination: PieceAdditionDestination,
 ): void {
   const counts = countExistingPieces(position);
   const updates = {

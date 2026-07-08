@@ -281,6 +281,10 @@ export type AppSettings = {
   // Record Info View
   emptyRecordInfoVisibility: boolean;
 
+  // Position Editing
+  pieceAdditionDestination: "board" | "blackHand" | "whiteHand";
+  positionEditingBoardSizeLevel: "small" | "medium" | "large";
+
   // Low Level
   enableHardwareAcceleration: boolean;
 };
@@ -428,6 +432,8 @@ export function defaultAppSettings(opt?: {
     lastImageExportFilePath: "",
     lastOtherFilePath: "",
     emptyRecordInfoVisibility: true,
+    pieceAdditionDestination: "blackHand",
+    positionEditingBoardSizeLevel: "medium",
     enableHardwareAcceleration: true,
   };
 }
