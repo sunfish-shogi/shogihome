@@ -206,6 +206,8 @@ export const ja: Texts = {
   addToBlackHandPieceStand: "先手の駒台に追加",
   addToWhiteHandPieceStand: "後手の駒台に追加",
   addToBoard: "盤に追加",
+  undo: "元に戻す",
+  redo: "やり直す",
   appSettings: "アプリ設定",
   language: "言語",
   theme: "テーマ",

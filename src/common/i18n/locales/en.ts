@@ -206,6 +206,8 @@ export const en: Texts = {
   addToBlackHandPieceStand: "Add to Black's Piece Stand",
   addToWhiteHandPieceStand: "Add to White's Piece Stand",
   addToBoard: "Add to Board",
+  undo: "Undo",
+  redo: "Redo",
   appSettings: "Preferences",
   language: "Languages",
   theme: "Theme",

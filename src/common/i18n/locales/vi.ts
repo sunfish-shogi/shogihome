@@ -216,6 +216,8 @@ export const vi: Texts = {
   addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
   addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
   addToBoard: "盤に追加", // TODO: Translate
+  undo: "元に戻す", // TODO: Translate
+  redo: "やり直す", // TODO: Translate
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",

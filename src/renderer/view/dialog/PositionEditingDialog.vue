@@ -70,6 +70,16 @@
           <button class="bulk thin" @click="setAllZero">{{ t.setAllPiecesToZero }}</button>
         </div>
         <div class="form-group">
+          <div class="row">
+            <button class="wide" data-hotkey="Mod+z" :disabled="!canUndo" @click="undo">
+              <Icon :icon="IconType.UNDO" />
+              <span>{{ t.undo }}</span>
+            </button>
+            <button class="wide" data-hotkey="Mod+Shift+z" :disabled="!canRedo" @click="redo">
+              <Icon :icon="IconType.REDO" />
+              <span>{{ t.redo }}</span>
+            </button>
+          </div>
           <button class="wide" @click="isInitialPositionMenuVisible = true">
             <Icon :icon="IconType.REFRESH" />
             <span>{{ t.initializePosition }}</span>
@@ -150,6 +160,10 @@ const dialogFrame = ref<InstanceType<typeof DialogFrame>>();
 const ghostTeleportTarget = computed(() => dialogFrame.value?.dialog ?? "body");
 
 const position = ref(store.record.position.clone());
+const history = ref([position.value.sfen]);
+const historyIndex = ref(0);
+const canUndo = computed(() => historyIndex.value > 0);
+const canRedo = computed(() => historyIndex.value < history.value.length - 1);
 const isInitialPositionMenuVisible = ref(false);
 const destination = ref<PieceAdditionDestination>(appSettings.pieceAdditionDestination);
 
@@ -206,10 +220,32 @@ const currentCounts = computed(() => {
   );
 });
 
+const commitPosition = (newPosition: Position) => {
+  history.value = [...history.value.slice(0, historyIndex.value + 1), newPosition.sfen];
+  historyIndex.value = history.value.length - 1;
+  position.value = newPosition;
+};
+
+const undo = () => {
+  if (!canUndo.value) {
+    return;
+  }
+  historyIndex.value--;
+  position.value = Position.newBySFEN(history.value[historyIndex.value]) as Position;
+};
+
+const redo = () => {
+  if (!canRedo.value) {
+    return;
+  }
+  historyIndex.value++;
+  position.value = Position.newBySFEN(history.value[historyIndex.value]) as Position;
+};
+
 const applyCounts = (pieceSet: PieceSet) => {
   const cloned = position.value.clone();
   applyPieceSet(cloned, pieceSet, destination.value);
-  position.value = cloned;
+  commitPosition(cloned);
 };
 
 const onChangeCount = (pieceType: PieceType, event: Event) => {
@@ -228,19 +264,19 @@ const setAllZero = () => {
 const onEdit = (change: PositionChange) => {
   const cloned = position.value.clone();
   cloned.edit(change);
-  position.value = cloned;
+  commitPosition(cloned);
 };
 
 const onChangeTurn = () => {
   const cloned = position.value.clone();
   cloned.setColor(reverseColor(cloned.color));
-  position.value = cloned;
+  commitPosition(cloned);
 };
 
 const onSelectPreset = (sfen: string) => {
   const newPosition = Position.newBySFEN(sfen);
   if (newPosition) {
-    position.value = newPosition;
+    commitPosition(newPosition);
   }
 };
 
@@ -258,12 +294,12 @@ const onPaste = async () => {
     return;
   }
   if (Position.isValidSFEN(text)) {
-    position.value = Position.newBySFEN(text) as Position;
+    commitPosition(Position.newBySFEN(text) as Position);
     return;
   }
   const record = importKIF(text);
   if (!(record instanceof Error)) {
-    position.value = record.position.clone();
+    commitPosition(record.position.clone());
     return;
   }
   useErrorStore().add(new Error(t.failedToDetectRecordFormat));
@@ -290,6 +326,7 @@ const onCancel = () => {
 <style scoped>
 .root {
   align-items: flex-start;
+  user-select: none;
 }
 .board-area {
   margin-right: 15px;

@@ -213,6 +213,8 @@ export const zh_tw: Texts = {
   addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
   addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
   addToBoard: "盤に追加", // TODO: Translate
+  undo: "元に戻す", // TODO: Translate
+  redo: "やり直す", // TODO: Translate
   appSettings: "程式設定",
   language: "語言",
   theme: "主題",

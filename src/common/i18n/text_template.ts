@@ -201,6 +201,8 @@ export type Texts = {
   addToBlackHandPieceStand: string;
   addToWhiteHandPieceStand: string;
   addToBoard: string;
+  undo: string;
+  redo: string;
   appSettings: string;
   language: string;
   theme: string;
