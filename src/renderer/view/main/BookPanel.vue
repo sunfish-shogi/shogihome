@@ -148,6 +148,7 @@ const onEditBookMove = async (data: EditResult) => {
     await bookStore.updateMove(editingData.value.sfen, {
       usi: editingData.value.usi,
       usi2: editingData.value.usi2,
+      sbkId: editingData.value.sbkId,
       ...data,
     });
     editingData.value = undefined;

@@ -32,6 +32,9 @@
               <span v-if="move.score !== undefined">{{ t.score }} {{ move.score }}</span>
             </td>
             <td v-if="move.type === 'move'">
+              <span v-if="move.depth !== undefined">{{ t.depth }} {{ move.depth }}</span>
+            </td>
+            <td v-if="move.type === 'move'">
               <button
                 v-if="!move.exists || move.scoreUpdatable"
                 class="thin"
@@ -43,7 +46,7 @@
             <td v-if="move.type === 'move'">
               <span v-if="move.last">({{ t.currentMove }})</span>
             </td>
-            <td v-if="move.type === 'branch'" class="branch" colspan="5">
+            <td v-if="move.type === 'branch'" class="branch" colspan="6">
               {{ t.branchFrom(move.ply) }}:
             </td>
           </tr>
