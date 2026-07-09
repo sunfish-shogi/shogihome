@@ -11,9 +11,11 @@ import {
   openBookAsNewSession,
   removeBookMove,
   saveBook,
+  searchBookEntry,
   searchBookMoves,
   updateBookMove,
   updateBookMoveOrder,
+  updateBookPositionComment,
 } from "@/background/book/index.js";
 import { loadSbkBook } from "@/background/book/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
@@ -1057,6 +1059,94 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(moves[0].usi).toBe("2g2f");
       expect(moves[0].score).toBe(63);
       expect(moves[0].depth).toBe(27);
+    });
+  });
+
+  describe("searchBookEntry", () => {
+    it("yaneuraou.db (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db");
+      const entry = await searchBookEntry(
+        defaultBookSession,
+        "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/3P5/PPP1PPPPP/1BS4R1/LN1GKGSNL w - 1",
+      );
+      expect(entry?.comment).toBe("position comment 1\nposition comment 2");
+      expect(entry?.minPly).toBe(1);
+      expect(entry?.moves).toHaveLength(4);
+      expect(entry?.games).toBeUndefined();
+
+      const missing = await searchBookEntry(
+        defaultBookSession,
+        "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
+      );
+      expect(missing).toBeNull();
+    });
+
+    it("shogigui01.sbk (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
+      const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+      const baseline = (
+        await loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"))
+      ).entries.get(initialSfen);
+      const entry = await searchBookEntry(defaultBookSession, initialSfen);
+      expect(entry?.moves.length).toBe(baseline?.moves.length);
+      expect(entry?.comment).toBe(baseline?.comment);
+      expect(entry?.games).toBe(baseline?.games);
+      expect(entry?.wonBlack).toBe(baseline?.wonBlack);
+      expect(entry?.wonWhite).toBe(baseline?.wonWhite);
+      expect(entry?.sbkEvals?.length).toBe(baseline?.sbkEvals?.length);
+      for (let i = 0; i < (entry?.sbkEvals?.length ?? 0); i++) {
+        const actual = entry?.sbkEvals?.[i];
+        const expected = baseline?.sbkEvals?.[i];
+        expect(actual?.evaluationValue).toBe(expected?.EvaluationValue);
+        expect(actual?.depth).toBe(expected?.Depth);
+        expect(actual?.selDepth).toBe(expected?.SelDepth);
+        expect(actual?.nodes).toBe(expected?.Nodes.toString());
+        expect(actual?.variation).toBe(expected?.Variation);
+        expect(actual?.engineName).toBe(expected?.EngineName);
+      }
+    });
+  });
+
+  describe("updateBookPositionComment", () => {
+    const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+
+    it("yane2016", async () => {
+      await updateBookMove(defaultBookSession, initialSfen, { usi: "7g7f" });
+      await updateBookPositionComment(defaultBookSession, initialSfen, "line1\nline2");
+      let entry = await searchBookEntry(defaultBookSession, initialSfen);
+      expect(entry?.comment).toBe("line1\nline2");
+
+      // ファイルへ保存して読み直してもコメントが保持される。
+      const filePath = path.join(tmpdir, "position-comment.db");
+      await saveBook(defaultBookSession, filePath);
+      clearBook(defaultBookSession);
+      await openBook(defaultBookSession, filePath);
+      entry = await searchBookEntry(defaultBookSession, initialSfen);
+      expect(entry?.comment).toBe("line1\nline2");
+
+      // 空文字列を指定するとコメントを削除する。
+      await updateBookPositionComment(defaultBookSession, initialSfen, "");
+      entry = await searchBookEntry(defaultBookSession, initialSfen);
+      expect(entry?.comment).toBeUndefined();
+    });
+
+    it("sbk", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
+      await updateBookPositionComment(defaultBookSession, initialSfen, "sbk comment");
+      const entry = await searchBookEntry(defaultBookSession, initialSfen);
+      expect(entry?.comment).toBe("sbk comment");
+
+      const filePath = path.join(tmpdir, "position-comment.sbk");
+      await saveBook(defaultBookSession, filePath);
+      const stored = (await loadSbkBook(fs.readFileSync(filePath))).entries.get(initialSfen);
+      expect(stored?.comment).toBe("sbk comment");
+    });
+
+    it("apery: not supported", async () => {
+      clearBook(defaultBookSession, "apery");
+      await expect(
+        updateBookPositionComment(defaultBookSession, initialSfen, "comment"),
+      ).rejects.toThrow("Position comment is not supported");
     });
   });
 });

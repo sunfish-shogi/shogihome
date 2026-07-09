@@ -12,6 +12,20 @@
         @remove="removeBookMove"
         @order="updateBookMoveOrder"
       />
+      <div v-if="showPositionInfo && !isCommentEditing" class="row position-info">
+        <span v-if="statsLabel" class="position-stats">{{ statsLabel }}</span>
+        <span class="position-comment">{{ positionComment }}</span>
+        <button v-if="isCommentEditable" class="comment-edit-button" @click="startEditComment">
+          <Icon :icon="IconType.EDIT" />
+        </button>
+      </div>
+      <div v-if="isCommentEditing" class="row position-comment-editor">
+        <textarea v-model="commentDraft" class="comment-edit-area" />
+        <div class="column">
+          <button @click="savePositionComment">{{ t.ok }}</button>
+          <button @click="cancelEditComment">{{ t.cancel }}</button>
+        </div>
+      </div>
       <div class="row control">
         <span class="format-label">{{ formatLabel }}</span>
         <button @click="onResetBook">{{ t.clear }}</button>
@@ -45,7 +59,9 @@ import { BookMove } from "@/common/book";
 import { AppState } from "@/common/control/state";
 import { useStore } from "@/renderer/store";
 import { useBookStore } from "@/renderer/store/book";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons";
 import BookMoveDialog, { Result as EditResult } from "@/renderer/view/dialog/BookMoveDialog.vue";
 import { formatMove, Move } from "tsshogi";
 import { humanPlayer } from "@/renderer/players/human";
@@ -82,6 +98,59 @@ const editingData = ref<
     move: string;
   }
 >();
+
+const positionComment = computed(() => bookStore.positionProperties.comment || "");
+const isCommentSupported = computed(
+  () => bookStore.format === "yane2016" || bookStore.format === "sbk",
+);
+const isCommentEditable = computed(
+  () =>
+    isCommentSupported.value &&
+    isBookOperational.value &&
+    (bookStore.moves.length > 0 || !!positionComment.value),
+);
+const statsLabel = computed(() => {
+  const props = bookStore.positionProperties;
+  if (props.games === undefined && props.wonBlack === undefined && props.wonWhite === undefined) {
+    return "";
+  }
+  return (
+    `${t.gameCount}: ${props.games ?? 0} / ` +
+    `${t.blackWin}: ${props.wonBlack ?? 0} / ` +
+    `${t.whiteWin}: ${props.wonWhite ?? 0}`
+  );
+});
+const showPositionInfo = computed(
+  () => !!statsLabel.value || !!positionComment.value || isCommentEditable.value,
+);
+
+const isCommentEditing = ref(false);
+const commentDraft = ref("");
+
+watch(
+  () => store.record.position.sfen,
+  () => {
+    isCommentEditing.value = false;
+  },
+);
+
+const startEditComment = () => {
+  commentDraft.value = positionComment.value;
+  isCommentEditing.value = true;
+};
+
+const cancelEditComment = () => {
+  isCommentEditing.value = false;
+};
+
+const savePositionComment = async () => {
+  try {
+    await bookStore.updatePositionComment(commentDraft.value);
+    isCommentEditing.value = false;
+  } catch (e) {
+    useErrorStore().add(e);
+  }
+};
 
 const onResetBook = () => {
   store.showResetBookDialog();
@@ -190,7 +259,42 @@ const onCancelEditBookMove = () => {
   line-height: 23px;
 }
 .book-list {
-  height: calc(100% - 27px);
+  flex: 1;
+  min-height: 0;
   margin-bottom: 2px;
+}
+.position-info {
+  font-size: 12px;
+  align-items: center;
+  text-align: left;
+  margin-bottom: 2px;
+}
+.position-stats {
+  white-space: nowrap;
+  margin-right: 8px;
+}
+.position-comment {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.comment-edit-button {
+  padding: 0 4px;
+}
+.comment-edit-button > .icon {
+  height: 1.2em;
+  vertical-align: middle;
+}
+.position-comment-editor {
+  margin-bottom: 2px;
+}
+.position-comment-editor > textarea {
+  flex: 1;
+  height: 3em;
+  resize: vertical;
+}
+.position-comment-editor button {
+  font-size: 12px;
 }
 </style>

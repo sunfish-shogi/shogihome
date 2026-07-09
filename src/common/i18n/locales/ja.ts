@@ -547,6 +547,7 @@ export const ja: Texts = {
   aperyBookFile: "Apery 定跡ファイル",
   loadingMode: "読み込みモード",
   positionCount: "局面数",
+  gameCount: "対局数",
   chart: "グラフ",
   analytics: "解析",
   controlGroup: "メニュー",

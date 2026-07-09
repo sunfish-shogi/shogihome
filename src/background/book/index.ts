@@ -4,6 +4,7 @@ import {
   BookImportSummary,
   BookLoadingOptions,
   BookMove,
+  BookPositionEntry,
   defaultBookSession,
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
@@ -608,6 +609,47 @@ export async function searchBookMoves(session: number, sfen: string): Promise<Bo
   const book = getBook(session);
   const entry = await retrieveMergedEntry(book, sfen);
   return entry ? entry.moves : [];
+}
+
+export async function searchBookEntry(
+  session: number,
+  sfen: string,
+): Promise<BookPositionEntry | null> {
+  const book = getBook(session);
+  const entry = await retrieveMergedEntry(book, sfen);
+  if (!entry) {
+    return null;
+  }
+  return {
+    moves: entry.moves,
+    comment: entry.comment,
+    minPly: entry.minPly,
+    games: entry.games,
+    wonBlack: entry.wonBlack,
+    wonWhite: entry.wonWhite,
+    sbkEvals: entry.sbkEvals?.map((e) => ({
+      evaluationValue: e.EvaluationValue,
+      depth: e.Depth,
+      selDepth: e.SelDepth,
+      nodes: e.Nodes.toString(),
+      variation: e.Variation,
+      engineName: e.EngineName,
+    })),
+  };
+}
+
+export async function updateBookPositionComment(session: number, sfen: string, comment: string) {
+  const book = getBook(session);
+  if (book.format === "apery" || book.format === "ybb") {
+    throw new Error("Position comment is not supported by the current book format");
+  }
+  const entry = await retrieveMergedEntry(book, sfen);
+  if (entry) {
+    entry.comment = comment || undefined;
+    storeEntry(book, sfen, entry);
+  } else if (comment) {
+    storeEntry(book, sfen, { type: "normal", moves: [], comment });
+  }
 }
 
 function updateBookEntry(entry: BookEntry, move: BookMove): void {

@@ -118,9 +118,11 @@ import {
   openBookAsNewSession,
   removeBookMove,
   saveBook,
+  searchBookEntry,
   searchBookMoves,
   updateBookMove,
   updateBookMoveOrder,
+  updateBookPositionComment,
 } from "@/background/book/index.js";
 import { BookFormat, BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
 import { Message } from "@/common/message.js";
@@ -676,10 +678,26 @@ ipcMain.handle(
 );
 
 ipcMain.handle(
+  Background.SEARCH_BOOK_ENTRY,
+  async (event, session: number, sfen: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    return JSON.stringify(await searchBookEntry(session, sfen));
+  },
+);
+
+ipcMain.handle(
   Background.UPDATE_BOOK_MOVE,
   async (event, session: number, sfen: string, json: string) => {
     validateIPCSender(event.senderFrame);
     await updateBookMove(session, sfen, JSON.parse(json) as BookMove);
+  },
+);
+
+ipcMain.handle(
+  Background.UPDATE_BOOK_POSITION_COMMENT,
+  async (event, session: number, sfen: string, comment: string) => {
+    validateIPCSender(event.senderFrame);
+    await updateBookPositionComment(session, sfen, comment);
   },
 );
 

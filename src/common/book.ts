@@ -44,4 +44,26 @@ export type BookMoveEx = BookMove & {
   repetition?: number; // 千日手
 };
 
+export type BookPositionEval = {
+  evaluationValue: number; // 評価値
+  depth: number; // 探索深さ
+  selDepth: number; // 選択的探索深さ
+  nodes: string; // ノード数 (JSON で扱うために文字列で表現する)
+  variation?: string; // 読み筋
+  engineName?: string; // エンジン名
+};
+
+export type BookPositionProperties = {
+  comment?: string; // 局面に対するコメント
+  minPly?: number; // 初期局面からの手数
+  games?: number; // 対局数 (SBK)
+  wonBlack?: number; // 先手勝ち数 (SBK)
+  wonWhite?: number; // 後手勝ち数 (SBK)
+  sbkEvals?: BookPositionEval[]; // エンジン解析結果 (SBK)
+};
+
+export type BookPositionEntry = BookPositionProperties & {
+  moves: BookMove[]; // この局面に対する定跡手
+};
+
 export const defaultBookSession = 1;

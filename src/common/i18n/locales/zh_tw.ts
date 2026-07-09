@@ -554,6 +554,7 @@ export const zh_tw: Texts = {
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
+  gameCount: "対局数", // TODO: Translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",

@@ -547,6 +547,7 @@ export const en: Texts = {
   aperyBookFile: "Apery Book File",
   loadingMode: "Loading Mode",
   positionCount: "Position Count",
+  gameCount: "Games",
   chart: "Chart",
   analytics: "Analytics",
   controlGroup: "Control Group",

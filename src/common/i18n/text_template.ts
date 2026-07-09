@@ -540,6 +540,7 @@ export type Texts = {
   aperyBookFile: string;
   loadingMode: string;
   positionCount: string;
+  gameCount: string;
   chart: string;
   analytics: string;
   controlGroup: string;

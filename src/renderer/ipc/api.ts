@@ -26,7 +26,13 @@ import { CommandHistory, CommandType } from "@/common/advanced/command.js";
 import { Bridge } from "./bridge.js";
 import { TimeStates } from "@/common/game/time.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
-import { BookFormat, BookImportSummary, BookLoadingOptions, BookMove } from "@/common/book.js";
+import {
+  BookFormat,
+  BookImportSummary,
+  BookLoadingOptions,
+  BookMove,
+  BookPositionEntry,
+} from "@/common/book.js";
 import { BookImportSettings } from "@/common/settings/book.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 
@@ -87,7 +93,9 @@ export interface API {
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;
+  searchBookEntry(session: number, sfen: string): Promise<BookPositionEntry | null>;
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void>;
+  updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(session: number, sfen: string, usi: string, order: number): Promise<void>;
   importBookMoves(session: number, settings: BookImportSettings): Promise<BookImportSummary>;
@@ -253,6 +261,9 @@ const api: API = {
   },
   async searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {
     return JSON.parse(await bridge.searchBookMoves(session, sfen));
+  },
+  async searchBookEntry(session: number, sfen: string): Promise<BookPositionEntry | null> {
+    return JSON.parse(await bridge.searchBookEntry(session, sfen));
   },
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void> {
     return bridge.updateBookMove(session, sfen, JSON.stringify(move));
