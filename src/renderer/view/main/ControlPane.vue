@@ -129,42 +129,6 @@
           <Icon :icon="IconType.EDIT" />
           <span :class="{ tooltip: compact }">{{ t.setupPosition }}</span>
         </button>
-        <!-- 盤面編集終了 -->
-        <button
-          v-show="store.appState === AppState.POSITION_EDITING"
-          class="control-item close"
-          @click="onEndEditPosition"
-        >
-          <Icon :icon="IconType.CHECK" />
-          <span :class="{ tooltip: compact }">{{ t.completePositionSetup }}</span>
-        </button>
-        <!-- 手番変更 -->
-        <button
-          v-show="store.appState === AppState.POSITION_EDITING"
-          class="control-item"
-          @click="onChangeTurn"
-        >
-          <Icon :icon="IconType.SWAP" />
-          <span :class="{ tooltip: compact }">{{ t.changeTurn }}</span>
-        </button>
-        <!-- 局面の初期化 -->
-        <button
-          v-show="store.appState === AppState.POSITION_EDITING"
-          class="control-item"
-          @click="onInitPosition"
-        >
-          <Icon :icon="IconType.REFRESH" />
-          <span :class="{ tooltip: compact }">{{ t.initializePosition }}</span>
-        </button>
-        <!-- 駒の増減 -->
-        <button
-          v-show="store.appState === AppState.POSITION_EDITING"
-          class="control-item"
-          @click="onPieceSetChange"
-        >
-          <Icon :icon="IconType.EQUALIZER" />
-          <span :class="{ tooltip: compact }">{{ t.changePieceSet }}</span>
-        </button>
       </div>
       <div
         v-if="group === ControlGroup.Group2 || group === ControlGroup.All"
@@ -208,10 +172,6 @@
       </div>
       <GameMenu v-if="isGameMenuVisible" @close="isGameMenuVisible = false" />
       <FileMenu v-if="isFileMenuVisible" @close="isFileMenuVisible = false" />
-      <InitialPositionMenu
-        v-if="isInitialPositionMenuVisible"
-        @close="isInitialPositionMenuVisible = false"
-      />
     </div>
   </div>
 </template>
@@ -234,7 +194,6 @@ import { IconType } from "@/renderer/assets/icons";
 import GameMenu from "@/renderer/view/menu/GameMenu.vue";
 import FileMenu from "@/renderer/view/menu/FileMenu.vue";
 import { DeclarableJishogiRules } from "@/common/settings/game";
-import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
 import { humanPlayer } from "@/renderer/players/human";
 import { useAppSettings } from "@/renderer/store/settings";
 import {
@@ -259,7 +218,6 @@ const appSettings = useAppSettings();
 const root = ref();
 const isGameMenuVisible = ref(false);
 const isFileMenuVisible = ref(false);
-const isInitialPositionMenuVisible = ref(false);
 
 onMounted(() => {
   installHotKeyForMainWindow(root.value);
@@ -328,23 +286,7 @@ const onStopMateSearch = () => {
 };
 
 const onStartEditPosition = () => {
-  store.startPositionEditing();
-};
-
-const onEndEditPosition = () => {
-  store.endPositionEditing();
-};
-
-const onInitPosition = () => {
-  isInitialPositionMenuVisible.value = true;
-};
-
-const onChangeTurn = () => {
-  store.changeTurn();
-};
-
-const onPieceSetChange = () => {
-  store.showPieceSetChangeDialog();
+  store.showPositionEditingDialog();
 };
 
 const onOpenAppSettings = () => {

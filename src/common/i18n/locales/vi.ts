@@ -208,13 +208,16 @@ export const vi: Texts = {
   appearanceCount: "Số lần lặp lại",
   showList: "Hiện tất cả",
   setupPosition: "Xếp thế cờ",
-  startPositionSetup: "Bắt đầu xếp thế cờ",
-  completePositionSetup: "Hoàn tất xếp thế cờ",
   changeTurn: "Đổi lượt đi",
   initializePosition: "Đặt lại thế cờ",
   changePieceSet: "Tăng giảm quân",
   setAllPiecesToStandardCounts: "Đặt lại số lượng quân",
   setAllPiecesToZero: "Đặt tất cả số quân thành 0",
+  addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
+  addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
+  addToBoard: "盤に追加", // TODO: Translate
+  undo: "元に戻す", // TODO: Translate
+  redo: "やり直す", // TODO: Translate
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",
@@ -697,7 +700,6 @@ export const vi: Texts = {
   areYouSureWantToQuitGames: "Bạn có thật sự muốn bỏ ván không?",
   areYouSureWantToRequestQuit: "Bạn có thể bị xử thua. Bạn có thật sự muốn yêu cầu rời ván không?",
   areYouSureWantToClearRecord: "Bạn có thật sự muốn xóa kỳ phổ không?",
-  areYouSureWantToDiscardPosition: "Bạn có thật sự muốn xóa thế cờ không?",
   areYouSureWantToOpenFileInsteadOfCurrentRecord:
     "Bạn có thật sự muốn ghi đè thế cờ hiện tại không?",
   areYouSureWantToClearHistory: "Bạn có thật sự muốn xóa lịch sử không?",

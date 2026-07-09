@@ -39,6 +39,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value!);
 });
+
+defineExpose({ dialog });
 </script>
 
 <style scoped>

@@ -321,6 +321,12 @@ class AppSettingsStore {
   get emptyRecordInfoVisibility(): boolean {
     return this.merged.emptyRecordInfoVisibility;
   }
+  get pieceAdditionDestination(): "board" | "blackHand" | "whiteHand" {
+    return this.merged.pieceAdditionDestination;
+  }
+  get positionEditingBoardSizeLevel(): "small" | "medium" | "large" {
+    return this.merged.positionEditingBoardSizeLevel;
+  }
   get enableHardwareAcceleration(): boolean {
     return this.merged.enableHardwareAcceleration;
   }

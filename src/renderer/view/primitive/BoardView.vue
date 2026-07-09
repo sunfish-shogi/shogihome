@@ -191,7 +191,7 @@
   </div>
 
   <!-- ドラッグ中の駒ゴースト -->
-  <Teleport to="body">
+  <Teleport :to="ghostTeleportTarget">
     <div
       v-if="drag.active && drag.pieceImagePath"
       :style="{
@@ -397,6 +397,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true,
+  },
+  ghostTeleportTarget: {
+    type: [String, Object] as PropType<string | HTMLElement>,
+    required: false,
+    default: "body",
   },
 });
 

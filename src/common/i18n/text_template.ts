@@ -193,13 +193,16 @@ export type Texts = {
   appearanceCount: string;
   showList: string;
   setupPosition: string;
-  startPositionSetup: string;
-  completePositionSetup: string;
   changeTurn: string;
   initializePosition: string;
   changePieceSet: string;
   setAllPiecesToStandardCounts: string;
   setAllPiecesToZero: string;
+  addToBlackHandPieceStand: string;
+  addToWhiteHandPieceStand: string;
+  addToBoard: string;
+  undo: string;
+  redo: string;
   appSettings: string;
   language: string;
   theme: string;
@@ -672,7 +675,6 @@ export type Texts = {
   areYouSureWantToQuitGames: string;
   areYouSureWantToRequestQuit: string;
   areYouSureWantToClearRecord: string;
-  areYouSureWantToDiscardPosition: string;
   areYouSureWantToOpenFileInsteadOfCurrentRecord: string;
   areYouSureWantToClearHistory: string;
   areYouSureWantToRemoveCurrentProfile: string;

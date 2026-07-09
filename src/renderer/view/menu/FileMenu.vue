@@ -132,7 +132,11 @@
         </button>
       </div>
     </dialog>
-    <InitialPositionMenu v-if="isInitialPositionMenuVisible" @close="emit('close')" />
+    <InitialPositionMenu
+      v-if="isInitialPositionMenuVisible"
+      @select="onSelectInitialPosition"
+      @close="emit('close')"
+    />
     <MobileGameMenu v-if="isGameMenuVisible" @close="emit('close')" />
   </div>
 </template>
@@ -189,6 +193,10 @@ const onNewFile = () => {
     store.resetRecord();
     emit("close");
   }
+};
+const onSelectInitialPosition = (sfen: string) => {
+  store.initializePositionBySFEN(sfen);
+  emit("close");
 };
 const onOpen = () => {
   store.openRecord();
