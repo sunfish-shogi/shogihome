@@ -59,8 +59,6 @@ function menuItem(
   event: MenuEvent,
   appStates: AppState[] | null,
   accelerator?: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...args: any[]
 ): MenuItemConstructorOptions {
   const index = stateChangeCallbacks.length;
   const id = "menuItem" + index;
@@ -83,7 +81,7 @@ function menuItem(
     id,
     label,
     accelerator,
-    click: () => onMenuEvent(event, ...args),
+    click: () => onMenuEvent(event),
   };
 }
 
