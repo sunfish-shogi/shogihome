@@ -112,6 +112,7 @@ import {
   closeBookSession,
   exportBook,
   getBookFormat,
+  getBookInfo,
   importBookMoves,
   isBookUnsaved,
   openBook,
@@ -667,6 +668,11 @@ ipcMain.handle(
 ipcMain.handle(Background.GET_BOOK_FORMAT, (event, session: number): BookFormat => {
   validateIPCSender(event.senderFrame);
   return getBookFormat(session);
+});
+
+ipcMain.handle(Background.GET_BOOK_INFO, (event, session: number): string => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(getBookInfo(session));
 });
 
 ipcMain.handle(

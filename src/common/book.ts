@@ -66,4 +66,14 @@ export type BookPositionEntry = BookPositionProperties & {
   moves: BookMove[]; // この局面に対する定跡手
 };
 
+export type BookInfo = {
+  format: BookFormat;
+  type: "in-memory" | "on-the-fly";
+  path?: string;
+  entryCount?: number;
+  unsaved: boolean;
+  sbkAuthor?: string; // 作者 (SBK)
+  sbkDescription?: string; // 説明 (SBK)
+};
+
 export const defaultBookSession = 1;

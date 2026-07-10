@@ -29,6 +29,7 @@ import { LayoutProfileList } from "@/common/settings/layout.js";
 import {
   BookFormat,
   BookImportSummary,
+  BookInfo,
   BookLoadingOptions,
   BookMove,
   BookPositionEntry,
@@ -92,6 +93,7 @@ export interface API {
   exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
+  getBookInfo(session: number): Promise<BookInfo>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;
   searchBookEntry(session: number, sfen: string): Promise<BookPositionEntry | null>;
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void>;
@@ -252,6 +254,9 @@ const api: API = {
   // Book
   async getBookFormat(session: number): Promise<BookFormat> {
     return await bridge.getBookFormat(session);
+  },
+  async getBookInfo(session: number): Promise<BookInfo> {
+    return JSON.parse(await bridge.getBookInfo(session));
   },
   openBook(session: number, path: string, options: BookLoadingOptions): Promise<void> {
     return bridge.openBook(session, path, JSON.stringify(options));

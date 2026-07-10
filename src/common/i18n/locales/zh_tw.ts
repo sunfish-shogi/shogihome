@@ -419,6 +419,7 @@ export const zh_tw: Texts = {
   engineManagement: "引擎管理",
   engineName: "引擎名稱",
   author: "作者",
+  description: "説明", // TODO: Translate
   earlyPonder: "預先Ponder",
   enginePath: "場所",
   openDirectory: "開啟資料夾",

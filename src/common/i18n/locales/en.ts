@@ -412,6 +412,7 @@ export const en: Texts = {
   engineManagement: "Engine Management",
   engineName: "Engine Name",
   author: "Author",
+  description: "Description",
   earlyPonder: "Early Pondering",
   enginePath: "Engine Path",
   openDirectory: "Open Directory",

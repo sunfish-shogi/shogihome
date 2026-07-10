@@ -28,6 +28,9 @@
       </div>
       <div class="row control">
         <span class="format-label">{{ formatLabel }}</span>
+        <button class="info-button" :title="t.bookInfo" @click="onShowBookProperties">
+          <Icon :icon="IconType.INFO" />
+        </button>
         <button @click="onResetBook">{{ t.clear }}</button>
         <button @click="onOpenBook">{{ t.open }}</button>
         <button :disabled="!isBookOperational" @click="onSaveBook">{{ t.saveAs }}</button>
@@ -156,6 +159,10 @@ const onResetBook = () => {
   store.showResetBookDialog();
 };
 
+const onShowBookProperties = () => {
+  store.showBookPropertiesDialog();
+};
+
 const onOpenBook = () => {
   bookStore.openBookFile();
 };
@@ -278,6 +285,13 @@ const onCancelEditBookMove = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.control > button.info-button {
+  padding: 0 4px;
+}
+.info-button > .icon {
+  height: 1.4em;
+  vertical-align: middle;
 }
 .comment-edit-button {
   padding: 0 4px;

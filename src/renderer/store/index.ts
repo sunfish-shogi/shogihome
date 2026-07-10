@@ -460,6 +460,12 @@ class Store {
     }
   }
 
+  showBookPropertiesDialog(): void {
+    if (this.appState === AppState.NORMAL) {
+      this._appState = AppState.BOOK_PROPERTIES_DIALOG;
+    }
+  }
+
   showSearchDuplicatePositionsDialog(): void {
     if (this.appState === AppState.NORMAL) {
       this._appState = AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG;
@@ -489,6 +495,7 @@ class Store {
       this.appState === AppState.SHARE_DIALOG ||
       this.appState === AppState.ADD_BOOK_MOVES_DIALOG ||
       this.appState === AppState.RESET_BOOK_DIALOG ||
+      this.appState === AppState.BOOK_PROPERTIES_DIALOG ||
       this.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG ||
       this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
     ) {

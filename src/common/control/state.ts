@@ -21,6 +21,7 @@ export enum AppState {
   SHARE_DIALOG = "shareDialog",
   ADD_BOOK_MOVES_DIALOG = "addBookMovesDialog",
   RESET_BOOK_DIALOG = "resetBookDialog",
+  BOOK_PROPERTIES_DIALOG = "bookPropertiesDialog",
   SEARCH_DUPLICATE_POSITIONS_DIALOG = "searchDuplicatePositionsDialog",
   ELAPSED_TIME_CHART_DIALOG = "elapsedTimeChartDialog",
 }

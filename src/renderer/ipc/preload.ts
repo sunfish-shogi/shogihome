@@ -180,6 +180,9 @@ const api: Bridge = {
   async getBookFormat(session: number): Promise<BookFormat> {
     return await ipcRenderer.invoke(Background.GET_BOOK_FORMAT, session);
   },
+  async getBookInfo(session: number): Promise<string> {
+    return await ipcRenderer.invoke(Background.GET_BOOK_INFO, session);
+  },
   async searchBookMoves(session: number, sfen: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, session, sfen);
   },

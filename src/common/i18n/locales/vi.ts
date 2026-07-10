@@ -422,6 +422,7 @@ export const vi: Texts = {
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
   author: "Tác giả",
+  description: "説明", // TODO: Translate
   earlyPonder: "Tính nhanh",
   enginePath: "Đường dẫn phần mềm",
   openDirectory: "Mở đường dẫn",

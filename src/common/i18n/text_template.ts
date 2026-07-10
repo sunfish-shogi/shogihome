@@ -405,6 +405,7 @@ export type Texts = {
   engineManagement: string;
   engineName: string;
   author: string;
+  description: string;
   earlyPonder: string;
   enginePath: string;
   openDirectory: string;

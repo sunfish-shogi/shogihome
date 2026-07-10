@@ -412,6 +412,7 @@ export const ja: Texts = {
   engineManagement: "エンジン管理",
   engineName: "エンジン名",
   author: "作者",
+  description: "説明",
   earlyPonder: "早期Ponder",
   enginePath: "場所",
   openDirectory: "フォルダを開く",

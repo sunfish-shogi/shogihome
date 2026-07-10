@@ -6,6 +6,7 @@ import {
   closeBookSession,
   exportBook,
   getBookFormat,
+  getBookInfo,
   importBookMoves,
   openBook,
   openBookAsNewSession,
@@ -1147,6 +1148,38 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await expect(
         updateBookPositionComment(defaultBookSession, initialSfen, "comment"),
       ).rejects.toThrow("Position comment is not supported");
+    });
+  });
+
+  describe("getBookInfo", () => {
+    it("empty", () => {
+      const info = getBookInfo(defaultBookSession);
+      expect(info.format).toBe("yane2016");
+      expect(info.type).toBe("in-memory");
+      expect(info.path).toBeUndefined();
+      expect(info.entryCount).toBe(0);
+      expect(info.unsaved).toBeFalsy();
+      expect(info.sbkAuthor).toBeUndefined();
+      expect(info.sbkDescription).toBeUndefined();
+    });
+
+    it("sbk (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
+      const baseline = await loadSbkBook(
+        fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"),
+      );
+      const info = getBookInfo(defaultBookSession);
+      expect(info.format).toBe("sbk");
+      expect(info.type).toBe("in-memory");
+      expect(info.path).toBe("src/tests/testdata/book/shogigui01.sbk");
+      expect(info.entryCount).toBe(baseline.entries.size);
+      expect(info.unsaved).toBeFalsy();
+      expect(info.sbkAuthor).toBe(baseline.sbkAuthor);
+      expect(info.sbkDescription).toBe(baseline.sbkDescription);
+
+      const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+      await updateBookPositionComment(defaultBookSession, initialSfen, "modified");
+      expect(getBookInfo(defaultBookSession).unsaved).toBeTruthy();
     });
   });
 });

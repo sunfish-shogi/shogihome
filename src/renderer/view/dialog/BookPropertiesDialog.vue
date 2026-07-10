@@ -1,0 +1,172 @@
+<template>
+  <DialogFrame limited @cancel="onClose">
+    <div class="root">
+      <div class="title">{{ t.bookInfo }}</div>
+      <div class="form-group scroll">
+        <div v-if="info" class="section">
+          <div class="form-item">
+            <div class="form-item-label">{{ t.format }}</div>
+            <span>{{ formatLabel }}</span>
+          </div>
+          <div class="form-item">
+            <div class="form-item-label">{{ t.loadingMode }}</div>
+            <span>{{ info.type }}</span>
+          </div>
+          <div v-if="info.path" class="form-item">
+            <div class="form-item-label">{{ t.file }}</div>
+            <span class="long-text">{{ info.path }}</span>
+          </div>
+          <div v-if="info.entryCount !== undefined" class="form-item">
+            <div class="form-item-label">{{ t.positionCount }}</div>
+            <span>{{ info.entryCount }}</span>
+          </div>
+          <div v-if="info.unsaved" class="form-item">
+            <span>{{ t.unsaved }}</span>
+          </div>
+          <div v-if="info.sbkAuthor" class="form-item">
+            <div class="form-item-label">{{ t.author }}</div>
+            <span class="long-text">{{ info.sbkAuthor }}</span>
+          </div>
+          <div v-if="info.sbkDescription" class="form-item">
+            <div class="form-item-label">{{ t.description }}</div>
+            <span class="long-text">{{ info.sbkDescription }}</span>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">{{ t.currentPosition }}</div>
+          <div v-if="positionProperties.minPly !== undefined" class="form-item">
+            <div class="form-item-label">{{ t.numberOfMoves }}</div>
+            <span>{{ positionProperties.minPly }}</span>
+          </div>
+          <div v-if="statsLabel" class="form-item">
+            <span>{{ statsLabel }}</span>
+          </div>
+          <div v-if="positionProperties.comment" class="form-item">
+            <div class="form-item-label">{{ t.comments }}</div>
+            <span class="long-text comment">{{ positionProperties.comment }}</span>
+          </div>
+          <table v-if="positionProperties.sbkEvals?.length" class="evals">
+            <thead>
+              <tr>
+                <td>{{ t.engineName }}</td>
+                <td>{{ t.evaluation }}</td>
+                <td>{{ t.depth }}</td>
+                <td>{{ t.nodes }}</td>
+                <td>{{ t.pv }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(evalEntry, index) of positionProperties.sbkEvals" :key="index">
+                <td>{{ evalEntry.engineName }}</td>
+                <td class="number">{{ evalEntry.evaluationValue }}</td>
+                <td class="number">{{ evalEntry.depth }}/{{ evalEntry.selDepth }}</td>
+                <td class="number">{{ evalEntry.nodes }}</td>
+                <td class="long-text">{{ evalEntry.variation }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="main-buttons">
+        <button autofocus data-hotkey="Escape" @click="onClose">
+          {{ t.close }}
+        </button>
+      </div>
+    </div>
+  </DialogFrame>
+</template>
+
+<script setup lang="ts">
+import { computed, onMounted, ref } from "vue";
+import { t } from "@/common/i18n";
+import { BookInfo, defaultBookSession } from "@/common/book";
+import { useStore } from "@/renderer/store";
+import { useBookStore } from "@/renderer/store/book";
+import { useErrorStore } from "@/renderer/store/error";
+import api from "@/renderer/ipc/api";
+import DialogFrame from "./DialogFrame.vue";
+
+const store = useStore();
+const bookStore = useBookStore();
+const info = ref<BookInfo>();
+
+onMounted(async () => {
+  try {
+    info.value = await api.getBookInfo(defaultBookSession);
+  } catch (e) {
+    useErrorStore().add(e);
+    store.destroyModalDialog();
+  }
+});
+
+const positionProperties = computed(() => bookStore.positionProperties);
+
+const formatLabel = computed(() => {
+  switch (info.value?.format) {
+    case "yane2016":
+      return `${t.yane2016BookFile} (.db)`;
+    case "ybb":
+      return `${t.ybbBookFile} (.ybb)`;
+    case "apery":
+      return `${t.aperyBookFile} (.bin)`;
+    case "sbk":
+      return `${t.shogiGUIBookFile} (.sbk)`;
+    default:
+      return info.value?.format;
+  }
+});
+
+const statsLabel = computed(() => {
+  const props = positionProperties.value;
+  if (props.games === undefined && props.wonBlack === undefined && props.wonWhite === undefined) {
+    return "";
+  }
+  return (
+    `${t.gameCount}: ${props.games ?? 0} / ` +
+    `${t.blackWin}: ${props.wonBlack ?? 0} / ` +
+    `${t.whiteWin}: ${props.wonWhite ?? 0}`
+  );
+});
+
+const onClose = () => {
+  store.closeModalDialog();
+};
+</script>
+
+<style scoped>
+.root {
+  width: 540px;
+}
+.form-group {
+  max-height: 60vh;
+  text-align: left;
+}
+.section:not(:first-child) {
+  margin-top: 10px;
+}
+.section-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.long-text {
+  word-break: break-all;
+}
+.comment {
+  white-space: pre-wrap;
+}
+table.evals {
+  width: 100%;
+  font-size: 0.85em;
+  border-collapse: collapse;
+}
+table.evals td {
+  border: 1px solid var(--text-separator-color);
+  padding: 0 4px;
+  text-align: left;
+  vertical-align: middle;
+}
+table.evals td.number {
+  text-align: right;
+  white-space: nowrap;
+}
+</style>

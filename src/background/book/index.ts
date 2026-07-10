@@ -2,6 +2,7 @@ import fs, { ReadStream } from "node:fs";
 import {
   BookFormat,
   BookImportSummary,
+  BookInfo,
   BookLoadingOptions,
   BookMove,
   BookPositionEntry,
@@ -200,14 +201,6 @@ export function isBookUnsaved(session: number): boolean {
   return !book.saved;
 }
 
-export type BookInfo = {
-  format: BookFormat;
-  type: "in-memory" | "on-the-fly";
-  path?: string;
-  entryCount?: number;
-  unsaved: boolean;
-};
-
 export function getBookInfo(session: number): BookInfo {
   const book = getBook(session);
   return {
@@ -216,6 +209,8 @@ export function getBookInfo(session: number): BookInfo {
     path: book.path,
     entryCount: book.type === "in-memory" ? book.entries.size : undefined,
     unsaved: !book.saved,
+    sbkAuthor: book.format === "sbk" ? book.sbkAuthor : undefined,
+    sbkDescription: book.format === "sbk" ? book.sbkDescription : undefined,
   };
 }
 
