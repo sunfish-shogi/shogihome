@@ -1165,9 +1165,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 
     it("sbk (in-memory)", async () => {
       await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
-      const baseline = await loadSbkBook(
-        fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"),
-      );
+      const baseline = await loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"));
       const info = getBookInfo(defaultBookSession);
       expect(info.format).toBe("sbk");
       expect(info.type).toBe("in-memory");

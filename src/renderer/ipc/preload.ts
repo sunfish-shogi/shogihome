@@ -193,7 +193,12 @@ const api: Bridge = {
     return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE, session, sfen, json);
   },
   async updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void> {
-    return await ipcRenderer.invoke(Background.UPDATE_BOOK_POSITION_COMMENT, session, sfen, comment);
+    return await ipcRenderer.invoke(
+      Background.UPDATE_BOOK_POSITION_COMMENT,
+      session,
+      sfen,
+      comment,
+    );
   },
   async removeBookMove(session: number, sfen: string, usi: string): Promise<void> {
     return await ipcRenderer.invoke(Background.REMOVE_BOOK_MOVE, session, sfen, usi);
