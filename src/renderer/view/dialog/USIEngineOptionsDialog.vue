@@ -266,7 +266,7 @@
                 :items="[
                   { value: BookMoveSelectionRule.BEST, label: t.bestMove },
                   { value: BookMoveSelectionRule.WEIGHTED_BY_COUNT, label: t.frequency },
-                  { value: BookMoveSelectionRule.WEIGHTED_BY_SCORE, label: t.estimatedWinRate },
+                  { value: BookMoveSelectionRule.WEIGHTED_BY_SCORE, label: t.evaluation },
                 ]"
               />
             </div>

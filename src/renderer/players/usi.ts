@@ -16,9 +16,12 @@ import { GameResult } from "@/common/game/result.js";
 import { TimeStates } from "@/common/game/time.js";
 import { LogLevel } from "@/common/log.js";
 import { BookMove } from "@/common/book.js";
-import { scoreToPercentage } from "@/common/record/score.js";
 import { selectWeightedRandom } from "@/common/helpers/math.js";
-import { useAppSettings } from "@/renderer/store/settings.js";
+
+// 評価値による定跡選択のソフトマックス温度 (センチポーン単位)。
+// 重み比は exp((score1 - score2) / T) となり、評価値の差だけで決まる (局面の絶対的な有利不利に依存しない)。
+// 値が小さいほど最善手に集中し、大きいほど均等に近づく。
+const bookMoveScoreTemperature = 300;
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
@@ -245,9 +248,20 @@ export class USIPlayer implements Player {
       case BookMoveSelectionRule.WEIGHTED_BY_COUNT:
         return selectWeightedRandom(bookMoves, (bookMove) => bookMove.count ?? 0);
       case BookMoveSelectionRule.WEIGHTED_BY_SCORE: {
-        const coefficient = useAppSettings().coefficientInSigmoid;
+        // 評価値をソフトマックスで重み付けする。
+        // 最善手との評価値差を用いることで指数計算のオーバーフローを防ぎつつ、
+        // 評価値の低い手の重みを指数的に減衰させる。
+        const scores = bookMoves
+          .map((bookMove) => bookMove.score)
+          .filter((score): score is number => score !== undefined);
+        if (scores.length === 0) {
+          return bookMoves[0];
+        }
+        const maxScore = Math.max(...scores);
         return selectWeightedRandom(bookMoves, (bookMove) =>
-          bookMove.score !== undefined ? scoreToPercentage(bookMove.score, coefficient) : 0,
+          bookMove.score !== undefined
+            ? Math.exp((bookMove.score - maxScore) / bookMoveScoreTemperature)
+            : 0,
         );
       }
       default:
