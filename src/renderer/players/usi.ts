@@ -1,6 +1,7 @@
 import api from "@/renderer/ipc/api.js";
 import { parseUSIPV, USIInfoCommand } from "@/common/game/usi.js";
 import {
+  BookMoveSelectionRule,
   getUSIEngineMultiPV,
   getUSIEnginePonder,
   getUSIEngineStochasticPonder,
@@ -14,6 +15,10 @@ import { Player, SearchInfo, SearchHandler, MateHandler } from "./player.js";
 import { GameResult } from "@/common/game/result.js";
 import { TimeStates } from "@/common/game/time.js";
 import { LogLevel } from "@/common/log.js";
+import { BookMove } from "@/common/book.js";
+import { scoreToPercentage } from "@/common/record/score.js";
+import { selectWeightedRandom } from "@/common/helpers/math.js";
+import { useAppSettings } from "@/renderer/store/settings.js";
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
@@ -213,13 +218,13 @@ export class USIPlayer implements Player {
           }
         }
       }
-      // 最善手を返却
-      const bestMove = bookMoves[0];
-      const move = this.position.createMoveByUSI(bestMove.usi);
+      // 設定に応じて指し手を選択して返却
+      const bookMove = this.selectBookMove(bookMoves);
+      const move = this.position.createMoveByUSI(bookMove.usi);
       if (!move) {
         api.log(
           LogLevel.ERROR,
-          `Failed to search book moves: invalid move from book: ${bestMove.usi}`,
+          `Failed to search book moves: invalid move from book: ${bookMove.usi}`,
         );
         return false;
       }
@@ -232,6 +237,21 @@ export class USIPlayer implements Player {
     } catch (e) {
       api.log(LogLevel.ERROR, `Failed to search book moves: ${e}`);
       return false;
+    }
+  }
+
+  private selectBookMove(bookMoves: BookMove[]): BookMove {
+    switch (this.engine.extraBook?.moveSelectionRule) {
+      case BookMoveSelectionRule.WEIGHTED_BY_COUNT:
+        return selectWeightedRandom(bookMoves, (bookMove) => bookMove.count ?? 0);
+      case BookMoveSelectionRule.WEIGHTED_BY_SCORE: {
+        const coefficient = useAppSettings().coefficientInSigmoid;
+        return selectWeightedRandom(bookMoves, (bookMove) =>
+          bookMove.score !== undefined ? scoreToPercentage(bookMove.score, coefficient) : 0,
+        );
+      }
+      default:
+        return bookMoves[0];
     }
   }
 

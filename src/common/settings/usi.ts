@@ -126,10 +126,17 @@ export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate"): s
   }
 }
 
+export enum BookMoveSelectionRule {
+  BEST = "best",
+  WEIGHTED_BY_COUNT = "weightedByCount",
+  WEIGHTED_BY_SCORE = "weightedByScore",
+}
+
 export type USIEngineExtraBookConfig = {
   enabled: boolean;
   filePath: string;
   onTheFly: boolean;
+  moveSelectionRule?: BookMoveSelectionRule; // 省略時は BookMoveSelectionRule.BEST
 };
 
 export function emptyUSIEngineExtraBookConfig(): USIEngineExtraBookConfig {
@@ -137,6 +144,7 @@ export function emptyUSIEngineExtraBookConfig(): USIEngineExtraBookConfig {
     enabled: false,
     filePath: "",
     onTheFly: false,
+    moveSelectionRule: BookMoveSelectionRule.BEST,
   };
 }
 

@@ -418,6 +418,8 @@ export const ja: Texts = {
   replaceEnginePath: "エンジン再選択",
   displayName: "表示名",
   frontendBook: "定跡 (GUI拡張)",
+  moveSelection: "指し手の選択",
+  bestMove: "最善手",
   showAllOptions: "全てのオプションを表示",
   invoke: "実行",
   resetToEngineDefaultValues: "エンジンの既定値に戻す",

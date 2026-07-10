@@ -10,6 +10,7 @@ import {
 import { Move, parsePV, Record } from "tsshogi";
 import { testUSIEngine, testUSIEngineWithPonder } from "@/tests/mock/usi.js";
 import { Mocked } from "vitest";
+import { BookMoveSelectionRule } from "@/common/settings/usi.js";
 
 vi.mock("@/renderer/ipc/api.js");
 
@@ -130,6 +131,90 @@ describe("usi", () => {
     await player.close();
     expect(mockAPI.usiQuit).toBeCalledWith(100);
     expect(mockAPI.closeBookSession).toBeCalledTimes(1);
+  });
+
+  it("bookHit/weightedByCount", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", count: 10, comment: "" },
+      { usi: "6g6f", count: 30, comment: "" },
+      { usi: "5g5f", count: 60, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.3);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_COUNT,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      // 重みは 10 : 30 : 60 であり、乱数値 0.3 は累積 10% ~ 40% の範囲に入るので 2 番目の手が選ばれる。
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("6g6f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
+  });
+
+  it("bookHit/weightedByScore", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", score: 0, comment: "" },
+      { usi: "6g6f", comment: "" }, // score が無い手は選ばれない
+      { usi: "5g5f", score: 0, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.6);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      // 期待勝率換算の重みは 50 : 0 : 50 であり、乱数値 0.6 では 3 番目の手が選ばれる。
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("5g5f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
   });
 
   it("bookMiss", async () => {

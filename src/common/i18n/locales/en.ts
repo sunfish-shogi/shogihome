@@ -418,6 +418,8 @@ export const en: Texts = {
   replaceEnginePath: "Replace Engine Path",
   displayName: "Display Name",
   frontendBook: "Frontend Book",
+  moveSelection: "Move Selection",
+  bestMove: "Best Move",
   showAllOptions: "Show All Options",
   invoke: "Invoke",
   resetToEngineDefaultValues: "Reset to default values",
