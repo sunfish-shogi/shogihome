@@ -14,9 +14,13 @@ export function calculateWinRateConfidenceInterval(zValue: number, winRate: numb
 }
 
 // 重みに比例した確率で要素を 1 つ選択する。
+// 有限かつ正の値でない重み (0 以下, NaN, ±Infinity) は 0 として扱う。
 // 重みの合計が 0 以下の場合は先頭の要素を返す。
 export function selectWeightedRandom<T>(items: T[], getWeight: (item: T) => number): T {
-  const weights = items.map((item) => Math.max(getWeight(item), 0));
+  const weights = items.map((item) => {
+    const weight = getWeight(item);
+    return Number.isFinite(weight) && weight > 0 ? weight : 0;
+  });
   const total = weights.reduce((sum, weight) => sum + weight, 0);
   if (total <= 0) {
     return items[0];

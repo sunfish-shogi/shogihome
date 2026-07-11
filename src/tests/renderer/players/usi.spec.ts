@@ -178,11 +178,11 @@ describe("usi", () => {
   it("bookHit/weightedByScore", async () => {
     const usi = "position startpos moves 7g7f 3c3d";
     const record = Record.newByUSI(usi) as Record;
-    // ソフトマックス (温度 300) による重みは以下の通り。
-    //   2g2f: exp((300-300)/300) = 1
+    // ソフトマックス (温度 100) による重みは以下の通り。
+    //   2g2f: exp((300-300)/100) = 1
     //   6g6f: score が無いので 0 (選ばれない)
-    //   5g5f: exp((0-300)/300) = exp(-1) ≈ 0.3679
-    // 合計 ≈ 1.3679 なので 2g2f は [0, 0.7311)、5g5f は [0.7311, 1) を占める。
+    //   5g5f: exp((0-300)/100) = exp(-3) ≈ 0.0498
+    // 合計 ≈ 1.0498 なので 2g2f は [0, 0.9526)、5g5f は [0.9526, 1) を占める。
     const runSelection = async (randomValue: number): Promise<string> => {
       vi.clearAllMocks();
       mockAPI.usiLaunch.mockResolvedValueOnce(100);
@@ -224,8 +224,52 @@ describe("usi", () => {
     };
     // 乱数値 0.5 は 2g2f の範囲に入る。
     expect(await runSelection(0.5)).toBe("2g2f");
-    // 乱数値 0.9 は 5g5f の範囲に入る。
-    expect(await runSelection(0.9)).toBe("5g5f");
+    // 乱数値 0.98 は 5g5f の範囲に入る。
+    expect(await runSelection(0.98)).toBe("5g5f");
+  });
+
+  it("bookHit/weightedByScore/nonFiniteScore", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    // 先頭に不正な (非有限の) 評価値を持つ手があっても、他の手の重み付けを汚染しない。
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", score: NaN, comment: "" },
+      { usi: "6g6f", score: 300, comment: "" },
+      { usi: "5g5f", score: 0, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    // 有限な評価値は 300 : 0 なので重みは 6g6f=1, 5g5f≈0.0498、2g2f は 0。
+    // 乱数値 0.5 は 6g6f の範囲に入る (汚染時は最後の 5g5f が返っていた)。
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.5);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("6g6f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
   });
 
   it("bookMiss", async () => {

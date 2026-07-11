@@ -21,7 +21,9 @@ import { selectWeightedRandom } from "@/common/helpers/math.js";
 // 評価値による定跡選択のソフトマックス温度 (センチポーン単位)。
 // 重み比は exp((score1 - score2) / T) となり、評価値の差だけで決まる (局面の絶対的な有利不利に依存しない)。
 // 値が小さいほど最善手に集中し、大きいほど均等に近づく。
-const bookMoveScoreTemperature = 300;
+// T=100 の場合、最善手に対する重みは 100 点差で約 0.37、200 点差で約 0.14、300 点差で約 0.05 となり、
+// 大きく形勢を落とす手はほとんど選ばれない。
+const bookMoveScoreTemperature = 100;
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
@@ -253,7 +255,7 @@ export class USIPlayer implements Player {
         // 評価値の低い手の重みを指数的に減衰させる。
         const scores = bookMoves
           .map((bookMove) => bookMove.score)
-          .filter((score): score is number => score !== undefined);
+          .filter((score): score is number => score !== undefined && Number.isFinite(score));
         if (scores.length === 0) {
           return bookMoves[0];
         }
