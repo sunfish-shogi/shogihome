@@ -4,6 +4,7 @@
       <div class="title">{{ t.bookInfo }}</div>
       <div class="form-group scroll">
         <div v-if="info" class="section">
+          <div class="section-title">{{ t.bookInfo }}</div>
           <div class="form-item">
             <div class="form-item-label">{{ t.format }}</div>
             <span>{{ formatLabel }}</span>
@@ -39,6 +40,7 @@
             <span>{{ positionProperties.minPly }}</span>
           </div>
           <div v-if="statsLabel" class="form-item">
+            <div class="form-item-label">{{ t.statistics }}</div>
             <span>{{ statsLabel }}</span>
           </div>
           <div v-if="positionProperties.comment" class="form-item">
@@ -135,18 +137,28 @@ const onClose = () => {
 
 <style scoped>
 .root {
-  width: 540px;
+  width: 640px;
 }
 .form-group {
   max-height: 60vh;
   text-align: left;
 }
 .section:not(:first-child) {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 .section-title {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+}
+.form-item {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 8px;
+  margin-bottom: 6px;
+  align-items: start;
+}
+.form-item-label {
+  font-weight: 500;
 }
 .long-text {
   word-break: break-all;
@@ -158,6 +170,7 @@ table.evals {
   width: 100%;
   font-size: 0.85em;
   border-collapse: collapse;
+  margin-top: 8px;
 }
 table.evals td {
   border: 1px solid var(--text-separator-color);

@@ -314,6 +314,9 @@ export function setup(): void {
       case MenuEvent.EXPORT_BOOK_AS_SBK:
         useBookStore().exportBookFile("sbk");
         break;
+      case MenuEvent.SHOW_BOOK_PROPERTIES:
+        store.showBookPropertiesDialog();
+        break;
     }
   });
 

@@ -70,4 +70,5 @@ export enum MenuEvent {
   EXPORT_BOOK_AS_YBB = "exportBookAsYbb",
   EXPORT_BOOK_AS_APERY = "exportBookAsApery",
   EXPORT_BOOK_AS_SBK = "exportBookAsSbk",
+  SHOW_BOOK_PROPERTIES = "showBookProperties",
 }

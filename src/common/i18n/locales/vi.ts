@@ -559,6 +559,7 @@ export const vi: Texts = {
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
   gameCount: "対局数", // TODO: Translate
+  statistics: "統計", // TODO: Translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",

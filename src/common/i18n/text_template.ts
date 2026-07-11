@@ -542,6 +542,7 @@ export type Texts = {
   loadingMode: string;
   positionCount: string;
   gameCount: string;
+  statistics: string;
   chart: string;
   analytics: string;
   controlGroup: string;

@@ -549,6 +549,7 @@ export const ja: Texts = {
   loadingMode: "読み込みモード",
   positionCount: "局面数",
   gameCount: "対局数",
+  statistics: "統計",
   chart: "グラフ",
   analytics: "解析",
   controlGroup: "メニュー",

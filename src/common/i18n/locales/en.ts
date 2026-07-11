@@ -549,6 +549,7 @@ export const en: Texts = {
   loadingMode: "Loading Mode",
   positionCount: "Position Count",
   gameCount: "Games",
+  statistics: "Statistics",
   chart: "Chart",
   analytics: "Analytics",
   controlGroup: "Control Group",
