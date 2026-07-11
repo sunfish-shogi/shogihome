@@ -413,6 +413,7 @@ export type Texts = {
   frontendBook: string;
   moveSelection: string;
   bestMove: string;
+  bookMoveTemperature: string;
   showAllOptions: string;
   invoke: string;
   resetToEngineDefaultValues: string;

@@ -420,6 +420,7 @@ export const en: Texts = {
   frontendBook: "Frontend Book",
   moveSelection: "Move Selection",
   bestMove: "Best Move",
+  bookMoveTemperature: "Temperature (lower favors the best move)",
   showAllOptions: "Show All Options",
   invoke: "Invoke",
   resetToEngineDefaultValues: "Reset to default values",

@@ -270,6 +270,22 @@
                 ]"
               />
             </div>
+            <div
+              v-show="
+                extraBook.enabled &&
+                extraBook.moveSelectionRule === BookMoveSelectionRule.WEIGHTED_BY_SCORE
+              "
+              class="additional"
+            >
+              <span class="option-value-control">{{ t.bookMoveTemperature }}</span>
+              <input
+                v-model.number="extraBook.scoreTemperature"
+                class="option-value-number"
+                type="number"
+                min="1"
+                step="1"
+              />
+            </div>
           </div>
         </div>
         <div class="menu">

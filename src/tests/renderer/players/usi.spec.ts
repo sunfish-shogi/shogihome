@@ -272,6 +272,50 @@ describe("usi", () => {
     }
   });
 
+  it("bookHit/weightedByScore/customTemperature", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", score: 300, comment: "" },
+      { usi: "5g5f", score: 0, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    // 温度 600 では重みは 2g2f=exp(0)=1, 5g5f=exp(-300/600)=exp(-0.5)≈0.6065。
+    // 合計 ≈ 1.6065 なので 2g2f は [0, 0.6225)、5g5f は [0.6225, 1) を占める。
+    // 乱数値 0.7 は 5g5f の範囲に入る (既定の温度 100 なら 2g2f が返る)。
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.7);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+            scoreTemperature: 600,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("5g5f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
+  });
+
   it("bookMiss", async () => {
     mockAPI.usiLaunch.mockResolvedValueOnce(100);
     mockAPI.usiGo.mockResolvedValueOnce();

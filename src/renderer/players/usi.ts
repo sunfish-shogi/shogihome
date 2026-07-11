@@ -2,6 +2,7 @@ import api from "@/renderer/ipc/api.js";
 import { parseUSIPV, USIInfoCommand } from "@/common/game/usi.js";
 import {
   BookMoveSelectionRule,
+  defaultBookMoveScoreTemperature,
   getUSIEngineMultiPV,
   getUSIEnginePonder,
   getUSIEngineStochasticPonder,
@@ -17,13 +18,6 @@ import { TimeStates } from "@/common/game/time.js";
 import { LogLevel } from "@/common/log.js";
 import { BookMove } from "@/common/book.js";
 import { selectWeightedRandom } from "@/common/helpers/math.js";
-
-// 評価値による定跡選択のソフトマックス温度 (センチポーン単位)。
-// 重み比は exp((score1 - score2) / T) となり、評価値の差だけで決まる (局面の絶対的な有利不利に依存しない)。
-// 値が小さいほど最善手に集中し、大きいほど均等に近づく。
-// T=100 の場合、最善手に対する重みは 100 点差で約 0.37、200 点差で約 0.14、300 点差で約 0.05 となり、
-// 大きく形勢を落とす手はほとんど選ばれない。
-const bookMoveScoreTemperature = 100;
 
 type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
@@ -250,7 +244,8 @@ export class USIPlayer implements Player {
       case BookMoveSelectionRule.WEIGHTED_BY_COUNT:
         return selectWeightedRandom(bookMoves, (bookMove) => bookMove.count ?? 0);
       case BookMoveSelectionRule.WEIGHTED_BY_SCORE: {
-        // 評価値をソフトマックスで重み付けする。
+        // 評価値をソフトマックスで重み付けする。重み比は exp((score1 - score2) / T) となり、
+        // 評価値の差だけで決まる (局面の絶対的な有利不利に依存しない)。
         // 最善手との評価値差を用いることで指数計算のオーバーフローを防ぎつつ、
         // 評価値の低い手の重みを指数的に減衰させる。
         const scores = bookMoves
@@ -260,10 +255,16 @@ export class USIPlayer implements Player {
           return bookMoves[0];
         }
         const maxScore = Math.max(...scores);
+        // 設定値が不正 (未設定・非有限・0 以下) の場合は既定値を用いる。
+        const configuredTemperature = this.engine.extraBook?.scoreTemperature;
+        const temperature =
+          configuredTemperature !== undefined &&
+          Number.isFinite(configuredTemperature) &&
+          configuredTemperature > 0
+            ? configuredTemperature
+            : defaultBookMoveScoreTemperature;
         return selectWeightedRandom(bookMoves, (bookMove) =>
-          bookMove.score !== undefined
-            ? Math.exp((bookMove.score - maxScore) / bookMoveScoreTemperature)
-            : 0,
+          bookMove.score !== undefined ? Math.exp((bookMove.score - maxScore) / temperature) : 0,
         );
       }
       default:

@@ -132,11 +132,16 @@ export enum BookMoveSelectionRule {
   WEIGHTED_BY_SCORE = "weightedByScore",
 }
 
+// 評価値による定跡選択のソフトマックス温度 (センチポーン単位) の既定値。
+// 値が小さいほど最善手に集中し、大きいほど均等に近づく。
+export const defaultBookMoveScoreTemperature = 100;
+
 export type USIEngineExtraBookConfig = {
   enabled: boolean;
   filePath: string;
   onTheFly: boolean;
   moveSelectionRule?: BookMoveSelectionRule; // 省略時は BookMoveSelectionRule.BEST
+  scoreTemperature?: number; // 省略時は defaultBookMoveScoreTemperature
 };
 
 export function emptyUSIEngineExtraBookConfig(): USIEngineExtraBookConfig {
@@ -145,6 +150,7 @@ export function emptyUSIEngineExtraBookConfig(): USIEngineExtraBookConfig {
     filePath: "",
     onTheFly: false,
     moveSelectionRule: BookMoveSelectionRule.BEST,
+    scoreTemperature: defaultBookMoveScoreTemperature,
   };
 }
 

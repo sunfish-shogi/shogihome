@@ -427,6 +427,7 @@ export const zh_tw: Texts = {
   frontendBook: "定跡 (GUI拡張)", // TODO: Translate
   moveSelection: "指し手の選択", // TODO: Translate
   bestMove: "最善手", // TODO: Translate
+  bookMoveTemperature: "温度 (小さいほど最善手を優先)", // TODO: Translate
   showAllOptions: "全てのオプションを表示", // TODO: Translate
   invoke: "執行",
   resetToEngineDefaultValues: "回復至引擎預設設定",

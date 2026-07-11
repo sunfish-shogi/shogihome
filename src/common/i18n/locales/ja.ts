@@ -420,6 +420,7 @@ export const ja: Texts = {
   frontendBook: "定跡 (GUI拡張)",
   moveSelection: "指し手の選択",
   bestMove: "最善手",
+  bookMoveTemperature: "温度 (小さいほど最善手を優先)",
   showAllOptions: "全てのオプションを表示",
   invoke: "実行",
   resetToEngineDefaultValues: "エンジンの既定値に戻す",
