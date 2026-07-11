@@ -18,20 +18,20 @@ const resolveForCJS = {
 export default (env = {}) => {
   const dev = !!env.dev;
 
+  // In dev mode `minimize` is false, so the minimizer is never consulted and
+  // TerserPlugin does not run — no need to branch the minimizer array itself.
   const optimization = {
     minimize: !dev,
-    minimizer: dev
-      ? []
-      : [
-          new TerserPlugin({
-            terserOptions: {
-              format: {
-                comments: false,
-              },
-            },
-            extractComments: false,
-          }),
-        ],
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
   };
 
   const moduleForCJS = {
