@@ -5,46 +5,46 @@
       <div class="form-group scroll">
         <div v-if="info" class="section">
           <div class="section-title">{{ t.bookInfo }}</div>
-          <div class="form-item">
-            <div class="form-item-label">{{ t.format }}</div>
+          <div class="property-item">
+            <div class="property-label">{{ t.format }}</div>
             <span>{{ formatLabel }}</span>
           </div>
-          <div class="form-item">
-            <div class="form-item-label">{{ t.loadingMode }}</div>
+          <div class="property-item">
+            <div class="property-label">{{ t.loadingMode }}</div>
             <span>{{ info.type }}</span>
           </div>
-          <div v-if="info.path" class="form-item">
-            <div class="form-item-label">{{ t.file }}</div>
+          <div v-if="info.path" class="property-item">
+            <div class="property-label">{{ t.file }}</div>
             <span class="long-text">{{ info.path }}</span>
           </div>
-          <div v-if="info.entryCount !== undefined" class="form-item">
-            <div class="form-item-label">{{ t.positionCount }}</div>
+          <div v-if="info.entryCount !== undefined" class="property-item">
+            <div class="property-label">{{ t.positionCount }}</div>
             <span>{{ info.entryCount }}</span>
           </div>
-          <div v-if="info.unsaved" class="form-item">
+          <div v-if="info.unsaved" class="property-item">
             <span>{{ t.unsaved }}</span>
           </div>
-          <div v-if="info.sbkAuthor" class="form-item">
-            <div class="form-item-label">{{ t.author }}</div>
+          <div v-if="info.sbkAuthor" class="property-item">
+            <div class="property-label">{{ t.author }}</div>
             <span class="long-text">{{ info.sbkAuthor }}</span>
           </div>
-          <div v-if="info.sbkDescription" class="form-item">
-            <div class="form-item-label">{{ t.description }}</div>
+          <div v-if="info.sbkDescription" class="property-item">
+            <div class="property-label">{{ t.description }}</div>
             <span class="long-text">{{ info.sbkDescription }}</span>
           </div>
         </div>
         <div class="section">
           <div class="section-title">{{ t.currentPosition }}</div>
-          <div v-if="positionProperties.minPly !== undefined" class="form-item">
-            <div class="form-item-label">{{ t.numberOfMoves }}</div>
+          <div v-if="positionProperties.minPly !== undefined" class="property-item">
+            <div class="property-label">{{ t.numberOfMoves }}</div>
             <span>{{ positionProperties.minPly }}</span>
           </div>
-          <div v-if="statsLabel" class="form-item">
-            <div class="form-item-label">{{ t.statistics }}</div>
+          <div v-if="statsLabel" class="property-item">
+            <div class="property-label">{{ t.statistics }}</div>
             <span>{{ statsLabel }}</span>
           </div>
-          <div v-if="positionProperties.comment" class="form-item">
-            <div class="form-item-label">{{ t.comments }}</div>
+          <div v-if="positionProperties.comment" class="property-item">
+            <div class="property-label">{{ t.comments }}</div>
             <span class="long-text comment">{{ positionProperties.comment }}</span>
           </div>
           <table v-if="positionProperties.sbkEvals?.length" class="evals">
@@ -150,14 +150,14 @@ const onClose = () => {
   font-weight: bold;
   margin-bottom: 8px;
 }
-.form-item {
+.property-item {
   display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 8px;
-  margin-bottom: 6px;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
   align-items: start;
 }
-.form-item-label {
+.property-label {
   font-weight: 500;
 }
 .long-text {
