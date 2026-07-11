@@ -38,7 +38,14 @@ export default (env = {}) => {
     rules: [
       {
         test: /\.ts$/,
-        use: { loader: "ts-loader", options: { transpileOnly: dev } },
+        use: {
+          loader: "ts-loader",
+          options: {
+            transpileOnly: dev,
+            onlyCompileBundledFiles: true,
+            compilerOptions: { rootDir: "./src" },
+          },
+        },
       },
     ],
   };
