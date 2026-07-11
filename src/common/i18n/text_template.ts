@@ -411,6 +411,9 @@ export type Texts = {
   replaceEnginePath: string;
   displayName: string;
   frontendBook: string;
+  moveSelection: string;
+  bestMove: string;
+  bookMoveTemperature: string;
   showAllOptions: string;
   invoke: string;
   resetToEngineDefaultValues: string;

@@ -259,6 +259,33 @@
               class="additional"
               label="On-the-fly"
             />
+            <div v-show="extraBook.enabled" class="additional">
+              <span class="option-value-control">{{ t.moveSelection }}</span>
+              <HorizontalSelector
+                v-model:value="extraBook.moveSelectionRule as string"
+                :items="[
+                  { value: BookMoveSelectionRule.BEST, label: t.bestMove },
+                  { value: BookMoveSelectionRule.WEIGHTED_BY_COUNT, label: t.frequency },
+                  { value: BookMoveSelectionRule.WEIGHTED_BY_SCORE, label: t.evaluation },
+                ]"
+              />
+            </div>
+            <div
+              v-show="
+                extraBook.enabled &&
+                extraBook.moveSelectionRule === BookMoveSelectionRule.WEIGHTED_BY_SCORE
+              "
+              class="additional"
+            >
+              <span class="option-value-control">{{ t.bookMoveTemperature }}</span>
+              <input
+                v-model.number="extraBook.scoreTemperature"
+                class="option-value-number"
+                type="number"
+                min="1"
+                step="1"
+              />
+            </div>
           </div>
         </div>
         <div class="menu">
@@ -297,6 +324,7 @@ import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import {
+  BookMoveSelectionRule,
   compressUSIEngineOptionsClipboardData,
   ConsiderationMode,
   decompressUSIEngineOptionsClipboardData,
@@ -380,11 +408,7 @@ const optionVisibility = computed(() =>
     }
   }),
 );
-const extraBook = ref<USIEngineExtraBookConfig>({
-  enabled: false,
-  filePath: "",
-  onTheFly: false,
-});
+const extraBook = ref<USIEngineExtraBookConfig>(emptyUSIEngineExtraBookConfig());
 const machineSpec = ref<MachineSpec>({ cpuCores: 0, memory: 0 });
 const metadata = ref<USIEngineMetadata>({ isShellScript: false });
 
@@ -414,7 +438,10 @@ onMounted(async () => {
         ...option,
         currentValue: getUSIEngineOptionCurrentValue(option) ?? (option.type === "spin" ? 0 : ""),
       }));
-    extraBook.value = engine.value.extraBook || emptyUSIEngineExtraBookConfig();
+    extraBook.value = {
+      ...emptyUSIEngineExtraBookConfig(),
+      ...engine.value.extraBook,
+    };
     machineSpec.value = await api.getMachineSpec();
   } catch (e) {
     useErrorStore().add(e);
@@ -484,11 +511,7 @@ const sendOptionButtonSignal = async (name: string) => {
 const reset = () => {
   engine.value.name = engine.value.defaultName;
   engine.value.enableEarlyPonder = false;
-  extraBook.value = {
-    enabled: false,
-    filePath: "",
-    onTheFly: false,
-  };
+  extraBook.value = emptyUSIEngineExtraBookConfig();
   options.value.forEach((option) => {
     if (option.type === "button") {
       return;
@@ -556,10 +579,9 @@ const pasteOptions = async () => {
     const data = await decompressUSIEngineOptionsClipboardData(base64);
     restoreEngineOptions(data.options);
     engine.value.enableEarlyPonder = data.enableEarlyPonder;
-    extraBook.value = data.extraBook || {
-      enabled: false,
-      filePath: "",
-      onTheFly: false,
+    extraBook.value = {
+      ...emptyUSIEngineExtraBookConfig(),
+      ...data.extraBook,
     };
     useMessageStore().enqueue({ text: t.pastedFromClipboard });
   } catch (e) {

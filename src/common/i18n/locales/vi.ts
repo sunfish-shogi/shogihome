@@ -428,6 +428,9 @@ export const vi: Texts = {
   replaceEnginePath: "Chọn lại đường dẫn phần mềm",
   displayName: "Tên hiển thị",
   frontendBook: "Định thức (mở rộng GUI)",
+  moveSelection: "指し手の選択", // TODO: Translate
+  bestMove: "最善手", // TODO: Translate
+  bookMoveTemperature: "温度 (小さいほど最善手を優先)", // TODO: Translate
   showAllOptions: "Hiển thị tất cả cài đặt",
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
