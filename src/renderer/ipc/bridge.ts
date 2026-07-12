@@ -67,8 +67,11 @@ export interface Bridge {
   exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
+  getBookInfo(session: number): Promise<string>;
   searchBookMoves(session: number, sfen: string): Promise<string>;
+  searchBookEntry(session: number, sfen: string): Promise<string>;
   updateBookMove(session: number, sfen: string, move: string): Promise<void>;
+  updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(session: number, sfen: string, usi: string, order: number): Promise<void>;
   importBookMoves(session: number, json: string): Promise<string>;

@@ -194,10 +194,19 @@ const bridge: Bridge = {
   async getBookFormat(): Promise<BookFormat> {
     throw new Error("This feature is not available on command line tool");
   },
+  async getBookInfo(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async searchBookMoves(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
+  async searchBookEntry(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async updateBookMove(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async updateBookPositionComment(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
   async removeBookMove(): Promise<void> {

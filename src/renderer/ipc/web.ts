@@ -281,10 +281,24 @@ export const webAPI: Bridge = {
   async getBookFormat(): Promise<BookFormat> {
     return "yane2016";
   },
+  async getBookInfo(): Promise<string> {
+    return JSON.stringify({
+      format: "yane2016",
+      type: "in-memory",
+      entryCount: 0,
+      unsaved: false,
+    });
+  },
   async searchBookMoves(): Promise<string> {
     return "[]";
   },
+  async searchBookEntry(): Promise<string> {
+    return "null";
+  },
   async updateBookMove(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async updateBookPositionComment(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async removeBookMove(): Promise<void> {

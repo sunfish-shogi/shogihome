@@ -422,6 +422,7 @@ export const vi: Texts = {
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
   author: "Tác giả",
+  description: "説明", // TODO: Translate
   earlyPonder: "Tính nhanh",
   enginePath: "Đường dẫn phần mềm",
   openDirectory: "Mở đường dẫn",
@@ -560,6 +561,8 @@ export const vi: Texts = {
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
+  gameCount: "対局数", // TODO: Translate
+  statistics: "統計", // TODO: Translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",

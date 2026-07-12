@@ -419,6 +419,7 @@ export const zh_tw: Texts = {
   engineManagement: "引擎管理",
   engineName: "引擎名稱",
   author: "作者",
+  description: "説明", // TODO: Translate
   earlyPonder: "預先Ponder",
   enginePath: "場所",
   openDirectory: "開啟資料夾",
@@ -557,6 +558,8 @@ export const zh_tw: Texts = {
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
+  gameCount: "対局数", // TODO: Translate
+  statistics: "統計", // TODO: Translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",
