@@ -137,7 +137,8 @@ const onClose = () => {
 
 <style scoped>
 .root {
-  width: 640px;
+  width: calc(100vw - 150px);
+  max-width: 1000px;
 }
 .form-group {
   max-height: 60vh;
