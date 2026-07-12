@@ -29,6 +29,7 @@ import {
   defaultCSAGameSettingsHistory,
   encryptCSAGameSettingsHistory,
   normalizeSecureCSAGameSettingsHistory,
+  SecureCSAGameSettingsHistory,
 } from "@/common/settings/csa.js";
 import { DecryptString, EncryptString, isEncryptionAvailable } from "./helpers/encrypt.js";
 import { getPortableExeDir, isPortable } from "./proc/env.js";
@@ -52,6 +53,7 @@ import {
 } from "@/common/settings/book.js";
 import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic.js";
 import { getAppPath } from "./proc/path-electron.js";
+import { getDateTimeString } from "@/common/helpers/datetime.js";
 
 const userDir = getAppPath("userData");
 const rootDir = getPortableExeDir() || userDir;
@@ -59,6 +61,68 @@ const docDir = path.join(getAppPath("documents"), "ShogiHome");
 
 export function openSettingsDirectory(): Promise<void> {
   return openPath(rootDir);
+}
+
+export type CorruptedSettingsFileReport = {
+  filePath: string;
+  backupPath: string;
+};
+
+type CorruptedSettingsFileHandler = (report: CorruptedSettingsFileReport) => void;
+
+const corruptedSettingsFileReports: CorruptedSettingsFileReport[] = [];
+let corruptedSettingsFileHandler: CorruptedSettingsFileHandler | undefined;
+
+// エラー表示の準備ができる前に検出された分はハンドラー登録時にまとめて通知する。
+export function setCorruptedSettingsFileHandler(handler: CorruptedSettingsFileHandler): void {
+  corruptedSettingsFileHandler = handler;
+  for (const report of corruptedSettingsFileReports.splice(0)) {
+    handler(report);
+  }
+}
+
+function buildCorruptedFileBackupPath(filePath: string): string {
+  const timestamp = getDateTimeString().replace(/\D/g, "");
+  let backupPath = `${filePath}.corrupted-${timestamp}`;
+  for (let number = 2; fs.existsSync(backupPath); number++) {
+    backupPath = `${filePath}.corrupted-${timestamp}-${number}`;
+  }
+  return backupPath;
+}
+
+function backupCorruptedSettingsFile(filePath: string, cause: unknown): void {
+  const backupPath = buildCorruptedFileBackupPath(filePath);
+  fs.renameSync(filePath, backupPath);
+  getAppLogger().error(
+    "corrupted settings file was moved: %s -> %s: %s",
+    filePath,
+    backupPath,
+    cause,
+  );
+  const report = { filePath, backupPath };
+  if (corruptedSettingsFileHandler) {
+    corruptedSettingsFileHandler(report);
+  } else {
+    corruptedSettingsFileReports.push(report);
+  }
+}
+
+// JSON としてパースできない場合はファイルをリネームして退避し、 undefined を返す。
+function parseSettingsJSON<T>(filePath: string, text: string): T | undefined {
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    backupCorruptedSettingsFile(filePath, e);
+    return undefined;
+  }
+}
+
+function readSettingsJSONSync<T>(filePath: string): T | undefined {
+  return parseSettingsJSON(filePath, fs.readFileSync(filePath, "utf8"));
+}
+
+async function readSettingsJSON<T>(filePath: string): Promise<T | undefined> {
+  return parseSettingsJSON(filePath, await fs.promises.readFile(filePath, "utf8"));
 }
 
 export async function openAutoSaveDirectory(): Promise<void> {
@@ -87,7 +151,8 @@ export function saveWindowSettings(settings: WindowSettings): void {
 
 export function loadWindowSettings(): WindowSettings {
   try {
-    return normalizeWindowSettings(JSON.parse(fs.readFileSync(windowSettingsPath, "utf8")));
+    const data = readSettingsJSONSync<WindowSettings>(windowSettingsPath);
+    return data !== undefined ? normalizeWindowSettings(data) : defaultWindowSettings();
   } catch (e) {
     getAppLogger().error("failed to read window settings: %s", e);
     return defaultWindowSettings();
@@ -104,7 +169,11 @@ export async function loadUSIEngines(): Promise<USIEngines> {
   if (!(await exists(usiEnginesPath))) {
     return new USIEngines();
   }
-  return new USIEngines(await fs.promises.readFile(usiEnginesPath, "utf8"));
+  const text = await fs.promises.readFile(usiEnginesPath, "utf8");
+  if (parseSettingsJSON(usiEnginesPath, text) === undefined) {
+    return new USIEngines();
+  }
+  return new USIEngines(text);
 }
 
 const appSettingsPath = path.join(userDir, "app_setting.json");
@@ -122,8 +191,8 @@ function getDefaultAppSettings(): AppSettings {
   });
 }
 
-function loadAppSettingsFromMemory(json: string): AppSettings {
-  return normalizeAppSettings(JSON.parse(json), {
+function normalizeAppSettingsWithDefaults(settings: AppSettings): AppSettings {
+  return normalizeAppSettings(settings, {
     returnCode: defaultReturnCode,
     autoSaveDirectory: docDir, // Deprecated
   });
@@ -133,7 +202,8 @@ function loadAppSettingsSync(): AppSettings {
   if (!fs.existsSync(appSettingsPath)) {
     return getDefaultAppSettings();
   }
-  return loadAppSettingsFromMemory(fs.readFileSync(appSettingsPath, "utf8"));
+  const data = readSettingsJSONSync<AppSettings>(appSettingsPath);
+  return data !== undefined ? normalizeAppSettingsWithDefaults(data) : getDefaultAppSettings();
 }
 
 let appSettingsCache: AppSettings;
@@ -149,7 +219,8 @@ export async function loadAppSettings(): Promise<AppSettings> {
   if (!(await exists(appSettingsPath))) {
     return getDefaultAppSettings();
   }
-  return loadAppSettingsFromMemory(await fs.promises.readFile(appSettingsPath, "utf8"));
+  const data = await readSettingsJSON<AppSettings>(appSettingsPath);
+  return data !== undefined ? normalizeAppSettingsWithDefaults(data) : getDefaultAppSettings();
 }
 
 const batchConversionSettingsPath = path.join(rootDir, "batch_conversion_setting.json");
@@ -168,9 +239,10 @@ export async function loadBatchConversionSettings(): Promise<BatchConversionSett
   if (!(await exists(batchConversionSettingsPath))) {
     return defaultBatchConversionSettings();
   }
-  return normalizeBatchConversionSettings(
-    JSON.parse(await fs.promises.readFile(batchConversionSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<BatchConversionSettings>(batchConversionSettingsPath);
+  return data !== undefined
+    ? normalizeBatchConversionSettings(data)
+    : defaultBatchConversionSettings();
 }
 
 const gameSettingsPath = path.join(rootDir, "game_setting.json");
@@ -187,10 +259,8 @@ export async function loadGameSettings(): Promise<GameSettings> {
   if (!(await exists(gameSettingsPath))) {
     return defaultGameSettings(opts);
   }
-  return normalizeGameSettings(
-    JSON.parse(await fs.promises.readFile(gameSettingsPath, "utf8")),
-    opts,
-  );
+  const data = await readSettingsJSON<GameSettings>(gameSettingsPath);
+  return data !== undefined ? normalizeGameSettings(data, opts) : defaultGameSettings(opts);
 }
 
 const csaGameSettingsHistoryPath = path.join(rootDir, "csa_game_setting_history.json");
@@ -215,7 +285,12 @@ export async function loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHisto
   if (!(await exists(csaGameSettingsHistoryPath))) {
     return defaultCSAGameSettingsHistory(opts);
   }
-  const encrypted = JSON.parse(await fs.promises.readFile(csaGameSettingsHistoryPath, "utf8"));
+  const encrypted = await readSettingsJSON<SecureCSAGameSettingsHistory>(
+    csaGameSettingsHistoryPath,
+  );
+  if (encrypted === undefined) {
+    return defaultCSAGameSettingsHistory(opts);
+  }
   return decryptCSAGameSettingsHistory(
     normalizeSecureCSAGameSettingsHistory(encrypted, opts),
     isEncryptionAvailable() ? DecryptString : undefined,
@@ -232,9 +307,8 @@ export async function loadResearchSettings(): Promise<ResearchSettings> {
   if (!(await exists(researchSettingsPath))) {
     return defaultResearchSettings();
   }
-  return normalizeResearchSettings(
-    JSON.parse(await fs.promises.readFile(researchSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<ResearchSettings>(researchSettingsPath);
+  return data !== undefined ? normalizeResearchSettings(data) : defaultResearchSettings();
 }
 
 const analysisSettingsPath = path.join(rootDir, "analysis_setting.json");
@@ -247,9 +321,8 @@ export async function loadAnalysisSettings(): Promise<AnalysisSettings> {
   if (!(await exists(analysisSettingsPath))) {
     return defaultAnalysisSettings();
   }
-  return normalizeAnalysisSettings(
-    JSON.parse(await fs.promises.readFile(analysisSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<AnalysisSettings>(analysisSettingsPath);
+  return data !== undefined ? normalizeAnalysisSettings(data) : defaultAnalysisSettings();
 }
 
 const mateSearchSettingsPath = path.join(rootDir, "mate_search_setting.json");
@@ -262,9 +335,8 @@ export async function loadMateSearchSettings(): Promise<MateSearchSettings> {
   if (!(await exists(mateSearchSettingsPath))) {
     return defaultMateSearchSettings();
   }
-  return normalizeMateSearchSettings(
-    JSON.parse(await fs.promises.readFile(mateSearchSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<MateSearchSettings>(mateSearchSettingsPath);
+  return data !== undefined ? normalizeMateSearchSettings(data) : defaultMateSearchSettings();
 }
 
 const layoutProfileListPath = path.join(userDir, "layouts.json");
@@ -277,14 +349,16 @@ export async function loadLayoutProfileList(): Promise<LayoutProfileList> {
   if (!(await exists(layoutProfileListPath))) {
     return emptyLayoutProfileList();
   }
-  return JSON.parse(await fs.promises.readFile(layoutProfileListPath, "utf8"));
+  const data = await readSettingsJSON<LayoutProfileList>(layoutProfileListPath);
+  return data !== undefined ? data : emptyLayoutProfileList();
 }
 
 export function loadLayoutProfileListSync(): LayoutProfileList {
   if (!fs.existsSync(layoutProfileListPath)) {
     return emptyLayoutProfileList();
   }
-  return JSON.parse(fs.readFileSync(layoutProfileListPath, "utf8"));
+  const data = readSettingsJSONSync<LayoutProfileList>(layoutProfileListPath);
+  return data !== undefined ? data : emptyLayoutProfileList();
 }
 
 const bookImportSettingsPath = path.join(rootDir, "book_import.json");
@@ -297,7 +371,6 @@ export async function loadBookImportSettings(): Promise<BookImportSettings> {
   if (!(await exists(bookImportSettingsPath))) {
     return defaultBookImportSettings();
   }
-  return normalizeBookImportSettings(
-    JSON.parse(await fs.promises.readFile(bookImportSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<BookImportSettings>(bookImportSettingsPath);
+  return data !== undefined ? normalizeBookImportSettings(data) : defaultBookImportSettings();
 }

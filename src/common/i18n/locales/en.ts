@@ -886,4 +886,7 @@ export const en: Texts = {
   heapUsageExceedsNGBMayHang(gb: number): string {
     return `Memory usage has exceeded ${gb} GB. If the upward trend continues, the app may hang.`;
   },
+  settingsFileCorruptedMovedAndReset(path: string, backupPath: string): string {
+    return `The settings file ${path} was corrupted and could not be loaded. The broken file was moved to ${backupPath}, and default settings will be used.`;
+  },
 };

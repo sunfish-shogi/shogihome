@@ -2,6 +2,7 @@ import path from "node:path";
 import fs from "node:fs";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import {
+  CorruptedSettingsFileReport,
   loadAnalysisSettings,
   loadAppSettings,
   loadBatchConversionSettings,
@@ -24,6 +25,7 @@ import {
   saveResearchSettings,
   saveUSIEngines,
   saveWindowSettings,
+  setCorruptedSettingsFileHandler,
 } from "@/background/settings.js";
 import { defaultWindowSettings } from "@/common/settings/window.js";
 import { defaultAppSettings } from "@/common/settings/app.js";
@@ -135,5 +137,65 @@ describe("background/settings", () => {
     expect((await loadMateSearchSettings()).usi).toEqual(testUSIEngine);
     expect((await loadLayoutProfileList()).profiles[0].uri).toBe("test-layout-profile");
     expect((await loadBookImportSettings()).sourceDirectory).toBe("path/to/sourceDirectory");
+  });
+
+  it("corrupted", async () => {
+    const reports: CorruptedSettingsFileReport[] = [];
+    setCorruptedSettingsFileHandler((report) => {
+      reports.push(report);
+    });
+
+    const fileNames = [
+      "window.json",
+      "usi_engine.json",
+      "app_setting.json",
+      "batch_conversion_setting.json",
+      "game_setting.json",
+      "csa_game_setting_history.json",
+      "research_setting.json",
+      "analysis_setting.json",
+      "mate_search_setting.json",
+      "layouts.json",
+      "book_import.json",
+    ];
+    for (const fileName of fileNames) {
+      fs.writeFileSync(path.join(userDir, fileName), "{ broken JSON");
+    }
+
+    expect(loadWindowSettings()).toEqual(defaultWindowSettings());
+    expect((await loadUSIEngines()).engineList).toHaveLength(0);
+    expect(await loadAppSettings()).toEqual(
+      defaultAppSettings({
+        returnCode: process.platform === "win32" ? "\r\n" : "\n",
+        autoSaveDirectory: path.join(getAppPath("documents"), "ShogiHome"),
+      }),
+    );
+    expect(await loadBatchConversionSettings()).toEqual(defaultBatchConversionSettings());
+    expect(await loadGameSettings()).toEqual(
+      defaultGameSettings({
+        autoSaveDirectory: path.join(getAppPath("documents"), "ShogiHome"),
+      }),
+    );
+    expect(await loadCSAGameSettingsHistory()).toEqual(
+      defaultCSAGameSettingsHistory({
+        autoSaveDirectory: path.join(getAppPath("documents"), "ShogiHome"),
+      }),
+    );
+    expect(await loadResearchSettings()).toEqual(defaultResearchSettings());
+    expect(await loadAnalysisSettings()).toEqual(defaultAnalysisSettings());
+    expect(await loadMateSearchSettings()).toEqual(defaultMateSearchSettings());
+    expect(await loadLayoutProfileList()).toEqual(emptyLayoutProfileList());
+    expect(await loadBookImportSettings()).toEqual(defaultBookImportSettings());
+
+    // 破損したファイルはリネームして保管される。
+    for (const fileName of fileNames) {
+      expect(fs.existsSync(path.join(userDir, fileName))).toBeFalsy();
+    }
+    expect(reports).toHaveLength(fileNames.length);
+    for (const report of reports) {
+      expect(path.basename(report.backupPath)).toMatch(/\.corrupted-\d{14}(-\d+)?$/);
+      expect(fs.readFileSync(report.backupPath, "utf8")).toBe("{ broken JSON");
+    }
+    expect(new Set(reports.map((report) => report.filePath)).size).toBe(fileNames.length);
   });
 });

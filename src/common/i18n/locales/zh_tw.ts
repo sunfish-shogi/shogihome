@@ -880,4 +880,7 @@ export const zh_tw: Texts = {
   heapUsageExceedsNGBMayHang(gb: number): string {
     return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
   },
+  settingsFileCorruptedMovedAndReset(path: string, backupPath: string): string {
+    return `設定ファイル ${path} が破損していたため読み込めませんでした。壊れたファイルは ${backupPath} に移動し、既定の設定を使用します。`; // TODO: Translate
+  },
 };
