@@ -31,7 +31,7 @@
     "bench": "npm run install:esbuild && npm run install:electron && vitest bench",
     "coverage": "npm test -- --coverage",
     "test:ui": "npm run install:esbuild && npm run install:electron && vitest --ui --coverage",
-    "lint": "vue-tsc --noEmit -p tsconfig.lint.json && eslint --cache --cache-location node_modules/.cache/eslint/ --fix --max-warnings 0 . && prettier --cache --cache-location node_modules/.cache/prettier/ --write .",
+    "lint": "vue-tsc --noEmit -p tsconfig.lint.json && eslint --cache --cache-location node_modules/.cache/eslint/ --fix --max-warnings 0 . && prettier --cache --cache-location node_modules/.cache/prettier/.prettier-cache --write .",
     "electron:compile": "npm run install:electron && tsc --project ./tsconfig.bg.json && tsc-alias && webpack --config-name preload",
     "electron:compile:serve": "npm run install:electron && tsc --project ./tsconfig.bg.json && tsc-alias && webpack --config-name preload --env dev",
     "electron:compile-all": "npm run compile && npm run electron:compile",
