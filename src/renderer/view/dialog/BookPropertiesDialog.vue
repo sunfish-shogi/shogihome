@@ -15,7 +15,12 @@
           </div>
           <div v-if="info.path" class="property-item">
             <div class="property-label">{{ t.file }}</div>
-            <span class="long-text">{{ info.path }}</span>
+            <div class="property-value">
+              <span class="long-text">{{ info.path }}</span>
+              <button class="copy-button" :title="t.copy" @click="copyText(info.path)">
+                <Icon :icon="IconType.COPY" />
+              </button>
+            </div>
           </div>
           <div v-if="info.entryCount !== undefined" class="property-item">
             <div class="property-label">{{ t.positionCount }}</div>
@@ -26,11 +31,21 @@
           </div>
           <div v-if="info.sbkAuthor" class="property-item">
             <div class="property-label">{{ t.author }}</div>
-            <span class="long-text">{{ info.sbkAuthor }}</span>
+            <div class="property-value">
+              <span class="long-text">{{ info.sbkAuthor }}</span>
+              <button class="copy-button" :title="t.copy" @click="copyText(info.sbkAuthor)">
+                <Icon :icon="IconType.COPY" />
+              </button>
+            </div>
           </div>
           <div v-if="info.sbkDescription" class="property-item">
             <div class="property-label">{{ t.description }}</div>
-            <span class="long-text">{{ info.sbkDescription }}</span>
+            <div class="property-value">
+              <span class="long-text">{{ info.sbkDescription }}</span>
+              <button class="copy-button" :title="t.copy" @click="copyText(info.sbkDescription)">
+                <Icon :icon="IconType.COPY" />
+              </button>
+            </div>
           </div>
         </div>
         <div class="section">
@@ -45,7 +60,16 @@
           </div>
           <div v-if="positionProperties.comment" class="property-item">
             <div class="property-label">{{ t.comments }}</div>
-            <span class="long-text comment">{{ positionProperties.comment }}</span>
+            <div class="property-value">
+              <span class="long-text comment">{{ positionProperties.comment }}</span>
+              <button
+                class="copy-button"
+                :title="t.copy"
+                @click="copyText(positionProperties.comment)"
+              >
+                <Icon :icon="IconType.COPY" />
+              </button>
+            </div>
           </div>
           <table v-if="positionProperties.sbkEvals?.length" class="evals">
             <thead>
@@ -63,7 +87,19 @@
                 <td class="number">{{ evalEntry.evaluationValue }}</td>
                 <td class="number">{{ evalEntry.depth }}/{{ evalEntry.selDepth }}</td>
                 <td class="number">{{ evalEntry.nodes }}</td>
-                <td class="long-text">{{ evalEntry.variation }}</td>
+                <td class="long-text">
+                  <div class="property-value">
+                    <span>{{ evalEntry.variation }}</span>
+                    <button
+                      v-if="evalEntry.variation"
+                      class="copy-button"
+                      :title="t.copy"
+                      @click="copyText(evalEntry.variation)"
+                    >
+                      <Icon :icon="IconType.COPY" />
+                    </button>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -85,8 +121,11 @@ import { BookInfo, defaultBookSession } from "@/common/book";
 import { useStore } from "@/renderer/store";
 import { useBookStore } from "@/renderer/store/book";
 import { useErrorStore } from "@/renderer/store/error";
+import { useMessageStore } from "@/renderer/store/message";
 import api from "@/renderer/ipc/api";
 import DialogFrame from "./DialogFrame.vue";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons";
 
 const store = useStore();
 const bookStore = useBookStore();
@@ -130,6 +169,11 @@ const statsLabel = computed(() => {
   );
 });
 
+const copyText = (text: string) => {
+  navigator.clipboard.writeText(text);
+  useMessageStore().enqueue({ text: t.copiedToClipboard });
+};
+
 const onClose = () => {
   store.closeModalDialog();
 };
@@ -163,6 +207,19 @@ const onClose = () => {
 }
 .long-text {
   word-break: break-all;
+}
+.property-value {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.copy-button {
+  flex-shrink: 0;
+  padding: 2px 4px;
+}
+.copy-button > .icon {
+  height: 1.1em;
+  vertical-align: middle;
 }
 .comment {
   white-space: pre-wrap;
