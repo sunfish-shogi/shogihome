@@ -283,6 +283,7 @@ function createMenuTemplate(window: BrowserWindow) {
     {
       label: t.book,
       submenu: [
+        menuItem(t.bookInfo, MenuEvent.SHOW_BOOK_PROPERTIES, [AppState.NORMAL]),
         menuItem(t.clear, MenuEvent.RESET_BOOK, [AppState.NORMAL]),
         menuItem(t.open, MenuEvent.OPEN_BOOK_FILE, [AppState.NORMAL]),
         menuItem(t.saveAs, MenuEvent.SAVE_BOOK_FILE, [AppState.NORMAL]),
@@ -302,8 +303,6 @@ function createMenuTemplate(window: BrowserWindow) {
           ],
         },
         menuItem(t.addMoves, MenuEvent.ADD_BOOK_MOVES, [AppState.NORMAL]),
-        { type: "separator" },
-        menuItem(t.bookInfo, MenuEvent.SHOW_BOOK_PROPERTIES, [AppState.NORMAL]),
       ],
     },
     {
