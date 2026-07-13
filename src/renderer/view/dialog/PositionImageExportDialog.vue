@@ -34,6 +34,7 @@
               appSettings.pieceStandImageFileURL &&
               fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
             "
+            :hand-piece-order="appSettings.handPieceOrder"
             :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
             :king-piece-type="appSettings.kingPieceType"
             :board-label-type="appSettings.boardLabelType"

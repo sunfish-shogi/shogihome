@@ -250,6 +250,9 @@ export const zh_tw: Texts = {
   boardOpacity: "盤面不透明度",
   pieceStandOpacity: "駒台不透明度",
   recordOpacity: "棋譜不透明度",
+  handPieceOrder: "持ち駒の並び順", // TODO: Translate
+  rookGoldKnightToLeft: "飛・金・桂を左に", // TODO: Translate
+  rookGoldKnightToRight: "飛・金・桂を右に", // TODO: Translate
   promotionSelector: "成變、不成對話框顯示",
   centeredHorizontal: "水平置中",
   promoteFirstVertical: "垂直（成變優先）",

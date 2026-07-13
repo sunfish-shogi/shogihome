@@ -7,6 +7,7 @@ import {
   BranchListMode,
   ClockSoundTarget,
   EvaluationViewFrom,
+  HandPieceOrder,
   KingPieceType,
   LeftSideControlType,
   NodeCountFormat,
@@ -86,6 +87,9 @@ class AppSettingsStore {
   }
   get pieceStandImage(): PieceStandImageType {
     return this.merged.pieceStandImage;
+  }
+  get handPieceOrder(): HandPieceOrder {
+    return this.merged.handPieceOrder;
   }
   get promotionSelectorStyle(): PromotionSelectorStyle {
     return this.merged.promotionSelectorStyle;

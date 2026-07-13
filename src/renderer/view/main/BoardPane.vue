@@ -14,6 +14,7 @@
         fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
       "
       :piece-stand-image-opacity="appSettings.enableTransparent ? appSettings.pieceStandOpacity : 1"
+      :hand-piece-order="appSettings.handPieceOrder"
       :promotion-selector-style="appSettings.promotionSelectorStyle"
       :board-label-type="appSettings.boardLabelType"
       :piece-image-url-template="getPieceImageURLTemplate(appSettings)"

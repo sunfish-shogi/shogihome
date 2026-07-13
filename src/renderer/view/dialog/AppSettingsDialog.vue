@@ -208,6 +208,18 @@
           @select="(url: string) => (update.pieceStandImageFileURL = url)"
         />
       </div>
+      <!-- 持ち駒の並び順 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.handPieceOrder }}</div>
+        <HorizontalSelector
+          v-model:value="update.handPieceOrder"
+          class="selector"
+          :items="[
+            { label: t.rookGoldKnightToLeft, value: HandPieceOrder.STRONGER_TO_LEFT },
+            { label: t.rookGoldKnightToRight, value: HandPieceOrder.STRONGER_TO_RIGHT },
+          ]"
+        />
+      </div>
       <!-- 透過表示 -->
       <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.transparent }}</div>
@@ -819,6 +831,7 @@ import {
   PieceStandImageType,
   BoardLabelType,
   BranchListMode,
+  HandPieceOrder,
   LeftSideControlType,
   PromotionSelectorStyle,
   RightSideControlType,
@@ -889,6 +902,7 @@ const update = ref({
   boardGridColor: org.boardGridColor,
   pieceStandImage: org.pieceStandImage,
   pieceStandImageFileURL: org.pieceStandImageFileURL,
+  handPieceOrder: org.handPieceOrder,
   enableTransparent: org.enableTransparent,
   boardOpacity: Math.round(org.boardOpacity * 100),
   pieceStandOpacity: Math.round(org.pieceStandOpacity * 100),
