@@ -415,6 +415,9 @@ const bridge: Bridge = {
   async getVersionStatus(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
+  async checkUpdates(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
   getPathForFile() {
     throw new Error("This feature is not available on command line tool");
   },

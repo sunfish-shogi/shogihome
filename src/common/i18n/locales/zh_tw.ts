@@ -102,6 +102,7 @@ export const zh_tw: Texts = {
   openUserGuide: "使用教學",
   openLatestReleasePage: "前往最新版發布頁面",
   openStableReleasePage: "前往安定版發布頁面",
+  checkForUpdates: "アップデートを確認", // TODO: Translate
   license: "授權條款",
   inputs: "輸入目錄",
   outputs: "輸出目錄",
@@ -728,6 +729,7 @@ export const zh_tw: Texts = {
   failedToSendStopCommand: "無法送出stop指令。",
   failedToShutdownEngines: "引擎無法正常結束。",
   failedToCheckUpdates: "無法確認更新。",
+  youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
   failedToSaveRecord: "棋譜保存失敗。",
   failedToParseSFEN: "SFEN讀取失敗。",
   failedToDetectRecordFormat: "無法判別棋譜形式。",

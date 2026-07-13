@@ -1,4 +1,4 @@
-import { checkUpdates } from "@/background/version.js";
+import { checkUpdates, checkUpdatesManually } from "@/background/version.js";
 import http from "node:http";
 import path from "node:path";
 import fs from "node:fs";
@@ -387,6 +387,101 @@ describe("version", () => {
     expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
     expect(server.accessCount).toBe(1);
     expect(server.invalidCount).toBe(0);
+  });
+
+  it("corrupted_status_file", async () => {
+    reset({
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+    });
+    // 破損した version.json は無視され、チェック後に上書きされる。
+    fs.writeFileSync(statusFilePath, "{ broken json");
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.1");
+    const notify = vi.fn();
+    await checkUpdates(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("安定版 v1.0.4 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/stable");
+    expect(server.accessCount).toBe(1);
+    expect(server.invalidCount).toBe(0);
+    const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.0.4");
+    expect(status.knownReleases?.latest.version).toBe("1.1.1");
+    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.updatedMs).toBe(time25HoursAfter);
+  });
+
+  it("manual/known_update", async () => {
+    // 自動チェックでは通知済みのバージョンでも、手動チェックでは再度通知する。
+    // また、前回のダウンロードからの経過時間に関係なくダウンロードする。
+    reset({
+      knownStable: "1.0.4",
+      knownLatest: "1.1.1",
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time23HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.1");
+    const notify = vi.fn();
+    await checkUpdatesManually(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("安定版 v1.0.4 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/stable");
+    expect(server.accessCount).toBe(1);
+    expect(server.invalidCount).toBe(0);
+    const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.0.4");
+    expect(status.knownReleases?.latest.version).toBe("1.1.1");
+    expect(status.knownReleases?.downloadedMs).toBe(time23HoursAfter);
+    expect(status.updatedMs).toBe(time23HoursAfter);
+  });
+
+  it("manual/no_updates", async () => {
+    reset({
+      knownStable: "1.0.4",
+      knownLatest: "1.1.1",
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.1.1");
+    const notify = vi.fn();
+    await checkUpdatesManually(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("最新のバージョンを使用しています。");
+    expect(notify.mock.calls[0][1]).toBeUndefined();
+    expect(server.accessCount).toBe(1);
+    expect(server.invalidCount).toBe(0);
+  });
+
+  it("manual/corrupted_status_file", async () => {
+    reset({
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+    });
+    fs.writeFileSync(statusFilePath, "{ broken json");
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.1.1");
+    const notify = vi.fn();
+    await checkUpdatesManually(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("最新のバージョンを使用しています。");
+    expect(server.accessCount).toBe(1);
+    expect(server.invalidCount).toBe(0);
+    const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.0.4");
+    expect(status.knownReleases?.latest.version).toBe("1.1.1");
+    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
   it("fallback", async () => {

@@ -747,6 +747,9 @@
         <div class="form-item-label-wide">{{ t.stable }}</div>
         {{ versionStatus.knownReleases?.stable.version ?? t.unknown }}
       </div>
+      <div v-if="isNative()" class="form-item">
+        <button class="thin" @click="checkForUpdates">{{ t.checkForUpdates }}</button>
+      </div>
     </div>
     <!-- 開発者向け -->
     <div
@@ -995,6 +998,18 @@ const saveAndClose = async () => {
   try {
     await useAppSettings().updateAppSettings(reverseFormat(update.value));
     store.closeAppSettingsDialog();
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
+const checkForUpdates = async () => {
+  busyState.retain();
+  try {
+    await api.checkUpdates();
+    versionStatus.value = await api.getVersionStatus();
   } catch (e) {
     useErrorStore().add(e);
   } finally {
