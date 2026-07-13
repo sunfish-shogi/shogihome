@@ -50,7 +50,7 @@
     <div v-else-if="showBranches" class="row branch-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
-      <div class="auto column regular-interval branch-list-main">
+      <div class="auto column branch-list-main">
         <div ref="branchList" class="auto full branch-list">
           <div
             v-for="(branch, index) in branches"
@@ -380,6 +380,7 @@ onUpdated(() => {
   overflow-y: auto;
 }
 .branch-list {
+  min-height: 0;
   color: var(--text-color);
 }
 .branch-bottom-control {
