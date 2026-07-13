@@ -3,6 +3,7 @@ import { getPieceImageAssetName, pieceAssetTypes } from "@/common/assets/pieces.
 import {
   BoardImageType,
   BoardLabelType,
+  HandPieceOrder,
   KingPieceType,
   PieceStandImageType,
   PromotionSelectorStyle,
@@ -19,6 +20,7 @@ type PieceImages = {
 export type Config = {
   boardImageType: BoardImageType;
   pieceStandImageType: PieceStandImageType;
+  handPieceOrder: HandPieceOrder;
   kingPieceType: KingPieceType;
   pieceImages: PieceImages;
   boardGridColor: string;
@@ -38,6 +40,7 @@ export function newConfig(params: {
   customBoardImageURL?: string;
   pieceStandImageType: PieceStandImageType;
   customPieceStandImageURL?: string;
+  handPieceOrder?: HandPieceOrder;
   pieceImageURLTemplate: string;
   kingPieceType: KingPieceType;
   boardImageOpacity: number;
@@ -51,6 +54,7 @@ export function newConfig(params: {
   const config = {
     boardImageType: params.boardImageType,
     pieceStandImageType: params.pieceStandImageType,
+    handPieceOrder: params.handPieceOrder ?? HandPieceOrder.STRONGER_TO_LEFT,
     kingPieceType: params.kingPieceType,
     pieceImages: getPieceTextureMap(params.pieceImageURLTemplate, params.kingPieceType),
     boardGridColor: getBoardGridColor(params.boardImageType),

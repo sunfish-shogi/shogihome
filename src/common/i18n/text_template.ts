@@ -238,6 +238,9 @@ export type Texts = {
   boardOpacity: string;
   pieceStandOpacity: string;
   recordOpacity: string;
+  handPieceOrder: string;
+  rookGoldKnightToLeft: string;
+  rookGoldKnightToRight: string;
   promotionSelector: string;
   centeredHorizontal: string;
   promoteFirstVertical: string;

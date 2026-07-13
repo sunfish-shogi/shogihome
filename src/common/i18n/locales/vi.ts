@@ -253,6 +253,9 @@ export const vi: Texts = {
   boardOpacity: "Độ đục bàn cờ",
   pieceStandOpacity: "Độ đục komadai",
   recordOpacity: "Độ đục kỳ phổ",
+  handPieceOrder: "持ち駒の並び順", // TODO: Translate
+  rookGoldKnightToLeft: "飛・金・桂を左に", // TODO: Translate
+  rookGoldKnightToRight: "飛・金・桂を右に", // TODO: Translate
   promotionSelector: "Chọn phong cấp",
   centeredHorizontal: "Ngang, căn giữa",
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",

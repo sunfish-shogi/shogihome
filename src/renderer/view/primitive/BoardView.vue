@@ -226,6 +226,7 @@ import { computed, reactive, ref, watch, onMounted, onUnmounted, PropType } from
 import {
   BoardImageType,
   BoardLabelType,
+  HandPieceOrder,
   KingPieceType,
   PieceStandImageType,
   PromotionSelectorStyle,
@@ -308,6 +309,11 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 1.0,
+  },
+  handPieceOrder: {
+    type: String as PropType<HandPieceOrder>,
+    required: false,
+    default: HandPieceOrder.STRONGER_TO_LEFT,
   },
   promotionSelectorStyle: {
     type: String as PropType<PromotionSelectorStyle>,
@@ -877,6 +883,7 @@ const config = computed(() => {
     kingPieceType: props.kingPieceType,
     boardImageOpacity: props.boardImageOpacity,
     pieceStandImageOpacity: props.pieceStandImageOpacity,
+    handPieceOrder: props.handPieceOrder,
     promotionSelectorStyle: props.promotionSelectorStyle,
     boardLabelType: props.boardLabelType,
     upperSizeLimit: props.maxSize,
