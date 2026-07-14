@@ -4,12 +4,82 @@ permissions:
   contents: write
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "Release type (see specs/release-workflow.md)"
+        required: true
+        type: choice
+        options:
+          - minor # x.y.z -> x.(y+1).0
+          - patch # x.y.z -> x.y.(z+1)
+          - major # x.y.z -> (x+1).0.0
+          - preminor-alpha # x.y.z -> x.(y+1).0-alpha.0
+          - preminor-beta # x.y.z -> x.(y+1).0-beta.0
+          - prerelease # x.y.z-alpha.n -> x.y.z-alpha.(n+1)
+          - prerelease-beta # x.y.z-alpha.n -> x.y.z-beta.0
+          - finalize # x.y.z-pre.n -> x.y.z
+      dry_run:
+        description: "Validate and bump without pushing (no tag/branch push, no build)"
+        type: boolean
+        default: false
 
 jobs:
+  # Phase 1: run the quality gate and a build (compile) check, then create the
+  # release commit and tag. Nothing is pushed until every check above passes.
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-node@v6.4.0
+        with:
+          # Do not use Node.js v24.16.0 or later
+          # See: https://github.com/electron/electron/issues/51619
+          node-version: v24.15.0
+          cache: "npm"
+      - run: npm install -g npm@latest
+      - run: npm version
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Quality gate (mirrors test.yml)
+      - name: Verify package-lock.json integrity
+        run: node scripts/verify-lockfile.mjs
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run docs
+      - run: git diff --exit-code
+      - run: npm run license
+      - run: npm run coverage
+
+      # Build gate: compile web + electron main/preload/background.
+      - run: npm run electron:pack
+
+      # Bump the version, update the website assets (final versions only),
+      # and create the release commit and tag locally.
+      - name: Prepare release
+        id: release
+        run: npm run release:ci -- ${{ inputs.release_type }}
+
+      # Push the branch and tag only after the gate and build succeeded.
+      - name: Push branch and tag
+        if: ${{ !inputs.dry_run }}
+        run: |
+          git push origin HEAD:${{ github.ref_name }}
+          git push origin "${{ steps.release.outputs.tag }}"
+
+  # Phase 2: build platform installers from the pushed tag.
   build:
+    needs: prepare
+    if: ${{ !inputs.dry_run }}
     strategy:
       matrix:
         include:
@@ -30,6 +100,8 @@ jobs:
       - run: git config --global core.autocrlf false
         if: matrix.os == 'windows'
       - uses: actions/checkout@v7.0.0
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
       - uses: actions/setup-node@v6.4.0
         with:
           node-version: lts/*
@@ -41,16 +113,21 @@ jobs:
         if: matrix.variant != 'portable'
       - run: npm run electron:portable
         if: matrix.variant == 'portable'
-      - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ github.ref_name }} ${{ matrix.variant }}
+      - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ needs.prepare.outputs.tag }} ${{ matrix.variant }}
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.os }}${{ matrix.variant == 'portable' && '-portable' || '' }}-release
           path: dist/release-*.zip
+
+  # Phase 3: gather the installers into a draft GitHub Release.
   release:
-    needs: build
+    needs: [prepare, build]
+    if: ${{ !inputs.dry_run }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.0
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
       - uses: actions/download-artifact@v8
         with:
           path: dist
@@ -63,4 +140,4 @@ jobs:
             dist/release-*.zip
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ github.ref_name }}
+          TAG_NAME: ${{ needs.prepare.outputs.tag }}

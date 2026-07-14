@@ -1,0 +1,89 @@
+# Release Workflow
+
+ShogiHome releases are driven entirely by the `Release`
+GitHub Actions workflow (`.github/workflows/release.yml`). A maintainer no
+longer runs `npm run release:*` locally to create the release commit and tag;
+instead the workflow runs the quality gate and a build check first, and only
+then pushes the branch and tag.
+
+## Triggering a release
+
+Run the **Release** workflow from the Actions tab
+(`workflow_dispatch`) on the branch you want to release from (usually `main`,
+or a `support-*` branch). Two inputs are available:
+
+- `release_type` — the kind of version bump (see the table below).
+- `dry_run` — when `true`, the workflow runs the quality gate, the build check
+  and the version bump, but does **not** push anything and does **not** build
+  installers. Use it to validate a release candidate.
+
+## Release types
+
+`release_type` maps to `npm version` arguments. Whether the new version is a
+pre-release is detected from `package.json` afterwards, and the website assets
+(`docs/release.json`, the generated docs HTML, and the webapp bundle) are only
+updated for final (non-pre-release) versions. Pre-releases publish a tag only,
+matching the previous local behavior of `release:alpha` / `release:beta` /
+`release:pre`.
+
+| `release_type`    | Example                           | `npm version`             | Website update |
+| ----------------- | --------------------------------- | ------------------------- | -------------- |
+| `minor`           | `1.1.0` → `1.2.0`                 | `minor`                   | yes            |
+| `patch`           | `1.1.0` → `1.1.1`                 | `patch`                   | yes            |
+| `major`           | `1.1.0` → `2.0.0`                 | `major`                   | yes            |
+| `preminor-alpha`  | `1.1.0` → `1.2.0-alpha.0`         | `preminor --preid alpha`  | no (tag only)  |
+| `preminor-beta`   | `1.1.0` → `1.2.0-beta.0`          | `preminor --preid beta`   | no (tag only)  |
+| `prerelease`      | `1.1.0-alpha.0` → `1.1.0-alpha.1` | `prerelease`              | no (tag only)  |
+| `prerelease-beta` | `1.1.0-alpha.0` → `1.1.0-beta.0`  | `prerelease --preid beta` | no (tag only)  |
+| `finalize`        | `1.1.0-alpha.0` → `1.1.0`         | `patch`                   | yes            |
+
+The mapping lives in `scripts/ci-release.ts`
+(`releaseTypeToVersionArgs`).
+
+## Workflow phases
+
+The workflow runs three jobs in sequence:
+
+1. **prepare** (`ubuntu-latest`)
+   1. Quality gate mirroring `test.yml`: `verify-lockfile`, `npm ci`, `lint`,
+      `docs` + `git diff --exit-code`, `license`, `coverage`.
+   2. Build gate: `npm run electron:pack` (compiles web + electron
+      main/preload/background).
+   3. `npm run release:ci -- <release_type>` — runs `scripts/ci-release.ts`,
+      which commits the license report, runs `npm version` (creating the bump
+      commit and the `v<version>` tag), and for final versions runs
+      `publish-release`, `docs`, and `release` to update the website assets and
+      create the `release` commit.
+   4. Unless `dry_run`, pushes the current branch and the new tag. **Nothing is
+      pushed before this point**, so a failing test or build aborts the release
+      with no tag created.
+
+2. **build** (matrix: win/mac/linux installers + win portable) — checks out the
+   pushed tag and produces the platform installers as artifacts. Same as before.
+
+3. **release** — downloads the artifacts and creates a **draft** GitHub Release
+   for the tag. Same as before.
+
+`build` and `release` are skipped on `dry_run`.
+
+## Why one workflow instead of a tag-push trigger
+
+A tag pushed with the default `GITHUB_TOKEN` does **not** trigger other
+workflows (GitHub's protection against recursive Actions runs). Keeping the
+installer build in a separate `on: push: tags` workflow would therefore never
+fire for CI-created tags. Consolidating everything into a single
+`workflow_dispatch` run with job dependencies (`needs`) avoids this and keeps
+the whole release in one place.
+
+## Prerequisites / notes
+
+- The `prepare` job pushes directly to the release branch. Branch protection
+  rules must allow the `github-actions[bot]` (via the `contents: write`
+  permission) to push to that branch, or the push step will fail.
+- The tag points at the `npm version` bump commit; the `release` commit (webapp
+  bundle + `release.json`) sits on top on the branch. Installer builds check out
+  the tag, which carries the correct `package.json` version — this matches the
+  previous behavior.
+- The local `npm run release:*` scripts are retained for manual/offline use.
+  `scripts/publish-release.ts` now also accepts `--yes` and
+  `--platforms=all|win,mac,linux` for non-interactive runs.
