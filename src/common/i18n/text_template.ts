@@ -181,6 +181,11 @@ export type Texts = {
   analysis: string;
   analyze: string;
   stopAnalysis: string;
+  batchAnalysis: string;
+  currentRecord: string;
+  skipAnalyzed: string;
+  analysisCompleted: string;
+  noRecordFileFound: string;
   searchDuplicatePositions: string;
   duplicatePositionSearch: string;
   duplicatePositions: string;

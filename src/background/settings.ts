@@ -22,6 +22,11 @@ import {
   defaultAnalysisSettings,
   normalizeAnalysisSettings,
 } from "@/common/settings/analysis.js";
+import {
+  BatchAnalysisSettings,
+  defaultBatchAnalysisSettings,
+  normalizeBatchAnalysisSettings,
+} from "@/common/settings/batch_analysis.js";
 import { getAppLogger } from "@/background/log.js";
 import {
   CSAGameSettingsHistory as CSAGameSettingsHistory,
@@ -323,6 +328,21 @@ export async function loadAnalysisSettings(): Promise<AnalysisSettings> {
   }
   const data = await readSettingsJSON<AnalysisSettings>(analysisSettingsPath);
   return data !== undefined ? normalizeAnalysisSettings(data) : defaultAnalysisSettings();
+}
+
+const batchAnalysisSettingsPath = path.join(rootDir, "batch_analysis_setting.json");
+
+export async function saveBatchAnalysisSettings(settings: BatchAnalysisSettings): Promise<void> {
+  await writeFileAtomic(batchAnalysisSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+}
+
+export async function loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings> {
+  if (!(await exists(batchAnalysisSettingsPath))) {
+    return defaultBatchAnalysisSettings();
+  }
+  return normalizeBatchAnalysisSettings(
+    JSON.parse(await fs.promises.readFile(batchAnalysisSettingsPath, "utf8")),
+  );
 }
 
 const mateSearchSettingsPath = path.join(rootDir, "mate_search_setting.json");

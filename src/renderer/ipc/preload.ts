@@ -71,6 +71,12 @@ const api: Bridge = {
   async saveAnalysisSettings(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_ANALYSIS_SETTINGS, json);
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_BATCH_ANALYSIS_SETTINGS);
+  },
+  async saveBatchAnalysisSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_BATCH_ANALYSIS_SETTINGS, json);
+  },
   async loadGameSettings(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_GAME_SETTINGS);
   },
@@ -126,6 +132,9 @@ const api: Bridge = {
   },
   async convertRecordFiles(json: string): Promise<string> {
     return await ipcRenderer.invoke(Background.CONVERT_RECORD_FILES, json);
+  },
+  async listRecordFiles(json: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.LIST_RECORD_FILES, json);
   },
   async showSelectSFENDialog(lastPath: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SELECT_SFEN_DIALOG, lastPath);

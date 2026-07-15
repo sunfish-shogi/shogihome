@@ -44,6 +44,12 @@ import { AppState, ResearchState } from "@/common/control/state.js";
 import { useMessageStore } from "./message.js";
 import { AnalysisManager } from "./analysis.js";
 import { AnalysisSettings } from "@/common/settings/analysis.js";
+import {
+  BatchAnalysisManager,
+  BatchAnalysisProgress,
+  BatchAnalysisResult,
+} from "./batch_analysis.js";
+import { BatchAnalysisSettings } from "@/common/settings/batch_analysis.js";
 import { MateSearchSettings } from "@/common/settings/mate.js";
 import { LogLevel } from "@/common/log.js";
 import { CSAGameSettings, appendCSAGameSettingsHistory } from "@/common/settings/csa.js";
@@ -74,6 +80,8 @@ type CandidateMove = {
   move: Move;
   score?: number; // 手番側視点の数値スコア（showArrowScore が有効な場合のみ設定）
 };
+
+export type AnalysisDialogTarget = "record" | "batch";
 
 export type PVPreview = {
   position: ImmutablePosition;
@@ -161,6 +169,12 @@ class Store {
   private _gameSettings: GameSettings = defaultGameSettings();
   private csaGameManager = new CSAGameManager(this.recordManager, this.blackClock, this.whiteClock);
   private analysisManager = new AnalysisManager(this.recordManager);
+  // reactive(this) の後に、reactive proxy 経由の recordManager を渡して構築する。
+  // これにより、連続解析のファイル間遷移が生の this に束縛されたコールバック経由で進んでも、
+  // this.recordManager が reactive proxy のままなので棋譜の置換・移動が Vue に伝わる。
+  private batchAnalysisManager!: BatchAnalysisManager;
+  private _batchAnalysisProgress?: BatchAnalysisProgress;
+  private _analysisDialogTarget: AnalysisDialogTarget = "record";
   private mateSearchManager = new MateSearchManager();
   private _researchState = ResearchState.IDLE;
   private researchManager = new ResearchManager();
@@ -173,6 +187,12 @@ class Store {
   constructor() {
     const refs = reactive(this);
     this._reactive = refs;
+    // 連続解析では reactive proxy 経由の recordManager を渡す。詳細はフィールド定義のコメント参照。
+    // reactive() は生オブジェクトをキーにプロキシをキャッシュするため、これはストアが公開する
+    // reactive proxy と同一のインスタンスになる。
+    this.batchAnalysisManager = new BatchAnalysisManager(
+      reactive(this.recordManager) as RecordManager,
+    );
     this.recordManager
       .on("changePosition", () => {
         this.onChangePositionHandlers.forEach((handler) => handler());
@@ -236,6 +256,12 @@ class Store {
     this.analysisManager.on("finish", this.onFinish.bind(refs)).on("error", (e) => {
       useErrorStore().add(e);
     });
+    this.batchAnalysisManager
+      .on("finish", this.onBatchAnalysisFinish.bind(refs))
+      .on("progress", this.onBatchAnalysisProgress.bind(refs))
+      .on("error", (e) => {
+        useErrorStore().add(e);
+      });
     this.mateSearchManager
       .on("checkmate", this.onCheckmate.bind(refs))
       .on("notImplemented", this.onNotImplemented.bind(refs))
@@ -388,10 +414,15 @@ class Store {
     }
   }
 
-  showAnalysisDialog(): void {
+  showAnalysisDialog(target?: AnalysisDialogTarget): void {
     if (this.appState === AppState.NORMAL) {
+      this._analysisDialogTarget = target || "record";
       this._appState = AppState.ANALYSIS_DIALOG;
     }
+  }
+
+  get analysisDialogTarget(): AnalysisDialogTarget {
+    return this._analysisDialogTarget;
   }
 
   showMateSearchDialog(): void {
@@ -1011,6 +1042,67 @@ class Store {
       return;
     }
     this.analysisManager.close();
+    this._appState = AppState.NORMAL;
+  }
+
+  startBatchAnalysis(
+    batchAnalysisSettings: BatchAnalysisSettings,
+    analysisSettings: AnalysisSettings,
+  ): void {
+    if (this.appState !== AppState.ANALYSIS_DIALOG || useBusyState().isBusy) {
+      return;
+    }
+    useBusyState().retain();
+    Promise.all([
+      api.saveBatchAnalysisSettings(batchAnalysisSettings),
+      api.saveAnalysisSettings(analysisSettings),
+    ])
+      .then(() => this.batchAnalysisManager.start(batchAnalysisSettings, analysisSettings))
+      .then(() => {
+        this._batchAnalysisProgress = undefined;
+        this._appState = AppState.BATCH_ANALYSIS;
+      })
+      .catch((e) => {
+        useErrorStore().add("連続棋譜解析の初期化中にエラーが出ました: " + e); // TODO: i18n
+      })
+      .finally(() => {
+        useBusyState().release();
+      });
+  }
+
+  stopBatchAnalysis(): void {
+    if (this.appState !== AppState.BATCH_ANALYSIS) {
+      return;
+    }
+    this.batchAnalysisManager.stop();
+  }
+
+  get batchAnalysisProgress(): BatchAnalysisProgress | undefined {
+    return this._batchAnalysisProgress;
+  }
+
+  private onBatchAnalysisProgress(progress: BatchAnalysisProgress): void {
+    this._batchAnalysisProgress = progress;
+  }
+
+  private onBatchAnalysisFinish(result: BatchAnalysisResult): void {
+    if (this.appState !== AppState.BATCH_ANALYSIS) {
+      return;
+    }
+    useMessageStore().enqueue({
+      text: t.analysisCompleted,
+      attachments: [
+        {
+          type: "list",
+          items: [
+            { text: `${t.success}: ${t.totalNumber(result.successTotal)}` },
+            { text: `${t.failed}: ${t.totalNumber(result.failedTotal)}` },
+            { text: `${t.skipped}: ${t.totalNumber(result.skippedTotal)}` },
+          ],
+        },
+      ],
+    });
+    this._batchAnalysisProgress = undefined;
     this._appState = AppState.NORMAL;
   }
 

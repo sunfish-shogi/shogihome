@@ -48,6 +48,7 @@ import {
 type replaceRecordOption = {
   path?: string;
   markAsSaved?: boolean;
+  skipHistory?: boolean;
 };
 
 export type ImportRecordOption = {
@@ -132,13 +133,13 @@ export class RecordManager {
     return this._positionCounts;
   }
 
-  private updateRecordFilePath(recordFilePath: string | undefined): void {
+  private updateRecordFilePath(recordFilePath: string | undefined, skipHistory?: boolean): void {
     this._unsaved = false;
     if (recordFilePath === this._recordFilePath) {
       return;
     }
     this._recordFilePath = recordFilePath;
-    if (recordFilePath) {
+    if (recordFilePath && !skipHistory) {
       api.addRecordFileHistory(recordFilePath);
     }
   }
@@ -173,7 +174,7 @@ export class RecordManager {
     this._record = record;
     this.resetPositionCounts();
     this.bindRecordHandlers();
-    this.updateRecordFilePath(option?.path);
+    this.updateRecordFilePath(option?.path, option?.skipHistory);
     this._unsaved = !option?.markAsSaved;
     this._sourceURL = undefined;
     restoreCustomData(this._record);
@@ -266,7 +267,7 @@ export class RecordManager {
   importRecordFromBuffer(
     data: Uint8Array,
     path: string,
-    option?: { autoDetect?: boolean },
+    option?: { autoDetect?: boolean; skipHistory?: boolean },
   ): Error | undefined {
     const format = detectRecordFileFormatByPath(path);
     if (!format) {
@@ -276,7 +277,11 @@ export class RecordManager {
     if (recordOrError instanceof Error) {
       return localizeError(recordOrError);
     }
-    this.replaceRecord(recordOrError, { path, markAsSaved: true });
+    this.replaceRecord(recordOrError, {
+      path,
+      markAsSaved: true,
+      skipHistory: option?.skipHistory,
+    });
     return;
   }
 
@@ -302,13 +307,16 @@ export class RecordManager {
     }
   }
 
-  exportRecordAsBuffer(path: string, opt: ExportOptions): ExportResult | Error {
+  exportRecordAsBuffer(
+    path: string,
+    opt: ExportOptions & { skipHistory?: boolean },
+  ): ExportResult | Error {
     const format = detectRecordFileFormatByPath(path);
     if (!format) {
       return new Error(`${t.unknownFileExtension}: ${path}`);
     }
     const result = exportRecordAsBuffer(this._record, format, opt);
-    this.updateRecordFilePath(path);
+    this.updateRecordFilePath(path, opt.skipHistory);
     return result;
   }
 

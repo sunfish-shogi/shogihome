@@ -28,6 +28,17 @@ import {
 } from "tsshogi";
 import { resolveConflictFilePath } from "./filename.js";
 
+export async function listRecordFiles(
+  directory: string,
+  formats: RecordFileFormat[],
+  subdirectories: boolean,
+): Promise<string[]> {
+  return (await listFiles(directory, subdirectories ? Infinity : 0)).filter((file) => {
+    const ext = path.extname(file).toLowerCase();
+    return formats.includes(ext as RecordFileFormat);
+  });
+}
+
 export async function convertRecordFiles(
   settings: BatchConversionSettings,
   onProgress?: (progress: number) => void,
@@ -55,12 +66,11 @@ async function convertFromDirectory(
     skippedTotal: 0,
   };
 
-  const sourceFiles = (
-    await listFiles(settings.source, settings.subdirectories ? Infinity : 0)
-  ).filter((file) => {
-    const ext = path.extname(file).toLowerCase();
-    return settings.sourceFormats.includes(ext as RecordFileFormat);
-  });
+  const sourceFiles = await listRecordFiles(
+    settings.source,
+    settings.sourceFormats,
+    settings.subdirectories,
+  );
 
   const writer =
     settings.destinationType === DestinationType.DIRECTORY

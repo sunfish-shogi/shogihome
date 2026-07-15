@@ -18,7 +18,8 @@ import { MateSearchSettings } from "@/common/settings/mate.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import { BatchConversionResult } from "@/common/file/conversion.js";
 import { RecordFileHistory } from "@/common/file/history.js";
-import { RecordFileFormat } from "@/common/file/record.js";
+import { ListRecordFilesRequest, RecordFileFormat } from "@/common/file/record.js";
+import { BatchAnalysisSettings } from "@/common/settings/batch_analysis.js";
 import { VersionStatus } from "@/common/version.js";
 import { MachineSpec, SessionStates } from "@/common/advanced/monitor.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -56,6 +57,8 @@ export interface API {
   saveResearchSettings(settings: ResearchSettings): Promise<void>;
   loadAnalysisSettings(): Promise<AnalysisSettings>;
   saveAnalysisSettings(settings: AnalysisSettings): Promise<void>;
+  loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings>;
+  saveBatchAnalysisSettings(settings: BatchAnalysisSettings): Promise<void>;
   loadGameSettings(): Promise<GameSettings>;
   saveGameSettings(settings: GameSettings): Promise<void>;
   loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHistory>;
@@ -80,6 +83,7 @@ export interface API {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
   convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult>;
+  listRecordFiles(request: ListRecordFilesRequest): Promise<string[]>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;
 
@@ -213,6 +217,12 @@ const api: API = {
   saveAnalysisSettings(settings: AnalysisSettings): Promise<void> {
     return bridge.saveAnalysisSettings(JSON.stringify(settings));
   },
+  async loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings> {
+    return JSON.parse(await bridge.loadBatchAnalysisSettings());
+  },
+  saveBatchAnalysisSettings(settings: BatchAnalysisSettings): Promise<void> {
+    return bridge.saveBatchAnalysisSettings(JSON.stringify(settings));
+  },
   async loadGameSettings(): Promise<GameSettings> {
     return JSON.parse(await bridge.loadGameSettings());
   },
@@ -250,6 +260,9 @@ const api: API = {
   // Record File
   async convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult> {
     return JSON.parse(await bridge.convertRecordFiles(JSON.stringify(settings)));
+  },
+  async listRecordFiles(request: ListRecordFilesRequest): Promise<string[]> {
+    return JSON.parse(await bridge.listRecordFiles(JSON.stringify(request)));
   },
 
   // Book

@@ -103,6 +103,12 @@ const bridge: Bridge = {
   async saveMateSearchSettings(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveBatchAnalysisSettings(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async loadUSIEngines(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
@@ -154,6 +160,9 @@ const bridge: Bridge = {
     throw new Error("This feature is not available on command line tool");
   },
   async convertRecordFiles(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async listRecordFiles(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
   async showSelectSFENDialog(): Promise<string> {

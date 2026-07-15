@@ -26,7 +26,14 @@ export class AnalysisManager {
     /* noop */
   };
 
-  constructor(private recordManager: RecordManager) {}
+  constructor(
+    private recordManager: RecordManager,
+    private option?: {
+      // 有効にすると解析終了時にエンジンを終了せず、次の start() で再利用する。
+      // エンジンの終了は呼び出し元が close() で行う。
+      keepEngine?: boolean;
+    },
+  ) {}
 
   on(event: "finish", handler: FinishCallback): this;
   on(event: "error", handler: ErrorCallback): this;
@@ -46,7 +53,11 @@ export class AnalysisManager {
     if (!settings.usi) {
       throw new Error("エンジンが設定されていません。");
     }
-    await this.setupEngine(settings.usi as USIEngine);
+    if (this.option?.keepEngine && this.researcher) {
+      await this.researcher.readyNewGame();
+    } else {
+      await this.setupEngine(settings.usi as USIEngine);
+    }
     this.settings = settings;
     this.lastSearchInfo = undefined;
     this.searchInfo = undefined;
@@ -175,8 +186,11 @@ export class AnalysisManager {
   }
 
   private finish(): void {
+    this.clearTimer();
     this.onFinish();
-    this.close();
+    if (!this.option?.keepEngine) {
+      this.close();
+    }
   }
 
   private setTimer(): void {

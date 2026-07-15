@@ -101,6 +101,22 @@
           <Icon :icon="IconType.STOP" />
           <span :class="{ tooltip: compact }">{{ t.stopAnalysis }}</span>
         </button>
+        <!-- 連続棋譜解析中断 -->
+        <button
+          v-show="store.appState === AppState.BATCH_ANALYSIS"
+          class="control-item close"
+          @click="onEndBatchAnalysis"
+        >
+          <Icon :icon="IconType.STOP" />
+          <span :class="{ tooltip: compact }"
+            >{{ t.stopAnalysis
+            }}{{
+              store.batchAnalysisProgress
+                ? ` (${store.batchAnalysisProgress.current}/${store.batchAnalysisProgress.total})`
+                : ""
+            }}</span
+          >
+        </button>
         <!-- 詰み探索 -->
         <button
           v-show="store.appState === AppState.NORMAL"
@@ -275,6 +291,10 @@ const onAnalysis = () => {
 
 const onEndAnalysis = () => {
   store.stopAnalysis();
+};
+
+const onEndBatchAnalysis = () => {
+  store.stopBatchAnalysis();
 };
 
 const onMateSearch = () => {

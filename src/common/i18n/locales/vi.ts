@@ -196,6 +196,11 @@ export const vi: Texts = {
   analysis: "Phân tích",
   analyze: "Phân tích",
   stopAnalysis: "Dừng phân tích",
+  batchAnalysis: "連続棋譜解析", // TODO: Translate
+  currentRecord: "現在の棋譜", // TODO: Translate
+  skipAnalyzed: "解析済みをスキップ", // TODO: Translate
+  analysisCompleted: "解析が完了しました。", // TODO: Translate
+  noRecordFileFound: "対象の棋譜ファイルが見つかりません。", // TODO: Translate
   searchDuplicatePositions: "Tìm thế cờ lặp lại",
   duplicatePositionSearch: "Tìm thế cờ lặp lại",
   duplicatePositions: "Thế cờ lặp lại",

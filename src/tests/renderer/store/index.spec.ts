@@ -7,7 +7,9 @@ import { gameSettings10m30s } from "@/tests/mock/game.js";
 import { GameManager } from "@/renderer/game/game.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import { AnalysisManager } from "@/renderer/store/analysis.js";
+import { BatchAnalysisManager } from "@/renderer/store/batch_analysis.js";
 import { analysisSettings } from "@/tests/mock/analysis.js";
+import { BatchAnalysisSettings } from "@/common/settings/batch_analysis.js";
 import { USIPlayer } from "@/renderer/players/usi.js";
 import { researchSettings } from "@/tests/mock/research.js";
 import {
@@ -35,6 +37,7 @@ vi.mock("@/renderer/game/game.js");
 vi.mock("@/renderer/game/csa.js");
 vi.mock("@/renderer/players/usi.js");
 vi.mock("@/renderer/store/analysis.js");
+vi.mock("@/renderer/store/batch_analysis.js");
 vi.mock("@/renderer/store/mate.js");
 
 const mockAudio = audio as Mocked<typeof audio>;
@@ -43,6 +46,7 @@ const mockGameManager = GameManager as MockedClass<typeof GameManager>;
 const mockCSAGameManager = CSAGameManager as MockedClass<typeof CSAGameManager>;
 const mockUSIPlayer = USIPlayer as MockedClass<typeof USIPlayer>;
 const mockAnalysisManager = AnalysisManager as MockedClass<typeof AnalysisManager>;
+const mockBatchAnalysisManager = BatchAnalysisManager as MockedClass<typeof BatchAnalysisManager>;
 const mockMateSearchManager = MateSearchManager as MockedClass<typeof MateSearchManager>;
 
 const sampleKIF = `
@@ -149,6 +153,7 @@ describe("store/index", () => {
     mockGameManager.prototype.on.mockReturnThis();
     mockCSAGameManager.prototype.on.mockReturnThis();
     mockAnalysisManager.prototype.on.mockReturnThis();
+    mockBatchAnalysisManager.prototype.on.mockReturnThis();
     mockMateSearchManager.prototype.on.mockReturnThis();
   });
 
@@ -518,6 +523,50 @@ describe("store/index", () => {
   it("startAnalysis/invalidState", () => {
     const store = createStore();
     store.startAnalysis(analysisSettings);
+    expect(useBusyState().isBusy).toBeFalsy();
+    expect(store.appState).toBe(AppState.NORMAL);
+  });
+
+  it("startBatchAnalysis/success", async () => {
+    const batchAnalysisSettings: BatchAnalysisSettings = {
+      source: "/path/to/records",
+      sourceFormats: [RecordFileFormat.KIF],
+      subdirectories: true,
+      skipAnalyzed: true,
+    };
+    mockAPI.saveBatchAnalysisSettings.mockResolvedValue();
+    mockAPI.saveAnalysisSettings.mockResolvedValue();
+    mockBatchAnalysisManager.prototype.start.mockResolvedValue();
+    const store = createStore();
+    store.showAnalysisDialog("batch");
+    expect(store.appState).toBe(AppState.ANALYSIS_DIALOG);
+    expect(store.analysisDialogTarget).toBe("batch");
+    store.startBatchAnalysis(batchAnalysisSettings, analysisSettings);
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(useBusyState().isBusy).toBeFalsy();
+    expect(store.appState).toBe(AppState.BATCH_ANALYSIS);
+    expect(mockAPI.saveBatchAnalysisSettings).toBeCalledTimes(1);
+    expect(mockAPI.saveBatchAnalysisSettings.mock.calls[0][0]).toBe(batchAnalysisSettings);
+    expect(mockAPI.saveAnalysisSettings).toBeCalledTimes(1);
+    expect(mockAPI.saveAnalysisSettings.mock.calls[0][0]).toBe(analysisSettings);
+    expect(mockBatchAnalysisManager.prototype.start).toBeCalledTimes(1);
+    expect(mockBatchAnalysisManager.prototype.start.mock.calls[0][0]).toBe(batchAnalysisSettings);
+    expect(mockBatchAnalysisManager.prototype.start.mock.calls[0][1]).toBe(analysisSettings);
+    store.stopBatchAnalysis();
+    expect(mockBatchAnalysisManager.prototype.stop).toBeCalledTimes(1);
+  });
+
+  it("startBatchAnalysis/invalidState", () => {
+    const store = createStore();
+    store.startBatchAnalysis(
+      {
+        source: "/path/to/records",
+        sourceFormats: [RecordFileFormat.KIF],
+        subdirectories: true,
+        skipAnalyzed: true,
+      },
+      analysisSettings,
+    );
     expect(useBusyState().isBusy).toBeFalsy();
     expect(store.appState).toBe(AppState.NORMAL);
   });

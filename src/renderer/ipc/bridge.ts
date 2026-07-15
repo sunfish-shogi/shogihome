@@ -28,6 +28,8 @@ export interface Bridge {
   saveResearchSettings(settings: string): Promise<void>;
   loadAnalysisSettings(): Promise<string>;
   saveAnalysisSettings(settings: string): Promise<void>;
+  loadBatchAnalysisSettings(): Promise<string>;
+  saveBatchAnalysisSettings(settings: string): Promise<void>;
   loadGameSettings(): Promise<string>;
   saveGameSettings(settings: string): Promise<void>;
   loadCSAGameSettingsHistory(): Promise<string>;
@@ -53,6 +55,7 @@ export interface Bridge {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
   convertRecordFiles(json: string): Promise<string>;
+  listRecordFiles(json: string): Promise<string>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;
   onOpenRecord(callback: (path: string) => void): void;

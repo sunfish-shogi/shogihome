@@ -46,6 +46,8 @@ export enum MenuEvent {
   TOGGLE_RESEARCH = "toggleResearch",
   START_ANALYSIS = "startAnalysis",
   STOP_ANALYSIS = "stopAnalysis",
+  START_BATCH_ANALYSIS = "startBatchAnalysis",
+  STOP_BATCH_ANALYSIS = "stopBatchAnalysis",
   START_MATE_SEARCH = "startMateSearch",
   STOP_MATE_SEARCH = "stopMateSearch",
   START_GAME = "startGame",

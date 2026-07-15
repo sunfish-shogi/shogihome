@@ -105,6 +105,12 @@ export function setup(): void {
       case MenuEvent.BATCH_CONVERSION:
         store.showBatchConversionDialog();
         break;
+      case MenuEvent.START_BATCH_ANALYSIS:
+        store.showAnalysisDialog("batch");
+        break;
+      case MenuEvent.STOP_BATCH_ANALYSIS:
+        store.stopBatchAnalysis();
+        break;
       case MenuEvent.SHARE:
         store.showShareDialog();
         break;
