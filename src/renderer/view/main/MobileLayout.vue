@@ -22,6 +22,7 @@
           :show-bottom-control="false"
           :show-elapsed-time="true"
           :show-comment="true"
+          :show-branch-tree="appSettings.showBranchTreeInRecordView"
         />
         <RecordComment
           v-if="showRecordViewOnBottom"
@@ -60,6 +61,7 @@
           :show-bottom-control="false"
           :show-elapsed-time="true"
           :show-comment="true"
+          :show-branch-tree="appSettings.showBranchTreeInRecordView"
         />
         <RecordComment
           v-show="sideUIType === SideUIType.RECORD"
@@ -107,6 +109,9 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 import { isIOS } from "@/renderer/helpers/env";
+import { useAppSettings } from "@/renderer/store/settings";
+
+const appSettings = useAppSettings();
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;

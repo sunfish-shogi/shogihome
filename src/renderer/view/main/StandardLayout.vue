@@ -29,6 +29,7 @@
                 class="record-area"
                 :show-comment="appSettings.showCommentInRecordView"
                 :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
+                :show-branch-tree="appSettings.showBranchTreeInRecordView"
                 :show-top-control="!isConsecutiveGame"
                 :show-bottom-control="!isConsecutiveGame"
                 :show-branches="!isConsecutiveGame"

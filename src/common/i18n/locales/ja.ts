@@ -316,6 +316,7 @@ export const ja: Texts = {
   commentsAndBookmarks: "コメント・しおり",
   branches: "分岐",
   branchListMode: "分岐の表示",
+  branchTree: "分岐ツリー",
   previousMoveBranches: "着手した手",
   nextMoveBranches: "次の手",
   bookmark: "しおり",

@@ -265,6 +265,9 @@ class AppSettingsStore {
   get showCommentInRecordView(): boolean {
     return this.merged.showCommentInRecordView;
   }
+  get showBranchTreeInRecordView(): boolean {
+    return this.merged.showBranchTreeInRecordView;
+  }
   get branchListMode(): BranchListMode {
     return this.merged.branchListMode;
   }

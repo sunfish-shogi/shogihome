@@ -22,6 +22,7 @@
         class="full"
         :show-comment="!!c.showCommentColumn"
         :show-elapsed-time="!!c.showElapsedTimeColumn"
+        :show-branch-tree="!!c.showBranchTree"
         :show-top-control="!!c.topControlBox"
         :show-bottom-control="false"
         :show-branches="!!c.branches"

@@ -259,6 +259,7 @@ export type AppSettings = {
   // Record View
   showElapsedTimeInRecordView: boolean;
   showCommentInRecordView: boolean;
+  showBranchTreeInRecordView: boolean;
   branchListMode: BranchListMode;
 
   // Logging
@@ -420,6 +421,7 @@ export function defaultAppSettings(opt?: {
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     showElapsedTimeInRecordView: true,
     showCommentInRecordView: true,
+    showBranchTreeInRecordView: false,
     branchListMode: BranchListMode.SIBLING,
     enableAppLog: false,
     enableUSILog: false,

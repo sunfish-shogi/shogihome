@@ -33,6 +33,7 @@ type Record = {
   showElapsedTimeColumn?: boolean;
   topControlBox?: boolean;
   branches?: boolean;
+  showBranchTree?: boolean;
 };
 
 type Book = {
