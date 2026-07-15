@@ -37,21 +37,23 @@ function getReleaseURL() {
 }
 
 export async function readStatus(): Promise<VersionStatus> {
-  try {
-    if (await exists(statusFilePath)) {
-      getAppLogger().debug("version.json exists");
-      const data = await fs.promises.readFile(statusFilePath, "utf8");
+  if (await exists(statusFilePath)) {
+    getAppLogger().debug("version.json exists");
+    const data = await fs.promises.readFile(statusFilePath, "utf8");
+    try {
       const status = JSON.parse(data) as VersionStatus;
       if (!status || typeof status !== "object") {
         throw new Error("unexpected data format");
       }
       getAppLogger().debug(`last version check status: ${JSON.stringify(status)}}`);
       return status;
+    } catch (e) {
+      // 破損した version.json は無視して、次回の書き込みで上書きする。
+      // 読み込み自体のエラーは一時的な障害の可能性があるためここでは握りつぶさない。
+      getAppLogger().warn(`failed to parse version.json: ${e}`);
     }
+  } else {
     getAppLogger().debug("version.json not exists");
-  } catch (e) {
-    // 破損した version.json は無視して、次回の書き込みで上書きする。
-    getAppLogger().warn(`failed to read version.json: ${e}`);
   }
   return {
     updatedMs: 0,

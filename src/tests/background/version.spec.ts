@@ -107,7 +107,7 @@ describe("version", () => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
     vi.useRealTimers();
-    fs.unlinkSync(statusFilePath);
+    fs.rmSync(statusFilePath, { recursive: true, force: true });
   });
 
   it("no_status_file/patch_update/stable", async () => {
@@ -412,6 +412,25 @@ describe("version", () => {
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
     expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
     expect(status.updatedMs).toBe(time25HoursAfter);
+  });
+
+  it("unreadable_status_file", async () => {
+    // 読み込み自体のエラーは一時的な障害の可能性があるため、ステータスを
+    // リセットせずにエラーとする。
+    reset({
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+    });
+    fs.mkdirSync(statusFilePath); // ディレクトリにして読み込みエラーを起こす。
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.1");
+    const notify = vi.fn();
+    await expect(checkUpdates(notify)).rejects.toThrow();
+    expect(notify.mock.calls).toHaveLength(0);
+    expect(server.accessCount).toBe(0);
+    expect(server.invalidCount).toBe(0);
   });
 
   it("manual/known_update", async () => {
