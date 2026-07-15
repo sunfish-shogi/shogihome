@@ -68,6 +68,8 @@ function suggestUpdate(
   releases: Releases,
   last: VersionStatus,
   notify: (message: string, url?: string) => void,
+  // 通知済みのバージョンでも再度通知するかどうか (手動チェック用)
+  renotify = false,
 ): boolean {
   const current = semver.clean(getAppVersion());
   if (!current) {
@@ -91,7 +93,7 @@ function suggestUpdate(
       semver.major(current) === semver.major(knownStable) &&
       semver.minor(current) <= semver.minor(knownStable)) ||
     (!knownStable && semver.lte(current, stable));
-  const stableUpdated = !knownStable || semver.gt(stable, knownStable);
+  const stableUpdated = renotify || !knownStable || semver.gt(stable, knownStable);
   const stableNotInstalled = semver.gt(stable, current);
   if (stablePreferred && stableUpdated && stableNotInstalled) {
     getAppLogger().info(`new stable version released: ${stable}`);
@@ -100,7 +102,7 @@ function suggestUpdate(
   }
 
   const latestPreferred = !stablePreferred;
-  const latestUpdated = !knownLatest || semver.gt(latest, knownLatest);
+  const latestUpdated = renotify || !knownLatest || semver.gt(latest, knownLatest);
   const latestNotInstalled = semver.gt(latest, current);
   if (latestPreferred && latestUpdated && latestNotInstalled) {
     getAppLogger().info(`new latest version released: ${latest}`);
@@ -141,7 +143,8 @@ export async function checkUpdatesManually(notify: (message: string, url?: strin
   getAppLogger().debug(`release info fetched: ${JSON.stringify(releases)}}`);
 
   // 手動チェックでは通知済みのバージョンであっても再度通知する。
-  const suggested = suggestUpdate(releases, { updatedMs: 0 }, notify);
+  // ただし、系列 (安定版/最新版) の判定には既知のリリース情報をそのまま使う。
+  const suggested = suggestUpdate(releases, last, notify, true);
   if (!suggested) {
     notify(t.youAreUsingTheLatestVersion);
   }

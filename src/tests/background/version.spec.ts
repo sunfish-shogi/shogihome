@@ -460,6 +460,33 @@ describe("version", () => {
     expect(status.updatedMs).toBe(time23HoursAfter);
   });
 
+  it("manual/minor_update/latest", async () => {
+    // 安定版が現在のバージョンに追いついていても、最新版系列を使用している
+    // 場合は新しい最新版を通知する。
+    reset({
+      knownStable: "1.0.4",
+      knownLatest: "1.1.1",
+      stable: "1.1.1",
+      latest: "1.2.0",
+      remoteFileName: "release-win.json",
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.1.1");
+    const notify = vi.fn();
+    await checkUpdatesManually(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("最新版 v1.2.0 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe("https://link/to/latest");
+    expect(server.accessCount).toBe(1);
+    expect(server.invalidCount).toBe(0);
+    const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.1.1");
+    expect(status.knownReleases?.latest.version).toBe("1.2.0");
+    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.updatedMs).toBe(time25HoursAfter);
+  });
+
   it("manual/no_updates", async () => {
     reset({
       knownStable: "1.0.4",
