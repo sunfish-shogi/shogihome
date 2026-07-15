@@ -326,6 +326,7 @@ export const vi: Texts = {
   commentsAndBookmarks: "Bình luận & đánh dấu",
   branches: "Nhánh",
   branchListMode: "Hiển thị các nhánh",
+  branchTree: "分岐ツリー", // TODO: Translate
   previousMoveBranches: "Các nước đã đi",
   nextMoveBranches: "Nước tiếp theo",
   bookmark: "Đánh dấu",

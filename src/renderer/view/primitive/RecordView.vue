@@ -17,7 +17,7 @@
     <div class="move-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
-      <div ref="moveList" class="move-list">
+      <div v-if="!showBranchTree" ref="moveList" class="move-list">
         <div
           v-for="move in record.moves"
           :key="move.ply"
@@ -40,6 +40,29 @@
             </button>
             <span v-if="move.bookmark" class="bookmark">{{ move.bookmark }}</span>
             {{ move.comment }}
+          </div>
+        </div>
+      </div>
+      <div v-else ref="moveList" class="move-list with-tree">
+        <div class="row move-list-content">
+          <div class="move-list-column">
+            <div
+              v-for="move in record.moves"
+              :key="move.ply"
+              class="row move-element"
+              :class="{ 'has-branch': move.hasBranch, selected: move.ply === record.current.ply }"
+              @click="changePly(move.ply)"
+            >
+              <div class="move-number">
+                {{ move.ply !== 0 ? move.ply : "" }}
+              </div>
+              <div class="move-text">{{ move.displayText }}</div>
+            </div>
+          </div>
+          <!-- NOTE: 棋譜リストの列とは別のスクロール領域にすることで、横スクロール時にツリーが列の下に -->
+          <!-- 潜り込むことがなくなり、半透明表示時の透けや二重の不透明度合成を避けられる。 -->
+          <div ref="treeScroll" class="tree-scroll">
+            <RecordBranchTree :record="record" @click-node="clickNode" />
           </div>
         </div>
       </div>
@@ -100,12 +123,19 @@
       </div>
       <div class="option">
         <ToggleButton
+          :label="t.branchTree"
+          :value="showBranchTree"
+          @update:value="(enabled: boolean) => emit('toggleShowBranchTree', enabled)"
+        />
+      </div>
+      <div v-if="!showBranchTree" class="option">
+        <ToggleButton
           :label="t.elapsedTime"
           :value="showElapsedTime"
           @update:value="(enabled: boolean) => emit('toggleShowElapsedTime', enabled)"
         />
       </div>
-      <div class="option">
+      <div v-if="!showBranchTree" class="option">
         <ToggleButton
           :label="t.commentsAndBookmarks"
           :value="showComment"
@@ -121,6 +151,7 @@ import { ImmutableRecord, ImmutableNode } from "tsshogi";
 import { computed, ref, PropType, onUpdated } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
+import RecordBranchTree from "@/renderer/view/primitive/RecordBranchTree.vue";
 import ToggleButton from "./ToggleButton.vue";
 import { RecordShortcutKeys } from "./board/shortcut";
 import { t } from "@/common/i18n";
@@ -144,6 +175,10 @@ const props = defineProps({
     required: false,
   },
   showComment: {
+    type: Boolean,
+    required: false,
+  },
+  showBranchTree: {
     type: Boolean,
     required: false,
   },
@@ -189,6 +224,7 @@ const emit = defineEmits<{
   goForward: [];
   goEnd: [];
   selectMove: [ply: number];
+  selectNode: [node: ImmutableNode];
   selectBranch: [index: number];
   selectNextBranch: [index: number];
   backToMainBranch: [];
@@ -197,9 +233,11 @@ const emit = defineEmits<{
   showDuplicatePositions: [sfen: string];
   toggleShowElapsedTime: [enabled: boolean];
   toggleShowComment: [enabled: boolean];
+  toggleShowBranchTree: [enabled: boolean];
 }>();
 
 const moveList = ref(null as HTMLDivElement | null);
+const treeScroll = ref(null as HTMLDivElement | null);
 const branchList = ref(null as HTMLDivElement | null);
 const showSubArea = ref(false);
 
@@ -230,6 +268,12 @@ const goEnd = () => {
 const changePly = (number: number) => {
   if (props.operational) {
     emit("selectMove", Number(number));
+  }
+};
+
+const clickNode = (node: ImmutableNode) => {
+  if (props.operational) {
+    emit("selectNode", node);
   }
 };
 
@@ -302,11 +346,24 @@ const branches = computed(() => {
 
 onUpdated(() => {
   const moveListElement = moveList.value;
-  moveListElement?.childNodes.forEach((elem) => {
-    if (elem instanceof HTMLElement && elem.classList.contains("selected")) {
-      elem.scrollIntoView({ behavior: "auto", block: "nearest" });
+  moveListElement
+    ?.querySelector(".move-element.selected")
+    ?.scrollIntoView({ behavior: "auto", block: "nearest" });
+  // ツリー表示では現在のノードが見えるように、ツリー専用のスクロール領域を横方向にも追従させる。
+  const treeScrollElement = treeScroll.value;
+  if (props.showBranchTree && treeScrollElement) {
+    const currentNode = treeScrollElement.querySelector(".node.current");
+    if (currentNode) {
+      const containerRect = treeScrollElement.getBoundingClientRect();
+      const nodeRect = currentNode.getBoundingClientRect();
+      const margin = 10;
+      if (nodeRect.left < containerRect.left + margin) {
+        treeScrollElement.scrollLeft -= containerRect.left + margin - nodeRect.left;
+      } else if (nodeRect.right > containerRect.right - margin) {
+        treeScrollElement.scrollLeft += nodeRect.right - (containerRect.right - margin);
+      }
     }
-  });
+  }
   const branchListElement = branchList.value as HTMLElement;
   branchListElement?.childNodes.forEach((elem) => {
     if (elem instanceof HTMLElement && elem.classList.contains("selected")) {
@@ -356,6 +413,24 @@ onUpdated(() => {
   overflow-x: hidden;
   overflow-y: auto;
   color: var(--text-color);
+}
+.move-list-content {
+  width: 100%;
+}
+.move-list-column {
+  flex: none;
+}
+.tree-scroll {
+  /* ツリー部分のみ横スクロールできるようにする。棋譜リストの列は別要素なので巻き込まれない。 */
+  /* display: flex にしないと、スクロールコンテナの右側の padding がスクロール可能領域に */
+  /* 含まれず、右マージンが消えてしまう(ブロック要素の overflow ではトレイリング側の */
+  /* padding が仕様上考慮されないブラウザの挙動による)。 */
+  display: flex;
+  flex: auto;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 20px;
 }
 .sub-area {
   position: relative;
@@ -409,6 +484,9 @@ onUpdated(() => {
 }
 .move-element.has-branch:not(.selected) {
   background-color: var(--text-bg-color-warning);
+}
+.move-list.with-tree .move-element.has-branch:not(.selected) {
+  background-color: transparent;
 }
 .move-element.selected {
   background-color: var(--text-bg-color-selected);

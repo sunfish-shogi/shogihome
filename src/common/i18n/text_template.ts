@@ -309,6 +309,7 @@ export type Texts = {
   commentsAndBookmarks: string;
   branches: string;
   branchListMode: string;
+  branchTree: string;
   previousMoveBranches: string;
   nextMoveBranches: string;
   bookmark: string;

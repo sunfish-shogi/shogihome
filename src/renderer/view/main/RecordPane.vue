@@ -7,6 +7,7 @@
         :operational="isRecordOperational"
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
+        :show-branch-tree="showBranchTree"
         :sub-area-toggle-label="t.book"
         :opacity="appSettings.enableTransparent ? appSettings.recordOpacity : 1"
         :show-top-control="showTopControl"
@@ -19,6 +20,7 @@
         @go-forward="store.goForward()"
         @go-end="store.changePly(Number.MAX_SAFE_INTEGER)"
         @select-move="(ply) => store.changePly(ply)"
+        @select-node="(node) => store.changeNode(node)"
         @select-branch="(index) => store.changeBranch(index)"
         @select-next-branch="selectNextBranch"
         @back-to-main-branch="store.backToMainBranch()"
@@ -27,6 +29,7 @@
         @show-duplicate-positions="showDuplicatePositions"
         @toggle-show-elapsed-time="onToggleElapsedTime"
         @toggle-show-comment="onToggleComment"
+        @toggle-show-branch-tree="onToggleBranchTree"
       >
         <template #sub-area>
           <BookPanel class="full" />
@@ -71,6 +74,10 @@ defineProps({
     required: false,
   },
   showComment: {
+    type: Boolean,
+    required: false,
+  },
+  showBranchTree: {
     type: Boolean,
     required: false,
   },
@@ -132,6 +139,12 @@ const onToggleElapsedTime = (enabled: boolean) => {
 const onToggleComment = (enabled: boolean) => {
   appSettings.updateAppSettings({
     showCommentInRecordView: enabled,
+  });
+};
+
+const onToggleBranchTree = (enabled: boolean) => {
+  appSettings.updateAppSettings({
+    showBranchTreeInRecordView: enabled,
   });
 };
 </script>

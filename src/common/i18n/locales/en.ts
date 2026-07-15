@@ -316,6 +316,7 @@ export const en: Texts = {
   commentsAndBookmarks: "Comments & Bookmarks",
   branches: "Branches",
   branchListMode: "Branch List Mode",
+  branchTree: "Branch Tree",
   previousMoveBranches: "Sibling Branches",
   nextMoveBranches: "Next Move Branches",
   bookmark: "Bookmark",
