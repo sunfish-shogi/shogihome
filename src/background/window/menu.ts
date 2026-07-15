@@ -46,6 +46,7 @@ import { createListItems } from "@/common/message.js";
 import { BoardLayoutType } from "@/common/settings/layout.js";
 import { getCPUInfo } from "@/background/proc/state.js";
 import { outputStatsHTML } from "@/background/stats/html.js";
+import { checkUpdatesManually } from "@/background/version.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -676,6 +677,14 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.openStableReleasePage,
           click: () => {
             openStableReleasePage().catch(sendError);
+          },
+        },
+        {
+          label: t.checkForUpdates,
+          click: () => {
+            checkUpdatesManually(sendNotification).catch((e) => {
+              sendError(new Error(`${t.failedToCheckUpdates}: ${e}`));
+            });
           },
         },
         {

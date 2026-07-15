@@ -105,6 +105,7 @@ export const vi: Texts = {
   openUserGuide: "Mở hướng dẫn sử dụng",
   openLatestReleasePage: "Mở trang của bản mới nhất",
   openStableReleasePage: "Mở trang của bản ổn định",
+  checkForUpdates: "アップデートを確認", // TODO: Translate
   license: "Giấy phép",
   inputs: "Đầu vào",
   outputs: "Đầu ra",
@@ -733,6 +734,7 @@ export const vi: Texts = {
   failedToSendStopCommand: "Gửi lệnh stop thất bại.",
   failedToShutdownEngines: "Dừng phần mềm thất bại.",
   failedToCheckUpdates: "Kiểm tra cập nhật thất bại.",
+  youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
   failedToSaveRecord: "Lưu kỳ phổ thất bại.",
   failedToParseSFEN: "Đọc SFEN thất bại.",
   failedToDetectRecordFormat: "Xác định định dạng kỳ phổ thất bại.",

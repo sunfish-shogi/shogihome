@@ -90,6 +90,7 @@ export type Texts = {
   openUserGuide: string;
   openLatestReleasePage: string;
   openStableReleasePage: string;
+  checkForUpdates: string;
   license: string;
   inputs: string;
   outputs: string;
@@ -707,6 +708,7 @@ export type Texts = {
   failedToSendStopCommand: string;
   failedToShutdownEngines: string;
   failedToCheckUpdates: string;
+  youAreUsingTheLatestVersion: string;
   failedToSaveRecord: string;
   failedToParseSFEN: string;
   failedToDetectRecordFormat: string;

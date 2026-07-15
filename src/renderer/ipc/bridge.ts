@@ -154,6 +154,7 @@ export interface Bridge {
   getMachineSpec(): Promise<string>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<string>;
+  checkUpdates(): Promise<void>;
   getPathForFile(file: File): string;
   onProgress(callback: (progress: number) => void): void;
 }

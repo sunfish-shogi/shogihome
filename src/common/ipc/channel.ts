@@ -90,6 +90,7 @@ export enum Background {
   GET_MACHINE_SPEC = "getMachineSpec",
   IS_ENCRYPTION_AVAILABLE = "isEncryptionAvailable",
   GET_VERSION_STATUS = "getVersionStatus",
+  CHECK_UPDATES = "checkUpdates",
   OPEN_LOG_FILE = "openLogFile",
   LOG = "log",
   ON_CLOSABLE = "onClosable",

@@ -99,7 +99,7 @@ import {
 } from "@/background/file/history.js";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { isSupportedRecordFilePath } from "@/background/file/extensions.js";
-import { readStatus as readVersionStatus } from "@/background/version.js";
+import { checkUpdatesManually, readStatus as readVersionStatus } from "@/background/version.js";
 import { SessionStates } from "@/common/advanced/monitor.js";
 import { createCommandWindow } from "./prompt.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -1054,6 +1054,11 @@ ipcMain.handle(Background.IS_ENCRYPTION_AVAILABLE, (event): boolean => {
 ipcMain.handle(Background.GET_VERSION_STATUS, async (event) => {
   validateIPCSender(event.senderFrame);
   return JSON.stringify(await readVersionStatus());
+});
+
+ipcMain.handle(Background.CHECK_UPDATES, async (event) => {
+  validateIPCSender(event.senderFrame);
+  await checkUpdatesManually(sendNotification);
 });
 
 ipcMain.on(Background.OPEN_LOG_FILE, (event, logType: LogType) => {

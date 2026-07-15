@@ -162,6 +162,7 @@ export interface API {
   getMachineSpec(): Promise<MachineSpec>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<VersionStatus>;
+  checkUpdates(): Promise<void>;
   onSendNotification(callback: (message: string, url?: string) => void): void;
   getPathForFile(file: File): string;
 }
@@ -338,6 +339,9 @@ const api: API = {
   },
   async getVersionStatus(): Promise<VersionStatus> {
     return JSON.parse(await bridge.getVersionStatus());
+  },
+  async checkUpdates(): Promise<void> {
+    await bridge.checkUpdates();
   },
 };
 
