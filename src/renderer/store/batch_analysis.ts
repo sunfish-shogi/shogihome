@@ -49,6 +49,7 @@ export class BatchAnalysisManager {
   private result: BatchAnalysisResult = { successTotal: 0, failedTotal: 0, skippedTotal: 0 };
   private running = false;
   private stopped = false;
+  private savingPromise?: Promise<void>;
   private _progress?: BatchAnalysisProgress;
   private onFinish: FinishCallback = () => {
     /* noop */
@@ -63,7 +64,7 @@ export class BatchAnalysisManager {
   constructor(private recordManager: RecordManager) {
     this.analysisManager = new AnalysisManager(recordManager, { keepEngine: true })
       .on("finish", () => this.onAnalysisFinish())
-      .on("error", (e) => this.onError(e));
+      .on("error", (e) => this.onAnalysisError(e));
   }
 
   on(event: "finish", handler: FinishCallback): this;
@@ -120,7 +121,13 @@ export class BatchAnalysisManager {
     }
     // 解析途中のファイルの結果は保存せずに終了する。
     this.stopped = true;
-    this.finish();
+    // 直前のファイルの保存が進行中の場合は、書き込みが完了して結果に反映されてから終了処理を行う。
+    // (保存が完了する前に終了報告すると、成功件数が表示後に変化してしまうため。)
+    if (this.savingPromise) {
+      this.savingPromise.finally(() => this.finish());
+    } else {
+      this.finish();
+    }
   }
 
   private processCurrentFile(): void {
@@ -183,11 +190,21 @@ export class BatchAnalysisManager {
     }
   }
 
+  // エンジンエラーは復旧が見込めないためバッチ全体を中断する。
+  // (start() の失敗と異なり、startResearch() の非同期エラーはここに届く。)
+  private onAnalysisError(e: unknown): void {
+    if (!this.running) {
+      return;
+    }
+    this.onError(e);
+    this.finish();
+  }
+
   private onAnalysisFinish(): void {
     if (!this.running || this.stopped) {
       return;
     }
-    this.saveCurrentFile()
+    this.savingPromise = this.saveCurrentFile()
       .then(() => {
         this.result.successTotal++;
       })
@@ -196,6 +213,7 @@ export class BatchAnalysisManager {
         this.result.failedTotal++;
       })
       .finally(() => {
+        this.savingPromise = undefined;
         this.goNextFile();
       });
   }

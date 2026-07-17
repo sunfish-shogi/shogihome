@@ -19,6 +19,7 @@ export class AnalysisManager {
   private lastSearchInfo?: SearchInfo;
   private searchInfo?: SearchInfo;
   private timerHandle?: number;
+  private closed = false;
   private onFinish: FinishCallback = () => {
     /* noop */
   };
@@ -53,10 +54,15 @@ export class AnalysisManager {
     if (!settings.usi) {
       throw new Error("エンジンが設定されていません。");
     }
+    this.closed = false;
     if (this.option?.keepEngine && this.researcher) {
       await this.researcher.readyNewGame();
     } else {
       await this.setupEngine(settings.usi as USIEngine);
+    }
+    // エンジンの起動処理中に close() が呼ばれた場合は解析を開始せずに終了する。
+    if (this.closed) {
+      return;
     }
     this.settings = settings;
     this.lastSearchInfo = undefined;
@@ -92,6 +98,7 @@ export class AnalysisManager {
   }
 
   close(): void {
+    this.closed = true;
     this.clearTimer();
     this.closeEngine().catch((e) => {
       this.onError(e);
@@ -112,6 +119,12 @@ export class AnalysisManager {
     );
     await researcher.launch();
     await researcher.readyNewGame();
+    // 起動処理中に close() が呼ばれていた場合は、起動したエンジンを確実に終了して放置しない。
+    // (close() 時点では this.researcher が未設定のため closeEngine() では終了できない。)
+    if (this.closed) {
+      await researcher.close();
+      return;
+    }
     this.researcher = researcher;
   }
 

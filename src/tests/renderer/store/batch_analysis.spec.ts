@@ -150,6 +150,71 @@ describe("store/batch_analysis", () => {
     await expect(manager.start(batchAnalysisSettings, analysisSettings)).rejects.toThrow();
   });
 
+  it("abort-on-engine-error", async () => {
+    // startResearch() が非同期で失敗した場合、復旧が見込めないためバッチ全体を中断する。
+    mockUSIPlayer.prototype.launch.mockResolvedValue();
+    mockUSIPlayer.prototype.readyNewGame.mockResolvedValue();
+    mockUSIPlayer.prototype.startResearch.mockRejectedValue(new Error("engine crashed"));
+    mockUSIPlayer.prototype.close.mockResolvedValue();
+    mockAPI.listRecordFiles.mockResolvedValue([
+      "/path/to/records/a.kifu",
+      "/path/to/records/b.kifu",
+    ]);
+    mockAPI.openRecord.mockImplementation(async () => new TextEncoder().encode(sampleKIFU));
+    mockAPI.saveRecord.mockResolvedValue();
+    const recordManager = new RecordManager();
+    const onFinish = vi.fn();
+    const onError = vi.fn();
+    const manager = new BatchAnalysisManager(recordManager)
+      .on("finish", onFinish)
+      .on("error", onError);
+    await manager.start(batchAnalysisSettings, analysisSettings);
+    await vi.runAllTimersAsync();
+    // エンジンエラーが通知され、バッチは中断される。
+    expect(onError).toBeCalledTimes(1);
+    expect(onFinish).toBeCalledTimes(1);
+    // 2 ファイル目には進まず、保存も行われない。
+    expect(mockAPI.saveRecord).not.toBeCalled();
+    expect(mockAPI.openRecord).toBeCalledTimes(1);
+    expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
+  });
+
+  it("stop-during-save", async () => {
+    // 直前ファイルの保存中に stop() が呼ばれても、保存完了を待ってから結果を報告する。
+    setupUSIPlayerMock();
+    mockAPI.listRecordFiles.mockResolvedValue(["/path/to/records/a.kifu"]);
+    mockAPI.openRecord.mockImplementation(async () => new TextEncoder().encode(sampleKIFU));
+    let resolveSave: () => void = () => {
+      /* noop */
+    };
+    mockAPI.saveRecord.mockReturnValue(
+      new Promise<void>((resolve) => {
+        resolveSave = resolve;
+      }),
+    );
+    const recordManager = new RecordManager();
+    const onFinish = vi.fn();
+    const onError = vi.fn();
+    const manager = new BatchAnalysisManager(recordManager)
+      .on("finish", onFinish)
+      .on("error", onError);
+    await manager.start(batchAnalysisSettings, analysisSettings);
+    // 解析が終わり保存が開始される (saveRecord は保留中) 状態まで進める。
+    await vi.runAllTimersAsync();
+    expect(mockAPI.saveRecord).toBeCalledTimes(1);
+    expect(onFinish).not.toBeCalled();
+    // 保存中に停止する。保存完了までは終了報告しない。
+    manager.stop();
+    expect(onFinish).not.toBeCalled();
+    // 保存を完了させる。
+    resolveSave();
+    await vi.runAllTimersAsync();
+    // 保存完了後に、保存された分を反映した結果が報告される。
+    expect(onError).not.toBeCalled();
+    expect(onFinish).toBeCalledTimes(1);
+    expect(onFinish).toBeCalledWith({ successTotal: 1, failedTotal: 0, skippedTotal: 0 });
+  });
+
   it("stop", async () => {
     setupUSIPlayerMock();
     mockAPI.listRecordFiles.mockResolvedValue([
