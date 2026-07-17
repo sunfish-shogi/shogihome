@@ -340,9 +340,8 @@ export async function loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings
   if (!(await exists(batchAnalysisSettingsPath))) {
     return defaultBatchAnalysisSettings();
   }
-  return normalizeBatchAnalysisSettings(
-    JSON.parse(await fs.promises.readFile(batchAnalysisSettingsPath, "utf8")),
-  );
+  const data = await readSettingsJSON<BatchAnalysisSettings>(batchAnalysisSettingsPath);
+  return data !== undefined ? normalizeBatchAnalysisSettings(data) : defaultBatchAnalysisSettings();
 }
 
 const mateSearchSettingsPath = path.join(rootDir, "mate_search_setting.json");
