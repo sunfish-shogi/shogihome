@@ -14,6 +14,7 @@ import url from "node:url";
 import {
   loadAnalysisSettings,
   loadAppSettings,
+  loadBatchAnalysisSettings,
   loadBatchConversionSettings,
   loadBookImportSettings,
   loadCSAGameSettingsHistory,
@@ -24,6 +25,7 @@ import {
   loadUSIEngines,
   saveAnalysisSettings,
   saveAppSettings,
+  saveBatchAnalysisSettings,
   saveBatchConversionSettings,
   saveBookImportSettings,
   saveCSAGameSettingsHistory,
@@ -89,6 +91,7 @@ import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.
 import { fileURLToPath } from "@/background/helpers/url.js";
 import { AppSettingsUpdate } from "@/common/settings/app.js";
 import { convertRecordFiles } from "@/background/file/conversion.js";
+import { listRecordFiles } from "@/background/file/list.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import {
   addHistory,
@@ -127,7 +130,7 @@ import {
 } from "@/background/book/index.js";
 import { BookFormat, BookLoadingOptions, BookMove, defaultBookSession } from "@/common/book.js";
 import { Message } from "@/common/message.js";
-import { RecordFileFormat } from "@/common/file/record.js";
+import { ListRecordFilesRequest, RecordFileFormat } from "@/common/file/record.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 import { createDesktopShortcut } from "@/background/file/shortcuts.js";
@@ -434,6 +437,14 @@ ipcMain.handle(Background.CONVERT_RECORD_FILES, async (event, json: string): Pro
   return JSON.stringify(await convertRecordFiles(settings, sendProgress));
 });
 
+ipcMain.handle(Background.LIST_RECORD_FILES, async (event, json: string): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  const request = JSON.parse(json) as ListRecordFilesRequest;
+  return JSON.stringify(
+    await listRecordFiles(request.directory, request.formats, request.subdirectories),
+  );
+});
+
 ipcMain.handle(
   Background.SHOW_SELECT_SFEN_DIALOG,
   async (event, lastPath: string): Promise<string> => {
@@ -508,6 +519,21 @@ ipcMain.handle(Background.SAVE_ANALYSIS_SETTINGS, async (event, json: string): P
   getAppLogger().debug("save analysis settings");
   await saveAnalysisSettings(JSON.parse(json));
 });
+
+ipcMain.handle(Background.LOAD_BATCH_ANALYSIS_SETTINGS, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("load batch analysis settings");
+  return JSON.stringify(await loadBatchAnalysisSettings());
+});
+
+ipcMain.handle(
+  Background.SAVE_BATCH_ANALYSIS_SETTINGS,
+  async (event, json: string): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug("save batch analysis settings");
+    await saveBatchAnalysisSettings(JSON.parse(json));
+  },
+);
 
 ipcMain.handle(Background.LOAD_GAME_SETTINGS, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);

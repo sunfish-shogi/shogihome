@@ -193,6 +193,13 @@ export const zh_tw: Texts = {
   analysis: "解析",
   analyze: "解析開始",
   stopAnalysis: "中斷解析",
+  batchAnalysis: "連続棋譜解析", // TODO: Translate
+  currentRecord: "現在の棋譜", // TODO: Translate
+  skipAnalyzed: "解析済みをスキップ", // TODO: Translate
+  analyzedRecordFilesWillBeOverwritten:
+    "解析した棋譜ファイルは上書きされます。重要なデータは事前にコピーを作成してください。", // TODO: Translate
+  analysisCompleted: "解析が完了しました。", // TODO: Translate
+  noRecordFileFound: "対象の棋譜ファイルが見つかりません。", // TODO: Translate
   searchDuplicatePositions: "同一局面を検索", // TODO: Translate
   duplicatePositionSearch: "同一局面検索", // TODO: Translate
   duplicatePositions: "同一局面", // TODO: Translate

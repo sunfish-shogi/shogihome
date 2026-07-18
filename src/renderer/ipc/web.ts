@@ -112,6 +112,12 @@ export const webAPI: Bridge = {
   async saveAnalysisSettings(json: string): Promise<void> {
     localStorage.setItem(STORAGE_KEY.ANALYSIS_SETTINGS, json);
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveBatchAnalysisSettings(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async loadGameSettings(): Promise<string> {
     const json = localStorage.getItem(STORAGE_KEY.GAME_SETTINGS);
     if (!json) {
@@ -241,6 +247,9 @@ export const webAPI: Bridge = {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async convertRecordFiles(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async listRecordFiles(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async showSelectSFENDialog(): Promise<string> {

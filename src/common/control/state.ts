@@ -10,6 +10,7 @@ export enum AppState {
   CSA_GAME = "csaGame",
   ANALYSIS = "analysis",
   ANALYSIS_DIALOG = "analysisDialog",
+  BATCH_ANALYSIS = "batchAnalysis",
   MATE_SEARCH = "mateSearch",
   MATE_SEARCH_DIALOG = "mateSearchDialog",
   USI_ENGINES_DIALOG = "usiEnginesDialog",

@@ -272,6 +272,9 @@ function createMenuTemplate(window: BrowserWindow) {
           isMac ? "CmdOrCtrl+Y" : "CmdOrCtrl+A",
         ),
         menuItem(t.stopAnalysis, MenuEvent.STOP_ANALYSIS, [AppState.ANALYSIS]),
+        { type: "separator" },
+        menuItem(t.batchAnalysis, MenuEvent.START_BATCH_ANALYSIS, [AppState.NORMAL]),
+        menuItem(t.stopAnalysis, MenuEvent.STOP_BATCH_ANALYSIS, [AppState.BATCH_ANALYSIS]),
       ],
     },
     {

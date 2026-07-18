@@ -33,6 +33,12 @@ export function getStandardRecordFileFormats() {
   ];
 }
 
+export type ListRecordFilesRequest = {
+  directory: string;
+  formats: RecordFileFormat[];
+  subdirectories: boolean;
+};
+
 export function detectRecordFileFormatByPath(path: string): RecordFileFormat | undefined {
   const lowerCase = path.toLowerCase();
   for (const ext of Object.values(RecordFileFormat)) {
