@@ -81,4 +81,17 @@ describe("SimpleBoardView", () => {
     }
     expect(parseDy(blackPiece.attributes("dy"))).toBe(0);
   });
+
+  it("renders hand markers separately from vertical hand text", () => {
+    const wrapper = mountSimpleBoard();
+    const hands = wrapper.findAll(".hand");
+
+    expect(hands).toHaveLength(2);
+    expect(hands[0].find(".hand-marker.black").exists()).toBeTruthy();
+    expect(hands[1].find(".hand-marker.white").exists()).toBeTruthy();
+    expect(hands[0].text()).not.toContain("☗");
+    expect(hands[1].text()).not.toContain("☖");
+    expect(hands[0].text()).toContain("なし");
+    expect(hands[1].text()).toContain("なし");
+  });
 });

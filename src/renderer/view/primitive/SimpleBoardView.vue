@@ -65,14 +65,20 @@
         </text>
       </svg>
       <div class="column reverse" :style="layout.blackHand.style">
-        <span class="hand black" :class="layout.typefaceClass" :style="layout.blackHand.textStyle"
-          >☗{{ layout.blackHand.text }}</span
-        >
+        <span class="hand black" :class="layout.typefaceClass" :style="layout.blackHand.textStyle">
+          <svg class="hand-marker black" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 1 22 5 19 23H5L2 5Z" />
+          </svg>
+          <span>{{ layout.blackHand.text }}</span>
+        </span>
       </div>
       <div v-if="!hideWhiteHand" class="column reverse" :style="layout.whiteHand.style">
-        <span class="hand white" :class="layout.typefaceClass" :style="layout.whiteHand.textStyle"
-          >☖{{ layout.whiteHand.text }}</span
-        >
+        <span class="hand white" :class="layout.typefaceClass" :style="layout.whiteHand.textStyle">
+          <svg class="hand-marker white" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 1 22 5 19 23H5L2 5Z" />
+          </svg>
+          <span>{{ layout.whiteHand.text }}</span>
+        </span>
       </div>
     </div>
   </div>
@@ -358,5 +364,21 @@ const layout = computed(() => {
   display: inline-block;
   text-orientation: upright;
   letter-spacing: 0px;
+}
+.hand-marker {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  writing-mode: horizontal-tb;
+  overflow: visible;
+}
+.hand-marker.black {
+  fill: black;
+}
+.hand-marker.white {
+  fill: white;
+  stroke: black;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
 }
 </style>
