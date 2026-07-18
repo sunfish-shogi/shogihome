@@ -189,6 +189,8 @@ export const en: Texts = {
   batchAnalysis: "Batch Analysis",
   currentRecord: "Current Record",
   skipAnalyzed: "Skip analyzed",
+  analyzedRecordFilesWillBeOverwritten:
+    "Analyzed record files will be overwritten. Please make a copy of important data in advance.",
   analysisCompleted: "Analysis completed.",
   noRecordFileFound: "No record file found.",
   searchDuplicatePositions: "Search Duplicate Positions",

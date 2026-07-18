@@ -189,6 +189,8 @@ export const ja: Texts = {
   batchAnalysis: "連続棋譜解析",
   currentRecord: "現在の棋譜",
   skipAnalyzed: "解析済みをスキップ",
+  analyzedRecordFilesWillBeOverwritten:
+    "解析した棋譜ファイルは上書きされます。重要なデータは事前にコピーを作成してください。",
   analysisCompleted: "解析が完了しました。",
   noRecordFileFound: "対象の棋譜ファイルが見つかりません。",
   searchDuplicatePositions: "同一局面を検索",

@@ -184,6 +184,7 @@ export type Texts = {
   batchAnalysis: string;
   currentRecord: string;
   skipAnalyzed: string;
+  analyzedRecordFilesWillBeOverwritten: string;
   analysisCompleted: string;
   noRecordFileFound: string;
   searchDuplicatePositions: string;

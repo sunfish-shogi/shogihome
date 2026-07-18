@@ -11,6 +11,9 @@
       />
     </div>
     <div ref="scrollContainer" class="form-group scroll">
+      <div v-show="isNative() && target === 'batch'" class="form-group warning">
+        <div class="note">{{ t.analyzedRecordFilesWillBeOverwritten }}</div>
+      </div>
       <div v-show="isNative() && target === 'batch'" class="form-group">
         <div class="form-item row">
           <input v-model="batchSettings.source" class="grow" type="text" />
