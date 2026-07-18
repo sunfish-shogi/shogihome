@@ -16,7 +16,8 @@ import { createReadStream, promises as fs } from "node:fs";
 import path from "node:path";
 import { getAppLogger } from "@/background/log.js";
 import { AppSettings, TextDecodingRule } from "@/common/settings/app.js";
-import { exists, listFiles } from "@/background/helpers/file.js";
+import { exists } from "@/background/helpers/file.js";
+import { listRecordFiles } from "@/background/file/list.js";
 import { loadAppSettings } from "@/background/settings.js";
 import {
   ImmutableNode,
@@ -27,17 +28,6 @@ import {
   SpecialMoveType,
 } from "tsshogi";
 import { resolveConflictFilePath } from "./filename.js";
-
-export async function listRecordFiles(
-  directory: string,
-  formats: RecordFileFormat[],
-  subdirectories: boolean,
-): Promise<string[]> {
-  return (await listFiles(directory, subdirectories ? Infinity : 0)).filter((file) => {
-    const ext = path.extname(file).toLowerCase();
-    return formats.includes(ext as RecordFileFormat);
-  });
-}
 
 export async function convertRecordFiles(
   settings: BatchConversionSettings,

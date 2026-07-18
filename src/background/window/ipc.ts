@@ -90,7 +90,8 @@ import { cropPieceImage } from "@/background/image/cropper.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
 import { fileURLToPath } from "@/background/helpers/url.js";
 import { AppSettingsUpdate } from "@/common/settings/app.js";
-import { convertRecordFiles, listRecordFiles } from "@/background/file/conversion.js";
+import { convertRecordFiles } from "@/background/file/conversion.js";
+import { listRecordFiles } from "@/background/file/list.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import {
   addHistory,
