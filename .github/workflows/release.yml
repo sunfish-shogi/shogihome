@@ -151,7 +151,6 @@ jobs:
         with:
           name: ${{ matrix.os }}${{ matrix.variant == 'portable' && '-portable' || '' }}-release
           path: dist/release-*.zip
-          persist-credentials: false
 
   # Phase 3: gather the installers into a draft GitHub Release.
   release:
