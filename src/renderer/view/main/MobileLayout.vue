@@ -37,16 +37,24 @@
           v-show="bottomUIType === BottomUIType.INFO"
           :size="bottomViewSize"
         />
-        <HorizontalSelector
-          v-if="showRecordViewOnBottom"
-          v-model:value="bottomUIType"
-          :items="[
-            { label: t.record, value: BottomUIType.RECORD },
-            { label: t.comments, value: BottomUIType.COMMENT },
-            { label: t.recordProperties, value: BottomUIType.INFO },
-          ]"
-          :height="selectorHeight"
-        />
+        <div v-if="showRecordViewOnBottom" class="row selector-row">
+          <HorizontalSelector
+            v-model:value="bottomUIType"
+            :items="[
+              { label: t.record, value: BottomUIType.RECORD },
+              { label: t.comments, value: BottomUIType.COMMENT },
+              { label: t.recordProperties, value: BottomUIType.INFO },
+            ]"
+            :height="selectorHeight"
+          />
+          <ToggleButton
+            v-if="bottomUIType === BottomUIType.RECORD"
+            class="branch-tree-toggle"
+            :value="appSettings.showBranchTreeInRecordView"
+            :label="t.branchTree"
+            @update:value="onToggleBranchTree"
+          />
+        </div>
       </div>
       <div
         v-if="!showRecordViewOnBottom"
@@ -71,14 +79,23 @@
           }"
         />
         <RecordInfo v-show="sideUIType === SideUIType.INFO" :size="sideViewSize" />
-        <HorizontalSelector
-          v-model:value="sideUIType"
-          :items="[
-            { label: t.record, value: SideUIType.RECORD },
-            { label: t.recordProperties, value: SideUIType.INFO },
-          ]"
-          :height="selectorHeight"
-        />
+        <div class="row selector-row">
+          <HorizontalSelector
+            v-model:value="sideUIType"
+            :items="[
+              { label: t.record, value: SideUIType.RECORD },
+              { label: t.recordProperties, value: SideUIType.INFO },
+            ]"
+            :height="selectorHeight"
+          />
+          <ToggleButton
+            v-if="sideUIType === SideUIType.RECORD"
+            class="branch-tree-toggle"
+            :value="appSettings.showBranchTreeInRecordView"
+            :label="t.branchTree"
+            @update:value="onToggleBranchTree"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -106,6 +123,7 @@ import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import MobileControls from "./MobileControls.vue";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 import { isIOS } from "@/renderer/helpers/env";
@@ -164,6 +182,10 @@ const onBoardPaneResize = (size: RectSize) => {
   boardPaneSize.value = size;
 };
 
+const onToggleBranchTree = (enabled: boolean) => {
+  appSettings.updateAppSettings({ showBranchTreeInRecordView: enabled });
+};
+
 const bottomViewSize = computed(() => {
   return new RectSize(
     windowSize.width,
@@ -194,5 +216,11 @@ onUnmounted(() => {
 }
 .controls button .icon {
   height: 68%;
+}
+.selector-row {
+  align-items: center;
+}
+.branch-tree-toggle {
+  margin-left: 10px;
 }
 </style>
