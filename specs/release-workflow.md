@@ -3,8 +3,9 @@
 ShogiHome releases are driven entirely by the `Release`
 GitHub Actions workflow (`.github/workflows/release.yml`). A maintainer no
 longer runs `npm run release:*` locally to create the release commit and tag;
-instead the workflow runs the quality gate and a build check first, and only
-then pushes the branch and tag.
+instead the workflow runs the quality gate and a build check first, creates a
+release PR, and only after the maintainer reviews and merges the PR are
+installers built and the draft release published.
 
 ## Triggering a release
 
@@ -14,8 +15,8 @@ or a `support-*` branch). Two inputs are available:
 
 - `release_type` — the kind of version bump (see the table below).
 - `dry_run` — when `true`, the workflow runs the quality gate, the build check
-  and the version bump, but does **not** push anything and does **not** build
-  installers. Use it to validate a release candidate.
+  and the version bump, but does **not** push anything and does **not** create
+  a PR or build installers. Use it to validate a release candidate.
 
 ## Release types
 
@@ -54,17 +55,29 @@ The workflow runs three jobs in sequence:
       commit and the `v<version>` tag), and for final versions runs
       `publish-release`, `docs`, and `release` to update the website assets and
       create the `release` commit.
-   4. Unless `dry_run`, pushes the current branch and the new tag. **Nothing is
-      pushed before this point**, so a failing test or build aborts the release
-      with no tag created.
+   4. Unless `dry_run`:
+      - Creates and pushes a `release/v<version>` branch (isolated from `main`)
+      - Pushes the version tag
+      - **Creates a PR** against `main` for review of the generated assets
+   5. **Nothing is pushed to `main` before this point**, so a failing test or
+      build aborts the release with no branch/tag created.
 
 2. **build** (matrix: win/mac/linux installers + win portable) — checks out the
-   pushed tag and produces the platform installers as artifacts. Same as before.
+   tag and produces the platform installers as artifacts. Runs even before the
+   PR is merged (on the tag, which is stable).
 
 3. **release** — downloads the artifacts and creates a **draft** GitHub Release
-   for the tag. Same as before.
+   for the tag. The draft is left for manual review/publishing.
 
 `build` and `release` are skipped on `dry_run`.
+
+## After the workflow completes
+
+1. Review the release PR: check the generated assets (`docs/release.json`,
+   webapp build, etc.)
+2. Merge the PR into `main` when satisfied.
+3. If desired, publish the draft release from the GitHub Releases page (or let
+   it sit as a draft for further review).
 
 ## Why one workflow instead of a tag-push trigger
 
@@ -77,13 +90,16 @@ the whole release in one place.
 
 ## Prerequisites / notes
 
-- The `prepare` job pushes directly to the release branch. Branch protection
-  rules must allow the `github-actions[bot]` (via the `contents: write`
-  permission) to push to that branch, or the push step will fail.
+- The `prepare` job creates and pushes a `release/v<version>` branch and
+  creates a PR. The branch protection rules for `main` are **not** bypassed —
+  the PR merge still requires branch protection checks to pass.
 - The tag points at the `npm version` bump commit; the `release` commit (webapp
-  bundle + `release.json`) sits on top on the branch. Installer builds check out
+  bundle + `release.json`) sits on top of the branch. Installer builds check out
   the tag, which carries the correct `package.json` version — this matches the
   previous behavior.
+- The draft release is created pointing at this tag, but is not automatically
+  published. The maintainer can review and publish it from GitHub, or keep it
+  as a draft.
 - The local `npm run release:*` scripts are retained for manual/offline use.
   `scripts/publish-release.ts` now also accepts `--yes` and
   `--platforms=all|win,mac,linux` for non-interactive runs.

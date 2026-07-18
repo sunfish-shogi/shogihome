@@ -26,12 +26,13 @@ on:
 
 jobs:
   # Phase 1: run the quality gate and a build (compile) check, then create the
-  # release commit and tag. Nothing is pushed until every check above passes.
+  # release commit and tag on a release branch. Create a PR for review.
   prepare:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.release.outputs.tag }}
       version: ${{ steps.release.outputs.version }}
+      pr_number: ${{ steps.create-pr.outputs.pull-request-number }}
     steps:
       - uses: actions/checkout@v7.0.0
         with:
@@ -69,12 +70,35 @@ jobs:
         id: release
         run: npm run release:ci -- ${{ inputs.release_type }}
 
-      # Push the branch and tag only after the gate and build succeeded.
-      - name: Push branch and tag
+      # Create a release branch and push the tag (not main) only after all checks pass.
+      - name: Push release branch and tag
         if: ${{ !inputs.dry_run }}
         run: |
-          git push origin HEAD:${{ github.ref_name }}
+          RELEASE_BRANCH="release/${{ steps.release.outputs.tag }}"
+          git checkout -b "$RELEASE_BRANCH"
+          git push -u origin "$RELEASE_BRANCH"
           git push origin "${{ steps.release.outputs.tag }}"
+
+      # Create a PR for review of the release assets.
+      - name: Create release PR
+        if: ${{ !inputs.dry_run }}
+        id: create-pr
+        run: |
+          RELEASE_BRANCH="release/${{ steps.release.outputs.tag }}"
+          gh pr create \
+            --base main \
+            --head "$RELEASE_BRANCH" \
+            --title "Release ${{ steps.release.outputs.tag }}" \
+            --body "Release candidate for ${{ steps.release.outputs.tag }}.
+
+          Please review the generated assets:
+          - \`docs/release.json\` (for final versions)
+          - \`docs/release-*.json\` (platform-specific)
+          - \`docs/webapp/\` (built web app bundle)
+
+          Merge this PR to finalize the release."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Phase 2: build platform installers from the pushed tag.
   build:
