@@ -315,7 +315,7 @@ export type Texts = {
   commentsAndBookmarks: string;
   branches: string;
   branchListMode: string;
-  branchTree: string;
+  tree: string;
   previousMoveBranches: string;
   nextMoveBranches: string;
   bookmark: string;

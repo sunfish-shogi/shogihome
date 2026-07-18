@@ -240,7 +240,7 @@
               <span class="property">
                 <ToggleButton
                   :value="!!component.showBranchTree"
-                  :label="t.branchTree"
+                  :label="t.tree"
                   @update:value="
                     (value) => updateCustomProfileComponent(index, 'showBranchTree', value)
                   "
