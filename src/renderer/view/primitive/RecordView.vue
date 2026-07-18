@@ -123,7 +123,7 @@
       </div>
       <div class="option">
         <ToggleButton
-          :label="t.branchTree"
+          :label="t.tree"
           :value="showBranchTree"
           @update:value="(enabled: boolean) => emit('toggleShowBranchTree', enabled)"
         />

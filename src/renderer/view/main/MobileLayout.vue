@@ -13,7 +13,7 @@
         />
         <RecordPane
           v-if="showRecordViewOnBottom"
-          v-show="bottomUIType === BottomUIType.RECORD"
+          v-show="bottomUIType === BottomUIType.RECORD || bottomUIType === BottomUIType.BRANCH_TREE"
           :style="{
             width: `${windowSize.width}px`,
             height: `${bottomViewSize.height}px`,
@@ -22,7 +22,7 @@
           :show-bottom-control="false"
           :show-elapsed-time="true"
           :show-comment="true"
-          :show-branch-tree="appSettings.showBranchTreeInRecordView"
+          :show-branch-tree="bottomUIType === BottomUIType.BRANCH_TREE"
         />
         <RecordComment
           v-if="showRecordViewOnBottom"
@@ -42,6 +42,7 @@
           v-model:value="bottomUIType"
           :items="[
             { label: t.record, value: BottomUIType.RECORD },
+            { label: t.tree, value: BottomUIType.BRANCH_TREE },
             { label: t.comments, value: BottomUIType.COMMENT },
             { label: t.recordProperties, value: BottomUIType.INFO },
           ]"
@@ -55,13 +56,19 @@
       >
         <MobileControls :style="{ height: `${controlPaneHeight}px` }" />
         <RecordPane
-          v-show="sideUIType === SideUIType.RECORD"
-          :style="{ height: `${sideViewSize.height * 0.6}px` }"
+          v-show="sideUIType === SideUIType.RECORD || sideUIType === SideUIType.BRANCH_TREE"
+          :style="{
+            height: `${
+              sideUIType === SideUIType.BRANCH_TREE
+                ? sideViewSize.height
+                : sideViewSize.height * 0.6
+            }px`,
+          }"
           :show-top-control="false"
           :show-bottom-control="false"
           :show-elapsed-time="true"
           :show-comment="true"
-          :show-branch-tree="appSettings.showBranchTreeInRecordView"
+          :show-branch-tree="sideUIType === SideUIType.BRANCH_TREE"
         />
         <RecordComment
           v-show="sideUIType === SideUIType.RECORD"
@@ -75,6 +82,7 @@
           v-model:value="sideUIType"
           :items="[
             { label: t.record, value: SideUIType.RECORD },
+            { label: t.tree, value: SideUIType.BRANCH_TREE },
             { label: t.recordProperties, value: SideUIType.INFO },
           ]"
           :height="selectorHeight"
@@ -87,11 +95,13 @@
 <script lang="ts">
 enum BottomUIType {
   RECORD = "record",
+  BRANCH_TREE = "branchTree",
   COMMENT = "comment",
   INFO = "info",
 }
 enum SideUIType {
   RECORD = "record",
+  BRANCH_TREE = "branchTree",
   INFO = "info",
 }
 </script>
@@ -109,9 +119,6 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 import { isIOS } from "@/renderer/helpers/env";
-import { useAppSettings } from "@/renderer/store/settings";
-
-const appSettings = useAppSettings();
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;

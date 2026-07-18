@@ -149,7 +149,7 @@ export function buildRecordTreeLayout(record: ImmutableRecord): RecordTreeLayout
 
 - `src/common/settings/app.ts`: `showBranchTreeInRecordView: boolean` を追加(既定 false、normalize 対応)。
 - `src/renderer/view/main/RecordPane.vue`: appSettings から prop を渡し、トグルの emit で `updateAppSettings` を呼ぶ(既存トグルと同じ経路)。StandardLayout / MobileLayout / CustomLayout は RecordPane 経由のため個別対応は不要。
-- i18n: `ja.ts` / `en.ts` に「分岐ツリー」(例: `branchTree`)を追加。`zh_tw.ts` / `vi.ts` は翻訳ポリシーに従い `// TODO: Translate` を付けて日本語のまま追加する。
+- i18n: `ja.ts` / `en.ts` に「ツリー」(例: `tree`)を追加。`zh_tw.ts` / `vi.ts` は翻訳ポリシーに従い `// TODO: Translate` を付けて日本語のまま追加する。
 
 ### 5. テスト
 
