@@ -70,7 +70,7 @@
     <div v-if="showSubArea" class="row sub-area">
       <slot name="sub-area"></slot>
     </div>
-    <div v-else-if="showBranches" class="row branch-list-area">
+    <div v-else-if="showBranches" ref="branchListArea" class="row branch-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
       <div class="auto column branch-list-main">
@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div v-if="!isMainBranch">
+        <div v-if="showBackToMainBranch">
           <button
             class="branch-bottom-control"
             :disabled="!operational"
@@ -148,7 +148,7 @@
 
 <script setup lang="ts">
 import { ImmutableRecord, ImmutableNode } from "tsshogi";
-import { computed, ref, PropType, onUpdated } from "vue";
+import { computed, ref, PropType, onUpdated, onMounted, onBeforeUnmount, watch } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import RecordBranchTree from "@/renderer/view/primitive/RecordBranchTree.vue";
@@ -239,7 +239,34 @@ const emit = defineEmits<{
 const moveList = ref(null as HTMLDivElement | null);
 const treeScroll = ref(null as HTMLDivElement | null);
 const branchList = ref(null as HTMLDivElement | null);
+const branchListArea = ref(null as HTMLDivElement | null);
+const branchListAreaHeight = ref(0);
 const showSubArea = ref(false);
+
+let branchListAreaResizeObserver: ResizeObserver | null = null;
+onMounted(() => {
+  branchListAreaResizeObserver = new ResizeObserver((entries) => {
+    branchListAreaHeight.value = entries[0].contentRect.height;
+  });
+  if (branchListArea.value) {
+    branchListAreaResizeObserver.observe(branchListArea.value);
+  }
+});
+watch(branchListArea, (element, previous) => {
+  if (previous) {
+    branchListAreaResizeObserver?.unobserve(previous);
+  }
+  if (element) {
+    branchListAreaResizeObserver?.observe(element);
+    branchListAreaHeight.value = element.getBoundingClientRect().height;
+  } else {
+    branchListAreaHeight.value = 0;
+  }
+});
+onBeforeUnmount(() => {
+  branchListAreaResizeObserver?.disconnect();
+  branchListAreaResizeObserver = null;
+});
 
 const goBegin = () => {
   if (props.operational) {
@@ -305,17 +332,22 @@ const showDuplicatePositions = (sfen: string) => {
   }
 };
 
-const isMainBranch = computed(() => {
+const showBackToMainBranch = computed(() => {
+  // 分岐エリアの高さが十分ではない場合に「本譜へ戻る」ボタンの表示を抑制
+  if (branchListAreaHeight.value < 70) {
+    return false;
+  }
+  // メインの分岐以外に居る場合に「本譜へ戻る」ボタンを表示
   for (
     let node: ImmutableNode | null = props.record.first;
     node && node.activeBranch;
     node = node.next
   ) {
     if (node === props.record.current) {
-      return true;
+      return false;
     }
   }
-  return false;
+  return true;
 });
 
 const branches = computed(() => {
