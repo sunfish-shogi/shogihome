@@ -40,6 +40,18 @@ function readVersion(): string {
   return JSON.parse(fs.readFileSync("package.json", "utf-8")).version;
 }
 
+function validateReleaseType(releaseType: string, currentVersion: string) {
+  const currentIsPrerelease = semver.prerelease(currentVersion) !== null;
+
+  // prerelease / prerelease-beta / finalize require the current version to be a prerelease
+  if (["prerelease", "prerelease-beta", "finalize"].includes(releaseType) && !currentIsPrerelease) {
+    throw new Error(
+      `Release type '${releaseType}' requires the current version to be a prerelease. ` +
+        `Current version: ${currentVersion}`,
+    );
+  }
+}
+
 function main() {
   const releaseType = process.argv[2];
   const versionArgs = releaseTypeToVersionArgs[releaseType];
@@ -49,6 +61,9 @@ function main() {
         `Valid types: ${Object.keys(releaseTypeToVersionArgs).join(", ")}`,
     );
   }
+
+  const currentVersion = readVersion();
+  validateReleaseType(releaseType, currentVersion);
 
   // 1. Commit the third-party license report if it changed.
   run("npm", ["run", "license:commit"]);

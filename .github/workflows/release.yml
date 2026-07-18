@@ -2,6 +2,7 @@ name: Release
 
 permissions:
   contents: write
+  pull-requests: write
 
 on:
   workflow_dispatch:
@@ -73,11 +74,13 @@ jobs:
       # Create a release branch and push the tag (not main) only after all checks pass.
       - name: Push release branch and tag
         if: ${{ !inputs.dry_run }}
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
-          RELEASE_BRANCH="release/${{ steps.release.outputs.tag }}"
+          RELEASE_BRANCH="release/${TAG}"
           git checkout -b "$RELEASE_BRANCH"
           git push -u origin "$RELEASE_BRANCH"
-          git push origin "${{ steps.release.outputs.tag }}"
+          git push origin "$TAG"
 
       # Create a PR for review of the release assets.
       - name: Create release PR
@@ -100,7 +103,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Phase 2: build platform installers from the pushed tag.
+  # Phase 2: build platform installers from the release branch (not tag, to include all assets).
   build:
     needs: prepare
     if: ${{ !inputs.dry_run }}
@@ -125,7 +128,8 @@ jobs:
         if: matrix.os == 'windows'
       - uses: actions/checkout@v7.0.0
         with:
-          ref: ${{ needs.prepare.outputs.tag }}
+          ref: release/${{ needs.prepare.outputs.tag }}
+          persist-credentials: false
       - uses: actions/setup-node@v6.4.0
         with:
           node-version: lts/*
@@ -137,11 +141,17 @@ jobs:
         if: matrix.variant != 'portable'
       - run: npm run electron:portable
         if: matrix.variant == 'portable'
-      - run: node scripts/archive.mjs ${{ matrix.os_short }} ${{ needs.prepare.outputs.tag }} ${{ matrix.variant }}
+      - name: Archive and upload
+        env:
+          OS_SHORT: ${{ matrix.os_short }}
+          TAG: ${{ needs.prepare.outputs.tag }}
+          VARIANT: ${{ matrix.variant }}
+        run: node scripts/archive.mjs "$OS_SHORT" "$TAG" "$VARIANT"
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.os }}${{ matrix.variant == 'portable' && '-portable' || '' }}-release
           path: dist/release-*.zip
+          persist-credentials: false
 
   # Phase 3: gather the installers into a draft GitHub Release.
   release:
@@ -152,16 +162,17 @@ jobs:
       - uses: actions/checkout@v7.0.0
         with:
           ref: ${{ needs.prepare.outputs.tag }}
+          persist-credentials: false
       - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
       - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.prepare.outputs.tag }}
         run: |
           gh release create "$TAG_NAME" \
             --title "ShogiHome $TAG_NAME" \
             --draft \
             dist/release-*.zip
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ needs.prepare.outputs.tag }}
