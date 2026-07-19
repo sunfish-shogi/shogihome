@@ -175,6 +175,26 @@ const bridge: Bridge = {
     // Do Nothing
   },
 
+  // Next Move Problem Collection
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async showSaveNextMoveCollectionDialog(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async loadNextMoveCollection(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveNextMoveCollection(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveNextMoveGenerationSettings(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+
   // Book
   async showOpenBookDialog(): Promise<string> {
     throw new Error("This feature is not available on command line tool");

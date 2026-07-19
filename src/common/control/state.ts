@@ -25,6 +25,8 @@ export enum AppState {
   BOOK_PROPERTIES_DIALOG = "bookPropertiesDialog",
   SEARCH_DUPLICATE_POSITIONS_DIALOG = "searchDuplicatePositionsDialog",
   ELAPSED_TIME_CHART_DIALOG = "elapsedTimeChartDialog",
+  NEXT_MOVE_GENERATION_DIALOG = "nextMoveGenerationDialog",
+  NEXT_MOVE_GENERATION = "nextMoveGeneration",
 }
 
 export enum ResearchState {

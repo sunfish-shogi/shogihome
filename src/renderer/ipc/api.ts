@@ -37,6 +37,12 @@ import {
 } from "@/common/book.js";
 import { BookImportSettings } from "@/common/settings/book.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
+import {
+  NextMoveCollection,
+  parseNextMoveCollection,
+  serializeNextMoveCollection,
+} from "@/common/nextmove/collection.js";
+import { NextMoveGenerationSettings } from "@/common/settings/nextmove.js";
 
 type AppInfo = {
   appVersion?: string;
@@ -86,6 +92,14 @@ export interface API {
   listRecordFiles(request: ListRecordFilesRequest): Promise<string[]>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;
+
+  // Next Move Problem Collection
+  showOpenNextMoveCollectionDialog(): Promise<string>;
+  showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string>;
+  loadNextMoveCollection(path: string): Promise<NextMoveCollection>;
+  saveNextMoveCollection(path: string, collection: NextMoveCollection): Promise<void>;
+  loadNextMoveGenerationSettings(): Promise<NextMoveGenerationSettings>;
+  saveNextMoveGenerationSettings(settings: NextMoveGenerationSettings): Promise<void>;
 
   // Book
   showOpenBookDialog(): Promise<string>;
@@ -263,6 +277,20 @@ const api: API = {
   },
   async listRecordFiles(request: ListRecordFilesRequest): Promise<string[]> {
     return JSON.parse(await bridge.listRecordFiles(JSON.stringify(request)));
+  },
+
+  // Next Move Problem Collection
+  async loadNextMoveCollection(path: string): Promise<NextMoveCollection> {
+    return parseNextMoveCollection(await bridge.loadNextMoveCollection(path));
+  },
+  saveNextMoveCollection(path: string, collection: NextMoveCollection): Promise<void> {
+    return bridge.saveNextMoveCollection(path, serializeNextMoveCollection(collection));
+  },
+  async loadNextMoveGenerationSettings(): Promise<NextMoveGenerationSettings> {
+    return JSON.parse(await bridge.loadNextMoveGenerationSettings());
+  },
+  saveNextMoveGenerationSettings(settings: NextMoveGenerationSettings): Promise<void> {
+    return bridge.saveNextMoveGenerationSettings(JSON.stringify(settings));
   },
 
   // Book

@@ -75,6 +75,14 @@ import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./weba
 import { CommentBehavior } from "@/common/settings/comment.js";
 import { Attachment, ListItem } from "@/common/message.js";
 import { ParallelGameManager, ParallelGameProgress } from "@/renderer/game/parallel.js";
+import {
+  NextMoveGenerationManager,
+  NextMoveGenerationProgress,
+  NextMoveGenerationSummary,
+  useNextMoveQuizStore,
+} from "./nextmove.js";
+import { NextMoveGenerationSettings } from "@/common/settings/nextmove.js";
+import { NextMoveCollection } from "@/common/nextmove/collection.js";
 
 type CandidateMove = {
   move: Move;
@@ -94,6 +102,7 @@ export type PVPreview = {
   lowerBound?: boolean;
   upperBound?: boolean;
   pv: Move[];
+  flip?: boolean;
 };
 
 function getMessageAttachmentsByGameResults(
@@ -176,6 +185,9 @@ class Store {
   private _batchAnalysisProgress?: BatchAnalysisProgress;
   private _analysisDialogTarget: AnalysisDialogTarget = "record";
   private mateSearchManager = new MateSearchManager();
+  private nextMoveGenerationManager = new NextMoveGenerationManager();
+  private _nextMoveGenerationProgress?: NextMoveGenerationProgress;
+  private nextMoveGenerationSettings?: NextMoveGenerationSettings;
   private _researchState = ResearchState.IDLE;
   private researchManager = new ResearchManager();
   private _reactive: UnwrapNestedRefs<Store>;
@@ -267,6 +279,12 @@ class Store {
       .on("notImplemented", this.onNotImplemented.bind(refs))
       .on("noMate", this.onNoMate.bind(refs))
       .on("error", this.onCheckmateError.bind(refs));
+    this.nextMoveGenerationManager
+      .on("progress", this.onNextMoveGenerationProgress.bind(refs))
+      .on("finish", this.onNextMoveGenerationFinish.bind(refs))
+      .on("error", (e) => {
+        useErrorStore().add(e);
+      });
     setOnStartSearchHandler(this.endUSIIteration.bind(refs));
     setOnUpdateUSIInfoHandler(this.updateUSIInfo.bind(refs));
   }
@@ -528,7 +546,8 @@ class Store {
       this.appState === AppState.RESET_BOOK_DIALOG ||
       this.appState === AppState.BOOK_PROPERTIES_DIALOG ||
       this.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG ||
-      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG
+      this.appState === AppState.ELAPSED_TIME_CHART_DIALOG ||
+      this.appState === AppState.NEXT_MOVE_GENERATION_DIALOG
     ) {
       this._appState = AppState.NORMAL;
     }
@@ -1139,6 +1158,150 @@ class Store {
     }
     this.mateSearchManager.close();
     this._appState = AppState.NORMAL;
+  }
+
+  get nextMoveGenerationProgress(): NextMoveGenerationProgress | undefined {
+    return this._nextMoveGenerationProgress;
+  }
+
+  showNextMoveGenerationDialog(): void {
+    if (this.appState === AppState.NORMAL) {
+      this._appState = AppState.NEXT_MOVE_GENERATION_DIALOG;
+    }
+  }
+
+  startNextMoveGeneration(settings: NextMoveGenerationSettings): void {
+    if (this.appState !== AppState.NEXT_MOVE_GENERATION_DIALOG || useBusyState().isBusy) {
+      return;
+    }
+    useBusyState().retain();
+    api
+      .saveNextMoveGenerationSettings(settings)
+      .then(() => this.nextMoveGenerationManager.start(settings))
+      .then(() => {
+        this.nextMoveGenerationSettings = settings;
+        this._nextMoveGenerationProgress = undefined;
+        this._appState = AppState.NEXT_MOVE_GENERATION;
+      })
+      .catch((e) => {
+        useErrorStore().add("次の一手問題集の作成の初期化中にエラーが出ました: " + e); // TODO: i18n
+      })
+      .finally(() => {
+        useBusyState().release();
+      });
+  }
+
+  stopNextMoveGeneration(): void {
+    if (this.appState !== AppState.NEXT_MOVE_GENERATION) {
+      return;
+    }
+    this.nextMoveGenerationManager.stop();
+  }
+
+  private onNextMoveGenerationProgress(progress: NextMoveGenerationProgress): void {
+    this._nextMoveGenerationProgress = progress;
+  }
+
+  private onNextMoveGenerationFinish(
+    collection: NextMoveCollection,
+    summary: NextMoveGenerationSummary,
+  ): void {
+    this._appState = AppState.NORMAL;
+    this._nextMoveGenerationProgress = undefined;
+    const settings = this.nextMoveGenerationSettings;
+    if (!settings) {
+      return;
+    }
+    if (collection.problems.length === 0) {
+      useErrorStore().add(
+        `${t.noProblemsWereGeneratedAndFileWasNotCreated} (${this.nextMoveGenerationSummaryText(summary)})`,
+      );
+      return;
+    }
+    const save = () => {
+      api
+        .saveNextMoveCollection(settings.destinationFile, collection)
+        .then(() => {
+          // 保存した問題集をそのまま出題できるように確認を出す。
+          this.showConfirmation({
+            message: [
+              t.nextMoveGenerationCompleted,
+              this.nextMoveGenerationSummaryText(summary),
+              settings.destinationFile,
+              t.doYouWantToStartQuiz,
+            ].join("\n"),
+            buttonType: "yesNo",
+            onOk: () => {
+              useNextMoveQuizStore().open(collection, settings.destinationFile, false);
+            },
+          });
+        })
+        .catch((e) => {
+          useErrorStore().add(e);
+        });
+    };
+    if (summary.aborted) {
+      // 中断した場合はそれまでに採用した問題を保存するかどうかを確認する。
+      this.showConfirmation({
+        message: t.doYouWantToSaveNProblems(collection.problems.length),
+        buttonType: "yesNo",
+        onOk: save,
+      });
+    } else {
+      save();
+    }
+  }
+
+  private nextMoveGenerationSummaryText(summary: NextMoveGenerationSummary): string {
+    return (
+      `${t.files}: ${summary.totalFiles} (${t.skipped}: ${summary.skippedFiles})` +
+      ` / ${t.blunderCandidates}: ${summary.blunderCount}` +
+      ` / ${t.adoptedProblems}: ${summary.adoptedCount}`
+    );
+  }
+
+  openNextMoveQuiz(): void {
+    if (this.appState !== AppState.NORMAL || useBusyState().isBusy) {
+      return;
+    }
+    // 中断中のセッションがあれば続きから再開するかどうかを確認する。
+    if (useNextMoveQuizStore().isActive) {
+      this.showConfirmation({
+        message: t.doYouWantToResumeFromWhereYouLeftOff,
+        buttonType: "yesNo",
+        onOk: () => {
+          useNextMoveQuizStore().resume();
+        },
+        onCancel: () => {
+          this.selectAndOpenNextMoveQuiz();
+        },
+      });
+      return;
+    }
+    this.selectAndOpenNextMoveQuiz();
+  }
+
+  private selectAndOpenNextMoveQuiz(): void {
+    if (this.appState !== AppState.NORMAL || useBusyState().isBusy) {
+      return;
+    }
+    useBusyState().retain();
+    api
+      .showOpenNextMoveCollectionDialog()
+      .then((path) => {
+        if (!path) {
+          return;
+        }
+        return api.loadNextMoveCollection(path).then((collection) => {
+          useNextMoveQuizStore().open(collection, path, false);
+        });
+      })
+      .catch((e) => {
+        useErrorStore().add(e);
+      })
+      .finally(() => {
+        useBusyState().release();
+      });
   }
 
   private onCheckmate(moves: Move[]): void {

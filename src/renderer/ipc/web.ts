@@ -262,6 +262,56 @@ export const webAPI: Bridge = {
     // Do Nothing
   },
 
+  // Next Move Problem Collection
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", ".json");
+    return new Promise<string>((resolve, reject) => {
+      input.click();
+      input.onchange = () => {
+        const file = input.files?.[0];
+        if (file) {
+          file
+            .arrayBuffer()
+            .then((data) => {
+              const fileURI = uri.issueTempFileURI(file.name);
+              fileCache.clear();
+              fileCache.set(fileURI, data);
+              resolve(fileURI);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          reject(new Error("invalid file"));
+        }
+      };
+      input.oncancel = () => {
+        resolve("");
+      };
+    });
+  },
+  async showSaveNextMoveCollectionDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async loadNextMoveCollection(uri: string): Promise<string> {
+    const data = fileCache.get(uri);
+    if (data) {
+      return new TextDecoder().decode(data);
+    }
+    return Promise.reject(new Error("invalid URI"));
+  },
+  async saveNextMoveCollection(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveNextMoveGenerationSettings(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+
   // Book
   async showOpenBookDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);

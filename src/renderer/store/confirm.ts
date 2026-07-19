@@ -2,8 +2,11 @@ import { LogLevel } from "@/common/log.js";
 import api from "@/renderer/ipc/api.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 
+export type ConfirmationButtonType = "okCancel" | "yesNo";
+
 export type Confirmation = {
   message: string;
+  buttonType?: ConfirmationButtonType; // 省略時は "okCancel"
   onOk: () => void;
   onCancel?: () => void;
 };
@@ -13,6 +16,10 @@ class ConfirmationStore {
 
   get message(): string | undefined {
     return this._confirmation?.message;
+  }
+
+  get buttonType(): ConfirmationButtonType {
+    return this._confirmation?.buttonType || "okCancel";
   }
 
   /**

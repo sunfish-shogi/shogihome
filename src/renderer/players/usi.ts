@@ -52,6 +52,7 @@ export class USIPlayer implements Player {
   private usiInfoTimeout?: number;
   private customMultiPV?: number;
   private bookSessionID?: number;
+  private usiInfoCommandHandler?: (position: ImmutablePosition, info: USIInfoCommand) => void;
 
   constructor(
     private engine: USIEngine,
@@ -382,11 +383,21 @@ export class USIPlayer implements Player {
     mateHandler?.onNoMate();
   }
 
+  /**
+   * MultiPV の候補を含む生の USI info コマンドを受け取るハンドラーを設定する。
+   */
+  setUSIInfoCommandHandler(
+    handler?: (position: ImmutablePosition, info: USIInfoCommand) => void,
+  ): void {
+    this.usiInfoCommandHandler = handler;
+  }
+
   onUSIInfo(usi: string, infoCommand: USIInfoCommand) {
     if (usi !== this.usi || !this.position) {
       return;
     }
     onUpdateUSIInfo(this.sessionID, this.position, this.name, infoCommand, this.ponderMove);
+    this.usiInfoCommandHandler?.(this.position, infoCommand);
     if (infoCommand.multipv && infoCommand.multipv !== 1) {
       return;
     }

@@ -285,6 +285,16 @@ function createMenuTemplate(window: BrowserWindow) {
       ],
     },
     {
+      label: t.nextMoveProblemCollection,
+      submenu: [
+        menuItem(t.createProblemCollection, MenuEvent.CREATE_NEXT_MOVE_COLLECTION, [
+          AppState.NORMAL,
+        ]),
+        menuItem(t.interrupt, MenuEvent.STOP_NEXT_MOVE_GENERATION, [AppState.NEXT_MOVE_GENERATION]),
+        menuItem(t.openProblemCollection, MenuEvent.OPEN_NEXT_MOVE_COLLECTION, [AppState.NORMAL]),
+      ],
+    },
+    {
       label: t.book,
       submenu: [
         menuItem(t.bookInfo, MenuEvent.SHOW_BOOK_PROPERTIES, [AppState.NORMAL]),

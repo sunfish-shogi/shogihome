@@ -38,6 +38,9 @@
       @close="store.destroyModalDialog()"
     />
     <ElapsedTimeChartDialog v-if="store.appState === AppState.ELAPSED_TIME_CHART_DIALOG" />
+    <NextMoveGenerationDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION_DIALOG" />
+    <NextMoveGenerationProgressDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION" />
+    <NextMoveQuizDialog v-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
     <CSAGameReadyDialog
       v-if="
         store.csaGameState === CSAGameState.PLAYER_SETUP ||
@@ -58,6 +61,7 @@
       :lower-bound="store.pvPreview.lowerBound"
       :upper-bound="store.pvPreview.upperBound"
       :pv="store.pvPreview.pv"
+      :flip="store.pvPreview.flip"
       @close="store.closePVPreviewDialog()"
     />
     <ParallelGameViewer v-if="store.appState === AppState.PARALLEL_GAME" />
@@ -111,12 +115,16 @@ import ResetBookDialog from "./dialog/ResetBookDialog.vue";
 import BookPropertiesDialog from "./dialog/BookPropertiesDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
 import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
+import NextMoveGenerationDialog from "./dialog/NextMoveGenerationDialog.vue";
+import NextMoveGenerationProgressDialog from "./dialog/NextMoveGenerationProgressDialog.vue";
+import NextMoveQuizDialog from "./dialog/NextMoveQuizDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import NotificationOverlay from "./overlay/NotificationOverlay.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
 import { useErrorStore } from "@/renderer/store/error";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import { useNextMoveQuizStore } from "@/renderer/store/nextmove";
 import CustomLayout from "./main/CustomLayout.vue";
 import MobileLayout from "./main/MobileLayout.vue";
 import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api";
@@ -132,6 +140,7 @@ const messageStore = useMessageStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
 const confirmation = useConfirmationStore();
+const nextMoveQuiz = useNextMoveQuizStore();
 
 const onCopy = () => {
   store.copyRecordKIF();
