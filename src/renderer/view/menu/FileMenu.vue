@@ -76,9 +76,14 @@
           <Icon :icon="IconType.BATCH" />
           <div class="label">{{ t.batchConversion }}</div>
         </button>
-        <button :disabled="!states.nextMoveQuiz" @click="onOpenNextMoveCollection">
+        <!-- モバイル版は出題ダイアログが専用レイアウトに対応していないため表示しない。 -->
+        <button
+          v-if="!isMobileWebApp()"
+          :disabled="!states.nextMoveQuiz"
+          @click="onOpenNextMoveCollection"
+        >
           <Icon :icon="IconType.QUIZ" />
-          <div class="label">{{ t.openNextMoveProblemCollection }}</div>
+          <div class="label">{{ t.nextMoveProblemCollection }}</div>
         </button>
         <button v-if="isNative()" @click="onOpenAutoSaveDirectory">
           <Icon :icon="IconType.OPEN_FOLDER" />

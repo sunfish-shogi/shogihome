@@ -77,7 +77,6 @@ export const en: Texts = {
   statisticsReport: "Statistics Report",
   nextMoveProblemCollection: "Next Move",
   createNextMoveProblemCollection: "Create Next Move Problems",
-  openNextMoveProblemCollection: "Open Next Move Problems",
   createProblemCollection: "Create Collection",
   openProblemCollection: "Open Collection",
   nextMoveGenerationCompleted: "Next move problem generation completed.",

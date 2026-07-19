@@ -76,7 +76,6 @@ export const ja: Texts = {
   statisticsReport: "統計情報",
   nextMoveProblemCollection: "次の一手",
   createNextMoveProblemCollection: "次の一手問題集の作成",
-  openNextMoveProblemCollection: "次の一手問題集を開く",
   createProblemCollection: "問題集の作成",
   openProblemCollection: "問題集を開く",
   nextMoveGenerationCompleted: "次の一手問題集の作成が完了しました。",

@@ -74,7 +74,6 @@ export type Texts = {
   statisticsReport: string;
   nextMoveProblemCollection: string;
   createNextMoveProblemCollection: string;
-  openNextMoveProblemCollection: string;
   createProblemCollection: string;
   openProblemCollection: string;
   nextMoveGenerationCompleted: string;

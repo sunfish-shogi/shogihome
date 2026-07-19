@@ -86,7 +86,6 @@ export const vi: Texts = {
   statisticsReport: "Thống kê",
   nextMoveProblemCollection: "次の一手", // TODO: Translate
   createNextMoveProblemCollection: "次の一手問題集の作成", // TODO: Translate
-  openNextMoveProblemCollection: "次の一手問題集を開く", // TODO: Translate
   createProblemCollection: "問題集の作成", // TODO: Translate
   openProblemCollection: "問題集を開く", // TODO: Translate
   nextMoveGenerationCompleted: "次の一手問題集の作成が完了しました。", // TODO: Translate
