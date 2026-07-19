@@ -51,13 +51,16 @@ The workflow runs three jobs in sequence:
    2. Build gate: `npm run electron:pack` (compiles web + electron
       main/preload/background).
    3. `npm run release:ci -- <release_type>` — runs `scripts/ci-release.ts`,
-      which commits the license report, runs `npm version` (creating the bump
-      commit and the `v<version>` tag), and for final versions runs
-      `publish-release`, `docs`, and `release` to update the website assets and
-      create the `release` commit.
+      which validates the release type against the current version, commits the
+      license report, bumps the version with `npm version --no-git-tag-version`
+      and commits it, for final versions runs `publish-release`, `docs`, and
+      `release` to update the website assets and create the `release` commit,
+      and finally creates the annotated `v<version>` tag on the last commit so
+      the tag includes every release asset.
    4. Unless `dry_run`:
-      - Creates and pushes a `release/v<version>` branch (isolated from `main`)
-      - Pushes the version tag
+      - Creates a `release/v<version>` branch (isolated from `main`) and pushes
+        it together with the tag in a single atomic push (`git push --atomic`),
+        so a partial failure cannot leave the branch without its tag
       - **Creates a PR** against `main` for review of the generated assets
    5. **Nothing is pushed to `main` before this point**, so a failing test or
       build aborts the release with no branch/tag created.
@@ -93,10 +96,10 @@ the whole release in one place.
 - The `prepare` job creates and pushes a `release/v<version>` branch and
   creates a PR. The branch protection rules for `main` are **not** bypassed —
   the PR merge still requires branch protection checks to pass.
-- The tag points at the `npm version` bump commit; the `release` commit (webapp
-  bundle + `release.json`) sits on top of the branch. Installer builds check out
-  the tag, which carries the correct `package.json` version — this matches the
-  previous behavior.
+- The tag points at the final commit of the release branch: the `release`
+  commit (webapp bundle + `release.json`) for final versions, or the version
+  bump commit for pre-releases. Installer builds check out the tag, so they
+  always build from the complete release state.
 - The draft release is created pointing at this tag, but is not automatically
   published. The maintainer can review and publish it from GitHub, or keep it
   as a draft.

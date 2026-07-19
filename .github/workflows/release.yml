@@ -33,7 +33,6 @@ jobs:
     outputs:
       tag: ${{ steps.release.outputs.tag }}
       version: ${{ steps.release.outputs.version }}
-      pr_number: ${{ steps.create-pr.outputs.pull-request-number }}
     steps:
       - uses: actions/checkout@v7.0.0
         with:
@@ -71,7 +70,9 @@ jobs:
         id: release
         run: npm run release:ci -- ${{ inputs.release_type }}
 
-      # Create a release branch and push the tag (not main) only after all checks pass.
+      # Create a release branch and push it together with the tag (atomically,
+      # so a partial failure cannot leave the branch without its tag).
+      # Nothing is pushed to main.
       - name: Push release branch and tag
         if: ${{ !inputs.dry_run }}
         env:
@@ -79,20 +80,20 @@ jobs:
         run: |
           RELEASE_BRANCH="release/${TAG}"
           git checkout -b "$RELEASE_BRANCH"
-          git push -u origin "$RELEASE_BRANCH"
-          git push origin "$TAG"
+          git push --atomic origin "refs/heads/${RELEASE_BRANCH}" "refs/tags/${TAG}"
 
       # Create a PR for review of the release assets.
       - name: Create release PR
         if: ${{ !inputs.dry_run }}
-        id: create-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
         run: |
-          RELEASE_BRANCH="release/${{ steps.release.outputs.tag }}"
           gh pr create \
             --base main \
-            --head "$RELEASE_BRANCH" \
-            --title "Release ${{ steps.release.outputs.tag }}" \
-            --body "Release candidate for ${{ steps.release.outputs.tag }}.
+            --head "release/${TAG}" \
+            --title "Release ${TAG}" \
+            --body "Release candidate for ${TAG}.
 
           Please review the generated assets:
           - \`docs/release.json\` (for final versions)
@@ -100,10 +101,9 @@ jobs:
           - \`docs/webapp/\` (built web app bundle)
 
           Merge this PR to finalize the release."
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Phase 2: build platform installers from the release branch (not tag, to include all assets).
+  # Phase 2: build platform installers from the tag, which points at the final
+  # release commit (all assets included), so the build input is deterministic.
   build:
     needs: prepare
     if: ${{ !inputs.dry_run }}
@@ -128,7 +128,7 @@ jobs:
         if: matrix.os == 'windows'
       - uses: actions/checkout@v7.0.0
         with:
-          ref: release/${{ needs.prepare.outputs.tag }}
+          ref: ${{ needs.prepare.outputs.tag }}
           persist-credentials: false
       - uses: actions/setup-node@v6.4.0
         with:

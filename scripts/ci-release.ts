@@ -68,12 +68,17 @@ function main() {
   // 1. Commit the third-party license report if it changed.
   run("npm", ["run", "license:commit"]);
 
-  // 2. Bump the version. This creates a commit and a `v<version>` tag.
-  run("npm", ["version", ...versionArgs]);
+  // 2. Bump the version without committing or tagging, so the tag can be
+  //    placed on the final commit after all release assets are generated.
+  run("npm", ["version", ...versionArgs, "--no-git-tag-version"]);
 
   const version = readVersion();
   const isPrerelease = semver.prerelease(version) !== null;
   console.log(`New version: ${version} (prerelease: ${isPrerelease})`);
+
+  // Commit the bump with the same message format as `npm version`.
+  run("git", ["add", "package.json", "package-lock.json"]);
+  run("git", ["commit", "-m", version]);
 
   // 3. For final (non-pre-release) versions, update the website assets that
   //    advertise the latest/stable versions and produce the release commit.
@@ -92,8 +97,9 @@ function main() {
     run("npm", ["run", "release"]);
   }
 
-  // Expose the tag name to the workflow via the step summary output file.
+  // 4. Tag the final commit so the tag includes every release asset.
   const tag = `v${version}`;
+  run("git", ["tag", "-a", tag, "-m", version]);
   const outputPath = process.env.GITHUB_OUTPUT;
   if (outputPath) {
     fs.appendFileSync(outputPath, `tag=${tag}\nversion=${version}\nprerelease=${isPrerelease}\n`);
