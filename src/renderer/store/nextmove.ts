@@ -14,6 +14,7 @@ import {
   nextMoveCollectionVersion,
   NextMoveCandidate,
   NextMoveCollection,
+  NextMovePreviousMove,
   NextMoveProblem,
   normalizeProblemSFEN,
 } from "@/common/nextmove/collection.js";
@@ -193,7 +194,19 @@ export class NextMoveGenerationManager {
           if (!(actualMove instanceof Move)) {
             continue;
           }
+          // 出題時に盤面へ表示するため、出題局面に至る直前の指し手と
+          // その指し手を指す前の局面を記録する。
           record.goto(blunder.ply - 1);
+          const previousMove = record.current.move instanceof Move ? record.current.move : null;
+          let previousMoveInfo: NextMovePreviousMove | undefined;
+          if (previousMove) {
+            record.goto(blunder.ply - 2);
+            previousMoveInfo = {
+              usi: previousMove.usi,
+              sfen: normalizeProblemSFEN(record.position.sfen),
+            };
+            record.goto(blunder.ply - 1);
+          }
           const position = record.position;
           const key = getProblemPositionKey(position.sfen);
           if (positionKeys.has(key)) {
@@ -209,6 +222,7 @@ export class NextMoveGenerationManager {
             file,
             position,
             actualMove,
+            previousMoveInfo,
             blunder,
             candidates,
           );
@@ -298,6 +312,7 @@ export class NextMoveGenerationManager {
     file: string,
     position: ImmutablePosition,
     actualMove: Move,
+    previousMove: NextMovePreviousMove | undefined,
     blunder: { ply: number; scoreBeforeMove: number; scoreAfterMove: number },
     candidates: NextMoveCandidate[],
   ): NextMoveProblem | undefined {
@@ -333,6 +348,7 @@ export class NextMoveGenerationManager {
             score: blunder.scoreAfterMove,
             scoreSource: "comment",
           },
+      previousMove,
       analysis: {
         scoreBeforeMove: blunder.scoreBeforeMove,
         scoreAfterMove: blunder.scoreAfterMove,
@@ -412,6 +428,7 @@ export class NextMoveQuizState {
   private cursor = 0;
   private problemStates: NextMoveQuizProblemState[] = [];
   private _position?: Position;
+  private _previousMove?: Move;
   private _playedMove?: Move;
   private _positionAfterPlayedMove?: Position;
   private _lastJudgement?: NextMoveQuizJudgement;
@@ -516,9 +533,19 @@ export class NextMoveQuizState {
     return this._playedMove;
   }
 
+  /** 出題局面に至る直前の指し手を返します。 */
+  get previousMove(): Move | undefined {
+    return this._previousMove;
+  }
+
   private updatePosition(): void {
     const problem = this.problem;
     this._position = problem ? Position.newBySFEN(problem.sfen) || undefined : undefined;
+    this._previousMove = undefined;
+    if (problem?.previousMove) {
+      const previousPosition = Position.newBySFEN(problem.previousMove.sfen);
+      this._previousMove = previousPosition?.createMoveByUSI(problem.previousMove.usi) || undefined;
+    }
     this._playedMove = undefined;
     this._positionAfterPlayedMove = undefined;
   }

@@ -30,6 +30,16 @@ const validCollection: NextMoveCollection = {
   ],
 };
 
+const problemWithPreviousMove = {
+  sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+  candidates: [{ usi: "8c8d", score: -20, accepted: true }],
+  actualMove: { usi: "9c9d", score: 100 },
+  previousMove: {
+    usi: "7g7f",
+    sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+  },
+};
+
 describe("common/nextmove/collection", () => {
   it("normalizeProblemSFEN", () => {
     expect(
@@ -125,6 +135,41 @@ describe("common/nextmove/collection", () => {
       problems: [{ ...validCollection.problems[0], candidates: [null] }],
     });
     expect(() => parseNextMoveCollection(json)).toThrow("不正な指し手です");
+  });
+
+  it("parse/previousMove", () => {
+    const json = JSON.stringify({ ...validCollection, problems: [problemWithPreviousMove] });
+    const parsed = parseNextMoveCollection(json);
+    expect(parsed.problems[0].previousMove).toStrictEqual(problemWithPreviousMove.previousMove);
+  });
+
+  it("parse/invalidPreviousMove", () => {
+    const json = JSON.stringify({
+      ...validCollection,
+      problems: [
+        {
+          ...problemWithPreviousMove,
+          previousMove: { ...problemWithPreviousMove.previousMove, usi: "xxxx" },
+        },
+      ],
+    });
+    expect(() => parseNextMoveCollection(json)).toThrow("不正な指し手です");
+  });
+
+  it("parse/inconsistentPreviousMove", () => {
+    // 直前の指し手を進めても出題局面と一致しない場合はエラーとする。
+    const json = JSON.stringify({
+      ...validCollection,
+      problems: [
+        {
+          ...problemWithPreviousMove,
+          previousMove: { ...problemWithPreviousMove.previousMove, usi: "2g2f" },
+        },
+      ],
+    });
+    expect(() => parseNextMoveCollection(json)).toThrow(
+      "指し手を進めた局面が出題局面と一致しません。",
+    );
   });
 
   it("parse/unknownFieldsIgnored", () => {

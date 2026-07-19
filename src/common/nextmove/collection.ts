@@ -21,6 +21,11 @@ export type NextMoveActualMove = {
   scoreSource?: NextMoveScoreSource; // 評価値の出所
 };
 
+export type NextMovePreviousMove = {
+  usi: string; // 指し手 (USI 形式)
+  sfen: string; // この指し手を指す前の局面 (手数は 1 に正規化)
+};
+
 export type NextMoveProblemAnalysis = {
   scoreBeforeMove?: number; // 実戦の手を指す直前の局面の評価値 (解析コメント由来)
   scoreAfterMove?: number; // 実戦の手を指した直後の局面の評価値 (解析コメント由来)
@@ -38,6 +43,7 @@ export type NextMoveProblem = {
   sfen: string; // 出題局面 (手数は 1 に正規化)
   candidates: NextMoveCandidate[]; // 再探索で得られた候補手 (良い順)
   actualMove: NextMoveActualMove; // 実戦で指された手
+  previousMove?: NextMovePreviousMove; // 出題局面に至る直前の指し手
   analysis?: NextMoveProblemAnalysis;
   source?: NextMoveProblemSource;
 };
@@ -117,6 +123,26 @@ function validateProblem(problem: NextMoveProblem, index: number): void {
   }
   if (!problem.actualMove || !isValidMoveUSI(problem.actualMove.usi)) {
     throw new Error(`${prefix}.actualMove: 不正な指し手です: ${problem.actualMove?.usi}`);
+  }
+  if (problem.previousMove !== undefined) {
+    const previousMove = problem.previousMove;
+    if (!previousMove || typeof previousMove !== "object") {
+      throw new Error(`${prefix}.previousMove: 不正なデータです。`);
+    }
+    const previousPosition = Position.newBySFEN(previousMove.sfen);
+    if (!previousPosition) {
+      throw new Error(`${prefix}.previousMove: 不正な SFEN です: ${previousMove.sfen}`);
+    }
+    const move =
+      typeof previousMove.usi === "string"
+        ? previousPosition.createMoveByUSI(previousMove.usi)
+        : null;
+    if (!move || !previousPosition.doMove(move)) {
+      throw new Error(`${prefix}.previousMove: 不正な指し手です: ${previousMove.usi}`);
+    }
+    if (getProblemPositionKey(previousPosition.sfen) !== getProblemPositionKey(problem.sfen)) {
+      throw new Error(`${prefix}.previousMove: 指し手を進めた局面が出題局面と一致しません。`);
+    }
   }
 }
 

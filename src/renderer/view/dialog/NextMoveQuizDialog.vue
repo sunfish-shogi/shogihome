@@ -36,7 +36,7 @@
           :board-label-type="appSettings.boardLabelType"
           :max-size="maxSize"
           :position="boardPosition"
-          :last-move="playedMove"
+          :last-move="lastMove"
           :flip="flip"
           :allow-move="!quiz.done && !quiz.playedMove"
           :ghost-teleport-target="ghostTeleportTarget"
@@ -139,7 +139,8 @@ const flip = ref(false);
 
 const position = computed(() => (quiz.position as Position) || new Position());
 const boardPosition = computed(() => (quiz.displayPosition as Position) || new Position());
-const playedMove = computed(() => (quiz.playedMove as Move) || null);
+// 解答の手が指されていればその手を、出題局面では問題に至る直前の指し手を強調表示する。
+const lastMove = computed(() => (quiz.playedMove as Move) || (quiz.previousMove as Move) || null);
 // ドラッグ中の駒ゴーストをダイアログ (トップレイヤー) 内に描画し、
 // ダイアログより手前に表示されるようにする。
 const ghostTeleportTarget = computed(() => dialogFrame.value?.dialog ?? "body");

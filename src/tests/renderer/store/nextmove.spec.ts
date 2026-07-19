@@ -137,6 +137,11 @@ describe("store/nextmove", () => {
         score: -300,
         scoreSource: "comment",
       });
+      // 出題局面に至る直前の手 (△3四歩) と、その手を指す前の局面を記録する。
+      expect(problem.previousMove).toStrictEqual({
+        usi: "3c3d",
+        sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+      });
       expect(problem.analysis).toStrictEqual({ scoreBeforeMove: 600, scoreAfterMove: -300 });
       expect(problem.source?.path).toBe("/path/to/records/a.kif");
       expect(problem.source?.ply).toBe(3);
@@ -190,6 +195,10 @@ describe("store/nextmove", () => {
           sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
           candidates: [{ usi: "8c8d", score: -20, accepted: true }],
           actualMove: { usi: "9c9d", score: 100 },
+          previousMove: {
+            usi: "7g7f",
+            sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+          },
         },
       ],
     };
@@ -284,10 +293,14 @@ describe("store/nextmove", () => {
       state.open(collection, "/path/to/problems.json", false);
       expect(state.hasPrevious).toBe(false);
       expect(state.hasNext).toBe(true);
+      // previousMove のない問題では直前の指し手は取得できない。
+      expect(state.previousMove).toBeUndefined();
       state.goNext();
       expect(state.problemNumber).toBe(2);
       expect(state.hasNext).toBe(false);
       expect(state.position?.sfen).toBe(collection.problems[1].sfen);
+      // previousMove から直前の指し手 (Move) を復元する。
+      expect(state.previousMove?.usi).toBe("7g7f");
       state.goPrevious();
       expect(state.problemNumber).toBe(1);
     });
