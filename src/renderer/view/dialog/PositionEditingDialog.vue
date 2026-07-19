@@ -70,42 +70,51 @@
           </button>
           <button class="bulk thin" @click="setAllZero">{{ t.setAllPiecesToZero }}</button>
         </div>
-        <div class="form-group">
-          <div class="row">
-            <button class="wide" data-hotkey="Mod+z" :disabled="!canUndo" @click="undo">
+        <div class="form-group icon-buttons">
+          <div class="icon-button-row">
+            <button class="icon-button" data-hotkey="Mod+z" :disabled="!canUndo" @click="undo">
               <Icon :icon="IconType.UNDO" />
-              <span>{{ t.undo }}</span>
+              <div class="label">{{ t.undo }}</div>
             </button>
-            <button class="wide" data-hotkey="Mod+Shift+z" :disabled="!canRedo" @click="redo">
+            <button
+              class="icon-button"
+              data-hotkey="Mod+Shift+z"
+              :disabled="!canRedo"
+              @click="redo"
+            >
               <Icon :icon="IconType.REDO" />
-              <span>{{ t.redo }}</span>
+              <div class="label">{{ t.redo }}</div>
             </button>
           </div>
-          <button class="wide" @click="isInitialPositionMenuVisible = true">
-            <Icon :icon="IconType.REFRESH" />
-            <span>{{ t.initializePosition }}</span>
-          </button>
+          <div class="icon-button-row">
+            <button class="icon-button" @click="isInitialPositionMenuVisible = true">
+              <Icon :icon="IconType.REFRESH" />
+              <div class="label">{{ t.initializePosition }}</div>
+            </button>
+            <button class="icon-button" @click="onChangeTurn">
+              <Icon :icon="IconType.SWAP" />
+              <div class="label">{{ t.changeTurn }}</div>
+            </button>
+          </div>
           <InitialPositionMenu
             v-if="isInitialPositionMenuVisible"
             @select="onSelectPreset"
             @close="isInitialPositionMenuVisible = false"
           />
-          <button class="wide" @click="onChangeTurn">
-            <Icon :icon="IconType.SWAP" />
-            <span>{{ t.changeTurn }}</span>
-          </button>
-          <button class="wide" @click="onCopySFEN">
-            <Icon :icon="IconType.COPY" />
-            <span>{{ t.copy }}(SFEN)</span>
-          </button>
-          <button class="wide" @click="onCopyBOD">
-            <Icon :icon="IconType.COPY" />
-            <span>{{ t.copy }}(BOD)</span>
-          </button>
-          <button class="wide" @click="onPaste">
-            <Icon :icon="IconType.PASTE" />
-            <span>{{ t.paste }}</span>
-          </button>
+          <div class="icon-button-row">
+            <button class="icon-button" @click="onCopySFEN">
+              <Icon :icon="IconType.COPY" />
+              <div class="label">{{ t.copy }}(SFEN)</div>
+            </button>
+            <button class="icon-button" @click="onCopyBOD">
+              <Icon :icon="IconType.COPY" />
+              <div class="label">{{ t.copy }}(BOD)</div>
+            </button>
+            <button class="icon-button" @click="onPaste">
+              <Icon :icon="IconType.PASTE" />
+              <div class="label">{{ t.paste }}</div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -353,8 +362,31 @@ const onCancel = () => {
 .number {
   width: 3em;
 }
-button.wide {
-  width: 100%;
+.icon-button-row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0.5em;
+}
+.icon-button-row:last-child {
+  margin-bottom: 0;
+}
+button.icon-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 6px 4px;
+}
+button.icon-button .icon {
+  height: 28px;
+  width: 28px;
+  display: block;
+}
+button.icon-button .label {
+  display: block;
+  font-size: 0.9em;
+  margin-top: 0.5em;
 }
 button.bulk {
   width: 100%;
