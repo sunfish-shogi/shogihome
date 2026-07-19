@@ -7,6 +7,7 @@ import {
   BranchListMode,
   ClockSoundTarget,
   EvaluationViewFrom,
+  HandPieceOrder,
   KingPieceType,
   LeftSideControlType,
   NodeCountFormat,
@@ -86,6 +87,9 @@ class AppSettingsStore {
   }
   get pieceStandImage(): PieceStandImageType {
     return this.merged.pieceStandImage;
+  }
+  get handPieceOrder(): HandPieceOrder {
+    return this.merged.handPieceOrder;
   }
   get promotionSelectorStyle(): PromotionSelectorStyle {
     return this.merged.promotionSelectorStyle;
@@ -261,6 +265,9 @@ class AppSettingsStore {
   get showCommentInRecordView(): boolean {
     return this.merged.showCommentInRecordView;
   }
+  get showBranchTreeInRecordView(): boolean {
+    return this.merged.showBranchTreeInRecordView;
+  }
   get branchListMode(): BranchListMode {
     return this.merged.branchListMode;
   }
@@ -320,6 +327,12 @@ class AppSettingsStore {
   }
   get emptyRecordInfoVisibility(): boolean {
     return this.merged.emptyRecordInfoVisibility;
+  }
+  get pieceAdditionDestination(): "board" | "blackHand" | "whiteHand" {
+    return this.merged.pieceAdditionDestination;
+  }
+  get positionEditingBoardSizeLevel(): "small" | "medium" | "large" {
+    return this.merged.positionEditingBoardSizeLevel;
   }
   get enableHardwareAcceleration(): boolean {
     return this.merged.enableHardwareAcceleration;

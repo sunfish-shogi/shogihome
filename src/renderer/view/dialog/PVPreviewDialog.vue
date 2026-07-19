@@ -1,68 +1,70 @@
 <template>
   <DialogFrame @cancel="onClose">
-    <BoardView
-      class="board-view"
-      :board-image-type="appSettings.boardImage"
-      :custom-board-image-url="
-        appSettings.boardImageFileURL && fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
-      "
-      :board-grid-color="appSettings.boardGridColor || undefined"
-      :piece-stand-image-type="appSettings.pieceStandImage"
-      :custom-piece-stand-image-url="
-        appSettings.pieceStandImageFileURL &&
-        fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
-      "
-      :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
-      :king-piece-type="appSettings.kingPieceType"
-      :board-label-type="appSettings.boardLabelType"
-      :max-size="maxSize"
-      :position="record.position"
-      :last-move="lastMove"
-      :flip="flip"
-      :black-player-name="t.sente"
-      :white-player-name="t.gote"
-    >
-      <template #right-control>
-        <div class="full column">
-          <div class="row control-row">
-            <button class="control-item" data-hotkey="Mod+t" @click="doFlip">
-              <Icon :icon="IconType.FLIP" />
+    <div class="board-view">
+      <BoardView
+        :board-image-type="appSettings.boardImage"
+        :custom-board-image-url="
+          appSettings.boardImageFileURL && fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
+        "
+        :board-grid-color="appSettings.boardGridColor || undefined"
+        :piece-stand-image-type="appSettings.pieceStandImage"
+        :custom-piece-stand-image-url="
+          appSettings.pieceStandImageFileURL &&
+          fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
+        "
+        :hand-piece-order="appSettings.handPieceOrder"
+        :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
+        :king-piece-type="appSettings.kingPieceType"
+        :board-label-type="appSettings.boardLabelType"
+        :max-size="maxSize"
+        :position="record.position"
+        :last-move="lastMove"
+        :flip="flip"
+        :black-player-name="t.sente"
+        :white-player-name="t.gote"
+      >
+        <template #right-control>
+          <div class="full column">
+            <div class="row control-row">
+              <button class="control-item" data-hotkey="Mod+t" @click="doFlip">
+                <Icon :icon="IconType.FLIP" />
+              </button>
+              <button class="control-item" autofocus data-hotkey="Escape" @click="onClose">
+                <Icon :icon="IconType.CLOSE" />
+              </button>
+            </div>
+            <div class="row control-row">
+              <button class="control-item" :data-hotkey="shortcutKeys.Begin" @click="goBegin">
+                <Icon :icon="IconType.FIRST" />
+              </button>
+              <button class="control-item" :data-hotkey="shortcutKeys.End" @click="goEnd">
+                <Icon :icon="IconType.LAST" />
+              </button>
+            </div>
+            <div class="row control-row">
+              <button class="control-item" :data-hotkey="shortcutKeys.Back" @click="goBack">
+                <Icon :icon="IconType.BACK" />
+              </button>
+              <button class="control-item" :data-hotkey="shortcutKeys.Forward" @click="goForward">
+                <Icon :icon="IconType.NEXT" />
+              </button>
+            </div>
+          </div>
+        </template>
+        <template #left-control>
+          <div class="full column reverse">
+            <button class="control-item-wide" :disabled="!enableInsertion" @click="insertToRecord">
+              <Icon :icon="IconType.TREE" />
+              <span>{{ t.insertToRecord }}</span>
             </button>
-            <button class="control-item" autofocus data-hotkey="Escape" @click="onClose">
-              <Icon :icon="IconType.CLOSE" />
+            <button class="control-item-wide" :disabled="!enableInsertion" @click="insertToComment">
+              <Icon :icon="IconType.NOTE" />
+              <span>{{ t.insertToComment }}</span>
             </button>
           </div>
-          <div class="row control-row">
-            <button class="control-item" :data-hotkey="shortcutKeys.Begin" @click="goBegin">
-              <Icon :icon="IconType.FIRST" />
-            </button>
-            <button class="control-item" :data-hotkey="shortcutKeys.End" @click="goEnd">
-              <Icon :icon="IconType.LAST" />
-            </button>
-          </div>
-          <div class="row control-row">
-            <button class="control-item" :data-hotkey="shortcutKeys.Back" @click="goBack">
-              <Icon :icon="IconType.BACK" />
-            </button>
-            <button class="control-item" :data-hotkey="shortcutKeys.Forward" @click="goForward">
-              <Icon :icon="IconType.NEXT" />
-            </button>
-          </div>
-        </div>
-      </template>
-      <template #left-control>
-        <div class="full column reverse">
-          <button class="control-item-wide" :disabled="!enableInsertion" @click="insertToRecord">
-            <Icon :icon="IconType.TREE" />
-            <span>{{ t.insertToRecord }}</span>
-          </button>
-          <button class="control-item-wide" :disabled="!enableInsertion" @click="insertToComment">
-            <Icon :icon="IconType.NOTE" />
-            <span>{{ t.insertToComment }}</span>
-          </button>
-        </div>
-      </template>
-    </BoardView>
+        </template>
+      </BoardView>
+    </div>
     <div class="informations">
       <div class="information">
         {{ info }}
@@ -146,6 +148,11 @@ const props = defineProps({
     type: Array as PropType<Move[]>,
     required: true,
   },
+  flip: {
+    type: Boolean,
+    required: false,
+    default: undefined,
+  },
 });
 
 const emit = defineEmits<{
@@ -157,7 +164,7 @@ const messageStore = useMessageStore();
 const appSettings = useAppSettings();
 const maxSize = reactive(new RectSize(0, 0));
 const record = reactive(new Record());
-const flip = ref(appSettings.boardFlipping);
+const flip = ref(props.flip !== undefined ? props.flip : appSettings.boardFlipping);
 
 const updateSize = () => {
   maxSize.width = window.innerWidth * 0.8;
@@ -297,8 +304,8 @@ const insertToComment = () => {
 
 <style scoped>
 .board-view {
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: center;
 }
 .control-row {
   width: 100%;

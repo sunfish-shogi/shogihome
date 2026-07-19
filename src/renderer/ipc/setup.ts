@@ -76,8 +76,7 @@ export function setup(): void {
   bridge.onSendNotification((message: string, url?: string) => {
     useNotificationStore().add(message, url);
   });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  bridge.onMenuEvent((event: MenuEvent, ...args: any[]) => {
+  bridge.onMenuEvent((event: MenuEvent) => {
     if (busyState.isBusy) {
       return;
     }
@@ -105,6 +104,12 @@ export function setup(): void {
         break;
       case MenuEvent.BATCH_CONVERSION:
         store.showBatchConversionDialog();
+        break;
+      case MenuEvent.START_BATCH_ANALYSIS:
+        store.showAnalysisDialog("batch");
+        break;
+      case MenuEvent.STOP_BATCH_ANALYSIS:
+        store.stopBatchAnalysis();
         break;
       case MenuEvent.SHARE:
         store.showShareDialog();
@@ -212,25 +217,22 @@ export function setup(): void {
         store.removeCurrentMove();
         break;
       case MenuEvent.START_POSITION_EDITING:
-        store.startPositionEditing();
-        break;
-      case MenuEvent.END_POSITION_EDITING:
-        store.endPositionEditing();
-        break;
-      case MenuEvent.CHANGE_TURN:
-        store.changeTurn();
-        break;
-      case MenuEvent.INIT_POSITION:
-        store.initializePositionBySFEN(args[0]);
-        break;
-      case MenuEvent.CHANGE_PIECE_SET:
-        store.showPieceSetChangeDialog();
+        store.showPositionEditingDialog();
         break;
       case MenuEvent.START_MATE_SEARCH:
         store.showMateSearchDialog();
         break;
       case MenuEvent.STOP_MATE_SEARCH:
         store.stopMateSearch();
+        break;
+      case MenuEvent.CREATE_NEXT_MOVE_COLLECTION:
+        store.showNextMoveGenerationDialog();
+        break;
+      case MenuEvent.STOP_NEXT_MOVE_GENERATION:
+        store.stopNextMoveGeneration();
+        break;
+      case MenuEvent.OPEN_NEXT_MOVE_COLLECTION:
+        store.openNextMoveQuiz();
         break;
       case MenuEvent.START_GAME:
         store.showGameDialog();
@@ -326,6 +328,9 @@ export function setup(): void {
         break;
       case MenuEvent.EXPORT_BOOK_AS_SBK:
         useBookStore().exportBookFile("sbk");
+        break;
+      case MenuEvent.SHOW_BOOK_PROPERTIES:
+        store.showBookPropertiesDialog();
         break;
     }
   });

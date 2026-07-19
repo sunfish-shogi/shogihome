@@ -21,11 +21,6 @@ import {
   SpecialMove,
   SpecialMoveType,
   importJKFString,
-  countExistingPieces,
-  PieceType,
-  Square,
-  Piece,
-  Color,
   ImmutableNode,
 } from "tsshogi";
 import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment.js";
@@ -53,23 +48,13 @@ import {
 type replaceRecordOption = {
   path?: string;
   markAsSaved?: boolean;
+  skipHistory?: boolean;
 };
 
 export type ImportRecordOption = {
   type?: RecordFormatType;
   mode?: "standard" | "mergeIntoRoot" | "mergeIntoCurrent";
   markAsSaved?: boolean;
-};
-
-export type PieceSet = {
-  pawn: number;
-  lance: number;
-  knight: number;
-  silver: number;
-  gold: number;
-  bishop: number;
-  rook: number;
-  king: number;
 };
 
 function restoreCustomData(record: Record): void {
@@ -148,13 +133,13 @@ export class RecordManager {
     return this._positionCounts;
   }
 
-  private updateRecordFilePath(recordFilePath: string | undefined): void {
+  private updateRecordFilePath(recordFilePath: string | undefined, skipHistory?: boolean): void {
     this._unsaved = false;
     if (recordFilePath === this._recordFilePath) {
       return;
     }
     this._recordFilePath = recordFilePath;
-    if (recordFilePath) {
+    if (recordFilePath && !skipHistory) {
       api.addRecordFileHistory(recordFilePath);
     }
   }
@@ -189,7 +174,7 @@ export class RecordManager {
     this._record = record;
     this.resetPositionCounts();
     this.bindRecordHandlers();
-    this.updateRecordFilePath(option?.path);
+    this.updateRecordFilePath(option?.path, option?.skipHistory);
     this._unsaved = !option?.markAsSaved;
     this._sourceURL = undefined;
     restoreCustomData(this._record);
@@ -222,8 +207,9 @@ export class RecordManager {
     this.replaceRecord(record, { markAsSaved: true });
   }
 
-  resetByCurrentPosition(): void {
-    this.clearRecord(this._record.position);
+  resetByPosition(position: ImmutablePosition): void {
+    this.clearRecord(position);
+    this._unsaved = true;
   }
 
   private parseRecordData(data: string, type?: RecordFormatType): Record | Error {
@@ -281,7 +267,7 @@ export class RecordManager {
   importRecordFromBuffer(
     data: Uint8Array,
     path: string,
-    option?: { autoDetect?: boolean },
+    option?: { autoDetect?: boolean; skipHistory?: boolean },
   ): Error | undefined {
     const format = detectRecordFileFormatByPath(path);
     if (!format) {
@@ -291,7 +277,11 @@ export class RecordManager {
     if (recordOrError instanceof Error) {
       return localizeError(recordOrError);
     }
-    this.replaceRecord(recordOrError, { path, markAsSaved: true });
+    this.replaceRecord(recordOrError, {
+      path,
+      markAsSaved: true,
+      skipHistory: option?.skipHistory,
+    });
     return;
   }
 
@@ -317,13 +307,16 @@ export class RecordManager {
     }
   }
 
-  exportRecordAsBuffer(path: string, opt: ExportOptions): ExportResult | Error {
+  exportRecordAsBuffer(
+    path: string,
+    opt: ExportOptions & { skipHistory?: boolean },
+  ): ExportResult | Error {
     const format = detectRecordFileFormatByPath(path);
     if (!format) {
       return new Error(`${t.unknownFileExtension}: ${path}`);
     }
     const result = exportRecordAsBuffer(this._record, format, opt);
-    this.updateRecordFilePath(path);
+    this.updateRecordFilePath(path, opt.skipHistory);
     return result;
   }
 
@@ -343,58 +336,6 @@ export class RecordManager {
   changePosition(change: PositionChange): void {
     const position = this.record.position.clone();
     position.edit(change);
-    this.applyPosition(position);
-  }
-
-  changePieceSet(pieceSet: PieceSet): void {
-    const position = this.record.position.clone();
-    const counts = countExistingPieces(this.record.position);
-    const updates = {
-      king: pieceSet.king - counts.king,
-      rook: pieceSet.rook - (counts.rook + counts.dragon),
-      bishop: pieceSet.bishop - (counts.bishop + counts.horse),
-      gold: pieceSet.gold - counts.gold,
-      silver: pieceSet.silver - (counts.silver + counts.promSilver),
-      knight: pieceSet.knight - (counts.knight + counts.promKnight),
-      lance: pieceSet.lance - (counts.lance + counts.promLance),
-      pawn: pieceSet.pawn - (counts.pawn + counts.promPawn),
-    };
-    Object.entries(updates)
-      .filter(([, update]) => update < 0)
-      .forEach(([key, update]) => {
-        const pieceType = key as PieceType;
-        for (let u = 0; u > update; u--) {
-          const square = Square.all.find(
-            (square) => position.board.at(square)?.unpromoted().type === pieceType,
-          );
-          if (square) {
-            position.board.remove(square);
-          } else if (pieceType !== PieceType.KING) {
-            if (position.blackHand.count(pieceType) > position.whiteHand.count(pieceType)) {
-              position.blackHand.reduce(pieceType, 1);
-            } else {
-              position.whiteHand.reduce(pieceType, 1);
-            }
-          }
-        }
-      });
-    Object.entries(updates)
-      .filter(([, update]) => update > 0)
-      .forEach(([key, update]) => {
-        const pieceType = key as PieceType;
-        for (let u = 0; u < update; u++) {
-          const square = Square.all.find((square) => !position.board.at(square));
-          if (square) {
-            position.board.set(square, new Piece(Color.BLACK, pieceType));
-          } else if (pieceType !== PieceType.KING) {
-            if (position.blackHand.count(pieceType) <= position.whiteHand.count(pieceType)) {
-              position.blackHand.add(pieceType, 1);
-            } else {
-              position.whiteHand.add(pieceType, 1);
-            }
-          }
-        }
-      });
     this.applyPosition(position);
   }
 

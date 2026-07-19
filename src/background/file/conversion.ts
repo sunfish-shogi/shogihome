@@ -16,7 +16,8 @@ import { createReadStream, promises as fs } from "node:fs";
 import path from "node:path";
 import { getAppLogger } from "@/background/log.js";
 import { AppSettings, TextDecodingRule } from "@/common/settings/app.js";
-import { exists, listFiles } from "@/background/helpers/file.js";
+import { exists } from "@/background/helpers/file.js";
+import { listRecordFiles } from "@/background/file/list.js";
 import { loadAppSettings } from "@/background/settings.js";
 import {
   ImmutableNode,
@@ -55,12 +56,11 @@ async function convertFromDirectory(
     skippedTotal: 0,
   };
 
-  const sourceFiles = (
-    await listFiles(settings.source, settings.subdirectories ? Infinity : 0)
-  ).filter((file) => {
-    const ext = path.extname(file).toLowerCase();
-    return settings.sourceFormats.includes(ext as RecordFileFormat);
-  });
+  const sourceFiles = await listRecordFiles(
+    settings.source,
+    settings.sourceFormats,
+    settings.subdirectories,
+  );
 
   const writer =
     settings.destinationType === DestinationType.DIRECTORY

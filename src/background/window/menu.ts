@@ -28,13 +28,10 @@ import {
   sendNotification,
   updateAppSettings,
 } from "@/background/window/ipc.js";
-import { getBookInfo } from "@/background/book/index.js";
-import { defaultBookSession } from "@/common/book.js";
 import { MenuEvent } from "@/common/control/menu.js";
 import { AppState } from "@/common/control/state.js";
 import { openHowToUse, openLatestReleasePage, openStableReleasePage, openWebsite } from "./help.js";
 import { t } from "@/common/i18n/index.js";
-import { InitialPositionSFEN } from "tsshogi";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { chromiumLicensePath, electronLicensePath } from "@/background/proc/path.js";
 import { openCacheDirectory } from "@/background/image/cache.js";
@@ -49,6 +46,7 @@ import { createListItems } from "@/common/message.js";
 import { BoardLayoutType } from "@/common/settings/layout.js";
 import { getCPUInfo } from "@/background/proc/state.js";
 import { outputStatsHTML } from "@/background/stats/html.js";
+import { checkUpdatesManually } from "@/background/version.js";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -60,8 +58,6 @@ function menuItem(
   event: MenuEvent,
   appStates: AppState[] | null,
   accelerator?: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...args: any[]
 ): MenuItemConstructorOptions {
   const index = stateChangeCallbacks.length;
   const id = "menuItem" + index;
@@ -84,7 +80,7 @@ function menuItem(
     id,
     label,
     accelerator,
-    click: () => onMenuEvent(event, ...args),
+    click: () => onMenuEvent(event),
   };
 }
 
@@ -229,108 +225,7 @@ function createMenuTemplate(window: BrowserWindow) {
           AppState.NORMAL,
         ]),
         { type: "separator" },
-        menuItem(t.startPositionSetup, MenuEvent.START_POSITION_EDITING, [AppState.NORMAL]),
-        menuItem(t.completePositionSetup, MenuEvent.END_POSITION_EDITING, [
-          AppState.POSITION_EDITING,
-        ]),
-        menuItem(t.changeTurn, MenuEvent.CHANGE_TURN, [AppState.POSITION_EDITING]),
-        {
-          label: t.initializePosition,
-          submenu: [
-            menuItem(
-              t.noHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.STANDARD,
-            ),
-            menuItem(
-              t.lanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_LANCE,
-            ),
-            menuItem(
-              t.rightLanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_RIGHT_LANCE,
-            ),
-            menuItem(
-              t.bishopHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_BISHOP,
-            ),
-            menuItem(
-              t.rookHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_ROOK,
-            ),
-            menuItem(
-              t.rookLanceHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_ROOK_LANCE,
-            ),
-            menuItem(
-              t.twoPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_2PIECES,
-            ),
-            menuItem(
-              t.fourPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_4PIECES,
-            ),
-            menuItem(
-              t.sixPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_6PIECES,
-            ),
-            menuItem(
-              t.eightPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_8PIECES,
-            ),
-            menuItem(
-              t.tenPiecesHandicap,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.HANDICAP_10PIECES,
-            ),
-            menuItem(
-              t.tsumeShogi,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.TSUME_SHOGI,
-            ),
-            menuItem(
-              t.doubleKingTsumeShogi,
-              MenuEvent.INIT_POSITION,
-              [AppState.POSITION_EDITING],
-              undefined,
-              InitialPositionSFEN.TSUME_SHOGI_2KINGS,
-            ),
-          ],
-        },
-        menuItem(t.changePieceSet, MenuEvent.CHANGE_PIECE_SET, [AppState.POSITION_EDITING]),
+        menuItem(t.setupPosition, MenuEvent.START_POSITION_EDITING, [AppState.NORMAL]),
         // NOTE:
         //   Mac ではこれらのショートカットがメニューに無いとテキスト編集時のショートカット操作ができない。
         //   https://github.com/sunfish-shogi/shogihome/issues/694
@@ -377,6 +272,9 @@ function createMenuTemplate(window: BrowserWindow) {
           isMac ? "CmdOrCtrl+Y" : "CmdOrCtrl+A",
         ),
         menuItem(t.stopAnalysis, MenuEvent.STOP_ANALYSIS, [AppState.ANALYSIS]),
+        { type: "separator" },
+        menuItem(t.batchAnalysis, MenuEvent.START_BATCH_ANALYSIS, [AppState.NORMAL]),
+        menuItem(t.stopAnalysis, MenuEvent.STOP_BATCH_ANALYSIS, [AppState.BATCH_ANALYSIS]),
       ],
     },
     {
@@ -387,8 +285,19 @@ function createMenuTemplate(window: BrowserWindow) {
       ],
     },
     {
+      label: t.nextMoveProblemCollection,
+      submenu: [
+        menuItem(t.createProblemCollection, MenuEvent.CREATE_NEXT_MOVE_COLLECTION, [
+          AppState.NORMAL,
+        ]),
+        menuItem(t.interrupt, MenuEvent.STOP_NEXT_MOVE_GENERATION, [AppState.NEXT_MOVE_GENERATION]),
+        menuItem(t.openProblemCollection, MenuEvent.OPEN_NEXT_MOVE_COLLECTION, [AppState.NORMAL]),
+      ],
+    },
+    {
       label: t.book,
       submenu: [
+        menuItem(t.bookInfo, MenuEvent.SHOW_BOOK_PROPERTIES, [AppState.NORMAL]),
         menuItem(t.clear, MenuEvent.RESET_BOOK, [AppState.NORMAL]),
         menuItem(t.open, MenuEvent.OPEN_BOOK_FILE, [AppState.NORMAL]),
         menuItem(t.saveAs, MenuEvent.SAVE_BOOK_FILE, [AppState.NORMAL]),
@@ -408,43 +317,6 @@ function createMenuTemplate(window: BrowserWindow) {
           ],
         },
         menuItem(t.addMoves, MenuEvent.ADD_BOOK_MOVES, [AppState.NORMAL]),
-        { type: "separator" },
-        {
-          label: t.bookInfo,
-          click: () => {
-            try {
-              const info = getBookInfo(defaultBookSession);
-              const formatLabel =
-                info.format === "yane2016"
-                  ? `${t.yane2016BookFile} (.db)`
-                  : info.format === "ybb"
-                    ? `${t.ybbBookFile} (.ybb)`
-                    : info.format === "apery"
-                      ? `${t.aperyBookFile} (.bin)`
-                      : `${t.shogiGUIBookFile} (.sbk)`;
-              const items: { text: string }[] = [
-                { text: `${t.format}: ${formatLabel}` },
-                { text: `${t.loadingMode}: ${info.type}` },
-              ];
-              if (info.path) {
-                items.push({ text: `${t.file}: ${info.path}` });
-              }
-              if (info.entryCount !== undefined) {
-                items.push({ text: `${t.positionCount}: ${info.entryCount}` });
-              }
-              if (info.unsaved) {
-                items.push({ text: t.unsaved });
-              }
-              sendMessage({
-                text: t.bookInfo,
-                attachments: [{ type: "list", items }],
-                withCopyButton: true,
-              });
-            } catch (e) {
-              sendError(e instanceof Error ? e : new Error(String(e)));
-            }
-          },
-        },
       ],
     },
     {
@@ -818,6 +690,14 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.openStableReleasePage,
           click: () => {
             openStableReleasePage().catch(sendError);
+          },
+        },
+        {
+          label: t.checkForUpdates,
+          click: () => {
+            checkUpdatesManually(sendNotification).catch((e) => {
+              sendError(new Error(`${t.failedToCheckUpdates}: ${e}`));
+            });
           },
         },
         {

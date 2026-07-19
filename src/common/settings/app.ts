@@ -70,6 +70,12 @@ export enum PieceStandImageType {
   CUSTOM_IMAGE = "custom-image",
 }
 
+// 持ち駒の飛角・金銀・桂香のペアについて、対局者から向かってどちらを左に置くか。
+export enum HandPieceOrder {
+  STRONGER_TO_LEFT = "strongerToLeft", // 飛・金・桂が左（実物の慣習に近い）
+  STRONGER_TO_RIGHT = "strongerToRight", // 飛・金・桂が右
+}
+
 export enum PromotionSelectorStyle {
   HORIZONTAL = "horizontal",
   VERTICAL_PREFER_BOTTOM = "verticalPreferBottom",
@@ -177,6 +183,7 @@ export type AppSettings = {
   boardImageFileURL?: string;
   boardGridColor: string | null;
   pieceStandImage: PieceStandImageType;
+  handPieceOrder: HandPieceOrder;
   promotionSelectorStyle: PromotionSelectorStyle;
   pieceStandImageFileURL?: string;
   enableTransparent: boolean;
@@ -252,6 +259,7 @@ export type AppSettings = {
   // Record View
   showElapsedTimeInRecordView: boolean;
   showCommentInRecordView: boolean;
+  showBranchTreeInRecordView: boolean;
   branchListMode: BranchListMode;
 
   // Logging
@@ -280,6 +288,10 @@ export type AppSettings = {
 
   // Record Info View
   emptyRecordInfoVisibility: boolean;
+
+  // Position Editing
+  pieceAdditionDestination: "board" | "blackHand" | "whiteHand";
+  positionEditingBoardSizeLevel: "small" | "medium" | "large";
 
   // Low Level
   enableHardwareAcceleration: boolean;
@@ -352,6 +364,7 @@ export function defaultAppSettings(opt?: {
     boardImage: BoardImageType.LIGHT2,
     boardGridColor: null,
     pieceStandImage: PieceStandImageType.DARK_WOOD,
+    handPieceOrder: HandPieceOrder.STRONGER_TO_LEFT,
     promotionSelectorStyle: PromotionSelectorStyle.HORIZONTAL,
     enableTransparent: false,
     boardOpacity: 1.0,
@@ -408,6 +421,7 @@ export function defaultAppSettings(opt?: {
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     showElapsedTimeInRecordView: true,
     showCommentInRecordView: true,
+    showBranchTreeInRecordView: false,
     branchListMode: BranchListMode.SIBLING,
     enableAppLog: false,
     enableUSILog: false,
@@ -428,6 +442,8 @@ export function defaultAppSettings(opt?: {
     lastImageExportFilePath: "",
     lastOtherFilePath: "",
     emptyRecordInfoVisibility: true,
+    pieceAdditionDestination: "blackHand",
+    positionEditingBoardSizeLevel: "medium",
     enableHardwareAcceleration: true,
   };
 }

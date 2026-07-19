@@ -1,8 +1,7 @@
 export enum AppState {
   NORMAL = "normal",
   PASTE_DIALOG = "pasteDialog",
-  POSITION_EDITING = "positionEditing",
-  PIECE_SET_CHANGE_DIALOG = "pieceSetChangeDialog",
+  POSITION_EDITING_DIALOG = "positionEditingDialog",
   EXPORT_POSITION_IMAGE_DIALOG = "exportBoardImageDialog",
   GAME_DIALOG = "gameDialog",
   GAME = "game",
@@ -11,6 +10,7 @@ export enum AppState {
   CSA_GAME = "csaGame",
   ANALYSIS = "analysis",
   ANALYSIS_DIALOG = "analysisDialog",
+  BATCH_ANALYSIS = "batchAnalysis",
   MATE_SEARCH = "mateSearch",
   MATE_SEARCH_DIALOG = "mateSearchDialog",
   USI_ENGINES_DIALOG = "usiEnginesDialog",
@@ -22,8 +22,11 @@ export enum AppState {
   SHARE_DIALOG = "shareDialog",
   ADD_BOOK_MOVES_DIALOG = "addBookMovesDialog",
   RESET_BOOK_DIALOG = "resetBookDialog",
+  BOOK_PROPERTIES_DIALOG = "bookPropertiesDialog",
   SEARCH_DUPLICATE_POSITIONS_DIALOG = "searchDuplicatePositionsDialog",
   ELAPSED_TIME_CHART_DIALOG = "elapsedTimeChartDialog",
+  NEXT_MOVE_GENERATION_DIALOG = "nextMoveGenerationDialog",
+  NEXT_MOVE_GENERATION = "nextMoveGeneration",
 }
 
 export enum ResearchState {

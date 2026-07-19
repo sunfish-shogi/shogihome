@@ -8,7 +8,7 @@ import {
   Square,
 } from "tsshogi";
 import { Config } from "./config.js";
-import { PieceStandImageType } from "@/common/settings/app.js";
+import { HandPieceOrder, PieceStandImageType } from "@/common/settings/app.js";
 import { commonParams, compactHandParams, handParams, portraitHandParams } from "./params.js";
 import { Hand, HandNumber, HandPiece, HandPointer } from "./layout.js";
 import { Point } from "@/common/assets/geometry.js";
@@ -31,9 +31,19 @@ export class HandLayoutBuilder {
     private ratio: number,
   ) {}
 
+  // handParams は STRONGER_TO_LEFT の配置で定義されているため、
+  // STRONGER_TO_RIGHT では飛角・金銀・桂香のペア（width が 1 の駒）の列を入れ替える。
+  private getRule(displayColor: Color, type: PieceType) {
+    const rule = handParams[displayColor][type];
+    if (this.config.handPieceOrder === HandPieceOrder.STRONGER_TO_RIGHT && rule.width === 1) {
+      return { ...rule, column: 1 - rule.column };
+    }
+    return rule;
+  }
+
   centerOfPieceType(_: ImmutableHand, color: Color, type: PieceType): Point {
     const displayColor = this.config.flip ? reverseColor(color) : color;
-    const rule = handParams[displayColor][type];
+    const rule = this.getRule(displayColor, type);
     const x = (rule.column + 0.5) * rule.width * (handParams.width / 2);
     const y = (rule.row + 0.5) * (handParams.height / 4);
     return new Point(x, y).multiply(this.ratio);
@@ -67,7 +77,7 @@ export class HandLayoutBuilder {
     const pointers: HandPointer[] = [];
     handPieceTypes.forEach((type) => {
       const count = hand.count(type);
-      const rule = handParams[displayColor][type];
+      const rule = this.getRule(displayColor, type);
       const areaWidth = (handParams.width / 2) * rule.width * this.ratio;
       const areaHeight = (handParams.height / 4) * this.ratio;
       const areaX = areaWidth * rule.column;

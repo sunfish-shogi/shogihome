@@ -1,4 +1,9 @@
 {
   "extends": "./tsconfig",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./dist/tsconfig.bg.tsbuildinfo",
+    "rootDir": "./src"
+  },
   "include": ["src/background/index.ts"]
 }

@@ -8,7 +8,11 @@ import {
   sendNotification,
   setupIPC,
 } from "@/background/window/ipc.js";
-import { loadWindowSettings, saveWindowSettings } from "@/background/settings.js";
+import {
+  loadWindowSettings,
+  saveWindowSettings,
+  setCorruptedSettingsFileHandler,
+} from "@/background/settings.js";
 import { buildWindowSettings } from "@/common/settings/window.js";
 import { getAppLogger } from "@/background/log.js";
 import { AppState } from "@/common/control/state.js";
@@ -86,6 +90,13 @@ export function createWindow(onClosed: () => void) {
   }
 
   win.once("ready-to-show", () => {
+    // 破損した設定ファイルが見つかった場合にエラーを表示する。起動時に検出済みの分もここで通知される。
+    setCorruptedSettingsFileHandler((report) => {
+      sendError(
+        new Error(t.settingsFileCorruptedMovedAndReset(report.filePath, report.backupPath)),
+      );
+    });
+
     const stopHeapMonitor = startHeapMonitor((message) => sendError(new Error(message)));
     win.once("closed", stopHeapMonitor);
 

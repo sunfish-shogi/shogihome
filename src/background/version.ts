@@ -40,11 +40,21 @@ export async function readStatus(): Promise<VersionStatus> {
   if (await exists(statusFilePath)) {
     getAppLogger().debug("version.json exists");
     const data = await fs.promises.readFile(statusFilePath, "utf8");
-    const status = JSON.parse(data) as VersionStatus;
-    getAppLogger().debug(`last version check status: ${JSON.stringify(status)}}`);
-    return status;
+    try {
+      const status = JSON.parse(data) as VersionStatus;
+      if (!status || typeof status !== "object") {
+        throw new Error("unexpected data format");
+      }
+      getAppLogger().debug(`last version check status: ${JSON.stringify(status)}}`);
+      return status;
+    } catch (e) {
+      // 破損した version.json は無視して、次回の書き込みで上書きする。
+      // 読み込み自体のエラーは一時的な障害の可能性があるためここでは握りつぶさない。
+      getAppLogger().warn(`failed to parse version.json: ${e}`);
+    }
+  } else {
+    getAppLogger().debug("version.json not exists");
   }
-  getAppLogger().debug("version.json not exists");
   return {
     updatedMs: 0,
   };
@@ -58,7 +68,9 @@ function suggestUpdate(
   releases: Releases,
   last: VersionStatus,
   notify: (message: string, url?: string) => void,
-) {
+  // 通知済みのバージョンでも再度通知するかどうか (手動チェック用)
+  renotify = false,
+): boolean {
   const current = semver.clean(getAppVersion());
   if (!current) {
     throw new Error("failed to get current app version");
@@ -81,22 +93,24 @@ function suggestUpdate(
       semver.major(current) === semver.major(knownStable) &&
       semver.minor(current) <= semver.minor(knownStable)) ||
     (!knownStable && semver.lte(current, stable));
-  const stableUpdated = !knownStable || semver.gt(stable, knownStable);
+  const stableUpdated = renotify || !knownStable || semver.gt(stable, knownStable);
   const stableNotInstalled = semver.gt(stable, current);
   if (stablePreferred && stableUpdated && stableNotInstalled) {
     getAppLogger().info(`new stable version released: ${stable}`);
     notify(t.stableVersionReleased("v" + stable), releases.stable.link);
-    return;
+    return true;
   }
 
   const latestPreferred = !stablePreferred;
-  const latestUpdated = !knownLatest || semver.gt(latest, knownLatest);
+  const latestUpdated = renotify || !knownLatest || semver.gt(latest, knownLatest);
   const latestNotInstalled = semver.gt(latest, current);
   if (latestPreferred && latestUpdated && latestNotInstalled) {
     getAppLogger().info(`new latest version released: ${latest}`);
     notify(t.latestVersionReleased("v" + latest), releases.latest.link);
-    return;
+    return true;
   }
+
+  return false;
 }
 
 export async function checkUpdates(notify: (message: string, url?: string) => void) {
@@ -117,6 +131,28 @@ export async function checkUpdates(notify: (message: string, url?: string) => vo
     };
   }
 
+  last.updatedMs = Date.now();
+  await writeStatus(last);
+}
+
+export async function checkUpdatesManually(notify: (message: string, url?: string) => void) {
+  const last = await readStatus();
+
+  getAppLogger().info("check new release manually");
+  const releases = JSON.parse(await fetch(getReleaseURL())) as Releases;
+  getAppLogger().debug(`release info fetched: ${JSON.stringify(releases)}}`);
+
+  // 手動チェックでは通知済みのバージョンであっても再度通知する。
+  // ただし、系列 (安定版/最新版) の判定には既知のリリース情報をそのまま使う。
+  const suggested = suggestUpdate(releases, last, notify, true);
+  if (!suggested) {
+    notify(t.youAreUsingTheLatestVersion);
+  }
+
+  last.knownReleases = {
+    ...releases,
+    downloadedMs: Date.now(),
+  };
   last.updatedMs = Date.now();
   await writeStatus(last);
 }

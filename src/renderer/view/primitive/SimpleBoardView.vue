@@ -65,10 +65,14 @@
         </text>
       </svg>
       <div class="column reverse" :style="layout.blackHand.style">
-        <span class="hand black" :class="layout.typefaceClass">☗{{ layout.blackHand.text }}</span>
+        <span class="hand black" :class="layout.typefaceClass" :style="layout.blackHand.textStyle"
+          >☗{{ layout.blackHand.text }}</span
+        >
       </div>
       <div v-if="!hideWhiteHand" class="column reverse" :style="layout.whiteHand.style">
-        <span class="hand white" :class="layout.typefaceClass">☖{{ layout.whiteHand.text }}</span>
+        <span class="hand white" :class="layout.typefaceClass" :style="layout.whiteHand.textStyle"
+          >☖{{ layout.whiteHand.text }}</span
+        >
       </div>
     </div>
   </div>
@@ -83,6 +87,7 @@ import {
   numberToKanji,
   ImmutableHand,
   Color,
+  reverseColor,
 } from "tsshogi";
 import { computed, PropType } from "vue";
 import { RectSize } from "@/common/assets/geometry";
@@ -151,6 +156,11 @@ const props = defineProps({
     default: null,
   },
   hideWhiteHand: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  flip: {
     type: Boolean,
     required: false,
     default: false,
@@ -228,8 +238,9 @@ const layout = computed(() => {
     },
     files: fileNumbers.map((character, index) => {
       const fontSize = param.labelFontSize * props.fontScale;
+      const column = props.flip ? index : 8 - index;
       return {
-        x: param.boardLeft + param.pieceSize * (8 - index) + param.pieceSize / 2,
+        x: param.boardLeft + param.pieceSize * column + param.pieceSize / 2,
         y: param.boardTop - param.labelSize / 2,
         dy: 0,
         fontSize,
@@ -238,9 +249,10 @@ const layout = computed(() => {
     }),
     ranks: rankNumbers.map((character, index) => {
       const fontSize = param.labelFontSize * props.fontScale;
+      const row = props.flip ? 8 - index : index;
       return {
         x: param.boardLeft + param.boardSize + param.labelSize / 2,
-        y: param.boardTop + param.pieceSize * index + param.pieceSize / 2,
+        y: param.boardTop + param.pieceSize * row + param.pieceSize / 2,
         dy: 0,
         fontSize,
         character,
@@ -250,7 +262,7 @@ const layout = computed(() => {
       if (!props.lastMove) {
         return null;
       }
-      const square = props.lastMove.to;
+      const square = props.flip ? props.lastMove.to.opposite : props.lastMove.to;
       return {
         x: param.boardLeft + (param.boardSize * square.x) / 9,
         y: param.boardTop + (param.boardSize * square.y) / 9,
@@ -260,8 +272,10 @@ const layout = computed(() => {
     })(),
     boardPieces: props.position.board.listNonEmptySquares().map((square) => {
       const piece = props.position.board.at(square) as Piece;
-      const cx = param.boardLeft + (param.boardSize * square.x) / 9 + param.pieceSize / 2;
-      const cy = param.boardTop + (param.boardSize * square.y) / 9 + param.pieceSize / 2;
+      const displaySquare = props.flip ? square.opposite : square;
+      const displayColor = props.flip ? reverseColor(piece.color) : piece.color;
+      const cx = param.boardLeft + (param.boardSize * displaySquare.x) / 9 + param.pieceSize / 2;
+      const cy = param.boardTop + (param.boardSize * displaySquare.y) / 9 + param.pieceSize / 2;
       const fontSize = (param.boardSize * props.fontScale) / 11;
       return {
         id: `${square.x},${square.y}`,
@@ -269,34 +283,43 @@ const layout = computed(() => {
         y: cy,
         dy: fontSize * characterYOffsetRatio,
         fontSize,
-        transform: piece.color === Color.WHITE ? `rotate(180, ${cx}, ${cy})` : undefined,
+        transform: displayColor === Color.WHITE ? `rotate(180, ${cx}, ${cy})` : undefined,
         character: pieceTypeToStringForBoard(piece.type),
       };
     }),
     blackHand: (function () {
       const text = buildHandText(props.blackName, props.position.blackHand);
       const fontSize = Math.min((param.boardSize / text.length) * 0.9, param.maxHandFontSize);
+      const near = !props.flip;
       return {
         text,
         style: {
-          left: `${param.blackHandLeft}px`,
+          left: `${near ? param.blackHandLeft : param.whiteHandLeft}px`,
           top: `${param.blackHandTop}px`,
           height: `${param.boardSize}px`,
           fontSize: `${fontSize * props.fontScale}px`,
+          transform: near ? undefined : "rotate(180deg)",
+        },
+        textStyle: {
+          writingMode: near ? ("vertical-lr" as const) : ("vertical-rl" as const),
         },
       };
     })(),
     whiteHand: (function () {
       const text = buildHandText(props.whiteName, props.position.whiteHand);
       const fontSize = Math.min((param.boardSize / text.length) * 0.9, param.maxHandFontSize);
+      const near = props.flip;
       return {
         text,
         style: {
-          left: `${param.whiteHandLeft}px`,
+          left: `${near ? param.blackHandLeft : param.whiteHandLeft}px`,
           top: `${param.whiteHandTop}px`,
           height: `${param.boardSize}px`,
           fontSize: `${fontSize * props.fontScale}px`,
-          transform: "rotate(180deg)",
+          transform: near ? undefined : "rotate(180deg)",
+        },
+        textStyle: {
+          writingMode: near ? ("vertical-lr" as const) : ("vertical-rl" as const),
         },
       };
     })(),
@@ -335,11 +358,5 @@ const layout = computed(() => {
   display: inline-block;
   text-orientation: upright;
   letter-spacing: 0px;
-}
-.hand.black {
-  writing-mode: vertical-lr;
-}
-.hand.white {
-  writing-mode: vertical-rl;
 }
 </style>

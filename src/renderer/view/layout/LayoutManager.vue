@@ -237,6 +237,15 @@
                   @update:value="(value) => updateCustomProfileComponent(index, 'branches', value)"
                 />
               </span>
+              <span class="property">
+                <ToggleButton
+                  :value="!!component.showBranchTree"
+                  :label="t.tree"
+                  @update:value="
+                    (value) => updateCustomProfileComponent(index, 'showBranchTree', value)
+                  "
+                />
+              </span>
             </div>
             <div v-if="component.type === 'Chart'">
               <span class="property">

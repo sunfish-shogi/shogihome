@@ -5,9 +5,11 @@
       <div class="message">{{ store.message }}</div>
     </div>
     <div class="main-buttons">
-      <button data-hotkey="Enter" autofocus @click="onOk()">OK</button>
+      <button data-hotkey="Enter" autofocus @click="onOk()">
+        {{ store.buttonType === "yesNo" ? t.yes : "OK" }}
+      </button>
       <button data-hotkey="Escape" @click="onClose()">
-        {{ t.cancel }}
+        {{ store.buttonType === "yesNo" ? t.no : t.cancel }}
       </button>
     </div>
   </dialog>
@@ -45,3 +47,10 @@ onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value!);
 });
 </script>
+
+<style scoped>
+/* 複数行のメッセージ (改行区切り) をそのまま表示できるようにする。 */
+.message {
+  white-space: pre-line;
+}
+</style>

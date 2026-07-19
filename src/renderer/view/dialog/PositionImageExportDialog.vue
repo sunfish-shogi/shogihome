@@ -14,6 +14,7 @@
             :header="header"
             :footer="store.record.current.comment"
             :last-move="lastMove"
+            :flip="appSettings.boardFlipping"
             :typeface="appSettings.positionImageTypeface"
             :font-weight="fontWeight"
             :text-shadow="textShadow"
@@ -33,6 +34,7 @@
               appSettings.pieceStandImageFileURL &&
               fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)
             "
+            :hand-piece-order="appSettings.handPieceOrder"
             :piece-image-url-template="getPieceImageURLTemplate(appSettings)"
             :king-piece-type="appSettings.kingPieceType"
             :board-label-type="appSettings.boardLabelType"
@@ -136,6 +138,11 @@
           @input="changeSize"
         />
         <span class="form-item-small-label">px</span>
+        <ToggleButton
+          :value="appSettings.boardFlipping"
+          :label="t.flipBoard"
+          @update:value="changeFlip"
+        />
       </div>
     </div>
     <div class="main-buttons">
@@ -338,6 +345,10 @@ const changeFontWeight = (value: PositionImageFontWeight) => {
 
 const changeType = (value: string) => {
   appSettings.updateAppSettings({ positionImageStyle: value as PositionImageStyle });
+};
+
+const changeFlip = () => {
+  appSettings.flipBoard();
 };
 
 const getRect = () => {

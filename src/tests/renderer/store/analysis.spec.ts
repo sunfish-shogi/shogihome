@@ -345,6 +345,41 @@ describe("store/analysis", () => {
     expect(recordManager.record.current.comment).toBe("");
   });
 
+  it("close-during-launch", async () => {
+    // エンジンの起動 (launch) 完了前に close() が呼ばれても、起動したエンジンを放置しない。
+    let resolveLaunch: () => void = () => {
+      /* noop */
+    };
+    mockUSIPlayer.prototype.launch.mockReturnValue(
+      new Promise<void>((resolve) => {
+        resolveLaunch = resolve;
+      }),
+    );
+    mockUSIPlayer.prototype.readyNewGame.mockResolvedValue();
+    mockUSIPlayer.prototype.startResearch.mockResolvedValue();
+    mockUSIPlayer.prototype.close.mockResolvedValue();
+    const recordManager = new RecordManager();
+    recordManager.importRecord(
+      "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+    );
+    const onFinish = vi.fn();
+    const onError = vi.fn();
+    const manager = new AnalysisManager(recordManager).on("finish", onFinish).on("error", onError);
+    const startPromise = manager.start({ ...baseAnalysisSettings });
+    // launch がまだ解決していないので this.researcher は未設定。
+    expect(mockUSIPlayer).toBeCalledTimes(1);
+    // 起動処理中に停止する。
+    manager.close();
+    // 起動を完了させる。
+    resolveLaunch();
+    await startPromise;
+    // 起動したエンジンは確実に終了される。
+    expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
+    // 解析は開始されない。
+    expect(mockUSIPlayer.prototype.startResearch).not.toBeCalled();
+    expect(onError).not.toBeCalled();
+  });
+
   describe("comment-behavior", () => {
     const testCases = [
       {

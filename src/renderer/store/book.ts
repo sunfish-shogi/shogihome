@@ -1,4 +1,11 @@
-import { BookFormat, BookMove, BookMoveEx, defaultBookSession } from "@/common/book.js";
+import {
+  BookFormat,
+  BookMove,
+  BookMoveEx,
+  BookPositionEntry,
+  BookPositionProperties,
+  defaultBookSession,
+} from "@/common/book.js";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { useStore } from ".";
 import api from "@/renderer/ipc/api.js";
@@ -14,6 +21,9 @@ import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen.js";
 
 export class BookStore {
   private _moves: BookMoveEx[] = [];
+  private _positionProperties: BookPositionProperties = {};
+  // 実際に定跡を検索した SFEN (flippedBook が有効な場合は反転局面のことがある)
+  private _resolvedSfen?: string;
   private _format: BookFormat = "yane2016";
   private _reactive: UnwrapNestedRefs<BookStore>;
 
@@ -29,6 +39,10 @@ export class BookStore {
     return this._moves;
   }
 
+  get positionProperties(): BookPositionProperties {
+    return this._positionProperties;
+  }
+
   get format(): BookFormat {
     return this._format;
   }
@@ -36,8 +50,19 @@ export class BookStore {
   async reloadBookMoves() {
     try {
       const sfen = this.record.position.sfen;
-      const moves = await this.searchMoves(sfen);
-      this._moves = moves.map((bookMove) => {
+      const { entry, sfen: resolvedSfen } = await this.searchEntry(sfen);
+      this._resolvedSfen = resolvedSfen;
+      this._positionProperties = entry
+        ? {
+            comment: entry.comment,
+            minPly: entry.minPly,
+            games: entry.games,
+            wonBlack: entry.wonBlack,
+            wonWhite: entry.wonWhite,
+            sbkEvals: entry.sbkEvals,
+          }
+        : {};
+      this._moves = (entry?.moves ?? []).map((bookMove) => {
         const position = this.record.position.clone();
         const move = position.createMoveByUSI(bookMove.usi);
         let repetition = 0;
@@ -192,21 +217,54 @@ export class BookStore {
   }
 
   async searchMoves(sfen: string): Promise<BookMove[]> {
-    const moves = await api.searchBookMoves(defaultBookSession, sfen);
-    if (moves.length !== 0) {
-      return moves;
+    const { entry } = await this.searchEntry(sfen);
+    return entry?.moves ?? [];
+  }
+
+  // 定跡局面を検索する。flippedBook が有効な場合は反転局面の定跡も検索するため、
+  // 実際に定跡が見つかった局面の SFEN を entry と合わせて返す。
+  private async searchEntry(
+    sfen: string,
+  ): Promise<{ entry: BookPositionEntry | null; sfen: string }> {
+    const entry = await api.searchBookEntry(defaultBookSession, sfen);
+    if (entry?.moves.length) {
+      return { entry, sfen };
     }
     const appSettings = useAppSettings();
     if (!appSettings.flippedBook) {
-      return [];
+      return { entry, sfen };
     }
-    return (await api.searchBookMoves(defaultBookSession, flippedSFEN(sfen))).map((move) => {
-      move.usi = flippedUSIMove(move.usi);
-      if (move.usi2) {
-        move.usi2 = flippedUSIMove(move.usi2);
-      }
-      return move;
-    });
+    const flippedSfen = flippedSFEN(sfen);
+    const flippedEntry = await api.searchBookEntry(defaultBookSession, flippedSfen);
+    if (!flippedEntry?.moves.length) {
+      return { entry, sfen };
+    }
+    return {
+      entry: {
+        ...flippedEntry,
+        moves: flippedEntry.moves.map((move) => {
+          move.usi = flippedUSIMove(move.usi);
+          if (move.usi2) {
+            move.usi2 = flippedUSIMove(move.usi2);
+          }
+          return move;
+        }),
+        wonBlack: flippedEntry.wonWhite,
+        wonWhite: flippedEntry.wonBlack,
+      },
+      sfen: flippedSfen,
+    };
+  }
+
+  async updatePositionComment(comment: string) {
+    const sfen = this._resolvedSfen ?? this.record.position.sfen;
+    useBusyState().retain();
+    return api
+      .updateBookPositionComment(defaultBookSession, sfen, comment)
+      .then(() => this.reloadBookMoves())
+      .finally(() => {
+        useBusyState().release();
+      });
   }
 
   importBookMoves(settings: BookImportSettings) {

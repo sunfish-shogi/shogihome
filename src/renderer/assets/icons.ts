@@ -62,6 +62,8 @@ export enum IconType {
   REFRESH = "refresh",
   ROBOT = "robot",
   TRASH = "trash",
+  UNDO = "undo",
+  REDO = "redo",
 }
 
 export const iconSourceMap = {
@@ -126,6 +128,8 @@ export const iconSourceMap = {
   [IconType.REFRESH]: "icon/refresh_FILL0.svg",
   [IconType.ROBOT]: "icon/smart_toy_FILL0.svg",
   [IconType.TRASH]: "icon/delete_FILL0.svg",
+  [IconType.UNDO]: "icon/undo.svg",
+  [IconType.REDO]: "icon/redo.svg",
 };
 
 Object.values(iconSourceMap).forEach((source) => {

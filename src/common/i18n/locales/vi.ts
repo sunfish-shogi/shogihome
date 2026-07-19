@@ -84,6 +84,42 @@ export const vi: Texts = {
   copyCSALogTailCommand: "Sao chép lệnh kết thúc log CSA",
   reloadCustomPieceImage: "Tải lại ảnh quân tùy chỉnh",
   statisticsReport: "Thống kê",
+  nextMoveProblemCollection: "次の一手", // TODO: Translate
+  createNextMoveProblemCollection: "次の一手問題集の作成", // TODO: Translate
+  createProblemCollection: "問題集の作成", // TODO: Translate
+  openProblemCollection: "問題集を開く", // TODO: Translate
+  nextMoveGenerationCompleted: "次の一手問題集の作成が完了しました。", // TODO: Translate
+  noProblemsWereGeneratedAndFileWasNotCreated:
+    "採用できる局面がなかったため、問題集ファイルは作成されませんでした。", // TODO: Translate
+  doYouWantToSaveNProblems: (n: number) => `作成済みの${n}問を保存しますか？`, // TODO: Translate
+  doYouWantToStartQuiz: "出題を開始しますか？", // TODO: Translate
+  doYouWantToResumeFromWhereYouLeftOff: "前回の続きから再開しますか？", // TODO: Translate
+  nextMoveGenerationRequiresAnalyzedRecord:
+    "問題集作成機能では解析コメントで悪手の候補を抽出してから、エンジンを起動して複数の候補手を求めます。事前に解析機能を実行して解析コメント付きの棋譜を用意してください。", // TODO: Translate
+  files: "ファイル数", // TODO: Translate
+  blunderCandidates: "悪手候補", // TODO: Translate
+  adoptedProblems: "採用した問題", // TODO: Translate
+  researchedPositions: "再探索済みの局面", // TODO: Translate
+  recordDirectory: "棋譜ディレクトリ", // TODO: Translate
+  winRateDropThreshold: "勝率降下幅", // TODO: Translate
+  minWinRate: "対象局面評価の下限", // TODO: Translate
+  adoptionWinRateDiff: "採用判定の勝率差", // TODO: Translate
+  acceptableWinRateDiff: "正解範囲の勝率差", // TODO: Translate
+  maxProblems: "問題数の上限", // TODO: Translate
+  outputFile: "出力ファイル", // TODO: Translate
+  problemNofM: (n: number, m: number) => `問題 ${n} / ${m}`, // TODO: Translate
+  findTheNextMove: "次の一手は？", // TODO: Translate
+  correct: "正解", // TODO: Translate
+  incorrect: "不正解", // TODO: Translate
+  correctRate: "正解率", // TODO: Translate
+  actualGameMove: "実戦の手", // TODO: Translate
+  thisMoveWasPlayedInTheGame: "実戦で指された手です。", // TODO: Translate
+  doYouWantToTryAgain: "もう一度チャレンジしますか？", // TODO: Translate
+  showAnswer: "答えを見る", // TODO: Translate
+  nextProblem: "次の問題", // TODO: Translate
+  previousProblem: "前の問題", // TODO: Translate
+  inOrder: "順番どおり", // TODO: Translate
+  sourceRecord: "出典棋譜", // TODO: Translate
   launchUSIEngine: "Khởi động phần mềm shogi",
   connectToCSAServer: "Kết nối với máy chủ CSA",
   adminMode: "Chế độ nâng cao",
@@ -105,6 +141,7 @@ export const vi: Texts = {
   openUserGuide: "Mở hướng dẫn sử dụng",
   openLatestReleasePage: "Mở trang của bản mới nhất",
   openStableReleasePage: "Mở trang của bản ổn định",
+  checkForUpdates: "アップデートを確認", // TODO: Translate
   license: "Giấy phép",
   inputs: "Đầu vào",
   outputs: "Đầu ra",
@@ -195,6 +232,13 @@ export const vi: Texts = {
   analysis: "Phân tích",
   analyze: "Phân tích",
   stopAnalysis: "Dừng phân tích",
+  batchAnalysis: "連続棋譜解析", // TODO: Translate
+  currentRecord: "現在の棋譜", // TODO: Translate
+  skipAnalyzed: "解析済みをスキップ", // TODO: Translate
+  analyzedRecordFilesWillBeOverwritten:
+    "解析した棋譜ファイルは上書きされます。重要なデータは事前にコピーを作成してください。", // TODO: Translate
+  analysisCompleted: "解析が完了しました。", // TODO: Translate
+  noRecordFileFound: "対象の棋譜ファイルが見つかりません。", // TODO: Translate
   searchDuplicatePositions: "Tìm thế cờ lặp lại",
   duplicatePositionSearch: "Tìm thế cờ lặp lại",
   duplicatePositions: "Thế cờ lặp lại",
@@ -208,13 +252,16 @@ export const vi: Texts = {
   appearanceCount: "Số lần lặp lại",
   showList: "Hiện tất cả",
   setupPosition: "Xếp thế cờ",
-  startPositionSetup: "Bắt đầu xếp thế cờ",
-  completePositionSetup: "Hoàn tất xếp thế cờ",
   changeTurn: "Đổi lượt đi",
   initializePosition: "Đặt lại thế cờ",
   changePieceSet: "Tăng giảm quân",
   setAllPiecesToStandardCounts: "Đặt lại số lượng quân",
   setAllPiecesToZero: "Đặt tất cả số quân thành 0",
+  addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
+  addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
+  addToBoard: "盤に追加", // TODO: Translate
+  undo: "元に戻す", // TODO: Translate
+  redo: "やり直す", // TODO: Translate
   appSettings: "Cài đặt ứng dụng",
   language: "Ngôn ngữ",
   theme: "Chủ đề",
@@ -250,6 +297,9 @@ export const vi: Texts = {
   boardOpacity: "Độ đục bàn cờ",
   pieceStandOpacity: "Độ đục komadai",
   recordOpacity: "Độ đục kỳ phổ",
+  handPieceOrder: "持ち駒の並び順", // TODO: Translate
+  rookGoldKnightToLeft: "飛・金・桂を左に", // TODO: Translate
+  rookGoldKnightToRight: "飛・金・桂を右に", // TODO: Translate
   promotionSelector: "Chọn phong cấp",
   centeredHorizontal: "Ngang, căn giữa",
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",
@@ -319,6 +369,7 @@ export const vi: Texts = {
   commentsAndBookmarks: "Bình luận & đánh dấu",
   branches: "Nhánh",
   branchListMode: "Hiển thị các nhánh",
+  tree: "ツリー", // TODO: Translate
   previousMoveBranches: "Các nước đã đi",
   nextMoveBranches: "Nước tiếp theo",
   bookmark: "Đánh dấu",
@@ -419,12 +470,16 @@ export const vi: Texts = {
   engineManagement: "Quản lý phần mềm",
   engineName: "Tên phần mềm",
   author: "Tác giả",
+  description: "説明", // TODO: Translate
   earlyPonder: "Tính nhanh",
   enginePath: "Đường dẫn phần mềm",
   openDirectory: "Mở đường dẫn",
   replaceEnginePath: "Chọn lại đường dẫn phần mềm",
   displayName: "Tên hiển thị",
   frontendBook: "Định thức (mở rộng GUI)",
+  moveSelection: "指し手の選択", // TODO: Translate
+  bestMove: "最善手", // TODO: Translate
+  bookMoveTemperature: "温度 (小さいほど最善手を優先)", // TODO: Translate
   showAllOptions: "Hiển thị tất cả cài đặt",
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
@@ -454,6 +509,8 @@ export const vi: Texts = {
   sourceURL: "URL nguồn",
   ok: "OK",
   cancel: "Hủy",
+  yes: "はい", // TODO: Translate
+  no: "いいえ", // TODO: Translate
   back: "Quay lại",
   doNotShowAgain: "Không hiện lại lần sau",
   name: "Tên",
@@ -554,6 +611,8 @@ export const vi: Texts = {
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
+  gameCount: "対局数", // TODO: Translate
+  statistics: "統計", // TODO: Translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",
@@ -697,7 +756,6 @@ export const vi: Texts = {
   areYouSureWantToQuitGames: "Bạn có thật sự muốn bỏ ván không?",
   areYouSureWantToRequestQuit: "Bạn có thể bị xử thua. Bạn có thật sự muốn yêu cầu rời ván không?",
   areYouSureWantToClearRecord: "Bạn có thật sự muốn xóa kỳ phổ không?",
-  areYouSureWantToDiscardPosition: "Bạn có thật sự muốn xóa thế cờ không?",
   areYouSureWantToOpenFileInsteadOfCurrentRecord:
     "Bạn có thật sự muốn ghi đè thế cờ hiện tại không?",
   areYouSureWantToClearHistory: "Bạn có thật sự muốn xóa lịch sử không?",
@@ -722,6 +780,7 @@ export const vi: Texts = {
   failedToSendStopCommand: "Gửi lệnh stop thất bại.",
   failedToShutdownEngines: "Dừng phần mềm thất bại.",
   failedToCheckUpdates: "Kiểm tra cập nhật thất bại.",
+  youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
   failedToSaveRecord: "Lưu kỳ phổ thất bại.",
   failedToParseSFEN: "Đọc SFEN thất bại.",
   failedToDetectRecordFormat: "Xác định định dạng kỳ phổ thất bại.",
@@ -883,5 +942,8 @@ export const vi: Texts = {
   },
   heapUsageExceedsNGBMayHang(gb: number): string {
     return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
+  },
+  settingsFileCorruptedMovedAndReset(path: string, backupPath: string): string {
+    return `設定ファイル ${path} が破損していたため読み込めませんでした。壊れたファイルは ${backupPath} に移動し、既定の設定を使用します。`; // TODO: Translate
   },
 };

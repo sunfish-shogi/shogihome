@@ -28,6 +28,8 @@ export interface Bridge {
   saveResearchSettings(settings: string): Promise<void>;
   loadAnalysisSettings(): Promise<string>;
   saveAnalysisSettings(settings: string): Promise<void>;
+  loadBatchAnalysisSettings(): Promise<string>;
+  saveBatchAnalysisSettings(settings: string): Promise<void>;
   loadGameSettings(): Promise<string>;
   saveGameSettings(settings: string): Promise<void>;
   loadCSAGameSettingsHistory(): Promise<string>;
@@ -53,9 +55,18 @@ export interface Bridge {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
   convertRecordFiles(json: string): Promise<string>;
+  listRecordFiles(json: string): Promise<string>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;
   onOpenRecord(callback: (path: string) => void): void;
+
+  // Next Move Problem Collection
+  showOpenNextMoveCollectionDialog(): Promise<string>;
+  showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string>;
+  loadNextMoveCollection(path: string): Promise<string>;
+  saveNextMoveCollection(path: string, json: string): Promise<void>;
+  loadNextMoveGenerationSettings(): Promise<string>;
+  saveNextMoveGenerationSettings(json: string): Promise<void>;
 
   // Book
   showOpenBookDialog(): Promise<string>;
@@ -67,8 +78,11 @@ export interface Bridge {
   exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
+  getBookInfo(session: number): Promise<string>;
   searchBookMoves(session: number, sfen: string): Promise<string>;
+  searchBookEntry(session: number, sfen: string): Promise<string>;
   updateBookMove(session: number, sfen: string, move: string): Promise<void>;
+  updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(session: number, sfen: string, usi: string, order: number): Promise<void>;
   importBookMoves(session: number, json: string): Promise<string>;
@@ -151,6 +165,7 @@ export interface Bridge {
   getMachineSpec(): Promise<string>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<string>;
+  checkUpdates(): Promise<void>;
   getPathForFile(file: File): string;
   onProgress(callback: (progress: number) => void): void;
 }

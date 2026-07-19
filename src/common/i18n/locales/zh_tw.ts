@@ -84,6 +84,42 @@ export const zh_tw: Texts = {
   copyCSALogTailCommand: "複製即時顯示CSA通訊紀錄指令",
   reloadCustomPieceImage: "重整自訂棋駒圖片",
   statisticsReport: "統計情報", // TODO: Translate
+  nextMoveProblemCollection: "次の一手", // TODO: Translate
+  createNextMoveProblemCollection: "次の一手問題集の作成", // TODO: Translate
+  createProblemCollection: "問題集の作成", // TODO: Translate
+  openProblemCollection: "問題集を開く", // TODO: Translate
+  nextMoveGenerationCompleted: "次の一手問題集の作成が完了しました。", // TODO: Translate
+  noProblemsWereGeneratedAndFileWasNotCreated:
+    "採用できる局面がなかったため、問題集ファイルは作成されませんでした。", // TODO: Translate
+  doYouWantToSaveNProblems: (n: number) => `作成済みの${n}問を保存しますか？`, // TODO: Translate
+  doYouWantToStartQuiz: "出題を開始しますか？", // TODO: Translate
+  doYouWantToResumeFromWhereYouLeftOff: "前回の続きから再開しますか？", // TODO: Translate
+  nextMoveGenerationRequiresAnalyzedRecord:
+    "問題集作成機能では解析コメントで悪手の候補を抽出してから、エンジンを起動して複数の候補手を求めます。事前に解析機能を実行して解析コメント付きの棋譜を用意してください。", // TODO: Translate
+  files: "ファイル数", // TODO: Translate
+  blunderCandidates: "悪手候補", // TODO: Translate
+  adoptedProblems: "採用した問題", // TODO: Translate
+  researchedPositions: "再探索済みの局面", // TODO: Translate
+  recordDirectory: "棋譜ディレクトリ", // TODO: Translate
+  winRateDropThreshold: "勝率降下幅", // TODO: Translate
+  minWinRate: "対象局面評価の下限", // TODO: Translate
+  adoptionWinRateDiff: "採用判定の勝率差", // TODO: Translate
+  acceptableWinRateDiff: "正解範囲の勝率差", // TODO: Translate
+  maxProblems: "問題数の上限", // TODO: Translate
+  outputFile: "出力ファイル", // TODO: Translate
+  problemNofM: (n: number, m: number) => `問題 ${n} / ${m}`, // TODO: Translate
+  findTheNextMove: "次の一手は？", // TODO: Translate
+  correct: "正解", // TODO: Translate
+  incorrect: "不正解", // TODO: Translate
+  correctRate: "正解率", // TODO: Translate
+  actualGameMove: "実戦の手", // TODO: Translate
+  thisMoveWasPlayedInTheGame: "実戦で指された手です。", // TODO: Translate
+  doYouWantToTryAgain: "もう一度チャレンジしますか？", // TODO: Translate
+  showAnswer: "答えを見る", // TODO: Translate
+  nextProblem: "次の問題", // TODO: Translate
+  previousProblem: "前の問題", // TODO: Translate
+  inOrder: "順番どおり", // TODO: Translate
+  sourceRecord: "出典棋譜", // TODO: Translate
   launchUSIEngine: "啟動USI引擎",
   connectToCSAServer: "連接CSA伺服器",
   adminMode: "管理模式",
@@ -102,6 +138,7 @@ export const zh_tw: Texts = {
   openUserGuide: "使用教學",
   openLatestReleasePage: "前往最新版發布頁面",
   openStableReleasePage: "前往安定版發布頁面",
+  checkForUpdates: "アップデートを確認", // TODO: Translate
   license: "授權條款",
   inputs: "輸入目錄",
   outputs: "輸出目錄",
@@ -192,6 +229,13 @@ export const zh_tw: Texts = {
   analysis: "解析",
   analyze: "解析開始",
   stopAnalysis: "中斷解析",
+  batchAnalysis: "連続棋譜解析", // TODO: Translate
+  currentRecord: "現在の棋譜", // TODO: Translate
+  skipAnalyzed: "解析済みをスキップ", // TODO: Translate
+  analyzedRecordFilesWillBeOverwritten:
+    "解析した棋譜ファイルは上書きされます。重要なデータは事前にコピーを作成してください。", // TODO: Translate
+  analysisCompleted: "解析が完了しました。", // TODO: Translate
+  noRecordFileFound: "対象の棋譜ファイルが見つかりません。", // TODO: Translate
   searchDuplicatePositions: "同一局面を検索", // TODO: Translate
   duplicatePositionSearch: "同一局面検索", // TODO: Translate
   duplicatePositions: "同一局面", // TODO: Translate
@@ -205,13 +249,16 @@ export const zh_tw: Texts = {
   appearanceCount: "出現数", // TODO: Translate
   showList: "一覧を表示", // TODO: Translate
   setupPosition: "編輯局面",
-  startPositionSetup: "開始編輯局面",
-  completePositionSetup: "結束編輯局面",
   changeTurn: "變更手番",
   initializePosition: "初始化局面",
   changePieceSet: "調整棋駒數",
   setAllPiecesToStandardCounts: "全ての駒を平手の枚数にする", // TODO: Translate
   setAllPiecesToZero: "全ての駒を0にする", // TODO: Translate
+  addToBlackHandPieceStand: "先手の駒台に追加", // TODO: Translate
+  addToWhiteHandPieceStand: "後手の駒台に追加", // TODO: Translate
+  addToBoard: "盤に追加", // TODO: Translate
+  undo: "元に戻す", // TODO: Translate
+  redo: "やり直す", // TODO: Translate
   appSettings: "程式設定",
   language: "語言",
   theme: "主題",
@@ -247,6 +294,9 @@ export const zh_tw: Texts = {
   boardOpacity: "盤面不透明度",
   pieceStandOpacity: "駒台不透明度",
   recordOpacity: "棋譜不透明度",
+  handPieceOrder: "持ち駒の並び順", // TODO: Translate
+  rookGoldKnightToLeft: "飛・金・桂を左に", // TODO: Translate
+  rookGoldKnightToRight: "飛・金・桂を右に", // TODO: Translate
   promotionSelector: "成變、不成對話框顯示",
   centeredHorizontal: "水平置中",
   promoteFirstVertical: "垂直（成變優先）",
@@ -316,6 +366,7 @@ export const zh_tw: Texts = {
   commentsAndBookmarks: "備註・書籤",
   branches: "分支",
   branchListMode: "分岐の表示", // TODO: Translate
+  tree: "ツリー", // TODO: Translate
   previousMoveBranches: "着手した手", // TODO: Translate
   nextMoveBranches: "次の手", // TODO: Translate
   bookmark: "書籤",
@@ -416,12 +467,16 @@ export const zh_tw: Texts = {
   engineManagement: "引擎管理",
   engineName: "引擎名稱",
   author: "作者",
+  description: "説明", // TODO: Translate
   earlyPonder: "預先Ponder",
   enginePath: "場所",
   openDirectory: "開啟資料夾",
   replaceEnginePath: "重新選擇引擎",
   displayName: "表示名稱",
   frontendBook: "定跡 (GUI拡張)", // TODO: Translate
+  moveSelection: "指し手の選択", // TODO: Translate
+  bestMove: "最善手", // TODO: Translate
+  bookMoveTemperature: "温度 (小さいほど最善手を優先)", // TODO: Translate
   showAllOptions: "全てのオプションを表示", // TODO: Translate
   invoke: "執行",
   resetToEngineDefaultValues: "回復至引擎預設設定",
@@ -451,6 +506,8 @@ export const zh_tw: Texts = {
   sourceURL: "來源網址",
   ok: "OK",
   cancel: "取消",
+  yes: "はい", // TODO: Translate
+  no: "いいえ", // TODO: Translate
   back: "返回",
   doNotShowAgain: "不再顯示",
   name: "名稱",
@@ -551,6 +608,8 @@ export const zh_tw: Texts = {
   aperyBookFile: "Apery 定跡ファイル", // TODO: Translate
   loadingMode: "読み込みモード", // TODO: Translate
   positionCount: "局面数", // TODO: Translate
+  gameCount: "対局数", // TODO: Translate
+  statistics: "統計", // TODO: Translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",
@@ -692,7 +751,6 @@ export const zh_tw: Texts = {
   areYouSureWantToQuitGames: "要中斷連續對局嗎？",
   areYouSureWantToRequestQuit: "若提出中斷要求，可能會被判負。請問您要繼續嗎？",
   areYouSureWantToClearRecord: "將會刪除現在的棋譜。請問您要繼續嗎？",
-  areYouSureWantToDiscardPosition: "將不會保存現在的局面。請問您要繼續嗎？",
   areYouSureWantToOpenFileInsteadOfCurrentRecord:
     "會將現在的棋譜關閉並開啟別的檔案，請問您要繼續嗎？",
   areYouSureWantToClearHistory: "將清除紀錄。請問您要繼續嗎？",
@@ -717,6 +775,7 @@ export const zh_tw: Texts = {
   failedToSendStopCommand: "無法送出stop指令。",
   failedToShutdownEngines: "引擎無法正常結束。",
   failedToCheckUpdates: "無法確認更新。",
+  youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
   failedToSaveRecord: "棋譜保存失敗。",
   failedToParseSFEN: "SFEN讀取失敗。",
   failedToDetectRecordFormat: "無法判別棋譜形式。",
@@ -871,5 +930,8 @@ export const zh_tw: Texts = {
   },
   heapUsageExceedsNGBMayHang(gb: number): string {
     return `メモリ使用量が ${gb}GB を超えました。増加傾向が続くとハングアップする可能性があります。`; // TODO: Translate
+  },
+  settingsFileCorruptedMovedAndReset(path: string, backupPath: string): string {
+    return `設定ファイル ${path} が破損していたため読み込めませんでした。壊れたファイルは ${backupPath} に移動し、既定の設定を使用します。`; // TODO: Translate
   },
 };

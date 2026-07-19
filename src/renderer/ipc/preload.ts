@@ -71,6 +71,12 @@ const api: Bridge = {
   async saveAnalysisSettings(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_ANALYSIS_SETTINGS, json);
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_BATCH_ANALYSIS_SETTINGS);
+  },
+  async saveBatchAnalysisSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_BATCH_ANALYSIS_SETTINGS, json);
+  },
   async loadGameSettings(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_GAME_SETTINGS);
   },
@@ -127,11 +133,32 @@ const api: Bridge = {
   async convertRecordFiles(json: string): Promise<string> {
     return await ipcRenderer.invoke(Background.CONVERT_RECORD_FILES, json);
   },
+  async listRecordFiles(json: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.LIST_RECORD_FILES, json);
+  },
   async showSelectSFENDialog(lastPath: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SHOW_SELECT_SFEN_DIALOG, lastPath);
   },
   async loadSFENFile(path: string): Promise<string[]> {
     return await ipcRenderer.invoke(Background.LOAD_SFEN_FILE, path);
+  },
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_OPEN_NEXT_MOVE_COLLECTION_DIALOG);
+  },
+  async showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_NEXT_MOVE_COLLECTION_DIALOG, defaultPath);
+  },
+  async loadNextMoveCollection(path: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_NEXT_MOVE_COLLECTION, path);
+  },
+  async saveNextMoveCollection(path: string, json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_NEXT_MOVE_COLLECTION, path, json);
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_NEXT_MOVE_GENERATION_SETTINGS);
+  },
+  async saveNextMoveGenerationSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_NEXT_MOVE_GENERATION_SETTINGS, json);
   },
   async loadRecordFileHistory(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_RECORD_FILE_HISTORY);
@@ -180,11 +207,25 @@ const api: Bridge = {
   async getBookFormat(session: number): Promise<BookFormat> {
     return await ipcRenderer.invoke(Background.GET_BOOK_FORMAT, session);
   },
+  async getBookInfo(session: number): Promise<string> {
+    return await ipcRenderer.invoke(Background.GET_BOOK_INFO, session);
+  },
   async searchBookMoves(session: number, sfen: string): Promise<string> {
     return await ipcRenderer.invoke(Background.SEARCH_BOOK_MOVES, session, sfen);
   },
+  async searchBookEntry(session: number, sfen: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SEARCH_BOOK_ENTRY, session, sfen);
+  },
   async updateBookMove(session: number, sfen: string, json: string): Promise<void> {
     return await ipcRenderer.invoke(Background.UPDATE_BOOK_MOVE, session, sfen, json);
+  },
+  async updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void> {
+    return await ipcRenderer.invoke(
+      Background.UPDATE_BOOK_POSITION_COMMENT,
+      session,
+      sfen,
+      comment,
+    );
   },
   async removeBookMove(session: number, sfen: string, usi: string): Promise<void> {
     return await ipcRenderer.invoke(Background.REMOVE_BOOK_MOVE, session, sfen, usi);
@@ -422,6 +463,9 @@ const api: Bridge = {
   },
   async getVersionStatus(): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_VERSION_STATUS);
+  },
+  async checkUpdates(): Promise<void> {
+    await ipcRenderer.invoke(Background.CHECK_UPDATES);
   },
   getPathForFile(file: File): string {
     return webUtils.getPathForFile(file);

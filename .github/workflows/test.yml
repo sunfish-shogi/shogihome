@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: actions/setup-node@v6.4.0
         with:
           # Do not use Node.js v24.16.0 or later
@@ -22,6 +22,8 @@ jobs:
           cache: "npm"
       - run: npm install -g npm@latest
       - run: npm version
+      - name: Verify package-lock.json integrity
+        run: node scripts/verify-lockfile.mjs
       - run: npm ci --no-audit --no-fund
       - run: npm run lint
       - run: npm run docs

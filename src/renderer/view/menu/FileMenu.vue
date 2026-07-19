@@ -76,6 +76,15 @@
           <Icon :icon="IconType.BATCH" />
           <div class="label">{{ t.batchConversion }}</div>
         </button>
+        <!-- モバイル版は出題ダイアログが専用レイアウトに対応していないため表示しない。 -->
+        <button
+          v-if="!isMobileWebApp()"
+          :disabled="!states.nextMoveQuiz"
+          @click="onOpenNextMoveCollection"
+        >
+          <Icon :icon="IconType.QUIZ" />
+          <div class="label">{{ t.nextMoveProblemCollection }}</div>
+        </button>
         <button v-if="isNative()" @click="onOpenAutoSaveDirectory">
           <Icon :icon="IconType.OPEN_FOLDER" />
           <div class="label">{{ t.openAutoSaveDirectory }}</div>
@@ -132,7 +141,11 @@
         </button>
       </div>
     </dialog>
-    <InitialPositionMenu v-if="isInitialPositionMenuVisible" @close="emit('close')" />
+    <InitialPositionMenu
+      v-if="isInitialPositionMenuVisible"
+      @select="onSelectInitialPosition"
+      @close="emit('close')"
+    />
     <MobileGameMenu v-if="isGameMenuVisible" @close="emit('close')" />
   </div>
 </template>
@@ -190,6 +203,10 @@ const onNewFile = () => {
     emit("close");
   }
 };
+const onSelectInitialPosition = (sfen: string) => {
+  store.initializePositionBySFEN(sfen);
+  emit("close");
+};
 const onOpen = () => {
   store.openRecord();
   emit("close");
@@ -220,6 +237,10 @@ const onShare = () => {
 };
 const onBatchConversion = () => {
   store.showBatchConversionDialog();
+  emit("close");
+};
+const onOpenNextMoveCollection = () => {
+  store.openNextMoveQuiz();
   emit("close");
 };
 const onExportImage = () => {
@@ -283,6 +304,7 @@ const states = computed(() => {
     loadRemoteFile: store.appState === AppState.NORMAL,
     share: store.appState === AppState.NORMAL,
     batchConversion: store.appState === AppState.NORMAL,
+    nextMoveQuiz: store.appState === AppState.NORMAL,
     exportImage: store.appState === AppState.NORMAL,
     paste: store.appState === AppState.NORMAL,
   };

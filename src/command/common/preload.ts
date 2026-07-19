@@ -103,6 +103,12 @@ const bridge: Bridge = {
   async saveMateSearchSettings(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveBatchAnalysisSettings(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async loadUSIEngines(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
@@ -156,6 +162,9 @@ const bridge: Bridge = {
   async convertRecordFiles(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
+  async listRecordFiles(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async showSelectSFENDialog(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
@@ -164,6 +173,26 @@ const bridge: Bridge = {
   },
   onOpenRecord(): void {
     // Do Nothing
+  },
+
+  // Next Move Problem Collection
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async showSaveNextMoveCollectionDialog(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async loadNextMoveCollection(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveNextMoveCollection(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async saveNextMoveGenerationSettings(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
   },
 
   // Book
@@ -194,10 +223,19 @@ const bridge: Bridge = {
   async getBookFormat(): Promise<BookFormat> {
     throw new Error("This feature is not available on command line tool");
   },
+  async getBookInfo(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async searchBookMoves(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
+  async searchBookEntry(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async updateBookMove(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async updateBookPositionComment(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
   async removeBookMove(): Promise<void> {
@@ -404,6 +442,9 @@ const bridge: Bridge = {
     return false;
   },
   async getVersionStatus(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async checkUpdates(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
   getPathForFile() {

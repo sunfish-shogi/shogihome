@@ -10,6 +10,7 @@ import {
 import { Move, parsePV, Record } from "tsshogi";
 import { testUSIEngine, testUSIEngineWithPonder } from "@/tests/mock/usi.js";
 import { Mocked } from "vitest";
+import { BookMoveSelectionRule } from "@/common/settings/usi.js";
 
 vi.mock("@/renderer/ipc/api.js");
 
@@ -130,6 +131,189 @@ describe("usi", () => {
     await player.close();
     expect(mockAPI.usiQuit).toBeCalledWith(100);
     expect(mockAPI.closeBookSession).toBeCalledTimes(1);
+  });
+
+  it("bookHit/weightedByCount", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", count: 10, comment: "" },
+      { usi: "6g6f", count: 30, comment: "" },
+      { usi: "5g5f", count: 60, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.3);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_COUNT,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      // 重みは 10 : 30 : 60 であり、乱数値 0.3 は累積 10% ~ 40% の範囲に入るので 2 番目の手が選ばれる。
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("6g6f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
+  });
+
+  it("bookHit/weightedByScore", async () => {
+    const usi = "position startpos moves 7g7f 3c3d";
+    const record = Record.newByUSI(usi) as Record;
+    // ソフトマックス (温度 100) による重みは以下の通り。
+    //   2g2f: exp((300-300)/100) = 1
+    //   6g6f: score が無いので 0 (選ばれない)
+    //   5g5f: exp((0-300)/100) = exp(-3) ≈ 0.0498
+    // 合計 ≈ 1.0498 なので 2g2f は [0, 0.9526)、5g5f は [0.9526, 1) を占める。
+    const runSelection = async (randomValue: number): Promise<string> => {
+      vi.clearAllMocks();
+      mockAPI.usiLaunch.mockResolvedValueOnce(100);
+      mockAPI.usiQuit.mockResolvedValueOnce();
+      mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+      mockAPI.searchBookMoves.mockResolvedValueOnce([
+        { usi: "2g2f", score: 300, comment: "" },
+        { usi: "6g6f", comment: "" }, // score が無い手は選ばれない
+        { usi: "5g5f", score: 0, comment: "" },
+      ]);
+      mockAPI.closeBookSession.mockResolvedValueOnce();
+      const random = vi.spyOn(Math, "random").mockReturnValue(randomValue);
+      try {
+        const player = new USIPlayer(
+          {
+            ...testUSIEngine,
+            extraBook: {
+              enabled: true,
+              filePath: "/path/to/book",
+              onTheFly: false,
+              moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+            },
+          },
+          { timeoutSeconds: 10 },
+        );
+        await player.launch();
+        const searchHandler = {
+          onMove: vi.fn(),
+          onResign: vi.fn(),
+          onWin: vi.fn(),
+          onError: vi.fn(),
+        };
+        await player.startSearch(record.position, usi, timeStates, searchHandler);
+        await player.close();
+        return searchHandler.onMove.mock.calls[0][0].usi;
+      } finally {
+        random.mockRestore();
+      }
+    };
+    // 乱数値 0.5 は 2g2f の範囲に入る。
+    expect(await runSelection(0.5)).toBe("2g2f");
+    // 乱数値 0.98 は 5g5f の範囲に入る。
+    expect(await runSelection(0.98)).toBe("5g5f");
+  });
+
+  it("bookHit/weightedByScore/nonFiniteScore", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    // 先頭に不正な (非有限の) 評価値を持つ手があっても、他の手の重み付けを汚染しない。
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", score: NaN, comment: "" },
+      { usi: "6g6f", score: 300, comment: "" },
+      { usi: "5g5f", score: 0, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    // 有限な評価値は 300 : 0 なので重みは 6g6f=1, 5g5f≈0.0498、2g2f は 0。
+    // 乱数値 0.5 は 6g6f の範囲に入る (汚染時は最後の 5g5f が返っていた)。
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.5);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("6g6f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
+  });
+
+  it("bookHit/weightedByScore/customTemperature", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiQuit.mockResolvedValueOnce();
+    mockAPI.openBookAsNewSession.mockResolvedValueOnce(123);
+    mockAPI.searchBookMoves.mockResolvedValueOnce([
+      { usi: "2g2f", score: 300, comment: "" },
+      { usi: "5g5f", score: 0, comment: "" },
+    ]);
+    mockAPI.closeBookSession.mockResolvedValueOnce();
+    // 温度 600 では重みは 2g2f=exp(0)=1, 5g5f=exp(-300/600)=exp(-0.5)≈0.6065。
+    // 合計 ≈ 1.6065 なので 2g2f は [0, 0.6225)、5g5f は [0.6225, 1) を占める。
+    // 乱数値 0.7 は 5g5f の範囲に入る (既定の温度 100 なら 2g2f が返る)。
+    const random = vi.spyOn(Math, "random").mockReturnValue(0.7);
+    try {
+      const usi = "position startpos moves 7g7f 3c3d";
+      const record = Record.newByUSI(usi) as Record;
+      const player = new USIPlayer(
+        {
+          ...testUSIEngine,
+          extraBook: {
+            enabled: true,
+            filePath: "/path/to/book",
+            onTheFly: false,
+            moveSelectionRule: BookMoveSelectionRule.WEIGHTED_BY_SCORE,
+            scoreTemperature: 600,
+          },
+        },
+        { timeoutSeconds: 10 },
+      );
+      await player.launch();
+      const searchHandler = {
+        onMove: vi.fn(),
+        onResign: vi.fn(),
+        onWin: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startSearch(record.position, usi, timeStates, searchHandler);
+      expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("5g5f");
+      await player.close();
+    } finally {
+      random.mockRestore();
+    }
   });
 
   it("bookMiss", async () => {

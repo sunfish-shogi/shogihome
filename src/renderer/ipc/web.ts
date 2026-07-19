@@ -112,6 +112,12 @@ export const webAPI: Bridge = {
   async saveAnalysisSettings(json: string): Promise<void> {
     localStorage.setItem(STORAGE_KEY.ANALYSIS_SETTINGS, json);
   },
+  async loadBatchAnalysisSettings(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveBatchAnalysisSettings(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async loadGameSettings(): Promise<string> {
     const json = localStorage.getItem(STORAGE_KEY.GAME_SETTINGS);
     if (!json) {
@@ -243,6 +249,9 @@ export const webAPI: Bridge = {
   async convertRecordFiles(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async listRecordFiles(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async showSelectSFENDialog(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
@@ -251,6 +260,56 @@ export const webAPI: Bridge = {
   },
   onOpenRecord(): void {
     // Do Nothing
+  },
+
+  // Next Move Problem Collection
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", ".json");
+    return new Promise<string>((resolve, reject) => {
+      input.click();
+      input.onchange = () => {
+        const file = input.files?.[0];
+        if (file) {
+          file
+            .arrayBuffer()
+            .then((data) => {
+              const fileURI = uri.issueTempFileURI(file.name);
+              fileCache.clear();
+              fileCache.set(fileURI, data);
+              resolve(fileURI);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } else {
+          reject(new Error("invalid file"));
+        }
+      };
+      input.oncancel = () => {
+        resolve("");
+      };
+    });
+  },
+  async showSaveNextMoveCollectionDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async loadNextMoveCollection(uri: string): Promise<string> {
+    const data = fileCache.get(uri);
+    if (data) {
+      return new TextDecoder().decode(data);
+    }
+    return Promise.reject(new Error("invalid URI"));
+  },
+  async saveNextMoveCollection(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveNextMoveGenerationSettings(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
 
   // Book
@@ -281,10 +340,24 @@ export const webAPI: Bridge = {
   async getBookFormat(): Promise<BookFormat> {
     return "yane2016";
   },
+  async getBookInfo(): Promise<string> {
+    return JSON.stringify({
+      format: "yane2016",
+      type: "in-memory",
+      entryCount: 0,
+      unsaved: false,
+    });
+  },
   async searchBookMoves(): Promise<string> {
     return "[]";
   },
+  async searchBookEntry(): Promise<string> {
+    return "null";
+  },
   async updateBookMove(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async updateBookPositionComment(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async removeBookMove(): Promise<void> {
@@ -495,6 +568,9 @@ export const webAPI: Bridge = {
   },
   async getVersionStatus(): Promise<string> {
     return JSON.stringify({} as VersionStatus);
+  },
+  async checkUpdates(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   getPathForFile(file: File): string {
     return file.name;

@@ -18,7 +18,8 @@ import { MateSearchSettings } from "@/common/settings/mate.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
 import { BatchConversionResult } from "@/common/file/conversion.js";
 import { RecordFileHistory } from "@/common/file/history.js";
-import { RecordFileFormat } from "@/common/file/record.js";
+import { ListRecordFilesRequest, RecordFileFormat } from "@/common/file/record.js";
+import { BatchAnalysisSettings } from "@/common/settings/batch_analysis.js";
 import { VersionStatus } from "@/common/version.js";
 import { MachineSpec, SessionStates } from "@/common/advanced/monitor.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
@@ -26,9 +27,22 @@ import { CommandHistory, CommandType } from "@/common/advanced/command.js";
 import { Bridge } from "./bridge.js";
 import { TimeStates } from "@/common/game/time.js";
 import { LayoutProfileList } from "@/common/settings/layout.js";
-import { BookFormat, BookImportSummary, BookLoadingOptions, BookMove } from "@/common/book.js";
+import {
+  BookFormat,
+  BookImportSummary,
+  BookInfo,
+  BookLoadingOptions,
+  BookMove,
+  BookPositionEntry,
+} from "@/common/book.js";
 import { BookImportSettings } from "@/common/settings/book.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
+import {
+  NextMoveCollection,
+  parseNextMoveCollection,
+  serializeNextMoveCollection,
+} from "@/common/nextmove/collection.js";
+import { NextMoveGenerationSettings } from "@/common/settings/nextmove.js";
 
 type AppInfo = {
   appVersion?: string;
@@ -49,6 +63,8 @@ export interface API {
   saveResearchSettings(settings: ResearchSettings): Promise<void>;
   loadAnalysisSettings(): Promise<AnalysisSettings>;
   saveAnalysisSettings(settings: AnalysisSettings): Promise<void>;
+  loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings>;
+  saveBatchAnalysisSettings(settings: BatchAnalysisSettings): Promise<void>;
   loadGameSettings(): Promise<GameSettings>;
   saveGameSettings(settings: GameSettings): Promise<void>;
   loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHistory>;
@@ -73,8 +89,17 @@ export interface API {
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
   convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult>;
+  listRecordFiles(request: ListRecordFilesRequest): Promise<string[]>;
   showSelectSFENDialog(lastPath: string): Promise<string>;
   loadSFENFile(path: string): Promise<string[]>;
+
+  // Next Move Problem Collection
+  showOpenNextMoveCollectionDialog(): Promise<string>;
+  showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string>;
+  loadNextMoveCollection(path: string): Promise<NextMoveCollection>;
+  saveNextMoveCollection(path: string, collection: NextMoveCollection): Promise<void>;
+  loadNextMoveGenerationSettings(): Promise<NextMoveGenerationSettings>;
+  saveNextMoveGenerationSettings(settings: NextMoveGenerationSettings): Promise<void>;
 
   // Book
   showOpenBookDialog(): Promise<string>;
@@ -86,8 +111,11 @@ export interface API {
   exportBook(session: number, path: string, targetFormat: BookFormat): Promise<void>;
   clearBook(session: number, format?: BookFormat): Promise<void>;
   getBookFormat(session: number): Promise<BookFormat>;
+  getBookInfo(session: number): Promise<BookInfo>;
   searchBookMoves(session: number, sfen: string): Promise<BookMove[]>;
+  searchBookEntry(session: number, sfen: string): Promise<BookPositionEntry | null>;
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void>;
+  updateBookPositionComment(session: number, sfen: string, comment: string): Promise<void>;
   removeBookMove(session: number, sfen: string, usi: string): Promise<void>;
   updateBookMoveOrder(session: number, sfen: string, usi: string, order: number): Promise<void>;
   importBookMoves(session: number, settings: BookImportSettings): Promise<BookImportSummary>;
@@ -152,6 +180,7 @@ export interface API {
   getMachineSpec(): Promise<MachineSpec>;
   isEncryptionAvailable(): Promise<boolean>;
   getVersionStatus(): Promise<VersionStatus>;
+  checkUpdates(): Promise<void>;
   onSendNotification(callback: (message: string, url?: string) => void): void;
   getPathForFile(file: File): string;
 }
@@ -202,6 +231,12 @@ const api: API = {
   saveAnalysisSettings(settings: AnalysisSettings): Promise<void> {
     return bridge.saveAnalysisSettings(JSON.stringify(settings));
   },
+  async loadBatchAnalysisSettings(): Promise<BatchAnalysisSettings> {
+    return JSON.parse(await bridge.loadBatchAnalysisSettings());
+  },
+  saveBatchAnalysisSettings(settings: BatchAnalysisSettings): Promise<void> {
+    return bridge.saveBatchAnalysisSettings(JSON.stringify(settings));
+  },
   async loadGameSettings(): Promise<GameSettings> {
     return JSON.parse(await bridge.loadGameSettings());
   },
@@ -240,10 +275,30 @@ const api: API = {
   async convertRecordFiles(settings: BatchConversionSettings): Promise<BatchConversionResult> {
     return JSON.parse(await bridge.convertRecordFiles(JSON.stringify(settings)));
   },
+  async listRecordFiles(request: ListRecordFilesRequest): Promise<string[]> {
+    return JSON.parse(await bridge.listRecordFiles(JSON.stringify(request)));
+  },
+
+  // Next Move Problem Collection
+  async loadNextMoveCollection(path: string): Promise<NextMoveCollection> {
+    return parseNextMoveCollection(await bridge.loadNextMoveCollection(path));
+  },
+  saveNextMoveCollection(path: string, collection: NextMoveCollection): Promise<void> {
+    return bridge.saveNextMoveCollection(path, serializeNextMoveCollection(collection));
+  },
+  async loadNextMoveGenerationSettings(): Promise<NextMoveGenerationSettings> {
+    return JSON.parse(await bridge.loadNextMoveGenerationSettings());
+  },
+  saveNextMoveGenerationSettings(settings: NextMoveGenerationSettings): Promise<void> {
+    return bridge.saveNextMoveGenerationSettings(JSON.stringify(settings));
+  },
 
   // Book
   async getBookFormat(session: number): Promise<BookFormat> {
     return await bridge.getBookFormat(session);
+  },
+  async getBookInfo(session: number): Promise<BookInfo> {
+    return JSON.parse(await bridge.getBookInfo(session));
   },
   openBook(session: number, path: string, options: BookLoadingOptions): Promise<void> {
     return bridge.openBook(session, path, JSON.stringify(options));
@@ -253,6 +308,9 @@ const api: API = {
   },
   async searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {
     return JSON.parse(await bridge.searchBookMoves(session, sfen));
+  },
+  async searchBookEntry(session: number, sfen: string): Promise<BookPositionEntry | null> {
+    return JSON.parse(await bridge.searchBookEntry(session, sfen));
   },
   updateBookMove(session: number, sfen: string, move: BookMove): Promise<void> {
     return bridge.updateBookMove(session, sfen, JSON.stringify(move));
@@ -322,6 +380,9 @@ const api: API = {
   },
   async getVersionStatus(): Promise<VersionStatus> {
     return JSON.parse(await bridge.getVersionStatus());
+  },
+  async checkUpdates(): Promise<void> {
+    await bridge.checkUpdates();
   },
 };
 

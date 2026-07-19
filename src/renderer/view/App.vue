@@ -30,13 +30,17 @@
     <ShareDialog v-if="store.appState === AppState.SHARE_DIALOG" />
     <AddBookMovesDialog v-if="store.appState === AppState.ADD_BOOK_MOVES_DIALOG" />
     <ResetBookDialog v-if="store.appState === AppState.RESET_BOOK_DIALOG" />
-    <PieceSetChangeDialog v-if="store.appState === AppState.PIECE_SET_CHANGE_DIALOG" />
+    <BookPropertiesDialog v-if="store.appState === AppState.BOOK_PROPERTIES_DIALOG" />
+    <PositionEditingDialog v-if="store.appState === AppState.POSITION_EDITING_DIALOG" />
     <ResearchDialog v-if="store.researchState === ResearchState.STARTUP_DIALOG" />
     <SearchDuplicatePositionsDialog
       v-if="store.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG"
       @close="store.destroyModalDialog()"
     />
     <ElapsedTimeChartDialog v-if="store.appState === AppState.ELAPSED_TIME_CHART_DIALOG" />
+    <NextMoveGenerationDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION_DIALOG" />
+    <NextMoveGenerationProgressDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION" />
+    <NextMoveQuizDialog v-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
     <CSAGameReadyDialog
       v-if="
         store.csaGameState === CSAGameState.PLAYER_SETUP ||
@@ -57,6 +61,7 @@
       :lower-bound="store.pvPreview.lowerBound"
       :upper-bound="store.pvPreview.upperBound"
       :pv="store.pvPreview.pv"
+      :flip="store.pvPreview.flip"
       @close="store.closePVPreviewDialog()"
     />
     <ParallelGameViewer v-if="store.appState === AppState.PARALLEL_GAME" />
@@ -102,19 +107,24 @@ import RecordFileHistoryDialog from "./dialog/RecordFileHistoryDialog.vue";
 import BatchConversionDialog from "./dialog/BatchConversionDialog.vue";
 import LaunchUSIEngineDialog from "./dialog/LaunchUSIEngineDialog.vue";
 import ConnectToCSAServerDialog from "./dialog/ConnectToCSAServerDialog.vue";
-import PieceSetChangeDialog from "./dialog/PieceSetChangeDialog.vue";
+import PositionEditingDialog from "./dialog/PositionEditingDialog.vue";
 import LoadRemoteFileDialog from "./dialog/LoadRemoteFileDialog.vue";
 import ShareDialog from "./dialog/ShareDialog.vue";
 import AddBookMovesDialog from "./dialog/AddBookMovesDialog.vue";
 import ResetBookDialog from "./dialog/ResetBookDialog.vue";
+import BookPropertiesDialog from "./dialog/BookPropertiesDialog.vue";
 import SearchDuplicatePositionsDialog from "./dialog/SearchDuplicatePositionsDialog.vue";
 import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
+import NextMoveGenerationDialog from "./dialog/NextMoveGenerationDialog.vue";
+import NextMoveGenerationProgressDialog from "./dialog/NextMoveGenerationProgressDialog.vue";
+import NextMoveQuizDialog from "./dialog/NextMoveQuizDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import NotificationOverlay from "./overlay/NotificationOverlay.vue";
 import { useBusyState } from "@/renderer/store/busy";
 import { useMessageStore } from "@/renderer/store/message";
 import { useErrorStore } from "@/renderer/store/error";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import { useNextMoveQuizStore } from "@/renderer/store/nextmove";
 import CustomLayout from "./main/CustomLayout.vue";
 import MobileLayout from "./main/MobileLayout.vue";
 import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api";
@@ -130,6 +140,7 @@ const messageStore = useMessageStore();
 const errorStore = useErrorStore();
 const busyState = useBusyState();
 const confirmation = useConfirmationStore();
+const nextMoveQuiz = useNextMoveQuizStore();
 
 const onCopy = () => {
   store.copyRecordKIF();

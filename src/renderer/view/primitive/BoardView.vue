@@ -191,7 +191,7 @@
   </div>
 
   <!-- ドラッグ中の駒ゴースト -->
-  <Teleport to="body">
+  <Teleport :to="ghostTeleportTarget">
     <div
       v-if="drag.active && drag.pieceImagePath"
       :style="{
@@ -226,6 +226,7 @@ import { computed, reactive, ref, watch, onMounted, onUnmounted, PropType } from
 import {
   BoardImageType,
   BoardLabelType,
+  HandPieceOrder,
   KingPieceType,
   PieceStandImageType,
   PromotionSelectorStyle,
@@ -308,6 +309,11 @@ const props = defineProps({
     type: Number,
     required: false,
     default: 1.0,
+  },
+  handPieceOrder: {
+    type: String as PropType<HandPieceOrder>,
+    required: false,
+    default: HandPieceOrder.STRONGER_TO_LEFT,
   },
   promotionSelectorStyle: {
     type: String as PropType<PromotionSelectorStyle>,
@@ -397,6 +403,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true,
+  },
+  ghostTeleportTarget: {
+    type: [String, Object] as PropType<string | HTMLElement>,
+    required: false,
+    default: "body",
   },
 });
 
@@ -872,6 +883,7 @@ const config = computed(() => {
     kingPieceType: props.kingPieceType,
     boardImageOpacity: props.boardImageOpacity,
     pieceStandImageOpacity: props.pieceStandImageOpacity,
+    handPieceOrder: props.handPieceOrder,
     promotionSelectorStyle: props.promotionSelectorStyle,
     boardLabelType: props.boardLabelType,
     upperSizeLimit: props.maxSize,
