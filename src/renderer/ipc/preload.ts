@@ -142,6 +142,24 @@ const api: Bridge = {
   async loadSFENFile(path: string): Promise<string[]> {
     return await ipcRenderer.invoke(Background.LOAD_SFEN_FILE, path);
   },
+  async showOpenNextMoveCollectionDialog(): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_OPEN_NEXT_MOVE_COLLECTION_DIALOG);
+  },
+  async showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SAVE_NEXT_MOVE_COLLECTION_DIALOG, defaultPath);
+  },
+  async loadNextMoveCollection(path: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_NEXT_MOVE_COLLECTION, path);
+  },
+  async saveNextMoveCollection(path: string, json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_NEXT_MOVE_COLLECTION, path, json);
+  },
+  async loadNextMoveGenerationSettings(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_NEXT_MOVE_GENERATION_SETTINGS);
+  },
+  async saveNextMoveGenerationSettings(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.SAVE_NEXT_MOVE_GENERATION_SETTINGS, json);
+  },
   async loadRecordFileHistory(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_RECORD_FILE_HISTORY);
   },

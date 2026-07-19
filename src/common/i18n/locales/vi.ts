@@ -84,6 +84,43 @@ export const vi: Texts = {
   copyCSALogTailCommand: "Sao chép lệnh kết thúc log CSA",
   reloadCustomPieceImage: "Tải lại ảnh quân tùy chỉnh",
   statisticsReport: "Thống kê",
+  nextMoveProblemCollection: "次の一手", // TODO: Translate
+  createNextMoveProblemCollection: "次の一手問題集の作成", // TODO: Translate
+  openNextMoveProblemCollection: "次の一手問題集を開く", // TODO: Translate
+  createProblemCollection: "問題集の作成", // TODO: Translate
+  openProblemCollection: "問題集を開く", // TODO: Translate
+  nextMoveGenerationCompleted: "次の一手問題集の作成が完了しました。", // TODO: Translate
+  noProblemsWereGeneratedAndFileWasNotCreated:
+    "採用できる局面がなかったため、問題集ファイルは作成されませんでした。", // TODO: Translate
+  doYouWantToSaveNProblems: (n: number) => `作成済みの${n}問を保存しますか？`, // TODO: Translate
+  doYouWantToStartQuiz: "出題を開始しますか？", // TODO: Translate
+  doYouWantToResumeFromWhereYouLeftOff: "前回の続きから再開しますか？", // TODO: Translate
+  nextMoveGenerationRequiresAnalyzedRecord:
+    "問題集作成機能では解析コメントで悪手の候補を抽出してから、エンジンを起動して複数の候補手を求めます。事前に解析機能を実行して解析コメント付きの棋譜を用意してください。", // TODO: Translate
+  files: "ファイル数", // TODO: Translate
+  blunderCandidates: "悪手候補", // TODO: Translate
+  adoptedProblems: "採用した問題", // TODO: Translate
+  researchedPositions: "再探索済みの局面", // TODO: Translate
+  recordDirectory: "棋譜ディレクトリ", // TODO: Translate
+  winRateDropThreshold: "勝率降下幅", // TODO: Translate
+  minWinRate: "対象局面評価の下限", // TODO: Translate
+  adoptionWinRateDiff: "採用判定の勝率差", // TODO: Translate
+  acceptableWinRateDiff: "正解範囲の勝率差", // TODO: Translate
+  maxProblems: "問題数の上限", // TODO: Translate
+  outputFile: "出力ファイル", // TODO: Translate
+  problemNofM: (n: number, m: number) => `問題 ${n} / ${m}`, // TODO: Translate
+  findTheNextMove: "次の一手は？", // TODO: Translate
+  correct: "正解", // TODO: Translate
+  incorrect: "不正解", // TODO: Translate
+  correctRate: "正解率", // TODO: Translate
+  actualGameMove: "実戦の手", // TODO: Translate
+  thisMoveWasPlayedInTheGame: "実戦で指された手です。", // TODO: Translate
+  doYouWantToTryAgain: "もう一度チャレンジしますか？", // TODO: Translate
+  showAnswer: "答えを見る", // TODO: Translate
+  nextProblem: "次の問題", // TODO: Translate
+  previousProblem: "前の問題", // TODO: Translate
+  inOrder: "順番どおり", // TODO: Translate
+  sourceRecord: "出典棋譜", // TODO: Translate
   launchUSIEngine: "Khởi động phần mềm shogi",
   connectToCSAServer: "Kết nối với máy chủ CSA",
   adminMode: "Chế độ nâng cao",
@@ -473,6 +510,8 @@ export const vi: Texts = {
   sourceURL: "URL nguồn",
   ok: "OK",
   cancel: "Hủy",
+  yes: "はい", // TODO: Translate
+  no: "いいえ", // TODO: Translate
   back: "Quay lại",
   doNotShowAgain: "Không hiện lại lần sau",
   name: "Tên",

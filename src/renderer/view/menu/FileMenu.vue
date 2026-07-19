@@ -76,6 +76,10 @@
           <Icon :icon="IconType.BATCH" />
           <div class="label">{{ t.batchConversion }}</div>
         </button>
+        <button :disabled="!states.nextMoveQuiz" @click="onOpenNextMoveCollection">
+          <Icon :icon="IconType.QUIZ" />
+          <div class="label">{{ t.openNextMoveProblemCollection }}</div>
+        </button>
         <button v-if="isNative()" @click="onOpenAutoSaveDirectory">
           <Icon :icon="IconType.OPEN_FOLDER" />
           <div class="label">{{ t.openAutoSaveDirectory }}</div>
@@ -230,6 +234,10 @@ const onBatchConversion = () => {
   store.showBatchConversionDialog();
   emit("close");
 };
+const onOpenNextMoveCollection = () => {
+  store.openNextMoveQuiz();
+  emit("close");
+};
 const onExportImage = () => {
   store.showExportBoardImageDialog();
   emit("close");
@@ -291,6 +299,7 @@ const states = computed(() => {
     loadRemoteFile: store.appState === AppState.NORMAL,
     share: store.appState === AppState.NORMAL,
     batchConversion: store.appState === AppState.NORMAL,
+    nextMoveQuiz: store.appState === AppState.NORMAL,
     exportImage: store.appState === AppState.NORMAL,
     paste: store.appState === AppState.NORMAL,
   };

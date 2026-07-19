@@ -21,6 +21,7 @@ import {
   loadGameSettings,
   loadLayoutProfileList,
   loadMateSearchSettings,
+  loadNextMoveGenerationSettings,
   loadResearchSettings,
   loadUSIEngines,
   saveAnalysisSettings,
@@ -32,6 +33,7 @@ import {
   saveGameSettings,
   saveLayoutProfileList,
   saveMateSearchSettings,
+  saveNextMoveGenerationSettings,
   saveResearchSettings,
   saveUSIEngines,
 } from "@/background/settings.js";
@@ -468,6 +470,70 @@ ipcMain.handle(Background.LOAD_SFEN_FILE, async (event, path: string): Promise<s
     .split(/[\r\n]+/) // split by line
     .filter((line) => line !== ""); // remove empty lines
 });
+
+ipcMain.handle(Background.SHOW_OPEN_NEXT_MOVE_COLLECTION_DIALOG, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  const appSettings = await loadAppSettings();
+  getAppLogger().debug("show open-next-move-collection dialog");
+  const ret = await showOpenDialog(["openFile"], appSettings.lastOtherFilePath, [
+    { name: "JSON", extensions: ["json"] },
+  ]);
+  if (ret) {
+    updateAppSettings({ lastOtherFilePath: ret });
+  }
+  return ret;
+});
+
+ipcMain.handle(
+  Background.SHOW_SAVE_NEXT_MOVE_COLLECTION_DIALOG,
+  async (event, defaultPath: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug("show save-next-move-collection dialog");
+    return await showSaveDialog(path.resolve(defaultPath), [
+      { name: "JSON", extensions: ["json"] },
+    ]);
+  },
+);
+
+ipcMain.handle(
+  Background.LOAD_NEXT_MOVE_COLLECTION,
+  async (event, filePath: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    if (!filePath.endsWith(".json")) {
+      throw new Error(`${t.fileExtensionNotSupported}: ${filePath}`);
+    }
+    getAppLogger().debug(`load next move collection: ${filePath}`);
+    return await fs.readFile(filePath, "utf-8");
+  },
+);
+
+ipcMain.handle(
+  Background.SAVE_NEXT_MOVE_COLLECTION,
+  async (event, filePath: string, json: string): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    if (!filePath.endsWith(".json")) {
+      throw new Error(`${t.fileExtensionNotSupported}: ${filePath}`);
+    }
+    getAppLogger().debug(`save next move collection: ${filePath}`);
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, json, "utf-8");
+  },
+);
+
+ipcMain.handle(Background.LOAD_NEXT_MOVE_GENERATION_SETTINGS, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("load next move generation settings");
+  return JSON.stringify(await loadNextMoveGenerationSettings());
+});
+
+ipcMain.handle(
+  Background.SAVE_NEXT_MOVE_GENERATION_SETTINGS,
+  async (event, json: string): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    getAppLogger().debug("save next move generation settings");
+    await saveNextMoveGenerationSettings(JSON.parse(json));
+  },
+);
 
 ipcMain.handle(Background.LOAD_APP_SETTINGS, async (event): Promise<string> => {
   validateIPCSender(event.senderFrame);

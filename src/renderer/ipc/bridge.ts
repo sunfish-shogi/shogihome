@@ -60,6 +60,14 @@ export interface Bridge {
   loadSFENFile(path: string): Promise<string[]>;
   onOpenRecord(callback: (path: string) => void): void;
 
+  // Next Move Problem Collection
+  showOpenNextMoveCollectionDialog(): Promise<string>;
+  showSaveNextMoveCollectionDialog(defaultPath: string): Promise<string>;
+  loadNextMoveCollection(path: string): Promise<string>;
+  saveNextMoveCollection(path: string, json: string): Promise<void>;
+  loadNextMoveGenerationSettings(): Promise<string>;
+  saveNextMoveGenerationSettings(json: string): Promise<void>;
+
   // Book
   showOpenBookDialog(): Promise<string>;
   showSaveBookDialog(session: number, targetFormat?: BookFormat): Promise<string>;

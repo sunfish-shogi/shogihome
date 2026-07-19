@@ -56,6 +56,11 @@ import {
   defaultBookImportSettings,
   normalizeBookImportSettings,
 } from "@/common/settings/book.js";
+import {
+  NextMoveGenerationSettings,
+  defaultNextMoveGenerationSettings,
+  normalizeNextMoveGenerationSettings,
+} from "@/common/settings/nextmove.js";
 import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic.js";
 import { getAppPath } from "./proc/path-electron.js";
 import { getDateTimeString } from "@/common/helpers/datetime.js";
@@ -378,6 +383,28 @@ export function loadLayoutProfileListSync(): LayoutProfileList {
   }
   const data = readSettingsJSONSync<LayoutProfileList>(layoutProfileListPath);
   return data !== undefined ? data : emptyLayoutProfileList();
+}
+
+const nextMoveGenerationSettingsPath = path.join(rootDir, "next_move_generation.json");
+
+export async function saveNextMoveGenerationSettings(
+  settings: NextMoveGenerationSettings,
+): Promise<void> {
+  await writeFileAtomic(
+    nextMoveGenerationSettingsPath,
+    JSON.stringify(settings, undefined, 2),
+    "utf8",
+  );
+}
+
+export async function loadNextMoveGenerationSettings(): Promise<NextMoveGenerationSettings> {
+  if (!(await exists(nextMoveGenerationSettingsPath))) {
+    return defaultNextMoveGenerationSettings();
+  }
+  const data = await readSettingsJSON<NextMoveGenerationSettings>(nextMoveGenerationSettingsPath);
+  return data !== undefined
+    ? normalizeNextMoveGenerationSettings(data)
+    : defaultNextMoveGenerationSettings();
 }
 
 const bookImportSettingsPath = path.join(rootDir, "book_import.json");

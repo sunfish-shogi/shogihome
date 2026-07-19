@@ -225,6 +225,15 @@ export function setup(): void {
       case MenuEvent.STOP_MATE_SEARCH:
         store.stopMateSearch();
         break;
+      case MenuEvent.CREATE_NEXT_MOVE_COLLECTION:
+        store.showNextMoveGenerationDialog();
+        break;
+      case MenuEvent.STOP_NEXT_MOVE_GENERATION:
+        store.stopNextMoveGeneration();
+        break;
+      case MenuEvent.OPEN_NEXT_MOVE_COLLECTION:
+        store.openNextMoveQuiz();
+        break;
       case MenuEvent.START_GAME:
         store.showGameDialog();
         break;
