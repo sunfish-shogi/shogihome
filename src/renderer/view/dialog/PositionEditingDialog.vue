@@ -385,9 +385,8 @@ button.icon-button .icon {
 }
 button.icon-button .label {
   display: block;
-  font-size: 0.8em;
+  font-size: 0.9em;
   margin-top: 0.5em;
-  white-space: nowrap;
 }
 button.bulk {
   width: 100%;
