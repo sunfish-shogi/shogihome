@@ -40,7 +40,11 @@
     <ElapsedTimeChartDialog v-if="store.appState === AppState.ELAPSED_TIME_CHART_DIALOG" />
     <NextMoveGenerationDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION_DIALOG" />
     <NextMoveGenerationProgressDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION" />
-    <NextMoveQuizDialog v-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
+    <MobileNextMoveQuizDialog
+      v-if="nextMoveQuiz.visible && isMobileWebApp()"
+      @close="nextMoveQuiz.hide()"
+    />
+    <NextMoveQuizDialog v-else-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
     <CSAGameReadyDialog
       v-if="
         store.csaGameState === CSAGameState.PLAYER_SETUP ||
@@ -118,6 +122,7 @@ import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
 import NextMoveGenerationDialog from "./dialog/NextMoveGenerationDialog.vue";
 import NextMoveGenerationProgressDialog from "./dialog/NextMoveGenerationProgressDialog.vue";
 import NextMoveQuizDialog from "./dialog/NextMoveQuizDialog.vue";
+import MobileNextMoveQuizDialog from "./dialog/MobileNextMoveQuizDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import NotificationOverlay from "./overlay/NotificationOverlay.vue";
 import { useBusyState } from "@/renderer/store/busy";
