@@ -53,8 +53,23 @@
         store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL
       "
     />
+    <MobilePVPreviewDialog
+      v-if="store.pvPreview && isMobileWebApp()"
+      :position="store.pvPreview.position"
+      :name="store.pvPreview.engineName"
+      :multi-pv="store.pvPreview.multiPV"
+      :depth="store.pvPreview.depth"
+      :selective-depth="store.pvPreview.selectiveDepth"
+      :score="store.pvPreview.score"
+      :mate="store.pvPreview.mate"
+      :lower-bound="store.pvPreview.lowerBound"
+      :upper-bound="store.pvPreview.upperBound"
+      :pv="store.pvPreview.pv"
+      :flip="store.pvPreview.flip"
+      @close="store.closePVPreviewDialog()"
+    />
     <PVPreviewDialog
-      v-if="store.pvPreview"
+      v-else-if="store.pvPreview"
       :position="store.pvPreview.position"
       :name="store.pvPreview.engineName"
       :multi-pv="store.pvPreview.multiPV"
@@ -107,6 +122,7 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { BackgroundImageType } from "@/common/settings/app";
 import MateSearchDialog from "./dialog/MateSearchDialog.vue";
 import PVPreviewDialog from "./dialog/PVPreviewDialog.vue";
+import MobilePVPreviewDialog from "./dialog/MobilePVPreviewDialog.vue";
 import RecordFileHistoryDialog from "./dialog/RecordFileHistoryDialog.vue";
 import BatchConversionDialog from "./dialog/BatchConversionDialog.vue";
 import LaunchUSIEngineDialog from "./dialog/LaunchUSIEngineDialog.vue";
