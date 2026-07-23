@@ -40,7 +40,11 @@
     <ElapsedTimeChartDialog v-if="store.appState === AppState.ELAPSED_TIME_CHART_DIALOG" />
     <NextMoveGenerationDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION_DIALOG" />
     <NextMoveGenerationProgressDialog v-if="store.appState === AppState.NEXT_MOVE_GENERATION" />
-    <NextMoveQuizDialog v-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
+    <MobileNextMoveQuizDialog
+      v-if="nextMoveQuiz.visible && isMobileWebApp()"
+      @close="nextMoveQuiz.hide()"
+    />
+    <NextMoveQuizDialog v-else-if="nextMoveQuiz.visible" @close="nextMoveQuiz.hide()" />
     <CSAGameReadyDialog
       v-if="
         store.csaGameState === CSAGameState.PLAYER_SETUP ||
@@ -49,8 +53,23 @@
         store.csaGameState === CSAGameState.LOGIN_RETRY_INTERVAL
       "
     />
+    <MobilePVPreviewDialog
+      v-if="store.pvPreview && isMobileWebApp()"
+      :position="store.pvPreview.position"
+      :name="store.pvPreview.engineName"
+      :multi-pv="store.pvPreview.multiPV"
+      :depth="store.pvPreview.depth"
+      :selective-depth="store.pvPreview.selectiveDepth"
+      :score="store.pvPreview.score"
+      :mate="store.pvPreview.mate"
+      :lower-bound="store.pvPreview.lowerBound"
+      :upper-bound="store.pvPreview.upperBound"
+      :pv="store.pvPreview.pv"
+      :flip="store.pvPreview.flip"
+      @close="store.closePVPreviewDialog()"
+    />
     <PVPreviewDialog
-      v-if="store.pvPreview"
+      v-else-if="store.pvPreview"
       :position="store.pvPreview.position"
       :name="store.pvPreview.engineName"
       :multi-pv="store.pvPreview.multiPV"
@@ -103,6 +122,7 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { BackgroundImageType } from "@/common/settings/app";
 import MateSearchDialog from "./dialog/MateSearchDialog.vue";
 import PVPreviewDialog from "./dialog/PVPreviewDialog.vue";
+import MobilePVPreviewDialog from "./dialog/MobilePVPreviewDialog.vue";
 import RecordFileHistoryDialog from "./dialog/RecordFileHistoryDialog.vue";
 import BatchConversionDialog from "./dialog/BatchConversionDialog.vue";
 import LaunchUSIEngineDialog from "./dialog/LaunchUSIEngineDialog.vue";
@@ -118,6 +138,7 @@ import ElapsedTimeChartDialog from "./dialog/ElapsedTimeChartDialog.vue";
 import NextMoveGenerationDialog from "./dialog/NextMoveGenerationDialog.vue";
 import NextMoveGenerationProgressDialog from "./dialog/NextMoveGenerationProgressDialog.vue";
 import NextMoveQuizDialog from "./dialog/NextMoveQuizDialog.vue";
+import MobileNextMoveQuizDialog from "./dialog/MobileNextMoveQuizDialog.vue";
 import ParallelGameViewer from "./dialog/ParallelGameViewer.vue";
 import NotificationOverlay from "./overlay/NotificationOverlay.vue";
 import { useBusyState } from "@/renderer/store/busy";
