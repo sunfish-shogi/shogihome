@@ -1,0 +1,35 @@
+# 早期 Ponder (enableEarlyPonder) のシナリオ。
+# bestmove の直後 (サーバーの応答を待たずに) go ponder が送信されることを検証する。
+# 早期 Ponder では go ponder に時間情報を付与せず、ponderhit に時間情報を付与する。
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2g2f
+recv:go btime 33000 wtime 30000 binc 5000 winc 5000
+send:bestmove 8c8d ponder 2f2e
+# bestmove 直後の早期 Ponder 開始
+recv:position startpos moves 2g2f 8c8d 2f2e
+recv:go ponder
+# 相手の応手が予想と一致 → ponderhit (時間情報付き)
+recv:ponderhit btime 36000 wtime 34000 binc 5000 winc 5000
+send:bestmove 8d8e ponder 7g7f
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 7g7f
+recv:go ponder
+# 相手の応手が予想と不一致 → stop で Ponder を中断して通常の go を送る
+recv:stop
+send:bestmove 8e8f
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h
+recv:go btime 38000 wtime 38000 binc 5000 winc 5000
+send:bestmove 3c3d ponder 2e2d
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h 3c3d 2e2d
+recv:go ponder
+# 早期 Ponder 中に対局が終了する
+recv:stop
+recv:gameover win
+recv:quit
