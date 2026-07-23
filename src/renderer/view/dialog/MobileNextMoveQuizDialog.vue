@@ -49,9 +49,6 @@
       />
     </div>
     <div class="controls">
-      <button class="control-button" @click="doFlip">
-        <Icon :icon="IconType.FLIP" />
-      </button>
       <button class="control-button" :disabled="!quiz.hasPrevious" @click="quiz.goPrevious()">
         <Icon :icon="IconType.BACK" />
       </button>
@@ -131,7 +128,6 @@ const {
   boardPosition,
   lastMove,
   flip,
-  doFlip,
   onMove,
   candidateRows,
   actualMoveRow,
