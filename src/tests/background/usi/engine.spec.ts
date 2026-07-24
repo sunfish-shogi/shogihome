@@ -380,6 +380,81 @@ describe("background/usi/engine", () => {
     expect(handlers.error).not.toBeCalled();
   });
 
+  it("earlyPonder_from_bestmove_callback", async () => {
+    // usi-csa-bridge では IPC を経由しないため、bestmove コールバックの同期処理から
+    // goPonder が呼ばれる。このとき state はまだ WaitingForBestMove である。
+    const engine = new EngineProcess("/path/to/engine", 123, log4js.getLogger(), {
+      enableEarlyPonder: true,
+    });
+    const handlers = bindHandlers(engine);
+    engine.on("bestmove", (position, move, ponder) => {
+      handlers.bestmove(position, move, ponder);
+      if (ponder) {
+        engine.goPonder(`${position} moves ${move} ${ponder}`, {
+          btime: 53e3,
+          wtime: 60e3,
+          byoyomi: 0,
+          binc: 5e3,
+          winc: 5e3,
+        });
+      }
+    });
+    engine.launch();
+    const onClose = getChildProcessHandler(mockChildProcess, "close");
+    const onReceive = getChildProcessHandler(mockChildProcess, "receive");
+    onReceive("id name DummyEngine");
+    onReceive("usiok");
+
+    engine.ready();
+    onReceive("readyok");
+    engine.go("position startpos", {
+      btime: 60e3,
+      wtime: 60e3,
+      byoyomi: 0,
+      binc: 5e3,
+      winc: 5e3,
+    });
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(5);
+
+    // bestmove を受信するとコールバック内から goPonder が呼ばれ、
+    // Ready へ遷移した後に position と go ponder が送信される。
+    onReceive("bestmove 7g7f ponder 3c3d");
+    expect(handlers.bestmove).lastCalledWith("position startpos", "7g7f", "3c3d");
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(7);
+    expect(mockChildProcess.prototype.send).nthCalledWith(6, "position startpos moves 7g7f 3c3d");
+    expect(mockChildProcess.prototype.send).nthCalledWith(7, "go ponder");
+    expect(handlers.goEnd).toBeCalledTimes(1);
+
+    // 予想が一致した場合は ponderhit が送信できる。
+    engine.ponderHit({
+      btime: 53e3,
+      wtime: 55e3,
+      byoyomi: 0,
+      binc: 5e3,
+      winc: 5e3,
+    });
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(8);
+    expect(mockChildProcess.prototype.send).lastCalledWith(
+      "ponderhit btime 53000 wtime 55000 binc 5000 winc 5000",
+    );
+
+    // 2 手目以降も同様に継続できる。
+    onReceive("bestmove 2g2f ponder 8c8d");
+    expect(handlers.bestmove).lastCalledWith("position startpos moves 7g7f 3c3d", "2g2f", "8c8d");
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(10);
+    expect(mockChildProcess.prototype.send).nthCalledWith(
+      9,
+      "position startpos moves 7g7f 3c3d moves 2g2f 8c8d",
+    );
+    expect(mockChildProcess.prototype.send).nthCalledWith(10, "go ponder");
+    expect(handlers.goEnd).toBeCalledTimes(2);
+
+    engine.quit();
+    onClose();
+    expect(handlers.timeout).not.toBeCalled();
+    expect(handlers.error).not.toBeCalled();
+  });
+
   it("mate", async () => {
     const engine = new EngineProcess("/path/to/engine", 123, log4js.getLogger(), {});
     const handlers = bindHandlers(engine);

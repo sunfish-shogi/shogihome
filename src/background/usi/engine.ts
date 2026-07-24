@@ -444,9 +444,13 @@ export class EngineProcess {
   }
 
   goPonder(position: string, timeState: TimeState): void {
-    if (this.state !== State.Ready) {
-      // ponder を実行する場合は必ず直前で bestmove が取得できているはず。
-      // Ready 以外のステータスで ponder を開始しても正常に機能しない。
+    // NOTE:
+    //   当初の設計では Ready の状態のみを想定しているが、 usi-csa-bridge で EarlyPonder を使用した場合に
+    //   bestMoveCallback からの呼び戻しに対して同期的に goPonder が呼ばれてしまう。
+    //   そのため state が WaitingForBestMove の状態を受け入れるワークアラウンドを実装する。
+    //   WaitingForBestMove の場合はまだ onBestMove が終わっていないことを意味するため、
+    //   この関数では Ready の場合のみ sendReservedGoCommands を呼び出す。
+    if (this.state !== State.Ready && this.state !== State.WaitingForBestMove) {
       this.logger.warn("sid=%d: goPonder: unexpected state: %s", this.sessionID, this.state);
       return;
     }
@@ -456,7 +460,10 @@ export class EngineProcess {
       timeState: this.option.enableEarlyPonder ? undefined : timeState,
       ponder: true,
     };
-    this.sendReservedGoCommands();
+    if (this.state === State.Ready) {
+      this.sendReservedGoCommands();
+    }
+    // WaitingForBestMove の場合は onBestMove の末尾 (Ready 遷移後) で送信される。
   }
 
   goMate(position: string, maxSeconds?: number): void {
