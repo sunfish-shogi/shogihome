@@ -9,39 +9,74 @@ const releaseWinJSON = "docs/release-win.json";
 const releaseMacJSON = "docs/release-mac.json";
 const releaseLinuxJSON = "docs/release-linux.json";
 
-const stdio = createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const platformJSONs: Record<string, string> = {
+  win: releaseWinJSON,
+  mac: releaseMacJSON,
+  linux: releaseLinuxJSON,
+};
 
 type Target = "stable" | "latest";
 
-async function getTarget(): Promise<Target> {
-  const value = process.argv[2];
-  switch (value) {
-    case "":
-    case undefined:
-      return "latest";
-    case "stable":
-    case "latest":
-      return value as Target;
-    default:
-      throw new Error("Invalid target");
+type Args = {
+  target: Target;
+  /** Skip interactive prompts (for CI). */
+  yes: boolean;
+  /** Comma-separated platform list or "all". Only used with --yes. */
+  platforms?: string;
+};
+
+function parseArgs(): Args {
+  let target: Target = "latest";
+  let yes = false;
+  let platforms: string | undefined;
+  for (const arg of process.argv.slice(2)) {
+    if (arg === "--yes" || arg === "-y") {
+      yes = true;
+    } else if (arg.startsWith("--platforms=")) {
+      platforms = arg.slice("--platforms=".length);
+    } else if (arg === "stable" || arg === "latest") {
+      target = arg;
+    } else if (arg === "" || arg === undefined) {
+      // ignore
+    } else {
+      throw new Error(`Invalid argument: ${arg}`);
+    }
   }
+  return { target, yes, platforms };
+}
+
+function resolvePlatformPaths(platforms?: string): string[] {
+  const keys =
+    !platforms || platforms === "all" ? Object.keys(platformJSONs) : platforms.split(",");
+  return keys.map((key) => {
+    const path = platformJSONs[key.trim()];
+    if (!path) {
+      throw new Error(`Invalid platform: ${key}`);
+    }
+    return path;
+  });
 }
 
 async function inputPlatforms(): Promise<string[]> {
-  const paths = [] as string[];
-  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseWinJSON}? [Y/n]:`))) {
-    paths.push(releaseWinJSON);
+  const stdio = createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  try {
+    const paths = [] as string[];
+    if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseWinJSON}? [Y/n]:`))) {
+      paths.push(releaseWinJSON);
+    }
+    if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseMacJSON}? [Y/n]:`))) {
+      paths.push(releaseMacJSON);
+    }
+    if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseLinuxJSON}? [Y/n]:`))) {
+      paths.push(releaseLinuxJSON);
+    }
+    return paths;
+  } finally {
+    stdio.close();
   }
-  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseMacJSON}? [Y/n]:`))) {
-    paths.push(releaseMacJSON);
-  }
-  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseLinuxJSON}? [Y/n]:`))) {
-    paths.push(releaseLinuxJSON);
-  }
-  return paths;
 }
 
 async function updateReleaseJSON(target: Target) {
@@ -89,20 +124,16 @@ async function updateReleaseJSON(target: Target) {
 }
 
 async function main() {
-  const target = await getTarget();
-  const paths = await inputPlatforms();
-  await updateReleaseJSON(target);
+  const args = parseArgs();
+  const paths = args.yes ? resolvePlatformPaths(args.platforms) : await inputPlatforms();
+  await updateReleaseJSON(args.target);
   for (const path of paths) {
     fs.copyFileSync(releaseJSON, path);
   }
   console.log("updated.");
 }
 
-main()
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  })
-  .finally(() => {
-    stdio.close();
-  });
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

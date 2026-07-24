@@ -50,6 +50,7 @@
     "release:beta": "npm run license:commit && npm version preminor --preid beta",
     "release:pre": "npm run license:commit && npm version prerelease",
     "release:stable": "tsx scripts/publish-release.ts stable && npm run docs && git add . && git commit -m \"update stable version\"",
+    "release:ci": "tsx scripts/ci-release.ts",
     "usi-csa-bridge:build": "webpack --config-name command:usi-csa-bridge && node scripts/distribute-command.mjs usi-csa-bridge",
     "usi-csa-bridge:install": "npm run usi-csa-bridge:build && npm install -g ./dist/command/usi-csa-bridge",
     "gen-proto": "node scripts/gen-proto.mjs"
