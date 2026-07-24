@@ -444,9 +444,12 @@ export class EngineProcess {
   }
 
   goPonder(position: string, timeState: TimeState): void {
-    // ponder を実行する場合は必ず直前で bestmove が取得できているはず。
-    // ただし、usi-csa-bridge では IPC を経由せず bestmove コールバックの同期処理から呼ばれるため、
-    // Ready へ遷移する前の WaitingForBestMove で到達する場合がある。
+    // NOTE:
+    //   当初の設計では Ready の状態のみを想定しているが、 usi-csa-bridge で EarlyPonder を使用した場合に
+    //   bestMoveCallback からの呼び戻しに対して同期的に goPonder が呼ばれてしまう。
+    //   そのため state が WaitingForBestMove の状態を受け入れるワークアラウンドを実装する。
+    //   WaitingForBestMove の場合はまだ onBestMove が終わっていないことを意味するため、
+    //   この関数では Ready の場合のみ sendReservedGoCommands を呼び出す。
     if (this.state !== State.Ready && this.state !== State.WaitingForBestMove) {
       this.logger.warn("sid=%d: goPonder: unexpected state: %s", this.sessionID, this.state);
       return;
