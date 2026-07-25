@@ -15,7 +15,7 @@ jobs:
       USI_CSA_BRIDGE_TMP: /tmp/usi-csa-bridge
     steps:
       # Setup
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: lts/*
