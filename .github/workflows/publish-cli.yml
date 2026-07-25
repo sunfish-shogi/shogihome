@@ -18,6 +18,11 @@ on:
 jobs:
   usi-csa-bridge:
     runs-on: ubuntu-latest
+    # Must match the environment name registered in the npm Trusted Publisher
+    # settings. It narrows the OIDC subject to
+    # "repo:sunfish-shogi/shogihome:environment:npm", so the refs allowed to
+    # publish can be restricted by the environment protection rules.
+    environment: npm
     env:
       USI_CSA_BRIDGE_TMP: /tmp/usi-csa-bridge
       DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
