@@ -90,7 +90,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.2.1",
     "archiver": "^7.0.1",
-    "concurrently": "^9.2.3",
+    "concurrently": "^9.2.4",
     "depcheck": "^1.4.7",
     "electron": "^42.4.1",
     "electron-builder": "^26.15.3",
