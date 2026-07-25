@@ -32,8 +32,11 @@ jobs:
       # Note: "registry-url" is intentionally omitted. It makes setup-node write an
       # "_authToken" line into .npmrc, which stops npm from performing the OIDC token
       # exchange for Trusted Publishing. The default registry is registry.npmjs.org.
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v6.4.0
+      #
+      # These actions are pinned to a commit SHA rather than a tag because they run
+      # in a job that holds the npm publishing identity via OIDC.
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
           node-version: lts/*
           cache: "npm"
