@@ -25,7 +25,15 @@ jobs:
       - name: Verify package-lock.json integrity
         run: node scripts/verify-lockfile.mjs
       - run: npm ci --no-audit --no-fund
-      - run: npm -g i tsx
+      # The e2e runner calls "npx --no-install tsx" from outside the repository, so it
+      # resolves the global tsx. Take the version from package-lock.json instead of
+      # installing the latest, so this job never runs an unreviewed third-party release
+      # while the OIDC publishing identity is available to it.
+      - name: Install tsx
+        run: |
+          set -eux
+          TSX_VERSION=$(node -p "require('./package-lock.json').packages['node_modules/tsx'].version")
+          npm -g i "tsx@${TSX_VERSION}"
 
       # usi-csa-bridge
       - run: npm run usi-csa-bridge:build
