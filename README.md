@@ -68,6 +68,9 @@ GitHub のアカウントをお持ちの方は Issue/PullRequest を活用して
 大きな変更はいきなり着手せず Issue を作成してください。
 Issue や PullRequest を作成する際は、必ず Template を使用してください。
 
+AI に Issue や PullRequest を作成させたり、やり取りを自動化することは固くお断りします。
+部分的に AI を利用したり、翻訳に利用することは問題ありませんが、必ず人間がやり取りをしてください。
+
 GitHub アカウントをお持ちでない場合は [送信フォーム](https://form.run/@sunfish-shogi-1650819491) でご連絡ください。
 
 開発の進捗状況は [プロジェクトボード](https://github.com/users/sunfish-shogi/projects/1/views/1) を参照してください。
