@@ -57,6 +57,9 @@ export function validateNextMoveGenerationSettings(
   if (!settings.destinationFile) {
     return new Error(t.destinationFileNotSpecified);
   }
+  if (!settings.destinationFile.endsWith(".json")) {
+    return new Error(t.destinationFileMustBeJSON);
+  }
   if (settings.playerCriteria === PlayerCriteria.FILTER_BY_NAME && !settings.playerName) {
     return new Error(t.playerNameNotSet);
   }

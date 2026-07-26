@@ -842,6 +842,7 @@ export const en: Texts = {
   sourceFormatsNotSpecified: "Source formats are not specified.",
   destinationDirectoryNotSpecified: "Destination directory is not specified.",
   destinationFileNotSpecified: "Destination file is not specified.",
+  destinationFileMustBeJSON: "Destination file must have a .json extension.",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "Any unsaved data will be lost. Do you really want to reset book data?",
   bookMovesWereImported: "Book moves were imported.",

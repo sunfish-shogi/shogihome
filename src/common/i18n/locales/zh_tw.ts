@@ -839,6 +839,7 @@ export const zh_tw: Texts = {
   sourceFormatsNotSpecified: "輸入格式尚未被指定。",
   destinationDirectoryNotSpecified: "輸出格式尚未被指定。",
   destinationFileNotSpecified: "輸出檔案尚未被指定。",
+  destinationFileMustBeJSON: "出力ファイルは .json 形式でなければなりません。", // TODO: Translate
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "未保存內容可能會丟失。您確認要重置定跡嗎？",
   bookMovesWereImported: "已完成匯入定跡。",

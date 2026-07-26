@@ -844,6 +844,7 @@ export const ja: Texts = {
   sourceFormatsNotSpecified: "入力の対象フォーマットが指定されていません。",
   destinationDirectoryNotSpecified: "出力ディレクトリが指定されていません。",
   destinationFileNotSpecified: "出力ファイルが指定されていません。",
+  destinationFileMustBeJSON: "出力ファイルは .json 形式でなければなりません。",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "保存していない内容は失われます。定跡を初期化しますか？",
   bookMovesWereImported: "定跡データをインポートしました。",
