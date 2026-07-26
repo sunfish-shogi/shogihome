@@ -5,6 +5,7 @@
 # チェックリスト / Checklist
 
 - MUST
+  - [ ] I am human
   - [ ] `npm test` passed
   - [ ] `npm run lint` was applied without warnings
   - [ ] changes of `/docs/webapp` not included (except release branch)
