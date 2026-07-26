@@ -271,9 +271,11 @@ const setAllZero = () => {
   applyCounts(Object.fromEntries(pieceTypes.map((pieceType) => [pieceType, 0])) as PieceSet);
 };
 
-const onEdit = (change: PositionChange) => {
+const onEdit = (changes: PositionChange[]) => {
   const cloned = position.value.clone();
-  cloned.edit(change);
+  for (const change of changes) {
+    cloned.edit(change);
+  }
   commitPosition(cloned);
 };
 
