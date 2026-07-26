@@ -812,6 +812,7 @@ export type Texts = {
   sourceFormatsNotSpecified: string;
   destinationDirectoryNotSpecified: string;
   destinationFileNotSpecified: string;
+  destinationFileMustBeJSON: string;
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData: string;
   bookMovesWereImported: string;
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;

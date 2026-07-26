@@ -850,6 +850,7 @@ export const vi: Texts = {
   sourceFormatsNotSpecified: "Định dạng nguồn chưa được đặt.",
   destinationDirectoryNotSpecified: "Đường dẫn đến chưa được đặt.",
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",
+  destinationFileMustBeJSON: "出力ファイルは .json 形式でなければなりません。", // TODO: Translate
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
     "Tất cả dữ liệu chưa lưu sẽ bị mất. Bạn có muốn đặt lại dữ liệu định thức?",
   bookMovesWereImported: "Dữ liệu định thức đã được nhập thành công.",
