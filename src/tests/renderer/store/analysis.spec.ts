@@ -4,6 +4,7 @@ import { analysisSettings as baseAnalysisSettings } from "@/tests/mock/analysis.
 import { USIPlayer } from "@/renderer/players/usi.js";
 import { MockedClass } from "vitest";
 import { CommentBehavior } from "@/common/settings/comment.js";
+import { RecordCustomData } from "@/common/record/types.js";
 
 vi.mock("@/renderer/players/usi.js");
 
@@ -48,25 +49,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      usi: recordManager.record.usi,
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f",
+      usi: recordManager.record.usi,
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+      usi: recordManager.record.usi,
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+      usi: recordManager.record.usi,
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -74,7 +75,7 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).not.toBeCalled();
     expect(onFinish).not.toBeCalled();
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d",
+      usi: recordManager.record.usi,
       score: 50,
     });
     vi.runOnlyPendingTimers();
@@ -103,6 +104,46 @@ describe("store/analysis", () => {
     );
     recordManager.changePly(5);
     expect(recordManager.record.current.comment).toBe("");
+  });
+
+  it("ignores-search-info-of-other-position", async () => {
+    // エンジン再利用時に前の局面 (前のファイル) の探索結果が遅れて届いても、
+    // 現在の解析対象局面と一致しない情報は無視され、別の局面に書き込まれない。
+    mockUSIPlayer.prototype.launch.mockResolvedValue();
+    mockUSIPlayer.prototype.startResearch.mockResolvedValue();
+    mockUSIPlayer.prototype.stop.mockResolvedValue();
+    mockUSIPlayer.prototype.close.mockResolvedValue();
+    const recordManager = new RecordManager();
+    recordManager.importRecord(
+      "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+    );
+    const manager = new AnalysisManager(recordManager);
+    await manager.start({
+      ...baseAnalysisSettings,
+      startCriteria: { enableNumber: false, number: 0 },
+      endCriteria: { enableNumber: false, number: 0 },
+    });
+    vi.runOnlyPendingTimers();
+    // 初期局面 (ply 0) を解析中に、別局面 (別ファイルの最終局面など) の結果が遅れて届く。
+    manager.updateSearchInfo({
+      usi: "position startpos moves 2g2f 8c8d 2f2e",
+      score: 9999,
+      depth: 20,
+    });
+    // 別局面の結果は現局面 (ply 0) に書き込まれない。
+    recordManager.changePly(0);
+    const staleData = recordManager.record.current.customData as RecordCustomData | undefined;
+    expect(staleData?.researchInfo).toBeUndefined();
+    // 現局面 (ply 0) 本来の結果は記録される。
+    manager.updateSearchInfo({
+      usi: recordManager.record.usi,
+      score: 10,
+      depth: 20,
+    });
+    recordManager.changePly(0);
+    const data = recordManager.record.current.customData as RecordCustomData;
+    expect(data.researchInfo?.score).toBe(10);
+    manager.close();
   });
 
   it("with-limits", async () => {
@@ -134,25 +175,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f",
+      usi: recordManager.record.usi,
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+      usi: recordManager.record.usi,
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+      usi: recordManager.record.usi,
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d",
+      usi: recordManager.record.usi,
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -211,31 +252,31 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d",
+      usi: recordManager.record.usi,
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+      usi: recordManager.record.usi,
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+      usi: recordManager.record.usi,
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f",
+      usi: recordManager.record.usi,
       score: 40,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(5);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      usi: recordManager.record.usi,
       score: 50,
     });
     vi.runOnlyPendingTimers();
@@ -296,25 +337,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d 2f2e",
+      usi: recordManager.record.usi,
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d",
+      usi: recordManager.record.usi,
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+      usi: recordManager.record.usi,
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+      usi: recordManager.record.usi,
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -446,37 +487,37 @@ describe("store/analysis", () => {
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+          usi: recordManager.record.usi,
           score: 10,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f",
+          usi: recordManager.record.usi,
           score: -10,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+          usi: recordManager.record.usi,
           score: 200,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+          usi: recordManager.record.usi,
           score: -200,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(5);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d",
+          usi: recordManager.record.usi,
           score: 400,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(6);
         manager.updateSearchInfo({
-          usi: "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f 8c8d 2f2e",
+          usi: recordManager.record.usi,
           score: -1000,
         });
         vi.runOnlyPendingTimers();

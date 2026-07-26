@@ -273,6 +273,12 @@ export class AnalysisManager {
   }
 
   updateSearchInfo(info: SearchInfo): void {
+    // エンジンを再利用する連続解析では、前のファイル (前の局面) に対する探索結果が
+    // 探索停止後に遅れて届くことがある。現在の解析対象局面と一致しない情報は、
+    // 別の局面 (例: 次のファイルの初期局面) に誤って書き込まれてしまうため破棄する。
+    if (info.usi !== this.recordManager.record.usi) {
+      return;
+    }
     this.recordManager.updateSearchInfo(SearchInfoSenderType.RESEARCHER, info);
     this.searchInfo = info;
   }
