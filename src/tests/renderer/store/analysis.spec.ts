@@ -169,6 +169,36 @@ describe("store/analysis", () => {
     manager.close();
   });
 
+  it("ignores-search-info-after-record-replaced", async () => {
+    // 降順の連続解析では前のファイルの最後の探索が初期局面になるため、次のファイルの
+    // 初期局面と USI 文字列が一致し得る。棋譜が差し替わっている場合は文字列が一致しても
+    // 前のファイルの結果として破棄する。
+    mockUSIPlayer.prototype.launch.mockResolvedValue();
+    mockUSIPlayer.prototype.readyNewGame.mockResolvedValue();
+    mockUSIPlayer.prototype.startResearch.mockResolvedValue();
+    mockUSIPlayer.prototype.close.mockResolvedValue();
+    const recordManager = new RecordManager();
+    recordManager.importRecord(
+      "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d",
+    );
+    const manager = new AnalysisManager(recordManager, { keepEngine: true });
+    await manager.start({ ...baseAnalysisSettings });
+    vi.runOnlyPendingTimers();
+    expect(lastStartResearchUSI()).toBe("position startpos");
+    // 次のファイルを読み込み、初期局面へ移動する。USI 文字列は前のファイルと同一になる。
+    recordManager.importRecord(
+      "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 2g2f 8c8d",
+    );
+    recordManager.changePly(0);
+    expect(recordManager.record.usi).toBe("position startpos");
+    // 前のファイルの結果が遅れて届いても取り込まない。
+    manager.updateSearchInfo({ usi: "position startpos", score: -3000, depth: 30 });
+    recordManager.changePly(0);
+    const data = recordManager.record.current.customData as RecordCustomData | undefined;
+    expect(data?.researchInfo).toBeUndefined();
+    manager.close();
+  });
+
   it("does-not-write-comment-from-other-position", async () => {
     // 別の局面の探索結果は評価値グラフ (customData) だけでなくコメントにも影響する。
     // コメントは棋譜ファイルに保存されるため、取り込んでしまうと上書き保存によって
