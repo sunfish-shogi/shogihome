@@ -169,6 +169,44 @@ describe("store/analysis", () => {
     manager.close();
   });
 
+  it("does-not-write-comment-from-other-position", async () => {
+    // 別の局面の探索結果は評価値グラフ (customData) だけでなくコメントにも影響する。
+    // コメントは棋譜ファイルに保存されるため、取り込んでしまうと上書き保存によって
+    // 本来コメントを持たない初期局面に誤った評価値や着手評価が残ってしまう。
+    mockUSIPlayer.prototype.launch.mockResolvedValue();
+    mockUSIPlayer.prototype.readyNewGame.mockResolvedValue();
+    mockUSIPlayer.prototype.startResearch.mockResolvedValue();
+    mockUSIPlayer.prototype.close.mockResolvedValue();
+    const recordManager = new RecordManager();
+    recordManager.importRecord(
+      "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7g7f 3c3d 2g2f",
+    );
+    const manager = new AnalysisManager(recordManager, { keepEngine: true });
+    await manager.start({ ...baseAnalysisSettings });
+    // 最初の探索開始前に、前のファイル (別局面) の結果が遅れて届く。
+    const otherPositionUSI = "position startpos moves 2g2f 8c8d 2f2e 8d8e";
+    manager.updateSearchInfo({ usi: otherPositionUSI, score: -3000, depth: 30 });
+    vi.runOnlyPendingTimers();
+    // 初期局面 (ply 0) 本来の結果が届いた後にも、前のファイルの結果が遅れて届く。
+    expect(lastStartResearchUSI()).toBe("position startpos");
+    manager.updateSearchInfo({ usi: lastStartResearchUSI(), score: 0, depth: 20 });
+    manager.updateSearchInfo({ usi: otherPositionUSI, score: -3000, depth: 30 });
+    vi.runOnlyPendingTimers();
+    // 1 手目の結果が届く。
+    expect(lastStartResearchUSI()).toBe("position startpos moves 7g7f");
+    manager.updateSearchInfo({ usi: lastStartResearchUSI(), score: 20, depth: 20 });
+    vi.runOnlyPendingTimers();
+    // 初期局面にはコメントを書き込まない。
+    recordManager.changePly(0);
+    expect(recordManager.record.current.comment).toBe("");
+    // 1 手目には自分の局面の評価値のみを書き込む (別局面の評価値による着手評価も付かない)。
+    recordManager.changePly(1);
+    expect(recordManager.record.current.comment).toBe(
+      "互角\n#評価値=20\n#深さ=20\n#エンジン=my usi engine\n",
+    );
+    manager.close();
+  });
+
   it("with-limits", async () => {
     mockUSIPlayer.prototype.launch.mockResolvedValue();
     mockUSIPlayer.prototype.startResearch.mockResolvedValue();
