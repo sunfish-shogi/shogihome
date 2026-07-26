@@ -414,7 +414,8 @@ const props = defineProps({
 const emit = defineEmits<{
   resize: [size: RectSize];
   move: [move: Move];
-  edit: [change: PositionChange];
+  // 1回の操作を表す変更の列。順番に適用することで1つの編集操作として扱う。
+  edit: [changes: PositionChange[]];
 }>();
 
 const state = reactive({
@@ -753,6 +754,22 @@ const clickFrame = () => {
   resetState();
 };
 
+// 局面編集の移動を PositionChange の列に変換する。
+// 移動先のマスに駒がある場合は入れ替えるのではなく、対局中に駒を取ったときと同様に
+// 移動する駒と同じ手番側の駒台へ移す。ただし玉は駒台に載せられないため入れ替える。
+const buildEditChanges = (from: Square | Piece, to: Square | Color): PositionChange[] => {
+  const changes = [{ move: { from, to } }];
+  if (!(from instanceof Square) || !(to instanceof Square)) {
+    return changes;
+  }
+  const movingPiece = props.position.board.at(from);
+  const capturedPiece = props.position.board.at(to);
+  if (!movingPiece || !capturedPiece || capturedPiece.type === PieceType.KING) {
+    return changes;
+  }
+  return [{ move: { from: to, to: movingPiece.color } }, ...changes];
+};
+
 const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color | undefined) => {
   const prevPointer = state.pointer;
   resetState();
@@ -774,12 +791,7 @@ const updatePointer = (newPointer: Square | Piece, empty: boolean, color: Color 
     const editFrom = prevPointer;
     const editTo = newPointer instanceof Square ? newPointer : newPointer.color;
     if (props.allowEdit && props.position.isValidEditing(editFrom, editTo)) {
-      emit("edit", {
-        move: {
-          from: prevPointer,
-          to: editTo,
-        },
-      });
+      emit("edit", buildEditChanges(editFrom, editTo));
       return;
     }
     if (props.allowMove && newPointer instanceof Square) {
@@ -853,7 +865,7 @@ const clickSquareR = (file: number, rank: number) => {
   resetState();
   const square = new Square(file, rank);
   if (props.allowEdit && props.position.board.at(square)) {
-    emit("edit", { rotate: square });
+    emit("edit", [{ rotate: square }]);
   }
 };
 
