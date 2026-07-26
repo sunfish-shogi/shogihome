@@ -10,6 +10,18 @@ vi.mock("@/renderer/players/usi.js");
 
 const mockUSIPlayer = USIPlayer as MockedClass<typeof USIPlayer>;
 
+// startResearch に渡された USI 文字列の一覧を返す。
+function startResearchUSIs(): string[] {
+  return mockUSIPlayer.prototype.startResearch.mock.calls.map((call) => call[1]);
+}
+
+// 実際のエンジンは startResearch に渡された USI 文字列をそのまま info.usi として
+// 返すため、テストでも探索開始時にキャプチャした値をコールバックに使用する。
+function lastStartResearchUSI(): string {
+  const calls = mockUSIPlayer.prototype.startResearch.mock.calls;
+  return calls[calls.length - 1][1];
+}
+
 describe("store/analysis", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -49,25 +61,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -75,7 +87,7 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).not.toBeCalled();
     expect(onFinish).not.toBeCalled();
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 50,
     });
     vi.runOnlyPendingTimers();
@@ -84,6 +96,14 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
     expect(onFinish).toBeCalledTimes(1);
     expect(onError).not.toBeCalled();
+    // 各局面で意図した USI 文字列により探索が開始されている。
+    expect(startResearchUSIs()).toEqual([
+      "position startpos",
+      "position startpos moves 7g7f",
+      "position startpos moves 7g7f 3c3d",
+      "position startpos moves 7g7f 3c3d 2g2f",
+      "position startpos moves 7g7f 3c3d 2g2f 8c8d",
+    ]);
     recordManager.changePly(0);
     expect(recordManager.record.current.comment).toBe("");
     recordManager.changePly(1);
@@ -124,6 +144,9 @@ describe("store/analysis", () => {
       endCriteria: { enableNumber: false, number: 0 },
     });
     vi.runOnlyPendingTimers();
+    // 初期局面 (ply 0) に対して意図した USI 文字列により探索が開始されている。
+    expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
+    expect(lastStartResearchUSI()).toBe("position startpos");
     // 初期局面 (ply 0) を解析中に、別局面 (別ファイルの最終局面など) の結果が遅れて届く。
     manager.updateSearchInfo({
       usi: "position startpos moves 2g2f 8c8d 2f2e",
@@ -134,9 +157,9 @@ describe("store/analysis", () => {
     recordManager.changePly(0);
     const staleData = recordManager.record.current.customData as RecordCustomData | undefined;
     expect(staleData?.researchInfo).toBeUndefined();
-    // 現局面 (ply 0) 本来の結果は記録される。
+    // 現局面 (ply 0) 本来の結果は探索開始時の USI 文字列とともに届き、記録される。
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 10,
       depth: 20,
     });
@@ -175,25 +198,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -202,6 +225,13 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
     expect(onFinish).toBeCalledTimes(1);
     expect(onError).not.toBeCalled();
+    // 開始手数から終了手数までの各局面で意図した USI 文字列により探索が開始されている。
+    expect(startResearchUSIs()).toEqual([
+      "position startpos moves 7g7f",
+      "position startpos moves 7g7f 3c3d",
+      "position startpos moves 7g7f 3c3d 2g2f",
+      "position startpos moves 7g7f 3c3d 2g2f 8c8d",
+    ]);
     recordManager.changePly(1);
     expect(recordManager.record.current.comment).toBe("");
     recordManager.changePly(2);
@@ -252,31 +282,31 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 40,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(5);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 50,
     });
     vi.runOnlyPendingTimers();
@@ -285,6 +315,14 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
     expect(onFinish).toBeCalledTimes(1);
     expect(onError).not.toBeCalled();
+    // 降順に各局面で意図した USI 文字列により探索が開始されている。
+    expect(startResearchUSIs()).toEqual([
+      "position startpos moves 7g7f 3c3d 2g2f 8c8d",
+      "position startpos moves 7g7f 3c3d 2g2f",
+      "position startpos moves 7g7f 3c3d",
+      "position startpos moves 7g7f",
+      "position startpos",
+    ]);
     recordManager.changePly(0);
     expect(recordManager.record.current.comment).toBe("");
     recordManager.changePly(1);
@@ -337,25 +375,25 @@ describe("store/analysis", () => {
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 10,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 20,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 30,
     });
     vi.runOnlyPendingTimers();
     expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
     manager.updateSearchInfo({
-      usi: recordManager.record.usi,
+      usi: lastStartResearchUSI(),
       score: 40,
     });
     vi.runOnlyPendingTimers();
@@ -364,6 +402,13 @@ describe("store/analysis", () => {
     expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
     expect(onFinish).toBeCalledTimes(1);
     expect(onError).not.toBeCalled();
+    // 降順に終了手数から開始手数までの各局面で意図した USI 文字列により探索が開始されている。
+    expect(startResearchUSIs()).toEqual([
+      "position startpos moves 7g7f 3c3d 2g2f 8c8d 2f2e",
+      "position startpos moves 7g7f 3c3d 2g2f 8c8d",
+      "position startpos moves 7g7f 3c3d 2g2f",
+      "position startpos moves 7g7f 3c3d",
+    ]);
     recordManager.changePly(0);
     expect(recordManager.record.current.comment).toBe("");
     recordManager.changePly(1);
@@ -487,37 +532,37 @@ describe("store/analysis", () => {
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(1);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: 10,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(2);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: -10,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(3);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: 200,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(4);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: -200,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(5);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: 400,
         });
         vi.runOnlyPendingTimers();
         expect(mockUSIPlayer.prototype.startResearch).toBeCalledTimes(6);
         manager.updateSearchInfo({
-          usi: recordManager.record.usi,
+          usi: lastStartResearchUSI(),
           score: -1000,
         });
         vi.runOnlyPendingTimers();
@@ -526,6 +571,15 @@ describe("store/analysis", () => {
         expect(mockUSIPlayer.prototype.close).toBeCalledTimes(1);
         expect(onFinish).toBeCalledTimes(1);
         expect(onError).not.toBeCalled();
+        // 各局面で意図した USI 文字列により探索が開始されている。
+        expect(startResearchUSIs()).toEqual([
+          "position startpos",
+          "position startpos moves 7g7f",
+          "position startpos moves 7g7f 3c3d",
+          "position startpos moves 7g7f 3c3d 2g2f",
+          "position startpos moves 7g7f 3c3d 2g2f 8c8d",
+          "position startpos moves 7g7f 3c3d 2g2f 8c8d 2f2e",
+        ]);
         recordManager.changePly(0);
         expect(recordManager.record.current.comment).toBe("");
         for (let i = 0; i < testCase.expectedComments.length; i++) {
