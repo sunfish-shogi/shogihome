@@ -30,11 +30,12 @@
                 :show-comment="appSettings.showCommentInRecordView"
                 :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
                 :show-branch-tree="appSettings.showBranchTreeInRecordView"
-                :show-top-control="!isConsecutiveGame"
-                :show-bottom-control="!isConsecutiveGame"
-                :show-branches="!isConsecutiveGame"
+                :show-top-control="!isConsecutiveGame && !isBatchAnalysis"
+                :show-bottom-control="!isConsecutiveGame && !isBatchAnalysis"
+                :show-branches="!isConsecutiveGame && !isBatchAnalysis"
               />
               <ConsecutiveGameProgress v-if="isConsecutiveGame" />
+              <BatchAnalysisProgress v-if="isBatchAnalysis" />
             </div>
           </div>
           <button
@@ -120,6 +121,7 @@ import { reactive, onMounted, onUnmounted, computed, ref } from "vue";
 import BoardPane from "./BoardPane.vue";
 import RecordPane, { minWidth as minRecordWidth } from "./RecordPane.vue";
 import ConsecutiveGameProgress from "./ConsecutiveGameProgress.vue";
+import BatchAnalysisProgress from "./BatchAnalysisProgress.vue";
 import { useStore } from "@/renderer/store";
 import { AppState } from "@/common/control/state.js";
 import TabPane, { headerHeight as tabHeaderHeight } from "./TabPane.vue";
@@ -148,6 +150,7 @@ const appSettings = useAppSettings();
 const isConsecutiveGame = computed(
   () => store.appState === AppState.GAME && store.gameSettings.repeat >= 2,
 );
+const isBatchAnalysis = computed(() => store.appState === AppState.BATCH_ANALYSIS);
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight));
 const topPaneHeightPercentage = ref(appSettings.topPaneHeightPercentage);
 const bottomLeftPaneWidthPercentage = ref(appSettings.bottomLeftPaneWidthPercentage);
