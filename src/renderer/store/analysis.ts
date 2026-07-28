@@ -3,7 +3,7 @@ import { USIPlayer } from "@/renderer/players/usi.js";
 import { AnalysisSettings, defaultAnalysisSettings } from "@/common/settings/analysis.js";
 import { AppSettings } from "@/common/settings/app.js";
 import { USIEngine } from "@/common/settings/usi.js";
-import { Color, Move, reverseColor } from "tsshogi";
+import { Color, ImmutableNode, Move, reverseColor } from "tsshogi";
 import { SearchInfoSenderType } from "@/common/record/types.js";
 import { RecordManager } from "@/renderer/record/manager.js";
 import { scoreToPercentage } from "@/common/record/score.js";
@@ -18,6 +18,9 @@ export class AnalysisManager {
   private settings = defaultAnalysisSettings();
   private lastSearchInfo?: SearchInfo;
   private searchInfo?: SearchInfo;
+  // 探索中の局面。Record#usi は呼び出しのたびに指し手を辿って文字列を生成するため、
+  // 探索開始時に取得した値を保持し、探索結果の照合に使い回す。
+  private searching?: { usi: string; node: ImmutableNode };
   private timerHandle?: number;
   private closed = false;
   private onFinish: FinishCallback = () => {
@@ -67,6 +70,7 @@ export class AnalysisManager {
     this.settings = settings;
     this.lastSearchInfo = undefined;
     this.searchInfo = undefined;
+    this.searching = undefined;
     this.recordManager.changePly(this.firstPly());
     if (this.settings.descending && !(this.recordManager.record.current.move instanceof Move)) {
       // 降順の場合に「投了」や「中断」などの特殊な指し手はスキップする。
@@ -99,6 +103,7 @@ export class AnalysisManager {
 
   close(): void {
     this.closed = true;
+    this.searching = undefined;
     this.clearTimer();
     this.closeEngine().catch((e) => {
       this.onError(e);
@@ -191,15 +196,17 @@ export class AnalysisManager {
     // タイマーをセットする。
     this.setTimer();
     // 探索を開始する。
-    this.researcher
-      .startResearch(this.recordManager.record.position, this.recordManager.record.usi)
-      .catch((e) => {
-        this.onError(e);
-      });
+    const usi = record.usi;
+    this.searching = { usi, node: record.current };
+    this.researcher.startResearch(record.position, usi).catch((e) => {
+      this.onError(e);
+    });
   }
 
   private finish(): void {
     this.clearTimer();
+    // 解析終了後に遅れて届く探索結果を取り込まないようにする。
+    this.searching = undefined;
     this.onFinish();
     if (!this.option?.keepEngine) {
       this.close();
@@ -273,6 +280,20 @@ export class AnalysisManager {
   }
 
   updateSearchInfo(info: SearchInfo): void {
+    // エンジンを再利用する連続解析では、前のファイル (前の局面) に対する探索結果が
+    // 探索停止後に遅れて届くことがある。現在の解析対象局面と一致しない情報は、
+    // 別の局面 (例: 次のファイルの初期局面) に誤って書き込まれてしまうため破棄する。
+    // 局面の一致は探索開始時に保持した USI 文字列で判定し、棋譜自体が別のファイルへ
+    // 差し替わっていないことをノードの同一性で確認する。
+    // (次のファイルの初期局面は前のファイルの初期局面と USI 文字列が一致し得るため、
+    //  文字列の比較だけでは不十分。)
+    if (
+      !this.searching ||
+      info.usi !== this.searching.usi ||
+      this.recordManager.record.current !== this.searching.node
+    ) {
+      return;
+    }
     this.recordManager.updateSearchInfo(SearchInfoSenderType.RESEARCHER, info);
     this.searchInfo = info;
   }
