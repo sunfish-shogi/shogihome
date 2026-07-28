@@ -31,7 +31,6 @@
                 :show-elapsed-time="appSettings.showElapsedTimeInRecordView"
                 :show-branch-tree="appSettings.showBranchTreeInRecordView"
                 :show-top-control="!isConsecutiveGame && !isBatchAnalysis"
-                :show-bottom-control="!isConsecutiveGame && !isBatchAnalysis"
                 :show-branches="!isConsecutiveGame && !isBatchAnalysis"
               />
               <ConsecutiveGameProgress v-if="isConsecutiveGame" />
