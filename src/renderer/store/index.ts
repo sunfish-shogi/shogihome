@@ -178,10 +178,13 @@ class Store {
   private _gameSettings: GameSettings = defaultGameSettings();
   private csaGameManager = new CSAGameManager(this.recordManager, this.blackClock, this.whiteClock);
   private analysisManager = new AnalysisManager(this.recordManager);
-  // reactive(this) の後に、reactive proxy 経由の recordManager を渡して構築する。
-  // これにより、連続解析のファイル間遷移が生の this に束縛されたコールバック経由で進んでも、
-  // this.recordManager が reactive proxy のままなので棋譜の置換・移動が Vue に伝わる。
-  private batchAnalysisManager!: BatchAnalysisManager;
+  // 連続解析で次のファイルを開くと棋譜が差し替わるが、生の RecordManager を渡すと
+  // この変更が Vue に伝わらず、盤面や棋譜の表示が前のファイルのまま更新されない。
+  // 変更を伝えるには reactive proxy 経由でメソッドを呼ぶ必要があるため、
+  // ストアが公開するものと同じプロキシを渡す。
+  private batchAnalysisManager = new BatchAnalysisManager(
+    reactive(this.recordManager) as RecordManager,
+  );
   private _batchAnalysisProgress?: BatchAnalysisProgress;
   private _analysisDialogTarget: AnalysisDialogTarget = "record";
   private mateSearchManager = new MateSearchManager();
@@ -199,12 +202,6 @@ class Store {
   constructor() {
     const refs = reactive(this);
     this._reactive = refs;
-    // 連続解析では reactive proxy 経由の recordManager を渡す。詳細はフィールド定義のコメント参照。
-    // reactive() は生オブジェクトをキーにプロキシをキャッシュするため、これはストアが公開する
-    // reactive proxy と同一のインスタンスになる。
-    this.batchAnalysisManager = new BatchAnalysisManager(
-      reactive(this.recordManager) as RecordManager,
-    );
     this.recordManager
       .on("changePosition", () => {
         this.onChangePositionHandlers.forEach((handler) => handler());

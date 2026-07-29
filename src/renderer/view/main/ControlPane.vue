@@ -108,14 +108,7 @@
           @click="onEndBatchAnalysis"
         >
           <Icon :icon="IconType.STOP" />
-          <span :class="{ tooltip: compact }"
-            >{{ t.stopAnalysis
-            }}{{
-              store.batchAnalysisProgress
-                ? ` (${store.batchAnalysisProgress.current}/${store.batchAnalysisProgress.total})`
-                : ""
-            }}</span
-          >
+          <span :class="{ tooltip: compact }">{{ t.stopAnalysis }}</span>
         </button>
         <!-- 詰み探索 -->
         <button
