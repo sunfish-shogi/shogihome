@@ -1150,7 +1150,7 @@ ipcMain.handle(Background.GET_VERSION_STATUS, async (event) => {
 
 ipcMain.handle(Background.CHECK_UPDATES, async (event) => {
   validateIPCSender(event.senderFrame);
-  await checkUpdatesManually(sendNotification);
+  await checkUpdatesManually(sendUpdateCheckResult);
 });
 
 ipcMain.on(Background.OPEN_LOG_FILE, (event, logType: LogType) => {
@@ -1206,6 +1206,13 @@ export function sendMessage(message: Message): void {
 
 export function sendNotification(message: string, url?: string): void {
   mainWindow.webContents.send(Renderer.SEND_NOTIFICATION, message, url);
+}
+
+export function sendUpdateCheckResult(message: string, url?: string): void {
+  sendMessage({
+    text: message,
+    attachments: url ? [{ type: "link", text: "Release Page", url }] : undefined,
+  });
 }
 
 export function onMenuEvent(event: MenuEvent): void {

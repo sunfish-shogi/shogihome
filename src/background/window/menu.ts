@@ -26,6 +26,7 @@ import {
   sendError,
   sendMessage,
   sendNotification,
+  sendUpdateCheckResult,
   updateAppSettings,
 } from "@/background/window/ipc.js";
 import { MenuEvent } from "@/common/control/menu.js";
@@ -695,7 +696,7 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.checkForUpdates,
           click: () => {
-            checkUpdatesManually(sendNotification).catch((e) => {
+            checkUpdatesManually(sendUpdateCheckResult).catch((e) => {
               sendError(new Error(`${t.failedToCheckUpdates}: ${e}`));
             });
           },
