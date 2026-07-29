@@ -18,7 +18,7 @@ export type BatchAnalysisResult = {
   skippedTotal: number;
 };
 
-export type BatchAnalysisProgress = {
+export type BatchAnalysisProgress = BatchAnalysisResult & {
   current: number; // 1 から始まる処理中ファイルの番号
   total: number;
   path: string;
@@ -143,6 +143,7 @@ export class BatchAnalysisManager {
       current: this.index + 1,
       total: this.files.length,
       path,
+      ...this.result,
     };
     this.onProgress(this._progress);
     this.openCurrentFile()
