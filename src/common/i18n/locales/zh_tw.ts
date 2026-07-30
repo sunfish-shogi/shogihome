@@ -649,6 +649,7 @@ export const zh_tw: Texts = {
   fromFile: "從檔案",
   fromDirectory: "從檔案目錄",
   noMoves: "沒有棋步。",
+  noComment: "コメントなし", // TODO: Translate
   register: "登錄",
   update: "更新",
   importAll: "全て反映", // TODO: Translate

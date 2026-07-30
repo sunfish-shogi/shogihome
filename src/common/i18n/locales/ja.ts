@@ -642,6 +642,7 @@ export const ja: Texts = {
   fromFile: "ファイルから",
   fromDirectory: "フォルダから",
   noMoves: "指し手がありません。",
+  noComment: "コメントなし",
   register: "登録",
   update: "更新",
   importAll: "全て反映",
