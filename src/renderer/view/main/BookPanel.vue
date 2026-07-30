@@ -14,7 +14,8 @@
       />
       <div v-if="showPositionInfo && !isCommentEditing" class="row position-info">
         <span v-if="statsLabel" class="position-stats">{{ statsLabel }}</span>
-        <span class="position-comment">{{ positionComment }}</span>
+        <span v-if="positionComment" class="position-comment">{{ positionComment }}</span>
+        <span v-else class="position-comment empty">{{ t.noComment }}</span>
         <button v-if="isCommentEditable" class="comment-edit-button" @click="startEditComment">
           <Icon :icon="IconType.EDIT" />
         </button>
@@ -289,6 +290,9 @@ const onCancelEditBookMove = () => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.position-comment.empty {
+  font-style: italic;
 }
 .comment-edit-button {
   padding: 0 4px;

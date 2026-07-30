@@ -632,6 +632,7 @@ export type Texts = {
   fromFile: string;
   fromDirectory: string;
   noMoves: string;
+  noComment: string;
   register: string;
   update: string;
   importAll: string;

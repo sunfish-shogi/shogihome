@@ -652,6 +652,7 @@ export const vi: Texts = {
   fromFile: "Từ tệp",
   fromDirectory: "Từ thư mục",
   noMoves: "Không tìm thấy nước đi.",
+  noComment: "コメントなし", // TODO: Translate
   register: "Đăng ký",
   update: "Cập nhật",
   importAll: "全て反映", // TODO: Translate

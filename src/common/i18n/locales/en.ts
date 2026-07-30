@@ -642,6 +642,7 @@ export const en: Texts = {
   fromFile: "From File",
   fromDirectory: "From Directory",
   noMoves: "No Moves",
+  noComment: "No Comment",
   register: "Register",
   update: "Update",
   importAll: "Register All",
