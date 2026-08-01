@@ -103,7 +103,7 @@
     "globals": "^17.6.0",
     "jsdom": "^29.0.2",
     "license-checker": "^25.0.1",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.6",
     "terser-webpack-plugin": "^5.6.1",
     "ts-loader": "^9.5.2",
     "ts-proto": "^2.11.4",
