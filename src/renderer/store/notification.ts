@@ -4,6 +4,7 @@ export type NotificationEntry = {
   id: number;
   message: string;
   url?: string;
+  onClick?: () => void;
 };
 
 let nextId = 1;
@@ -17,6 +18,15 @@ export class NotificationStore {
 
   add(message: string, url?: string): void {
     this._entries.push({ id: nextId++, message, url });
+  }
+
+  /**
+   * クリックすると任意の処理を実行する通知を表示します。
+   * @param message 表示するメッセージを指定します。
+   * @param onClick メッセージがクリックされたときに実行する処理を指定します。
+   */
+  addAction(message: string, onClick: () => void): void {
+    this._entries.push({ id: nextId++, message, onClick });
   }
 
   dismiss(id: number): void {

@@ -777,6 +777,10 @@ export const zh_tw: Texts = {
   failedToShutdownEngines: "引擎無法正常結束。",
   failedToCheckUpdates: "無法確認更新。",
   youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
+  newVersionIsAvailableClickToUpdate:
+    "新しいバージョンがあります。ここをクリックすると更新します。", // TODO: Translate
+  recordIsUnsavedDoYouReallyWantToReloadToUpdate:
+    "保存されていない棋譜があります。破棄して更新しますか？", // TODO: Translate
   failedToSaveRecord: "棋譜保存失敗。",
   failedToParseSFEN: "SFEN讀取失敗。",
   failedToDetectRecordFormat: "無法判別棋譜形式。",

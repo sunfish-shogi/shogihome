@@ -775,6 +775,10 @@ export const ja: Texts = {
   failedToShutdownEngines: "エンジンを正常に終了できませんでした。",
   failedToCheckUpdates: "アップデートの確認ができませんでした。",
   youAreUsingTheLatestVersion: "最新のバージョンを使用しています。",
+  newVersionIsAvailableClickToUpdate:
+    "新しいバージョンがあります。ここをクリックすると更新します。",
+  recordIsUnsavedDoYouReallyWantToReloadToUpdate:
+    "保存されていない棋譜があります。破棄して更新しますか？",
   failedToSaveRecord: "棋譜の保存に失敗しました。",
   failedToParseSFEN: "SFENの読み込みに失敗しました。",
   failedToDetectRecordFormat: "棋譜形式を判別できませんでした。",
