@@ -776,8 +776,6 @@ export const en: Texts = {
   failedToCheckUpdates: "Failed to check updates.",
   youAreUsingTheLatestVersion: "You are using the latest version.",
   newVersionIsAvailableClickToUpdate: "A new version is available. Click here to update.",
-  recordIsUnsavedDoYouReallyWantToReloadToUpdate:
-    "The record is unsaved. Do you really want to discard it and update?",
   failedToSaveRecord: "Failed to save record.",
   failedToParseSFEN: "Failed to parse SFEN.",
   failedToDetectRecordFormat: "Failed to detect record format.",

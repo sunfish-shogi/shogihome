@@ -754,7 +754,6 @@ export type Texts = {
   failedToCheckUpdates: string;
   youAreUsingTheLatestVersion: string;
   newVersionIsAvailableClickToUpdate: string;
-  recordIsUnsavedDoYouReallyWantToReloadToUpdate: string;
   failedToSaveRecord: string;
   failedToParseSFEN: string;
   failedToDetectRecordFormat: string;

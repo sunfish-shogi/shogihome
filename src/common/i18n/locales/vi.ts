@@ -784,8 +784,6 @@ export const vi: Texts = {
   youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
   newVersionIsAvailableClickToUpdate:
     "新しいバージョンがあります。ここをクリックすると更新します。", // TODO: Translate
-  recordIsUnsavedDoYouReallyWantToReloadToUpdate:
-    "保存されていない棋譜があります。破棄して更新しますか？", // TODO: Translate
   failedToSaveRecord: "Lưu kỳ phổ thất bại.",
   failedToParseSFEN: "Đọc SFEN thất bại.",
   failedToDetectRecordFormat: "Xác định định dạng kỳ phổ thất bại.",

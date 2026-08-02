@@ -25,14 +25,17 @@ export default defineConfig({
           "favicon*.png",
           "icon/**/*.svg",
           "arrow/**/*.svg",
+          "board/**/*.svg",
           "stand/**/*.png",
           "sound/**/*.mp3",
         ],
         // 実際に使用された盤・駒の画像だけをキャッシュする。
+        // これらの URL にはハッシュが含まれないため、キャッシュを返した後に
+        // 再取得して次回以降に反映する。
         runtimeCaching: [
           {
             urlPattern: /\/(?:board|piece)\/[^?]+\.png$/,
-            handler: "CacheFirst",
+            handler: "StaleWhileRevalidate",
             options: {
               cacheName: "shogihome-board-images",
               expiration: {

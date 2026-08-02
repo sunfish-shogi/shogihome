@@ -1,8 +1,6 @@
 import { t } from "@/common/i18n/index.js";
 import { LogLevel } from "@/common/log.js";
 import api, { isNative } from "@/renderer/ipc/api.js";
-import { useStore } from "@/renderer/store/index.js";
-import { useConfirmationStore } from "@/renderer/store/confirm.js";
 import { useNotificationStore } from "@/renderer/store/notification.js";
 
 // 更新確認を行う間隔
@@ -34,21 +32,10 @@ function activate(worker: ServiceWorker): void {
 }
 
 /**
- * 未保存の棋譜がある場合は確認した上で更新を適用します。
- */
-function applyUpdate(worker: ServiceWorker): void {
-  if (useStore().isRecordFileUnsaved) {
-    useConfirmationStore().show({
-      message: t.recordIsUnsavedDoYouReallyWantToReloadToUpdate,
-      onOk: () => activate(worker),
-    });
-    return;
-  }
-  activate(worker);
-}
-
-/**
  * 更新版のダウンロードが完了したことを通知します。
+ *
+ * Web アプリでは棋譜を localStorage へ自動保存しているため、
+ * 再読み込みしても編集中の内容は失われない。よって確認は行わない。
  */
 function onUpdateReady(worker: ServiceWorker): void {
   if (notifiedWorker === worker) {
@@ -56,7 +43,7 @@ function onUpdateReady(worker: ServiceWorker): void {
   }
   notifiedWorker = worker;
   api.log(LogLevel.INFO, "service worker: new version is ready");
-  useNotificationStore().addAction(t.newVersionIsAvailableClickToUpdate, () => applyUpdate(worker));
+  useNotificationStore().addAction(t.newVersionIsAvailableClickToUpdate, () => activate(worker));
 }
 
 /**
