@@ -43,7 +43,7 @@ function onUpdateReady(worker: ServiceWorker): void {
   }
   notifiedWorker = worker;
   api.log(LogLevel.INFO, "service worker: new version is ready");
-  useNotificationStore().addAction(t.newVersionIsAvailableClickToUpdate, () => activate(worker));
+  useNotificationStore().addAction(t.newVersionIsAvailablePressToUpdate, () => activate(worker));
 }
 
 /**

@@ -753,7 +753,7 @@ export type Texts = {
   failedToShutdownEngines: string;
   failedToCheckUpdates: string;
   youAreUsingTheLatestVersion: string;
-  newVersionIsAvailableClickToUpdate: string;
+  newVersionIsAvailablePressToUpdate: string;
   failedToSaveRecord: string;
   failedToParseSFEN: string;
   failedToDetectRecordFormat: string;

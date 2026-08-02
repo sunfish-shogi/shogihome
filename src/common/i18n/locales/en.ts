@@ -775,7 +775,7 @@ export const en: Texts = {
   failedToShutdownEngines: "Failed to shutdown engines.",
   failedToCheckUpdates: "Failed to check updates.",
   youAreUsingTheLatestVersion: "You are using the latest version.",
-  newVersionIsAvailableClickToUpdate: "A new version is available. Click here to update.",
+  newVersionIsAvailablePressToUpdate: "A new version is available. Press here to update.",
   failedToSaveRecord: "Failed to save record.",
   failedToParseSFEN: "Failed to parse SFEN.",
   failedToDetectRecordFormat: "Failed to detect record format.",
