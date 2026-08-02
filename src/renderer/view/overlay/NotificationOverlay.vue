@@ -6,6 +6,9 @@
         <span v-if="entry.url" class="message message-link" @click="api.openWebBrowser(entry.url!)">
           {{ entry.message }}
         </span>
+        <span v-else-if="entry.onClick" class="message message-link" @click="onClick(entry)">
+          {{ entry.message }}
+        </span>
         <span v-else class="message">{{ entry.message }}</span>
         <span class="close-button" @click="store.dismiss(entry.id)">
           <Icon :icon="IconType.CLOSE" class="close-icon" />
@@ -16,12 +19,17 @@
 </template>
 
 <script setup lang="ts">
-import { useNotificationStore } from "@/renderer/store/notification";
+import { NotificationEntry, useNotificationStore } from "@/renderer/store/notification";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import api from "@/renderer/ipc/api";
 
 const store = useNotificationStore();
+
+function onClick(entry: NotificationEntry): void {
+  store.dismiss(entry.id);
+  entry.onClick?.();
+}
 </script>
 
 <style scoped>

@@ -31,6 +31,7 @@ import * as _ja from "dayjs/locale/ja";
 import * as _zh_tw from "dayjs/locale/zh-tw";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useErrorStore } from "@/renderer/store/error.js";
+import { setupUpdateNotification } from "@/renderer/webapp/update.js";
 
 api.log(LogLevel.INFO, `start renderer process: APP_VERSION=${appInfo.appVersion}`);
 
@@ -124,4 +125,9 @@ Promise.allSettled([
 
   api.log(LogLevel.INFO, "mount app");
   createApp(App).mount("#app");
+
+  // Web アプリの更新を検知して通知する。
+  setupUpdateNotification().catch((e) => {
+    api.log(LogLevel.WARN, `failed to setup update notification: ${e}`);
+  });
 });

@@ -782,6 +782,7 @@ export const vi: Texts = {
   failedToShutdownEngines: "Dừng phần mềm thất bại.",
   failedToCheckUpdates: "Kiểm tra cập nhật thất bại.",
   youAreUsingTheLatestVersion: "最新のバージョンを使用しています。", // TODO: Translate
+  newVersionIsAvailablePressToUpdate: "新しいバージョンがあります。ここを押すと更新します。", // TODO: Translate
   failedToSaveRecord: "Lưu kỳ phổ thất bại.",
   failedToParseSFEN: "Đọc SFEN thất bại.",
   failedToDetectRecordFormat: "Xác định định dạng kỳ phổ thất bại.",
