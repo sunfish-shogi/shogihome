@@ -1,8 +1,10 @@
 # Web アプリの更新配信とキャッシュ
 
-Web/PWA 版 (`vite.config-pwa.mts` でビルドし GitHub Pages で配信するもの) の
+Web 版 (`vite.config-pwa.mts` でビルドし GitHub Pages で配信するもの) の
 Service Worker によるキャッシュと、更新版をユーザーへ届けるまでの振る舞いを定める。
 
+Service Worker が登録されていれば適用されるため、ホーム画面へインストールした
+PWA として起動した場合に限らず、ブラウザーのタブで開いている場合も対象となる。
 Electron 版には Service Worker を登録しないため、この仕様は適用されない。
 
 ## 前提
@@ -61,7 +63,7 @@ Service Worker の制御下では、ナビゲーションリクエストを `ind
 
 ブラウザーによる Service Worker の更新確認はページ遷移時と 24 時間ごとに限られ、
 インストールした PWA を開いたまま使い続けるユーザーには更新が届かない。
-そのため `src/renderer/pwa/update.ts` で以下のタイミングでも明示的に確認を行う。
+そのため `src/renderer/webapp/update.ts` で以下のタイミングでも明示的に確認を行う。
 
 - 1 時間ごと
 - 画面が再び表示された時 (`visibilitychange`)
@@ -75,7 +77,7 @@ Service Worker の制御下では、ナビゲーションリクエストを `ind
    - この時点で更新版のファイルは取得済みであり、以降はオフラインでも適用できる。
    - 初回アクセス時のインストール (制御中の Service Worker が存在しない場合) では通知しない。
    - 同じ Service Worker について繰り返し通知はしない。
-2. 通知をクリックすると更新を適用する。
+2. 通知を押すと更新を適用する。
    - 編集中の棋譜は localStorage へ自動保存され、再読み込み後に復元されるため、
      保存に関する確認は行わない。
 3. 適用時は待機中の Service Worker へ `SKIP_WAITING` を送信し、
