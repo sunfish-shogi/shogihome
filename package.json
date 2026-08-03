@@ -57,7 +57,7 @@
   "main": "dist/src/background/index.js",
   "module": "dist/src/background/index.js",
   "dependencies": {
-    "@bufbuild/protobuf": "^2.12.1",
+    "@bufbuild/protobuf": "^2.13.0",
     "@github/hotkey": "^3.1.4",
     "async-lock": "^1.4.0",
     "chart.js": "^4.5.1",
