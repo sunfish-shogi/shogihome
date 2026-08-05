@@ -1,0 +1,29 @@
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h
+recv:go btime 34000 wtime 30000 binc 5000 winc 5000
+send:bestmove 5a4a
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h 5a4a 5h4h
+recv:go btime 38000 wtime 34000 binc 5000 winc 5000
+send:bestmove 4a5a
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h 5a4a 5h4h 4a5a 4h5h
+recv:go btime 42000 wtime 38000 binc 5000 winc 5000
+send:bestmove 5a4a
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h 5a4a 5h4h 4a5a 4h5h 5a4a 5h4h
+recv:go btime 46000 wtime 42000 binc 5000 winc 5000
+send:bestmove 4a5a
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h 5a4a 5h4h 4a5a 4h5h 5a4a 5h4h 4a5a 4h5h
+recv:go btime 50000 wtime 46000 binc 5000 winc 5000
+send:bestmove 5a4a
+recv:position sfen 4k4/9/9/9/9/9/9/5R3/4K4 b - 1 moves 4h5h 5a4a 5h4h 4a5a 4h5h 5a4a 5h4h 4a5a 4h5h 5a4a 5h4h
+recv:go btime 54000 wtime 50000 binc 5000 winc 5000
+send:bestmove 4a5a
+recv:gameover win
+recv:quit

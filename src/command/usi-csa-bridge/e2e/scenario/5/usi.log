@@ -1,0 +1,29 @@
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2h3h
+recv:go btime 34000 wtime 30000 binc 5000 winc 5000
+send:bestmove 8b7b
+recv:position startpos moves 2h3h 8b7b 3h2h
+recv:go btime 38000 wtime 34000 binc 5000 winc 5000
+send:bestmove 7b8b
+recv:position startpos moves 2h3h 8b7b 3h2h 7b8b 2h3h
+recv:go btime 42000 wtime 38000 binc 5000 winc 5000
+send:bestmove 8b7b
+recv:position startpos moves 2h3h 8b7b 3h2h 7b8b 2h3h 8b7b 3h2h
+recv:go btime 46000 wtime 42000 binc 5000 winc 5000
+send:bestmove 7b8b
+recv:position startpos moves 2h3h 8b7b 3h2h 7b8b 2h3h 8b7b 3h2h 7b8b 2h3h
+recv:go btime 50000 wtime 46000 binc 5000 winc 5000
+send:bestmove 8b7b
+recv:position startpos moves 2h3h 8b7b 3h2h 7b8b 2h3h 8b7b 3h2h 7b8b 2h3h 8b7b 3h2h
+recv:go btime 54000 wtime 50000 binc 5000 winc 5000
+send:bestmove 7b8b
+recv:gameover draw
+recv:quit

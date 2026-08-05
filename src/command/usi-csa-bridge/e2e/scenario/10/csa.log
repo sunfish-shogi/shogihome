@@ -1,6 +1,6 @@
-# 早期 Ponder (enableEarlyPonder) のシナリオ。
-# 自分は後手。相手の応手が Ponder の予想と一致するケース (ponderhit) と
-# 一致しないケース (ponder miss) の両方を含む。
+# 手番外の送信による反則負け (#ILLEGAL_ACTION / #LOSE) のシナリオ。
+# 指し手行を伴わない 2 行の終局通知で、かつ手番が相手側にある状態での終局。
+# 棋譜には手番側 (相手) の反則勝ちとして記録される。
 recv:LOGIN usi-csa-bridge test
 send:LOGIN:usi-csa-bridge OK
 send:BEGIN Game_Summary
@@ -8,7 +8,7 @@ send:Protocol_Version:1.2
 send:Protocol_Mode:Server
 send:Format:Shogi 1.0
 send:Declaration:Jishogi 1.1
-send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260723000000
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805001000
 send:Name+:Enemy
 send:Name-:usi-csa-bridge
 send:Your_Turn:-
@@ -35,20 +35,17 @@ send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
 send:+
 send:END Position
 send:END Game_Summary
-recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260723000000
-send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260723000000
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805001000
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805001000
 send:+2726FU,T2
 recv:-8384FU
 send:-8384FU,T1
-# 相手が Ponder の予想 (2f2e) と同じ手を指す → ponderhit
 send:+2625FU,T2
 recv:-8485FU
 send:-8485FU,T1
-# 相手が Ponder の予想 (7g7f) と違う手を指す → ponder miss
 send:+6978KI,T3
 recv:-3334FU
 send:-3334FU,T1
-# 早期 Ponder 中に相手が投了する
-send:%TORYO,T3
-send:#RESIGN
-send:#WIN
+# 自分の手番でないときに送信を行ったとみなされ反則負けとなる
+send:#ILLEGAL_ACTION
+send:#LOSE

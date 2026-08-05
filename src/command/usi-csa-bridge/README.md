@@ -173,5 +173,23 @@ ShogiHome のプロジェクトルートディレクトリで以下の要領で�
 
 ```
 npm run usi-csa-bridge:build
-./src/tests/e2e/usi-csa-bridge/run 1
+
+# シナリオ番号を指定して 1 件だけ実行する
+./dist/command/usi-csa-bridge/e2e/run 1
+
+# すべてのシナリオを実行する
+./dist/command/usi-csa-bridge/e2e/run-all
 ```
+
+シナリオは `src/command/usi-csa-bridge/e2e/scenario/<番号>/` に配置します。 1 シナリオは以下のファイルで構成されます。
+
+| ファイル             | 内容                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| `bridge-config.yaml` | ブリッジの設定                                               |
+| `csa.log`            | CSA サーバーのモックが再生するコマンド列 (`send:` / `recv:`) |
+| `usi.log`            | USI エンジンのモックが再生するコマンド列 (`send:` / `recv:`) |
+| `usi-replay-engine`  | USI エンジンのモックを起動するスクリプト                     |
+| `record.kifu`        | 期待される棋譜                                               |
+| `verify-record`      | 出力された棋譜と `record.kifu` を比較するスクリプト          |
+
+`send:` / `recv:` はモックから見た向きを表し、`#` で始まる行はコメントです。 モックは記述された順序どおりのやりとりを厳密に期待するため、想定と異なるコマンドを受信した時点で失敗します。
