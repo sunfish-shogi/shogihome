@@ -1,0 +1,9 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EXPECTED="$DIR/record.csa"
+ACTUAL=records/usi-csa-bridge-_test+test-30-5F+Enemy+usi-csa-bridge+20260805002700_Enemy_usi-csa-bridge.csa
+
+diff <(grep -v '^\$START_TIME:' "$EXPECTED") \
+     <(grep -v '^\$START_TIME:' "$ACTUAL")

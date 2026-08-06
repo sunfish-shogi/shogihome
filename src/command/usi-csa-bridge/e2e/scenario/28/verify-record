@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EXPECTED="$DIR/record.kif"
+ACTUAL=records/usi-csa-bridge-_test+test-30-5F+Enemy+usi-csa-bridge+20260805002800_Enemy_usi-csa-bridge.kif
+
+# KIF は Shift_JIS で出力されるため、UTF-8 に変換してから日付の行を除いて比較する。
+filter() {
+  iconv -f CP932 -t UTF-8 "$1" | grep -v '^対局日：' | grep -v '^開始日時：'
+}
+diff <(filter "$EXPECTED") <(filter "$ACTUAL")
