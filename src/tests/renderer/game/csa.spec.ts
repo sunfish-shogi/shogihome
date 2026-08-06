@@ -24,6 +24,7 @@ import {
   csaGameSettings,
   csaGameSummary,
   csaGameSummaryInvalidPosition,
+  csaGameSummaryWithMsecTimeUnit,
   csaGameSummaryWithUnequalTimeConfig,
   playerURI,
 } from "@/tests/mock/csa.js";
@@ -824,5 +825,30 @@ P-
       expect(mockAPI.csaMove).toBeCalledTimes(1);
       expect(mockAPI.csaMove).toBeCalledWith(0, "+7776FU", 159, "-3334FU +2726FU -2288UM");
     });
+  });
+
+  describe("parseElapsedMs", () => {
+    // 消費時間は CSA 棋譜形式に準拠するため常に秒であり、Time_Unit の影響を受けない。
+    it.each([
+      { summary: csaGameSummary, data: "+7776FU,T12", expected: 12e3 },
+      { summary: csaGameSummary, data: "+7776FU,T0", expected: 0 },
+      // CSA V3 の小数表記
+      { summary: csaGameSummary, data: "+7776FU,T1.5", expected: 1500 },
+      { summary: csaGameSummary, data: "-3334FU,T0.125", expected: 125 },
+      // 小数点以下の桁は無くても良い。
+      { summary: csaGameSummary, data: "+7776FU,T3.", expected: 3e3 },
+      // 単位時間がミリ秒でも解釈は変わらない。
+      { summary: csaGameSummaryWithMsecTimeUnit, data: "+7776FU,T12", expected: 12e3 },
+      { summary: csaGameSummaryWithMsecTimeUnit, data: "+7776FU,T1.5", expected: 1500 },
+      // 消費時間を伴わない場合
+      { summary: csaGameSummary, data: "+7776FU", expected: 0 },
+    ])(
+      "$data (timeUnitMs=$summary.players.black.time.timeUnitMs)",
+      ({ summary, data, expected }) => {
+        const manager = new CSAGameManager(new RecordManager(), new Clock(), new Clock());
+        manager["gameSummary"] = summary;
+        expect(manager["parseElapsedMs"](data)).toBe(expected);
+      },
+    );
   });
 });

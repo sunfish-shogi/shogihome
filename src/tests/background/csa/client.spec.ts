@@ -880,6 +880,37 @@ describe("background/csa/client", () => {
     });
   });
 
+  it("decimalConsumedTime", async () => {
+    // CSA V3 ではミリ秒を表現するために消費時間に小数を使用できる。
+    const client = new Client(123, csaServerSettings, log4js.getLogger());
+    const clientHandlers = bindHandlers(client);
+    client.login();
+    const socketHandlers = mockSocket.mock.calls[0][2];
+    socketHandlers.onConnect();
+    socketHandlers.onRead("LOGIN:TestPlayer OK");
+    for (const line of mockGameSummary) {
+      socketHandlers.onRead(line);
+    }
+    client.agree("20150505-CSA25-3-5-7");
+    socketHandlers.onRead("START:20150505-CSA25-3-5-7");
+    expect(clientHandlers.mockOnStart.mock.calls[0][0]).toStrictEqual({
+      black: { time: 600 },
+      white: { time: 600 },
+    });
+    socketHandlers.onRead("+7776FU,T11.5");
+    expect(clientHandlers.mockOnMove).toBeCalledTimes(1);
+    expect(clientHandlers.mockOnMove.mock.calls[0][1]).toStrictEqual({
+      black: { time: 588.5 }, // 600 - 11.5
+      white: { time: 600 },
+    });
+    socketHandlers.onRead("-3334FU,T8.25");
+    expect(clientHandlers.mockOnMove).toBeCalledTimes(2);
+    expect(clientHandlers.mockOnMove.mock.calls[1][1]).toStrictEqual({
+      black: { time: 588.5 },
+      white: { time: 591.75 }, // 600 - 8.25
+    });
+  });
+
   it("errorOfStartPosition", async () => {
     const client = new Client(123, csaServerSettings, log4js.getLogger());
     const clientHandlers = bindHandlers(client);
