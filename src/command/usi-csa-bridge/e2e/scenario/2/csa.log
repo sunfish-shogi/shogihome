@@ -49,6 +49,6 @@ send:+6978KI,T3
 recv:-3334FU
 send:-3334FU,T1
 # 早期 Ponder 中に相手が投了する
-send:%TORYO
+send:%TORYO,T3
 send:#RESIGN
 send:#WIN

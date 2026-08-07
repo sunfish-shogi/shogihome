@@ -579,7 +579,9 @@ export class Client {
   }
 
   private onMoveWithColor(command: string, color: Color): void {
-    const parsed = /^.*,T([0-9]+)$/.exec(command);
+    // NOTICE: 消費時間は CSA 棋譜形式に準拠するため常に秒であり、Time_Unit の影響を受けない。
+    //         CSA V3 ではミリ秒を表現するために小数を使用できる。
+    const parsed = /^.*,T([0-9]+(?:\.[0-9]*)?)$/.exec(command);
     if (parsed) {
       const elapsed = Number(parsed[1]);
       this.updateTime(color, elapsed * 1e3);

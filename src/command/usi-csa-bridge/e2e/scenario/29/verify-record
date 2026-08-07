@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+EXPECTED="$DIR/record.jkf"
+ACTUAL=records/usi-csa-bridge-_test+test-30-5F+Enemy+usi-csa-bridge+20260805002900_Enemy_usi-csa-bridge.jkf
+
+# JKF は JSON 1 行のため、日付のフィールドを除去してから比較する。
+filter() {
+  sed -e 's/"対局日":"[^"]*",//' -e 's/"開始日時":"[^"]*",//' "$1"
+}
+diff <(filter "$EXPECTED") <(filter "$ACTUAL")

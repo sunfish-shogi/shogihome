@@ -170,6 +170,24 @@ export const csaGameSummaryWithUnequalTimeConfig: CSAGameSummary = {
   position: initialPosition,
 };
 
+// 単位時間がミリ秒の持時間設定。指し手の消費時間は単位時間の影響を受けない。
+export const csaGameSummaryWithMsecTimeUnit: CSAGameSummary = {
+  id: "test-game",
+  players: {
+    black: {
+      playerName: "me",
+      time: { timeUnitMs: 1, totalTime: 600000, byoyomi: 30000, delay: 0, increment: 0 },
+    },
+    white: {
+      playerName: "enemy",
+      time: { timeUnitMs: 1, totalTime: 600000, byoyomi: 30000, delay: 0, increment: 0 },
+    },
+  },
+  myColor: Color.BLACK,
+  toMove: Color.BLACK,
+  position: initialPosition,
+};
+
 const invalidPosition = `+2726FU,T12`;
 
 export const csaGameSummaryInvalidPosition: CSAGameSummary = {

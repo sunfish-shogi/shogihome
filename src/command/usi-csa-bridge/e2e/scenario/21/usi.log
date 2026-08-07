@@ -1,0 +1,29 @@
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:option name USI_Hash type spin default 32 min 1 max 4096
+send:option name USI_Ponder type check default true
+send:option name BookFile type string default standard_book.db
+send:option name EvalDir type filename default eval
+send:option name BookMoveSelector type combo default default var default var random
+send:option name ClearHash type button
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value false
+recv:setoption name BookFile value standard_book.db
+recv:setoption name EvalDir value eval
+recv:setoption name BookMoveSelector value default
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2g2f
+recv:go btime 33000 wtime 30000 binc 5000 winc 5000
+send:bestmove 8c8d ponder 2f2e
+recv:position startpos moves 2g2f 8c8d 2f2e
+recv:go btime 36000 wtime 34000 binc 5000 winc 5000
+send:bestmove 8d8e ponder 6i7h
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h
+recv:go btime 38000 wtime 38000 binc 5000 winc 5000
+send:bestmove 3c3d ponder 2e2d
+recv:gameover win
+recv:quit

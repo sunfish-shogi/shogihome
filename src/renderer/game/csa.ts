@@ -393,7 +393,7 @@ export class CSAGameManager {
       moveOption: {
         ignoreValidation: true,
       },
-      elapsedMs: this.parseElapsedMs(move.color, data),
+      elapsedMs: this.parseElapsedMs(data),
     });
 
     // 探索情報を記録する。
@@ -417,10 +417,11 @@ export class CSAGameManager {
     this.next(playerStates);
   }
 
-  private parseElapsedMs(color: Color, data: string): number {
-    const timeConfig = this.gameSummary.players[color].time;
-    const parsed = /^.*,T([0-9]+)$/.exec(data);
-    return parsed ? Number(parseInt(parsed[1])) * timeConfig.timeUnitMs : 0;
+  private parseElapsedMs(data: string): number {
+    // NOTICE: 消費時間は CSA 棋譜形式に準拠するため常に秒であり、Time_Unit の影響を受けない。
+    //         CSA V3 ではミリ秒を表現するために小数を使用できる。
+    const parsed = /^.*,T([0-9]+(?:\.[0-9]*)?)$/.exec(data);
+    return parsed ? Number(parsed[1]) * 1e3 : 0;
   }
 
   onGameResult(move: CSASpecialMove, gameResult: CSAGameResult): void {

@@ -1,0 +1,50 @@
+# 自分が先手番 (Your_Turn:+) のシナリオ。
+# 対局開始直後に指し手の要求が発生する経路 (直前の指し手がない状態からの go) を検証する。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Protocol_Mode:Server
+send:Format:Shogi 1.0
+send:Declaration:Jishogi 1.1
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805001300
+send:Name+:usi-csa-bridge
+send:Name-:Enemy
+send:Your_Turn:+
+send:Rematch_On_Draw:NO
+send:To_Move:+
+send:Max_Moves:256
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:Byoyomi:0
+send:Increment:5
+send:Least_Time_Per_Move:0
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805001300
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805001300
+recv:+2726FU
+send:+2726FU,T1
+send:-8384FU,T2
+recv:+2625FU
+send:+2625FU,T1
+send:-8485FU,T2
+recv:+6978KI
+send:+6978KI,T1
+# 自分の着手の直後、相手の手番で相手が投了する
+send:%TORYO,T2
+send:#RESIGN
+send:#WIN

@@ -1,0 +1,5 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+npx --no-install tsx $DIR/../../mock/usi-replay-engine.ts $DIR/usi.log

@@ -288,6 +288,6 @@ recv:-4342KI
 send:-4342KI,T0
 send:+3342RY,T1
 recv:%TORYO
-send:%TORYO
+send:%TORYO,T0
 send:#RESIGN
 send:#LOSE

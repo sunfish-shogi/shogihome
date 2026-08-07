@@ -1,0 +1,50 @@
+# 指し手コメントの書式に shogigui を指定するシナリオ。
+# エンジンが評価値と読み筋を返し、Floodgate 拡張により指し手に付与される。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Protocol_Mode:Server
+send:Format:Shogi 1.0
+send:Declaration:Jishogi 1.1
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805002500
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:Rematch_On_Draw:NO
+send:To_Move:+
+send:Max_Moves:256
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:Byoyomi:0
+send:Increment:5
+send:Least_Time_Per_Move:0
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805002500
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805002500
+send:+2726FU,T2
+recv:-8384FU,'* -35 +2625FU -8485FU
+send:-8384FU,T1
+send:+2625FU,T2
+recv:-8485FU,'* 120 +6978KI
+send:-8485FU,T1
+send:+6978KI,T3
+recv:-3334FU,'* -8 +2524FU
+send:-3334FU,T1
+send:%TORYO,T2
+send:#RESIGN
+send:#WIN

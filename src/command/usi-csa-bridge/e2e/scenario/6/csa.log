@@ -1,0 +1,62 @@
+# 連続王手の千日手 (#OUTE_SENNICHITE / #WIN) のシナリオ。
+# 相手 (先手) が飛車で王手を繰り返し、王手をかけた側の反則負けとなる。
+# 最後の指し手は自分 (後手) の玉の移動であるため、終局時の手番は相手側にある。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Protocol_Mode:Server
+send:Format:Shogi 1.0
+send:Declaration:Jishogi 1.1
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805000600
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:Rematch_On_Draw:NO
+send:To_Move:+
+send:Max_Moves:256
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:Byoyomi:0
+send:Increment:5
+send:Least_Time_Per_Move:0
+send:END Time
+send:BEGIN Position
+send:P1 *  *  *  * -OU *  *  *  *
+send:P2 *  *  *  *  *  *  *  *  *
+send:P3 *  *  *  *  *  *  *  *  *
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7 *  *  *  *  *  *  *  *  *
+send:P8 *  *  *  *  * +HI *  *  *
+send:P9 *  *  *  * +OU *  *  *  *
+send:P+
+send:P-
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805000600
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805000600
+send:+4858HI,T1
+recv:-5141OU
+send:-5141OU,T1
+send:+5848HI,T1
+recv:-4151OU
+send:-4151OU,T1
+send:+4858HI,T1
+recv:-5141OU
+send:-5141OU,T1
+send:+5848HI,T1
+recv:-4151OU
+send:-4151OU,T1
+send:+4858HI,T1
+recv:-5141OU
+send:-5141OU,T1
+send:+5848HI,T1
+recv:-4151OU
+send:-4151OU,T1
+# 同一局面が 4 回出現し、連続王手をかけていた先手の反則負けとなる
+send:#OUTE_SENNICHITE
+send:#WIN

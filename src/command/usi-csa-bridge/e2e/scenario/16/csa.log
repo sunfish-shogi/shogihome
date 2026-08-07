@@ -1,0 +1,58 @@
+# 手番ごとに異なる持時間 (BEGIN Time+ / BEGIN Time-) のシナリオ。
+# 仕様により、手番ごとに持時間を指定する場合は Time の階層が省略される。
+# 自分 (後手) は秒読み、相手 (先手) は加算時間という非対称な設定である。
+# USI では byoyomi と binc/winc の同時使用が認められないため、
+# 自分が秒読みの場合は秒読みを優先し、相手の加算時間は go に含めない。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Protocol_Mode:Server
+send:Format:Shogi 1.0
+send:Declaration:Jishogi 1.1
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805001600
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:Rematch_On_Draw:NO
+send:To_Move:+
+send:Max_Moves:256
+send:BEGIN Time+
+send:Time_Unit:1sec
+send:Total_Time:600
+send:Byoyomi:0
+send:Increment:10
+send:END Time+
+send:BEGIN Time-
+send:Time_Unit:1sec
+send:Total_Time:600
+send:Byoyomi:30
+send:Increment:0
+send:END Time-
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805001600
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805001600
+send:+2726FU,T5
+recv:-8384FU
+send:-8384FU,T8
+send:+2625FU,T6
+recv:-8485FU
+send:-8485FU,T4
+send:+6978KI,T7
+recv:-3334FU
+send:-3334FU,T3
+send:%TORYO,T2
+send:#RESIGN
+send:#WIN

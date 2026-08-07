@@ -1,0 +1,59 @@
+# 千日手による引き分け (#SENNICHITE / #DRAW) のシナリオ。
+# 双方が飛車を往復させ、初期局面が 4 回出現した時点で千日手が成立する。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Protocol_Mode:Server
+send:Format:Shogi 1.0
+send:Declaration:Jishogi 1.1
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805000500
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:Rematch_On_Draw:NO
+send:To_Move:+
+send:Max_Moves:256
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:Byoyomi:0
+send:Increment:5
+send:Least_Time_Per_Move:0
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805000500
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805000500
+send:+2838HI,T1
+recv:-8272HI
+send:-8272HI,T1
+send:+3828HI,T1
+recv:-7282HI
+send:-7282HI,T1
+send:+2838HI,T1
+recv:-8272HI
+send:-8272HI,T1
+send:+3828HI,T1
+recv:-7282HI
+send:-7282HI,T1
+send:+2838HI,T1
+recv:-8272HI
+send:-8272HI,T1
+send:+3828HI,T1
+recv:-7282HI
+send:-7282HI,T1
+# 初期局面が 4 回出現したため千日手が成立する
+send:#SENNICHITE
+send:#DRAW

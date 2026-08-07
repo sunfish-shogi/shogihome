@@ -1,0 +1,26 @@
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2g2f
+recv:go btime 33000 wtime 30000 binc 5000 winc 5000
+send:info string start thinking
+send:info depth 12 seldepth 15 time 300 nodes 20000 nps 66666 hashfull 150 score cp 64 lowerbound multipv 1 pv 8c8d 2f2e
+send:bestmove 8c8d
+recv:position startpos moves 2g2f 8c8d 2f2e
+recv:go btime 36000 wtime 34000 binc 5000 winc 5000
+send:info depth 20 seldepth 22 time 500 nodes 40000 multipv 2 score cp -500 pv 8d8e 1g1f
+send:info depth 20 seldepth 22 time 500 nodes 40000 multipv 1 score mate 7 pv 8d8e 6i7h
+send:bestmove 8d8e
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h
+recv:go btime 38000 wtime 38000 binc 5000 winc 5000
+send:info depth 5 time 50 nodes 900 currmove 3c3d score cp 12 multipv 1
+send:bestmove 3c3d
+recv:gameover win
+recv:quit
