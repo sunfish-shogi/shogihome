@@ -65,6 +65,14 @@ export default (env = {}) => {
       externals: ["electron"],
       experiments: {
         outputModule: true,
+        // This entry is already compiled to JavaScript by `tsc`, so webpack's built-in
+        // TypeScript support is unnecessary. Leaving it on "auto" (the default since
+        // webpack 5.109) turns it on for this config because no ts-loader is registered
+        // here, which in turn enables `resolve.tsconfig` and makes the resolver read the
+        // `tsconfig.json` files bundled in dependencies. jimp ships one that extends
+        // `@jimp/config-typescript`, a devDependency that is not installed for consumers,
+        // and the unresolvable `extends` breaks every module resolution from jimp.
+        typescript: false,
       },
       optimization,
       cache,
