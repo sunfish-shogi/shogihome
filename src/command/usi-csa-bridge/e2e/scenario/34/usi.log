@@ -1,0 +1,21 @@
+# エンジンは対局ごとに再起動されるため、このスクリプトはプロセスごとに先頭から再生される。
+recv:usi
+send:id name USI Replay Engine
+send:id author ShogiHome
+send:usiok
+recv:setoption name USI_Hash value 32
+recv:setoption name USI_Ponder value true
+recv:isready
+send:readyok
+recv:usinewgame
+recv:position startpos moves 2g2f
+recv:go btime 27000 wtime 30000 byoyomi 0
+send:bestmove 8c8d
+recv:position startpos moves 2g2f 8c8d 2f2e
+recv:go btime 23000 wtime 28000 byoyomi 0
+send:bestmove 8d8e
+recv:position startpos moves 2g2f 8c8d 2f2e 8d8e 6i7h
+recv:go btime 21000 wtime 27000 byoyomi 0
+send:bestmove 3c3d
+recv:gameover win
+recv:quit

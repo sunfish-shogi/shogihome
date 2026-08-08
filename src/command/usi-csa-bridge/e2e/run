@@ -17,7 +17,31 @@ if [ ! -f $COMMAND ]; then
   exit 1
 fi
 
-npx --no-install tsx $MOCK_DIR/csa-replay-server.ts $SCENARIO_DIR/csa.log &
+# モックサーバーが待ち受けを開始する前にブリッジが接続すると ECONNREFUSED となるため、
+# 待ち受けの開始を知らせるファイルが作られるまで待つ。
+READY_FILE="$(mktemp)"
+rm -f "$READY_FILE"
+trap 'rm -f "$READY_FILE"' EXIT
+
+READY_FILE=$READY_FILE npx --no-install tsx $MOCK_DIR/csa-replay-server.ts $SCENARIO_DIR/csa.log &
+MOCK_PID=$!
+
+for _ in $(seq 300); do
+  if [ -e "$READY_FILE" ]; then
+    break
+  fi
+  if ! kill -0 $MOCK_PID 2>/dev/null; then
+    echo "Mock server exited before listening"
+    exit 1
+  fi
+  sleep 0.1
+done
+
+if [ ! -e "$READY_FILE" ]; then
+  echo "Mock server did not start listening"
+  exit 1
+fi
+
 node $COMMAND --all-log-file $SCENARIO_DIR/bridge-config.yaml
 wait
 
