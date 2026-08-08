@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import fs from "node:fs";
 
+export type StepKind = "send" | "recv" | "disconnect";
+
 export type Step = {
-  kind: "send" | "recv";
+  kind: StepKind;
   body: string;
   srcLine: number;
 };
@@ -16,15 +18,16 @@ export function parseScript(filePath: string) {
     if (!line || line.startsWith("#")) {
       continue;
     }
-    const m = /^(send|recv)\s*:(.*)$/.exec(line);
+    const m = /^(send|recv|disconnect)\s*:(.*)$/.exec(line);
     if (!m) {
       throw new Error(
-        `Invalid script line ${i + 1}: ${line0}\nExpected "send:<text>" or "recv:<text>"`,
+        `Invalid script line ${i + 1}: ${line0}\n` +
+          `Expected "send:<text>", "recv:<text>" or "disconnect:"`,
       );
     }
     const [, kind, body] = m;
     steps.push({
-      kind: kind as "send" | "recv",
+      kind: kind as StepKind,
       body: body.trim(),
       srcLine: i + 1,
     });
@@ -37,6 +40,7 @@ export function parseScript(filePath: string) {
 
 export class Replayer {
   private idx = 0;
+  private waitingReconnect = false;
 
   constructor(
     private steps: Step[],
@@ -48,7 +52,34 @@ export class Replayer {
     this.advance();
   }
 
+  /**
+   * disconnect ステップで待機中かどうかを返します。
+   */
+  public get isWaitingReconnect() {
+    return this.waitingReconnect;
+  }
+
+  /**
+   * disconnect ステップを消化し、次の接続としてスクリプトを再開します。
+   */
+  public reconnect() {
+    if (!this.waitingReconnect) {
+      console.warn("ERR unexpected reconnection\n");
+      this.end(1);
+      return;
+    }
+    this.waitingReconnect = false;
+    this.idx++;
+    this.advance();
+  }
+
   public feed(line: string) {
+    if (this.waitingReconnect) {
+      const msg = `ERR expected disconnection, got: "${line}"`;
+      console.warn(`[mismatch] ${msg}`);
+      this.end(1);
+      return;
+    }
     if (this.idx >= this.steps.length) {
       console.warn("ERR unexpected input after script end\n");
       this.end(1);
@@ -79,6 +110,10 @@ export class Replayer {
     if (this.idx >= this.steps.length) {
       this.end(0);
       return;
+    }
+    // disconnect ステップは切断されるまで消化せずに待機する。
+    if (this.steps[this.idx].kind === "disconnect") {
+      this.waitingReconnect = true;
     }
   }
 }

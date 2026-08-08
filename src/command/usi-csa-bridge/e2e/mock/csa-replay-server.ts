@@ -15,25 +15,35 @@ const steps = parseScript(path.resolve(COMMAND_FILE));
 console.log(`Loaded ${steps.length} steps from ${COMMAND_FILE}`);
 console.log(`Listening on port ${PORT}...`);
 
-const server = net.createServer((socket) => {
-  socket.setEncoding("utf8");
-  const remote = `${socket.remoteAddress}:${socket.remotePort}`;
-  console.log(`[conn] ${remote} connected`);
+// 連続対局では対局ごとに接続しなおすため、Replayer を接続をまたいで共有する。
+let socket: net.Socket | undefined;
 
-  const replayer = new Replayer(
-    steps,
-    (line: string) => {
-      socket.write(line + "\n");
-    },
-    (exitCode) => {
+const replayer = new Replayer(
+  steps,
+  (line: string) => {
+    socket?.write(line + "\n");
+  },
+  (exitCode) => {
+    if (socket) {
       socket.end(() => {
         process.exit(exitCode);
       });
-    },
-  );
+    } else {
+      process.exit(exitCode);
+    }
+  },
+);
+
+const server = net.createServer((newSocket) => {
+  newSocket.setEncoding("utf8");
+  const remote = `${newSocket.remoteAddress}:${newSocket.remotePort}`;
+  console.log(`[conn] ${remote} connected`);
+
+  const reconnection = replayer.isWaitingReconnect;
+  socket = newSocket;
 
   let buf = "";
-  socket.on("data", (chunk) => {
+  newSocket.on("data", (chunk) => {
     buf += chunk;
     let nl: number;
     while ((nl = buf.indexOf("\n")) >= 0) {
@@ -44,15 +54,19 @@ const server = net.createServer((socket) => {
     }
   });
 
-  socket.on("end", () => {
+  newSocket.on("end", () => {
     console.log(`[conn] ${remote} disconnected`);
   });
 
-  socket.on("error", (err) => {
+  newSocket.on("error", (err) => {
     console.warn(`[conn] ${remote} error:`, err.message);
   });
 
-  replayer.start();
+  if (reconnection) {
+    replayer.reconnect();
+  } else {
+    replayer.start();
+  }
 });
 
 server.on("error", (err) => {

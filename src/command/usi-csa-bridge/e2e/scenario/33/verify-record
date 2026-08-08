@@ -1,0 +1,13 @@
+#!/bin/bash -eu
+set -o pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# 連続対局では対局ごとに棋譜が保存されるため、両方を比較する。
+for N in 1 2; do
+  EXPECTED="$DIR/record-$N.kifu"
+  ACTUAL=records/usi-csa-bridge-_test+test-30-5F+Enemy+usi-csa-bridge+2026080500330${N}_Enemy_usi-csa-bridge.kifu
+
+  diff <(grep -v '^対局日：' "$EXPECTED" | grep -v '^開始日時：') \
+       <(grep -v '^対局日：' "$ACTUAL" | grep -v '^開始日時：')
+done

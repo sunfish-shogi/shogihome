@@ -1,0 +1,85 @@
+# 連続対局 (repeat: 2) のシナリオ。
+# 対局ごとにサーバーとの接続が切断され、ログインからやり直される。
+# restartPlayerEveryGame: false であるため USI エンジンのプロセスは再起動されない。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Format:Shogi 1.0
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805003301
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:To_Move:+
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805003301
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805003301
+send:+2726FU,T3
+recv:-8384FU
+send:-8384FU,T2
+send:+2625FU,T4
+recv:-8485FU
+send:-8485FU,T1
+send:+6978KI,T2
+recv:-3334FU
+send:-3334FU,T1
+send:%TORYO,T2
+send:#RESIGN
+send:#WIN
+# 1 局目の終了に伴い切断される。
+disconnect:
+# 2 局目のログイン。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Format:Shogi 1.0
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805003302
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:To_Move:+
+send:BEGIN Time
+send:Time_Unit:1sec
+send:Total_Time:30
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805003302
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805003302
+send:+7776FU,T2
+recv:-3334FU
+send:-3334FU,T1
+send:+8822UM,T3
+recv:-3122GI
+send:-3122GI,T2
+send:%TORYO,T1
+send:#RESIGN
+send:#WIN
