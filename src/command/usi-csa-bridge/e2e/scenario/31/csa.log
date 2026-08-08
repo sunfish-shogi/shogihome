@@ -1,0 +1,45 @@
+# 単位時間がミリ秒のシナリオ。
+# Total_Time と Byoyomi は Time_Unit の影響を受けるが、
+# 指し手の消費時間 (T) は CSA 棋譜形式に準拠するため常に秒であり Time_Unit の影響を受けない。
+recv:LOGIN usi-csa-bridge test
+send:LOGIN:usi-csa-bridge OK
+send:BEGIN Game_Summary
+send:Protocol_Version:1.2
+send:Format:Shogi 1.0
+send:Game_ID:test+test-30-5F+Enemy+usi-csa-bridge+20260805003100
+send:Name+:Enemy
+send:Name-:usi-csa-bridge
+send:Your_Turn:-
+send:To_Move:+
+send:BEGIN Time
+send:Time_Unit:1msec
+send:Total_Time:30000
+send:Byoyomi:5000
+send:END Time
+send:BEGIN Position
+send:P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+send:P2 * -HI *  *  *  *  * -KA *
+send:P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+send:P4 *  *  *  *  *  *  *  *  *
+send:P5 *  *  *  *  *  *  *  *  *
+send:P6 *  *  *  *  *  *  *  *  *
+send:P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+send:P8 * +KA *  *  *  *  * +HI *
+send:P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+send:+
+send:END Position
+send:END Game_Summary
+recv:AGREE test+test-30-5F+Enemy+usi-csa-bridge+20260805003100
+send:START:test+test-30-5F+Enemy+usi-csa-bridge+20260805003100
+send:+2726FU,T3
+recv:-8384FU
+send:-8384FU,T2
+send:+2625FU,T4
+recv:-8485FU
+send:-8485FU,T1
+send:+6978KI,T2
+recv:-3334FU
+send:-3334FU,T1
+send:%TORYO,T2
+send:#RESIGN
+send:#WIN
