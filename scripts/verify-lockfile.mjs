@@ -31,62 +31,7 @@ function pathNameForKey(key) {
   return key.slice(key.lastIndexOf(marker) + marker.length);
 }
 
-// Extracts the real package name from an "npm:" alias spec such as
-// "npm:foo@^1.2.3" or "npm:@scope/foo@^1.2.3" (the version range is optional).
-function aliasTargetName(spec) {
-  const target = spec.slice("npm:".length);
-  const versionSeparator = target.lastIndexOf("@");
-  return versionSeparator > 0 ? target.slice(0, versionSeparator) : target;
-}
-
-// Collects every "npm:" alias declared by a dependency spec, as a map from the alias
-// (the name the package is installed under) to the set of real package names it may
-// point to. Specs are taken from package.json on disk and from every lockfile entry,
-// so aliases declared by transitive dependencies are covered too.
-function collectAliasSpecs(packages) {
-  const aliases = new Map();
-  const addSpecs = (deps) => {
-    for (const [depName, spec] of Object.entries(deps ?? {})) {
-      if (typeof spec === "string" && spec.startsWith("npm:")) {
-        if (!aliases.has(depName)) {
-          aliases.set(depName, new Set());
-        }
-        aliases.get(depName).add(aliasTargetName(spec));
-      }
-    }
-  };
-  const rootPackage = JSON.parse(fs.readFileSync("package.json", "utf-8"));
-  for (const pkg of [rootPackage, ...Object.values(packages)]) {
-    addSpecs(pkg.dependencies);
-    addSpecs(pkg.devDependencies);
-    addSpecs(pkg.optionalDependencies);
-    addSpecs(pkg.peerDependencies);
-  }
-  return aliases;
-}
-
-// A lockfile entry's "name" field overrides the path-derived name for aliased
-// dependencies (e.g. `"bar": "npm:foo@1.2.3"` installs foo at node_modules/bar with
-// `name: "foo"`). The lockfile alone must not be trusted here: an attacker who edits
-// only the lockfile could add a "name" matching a swapped-in "resolved" URL and defeat
-// the identity check below. So the override is honored only when some dependency spec
-// actually declares that alias; otherwise it is an error. Returns null on error.
-function expectedNameForKey(key, pkg, aliases, errors) {
-  const pathName = pathNameForKey(key);
-  if (!pkg.name || pkg.name === pathName) {
-    return pathName;
-  }
-  if (!aliases.get(pathName)?.has(pkg.name)) {
-    errors.push(
-      `"${key}" declares name "${pkg.name}" but no dependency spec aliases ` +
-        `"${pathName}" to "npm:${pkg.name}"`,
-    );
-    return null;
-  }
-  return pkg.name;
-}
-
-function verifyResolvedIdentity(key, pkg, aliases, errors) {
+function verifyResolvedIdentity(key, pkg, errors) {
   const match = pkg.resolved.match(RESOLVED_URL_PATTERN);
   if (!match) {
     errors.push(
@@ -105,8 +50,19 @@ function verifyResolvedIdentity(key, pkg, aliases, errors) {
     return;
   }
 
-  const expectedName = expectedNameForKey(key, pkg, aliases, errors);
-  if (expectedName === null) {
+  // The expected name is always derived from the install path. An entry whose "name"
+  // field disagrees with its path is how npm records aliased dependencies
+  // (e.g. `"bar": "npm:foo@1.2.3"`), but it is also exactly how a lockfile-only edit
+  // can relabel a swapped-in "resolved" URL as legitimate, and the lockfile itself
+  // offers no trustworthy way to tell the two apart. No current dependency uses
+  // aliases, so they are rejected outright; if one ever legitimately needs them,
+  // update this script to allow that specific alias explicitly.
+  const expectedName = pathNameForKey(key);
+  if (pkg.name && pkg.name !== expectedName) {
+    errors.push(
+      `"${key}" declares name "${pkg.name}" which does not match its install path` +
+        ` (npm aliases are not supported by this verifier)`,
+    );
     return;
   }
   if (resolvedName !== expectedName) {
@@ -146,7 +102,6 @@ function main() {
     throw new Error('package-lock.json is missing a top-level "packages" object');
   }
 
-  const aliases = collectAliasSpecs(packages);
   const errors = [];
   let checked = 0;
 
@@ -171,7 +126,7 @@ function main() {
       continue;
     }
 
-    verifyResolvedIdentity(key, pkg, aliases, errors);
+    verifyResolvedIdentity(key, pkg, errors);
     checked++;
   }
 
