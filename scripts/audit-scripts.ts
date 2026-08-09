@@ -1,63 +1,155 @@
-import fs from "node:fs";
+/* eslint-disable no-console */
+// Audits the install scripts of every package under node_modules.
+//
+// npm runs three lifecycle scripts when it installs a dependency: preinstall, install and
+// postinstall. They are disabled by "ignore-scripts=true" in .npmrc, and this script verifies that
+// no dependency has quietly gained one, which would be a strong signal of a supply-chain attack.
+// The few packages that legitimately ship an install script are listed in ALLOWED_PACKAGES below
+// together with the exact command they are allowed to run.
+//
+// npm nests packages (e.g. node_modules/a/node_modules/b) whenever versions conflict, so
+// node_modules is walked recursively instead of only two levels deep.
+//
+// "prepare" is not audited because it only runs for git dependencies, which .npmrc forbids
+// altogether via "allow-git=none". "prepublish" and "prepack" never run on install.
 
-function checkPackageJson(packageJsonPath: string) {
-  const stat = fs.statSync(packageJsonPath);
-  if (!stat.isFile()) {
+import fs from "node:fs";
+import path from "node:path";
+
+const NODE_MODULES = "node_modules";
+
+const LIFECYCLES = ["preinstall", "install", "postinstall"] as const;
+
+type Lifecycle = (typeof LIFECYCLES)[number];
+
+type PackageRule = Partial<Record<Lifecycle, string>> & {
+  // Whether the listed scripts must be present. Some of them are run manually elsewhere (see the
+  // "install:esbuild" npm script), so we also want to notice when upstream drops one.
+  required?: boolean;
+};
+
+const ALLOWED_PACKAGES: Record<string, PackageRule> = {
+  // This script is run manually by the "install:esbuild" npm script.
+  esbuild: { required: true, postinstall: "node install.js" },
+
+  // The postinstall is introduced since https://github.com/unrs/unrs-resolver/pull/66 (v1.6.0)
+  "unrs-resolver": { required: true, postinstall: "node postinstall.js" },
+
+  // Selects the bundled 7-Zip binary matching the host architecture. Not marked as required
+  // because nothing in this repository depends on it having run.
+  "electron-winstaller": { install: "node ./script/select-7z-arch.js" },
+
+  // Native build of the macOS file watcher. It is an optional darwin-only dependency, so it is
+  // absent on other platforms and cannot be required.
+  fsevents: { install: "node-gyp rebuild" },
+};
+
+type Context = {
+  // Real paths of the packages visited so far, used to stop symbolic links from causing cycles or
+  // duplicated work.
+  visited: Set<string>;
+  errors: string[];
+  checked: number;
+};
+
+// statSync follows symbolic links and returns undefined instead of throwing when the path is
+// missing or broken.
+function isDirectory(targetPath: string): boolean {
+  return fs.statSync(targetPath, { throwIfNoEntry: false })?.isDirectory() ?? false;
+}
+
+function checkPackageJson(packageDir: string, ctx: Context) {
+  const packageJsonPath = path.join(packageDir, "package.json");
+  const stat = fs.statSync(packageJsonPath, { throwIfNoEntry: false });
+  if (!stat?.isFile()) {
     return;
   }
-  const packageJson = fs.readFileSync(packageJsonPath, "utf-8");
-  const { name, version, scripts } = JSON.parse(packageJson);
 
-  // All packages must not have preinstall scripts
-  if (scripts?.preinstall) {
-    throw new Error(`Package ${name}@${version} has unexpected preinstall scripts`);
+  let name: string | undefined;
+  let version: string | undefined;
+  let scripts: Record<string, unknown> | undefined;
+  try {
+    ({ name, version, scripts } = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")));
+  } catch (e) {
+    ctx.errors.push(`${packageJsonPath} is not a valid package.json: ${e}`);
+    return;
   }
+  ctx.checked++;
 
-  switch (name) {
-    // These packages have install.js scripts
-    case "esbuild":
-      if (!scripts?.postinstall) {
-        throw new Error(`Package ${name}@${version} is missing postinstall scripts`);
-      }
-      if (scripts.postinstall !== "node install.js") {
-        throw new Error(`Package ${name}@${version} has unexpected postinstall scripts`);
-      }
-      break;
+  // hasOwn keeps inherited members such as "constructor" from being mistaken for a rule.
+  const rule = name && Object.hasOwn(ALLOWED_PACKAGES, name) ? ALLOWED_PACKAGES[name] : undefined;
+  // The same package name can appear at several paths once nested packages are included, so the
+  // directory is part of the message to make the offender identifiable.
+  const label = `${packageDir} (${name}@${version})`;
 
-    // The postinstall is introduced since https://github.com/unrs/unrs-resolver/pull/66 (v1.6.0)
-    case "unrs-resolver":
-      if (!scripts?.postinstall) {
-        throw new Error(`Package ${name}@${version} is missing postinstall scripts`);
+  for (const lifecycle of LIFECYCLES) {
+    const actual = scripts?.[lifecycle];
+    const expected = rule?.[lifecycle];
+    if (!actual) {
+      if (expected && rule?.required) {
+        ctx.errors.push(`${label} is missing the ${lifecycle} script: ${expected}`);
       }
-      if (scripts.postinstall !== "node postinstall.js") {
-        throw new Error(`Package ${name}@${version} has unexpected postinstall scripts`);
-      }
-      break;
+      continue;
+    }
+    if (actual !== expected) {
+      ctx.errors.push(`${label} has an unexpected ${lifecycle} script: ${JSON.stringify(actual)}`);
+    }
+  }
+}
 
-    // Other packages should not have postinstall scripts
-    default:
-      if (scripts?.postinstall) {
-        throw new Error(`Package ${name}@${version} has unexpected postinstall scripts`);
+function visitPackage(packageDir: string, ctx: Context) {
+  if (!isDirectory(packageDir)) {
+    return;
+  }
+  const realPath = fs.realpathSync(packageDir);
+  if (ctx.visited.has(realPath)) {
+    return;
+  }
+  ctx.visited.add(realPath);
+
+  checkPackageJson(packageDir, ctx);
+
+  const nested = path.join(packageDir, NODE_MODULES);
+  if (isDirectory(nested)) {
+    walkNodeModules(nested, ctx);
+  }
+}
+
+function walkNodeModules(nodeModulesDir: string, ctx: Context) {
+  for (const entry of fs.readdirSync(nodeModulesDir)) {
+    // Skips npm's own bookkeeping entries such as .bin, .cache and .package-lock.json
+    if (entry.startsWith(".")) {
+      continue;
+    }
+    const entryPath = path.join(nodeModulesDir, entry);
+    // A scope directory holds one more level of packages, and scopes are never nested.
+    if (entry.startsWith("@")) {
+      if (!isDirectory(entryPath)) {
+        continue;
       }
-      break;
+      for (const scoped of fs.readdirSync(entryPath)) {
+        if (scoped.startsWith(".")) {
+          continue;
+        }
+        visitPackage(path.join(entryPath, scoped), ctx);
+      }
+      continue;
+    }
+    visitPackage(entryPath, ctx);
   }
 }
 
 function main() {
-  const nodeModules = fs.readdirSync("node_modules");
-  for (const module of nodeModules) {
-    if (module.startsWith(".")) {
-      continue;
-    }
-    if (module.startsWith("@")) {
-      const subModules = fs.readdirSync(`node_modules/${module}`);
-      for (const subModule of subModules) {
-        checkPackageJson(`node_modules/${module}/${subModule}/package.json`);
-      }
-      continue;
-    }
-    checkPackageJson(`node_modules/${module}/package.json`);
+  const ctx: Context = { visited: new Set(), errors: [], checked: 0 };
+  walkNodeModules(NODE_MODULES, ctx);
+
+  if (ctx.errors.length > 0) {
+    throw new Error(
+      `${NODE_MODULES} failed the install script audit:\n${ctx.errors.map((e) => `  - ${e}`).join("\n")}`,
+    );
   }
+
+  console.log(`OK: ${ctx.checked} package(s) under ${NODE_MODULES} have no unexpected scripts`);
 }
 
 main();
