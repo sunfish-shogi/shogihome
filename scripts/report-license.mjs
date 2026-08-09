@@ -51,7 +51,7 @@ init(
     production: true,
     excludePrivatePackages: true,
     relativeLicensePath: true,
-    onlyAllow: "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;0BSD",
+    onlyAllow: "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause;0BSD;BlueOak-1.0.0",
   },
   function (err, packages) {
     if (err) {

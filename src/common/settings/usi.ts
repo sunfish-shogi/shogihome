@@ -564,9 +564,7 @@ type USIEngineStringOptionForCLI = {
 };
 
 export type USIEngineOptionForCLI =
-  | USIEngineCheckOptionForCLI
-  | USIEngineSpinOptionForCLI
-  | USIEngineStringOptionForCLI;
+  USIEngineCheckOptionForCLI | USIEngineSpinOptionForCLI | USIEngineStringOptionForCLI;
 
 export type USIEngineForCLI = {
   name: string;

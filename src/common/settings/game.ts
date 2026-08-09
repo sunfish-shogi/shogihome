@@ -20,10 +20,8 @@ export function defaultTimeLimitSettings(): TimeLimitSettings {
 }
 
 export type SingleGameStartPositionType =
-  | InitialPositionType
-  | "current" /* 現局面 */
-  | "sfen" /* SFEN */;
-export type GameStartPositionType = SingleGameStartPositionType | "list" /* 局面集 */;
+  InitialPositionType | "current" /* 現局面 */ | "sfen"; /* SFEN */
+export type GameStartPositionType = SingleGameStartPositionType | "list"; /* 局面集 */
 
 export enum JishogiRule {
   NONE = "none",
