@@ -29,7 +29,7 @@ function checkPackageJson(packageJsonPath: string) {
       if (!scripts?.postinstall) {
         throw new Error(`Package ${name}@${version} is missing postinstall scripts`);
       }
-      if (!scripts.postinstall.match(/^napi-postinstall unrs-resolver [\d.]+ check$/)) {
+      if (scripts.postinstall !== "node postinstall.js") {
         throw new Error(`Package ${name}@${version} has unexpected postinstall scripts`);
       }
       break;
