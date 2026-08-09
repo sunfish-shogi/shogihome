@@ -1,7 +1,7 @@
 <template>
   <DialogFrame limited @cancel="onCancel">
     <div class="title">{{ t.duplicatePositions }}</div>
-    <div class="frame form-group">
+    <div class="content form-group scroll">
       <table>
         <thead>
           <tr>
@@ -35,6 +35,38 @@
           </tr>
         </tbody>
       </table>
+      <div class="card-list">
+        <div v-for="(position, pi) of positions" :key="pi" class="card">
+          <hr v-if="pi !== 0" />
+          <div class="card-header">
+            <span class="card-index">{{ pi + 1 }}</span>
+            <span v-if="position.active">{{ t.currentPosition }}</span>
+            <button v-else @click="emit('select', position.node)">
+              {{ t.goToThisPosition }}
+            </button>
+          </div>
+          <div v-if="position.variation.length" class="card-field">
+            <div class="card-field-label">{{ t.via }}</div>
+            <div class="card-field-value">
+              <div v-for="(variation, vi) of position.variation" :key="vi">
+                {{ variation }}
+              </div>
+            </div>
+          </div>
+          <div class="card-field">
+            <div class="card-field-label">{{ t.lastMove }}</div>
+            <div class="card-field-value">{{ position.lastMove }}</div>
+          </div>
+          <div v-if="position.nextMoves.length" class="card-field">
+            <div class="card-field-label">{{ t.nextMoves }}</div>
+            <div class="card-field-value next-moves">
+              <span v-for="(nextMove, ni) of position.nextMoves" :key="ni">
+                {{ nextMove }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="main-buttons">
       <button data-hotkey="Escape" @click="onCancel">
@@ -100,11 +132,12 @@ function onCancel() {
 </script>
 
 <style scoped>
-.frame {
+.content {
   max-width: calc(100vw - 80px);
+  max-height: 60vh;
 }
 th {
-  padding: 0px 40px 5px 0px;
+  padding: 0px 20px 5px 0px;
 }
 th:not(:last-child) {
   text-align: left;
@@ -116,13 +149,62 @@ th:last-child {
 td {
   vertical-align: top;
   border-top: 1px dashed var(--dialog-border-color);
-  padding: 5px 40px 5px 0px;
+  padding: 5px 20px 5px 0px;
 }
 td:not(:last-child) {
   text-align: left;
 }
+td:first-child {
+  white-space: nowrap;
+}
 td:last-child {
   text-align: center;
   padding-right: 0px;
+  white-space: nowrap;
+}
+.card-list {
+  display: none;
+  flex-direction: column;
+  text-align: left;
+}
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0px 5px 0px;
+}
+.card-index {
+  font-weight: bold;
+}
+.card-field {
+  display: flex;
+  flex-direction: row;
+  margin: 2px 0px 2px 0px;
+}
+.card-field-label {
+  flex: none;
+  width: 6.5em;
+  font-size: 0.9em;
+}
+.card-field-value {
+  flex: 1;
+  word-break: break-word;
+}
+.next-moves {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0px 0.75em;
+}
+/* 5 カラムのテーブルとダイアログの余白を収めるのに必要な概算幅。
+   これを下回る場合はテーブルではなくカードリストで表示する。 */
+@media (max-width: 600px) {
+  table {
+    display: none;
+  }
+  .card-list {
+    display: flex;
+  }
 }
 </style>
