@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import archiver from "archiver";
+import { ZipArchive } from "archiver";
 import fs from "node:fs";
 
 const platform = process.argv[2];
@@ -14,8 +14,7 @@ if (`v${packageJson.version}` !== version) {
 function createArchive(outputPath, globPattern) {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(outputPath).on("error", reject).on("finish", resolve);
-    const archive = archiver
-      .create("zip")
+    const archive = new ZipArchive()
       .on("warning", function (err) {
         if (err.code === "ENOENT") {
           console.log(err);
