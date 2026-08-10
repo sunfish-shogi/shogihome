@@ -7,6 +7,11 @@
 // The few packages that legitimately ship an install script are listed in ALLOWED_PACKAGES below
 // together with the exact command they are allowed to run.
 //
+// A package can also gain an install script without declaring one: when it ships a binding.gyp and
+// has neither install nor preinstall, npm defaults its install command to "node-gyp rebuild". The
+// synthesized script exists only in npm's normalized manifest, never in the package.json on disk,
+// so it is derived here the same way npm does it.
+//
 // npm nests packages (e.g. node_modules/a/node_modules/b) whenever versions conflict, so
 // node_modules is walked recursively instead of only two levels deep.
 //
@@ -19,6 +24,9 @@ import path from "node:path";
 const NODE_MODULES = "node_modules";
 
 const LIFECYCLES = ["preinstall", "install", "postinstall"] as const;
+
+// The install command npm defaults to for a package that ships a binding.gyp
+const NODE_GYP_REBUILD = "node-gyp rebuild";
 
 type Lifecycle = (typeof LIFECYCLES)[number];
 
@@ -68,13 +76,23 @@ function checkPackageJson(packageDir: string, ctx: Context) {
   let name: string | undefined;
   let version: string | undefined;
   let scripts: Record<string, unknown> | undefined;
+  let gypfile: boolean | undefined;
   try {
-    ({ name, version, scripts } = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")));
+    ({ name, version, scripts, gypfile } = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8")));
   } catch (e) {
     ctx.errors.push(`${packageJsonPath} is not a valid package.json: ${e}`);
     return;
   }
   ctx.checked++;
+
+  // Mirrors the "gypfile" step of npm's package.json normalization: a binding.gyp turns into an
+  // implicit "node-gyp rebuild" install script unless the package declares install/preinstall
+  // itself or opts out with "gypfile": false.
+  const impliedByGypfile =
+    !scripts?.install &&
+    !scripts?.preinstall &&
+    gypfile !== false &&
+    fs.existsSync(path.join(packageDir, "binding.gyp"));
 
   // hasOwn keeps inherited members such as "constructor" from being mistaken for a rule.
   const rule = name && Object.hasOwn(ALLOWED_PACKAGES, name) ? ALLOWED_PACKAGES[name] : undefined;
@@ -83,7 +101,8 @@ function checkPackageJson(packageDir: string, ctx: Context) {
   const label = `${packageDir} (${name}@${version})`;
 
   for (const lifecycle of LIFECYCLES) {
-    const actual = scripts?.[lifecycle];
+    const implied = lifecycle === "install" && impliedByGypfile;
+    const actual = implied ? NODE_GYP_REBUILD : scripts?.[lifecycle];
     const expected = rule?.[lifecycle];
     if (!actual) {
       if (expected && rule?.required) {
@@ -92,7 +111,10 @@ function checkPackageJson(packageDir: string, ctx: Context) {
       continue;
     }
     if (actual !== expected) {
-      ctx.errors.push(`${label} has an unexpected ${lifecycle} script: ${JSON.stringify(actual)}`);
+      const origin = implied ? " implied by binding.gyp" : "";
+      ctx.errors.push(
+        `${label} has an unexpected ${lifecycle} script${origin}: ${JSON.stringify(actual)}`,
+      );
     }
   }
 }
