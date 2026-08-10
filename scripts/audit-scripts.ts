@@ -70,6 +70,9 @@ function checkPackageJson(packageDir: string, ctx: Context) {
   const packageJsonPath = path.join(packageDir, "package.json");
   const stat = fs.statSync(packageJsonPath, { throwIfNoEntry: false });
   if (!stat?.isFile()) {
+    // A package directory with no manifest means the install is incomplete or has been tampered
+    // with. Skipping it would let the audit report OK while leaving that directory unaudited.
+    ctx.errors.push(`${packageDir} has no package.json`);
     return;
   }
 
@@ -121,6 +124,9 @@ function checkPackageJson(packageDir: string, ctx: Context) {
 
 function visitPackage(packageDir: string, ctx: Context) {
   if (!isDirectory(packageDir)) {
+    // Every entry walked here sits where npm places a package, so anything that is not a
+    // directory (a stray file, a broken symbolic link) is unexpected.
+    ctx.errors.push(`${packageDir} is not a package directory`);
     return;
   }
   const realPath = fs.realpathSync(packageDir);
@@ -147,6 +153,7 @@ function walkNodeModules(nodeModulesDir: string, ctx: Context) {
     // A scope directory holds one more level of packages, and scopes are never nested.
     if (entry.startsWith("@")) {
       if (!isDirectory(entryPath)) {
+        ctx.errors.push(`${entryPath} is not a scope directory`);
         continue;
       }
       for (const scoped of fs.readdirSync(entryPath)) {
