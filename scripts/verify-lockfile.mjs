@@ -240,6 +240,65 @@ function verifyRequestedAliases(requestedAliases, errors) {
   }
 }
 
+// Indexes installable entries by the name they are installed under, so an alias request can be
+// followed to the entry (or entries) it would resolve to.
+function indexEntriesByInstalledName(packages) {
+  const index = new Map();
+  for (const [key, pkg] of Object.entries(packages)) {
+    if (key === "" || isBundledOrLinked(pkg)) {
+      continue;
+    }
+    const name = installedNameForKey(key);
+    let entries = index.get(name);
+    if (!entries) {
+      entries = [];
+      index.set(name, entries);
+    }
+    entries.push({ key, pkg });
+  }
+  return index;
+}
+
+// Checks the aliases from the requesting side. Verifying entries alone is not enough: dropping
+// the "name" field turns an alias entry into what looks like an ordinary package, and the
+// name/version check then only compares it against its own install name. An attacker who
+// publishes a package actually called "string-width-cjs" could therefore take the place of the
+// "string-width" that @isaacs/cliui asked for. So every alias request must land on an entry
+// that still declares the allow-listed target.
+function verifyAliasRequestsResolve(entriesByInstalledName, requestedAliases, errors) {
+  for (const [aliasName, records] of requestedAliases) {
+    const allowedTarget = ALLOWED_TRANSITIVE_ALIASES.get(aliasName);
+    if (allowedTarget === undefined) {
+      continue; // Already reported by verifyRequestedAliases().
+    }
+    const entries = entriesByInstalledName.get(aliasName) ?? [];
+    for (const { requesterKey, target } of records) {
+      if (target !== allowedTarget) {
+        continue; // Already reported by verifyRequestedAliases().
+      }
+      const requesterName = installedNameForKey(requesterKey);
+      const reachable = entries.filter(({ key }) =>
+        isReachableFrom(requesterKey, scopeOwnerForKey(key)),
+      );
+      if (reachable.length === 0) {
+        errors.push(
+          `"${requesterName}" requests the npm alias "${aliasName}" but no lockfile entry it can reach provides it`,
+        );
+        continue;
+      }
+      for (const { key, pkg } of reachable) {
+        if (pkg.name !== allowedTarget) {
+          errors.push(
+            `"${requesterName}" requests the npm alias "${aliasName}" for "${allowedTarget}",` +
+              ` but "${key}" declares "${pkg.name ?? installedNameForKey(key)}" — an entry an alias` +
+              ` request resolves to must declare "name": "${allowedTarget}"`,
+          );
+        }
+      }
+    }
+  }
+}
+
 function verifyResolvedIdentity(key, pkg, expectedName, errors) {
   const match = pkg.resolved.match(RESOLVED_URL_PATTERN);
   if (!match) {
@@ -304,6 +363,7 @@ function main() {
 
   const requestedAliases = collectRequestedAliases(packages);
   verifyRequestedAliases(requestedAliases, errors);
+  verifyAliasRequestsResolve(indexEntriesByInstalledName(packages), requestedAliases, errors);
 
   for (const [key, pkg] of Object.entries(packages)) {
     // The root project itself has no "resolved" URL.
