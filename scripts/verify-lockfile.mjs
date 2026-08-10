@@ -14,8 +14,8 @@
 //   - The root package.json must not declare any alias, in any dependency field or in
 //     "overrides".
 //   - An aliased lockfile entry (one whose "name" differs from its install path) is rejected
-//     unless it appears in ALLOWED_TRANSITIVE_ALIASES below and is genuinely requested by a
-//     third-party package that can resolve to that entry's install path.
+//     unless it appears in ALLOWED_TRANSITIVE_ALIASES below and some third-party package's
+//     alias request actually resolves to that entry (nearest-match, the way npm resolves).
 //
 // The alias syntax is what makes "install package X at the path of package Y" a legitimate
 // lockfile state, so an unrestricted alias is exactly the escape hatch the name/version check
@@ -66,18 +66,26 @@ function installedNameForKey(key) {
   return index < 0 ? key : key.slice(index + marker.length);
 }
 
-// A nested entry ("<owner>/node_modules/foo") is only reachable from <owner> itself and from
-// packages installed inside it. A top-level entry is hoisted and reachable from anywhere, so
-// it has no owner. Used to check that an alias is requested where it is actually installed.
+// A nested entry ("<owner>/node_modules/foo") is only visible to <owner> itself and to
+// packages installed inside it. A top-level entry is hoisted and has no owner (null).
 function scopeOwnerForKey(key) {
   const index = key.lastIndexOf("/node_modules/");
   return index < 0 ? null : key.slice(0, index);
 }
 
-function isReachableFrom(requesterKey, owner) {
-  return (
-    owner === null || requesterKey === owner || requesterKey.startsWith(`${owner}/node_modules/`)
-  );
+// npm resolves a dependency name by looking in the requester's own "node_modules", then in
+// each enclosing scope's, and takes the NEAREST match — entries farther up are shadowed.
+// Mirror that walk over the lockfile keys to find the one entry a request resolves to.
+function resolveRequestKey(packages, requesterKey, name) {
+  for (let scope = requesterKey; ; scope = scopeOwnerForKey(scope)) {
+    const candidate = scope === null ? `node_modules/${name}` : `${scope}/node_modules/${name}`;
+    if (Object.hasOwn(packages, candidate)) {
+      return candidate;
+    }
+    if (scope === null) {
+      return null;
+    }
+  }
 }
 
 // npm matches the alias protocol case-insensitively (npm-package-arg does
@@ -142,8 +150,9 @@ function* aliasSpecsOf(manifest) {
 }
 
 // Collects the aliases requested by third-party packages, keyed by the alias name, so that an
-// aliased lockfile entry can be traced back to the package that asked for it. The requester's
-// full lockfile key is kept because an alias only justifies entries that requester can reach.
+// aliased lockfile entry can be traced back to the package that asked for it. Each request is
+// resolved to its nearest matching entry up front, because that entry — and only that entry —
+// is what the request justifies.
 function collectRequestedAliases(packages) {
   const requested = new Map();
   for (const [key, pkg] of Object.entries(packages)) {
@@ -156,7 +165,11 @@ function collectRequestedAliases(packages) {
         records = [];
         requested.set(name, records);
       }
-      records.push({ requesterKey: key, target: aliasTarget(spec) });
+      records.push({
+        requesterKey: key,
+        target: aliasTarget(spec),
+        resolvedKey: resolveRequestKey(packages, key, name),
+      });
     }
   }
   return requested;
@@ -195,24 +208,24 @@ function resolveDeclaredName(key, pkg, requestedAliases, errors) {
     return null;
   }
 
-  // The alias must be requested by a package that can actually resolve to this entry: a
-  // request elsewhere in the tree says nothing about why the alias sits at this path.
+  // The alias must be justified by a request that actually resolves to this entry: a request
+  // that npm resolves to a nearer copy — or elsewhere in the tree — says nothing about why
+  // the alias sits at this path.
   const records = requestedAliases.get(installedName) ?? [];
-  const owner = scopeOwnerForKey(key);
-  const inScope = records.filter(({ requesterKey }) => isReachableFrom(requesterKey, owner));
-  if (inScope.length === 0) {
+  const resolvingHere = records.filter(({ resolvedKey }) => resolvedKey === key);
+  if (resolvingHere.length === 0) {
     errors.push(
       records.length === 0
         ? `"${key}" is an npm alias that no package in the lockfile requests — remove it or fix the lockfile`
-        : `"${key}" is an npm alias that nothing able to reach it requests` +
-            ` (only ${formatRequesters(records)} request "${installedName}")`,
+        : `"${key}" is an npm alias that no request resolves to` +
+            ` (${formatRequesters(records)} request "${installedName}", but npm resolves those requests elsewhere)`,
     );
     return null;
   }
-  if (!inScope.some(({ target }) => target === allowedTarget)) {
+  if (!resolvingHere.some(({ target }) => target === allowedTarget)) {
     errors.push(
-      `"${key}" aliases "${allowedTarget}" but its requester(s) ${formatRequesters(inScope)}` +
-        ` ask for "${formatTargets(inScope)}"`,
+      `"${key}" aliases "${allowedTarget}" but its requester(s) ${formatRequesters(resolvingHere)}` +
+        ` ask for "${formatTargets(resolvingHere)}"`,
     );
     return null;
   }
@@ -240,60 +253,38 @@ function verifyRequestedAliases(requestedAliases, errors) {
   }
 }
 
-// Indexes installable entries by the name they are installed under, so an alias request can be
-// followed to the entry (or entries) it would resolve to.
-function indexEntriesByInstalledName(packages) {
-  const index = new Map();
-  for (const [key, pkg] of Object.entries(packages)) {
-    if (key === "" || isBundledOrLinked(pkg)) {
-      continue;
-    }
-    const name = installedNameForKey(key);
-    let entries = index.get(name);
-    if (!entries) {
-      entries = [];
-      index.set(name, entries);
-    }
-    entries.push({ key, pkg });
-  }
-  return index;
-}
-
 // Checks the aliases from the requesting side. Verifying entries alone is not enough: dropping
 // the "name" field turns an alias entry into what looks like an ordinary package, and the
 // name/version check then only compares it against its own install name. An attacker who
 // publishes a package actually called "string-width-cjs" could therefore take the place of the
-// "string-width" that @isaacs/cliui asked for. So every alias request must land on an entry
-// that still declares the allow-listed target.
-function verifyAliasRequestsResolve(entriesByInstalledName, requestedAliases, errors) {
+// "string-width" that @isaacs/cliui asked for. So every allow-listed alias request must
+// resolve (nearest-match, as npm does) to an entry that still declares the allow-listed
+// target as its "name".
+function verifyAliasRequestsResolve(packages, requestedAliases, errors) {
   for (const [aliasName, records] of requestedAliases) {
     const allowedTarget = ALLOWED_TRANSITIVE_ALIASES.get(aliasName);
     if (allowedTarget === undefined) {
       continue; // Already reported by verifyRequestedAliases().
     }
-    const entries = entriesByInstalledName.get(aliasName) ?? [];
-    for (const { requesterKey, target } of records) {
+    for (const { requesterKey, target, resolvedKey } of records) {
       if (target !== allowedTarget) {
         continue; // Already reported by verifyRequestedAliases().
       }
       const requesterName = installedNameForKey(requesterKey);
-      const reachable = entries.filter(({ key }) =>
-        isReachableFrom(requesterKey, scopeOwnerForKey(key)),
-      );
-      if (reachable.length === 0) {
+      if (resolvedKey === null) {
         errors.push(
-          `"${requesterName}" requests the npm alias "${aliasName}" but no lockfile entry it can reach provides it`,
+          `"${requesterName}" requests the npm alias "${aliasName}" but no lockfile entry provides it`,
         );
         continue;
       }
-      for (const { key, pkg } of reachable) {
-        if (pkg.name !== allowedTarget) {
-          errors.push(
-            `"${requesterName}" requests the npm alias "${aliasName}" for "${allowedTarget}",` +
-              ` but "${key}" declares "${pkg.name ?? installedNameForKey(key)}" — an entry an alias` +
-              ` request resolves to must declare "name": "${allowedTarget}"`,
-          );
-        }
+      const resolved = packages[resolvedKey];
+      if (resolved.name !== allowedTarget) {
+        errors.push(
+          `"${requesterName}" requests the npm alias "${aliasName}" for "${allowedTarget}",` +
+            ` but it resolves to "${resolvedKey}" which declares` +
+            ` "${resolved.name ?? installedNameForKey(resolvedKey)}" — that entry must declare` +
+            ` "name": "${allowedTarget}"`,
+        );
       }
     }
   }
@@ -363,7 +354,7 @@ function main() {
 
   const requestedAliases = collectRequestedAliases(packages);
   verifyRequestedAliases(requestedAliases, errors);
-  verifyAliasRequestsResolve(indexEntriesByInstalledName(packages), requestedAliases, errors);
+  verifyAliasRequestsResolve(packages, requestedAliases, errors);
 
   for (const [key, pkg] of Object.entries(packages)) {
     // The root project itself has no "resolved" URL.
