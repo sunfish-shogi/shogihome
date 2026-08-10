@@ -15,7 +15,7 @@
 //     "overrides".
 //   - An aliased lockfile entry (one whose "name" differs from its install path) is rejected
 //     unless it appears in ALLOWED_TRANSITIVE_ALIASES below and is genuinely requested by a
-//     third-party package.
+//     third-party package that can resolve to that entry's install path.
 //
 // The alias syntax is what makes "install package X at the path of package Y" a legitimate
 // lockfile state, so an unrestricted alias is exactly the escape hatch the name/version check
@@ -66,11 +66,41 @@ function installedNameForKey(key) {
   return index < 0 ? key : key.slice(index + marker.length);
 }
 
+// A nested entry ("<owner>/node_modules/foo") is only reachable from <owner> itself and from
+// packages installed inside it. A top-level entry is hoisted and reachable from anywhere, so
+// it has no owner. Used to check that an alias is requested where it is actually installed.
+function scopeOwnerForKey(key) {
+  const index = key.lastIndexOf("/node_modules/");
+  return index < 0 ? null : key.slice(0, index);
+}
+
+function isReachableFrom(requesterKey, owner) {
+  return (
+    owner === null || requesterKey === owner || requesterKey.startsWith(`${owner}/node_modules/`)
+  );
+}
+
+// npm matches the alias protocol case-insensitively (npm-package-arg does
+// `spec.toLowerCase().startsWith('npm:')`), so "NPM:foo@1.2.3" is an alias too. It does not
+// trim, so lowercasing is the whole normalization.
+function isAliasSpec(spec) {
+  return typeof spec === "string" && spec.toLowerCase().startsWith(ALIAS_SPEC_PREFIX);
+}
+
 function aliasTarget(spec) {
   // "npm:foo@^1.2.3" / "npm:@scope/foo@^1.2.3" / "npm:foo" (version omitted)
   const rest = spec.slice(ALIAS_SPEC_PREFIX.length);
   const separator = rest.lastIndexOf("@");
   return separator > 0 ? rest.slice(0, separator) : rest;
+}
+
+function formatRequesters(records) {
+  const names = new Set(records.map(({ requesterKey }) => installedNameForKey(requesterKey)));
+  return [...names].map((name) => `"${name}"`).join(", ");
+}
+
+function formatTargets(records) {
+  return [...new Set(records.map(({ target }) => target))].join('", "');
 }
 
 // Yields every alias spec in an "overrides" map. A nested value is another overrides map,
@@ -81,7 +111,7 @@ function* aliasSpecsOfOverrides(overrides, path) {
   }
   for (const [name, value] of Object.entries(overrides)) {
     if (typeof value === "string") {
-      if (value.startsWith(ALIAS_SPEC_PREFIX)) {
+      if (isAliasSpec(value)) {
         // "." overrides the package named by the enclosing key.
         const target = name === "." && path.length > 1 ? path[path.length - 1] : name;
         yield { field: path.join("."), name: target, spec: value };
@@ -103,7 +133,7 @@ function* aliasSpecsOf(manifest) {
       continue;
     }
     for (const [name, spec] of Object.entries(deps)) {
-      if (typeof spec === "string" && spec.startsWith(ALIAS_SPEC_PREFIX)) {
+      if (isAliasSpec(spec)) {
         yield { field, name, spec };
       }
     }
@@ -112,7 +142,8 @@ function* aliasSpecsOf(manifest) {
 }
 
 // Collects the aliases requested by third-party packages, keyed by the alias name, so that an
-// aliased lockfile entry can be traced back to the package that asked for it.
+// aliased lockfile entry can be traced back to the package that asked for it. The requester's
+// full lockfile key is kept because an alias only justifies entries that requester can reach.
 function collectRequestedAliases(packages) {
   const requested = new Map();
   for (const [key, pkg] of Object.entries(packages)) {
@@ -120,13 +151,12 @@ function collectRequestedAliases(packages) {
       continue; // The root project is checked against package.json instead.
     }
     for (const { name, spec } of aliasSpecsOf(pkg)) {
-      let entry = requested.get(name);
-      if (!entry) {
-        entry = { targets: new Set(), requesters: new Set() };
-        requested.set(name, entry);
+      let records = requested.get(name);
+      if (!records) {
+        records = [];
+        requested.set(name, records);
       }
-      entry.targets.add(aliasTarget(spec));
-      entry.requesters.add(installedNameForKey(key));
+      records.push({ requesterKey: key, target: aliasTarget(spec) });
     }
   }
   return requested;
@@ -165,18 +195,24 @@ function resolveDeclaredName(key, pkg, requestedAliases, errors) {
     return null;
   }
 
-  const requested = requestedAliases.get(installedName);
-  if (!requested) {
+  // The alias must be requested by a package that can actually resolve to this entry: a
+  // request elsewhere in the tree says nothing about why the alias sits at this path.
+  const records = requestedAliases.get(installedName) ?? [];
+  const owner = scopeOwnerForKey(key);
+  const inScope = records.filter(({ requesterKey }) => isReachableFrom(requesterKey, owner));
+  if (inScope.length === 0) {
     errors.push(
-      `"${key}" is an npm alias that no package in the lockfile requests — remove it or fix the lockfile`,
+      records.length === 0
+        ? `"${key}" is an npm alias that no package in the lockfile requests — remove it or fix the lockfile`
+        : `"${key}" is an npm alias that nothing able to reach it requests` +
+            ` (only ${formatRequesters(records)} request "${installedName}")`,
     );
     return null;
   }
-  if (!requested.targets.has(allowedTarget)) {
+  if (!inScope.some(({ target }) => target === allowedTarget)) {
     errors.push(
-      `"${key}" aliases "${allowedTarget}" but its requester(s) ${[...requested.requesters]
-        .map((name) => `"${name}"`)
-        .join(", ")} ask for "${[...requested.targets].join('", "')}"`,
+      `"${key}" aliases "${allowedTarget}" but its requester(s) ${formatRequesters(inScope)}` +
+        ` ask for "${formatTargets(inScope)}"`,
     );
     return null;
   }
@@ -184,21 +220,20 @@ function resolveDeclaredName(key, pkg, requestedAliases, errors) {
 }
 
 function verifyRequestedAliases(requestedAliases, errors) {
-  for (const [name, { targets, requesters }] of requestedAliases) {
+  for (const [name, records] of requestedAliases) {
     const allowedTarget = ALLOWED_TRANSITIVE_ALIASES.get(name);
     if (allowedTarget === undefined) {
       errors.push(
-        `${[...requesters].map((r) => `"${r}"`).join(", ")} request the npm alias "${name}"` +
-          ` (for "${[...targets].join('", "')}") — aliases are not allowed in this project`,
+        `${formatRequesters(records)} request the npm alias "${name}"` +
+          ` (for "${formatTargets(records)}") — aliases are not allowed in this project`,
       );
       continue;
     }
-    for (const target of targets) {
+    for (const { requesterKey, target } of records) {
       if (target !== allowedTarget) {
         errors.push(
-          `the npm alias "${name}" is allowed to point at "${allowedTarget}" but ${[...requesters]
-            .map((r) => `"${r}"`)
-            .join(", ")} request "${target}"`,
+          `the npm alias "${name}" is allowed to point at "${allowedTarget}"` +
+            ` but "${installedNameForKey(requesterKey)}" requests "${target}"`,
         );
       }
     }
