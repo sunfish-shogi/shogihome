@@ -11,7 +11,16 @@ import importPlugin from "eslint-plugin-import";
 
 export default defineConfigWithVueTs([
   {
-    ignores: ["docs/webapp/**", "docs/webapp-dev/**", "dist/**", "dev-dist/**", "coverage/**"],
+    ignores: [
+      "docs/webapp/**",
+      "docs/webapp-dev/**",
+      "dist/**",
+      "dev-dist/**",
+      "coverage/**",
+      // Emscripten が生成したグルーコード
+      "public/engines/**",
+      "engines/build/**",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

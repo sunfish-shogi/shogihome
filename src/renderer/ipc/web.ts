@@ -3,9 +3,21 @@ import { defaultAnalysisSettings } from "@/common/settings/analysis.js";
 import { defaultAppSettings } from "@/common/settings/app.js";
 import { defaultGameSettings } from "@/common/settings/game.js";
 import { defaultResearchSettings } from "@/common/settings/research.js";
-import { USIEngines } from "@/common/settings/usi.js";
+import {
+  mergeUSIEngine,
+  USIEngine,
+  USIEngineLaunchOptions,
+  USIEngineMetadata,
+  USIEngines,
+} from "@/common/settings/usi.js";
 import { LogLevel } from "@/common/log.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
+import { TimeStates } from "@/common/game/time.js";
+import { GameResult } from "@/common/game/result.js";
+import { USIInfoCommand } from "@/common/game/usi.js";
+import { USISessionHandlers, USISessionManager } from "@/renderer/usi/session.js";
+import { wasmEngineTransportFactory } from "@/renderer/usi/transport.js";
+import { defaultBuiltinUSIEngines } from "@/renderer/usi/engines.js";
 import { t } from "@/common/i18n/index.js";
 import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
 import { defaultMateSearchSettings } from "@/common/settings/mate.js";
@@ -27,9 +39,52 @@ enum STORAGE_KEY {
   GAME_SETTINGS = "gameSetting",
   MATE_SEARCH_SETTINGS = "mateSearchSetting",
   CSA_GAME_SETTINGS_HISTORY = "csaGameSettingHistory",
+  USI_ENGINES = "usiEngines",
 }
 
 const fileCache = new Map<string, ArrayBuffer>();
+
+// setup.ts から登録されるコールバック。
+// Electron 版では background からの push イベントに相当する。
+const usiHandlers: Partial<{
+  onUSIBestMove: (sessionID: number, usi: string, usiMove: string, ponder?: string) => void;
+  onUSICheckmate: (sessionID: number, usi: string, usiMoves: string[]) => void;
+  onUSICheckmateNotImplemented: (sessionID: number) => void;
+  onUSICheckmateTimeout: (sessionID: number, usi: string) => void;
+  onUSINoMate: (sessionID: number, usi: string) => void;
+  onUSIInfo: (sessionID: number, usi: string, json: string) => void;
+}> = {};
+
+const usiSessionHandlers: USISessionHandlers = {
+  onUSIBestMove: (sessionID, usi, usiMove, ponder) =>
+    usiHandlers.onUSIBestMove?.(sessionID, usi, usiMove, ponder),
+  onUSICheckmate: (sessionID, usi, usiMoves) =>
+    usiHandlers.onUSICheckmate?.(sessionID, usi, usiMoves),
+  onUSICheckmateNotImplemented: (sessionID) =>
+    usiHandlers.onUSICheckmateNotImplemented?.(sessionID),
+  onUSICheckmateTimeout: (sessionID, usi) => usiHandlers.onUSICheckmateTimeout?.(sessionID, usi),
+  onUSINoMate: (sessionID, usi) => usiHandlers.onUSINoMate?.(sessionID, usi),
+  onUSIInfo: (sessionID, usi, info: USIInfoCommand) =>
+    usiHandlers.onUSIInfo?.(sessionID, usi, JSON.stringify(info)),
+};
+
+const usiSessions = new USISessionManager(wasmEngineTransportFactory, (level, message) => {
+  switch (level) {
+    case LogLevel.DEBUG:
+      console.debug(message);
+      break;
+    case LogLevel.WARN:
+      console.warn(message);
+      break;
+    case LogLevel.ERROR:
+      console.error(message);
+      break;
+    default:
+      console.log(message);
+      break;
+  }
+});
+usiSessions.setHandlers(usiSessionHandlers);
 
 // Electron を使わずにシンプルな Web アプリケーションとして実行した場合に使用します。
 export const webAPI: Bridge = {
@@ -161,10 +216,22 @@ export const webAPI: Bridge = {
     localStorage.setItem(STORAGE_KEY.MATE_SEARCH_SETTINGS, json);
   },
   async loadUSIEngines(): Promise<string> {
-    return new USIEngines().json;
+    const engines = new USIEngines(localStorage.getItem(STORAGE_KEY.USI_ENGINES) || undefined);
+    // 組み込みの WebAssembly エンジンを常に一覧へ含める。
+    // 既に保存されている場合は、ユーザーが編集したオプション値を引き継ぐ。
+    for (const builtin of defaultBuiltinUSIEngines()) {
+      const local = engines.getEngine(builtin.uri);
+      if (local) {
+        mergeUSIEngine(builtin, local);
+        engines.updateEngine(builtin);
+      } else {
+        engines.addEngine(builtin);
+      }
+    }
+    return engines.json;
   },
-  async saveUSIEngines(): Promise<void> {
-    // Do Nothing
+  async saveUSIEngines(json: string): Promise<void> {
+    localStorage.setItem(STORAGE_KEY.USI_ENGINES, json);
   },
   async loadBookImportSettings(): Promise<string> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
@@ -372,67 +439,78 @@ export const webAPI: Bridge = {
 
   // USI
   async showSelectUSIEngineDialog(): Promise<string> {
+    // Web 版はファイルシステム上のエンジンを起動できない。
+    // 利用できるのは組み込みの WebAssembly エンジンのみで、これらは既に一覧に含まれている。
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
-  async getUSIEngineInfo(): Promise<string> {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string> {
+    return JSON.stringify(await usiSessions.getEngineInfo(path, timeoutSeconds));
   },
   async getUSIEngineMetadata(): Promise<string> {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+    return JSON.stringify({ isShellScript: false } as USIEngineMetadata);
   },
-  async sendUSIOptionButtonSignal(): Promise<void> {
-    // Do Nothing
+  async sendUSIOptionButtonSignal(
+    path: string,
+    name: string,
+    timeoutSeconds: number,
+  ): Promise<void> {
+    await usiSessions.sendOptionButtonSignal(path, name, timeoutSeconds);
   },
-  async usiLaunch(): Promise<number> {
-    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  async usiLaunch(json: string, options: string): Promise<number> {
+    return usiSessions.setupPlayer(
+      JSON.parse(json) as USIEngine,
+      JSON.parse(options) as USIEngineLaunchOptions,
+    );
   },
-  async usiReady(): Promise<void> {
-    // Do Nothing
+  async usiReady(sessionID: number): Promise<void> {
+    await usiSessions.ready(sessionID);
   },
-  async usiSetOption(): Promise<void> {
-    // Do Nothing
+  async usiSetOption(sessionID: number, name: string, value: string): Promise<void> {
+    usiSessions.setOption(sessionID, name, value);
   },
-  async usiGo(): Promise<void> {
-    // Do Nothing
+  async usiGo(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
+    usiSessions.go(sessionID, usi, JSON.parse(timeStatesJSON) as TimeStates);
   },
-  async usiGoPonder(): Promise<void> {
-    // Do Nothing
+  async usiGoPonder(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
+    usiSessions.goPonder(sessionID, usi, JSON.parse(timeStatesJSON) as TimeStates);
   },
-  async usiPonderHit(): Promise<void> {
-    // Do Nothing
+  async usiPonderHit(sessionID: number, timeStatesJSON: string): Promise<void> {
+    usiSessions.ponderHit(sessionID, JSON.parse(timeStatesJSON) as TimeStates);
   },
-  async usiGoInfinite(): Promise<void> {
-    // Do Nothing
+  async usiGoInfinite(sessionID: number, usi: string): Promise<void> {
+    usiSessions.goInfinite(sessionID, usi);
   },
-  async usiGoMate(): Promise<void> {
-    // Do Nothing
+  async usiGoMate(sessionID: number, usi: string, maxSeconds?: number): Promise<void> {
+    usiSessions.goMate(sessionID, usi, maxSeconds);
   },
-  async usiStop(): Promise<void> {
-    // Do Nothing
+  async usiStop(sessionID: number): Promise<void> {
+    usiSessions.stop(sessionID);
   },
-  async usiGameover(): Promise<void> {
-    // Do Nothing
+  async usiGameover(sessionID: number, result: GameResult): Promise<void> {
+    usiSessions.gameover(sessionID, result);
   },
-  async usiQuit(): Promise<void> {
-    // Do Nothing
+  async usiQuit(sessionID: number): Promise<void> {
+    usiSessions.quit(sessionID);
   },
-  onUSIBestMove(): void {
-    // Do Nothing
+  onUSIBestMove(
+    callback: (sessionID: number, usi: string, usiMove: string, ponder?: string) => void,
+  ): void {
+    usiHandlers.onUSIBestMove = callback;
   },
-  onUSICheckmate(): void {
-    // Do Nothing
+  onUSICheckmate(callback: (sessionID: number, usi: string, usiMoves: string[]) => void): void {
+    usiHandlers.onUSICheckmate = callback;
   },
-  onUSICheckmateNotImplemented(): void {
-    // Do Nothing
+  onUSICheckmateNotImplemented(callback: (sessionID: number) => void): void {
+    usiHandlers.onUSICheckmateNotImplemented = callback;
   },
-  onUSICheckmateTimeout(): void {
-    // Do Nothing
+  onUSICheckmateTimeout(callback: (sessionID: number, usi: string) => void): void {
+    usiHandlers.onUSICheckmateTimeout = callback;
   },
-  onUSINoMate(): void {
-    // Do Nothing
+  onUSINoMate(callback: (sessionID: number, usi: string) => void): void {
+    usiHandlers.onUSINoMate = callback;
   },
-  onUSIInfo(): void {
-    // Do Nothing
+  onUSIInfo(callback: (sessionID: number, usi: string, json: string) => void): void {
+    usiHandlers.onUSIInfo = callback;
   },
 
   // CSA
@@ -480,7 +558,7 @@ export const webAPI: Bridge = {
   async collectSessionStates(): Promise<string> {
     return JSON.stringify({
       os: blankOSState(),
-      usiSessions: [],
+      usiSessions: usiSessions.collectSessionStates(),
       csaSessions: [],
     } as SessionStates);
   },

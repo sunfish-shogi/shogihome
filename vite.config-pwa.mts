@@ -22,6 +22,8 @@ export default defineConfig({
         // 盤・駒の画像は種類が多く合計 4MB 近くあるため、ここには含めず実行時にキャッシュする。
         globPatterns: [
           "**/*.{js,css,html,webmanifest}",
+          // オフラインでも対局できるように、組み込みエンジンの wasm も事前キャッシュする。
+          "engines/**/*.wasm",
           "favicon*.png",
           "icon/**/*.svg",
           "arrow/**/*.svg",

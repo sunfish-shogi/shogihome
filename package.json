@@ -43,6 +43,7 @@
     "license": "node scripts/report-license.mjs",
     "license:commit": "npm run license && git add . && git commit -m \"license\" || git diff",
     "docs": "tsx scripts/build-docs-templates.ts",
+    "engines:build": "node scripts/build-engines.mjs",
     "release": "npm run build && npm run build:dev && git add . && git commit -m \"release\"",
     "release:patch": "npm run license:commit && npm version patch && tsx scripts/publish-release.ts && npm run docs && npm run release",
     "release:minor": "npm run license:commit && npm version minor && tsx scripts/publish-release.ts && npm run docs && npm run release",
