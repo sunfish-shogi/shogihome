@@ -10,11 +10,11 @@
       <div class="group">
         <button v-if="!playerURI" @click="selectPlayer(staticRookURI)">
           <Icon :icon="IconType.ROBOT" />
-          <div class="label">{{ `${t.beginner} (${t.staticRook})` }}</div>
+          <div class="label">{{ `${t.threePlySearch} (${t.staticRook})` }}</div>
         </button>
         <button v-if="!playerURI" @click="selectPlayer(rangingRookURI)">
           <Icon :icon="IconType.ROBOT" />
-          <div class="label">{{ `${t.beginner} (${t.rangingRook})` }}</div>
+          <div class="label">{{ `${t.threePlySearch} (${t.rangingRook})` }}</div>
         </button>
         <button v-if="playerURI" @click="selectTurn(Color.BLACK)">
           <Icon :icon="IconType.GAME" />
@@ -53,8 +53,8 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
 
 // 組み込みの WebAssembly エンジン。モバイル表示は Web 版でのみ使われる。
-const staticRookURI = builtinEngineURI("basic-static-rook-v1");
-const rangingRookURI = builtinEngineURI("basic-ranging-rook-v1");
+const staticRookURI = builtinEngineURI("basic-3ply-static-rook-v1");
+const rangingRookURI = builtinEngineURI("basic-3ply-ranging-rook-v1");
 
 const store = useStore();
 const dialog = ref();

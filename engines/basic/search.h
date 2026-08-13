@@ -1,27 +1,48 @@
-// src/renderer/players/basic.ts の探索部を移植したもの。
-// α-β 枝刈りも置換表も持たない深さ 2 の全幅探索で、評価は「指し手の差分」で行う。
+// α-β 探索と静止探索。
+//
+// 反復深化の 1 反復ぶんを 1 回の呼び出しで行う。エンジン側はこれを usi_poll() から
+// 繰り返し呼ぶことで、探索を中断可能な単位に分割している。
 #pragma once
 
+#include <chrono>
 #include <random>
 #include <string>
 #include <vector>
 
 #include "core/position.h"
 #include "evaluate.h"
+#include "style.h"
 
 namespace shogi {
 namespace basic {
 
+// 詰みの評価値。手数が浅いほど大きくなるように ply を引いて使う。
+constexpr int MATE_SCORE = 30000;
+// 詰みとみなす評価値の閾値。
+constexpr int MATE_THRESHOLD = MATE_SCORE - 1000;
+
 struct SearchResult {
   bool found = false;
   Move move;
-  int score = 0;        // 乱数によるタイブレークを除いた評価値
-  long long nodes = 0;  // doMove に成功した回数
+  int score = 0;
+  int depth = 0;
+  long long nodes = 0;
+  std::vector<Move> pv;
+  // 打ち切りにより結果が信頼できない場合に true。
+  bool aborted = false;
 };
 
-// 深さ 2 の探索を行う。historyKeys は初期局面から現局面までの局面キー (千日手回避に使う)。
+struct SearchLimits {
+  // 探索を打ち切る時刻。
+  std::chrono::steady_clock::time_point deadline;
+  // 探索を打ち切るノード数。
+  long long nodeLimit = 3000000;
+};
+
+// 指定した深さで探索する。historyKeys は初期局面から現局面までの局面キー (千日手回避に使う)。
 SearchResult search(Style style, const Position& position,
-                    const std::vector<std::string>& historyKeys, std::mt19937& rng);
+                    const std::vector<std::string>& historyKeys, int depth,
+                    const SearchLimits& limits, std::mt19937& rng);
 
 // 合法手の中から一様ランダムに 1 手選ぶ。
 SearchResult searchRandom(const Position& position, std::mt19937& rng);

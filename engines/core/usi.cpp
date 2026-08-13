@@ -192,6 +192,7 @@ bool UsiDriver::command(const std::string& line) {
     engine_.gameover(args);
   } else if (name == "quit") {
     // 終了時に bestmove を返すと GUI 側の状態が壊れるため、思考中でも何も出力しない。
+    engine_.quit();
     return true;
   }
   return false;

@@ -1,23 +1,22 @@
-// src/renderer/players/basic.ts の Evaluator を移植したもの。
+// 局面の評価。駒割 (材料) と落とし穴法による位置評価の和で表す。
 #pragma once
 
 #include "core/position.h"
 #include "core/types.h"
+#include "style.h"
 
 namespace shogi {
 namespace basic {
 
-enum Style : int {
-  STYLE_STATIC_ROOK = 0,
-  STYLE_RANGING_ROOK,
-  STYLE_RANDOM,
-};
-
-// 駒の価値。basic.ts の pieceValues と同じ。
+// 駒の価値。盤上・持ち駒のどちらにも同じ値を用いる。
 extern const int PIECE_VALUES[PIECE_TYPE_COUNT];
 
-// 指し手 1 手分の評価値を返す。局面ではなく「指し手の差分」を評価する点に注意。
-int evaluateMove(Style style, const Position& position, const Move& move);
+// 手番側から見た局面の評価値を返す。末端局面で呼ぶ。
+int evaluatePosition(Style style, const Position& position);
+
+// 指し手による駒の損得 (手番側から見た増分)。指し手の並べ替えにのみ使う。
+// 位置評価は末端局面でまとめて行うため、ここには含めない。
+int materialDelta(const Move& move);
 
 }  // namespace basic
 }  // namespace shogi

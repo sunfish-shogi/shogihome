@@ -18,6 +18,7 @@ target_include_directories(shogi_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 # エンジンごとにライブラリと実行形式を定義する。
 # 新しいエンジンを追加する場合は engines/<name>/ を作り、同じ形で登録する。
 add_library(basic_engine STATIC
+  basic/pst.cpp
   basic/evaluate.cpp
   basic/search.cpp
   basic/engine.cpp
@@ -38,6 +39,8 @@ if(EMSCRIPTEN)
     "-sEXPORT_NAME=createBasicEngine"
     "-sENVIRONMENT=worker,node"
     "-sALLOW_MEMORY_GROWTH=1"
+    # 既定の 64KB では探索の再帰でスタックが不足する。
+    "-sSTACK_SIZE=1048576"
     "-sINVOKE_RUN=0"
     "-sEXPORTED_FUNCTIONS=_usi_init,_usi_command,_usi_poll,_malloc,_free"
     "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap"

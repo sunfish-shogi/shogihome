@@ -670,13 +670,28 @@ bool Position::parseUSIMove(const std::string& text, Move* move) const {
   return true;
 }
 
+bool Position::inCheck(Color color) const {
+  return isChecked(color, SQ_NONE, SQ_NONE);
+}
+
 std::vector<Move> Position::listMoves() const {
+  return generateMoves(false);
+}
+
+std::vector<Move> Position::listCaptures() const {
+  return generateMoves(true);
+}
+
+std::vector<Move> Position::generateMoves(bool capturesOnly) const {
   std::vector<Move> moves;
 
   // 盤上の駒を動かす手
   const auto addMove = [&](Square from, Square to, PieceType pieceType) {
     const Piece captured = board_[to];
     if (!isEmpty(captured) && colorOf(captured) == color_) {
+      return;
+    }
+    if (capturesOnly && isEmpty(captured)) {
       return;
     }
     Move move;
@@ -723,8 +738,8 @@ std::vector<Move> Position::listMoves() const {
     }
   }
 
-  // 持ち駒を打つ手
-  for (int i = 0; i < HAND_PIECE_TYPE_COUNT; i++) {
+  // 持ち駒を打つ手 (駒を取る手にはならないので静止探索では生成しない)
+  for (int i = 0; !capturesOnly && i < HAND_PIECE_TYPE_COUNT; i++) {
     const PieceType pieceType = HAND_PIECE_TYPES[i];
     if (hands_[color_][pieceType] == 0) {
       continue;

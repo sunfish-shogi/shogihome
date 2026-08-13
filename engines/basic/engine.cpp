@@ -2,36 +2,10 @@
 
 #include <algorithm>
 
-#include "search.h"
-
 namespace shogi {
 namespace basic {
 
 namespace {
-
-const char* styleName(Style style) {
-  switch (style) {
-    case STYLE_RANGING_ROOK:
-      return "ranging_rook";
-    case STYLE_RANDOM:
-      return "random";
-    default:
-      return "static_rook";
-  }
-}
-
-bool parseStyle(const std::string& value, Style* style) {
-  if (value == "static_rook") {
-    *style = STYLE_STATIC_ROOK;
-  } else if (value == "ranging_rook") {
-    *style = STYLE_RANGING_ROOK;
-  } else if (value == "random") {
-    *style = STYLE_RANDOM;
-  } else {
-    return false;
-  }
-  return true;
-}
 
 long long elapsedMs(std::chrono::steady_clock::time_point since) {
   return std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -39,12 +13,17 @@ long long elapsedMs(std::chrono::steady_clock::time_point since) {
       .count();
 }
 
+// 持ち時間から 1 手に使う時間の上限を決める。
+constexpr long long MIN_BUDGET_MS = 100;
+constexpr long long MAX_BUDGET_MS = 3000;
+constexpr long long INFINITE_BUDGET_MS = 10000;
+
 }  // namespace
 
 BasicEngine::BasicEngine() : rng_(std::random_device{}()) {}
 
 std::string BasicEngine::name() const {
-  return "ShogiHome Basic Engine";
+  return "ShogiHome 3-Ply Engine";
 }
 
 std::string BasicEngine::author() const {
@@ -53,8 +32,9 @@ std::string BasicEngine::author() const {
 
 std::vector<std::string> BasicEngine::optionDefinitions() const {
   return {
-      std::string("option name Style type combo default ") + styleName(STYLE_STATIC_ROOK) +
-          " var static_rook var ranging_rook var random",
+      "option name Style type combo default static_rook"
+      " var static_rook var ranging_rook var random",
+      "option name Depth type spin default 3 min 1 max 5",
       "option name MinimumThinkingTime type spin default 500 min 0 max 60000",
       // 本エンジンは先読みに対応しない。
       "option name USI_Ponder type check default false",
@@ -64,6 +44,12 @@ std::vector<std::string> BasicEngine::optionDefinitions() const {
 void BasicEngine::setOption(const std::string& name, const std::string& value) {
   if (name == "Style") {
     parseStyle(value, &style_);
+  } else if (name == "Depth") {
+    try {
+      maxDepth_ = std::clamp(static_cast<int>(std::stoi(value)), 1, 5);
+    } catch (...) {
+      // 不正な値は無視する。
+    }
   } else if (name == "MinimumThinkingTime") {
     try {
       minimumThinkingTimeMs_ = std::max(0LL, std::stoll(value));
@@ -78,6 +64,24 @@ void BasicEngine::newGame() {
   pendingBestMove_.clear();
 }
 
+long long BasicEngine::computeBudgetMs(const GoParams& params) const {
+  if (params.infinite || params.ponder) {
+    return INFINITE_BUDGET_MS;
+  }
+  const bool black = position_.color() == BLACK;
+  const long long remain = black ? params.btime : params.wtime;
+  const long long increment = black ? params.binc : params.winc;
+  long long budget;
+  if (params.byoyomi > 0) {
+    budget = params.byoyomi * 4 / 5;
+  } else if (increment > 0) {
+    budget = increment * 4 / 5;
+  } else {
+    budget = remain / 40;
+  }
+  return std::clamp(budget, MIN_BUDGET_MS, MAX_BUDGET_MS);
+}
+
 void BasicEngine::go(const Position& position, const std::vector<std::string>& historyKeys,
                      const GoParams& params) {
   if (params.mate) {
@@ -86,43 +90,116 @@ void BasicEngine::go(const Position& position, const std::vector<std::string>& h
     return;
   }
 
-  const auto startedAt = std::chrono::steady_clock::now();
-  const SearchResult result = style_ == STYLE_RANDOM ? searchRandom(position, rng_)
-                                                     : search(style_, position, historyKeys, rng_);
-  const long long thinkingTimeMs = elapsedMs(startedAt);
+  position_ = position;
+  historyKeys_ = historyKeys;
+  infinite_ = params.infinite || params.ponder;
+  completedDepth_ = 0;
+  finishedDeepening_ = false;
+  pendingBestMove_.clear();
+  pv_.clear();
+  score_ = 0;
+  nodes_ = 0;
+  startedAt_ = std::chrono::steady_clock::now();
+  minDeadline_ = startedAt_ + std::chrono::milliseconds(minimumThinkingTimeMs_);
+  hardDeadline_ = startedAt_ + std::chrono::milliseconds(computeBudgetMs(params));
+  state_ = State::THINKING;
 
-  if (!result.found) {
-    pendingBestMove_ = "resign";
-  } else {
-    pendingBestMove_ = moveToUSI(result.move);
-    std::string info = "info depth " + std::string(style_ == STYLE_RANDOM ? "1" : "2") +
-                       " nodes " + std::to_string(result.nodes) + " time " +
-                       std::to_string(thinkingTimeMs);
-    if (style_ != STYLE_RANDOM) {
-      info += " score cp " + std::to_string(result.score);
+  if (style_ == STYLE_RANDOM) {
+    const SearchResult result = searchRandom(position_, rng_);
+    nodes_ = result.nodes;
+    pendingBestMove_ = result.found ? moveToUSI(result.move) : "resign";
+    pv_ = result.pv;
+    finishedDeepening_ = true;
+    if (result.found) {
+      outputInfo();
     }
-    info += " pv " + pendingBestMove_;
-    usiOutput(info);
-  }
-
-  if (params.infinite || params.ponder) {
-    // stop または ponderhit を受け取るまで bestmove を返さない。
-    state_ = State::WAITING;
     return;
   }
-  state_ = State::THINKING;
-  deadline_ = startedAt + std::chrono::milliseconds(minimumThinkingTimeMs_);
-  // 既に締切を過ぎている場合は次の poll で出力される。
+
+  // 深さ 1 は必ずこの場で終わらせ、いつ stop されても指し手を返せるようにする。
+  runIteration(1);
+}
+
+void BasicEngine::runIteration(int depth) {
+  SearchLimits limits;
+  limits.deadline = hardDeadline_;
+  limits.nodeLimit = nodeLimit_;
+  const SearchResult result =
+      search(style_, position_, historyKeys_, depth, limits, rng_);
+  nodes_ += result.nodes;
+
+  // 打ち切られた反復の結果は信頼できないので、前の深さの結果を残す。
+  // ただし 1 手も確保できていない場合は暫定値として採用する。
+  if (result.found && (!result.aborted || pendingBestMove_.empty())) {
+    pendingBestMove_ = moveToUSI(result.move);
+    pv_ = result.pv;
+    score_ = result.score;
+  }
+  if (result.aborted) {
+    finishedDeepening_ = true;
+    return;
+  }
+  if (!result.found) {
+    pendingBestMove_ = "resign";
+    finishedDeepening_ = true;
+    return;
+  }
+
+  completedDepth_ = depth;
+  outputInfo();
+  if (depth >= maxDepth_) {
+    finishedDeepening_ = true;
+  }
+  // 詰みを見つけたらそれ以上深くしても意味が無い。
+  if (score_ >= MATE_THRESHOLD || score_ <= -MATE_THRESHOLD) {
+    finishedDeepening_ = true;
+  }
+}
+
+void BasicEngine::outputInfo() const {
+  std::string info = "info depth " + std::to_string(std::max(completedDepth_, 1)) + " nodes " +
+                     std::to_string(nodes_) + " time " + std::to_string(elapsedMs(startedAt_));
+  if (style_ != STYLE_RANDOM) {
+    if (score_ >= MATE_THRESHOLD) {
+      info += " score mate " + std::to_string(MATE_SCORE - score_);
+    } else if (score_ <= -MATE_THRESHOLD) {
+      info += " score mate -" + std::to_string(MATE_SCORE + score_);
+    } else {
+      info += " score cp " + std::to_string(score_);
+    }
+  }
+  if (!pv_.empty()) {
+    info += " pv";
+    for (const Move& move : pv_) {
+      info += " " + moveToUSI(move);
+    }
+  }
+  usiOutput(info);
 }
 
 void BasicEngine::poll() {
   if (state_ != State::THINKING) {
     return;
   }
-  if (std::chrono::steady_clock::now() < deadline_) {
+
+  // 1 回の poll で 1 反復ぶんだけ深くする。
+  if (!finishedDeepening_) {
+    if (std::chrono::steady_clock::now() >= hardDeadline_) {
+      finishedDeepening_ = true;
+    } else {
+      runIteration(completedDepth_ + 1);
+      return;
+    }
+  }
+
+  if (infinite_) {
+    // go infinite / go ponder では stop か ponderhit を待つ。
+    state_ = State::WAITING;
     return;
   }
-  flushBestMove();
+  if (std::chrono::steady_clock::now() >= minDeadline_) {
+    flushBestMove();
+  }
 }
 
 void BasicEngine::stop() {
@@ -133,11 +210,19 @@ void BasicEngine::stop() {
 }
 
 void BasicEngine::ponderHit(const GoParams& /* params */) {
-  if (state_ != State::WAITING) {
+  if (state_ != State::WAITING && state_ != State::THINKING) {
     return;
   }
+  infinite_ = false;
   state_ = State::THINKING;
-  deadline_ = std::chrono::steady_clock::now() + std::chrono::milliseconds(minimumThinkingTimeMs_);
+  minDeadline_ = std::chrono::steady_clock::now() +
+                 std::chrono::milliseconds(minimumThinkingTimeMs_);
+}
+
+void BasicEngine::quit() {
+  // 以降 poll() が呼ばれても何も出力しない。
+  state_ = State::IDLE;
+  pendingBestMove_.clear();
 }
 
 void BasicEngine::flushBestMove() {

@@ -50,6 +50,8 @@ class Engine {
   virtual void stop() = 0;
   virtual void ponderHit(const GoParams& params) = 0;
   virtual void gameover(const std::string& /* result */) {}
+  // quit を受け取ったときに呼ばれる。以降は一切出力してはならない。
+  virtual void quit() {}
 };
 
 // USI コマンドを解釈して Engine を駆動する。

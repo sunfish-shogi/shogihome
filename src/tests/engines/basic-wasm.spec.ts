@@ -1,18 +1,20 @@
 // @vitest-environment node
 //
-// public/engines/basic/ に commit された WebAssembly エンジンが、
-// TypeScript 実装 (src/renderer/players/basic.ts) と同じ手を選ぶことを確認する。
-// 期待値は src/tests/renderer/players/basic.spec.ts と同じ局面から取っている。
-// 仕様全般の確認は conformance.spec.ts が行う。
+// public/engines/basic/ に commit された WebAssembly エンジンの振る舞いを確認する。
+// 仕様全般 (ハンドシェイク・stop・quit など) の確認は conformance.spec.ts が行うので、
+// ここでは探索と評価に関する性質だけを扱う。
 import { Position } from "tsshogi";
 import { EngineHandle, handshake, launchEngine } from "./driver.js";
 
-async function launchBasic(style: string): Promise<EngineHandle> {
+async function launchBasic(style: string, options: Record<string, string> = {}) {
   const engine = await launchEngine("basic");
   await handshake(engine);
   engine.command(`setoption name Style value ${style}`);
   // テストを高速化するため擬似思考時間を無効化する。
   engine.command("setoption name MinimumThinkingTime value 0");
+  for (const [name, value] of Object.entries(options)) {
+    engine.command(`setoption name ${name} value ${value}`);
+  }
   engine.command("isready");
   await engine.waitFor((line) => line === "readyok", "readyok");
   engine.command("usinewgame");
@@ -20,13 +22,19 @@ async function launchBasic(style: string): Promise<EngineHandle> {
   return engine;
 }
 
-async function bestMove(style: string, position: string): Promise<string> {
-  const engine = await launchBasic(style);
+async function bestMove(engine: EngineHandle, position: string): Promise<string> {
+  engine.lines.length = 0;
   engine.command(position);
   engine.command("go btime 60000 wtime 60000 byoyomi 10000");
   const result = await engine.waitForResult();
-  engine.quit();
   return result.substring("bestmove ".length).split(" ")[0];
+}
+
+async function searchOnce(style: string, position: string): Promise<string> {
+  const engine = await launchBasic(style);
+  const move = await bestMove(engine, position);
+  engine.quit();
+  return move;
 }
 
 describe("engines/basic (wasm)", () => {
@@ -35,9 +43,10 @@ describe("engines/basic (wasm)", () => {
     engine.command("usi");
     await engine.waitFor((line) => line === "usiok", "usiok");
     expect(engine.lines).toEqual([
-      "id name ShogiHome Basic Engine",
+      "id name ShogiHome 3-Ply Engine",
       "id author Kubo, Ryosuke",
       "option name Style type combo default static_rook var static_rook var ranging_rook var random",
+      "option name Depth type spin default 3 min 1 max 5",
       "option name MinimumThinkingTime type spin default 500 min 0 max 60000",
       "option name USI_Ponder type check default false",
       "usiok",
@@ -45,29 +54,63 @@ describe("engines/basic (wasm)", () => {
     engine.quit();
   });
 
-  it("specificMoves", async () => {
-    const testCases = [
-      { style: "static_rook", moves: "2g2f 3c3d 7g7f 2b8h+ 7i8h 4a3b 2f2e", want: "3a2b" },
-      { style: "static_rook", moves: "2g2f 8c8d 2f2e 8d8e", want: "7g7f" },
-      { style: "ranging_rook", moves: "7g7f 3c3d 2g2f 4c4d 2f2e", want: "2b3c" },
-      { style: "ranging_rook", moves: "7g7f 8c8d 2h6h 8d8e", want: "8h7g" },
-    ];
-    for (const testCase of testCases) {
-      // 乱数によるタイブレークがあるため複数回試す。
-      for (let i = 0; i < 3; i++) {
-        const got = await bestMove(testCase.style, `position startpos moves ${testCase.moves}`);
-        expect(got).toBe(testCase.want);
-      }
+  it("ただ取りできる駒を取ること", async () => {
+    // 5五 の飛車は取られても取り返せない。
+    const sfen = "4k4/9/9/9/4r4/4P4/9/9/4K4 b - 1";
+    for (const style of ["static_rook", "ranging_rook"]) {
+      expect(await searchOnce(style, `position sfen ${sfen}`), style).toBe("5f5e");
     }
   }, 30000);
 
-  it("resign", async () => {
+  it("1 手詰めを見つけること", async () => {
+    const engine = await launchBasic("static_rook");
+    engine.lines.length = 0;
+    engine.command("position sfen 4k4/9/4G4/9/9/9/9/9/4K4 b G 1");
+    engine.command("go btime 60000 wtime 60000 byoyomi 10000");
+    const result = await engine.waitForResult();
+    expect(result.substring("bestmove ".length).split(" ")[0]).toBe("G*5b");
+    // 詰みは score mate として報告される。
+    const info = engine.lines.filter((line) => line.startsWith("info "));
+    expect(info.some((line) => line.includes("score mate 1"))).toBeTruthy();
+    engine.quit();
+  }, 20000);
+
+  it("反復深化で深さ 3 まで読むこと", async () => {
+    const engine = await launchBasic("static_rook");
+    engine.lines.length = 0;
+    engine.command("position startpos");
+    engine.command("go btime 60000 wtime 60000 byoyomi 10000");
+    await engine.waitForResult();
+    const depths = engine.lines
+      .filter((line) => line.startsWith("info depth "))
+      .map((line) => Number(line.split(" ")[2]));
+    // 浅い方から順に出力され、最終的に 3 手読みに到達すること。
+    expect(depths).toContain(1);
+    expect(Math.max(...depths)).toBe(3);
+    // 読み筋が指し手の列として出ること。
+    expect(engine.lines.some((line) => /\bpv( [0-9a-i+*A-Z]+){2,}/.test(line))).toBeTruthy();
+    engine.quit();
+  }, 20000);
+
+  it("Depth オプションで深さを変更できること", async () => {
+    const engine = await launchBasic("static_rook", { Depth: "1" });
+    engine.lines.length = 0;
+    engine.command("position startpos");
+    engine.command("go btime 60000 wtime 60000 byoyomi 10000");
+    await engine.waitForResult();
+    const depths = engine.lines
+      .filter((line) => line.startsWith("info depth "))
+      .map((line) => Number(line.split(" ")[2]));
+    expect(Math.max(...depths)).toBe(1);
+    engine.quit();
+  }, 20000);
+
+  it("合法手が無ければ投了すること", async () => {
     const sfen = "5+S2l/1+R7/2p1p+Bsp1/1p1p4p/8k/L3P1p1L/6PPP/1PGB3R1/3K2SNL w 3GS3N6P 1";
     for (const style of ["static_rook", "ranging_rook", "random"]) {
-      const got = await bestMove(style, `position sfen ${sfen}`);
-      expect(got).toBe("resign");
+      expect(await searchOnce(style, `position sfen ${sfen}`), style).toBe("resign");
     }
-  }, 20000);
+  }, 30000);
 
   it("goMate/notImplemented", async () => {
     const engine = await launchBasic("static_rook");
@@ -83,27 +126,27 @@ describe("engines/basic (wasm)", () => {
     await handshake(engine);
     engine.command("setoption name MinimumThinkingTime value 300");
     engine.command("isready");
+    engine.command("usinewgame");
     await engine.waitFor((line) => line === "readyok", "readyok");
     engine.lines.length = 0;
     const started = Date.now();
     engine.command("position startpos");
     engine.command("go btime 60000 wtime 60000 byoyomi 10000");
     await engine.waitForResult();
-    // 探索自体は一瞬で終わるが、指定した思考時間までは bestmove を返さない。
+    // 探索が早く終わっても、指定した思考時間までは bestmove を返さない。
     expect(Date.now() - started).toBeGreaterThanOrEqual(280);
     engine.quit();
-  });
+  }, 20000);
 
-  it("randomPlayerGeneratesLegalMoves", async () => {
+  it("ランダムプレイヤーが合法手を返すこと", async () => {
     const engine = await launchBasic("random");
     const position = new Position();
     const moves: string[] = [];
     for (let ply = 0; ply < 40; ply++) {
-      engine.lines.length = 0;
-      engine.command(`position startpos moves ${moves.join(" ")}`.trimEnd());
-      engine.command("go btime 60000 wtime 60000 byoyomi 10000");
-      const result = await engine.waitForResult();
-      const usiMove = result.substring("bestmove ".length).split(" ")[0];
+      const usiMove = await bestMove(
+        engine,
+        `position startpos moves ${moves.join(" ")}`.trimEnd(),
+      );
       if (usiMove === "resign") {
         break;
       }
@@ -115,4 +158,47 @@ describe("engines/basic (wasm)", () => {
     expect(moves.length).toBeGreaterThan(0);
     engine.quit();
   }, 30000);
+
+  it("居飛車と振り飛車で玉の囲いが分かれること", async () => {
+    // 双方が駒組を進めた局面で、玉をどちらへ寄せるかを確認する。
+    const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+    const moves: Record<string, string[]> = {};
+    for (const style of ["static_rook", "ranging_rook"]) {
+      const engine = await launchBasic(style);
+      const played: string[] = [];
+      const position = new Position();
+      for (let ply = 0; ply < 24; ply++) {
+        const usiMove = await bestMove(
+          engine,
+          `position sfen ${sfen} moves ${played.join(" ")}`.trimEnd(),
+        );
+        if (usiMove === "resign") {
+          break;
+        }
+        const move = position.createMoveByUSI(usiMove);
+        expect(move, `invalid move: ${usiMove}`).toBeTruthy();
+        expect(position.doMove(move!), `illegal move: ${usiMove}`).toBeTruthy();
+        played.push(usiMove);
+      }
+      moves[style] = played;
+      engine.quit();
+    }
+    // 先手番のみを取り出し、玉が左右どちらへ動いたかを見る。
+    const kingFile = (played: string[]) => {
+      const position = new Position();
+      for (const usiMove of played) {
+        position.doMove(position.createMoveByUSI(usiMove)!);
+      }
+      for (const square of position.board.listNonEmptySquares()) {
+        const piece = position.board.at(square)!;
+        if (piece.type === "king" && piece.color === "black") {
+          return square.file;
+        }
+      }
+      return 5;
+    };
+    // 居飛車は左 (筋の数字が大きい方)、振り飛車は右へ玉を囲う。
+    expect(kingFile(moves["static_rook"])).toBeGreaterThan(5);
+    expect(kingFile(moves["ranging_rook"])).toBeLessThan(5);
+  }, 60000);
 });

@@ -695,6 +695,7 @@ export const ja: Texts = {
   beginner: "初心者",
   staticRook: "居飛車",
   rangingRook: "振り飛車",
+  threePlySearch: "3手読み",
   pleaseSelectEngines: "エンジンを選択してください。",
   thisItemCannotBeMerged: "この項目はマージできません。",
   tryingToConnectAndLoginToCSAServer: "CSAサーバーへの接続とログインを試みています。",

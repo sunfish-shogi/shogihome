@@ -11,6 +11,7 @@ import {
   USIEngineOption,
   USIEngineOptions,
 } from "@/common/settings/usi.js";
+import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
 import {
   EngineManifest,
@@ -47,12 +48,11 @@ export function resolveEngineDirURL(path: string): string {
   return new URL(path, document.baseURI).href;
 }
 
-// 表示名を ShogiHome の i18n で上書きする。組み込みエンジンのうち、
-// 従来 BasicPlayer として表示していたものは同じ名前を維持する。
+// 表示名を ShogiHome の i18n で上書きする。
+// TypeScript 実装の簡易エンジン (初心者) と区別できるように、探索の深さを名前に含める。
 const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
-  "basic-static-rook-v1": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1),
-  "basic-ranging-rook-v1": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANGING_ROOK_V1),
-  "basic-random": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANDOM),
+  "basic-3ply-static-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.staticRook})`,
+  "basic-3ply-ranging-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.rangingRook})`,
 };
 
 export function builtinEngineURI(presetID: string): string {

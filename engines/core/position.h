@@ -85,12 +85,18 @@ class Position {
   // USI 形式の指し手文字列から Move を生成する。非合法な表記の場合は false を返す。
   bool parseUSIMove(const std::string& text, Move* move) const;
 
-  // 疑似合法手を列挙する。BasicPlayer の listMoves と同じ規則。
+  // 疑似合法手を列挙する。
   std::vector<Move> listMoves() const;
+  // 駒を取る手だけを列挙する。静止探索で使う。
+  std::vector<Move> listCaptures() const;
+
+  // 指定した手番の玉に王手がかかっているかどうか。
+  bool inCheck(Color color) const;
 
   Square findKing(Color color) const;
 
  private:
+  std::vector<Move> generateMoves(bool capturesOnly) const;
   bool hasPower(Square target, Color color, Square filled, Square ignore) const;
   bool isChecked(Color kingColor, Square filled, Square ignore) const;
   bool isPawnDropMate(const Move& move) const;

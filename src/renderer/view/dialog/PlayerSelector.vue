@@ -53,7 +53,7 @@ import {
   getUSIEngineMultiPV,
   getPredefinedUSIEngineTag,
 } from "@/common/settings/usi";
-import api, { isNative } from "@/renderer/ipc/api";
+import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
@@ -114,12 +114,6 @@ const listItems = computed(() => {
   }
   if (props.containsBasicEngines) {
     for (const playerURI of uri.ES_BASIC_ENGINE_LIST) {
-      // Web 版では同等のエンジンが組み込みの WebAssembly エンジンとして一覧に含まれるため、
-      // TypeScript 実装の簡易エンジンは表示しない。
-      // ただし既に選択されている場合は、選択が空欄になるのを避けるために残す。
-      if (!isNative() && playerURI !== selectedPlayerURI.value) {
-        continue;
-      }
       items.push({
         label: uri.basicEngineName(playerURI),
         value: playerURI,
