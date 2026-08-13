@@ -1,66 +1,117 @@
 import { getUSIEngineOptionCurrentValue, USIEngines } from "@/common/settings/usi.js";
 import * as uri from "@/common/uri.js";
 import {
-  BUILTIN_BASIC_RANDOM_URI,
-  BUILTIN_BASIC_RANGING_ROOK_URI,
-  BUILTIN_BASIC_STATIC_ROOK_URI,
-  BUILTIN_ENGINES,
-  defaultBuiltinUSIEngines,
-  findBuiltinEngine,
-  resolveModuleURL,
+  builtinEngineURI,
+  buildUSIEngines,
+  enginePathOf,
+  isBuiltinEnginePath,
+  loadBuiltinUSIEngines,
+  resolveEngineDirURL,
 } from "@/renderer/wasm-engine/catalog.js";
+import { EngineManifest, ENGINE_ABI } from "@/renderer/wasm-engine/manifest.js";
+
+const manifest: EngineManifest = {
+  abi: ENGINE_ABI,
+  module: "basic.js",
+  name: "ShogiHome Basic Engine",
+  author: "Kubo, Ryosuke",
+  options: [
+    {
+      name: "Style",
+      type: "combo",
+      default: "static_rook",
+      vars: ["static_rook", "ranging_rook", "random"],
+    },
+    { name: "MinimumThinkingTime", type: "spin", default: 500, min: 0, max: 60000 },
+  ],
+  presets: [
+    {
+      id: "basic-static-rook-v1",
+      displayName: "ShogiHome Basic (Static Rook)",
+      values: { Style: "static_rook" },
+    },
+    { id: "basic-random", displayName: "ShogiHome Random", values: { Style: "random" } },
+  ],
+};
 
 describe("wasm-engine/catalog", () => {
-  it("defaultBuiltinUSIEngines", () => {
-    const engines = defaultBuiltinUSIEngines();
-    expect(engines.map((engine) => engine.uri)).toEqual([
-      BUILTIN_BASIC_STATIC_ROOK_URI,
-      BUILTIN_BASIC_RANGING_ROOK_URI,
-      BUILTIN_BASIC_RANDOM_URI,
-    ]);
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("buildUSIEngines", () => {
+    const engines = buildUSIEngines("basic", manifest);
+    expect(engines).toHaveLength(2);
     for (const engine of engines) {
-      // 保存済みの対局設定と対応付けられるように、URI は固定値でなければならない。
       expect(uri.isUSIEngine(engine.uri)).toBeTruthy();
       // validateUSIEngine が path の非空を要求する。
-      expect(engine.path).not.toBe("");
-      expect(engine.options["Style"]?.type).toBe("combo");
+      expect(engine.path).toBe("engines/basic/");
+      expect(engine.defaultName).toBe("ShogiHome Basic Engine");
+      expect(engine.author).toBe("Kubo, Ryosuke");
+      // エンジンが宣言していない予約オプションは補完される。
+      expect(engine.options["USI_Hash"]?.type).toBe("spin");
+      expect(engine.options["USI_Ponder"]?.type).toBe("check");
     }
     expect(getUSIEngineOptionCurrentValue(engines[0].options["Style"])).toBe("static_rook");
-    expect(getUSIEngineOptionCurrentValue(engines[1].options["Style"])).toBe("ranging_rook");
-    expect(getUSIEngineOptionCurrentValue(engines[2].options["Style"])).toBe("random");
+    expect(getUSIEngineOptionCurrentValue(engines[1].options["Style"])).toBe("random");
+    // 従来 BasicPlayer として表示していた名前を維持する。
+    expect(engines[0].name).toBe(uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1));
+    expect(engines[1].name).toBe(uri.basicEngineName(uri.ES_BASIC_ENGINE_RANDOM));
   });
 
   it("stableURIs", () => {
     // URI を変更すると保存済みの対局設定が壊れるため、値そのものを固定する。
-    expect(BUILTIN_BASIC_STATIC_ROOK_URI).toBe("es://usi-engine/builtin/basic-static-rook-v1");
-    expect(BUILTIN_BASIC_RANGING_ROOK_URI).toBe("es://usi-engine/builtin/basic-ranging-rook-v1");
-    expect(BUILTIN_BASIC_RANDOM_URI).toBe("es://usi-engine/builtin/basic-random");
-  });
-
-  it("findBuiltinEngine", () => {
-    for (const spec of BUILTIN_ENGINES) {
-      expect(findBuiltinEngine(spec.path)).toBe(spec);
-    }
-    expect(findBuiltinEngine("/usr/local/bin/engine")).toBeUndefined();
-  });
-
-  it("resolveModuleURL", () => {
-    expect(resolveModuleURL(BUILTIN_ENGINES[0])).toBe(
-      new URL("engines/basic/basic.js", document.baseURI).href,
+    expect(builtinEngineURI("basic-static-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-static-rook-v1",
     );
+    expect(builtinEngineURI("basic-ranging-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-ranging-rook-v1",
+    );
+    expect(builtinEngineURI("basic-random")).toBe("es://usi-engine/builtin/basic-random");
+  });
+
+  it("enginePath", () => {
+    expect(enginePathOf("basic")).toBe("engines/basic/");
+    expect(isBuiltinEnginePath("engines/basic/")).toBeTruthy();
+    // 任意の URL やディレクトリ traversal を許可しない。
+    expect(isBuiltinEnginePath("engines/basic")).toBeFalsy();
+    expect(isBuiltinEnginePath("engines/../secret/")).toBeFalsy();
+    expect(isBuiltinEnginePath("engines/../")).toBeFalsy();
+    expect(isBuiltinEnginePath("engines/./")).toBeFalsy();
+    expect(isBuiltinEnginePath("https://example.com/evil/")).toBeFalsy();
+    expect(isBuiltinEnginePath("/usr/local/bin/engine")).toBeFalsy();
+    expect(() => resolveEngineDirURL("https://example.com/evil/")).toThrow();
+    expect(resolveEngineDirURL("engines/basic/")).toBe(
+      new URL("engines/basic/", document.baseURI).href,
+    );
+  });
+
+  it("loadBuiltinUSIEngines", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        expect(url).toBe(new URL("engines/basic/engine.json", document.baseURI).href);
+        return { ok: true, json: async () => manifest } as Response;
+      }),
+    );
+    const engines = await loadBuiltinUSIEngines();
+    expect(engines).toHaveLength(2);
+    // 2 回目はキャッシュから返るため fetch は増えない。
+    await loadBuiltinUSIEngines();
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 
   it("USIEngines/serialization", () => {
     // 一覧に組み込んだ後もシリアライズして復元できること。
     const engines = new USIEngines();
-    for (const engine of defaultBuiltinUSIEngines()) {
+    for (const engine of buildUSIEngines("basic", manifest)) {
       engines.addEngine(engine);
     }
     const restored = new USIEngines(engines.json);
-    expect(restored.engineList).toHaveLength(BUILTIN_ENGINES.length);
+    expect(restored.engineList).toHaveLength(2);
     expect(
       getUSIEngineOptionCurrentValue(
-        restored.getEngine(BUILTIN_BASIC_STATIC_ROOK_URI)?.options["Style"],
+        restored.getEngine(builtinEngineURI("basic-static-rook-v1"))?.options["Style"],
       ),
     ).toBe("static_rook");
   });

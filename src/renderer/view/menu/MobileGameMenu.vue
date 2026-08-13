@@ -8,11 +8,11 @@
         </button>
       </div>
       <div class="group">
-        <button v-if="!playerURI" @click="selectPlayer(BUILTIN_BASIC_STATIC_ROOK_URI)">
+        <button v-if="!playerURI" @click="selectPlayer(staticRookURI)">
           <Icon :icon="IconType.ROBOT" />
           <div class="label">{{ `${t.beginner} (${t.staticRook})` }}</div>
         </button>
-        <button v-if="!playerURI" @click="selectPlayer(BUILTIN_BASIC_RANGING_ROOK_URI)">
+        <button v-if="!playerURI" @click="selectPlayer(rangingRookURI)">
           <Icon :icon="IconType.ROBOT" />
           <div class="label">{{ `${t.beginner} (${t.rangingRook})` }}</div>
         </button>
@@ -42,10 +42,7 @@ import { JishogiRule } from "@/common/settings/game";
 import { PlayerSettings } from "@/common/settings/player";
 import * as uri from "@/common/uri";
 import api from "@/renderer/ipc/api";
-import {
-  BUILTIN_BASIC_RANGING_ROOK_URI,
-  BUILTIN_BASIC_STATIC_ROOK_URI,
-} from "@/renderer/wasm-engine/catalog";
+import { builtinEngineURI } from "@/renderer/wasm-engine/catalog";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
@@ -54,6 +51,10 @@ import { useStore } from "@/renderer/store";
 import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
+
+// 組み込みの WebAssembly エンジン。モバイル表示は Web 版でのみ使われる。
+const staticRookURI = builtinEngineURI("basic-static-rook-v1");
+const rangingRookURI = builtinEngineURI("basic-ranging-rook-v1");
 
 const store = useStore();
 const dialog = ref();

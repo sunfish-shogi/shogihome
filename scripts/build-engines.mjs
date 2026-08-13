@@ -83,13 +83,18 @@ function copyArtifacts() {
   for (const engine of ENGINES) {
     const destDir = path.join(outDir, engine.outName);
     fs.mkdirSync(destDir, { recursive: true });
-    for (const ext of [".js", ".wasm"]) {
-      const src = path.join(buildDir, `${engine.target}${ext}`);
-      if (!fs.existsSync(src)) {
-        throw new Error(`ビルド結果が見つかりません: ${src}`);
+    const files = [
+      // マニフェストはソースツリー側が正で、ビルド結果と一緒に配置する。
+      { src: path.join(enginesDir, engine.target, "engine.json"), dest: "engine.json" },
+      { src: path.join(buildDir, `${engine.target}.js`), dest: `${engine.outName}.js` },
+      { src: path.join(buildDir, `${engine.target}.wasm`), dest: `${engine.outName}.wasm` },
+    ];
+    for (const file of files) {
+      if (!fs.existsSync(file.src)) {
+        throw new Error(`ファイルが見つかりません: ${file.src}`);
       }
-      const dest = path.join(destDir, `${engine.outName}${ext}`);
-      fs.copyFileSync(src, dest);
+      const dest = path.join(destDir, file.dest);
+      fs.copyFileSync(file.src, dest);
       const size = fs.statSync(dest).size;
       console.log(`${path.relative(rootDir, dest)} (${(size / 1024).toFixed(1)} KB)`);
     }

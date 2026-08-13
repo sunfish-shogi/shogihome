@@ -1,125 +1,153 @@
 // Web 版に組み込まれている WebAssembly エンジンのカタログ。
 //
-// エンジンを追加する場合は public/engines/<name>/ にビルド済みの成果物を置き、
-// BUILTIN_ENGINES にエントリを追加する。
+// 実体は public/engines/<dir>/ に置かれたビルド済みの成果物で、エンジン自身が出力した
+// engine.json (マニフェスト) から名前やオプション定義を読み取る。
+// エンジンを追加する場合は成果物を public/engines/<dir>/ に置き、
+// BUILTIN_ENGINE_DIRS に <dir> を追加するだけでよい。
 import {
   emptyUSIEngine,
   getPredefinedUSIEngineTag,
   USIEngine,
+  USIEngineOption,
   USIEngineOptions,
 } from "@/common/settings/usi.js";
 import * as uri from "@/common/uri.js";
+import {
+  EngineManifest,
+  isSafeRelativePath,
+  MANIFEST_FILE_NAME,
+  parseEngineManifest,
+} from "./manifest.js";
 
-export type BuiltinEngineSpec = {
-  // USIEngine.path に格納する識別子。実体のファイルパスではない。
-  path: string;
-  // 保存済みの対局設定と対応付けるため、時刻ベースではなく固定値を用いる。
-  uri: string;
-  // public/ からの相対パス。
-  moduleFile: string;
-  // エンジンが id name で返す名前。
-  defaultName: string;
-  author: string;
-  // 一覧に表示する名前を返す。i18n を参照するため関数にしている。
-  displayName: () => string;
-  // 起動後に setoption で設定する値。
-  optionValues: { [name: string]: string | number };
+// 読み込む組み込みエンジンのディレクトリ名。
+export const BUILTIN_ENGINE_DIRS = ["basic"];
+
+// public/ からエンジンのディレクトリまでの相対パス。USIEngine.path にもこの形で入る。
+export const ENGINE_DIR_PREFIX = "engines/";
+
+// USIEngine.path として許可する形式。任意の URL を Worker に読み込ませないための制限。
+const ENGINE_PATH_PATTERN = /^engines\/([A-Za-z0-9._-]+)\/$/;
+
+export function isBuiltinEnginePath(path: string): boolean {
+  const matched = ENGINE_PATH_PATTERN.exec(path);
+  // "." と ".." は使用可能な文字だけで構成されるため別途弾く。
+  return !!matched && isSafeRelativePath(matched[1]);
+}
+
+export function enginePathOf(dir: string): string {
+  return `${ENGINE_DIR_PREFIX}${dir}/`;
+}
+
+// エンジンのディレクトリの絶対 URL を返す。
+// Vite の base が "./" のため、ドキュメントの URL を基準に解決する。
+export function resolveEngineDirURL(path: string): string {
+  if (!isBuiltinEnginePath(path)) {
+    throw new Error(`invalid engine path: ${path}`);
+  }
+  return new URL(path, document.baseURI).href;
+}
+
+// 表示名を ShogiHome の i18n で上書きする。組み込みエンジンのうち、
+// 従来 BasicPlayer として表示していたものは同じ名前を維持する。
+const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
+  "basic-static-rook-v1": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1),
+  "basic-ranging-rook-v1": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANGING_ROOK_V1),
+  "basic-random": () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANDOM),
 };
 
-const BASIC_ENGINE_MODULE_FILE = "engines/basic/basic.js";
-const BASIC_ENGINE_AUTHOR = "Kubo, Ryosuke";
-const BASIC_ENGINE_DEFAULT_NAME = "ShogiHome Basic Engine";
-
-export const BUILTIN_BASIC_STATIC_ROOK_URI = `${uri.ES_USI_ENGINE_PREFIX}builtin/basic-static-rook-v1`;
-export const BUILTIN_BASIC_RANGING_ROOK_URI = `${uri.ES_USI_ENGINE_PREFIX}builtin/basic-ranging-rook-v1`;
-export const BUILTIN_BASIC_RANDOM_URI = `${uri.ES_USI_ENGINE_PREFIX}builtin/basic-random`;
-
-export const BUILTIN_ENGINES: BuiltinEngineSpec[] = [
-  {
-    path: "wasm:basic/v1?style=static_rook",
-    uri: BUILTIN_BASIC_STATIC_ROOK_URI,
-    moduleFile: BASIC_ENGINE_MODULE_FILE,
-    defaultName: BASIC_ENGINE_DEFAULT_NAME,
-    author: BASIC_ENGINE_AUTHOR,
-    displayName: () => uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1),
-    optionValues: { Style: "static_rook" },
-  },
-  {
-    path: "wasm:basic/v1?style=ranging_rook",
-    uri: BUILTIN_BASIC_RANGING_ROOK_URI,
-    moduleFile: BASIC_ENGINE_MODULE_FILE,
-    defaultName: BASIC_ENGINE_DEFAULT_NAME,
-    author: BASIC_ENGINE_AUTHOR,
-    displayName: () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANGING_ROOK_V1),
-    optionValues: { Style: "ranging_rook" },
-  },
-  {
-    path: "wasm:basic/v1?style=random",
-    uri: BUILTIN_BASIC_RANDOM_URI,
-    moduleFile: BASIC_ENGINE_MODULE_FILE,
-    defaultName: BASIC_ENGINE_DEFAULT_NAME,
-    author: BASIC_ENGINE_AUTHOR,
-    displayName: () => uri.basicEngineName(uri.ES_BASIC_ENGINE_RANDOM),
-    optionValues: { Style: "random" },
-  },
-];
-
-export function findBuiltinEngine(path: string): BuiltinEngineSpec | undefined {
-  return BUILTIN_ENGINES.find((engine) => engine.path === path);
+export function builtinEngineURI(presetID: string): string {
+  return `${uri.ES_USI_ENGINE_PREFIX}builtin/${presetID}`;
 }
 
-// public/ に置いた成果物の絶対 URL を返す。
-// Vite の base が "./" のため、ドキュメントの URL を基準に解決する。
-export function resolveModuleURL(spec: BuiltinEngineSpec): string {
-  return new URL(spec.moduleFile, document.baseURI).href;
+const manifestCache = new Map<string, Promise<EngineManifest>>();
+
+export async function loadEngineManifest(dir: string): Promise<EngineManifest> {
+  const cached = manifestCache.get(dir);
+  if (cached) {
+    return cached;
+  }
+  const promise = (async () => {
+    const url = new URL(MANIFEST_FILE_NAME, resolveEngineDirURL(enginePathOf(dir))).href;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`failed to load ${url}: ${response.status}`);
+    }
+    return parseEngineManifest(await response.json());
+  })();
+  manifestCache.set(dir, promise);
+  promise.catch(() => manifestCache.delete(dir));
+  return promise;
 }
 
-// エンジンが usi コマンドで返すオプション定義。
-// 実体は engines/basic/engine.cpp の optionDefinitions() にあり、ここはその写し。
-// オプションダイアログの再取得ボタンを押すと、エンジンから取得した内容で更新される。
-function basicEngineOptions(): USIEngineOptions {
-  return {
-    USI_Hash: { name: "USI_Hash", type: "spin", order: 1, default: 32 },
-    Style: {
-      name: "Style",
-      type: "combo",
-      order: 100,
-      default: "static_rook",
-      vars: ["static_rook", "ranging_rook", "random"],
-    },
-    MinimumThinkingTime: {
-      name: "MinimumThinkingTime",
+// USI の予約オプション。エンジンが宣言していない場合に補完する。
+// セッション側 (session.ts) の onUSIOk と同じ内容にしている。
+const USI_HASH_OPTION_ORDER = 1;
+const USI_PONDER_OPTION_ORDER = 2;
+const USER_DEFINED_OPTION_ORDER_START = 100;
+
+function buildOptions(manifest: EngineManifest, preset: string): USIEngineOptions {
+  const options: USIEngineOptions = {};
+  manifest.options?.forEach((src, index) => {
+    const option = {
+      ...src,
+      order: USER_DEFINED_OPTION_ORDER_START + index,
+    } as USIEngineOption;
+    if (option.type === "combo" && !option.vars) {
+      option.vars = [];
+    }
+    options[option.name] = option;
+  });
+  if (!options["USI_Hash"]) {
+    options["USI_Hash"] = {
+      name: "USI_Hash",
       type: "spin",
-      order: 101,
-      default: 500,
-      min: 0,
-      max: 60000,
-    },
-    USI_Ponder: { name: "USI_Ponder", type: "check", order: 102, default: "false" },
-  };
-}
-
-function buildUSIEngine(spec: BuiltinEngineSpec): USIEngine {
-  const options = basicEngineOptions();
-  for (const [name, value] of Object.entries(spec.optionValues)) {
+      order: USI_HASH_OPTION_ORDER,
+      default: 32,
+    };
+  }
+  if (!options["USI_Ponder"]) {
+    options["USI_Ponder"] = {
+      name: "USI_Ponder",
+      type: "check",
+      order: USI_PONDER_OPTION_ORDER,
+      default: "true",
+    };
+  }
+  const values = manifest.presets.find((p) => p.id === preset)?.values || {};
+  for (const [name, value] of Object.entries(values)) {
     const option = options[name];
     if (option && option.type !== "button") {
       option.value = value as never;
     }
   }
-  return {
+  return options;
+}
+
+export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngine[] {
+  return manifest.presets.map((preset) => ({
     ...emptyUSIEngine(),
-    uri: spec.uri,
-    name: spec.displayName(),
-    defaultName: spec.defaultName,
-    author: spec.author,
-    path: spec.path,
-    options,
+    uri: builtinEngineURI(preset.id),
+    name: (DISPLAY_NAME_OVERRIDES[preset.id] || (() => preset.displayName))(),
+    defaultName: manifest.name,
+    author: manifest.author,
+    path: enginePathOf(dir),
+    options: buildOptions(manifest, preset.id),
     tags: [getPredefinedUSIEngineTag("game")],
-  };
+  }));
 }
 
 // 組み込みエンジンの一覧を返す。web.ts の loadUSIEngines() から使う。
-export function defaultBuiltinUSIEngines(): USIEngine[] {
-  return BUILTIN_ENGINES.map(buildUSIEngine);
+// 読み込みに失敗したエンジンは一覧から除外し、他のエンジンには影響させない。
+export async function loadBuiltinUSIEngines(
+  onError?: (error: Error) => void,
+): Promise<USIEngine[]> {
+  const engines: USIEngine[] = [];
+  for (const dir of BUILTIN_ENGINE_DIRS) {
+    try {
+      engines.push(...buildUSIEngines(dir, await loadEngineManifest(dir)));
+    } catch (e) {
+      onError?.(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
+  return engines;
 }

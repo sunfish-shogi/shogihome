@@ -1,90 +1,40 @@
 // @vitest-environment node
 //
-// public/engines/basic/ に commit された WebAssembly エンジンを直接動かし、
+// public/engines/basic/ に commit された WebAssembly エンジンが、
 // TypeScript 実装 (src/renderer/players/basic.ts) と同じ手を選ぶことを確認する。
 // 期待値は src/tests/renderer/players/basic.spec.ts と同じ局面から取っている。
-import path from "node:path";
-import { pathToFileURL } from "node:url";
+// 仕様全般の確認は conformance.spec.ts が行う。
 import { Position } from "tsshogi";
+import { EngineHandle, handshake, launchEngine } from "./driver.js";
 
-type EngineModule = {
-  ccall(name: string, returnType: string | null, argTypes: string[], args: unknown[]): unknown;
-};
-
-type EngineHandle = {
-  command(line: string): void;
-  poll(): void;
-  lines: string[];
-  // bestmove または checkmate の行が出るまで poll しながら待つ。
-  waitForResult(): Promise<string>;
-};
-
-const MODULE_PATH = path.resolve(import.meta.dirname, "../../../public/engines/basic/basic.js");
-
-let createEngine: (options: {
-  print: (line: string) => void;
-  printErr: (line: string) => void;
-}) => Promise<EngineModule>;
-
-beforeAll(async () => {
-  const imported = await import(pathToFileURL(MODULE_PATH).href);
-  createEngine = imported.default;
-});
-
-async function launch(style: string): Promise<EngineHandle> {
-  const lines: string[] = [];
-  const module = await createEngine({
-    print: (line) => lines.push(line),
-    printErr: (line) => lines.push(`ERR ${line}`),
-  });
-  module.ccall("usi_init", null, [], []);
-  const handle: EngineHandle = {
-    command: (line) => module.ccall("usi_command", null, ["string"], [line]),
-    poll: () => module.ccall("usi_poll", null, [], []),
-    lines,
-    async waitForResult() {
-      for (let i = 0; i < 200; i++) {
-        const found = lines.find(
-          (line) => line.startsWith("bestmove ") || line.startsWith("checkmate "),
-        );
-        if (found) {
-          return found;
-        }
-        handle.poll();
-        await new Promise((resolve) => setTimeout(resolve, 10));
-      }
-      throw new Error(`no result: ${lines.join(" / ")}`);
-    },
-  };
-  handle.command("usi");
-  handle.command(`setoption name Style value ${style}`);
+async function launchBasic(style: string): Promise<EngineHandle> {
+  const engine = await launchEngine("basic");
+  await handshake(engine);
+  engine.command(`setoption name Style value ${style}`);
   // テストを高速化するため擬似思考時間を無効化する。
-  handle.command("setoption name MinimumThinkingTime value 0");
-  handle.command("isready");
-  handle.command("usinewgame");
-  lines.length = 0;
-  return handle;
+  engine.command("setoption name MinimumThinkingTime value 0");
+  engine.command("isready");
+  await engine.waitFor((line) => line === "readyok", "readyok");
+  engine.command("usinewgame");
+  engine.lines.length = 0;
+  return engine;
 }
 
 async function bestMove(style: string, position: string): Promise<string> {
-  const engine = await launch(style);
+  const engine = await launchBasic(style);
   engine.command(position);
   engine.command("go btime 60000 wtime 60000 byoyomi 10000");
   const result = await engine.waitForResult();
-  engine.command("quit");
+  engine.quit();
   return result.substring("bestmove ".length).split(" ")[0];
 }
 
 describe("engines/basic (wasm)", () => {
   it("handshake", async () => {
-    const lines: string[] = [];
-    const module = await createEngine({
-      print: (line) => lines.push(line),
-      printErr: (line) => lines.push(`ERR ${line}`),
-    });
-    module.ccall("usi_init", null, [], []);
-    module.ccall("usi_command", null, ["string"], ["usi"]);
-    expect(lines).toEqual([
+    const engine = await launchEngine("basic");
+    engine.command("usi");
+    await engine.waitFor((line) => line === "usiok", "usiok");
+    expect(engine.lines).toEqual([
       "id name ShogiHome Basic Engine",
       "id author Kubo, Ryosuke",
       "option name Style type combo default static_rook var static_rook var ranging_rook var random",
@@ -92,19 +42,12 @@ describe("engines/basic (wasm)", () => {
       "option name USI_Ponder type check default false",
       "usiok",
     ]);
-    lines.length = 0;
-    module.ccall("usi_command", null, ["string"], ["isready"]);
-    expect(lines).toEqual(["readyok"]);
-    module.ccall("usi_command", null, ["string"], ["quit"]);
+    engine.quit();
   });
 
   it("specificMoves", async () => {
     const testCases = [
-      {
-        style: "static_rook",
-        moves: "2g2f 3c3d 7g7f 2b8h+ 7i8h 4a3b 2f2e",
-        want: "3a2b",
-      },
+      { style: "static_rook", moves: "2g2f 3c3d 7g7f 2b8h+ 7i8h 4a3b 2f2e", want: "3a2b" },
       { style: "static_rook", moves: "2g2f 8c8d 2f2e 8d8e", want: "7g7f" },
       { style: "ranging_rook", moves: "7g7f 3c3d 2g2f 4c4d 2f2e", want: "2b3c" },
       { style: "ranging_rook", moves: "7g7f 8c8d 2h6h 8d8e", want: "8h7g" },
@@ -127,28 +70,32 @@ describe("engines/basic (wasm)", () => {
   }, 20000);
 
   it("goMate/notImplemented", async () => {
-    const engine = await launch("static_rook");
+    const engine = await launchBasic("static_rook");
     engine.command("position startpos");
     engine.command("go mate 1000");
     const result = await engine.waitForResult();
     expect(result).toBe("checkmate notimplemented");
-    engine.command("quit");
+    engine.quit();
   });
 
-  it("stopReturnsBestMoveImmediately", async () => {
-    const engine = await launch("static_rook");
-    engine.command("setoption name MinimumThinkingTime value 60000");
+  it("minimumThinkingTime", async () => {
+    const engine = await launchEngine("basic");
+    await handshake(engine);
+    engine.command("setoption name MinimumThinkingTime value 300");
+    engine.command("isready");
+    await engine.waitFor((line) => line === "readyok", "readyok");
+    engine.lines.length = 0;
+    const started = Date.now();
     engine.command("position startpos");
     engine.command("go btime 60000 wtime 60000 byoyomi 10000");
-    expect(engine.lines.some((line) => line.startsWith("bestmove "))).toBeFalsy();
-    engine.command("stop");
-    const result = await engine.waitForResult();
-    expect(result.startsWith("bestmove ")).toBeTruthy();
-    engine.command("quit");
+    await engine.waitForResult();
+    // 探索自体は一瞬で終わるが、指定した思考時間までは bestmove を返さない。
+    expect(Date.now() - started).toBeGreaterThanOrEqual(280);
+    engine.quit();
   });
 
   it("randomPlayerGeneratesLegalMoves", async () => {
-    const engine = await launch("random");
+    const engine = await launchBasic("random");
     const position = new Position();
     const moves: string[] = [];
     for (let ply = 0; ply < 40; ply++) {
@@ -166,6 +113,6 @@ describe("engines/basic (wasm)", () => {
       moves.push(usiMove);
     }
     expect(moves.length).toBeGreaterThan(0);
-    engine.command("quit");
+    engine.quit();
   }, 30000);
 });

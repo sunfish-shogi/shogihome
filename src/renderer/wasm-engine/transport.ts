@@ -1,8 +1,7 @@
 // エンジンとの行単位の入出力を抽象化する。
 // Web 版では Worker 上の WebAssembly エンジンが実体になる。
 // (Electron 版は子プロセスの標準入出力を使うが、そちらは src/background/usi/ が担当する。)
-import { t } from "@/common/i18n/index.js";
-import { findBuiltinEngine, resolveModuleURL } from "./catalog.js";
+import { resolveEngineDirURL } from "./catalog.js";
 
 export interface EngineTransport {
   on(event: "receive", listener: (line: string) => void): this;
@@ -27,7 +26,10 @@ export class WasmEngineTransport implements EngineTransport {
   private errorListeners: ErrorListener[] = [];
   private closeListeners: CloseListener[] = [];
 
-  constructor(moduleURL: string) {
+  constructor(
+    baseURL: string,
+    private onLog?: (message: string) => void,
+  ) {
     this.worker = new Worker(new URL("./engine.worker.ts", import.meta.url), { type: "module" });
     this.worker.onmessage = (event: MessageEvent) => {
       const data = event.data as { type: string; line?: string; message?: string };
@@ -42,6 +44,10 @@ export class WasmEngineTransport implements EngineTransport {
         case "error":
           this.emitError(new Error(data.message || "unknown engine error"));
           break;
+        case "log":
+          // データファイルの読み込み状況など、USI のやり取りに含まれない情報。
+          this.onLog?.(data.message || "");
+          break;
         case "close":
           this.emitClose();
           break;
@@ -51,7 +57,7 @@ export class WasmEngineTransport implements EngineTransport {
       this.emitError(new Error(event.message || "failed to start engine worker"));
       this.emitClose();
     };
-    this.worker.postMessage({ type: "launch", moduleURL });
+    this.worker.postMessage({ type: "launch", baseURL });
   }
 
   on(event: "receive", listener: ReceiveListener): this;
@@ -104,10 +110,8 @@ export class WasmEngineTransport implements EngineTransport {
   }
 }
 
-export const wasmEngineTransportFactory: EngineTransportFactory = (path) => {
-  const spec = findBuiltinEngine(path);
-  if (!spec) {
-    throw new Error(`${t.thisFeatureNotAvailableOnWebApp}: ${path}`);
-  }
-  return new WasmEngineTransport(resolveModuleURL(spec));
-};
+export function createWasmEngineTransportFactory(
+  onLog?: (message: string) => void,
+): EngineTransportFactory {
+  return (path) => new WasmEngineTransport(resolveEngineDirURL(path), onLog);
+}

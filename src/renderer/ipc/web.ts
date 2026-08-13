@@ -16,8 +16,8 @@ import { TimeStates } from "@/common/game/time.js";
 import { GameResult } from "@/common/game/result.js";
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { USISessionHandlers, USISessionManager } from "@/renderer/wasm-engine/session.js";
-import { wasmEngineTransportFactory } from "@/renderer/wasm-engine/transport.js";
-import { defaultBuiltinUSIEngines } from "@/renderer/wasm-engine/catalog.js";
+import { createWasmEngineTransportFactory } from "@/renderer/wasm-engine/transport.js";
+import { loadBuiltinUSIEngines } from "@/renderer/wasm-engine/catalog.js";
 import { t } from "@/common/i18n/index.js";
 import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
 import { defaultMateSearchSettings } from "@/common/settings/mate.js";
@@ -68,7 +68,7 @@ const usiSessionHandlers: USISessionHandlers = {
     usiHandlers.onUSIInfo?.(sessionID, usi, JSON.stringify(info)),
 };
 
-const usiSessions = new USISessionManager(wasmEngineTransportFactory, (level, message) => {
+const usiLogger = (level: LogLevel, message: string) => {
   switch (level) {
     case LogLevel.DEBUG:
       console.debug(message);
@@ -83,7 +83,14 @@ const usiSessions = new USISessionManager(wasmEngineTransportFactory, (level, me
       console.log(message);
       break;
   }
-});
+};
+
+const usiSessions = new USISessionManager(
+  createWasmEngineTransportFactory((message) =>
+    usiLogger(LogLevel.INFO, `wasm-engine: ${message}`),
+  ),
+  usiLogger,
+);
 usiSessions.setHandlers(usiSessionHandlers);
 
 // Electron を使わずにシンプルな Web アプリケーションとして実行した場合に使用します。
@@ -219,7 +226,10 @@ export const webAPI: Bridge = {
     const engines = new USIEngines(localStorage.getItem(STORAGE_KEY.USI_ENGINES) || undefined);
     // 組み込みの WebAssembly エンジンを常に一覧へ含める。
     // 既に保存されている場合は、ユーザーが編集したオプション値を引き継ぐ。
-    for (const builtin of defaultBuiltinUSIEngines()) {
+    const builtins = await loadBuiltinUSIEngines((e) =>
+      usiLogger(LogLevel.ERROR, `failed to load builtin engine: ${e.message}`),
+    );
+    for (const builtin of builtins) {
       const local = engines.getEngine(builtin.uri);
       if (local) {
         mergeUSIEngine(builtin, local);

@@ -1,0 +1,43 @@
+{
+  "abi": "shogihome-wasm-engine/1",
+  "module": "basic.js",
+  "name": "ShogiHome Basic Engine",
+  "author": "Kubo, Ryosuke",
+  "options": [
+    {
+      "name": "Style",
+      "type": "combo",
+      "default": "static_rook",
+      "vars": ["static_rook", "ranging_rook", "random"]
+    },
+    {
+      "name": "MinimumThinkingTime",
+      "type": "spin",
+      "default": 500,
+      "min": 0,
+      "max": 60000
+    },
+    {
+      "name": "USI_Ponder",
+      "type": "check",
+      "default": "false"
+    }
+  ],
+  "presets": [
+    {
+      "id": "basic-static-rook-v1",
+      "displayName": "ShogiHome Basic (Static Rook)",
+      "values": { "Style": "static_rook" }
+    },
+    {
+      "id": "basic-ranging-rook-v1",
+      "displayName": "ShogiHome Basic (Ranging Rook)",
+      "values": { "Style": "ranging_rook" }
+    },
+    {
+      "id": "basic-random",
+      "displayName": "ShogiHome Random",
+      "values": { "Style": "random" }
+    }
+  ]
+}
