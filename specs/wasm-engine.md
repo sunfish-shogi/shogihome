@@ -18,16 +18,19 @@ engines/                              C++ エンジンのソース
 scripts/build-engines.mjs             Emscripten ビルドドライバ
 public/engines/<name>/<name>.{js,wasm} ビルド済みの成果物 (リポジトリに commit する)
 
-src/renderer/usi/
-  engines.ts                          組み込みエンジンのカタログ
+src/renderer/wasm-engine/          WebAssembly エンジンを動かす renderer 側のランタイム
+  catalog.ts                          組み込みエンジンのカタログ
   protocol.ts                         USI の行の解析と組み立て
   session.ts                          セッション管理 (状態遷移・タイムアウト)
   transport.ts                        Worker との行単位 I/O
   engine.worker.ts                    Worker エントリ
 ```
 
+`src/renderer/wasm-engine/` は USI の汎用実装ではなく、WebAssembly として提供される
+エンジンを動かすための実装である。Electron 版が扱うプロセス起動型のエンジンは対象外。
+
 Electron 版の USI 実装 (`src/background/usi/`) には手を加えていない。renderer から background を
-参照できないため、`src/renderer/usi/` は独立した実装になっており、プロトコル解析の一部が重複する。
+参照できないため、`src/renderer/wasm-engine/` は独立した実装になっており、プロトコル解析の一部が重複する。
 その代わり renderer 側は次の機能を持たない。
 
 - エンジンの統計情報の収集 (`src/background/stats/`)
@@ -41,10 +44,15 @@ Electron 版の USI 実装 (`src/background/usi/`) には手を加えていな�
    `engines/CMakeLists.txt` にターゲットを追加する。
 2. `scripts/build-engines.mjs` の `ENGINES` にエントリを追加する。
 3. `npm run engines:build` を実行し、生成された `public/engines/<name>/` を commit する。
-4. `src/renderer/usi/engines.ts` の `BUILTIN_ENGINES` にエントリを追加する。
+4. `src/renderer/wasm-engine/catalog.ts` の `BUILTIN_ENGINES` にエントリを追加する。
 
 `engines/core/` は特定のエンジンに依存しない。局面 (`Position`)、指し手生成、合法手判定、
 SFEN の入出力、USI コマンドの解釈 (`UsiDriver`) を提供する。
+
+外部の既存エンジンを取り込む場合は `engines/core/` を使う必要は無く、
+`usi_init` / `usi_command` / `usi_poll` の 3 関数だけを満たせばよい。
+手順とライセンス・スレッド・評価関数ファイルの扱いは
+[`specs/wasm-engine-integration.md`](./wasm-engine-integration.md) を参照。
 
 ## Worker と WebAssembly の間の契約
 

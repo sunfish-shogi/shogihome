@@ -1,7 +1,8 @@
 // USI プロトコルの行の解析と組み立て。副作用を持たない純粋関数だけを置く。
 //
 // NOTE: Electron 版は src/background/usi/engine.ts が同等の処理を持つ。
-// Web 版は background を参照できないため、必要な範囲だけをここに実装している。
+// renderer から background を参照できないため、WebAssembly エンジンに必要な範囲だけを
+// ここに実装している。
 import { SCORE_MATE_INFINITE, USIInfoCommand } from "@/common/game/usi.js";
 import { USIEngineOption, USIEngineOptionType } from "@/common/settings/usi.js";
 import { TimeStates } from "@/common/game/time.js";

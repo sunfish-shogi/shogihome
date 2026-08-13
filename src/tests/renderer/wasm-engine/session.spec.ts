@@ -1,7 +1,7 @@
 import { GameResult } from "@/common/game/result.js";
 import { USIEngine } from "@/common/settings/usi.js";
-import { USISessionHandlers, USISessionManager } from "@/renderer/usi/session.js";
-import { EngineTransport } from "@/renderer/usi/transport.js";
+import { USISessionHandlers, USISessionManager } from "@/renderer/wasm-engine/session.js";
+import { EngineTransport } from "@/renderer/wasm-engine/transport.js";
 
 const timeStates = {
   black: { timeMs: 300000, byoyomi: 30, increment: 0 },
@@ -101,7 +101,7 @@ const USI_OK_LINES = [
   "usiok",
 ];
 
-describe("usi/session", () => {
+describe("wasm-engine/session", () => {
   it("setupPlayer/go/bestmove", async () => {
     const env = setup();
     const promise = env.manager.setupPlayer(

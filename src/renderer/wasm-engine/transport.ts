@@ -2,7 +2,7 @@
 // Web 版では Worker 上の WebAssembly エンジンが実体になる。
 // (Electron 版は子プロセスの標準入出力を使うが、そちらは src/background/usi/ が担当する。)
 import { t } from "@/common/i18n/index.js";
-import { findBuiltinEngine, resolveModuleURL } from "./engines.js";
+import { findBuiltinEngine, resolveModuleURL } from "./catalog.js";
 
 export interface EngineTransport {
   on(event: "receive", listener: (line: string) => void): this;

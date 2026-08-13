@@ -8,9 +8,9 @@ import {
   defaultBuiltinUSIEngines,
   findBuiltinEngine,
   resolveModuleURL,
-} from "@/renderer/usi/engines.js";
+} from "@/renderer/wasm-engine/catalog.js";
 
-describe("usi/engines", () => {
+describe("wasm-engine/catalog", () => {
   it("defaultBuiltinUSIEngines", () => {
     const engines = defaultBuiltinUSIEngines();
     expect(engines.map((engine) => engine.uri)).toEqual([

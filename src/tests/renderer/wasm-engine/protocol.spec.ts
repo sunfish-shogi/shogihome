@@ -4,10 +4,10 @@ import {
   parseBestMove,
   parseInfoCommand,
   parseOptionCommand,
-} from "@/renderer/usi/protocol.js";
+} from "@/renderer/wasm-engine/protocol.js";
 import { Color } from "tsshogi";
 
-describe("usi/protocol", () => {
+describe("wasm-engine/protocol", () => {
   it("parseInfoCommand", () => {
     expect(
       parseInfoCommand("depth 2 seldepth 3 time 12 nodes 1097 nps 91416 score cp 42 pv 7g7f 3c3d"),

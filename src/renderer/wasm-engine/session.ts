@@ -1,8 +1,9 @@
-// Web 版の USI セッション管理。
+// WebAssembly エンジンの USI セッション管理。
 //
 // Electron 版の src/background/usi/{engine,index}.ts と役割は同じだが、
 // renderer から background を参照できないため独立した実装になっている。
 // Web で不要な機能 (統計収集・prompt 連携・早期 ponder の回避策) は持たない。
+// USI の汎用実装ではなく、あくまで WebAssembly エンジンを動かすためのものである。
 import { Command, CommandType, newCommand } from "@/common/advanced/command.js";
 import { USISessionState } from "@/common/advanced/monitor.js";
 import { GameResult } from "@/common/game/result.js";

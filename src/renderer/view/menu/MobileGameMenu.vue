@@ -45,7 +45,7 @@ import api from "@/renderer/ipc/api";
 import {
   BUILTIN_BASIC_RANGING_ROOK_URI,
   BUILTIN_BASIC_STATIC_ROOK_URI,
-} from "@/renderer/usi/engines";
+} from "@/renderer/wasm-engine/catalog";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
