@@ -13,10 +13,10 @@ import {
 describe("common/settings/layout", () => {
   it("calculateLayoutScale", () => {
     const components = [{ type: "Record" as const, left: 10, top: 20, width: 190, height: 80 }];
-    expect(calculateLayoutScale(components, 410, 220)).toBe(2);
-    expect(calculateLayoutScale(components, 310, 220)).toBe(1.5);
-    expect(calculateLayoutScale(components, 410, 170)).toBe(1.5);
-    expect(calculateLayoutScale([], 410, 220)).toBe(1);
+    expect(calculateLayoutScale(components, 420, 240)).toBe(2);
+    expect(calculateLayoutScale(components, 315, 240)).toBe(1.5);
+    expect(calculateLayoutScale(components, 420, 180)).toBe(1.5);
+    expect(calculateLayoutScale([], 420, 240)).toBe(1);
   });
 
   it("appendCustomLayout", () => {
