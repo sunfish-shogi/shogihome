@@ -137,8 +137,11 @@ export function calculateLayoutScale(
   const y0 = Math.max(Math.min(...components.map((component) => component.top)), 0);
   const maxX = Math.max(...components.map((component) => component.left + component.width));
   const maxY = Math.max(...components.map((component) => component.top + component.height));
-  const horizontalScale = maxX > 0 ? (width - x0) / maxX : Number.POSITIVE_INFINITY;
-  const verticalScale = maxY > 0 ? (height - y0) / maxY : Number.POSITIVE_INFINITY;
+  const horizontalExtent = maxX + x0;
+  const verticalExtent = maxY + y0;
+  const horizontalScale =
+    horizontalExtent > 0 ? width / horizontalExtent : Number.POSITIVE_INFINITY;
+  const verticalScale = verticalExtent > 0 ? height / verticalExtent : Number.POSITIVE_INFINITY;
   return Math.max(Math.min(horizontalScale, verticalScale), 0);
 }
 
