@@ -15,7 +15,8 @@ constexpr int MAX_QUIESCENCE_PLY = 8;
 // PV テーブルは MAX_PLY^2 の配列になるため、WebAssembly の既定スタックに収まる大きさにする。
 constexpr int MAX_PLY = 24;
 // 根で最善手を選ぶときに加える乱数の上限。同じ対局が続くのを避けるため。
-constexpr int JITTER_RANGE = 10;
+// 落とし穴法の 1 マスあたりの差 (3〜17) を埋めてしまわない大きさにする。
+constexpr int JITTER_RANGE = 3;
 // 千日手になる手に与える罰点。
 constexpr int REPETITION_PENALTY = 1000;
 
