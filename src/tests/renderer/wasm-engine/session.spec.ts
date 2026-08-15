@@ -217,6 +217,65 @@ describe("wasm-engine/session", () => {
     );
   });
 
+  // 連続対局では同じセッションに対して ready() が繰り返し呼ばれる。
+  // 思考中に終局しても次の対局を開始できること。
+  it("gameover/whileThinking", async () => {
+    const env = setup();
+    const promise = env.manager.setupPlayer(newEngine());
+    env.transport.receive(...USI_OK_LINES);
+    const sessionID = await promise;
+    const ready = env.manager.ready(sessionID);
+    env.transport.receive("readyok");
+    await ready;
+
+    env.manager.go(sessionID, "position startpos", timeStates);
+    env.transport.sent.length = 0;
+    // 思考中に終局した場合は、思考を打ち切ってから結果を送る。
+    env.manager.gameover(sessionID, GameResult.LOSE);
+    expect(env.transport.sent).toEqual(["stop", "gameover lose"]);
+
+    // 打ち切った探索から遅れて届く bestmove は捨てる。
+    env.transport.receive("bestmove 7g7f");
+    expect(env.handlers.onUSIBestMove).not.toHaveBeenCalled();
+
+    // 次の対局を開始できる。
+    env.transport.sent.length = 0;
+    const nextReady = env.manager.ready(sessionID);
+    expect(env.transport.sent).toEqual(["isready"]);
+    env.transport.receive("readyok");
+    await expect(nextReady).resolves.toBeUndefined();
+  });
+
+  // gameover が送られないまま次の対局が始まる異常系でも復帰できること。
+  it("ready/whileThinking", async () => {
+    const env = setup();
+    const promise = env.manager.setupPlayer(newEngine());
+    env.transport.receive(...USI_OK_LINES);
+    const sessionID = await promise;
+    const ready = env.manager.ready(sessionID);
+    env.transport.receive("readyok");
+    await ready;
+
+    env.manager.go(sessionID, "position startpos", timeStates);
+    env.transport.sent.length = 0;
+    const nextReady = env.manager.ready(sessionID);
+    // 勝敗が判断できないので引き分けとして終局を通知する。
+    expect(env.transport.sent).toEqual(["stop", "gameover draw", "isready"]);
+    env.transport.receive("readyok");
+    await expect(nextReady).resolves.toBeUndefined();
+  });
+
+  // 対局していない状態の gameover は無視する。
+  it("gameover/unexpectedState", async () => {
+    const env = setup();
+    const promise = env.manager.setupPlayer(newEngine());
+    env.transport.receive(...USI_OK_LINES);
+    const sessionID = await promise;
+    env.transport.sent.length = 0;
+    env.manager.gameover(sessionID, GameResult.WIN);
+    expect(env.transport.sent).toEqual([]);
+  });
+
   it("setupPlayer/timeout", async () => {
     vi.useFakeTimers();
     try {

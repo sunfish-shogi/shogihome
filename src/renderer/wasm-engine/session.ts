@@ -142,6 +142,15 @@ class Session {
   }
 
   ready(): void {
+    // 通常は対局の終わりに gameover が送られるが、異常終了時には送られないことがある。
+    // その場合でも次の対局を始められるよう、ここで終局を通知して思考を打ち切る。
+    // 勝敗は判断できないので引き分け扱いにする (Electron 版と同じ)。
+    if (
+      this.state === SessionState.WAITING_FOR_BEST_MOVE ||
+      this.state === SessionState.WAITING_FOR_CHECKMATE
+    ) {
+      this.gameover(GameResult.DRAW);
+    }
     if (this.state !== SessionState.NOT_READY && this.state !== SessionState.READY) {
       this.callbacks.onError?.(new Error(`unexpected state: ${this.state}`));
       return;
@@ -190,6 +199,22 @@ class Session {
   }
 
   gameover(result: GameResult): void {
+    switch (this.state) {
+      case SessionState.WAITING_FOR_USIOK:
+      case SessionState.NOT_READY:
+      case SessionState.WAITING_FOR_READYOK:
+      case SessionState.QUIT_COMPLETED:
+        this.logger?.(
+          LogLevel.WARN,
+          `usi: sid=${this.sessionID}: gameover: unexpected state: ${this.state}`,
+        );
+        return;
+      case SessionState.WAITING_FOR_BEST_MOVE:
+      case SessionState.WAITING_FOR_CHECKMATE:
+        // 対局を終えるので思考を打ち切る。
+        this.stop();
+        break;
+    }
     switch (result) {
       case GameResult.WIN:
         this.send("gameover win");
@@ -201,6 +226,11 @@ class Session {
         this.send("gameover draw");
         break;
     }
+    // 次の対局に備えて未初期化の状態に戻す。連続対局では同じセッションに対して
+    // もう一度 ready() が呼ばれるため、思考中のまま残してはいけない。
+    // 打ち切った探索から遅れて届く bestmove は onBestMove の状態チェックが捨てる。
+    this.state = SessionState.NOT_READY;
+    this.currentPosition = "";
   }
 
   quit(): void {

@@ -123,6 +123,11 @@ const engine = await createEngine({
 場所を伝えるためのもので、ShogiHome が必ず渡す (`moduleFormat: "umd"` のときは
 グルーコード自身が自分の位置を知り得ないため必須になる)。
 
+標準エラー出力は**診断情報として記録するだけで、起動の失敗とは扱わない。**
+Emscripten 自身が回復可能な状況 (MIME が `application/wasm` でないために
+streaming compile を諦めて ArrayBuffer へ切り替える等) をここへ書くため。
+起動の失敗はモジュール生成関数の reject か、Worker の外へ出た例外で判断する。
+
 生成されたオブジェクトは次を公開する。**メソッド名は YaneuraOu の wasm ビルドと同じ。**
 
 ```ts

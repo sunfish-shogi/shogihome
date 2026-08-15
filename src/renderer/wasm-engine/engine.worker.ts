@@ -148,7 +148,12 @@ async function launch(baseURL: string): Promise<void> {
     const factory = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(
       await factory({
-        printErr: (line: string) => post({ type: "error", message: line }),
+        // 標準エラー出力は診断情報として扱い、致命的なエラーとは区別する。
+        // Emscripten は MIME が application/wasm でない場合に
+        // "falling back to ArrayBuffer instantiation" をここへ書くが、これは回復可能で、
+        // エラーとして扱うと起動できたはずのエンジンが使えなくなる。
+        // 本当に致命的な場合は例外が Worker の外へ出るので onerror が拾う。
+        printErr: (line: string) => log(`stderr: ${line}`),
         // .wasm や .data はグルーコードと同じ場所に置かれる。
         // UMD を Blob URL から読み込む場合は自力で解決できないため、こちらから渡す。
         locateFile: (path: string) => new URL(path, moduleURL).href,
@@ -167,7 +172,9 @@ async function launch(baseURL: string): Promise<void> {
     }
   } catch (e) {
     post({ type: "error", message: e instanceof Error ? e.message : String(e) });
-    post({ type: "close" });
+    // 起動に失敗した Worker を残さない。メインスレッド側は close を受けた時点で
+    // 閉じたとみなすため、後から terminate が届くことはない。
+    terminate();
   }
 }
 
