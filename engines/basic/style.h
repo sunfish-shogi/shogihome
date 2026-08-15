@@ -7,8 +7,8 @@ namespace shogi {
 namespace basic {
 
 enum Style : int {
-  STYLE_STATIC_ROOK = 0,   // 居飛車 (矢倉に組む)
-  STYLE_RANGING_ROOK = 1,  // 振り飛車 (美濃囲いに組む)
+  STYLE_STATIC_ROOK = 0,   // 居飛車
+  STYLE_RANGING_ROOK = 1,  // 振り飛車
   STYLE_RANDOM = 2,        // 合法手からランダムに選ぶ (探索しない)
   STYLE_COUNT_WITH_TABLE = 2,
 };
