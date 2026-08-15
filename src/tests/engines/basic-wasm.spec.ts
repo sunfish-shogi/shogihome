@@ -179,6 +179,28 @@ describe("engines/basic (wasm)", () => {
     engine.quit();
   }, 20000);
 
+  // 最低思考時間より持ち時間の方が短い場合は、持ち時間の方を優先する。
+  // 切れ負け (秒読みも加算も無い設定) で残りが少なくなると発生する。
+  it("持ち時間が短ければ最低思考時間より早く指すこと", async () => {
+    const engine = await launchEngine("basic");
+    await handshake(engine);
+    // 既定と同じ 500ms。持ち時間 1 秒の 1/40 = 25ms (下限 100ms) より長い。
+    engine.command("setoption name MinimumThinkingTime value 500");
+    engine.command("isready");
+    engine.command("usinewgame");
+    await engine.waitFor((line) => line === "readyok", "readyok");
+    engine.lines.length = 0;
+    const started = Date.now();
+    engine.command("position startpos");
+    engine.command("go btime 1000 wtime 1000");
+    const result = await engine.waitForResult();
+    const elapsed = Date.now() - started;
+    expect(result.startsWith("bestmove ")).toBeTruthy();
+    // poll の間隔と実行環境の揺れを見込んでも、最低思考時間より十分に早いこと。
+    expect(elapsed).toBeLessThan(400);
+    engine.quit();
+  }, 20000);
+
   it("ランダムプレイヤーが合法手を返すこと", async () => {
     const engine = await launchBasic("random");
     const position = new Position();

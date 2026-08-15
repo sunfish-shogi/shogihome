@@ -99,8 +99,13 @@ void BasicEngine::go(const Position& position, const std::vector<std::string>& h
   score_ = 0;
   nodes_ = 0;
   startedAt_ = std::chrono::steady_clock::now();
-  minDeadline_ = startedAt_ + std::chrono::milliseconds(minimumThinkingTimeMs_);
   hardDeadline_ = startedAt_ + std::chrono::milliseconds(computeBudgetMs(params));
+  // 最低思考時間は持ち時間の範囲に収める。
+  // 切れ負け (秒読みも加算も無い設定) で残りが少なくなると
+  // computeBudgetMs() が最低思考時間を下回り、探索を終えた後もただ待つことになる。
+  // それでは USI で与えられた持ち時間を超えて時間切れ負けになってしまう。
+  minDeadline_ =
+      std::min(startedAt_ + std::chrono::milliseconds(minimumThinkingTimeMs_), hardDeadline_);
   state_ = State::THINKING;
 
   if (style_ == STYLE_RANDOM) {
