@@ -38,6 +38,16 @@ export default defineConfigWithVueTs([
     },
   },
   {
+    // Emscripten の --pre-js に渡す JavaScript。
+    // 生成関数の内側に埋め込まれるため、Module がスコープに存在する。
+    files: ["engines/**/*.js"],
+    languageOptions: {
+      globals: {
+        Module: "readonly",
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

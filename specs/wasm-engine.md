@@ -21,6 +21,7 @@ public/engines/<dir>/               ビルド済みの成果物 (リポジトリ
 src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
   catalog.ts                          組み込みエンジンのカタログ
   manifest.ts                         engine.json の型と検証
+  loader.ts                           エンジンモジュールのインターフェースと読み込み補助
   protocol.ts                         USI の行の解析と組み立て
   session.ts                          セッション管理 (状態遷移・タイムアウト)
   transport.ts                        Worker との行単位 I/O
@@ -28,6 +29,7 @@ src/renderer/wasm-engine/           WebAssembly エンジンを動かす rendere
 
 engines/                            ShogiHome 自身のエンジン (参照実装) のソース
   core/                               エンジン非依存の将棋コアと USI 入出力
+    shim.js                             ABI のインターフェースを Module に生やす --pre-js
   basic/                              BasicPlayer を移植したエンジン
   tests/                              ネイティブビルド用のテスト
 scripts/build-engines.mjs           参照実装の Emscripten ビルドドライバ
@@ -62,15 +64,16 @@ ShogiHome 側に写しを持つ必要は無い。配置したエンジンは
 
 ## Worker と WebAssembly の間の契約
 
-エンジンがエクスポートする `usi_init` / `usi_command` / `usi_poll` の 3 関数と、
-`bestmove` を `usi_command()` の中で出さない規約については
+エンジンのモジュールが公開する `postMessage` / `addMessageListener` /
+`removeMessageListener` / `terminate` と、任意の `poll` については
 [`wasm-engine-abi.md`](./wasm-engine-abi.md) を参照。
+これらの名前は YaneuraOu の wasm ビルドに合わせてある。
 
 Worker とメインスレッドの間のメッセージは次の通り。
 
 | 方向            | メッセージ                                                                                                    |
 | --------------- | ------------------------------------------------------------------------------------------------------------- |
-| メイン → Worker | `{ type: "launch", baseURL }` / `{ type: "send", line }`                                                      |
+| メイン → Worker | `{ type: "launch", baseURL }` / `{ type: "send", line }` / `{ type: "terminate" }`                            |
 | Worker → メイン | `{ type: "receive", line }` / `{ type: "log", message }` / `{ type: "error", message }` / `{ type: "close" }` |
 
 `baseURL` はエンジンのディレクトリの絶対 URL で、メインスレッドが `document.baseURI` を
@@ -80,6 +83,13 @@ Worker とメインスレッドの間のメッセージは次の通り。
 
 `log` は評価パラメータの読み込み状況など、USI のやり取りに含まれない情報を伝える。
 USI の行として扱われないため、セッションの状態遷移には影響しない。
+
+Worker を止めるときは、まず `terminate` を送ってエンジン自身に後始末をさせる。
+これはスレッドを持つエンジンが自前の Worker を畳めるようにするためで、
+探索から制御が戻らず応答が無い場合は 1 秒後に `Worker.terminate()` で強制的に止める。
+
+`poll` を公開しないエンジン (マルチスレッドを前提としたもの) に対しては、
+Worker は何も駆動せずに出力を待つだけになる。
 
 ## 組み込みエンジンの扱い
 
@@ -128,11 +138,15 @@ ShogiHome 自身が持つエンジン。仕様の参照実装と適合性テス�
 既定値は居飛車が矢倉 (玉8八・金7八・金6七・銀7七・飛2八)、
 振り飛車が美濃囲い (玉3八・金4九・金5八・銀3九) に組むように調整してある。
 
-### 反復深化と usi_poll
+### 反復深化と poll
 
 深さ 1 の探索は `go` の中で終わらせ、いつ `stop` されても指し手を返せるようにしている。
-深さ 2 以降は `usi_poll()` 1 回につき 1 反復ずつ進めるので、反復の切れ目で `stop` を
+深さ 2 以降は `poll()` 1 回につき 1 反復ずつ進めるので、反復の切れ目で `stop` を
 受け付けられる。これは `specs/wasm-engine-abi.md` が推奨する「分割実行」の実装例でもある。
+
+C++ 側がエクスポートするのは `usi_command` と `usi_poll` の 2 つだけで、
+ABI が定めるインターフェースは `engines/core/shim.js` (`--pre-js`) が組み立てる。
+このシムはエンジンに依存しないので、他のエンジンでもそのまま流用できる。
 
 持ち時間から 1 手あたりの上限 (100ms〜3000ms) を決め、ノード数の上限と合わせて
 探索を打ち切る。打ち切られた反復の結果は破棄し、1 つ前の深さの結果を採用する。

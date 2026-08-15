@@ -31,6 +31,39 @@ describe("wasm-engine/manifest", () => {
     const manifest = parseEngineManifest(src);
     expect(manifest.options).toBeUndefined();
     expect(manifest.dataFiles).toBeUndefined();
+    // moduleFormat を省略した場合は esm とみなす。
+    expect(manifest.moduleFormat).toBe("esm");
+    expect(manifest.exportName).toBeUndefined();
+  });
+
+  it("umdModuleFormat", () => {
+    const manifest = parseEngineManifest({
+      ...validManifest(),
+      moduleFormat: "umd",
+      exportName: "YaneuraOu_HalfKP",
+    });
+    expect(manifest.moduleFormat).toBe("umd");
+    expect(manifest.exportName).toBe("YaneuraOu_HalfKP");
+  });
+
+  it("rejectsUnknownModuleFormat", () => {
+    expect(() => parseEngineManifest({ ...validManifest(), moduleFormat: "cjs" })).toThrow(
+      /moduleFormat is unknown/,
+    );
+  });
+
+  it("rejectsUMDWithoutValidExportName", () => {
+    // exportName はソースへ埋め込むため、識別子でなければ受け付けない。
+    expect(() => parseEngineManifest({ ...validManifest(), moduleFormat: "umd" })).toThrow(
+      /exportName/,
+    );
+    expect(() =>
+      parseEngineManifest({
+        ...validManifest(),
+        moduleFormat: "umd",
+        exportName: "x; fetch('https://example.com')",
+      }),
+    ).toThrow(/exportName must be an identifier/);
   });
 
   it("rejectsUnsupportedABI", () => {

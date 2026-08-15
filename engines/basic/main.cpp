@@ -1,6 +1,7 @@
 // エントリポイント。
-// WebAssembly ビルドでは usi_init / usi_command / usi_poll をエクスポートし、
-// Worker 側から 1 行ずつコマンドを渡す。ネイティブビルドでは標準入出力で動作する。
+// WebAssembly ビルドでは usi_command / usi_poll をエクスポートし、
+// core/shim.js が postMessage / poll としてこれらを呼び出す。
+// ネイティブビルドでは標準入出力で動作する。
 #include <memory>
 #include <string>
 
@@ -34,10 +35,6 @@ void ensureInitialized() {
 #ifdef __EMSCRIPTEN__
 
 extern "C" {
-
-EMSCRIPTEN_KEEPALIVE void usi_init() {
-  ensureInitialized();
-}
 
 EMSCRIPTEN_KEEPALIVE void usi_command(const char* line) {
   ensureInitialized();

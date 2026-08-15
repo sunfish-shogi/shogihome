@@ -30,10 +30,13 @@ add_executable(basic basic/main.cpp)
 target_link_libraries(basic PRIVATE basic_engine)
 
 if(EMSCRIPTEN)
-  set_target_properties(basic PROPERTIES SUFFIX ".js")
+  # postMessage / addMessageListener などのインターフェースを Module に生やす JavaScript。
+  set(SHIM_JS ${CMAKE_CURRENT_SOURCE_DIR}/core/shim.js)
+  set_target_properties(basic PROPERTIES SUFFIX ".js" LINK_DEPENDS ${SHIM_JS})
   target_link_options(basic PRIVATE
     "-O2"
     "--no-entry"
+    "--pre-js" "${SHIM_JS}"
     "-sMODULARIZE=1"
     "-sEXPORT_ES6=1"
     "-sEXPORT_NAME=createBasicEngine"
@@ -42,7 +45,7 @@ if(EMSCRIPTEN)
     # 既定の 64KB では探索の再帰でスタックが不足する。
     "-sSTACK_SIZE=1048576"
     "-sINVOKE_RUN=0"
-    "-sEXPORTED_FUNCTIONS=_usi_init,_usi_command,_usi_poll,_malloc,_free"
+    "-sEXPORTED_FUNCTIONS=_usi_command,_usi_poll,_malloc,_free"
     "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap"
     # SharedArrayBuffer を必要としない単一スレッド構成にする。
     # GitHub Pages では COOP/COEP ヘッダを設定できないため。

@@ -1,6 +1,7 @@
 {
-  "abi": "shogihome-wasm-engine/1",
+  "abi": "shogihome-wasm-engine/2",
   "module": "basic.js",
+  "moduleFormat": "esm",
   "name": "ShogiHome 3-Ply Engine",
   "author": "Kubo, Ryosuke",
   "options": [

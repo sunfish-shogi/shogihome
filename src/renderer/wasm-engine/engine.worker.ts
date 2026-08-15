@@ -1,34 +1,22 @@
 // WebAssembly エンジンを動かす Worker。
 //
 // エンジンのディレクトリ URL を受け取り、engine.json を読んでモジュールを起動する。
-// Emscripten の標準入力は同期的で扱いづらいため、エンジン側は
-// usi_init / usi_command / usi_poll をエクスポートし、こちらから明示的に呼び出す。
-// エンジンの標準出力は Module.print に渡ってくるので、1 行ずつメインスレッドへ中継する。
-import { MANIFEST_FILE_NAME, parseEngineManifest } from "./manifest.js";
+// エンジンとのやり取りは postMessage / addMessageListener で行う
+// (specs/wasm-engine-abi.md 版 2。YaneuraOu の wasm ビルドと同じインターフェース)。
+// 単一スレッドのエンジンは poll() を公開し、こちらから定期的に呼んで探索を進める。
+import { EngineManifest, MANIFEST_FILE_NAME, parseEngineManifest } from "./manifest.js";
+import { EngineFactory, EngineInstance, validateEngineInstance, wrapUMDSource } from "./loader.js";
 
-// Emscripten が -sMODULARIZE -sEXPORT_ES6 で出力するファクトリ関数の型。
-type EmscriptenFS = {
-  mkdirTree(path: string): void;
-  writeFile(path: string, data: Uint8Array): void;
-};
-type EmscriptenModule = {
-  ccall(name: string, returnType: string | null, argTypes: string[], args: unknown[]): unknown;
-  FS?: EmscriptenFS;
-};
-type EmscriptenModuleFactory = (options: {
-  print: (line: string) => void;
-  printErr: (line: string) => void;
-}) => Promise<EmscriptenModule>;
-
-// 思考中に usi_poll を呼ぶ間隔 (ミリ秒)。
+// 思考中に poll() を呼ぶ間隔 (ミリ秒)。
 const POLL_INTERVAL_MS = 10;
 
-let engineModule: EmscriptenModule | undefined;
+let engine: EngineInstance | undefined;
 // モジュールの読み込みが終わるまでに届いたコマンドを保持する。
 const pendingCommands: string[] = [];
 let pollTimer: ReturnType<typeof setInterval> | undefined;
 // bestmove / checkmate をまだ受け取っていない状態かどうか。
 let awaitingResult = false;
+let terminated = false;
 
 function post(message: unknown): void {
   self.postMessage(message);
@@ -54,41 +42,79 @@ function stopPolling(): void {
 }
 
 function startPolling(): void {
-  if (pollTimer !== undefined || !engineModule) {
+  // poll() を公開しないエンジンは自力で探索を進めるため、呼ぶ必要がない。
+  if (pollTimer !== undefined || !engine?.poll) {
     return;
   }
-  pollTimer = setInterval(() => {
-    engineModule?.ccall("usi_poll", null, [], []);
-  }, POLL_INTERVAL_MS);
+  pollTimer = setInterval(() => engine?.poll?.(), POLL_INTERVAL_MS);
 }
 
 function sendToEngine(line: string): void {
-  if (!engineModule) {
+  if (terminated) {
+    return;
+  }
+  if (!engine) {
     pendingCommands.push(line);
     return;
   }
-  // 思考の開始を伴うコマンドは、結果が出るまで usi_poll を回す必要がある。
+  // 思考の開始を伴うコマンドは、結果が出るまで poll() を回す必要がある。
   const needsResult = line === "go" || line.startsWith("go ") || line.startsWith("ponderhit");
   if (needsResult) {
     awaitingResult = true;
   }
-  engineModule.ccall("usi_command", null, ["string"], [line]);
+  engine.postMessage(line);
   // 同期的に結果が出た場合 (stop 直後や go mate など) は awaitingResult が下りている。
   if (awaitingResult) {
     startPolling();
   }
 }
 
+function terminate(): void {
+  if (terminated) {
+    return;
+  }
+  terminated = true;
+  stopPolling();
+  try {
+    engine?.terminate();
+  } catch {
+    // 終了処理の失敗は握り潰す。どのみち Worker ごと破棄される。
+  }
+  engine = undefined;
+  post({ type: "close" });
+  self.close();
+}
+
+// グルーコードを読み込み、モジュールを生成する関数を取り出す。
+async function importFactory(manifest: EngineManifest, moduleURL: string): Promise<EngineFactory> {
+  if (manifest.moduleFormat === "umd") {
+    // UMD の出力は ES モジュールとして評価しても値をエクスポートしないので、
+    // 末尾に export 文を足したものを Blob URL 経由で読み込む。
+    const response = await fetch(moduleURL);
+    if (!response.ok) {
+      throw new Error(`failed to load ${moduleURL}: ${response.status}`);
+    }
+    const source = wrapUMDSource(await response.text(), manifest.exportName as string);
+    const blobURL = URL.createObjectURL(new Blob([source], { type: "text/javascript" }));
+    try {
+      return (await import(/* @vite-ignore */ blobURL)).default as EngineFactory;
+    } finally {
+      URL.revokeObjectURL(blobURL);
+    }
+  }
+  return (await import(/* @vite-ignore */ moduleURL)).default as EngineFactory;
+}
+
 // 評価パラメータや定跡を取得し、Emscripten の仮想ファイルシステムへ書き込む。
 async function loadDataFiles(
-  module: EmscriptenModule,
+  instance: EngineInstance,
   baseURL: string,
   dataFiles: { url: string; path: string }[],
 ): Promise<void> {
   if (dataFiles.length === 0) {
     return;
   }
-  if (!module.FS) {
+  if (!instance.FS) {
     throw new Error(
       "engine does not expose FS: add FS to -sEXPORTED_RUNTIME_METHODS to use dataFiles",
     );
@@ -103,9 +129,9 @@ async function loadDataFiles(
     const data = new Uint8Array(await response.arrayBuffer());
     const dir = file.path.substring(0, file.path.lastIndexOf("/"));
     if (dir) {
-      module.FS.mkdirTree(dir);
+      instance.FS.mkdirTree(dir);
     }
-    module.FS.writeFile(file.path, data);
+    instance.FS.writeFile(file.path, data);
     log(`loaded data file: ${file.path} (${data.byteLength} bytes)`);
   }
 }
@@ -119,17 +145,23 @@ async function launch(baseURL: string): Promise<void> {
     }
     const manifest = parseEngineManifest(await response.json());
     const moduleURL = new URL(manifest.module, baseURL).href;
-    const imported = (await import(/* @vite-ignore */ moduleURL)) as {
-      default: EmscriptenModuleFactory;
-    };
-    const module = await imported.default({
-      print: onEngineOutput,
-      printErr: (line: string) => post({ type: "error", message: line }),
-    });
+    const factory = await importFactory(manifest, moduleURL);
+    const instance = validateEngineInstance(
+      await factory({
+        printErr: (line: string) => post({ type: "error", message: line }),
+        // .wasm や .data はグルーコードと同じ場所に置かれる。
+        // UMD を Blob URL から読み込む場合は自力で解決できないため、こちらから渡す。
+        locateFile: (path: string) => new URL(path, moduleURL).href,
+      }),
+    );
+    instance.addMessageListener(onEngineOutput);
     // データファイルの読み込みはコマンドを処理する前に済ませる。
-    await loadDataFiles(module, baseURL, manifest.dataFiles || []);
-    module.ccall("usi_init", null, [], []);
-    engineModule = module;
+    await loadDataFiles(instance, baseURL, manifest.dataFiles || []);
+    if (terminated) {
+      instance.terminate();
+      return;
+    }
+    engine = instance;
     while (pendingCommands.length > 0) {
       sendToEngine(pendingCommands.shift() as string);
     }
@@ -151,6 +183,9 @@ self.onmessage = (event: MessageEvent) => {
       if (data.line !== undefined) {
         sendToEngine(data.line);
       }
+      break;
+    case "terminate":
+      terminate();
       break;
   }
 };

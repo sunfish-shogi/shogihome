@@ -14,6 +14,7 @@ import { EngineManifest, ENGINE_ABI } from "@/renderer/wasm-engine/manifest.js";
 const manifest: EngineManifest = {
   abi: ENGINE_ABI,
   module: "basic.js",
+  moduleFormat: "esm",
   name: "ShogiHome 3-Ply Engine",
   author: "Kubo, Ryosuke",
   options: [

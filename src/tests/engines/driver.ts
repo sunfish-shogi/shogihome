@@ -3,19 +3,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import {
+  EngineFactory,
+  EngineInstance,
+  validateEngineInstance,
+  wrapUMDSource,
+} from "@/renderer/wasm-engine/loader.js";
 import { EngineManifest, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
 
 export const PUBLIC_ENGINES_DIR = path.resolve(import.meta.dirname, "../../../public/engines");
-
-type EmscriptenFS = {
-  mkdirTree(path: string): void;
-  writeFile(path: string, data: Uint8Array): void;
-};
-
-type EngineModule = {
-  ccall(name: string, returnType: string | null, argTypes: string[], args: unknown[]): unknown;
-  FS?: EmscriptenFS;
-};
 
 export type EngineHandle = {
   manifest: EngineManifest;
@@ -26,7 +22,10 @@ export type EngineHandle = {
   waitFor(matcher: (line: string) => boolean, label?: string): Promise<string>;
   // bestmove または checkmate が現れるまで待つ。
   waitForResult(): Promise<string>;
+  // USI の quit コマンドを送る。
   quit(): void;
+  // モジュールの terminate() を呼ぶ。
+  terminate(): void;
 };
 
 export function listEngineDirs(): string[] {
@@ -45,36 +44,51 @@ export function readManifest(dir: string): EngineManifest {
   return parseEngineManifest(JSON.parse(fs.readFileSync(file, "utf8")));
 }
 
+// Worker では fetch と Blob URL を使う部分を、ここではファイルと data URL で置き換える。
+async function importFactory(manifest: EngineManifest, modulePath: string): Promise<EngineFactory> {
+  if (manifest.moduleFormat === "umd") {
+    const source = wrapUMDSource(
+      fs.readFileSync(modulePath, "utf8"),
+      manifest.exportName as string,
+    );
+    const url = `data:text/javascript;base64,${Buffer.from(source, "utf8").toString("base64")}`;
+    return (await import(url)).default;
+  }
+  return (await import(pathToFileURL(modulePath).href)).default;
+}
+
 export async function launchEngine(dir: string): Promise<EngineHandle> {
   const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
   const manifest = readManifest(dir);
-  const imported = await import(pathToFileURL(path.join(engineDir, manifest.module)).href);
+  const modulePath = path.join(engineDir, manifest.module);
+  const factory = await importFactory(manifest, modulePath);
   const lines: string[] = [];
-  const module: EngineModule = await imported.default({
-    print: (line: string) => lines.push(line),
-    printErr: (line: string) => lines.push(`ERR ${line}`),
-  });
+  const engine: EngineInstance = validateEngineInstance(
+    await factory({
+      printErr: (line: string) => lines.push(`ERR ${line}`),
+      locateFile: (file: string) => new URL(file, pathToFileURL(modulePath)).href,
+    }),
+  );
+  engine.addMessageListener((line) => lines.push(line));
 
   // Worker では fetch で取得する部分を、ここではファイルから読み込む。
   for (const file of manifest.dataFiles || []) {
-    if (!module.FS) {
+    if (!engine.FS) {
       throw new Error("engine does not expose FS but declares dataFiles");
     }
     const data = fs.readFileSync(path.join(engineDir, file.url));
     const parent = file.path.substring(0, file.path.lastIndexOf("/"));
     if (parent) {
-      module.FS.mkdirTree(parent);
+      engine.FS.mkdirTree(parent);
     }
-    module.FS.writeFile(file.path, new Uint8Array(data));
+    engine.FS.writeFile(file.path, new Uint8Array(data));
   }
-
-  module.ccall("usi_init", null, [], []);
 
   const handle: EngineHandle = {
     manifest,
     lines,
-    command: (line) => module.ccall("usi_command", null, ["string"], [line]),
-    poll: () => module.ccall("usi_poll", null, [], []),
+    command: (line) => engine.postMessage(line),
+    poll: () => engine.poll?.(),
     async waitFor(matcher, label) {
       for (let i = 0; i < 500; i++) {
         const found = lines.find(matcher);
@@ -92,7 +106,8 @@ export async function launchEngine(dir: string): Promise<EngineHandle> {
         "bestmove/checkmate",
       );
     },
-    quit: () => module.ccall("usi_command", null, ["string"], ["quit"]),
+    quit: () => engine.postMessage("quit"),
+    terminate: () => engine.terminate(),
   };
   return handle;
 }

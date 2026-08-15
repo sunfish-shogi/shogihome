@@ -4,11 +4,18 @@
 // ShogiHome 側はディレクトリ名を登録するだけでよく、オプション定義を写す必要は無い。
 // 仕様は specs/wasm-engine-abi.md を参照。
 import { USIEngineOptionType } from "@/common/settings/usi.js";
+import { EXPORT_NAME_PATTERN } from "./loader.js";
 
 // マニフェストの abi フィールドが取り得る値。非互換な変更を入れる際に更新する。
-export const ENGINE_ABI = "shogihome-wasm-engine/1";
+export const ENGINE_ABI = "shogihome-wasm-engine/2";
 
 export const MANIFEST_FILE_NAME = "engine.json";
+
+// グルーコードの出力形式。
+// esm は -sEXPORT_ES6=1 の出力で、そのまま動的 import() できる。
+// umd は -sEXPORT_ES6 無しの出力 (YaneuraOu の配布物がこれ) で、
+// 読み込み時に export 文を足す必要があるため exportName が要る。
+export type EngineModuleFormat = "esm" | "umd";
 
 export type EngineManifestOption = {
   name: string;
@@ -37,6 +44,9 @@ export type EngineManifestDataFile = {
 export type EngineManifest = {
   abi: string;
   module: string;
+  moduleFormat: EngineModuleFormat;
+  // moduleFormat が "umd" のときだけ意味を持つ。
+  exportName?: string;
   name: string;
   author: string;
   dataFiles?: EngineManifestDataFile[];
@@ -156,10 +166,26 @@ export function parseEngineManifest(json: unknown): EngineManifest {
   const manifest: EngineManifest = {
     abi,
     module: asSafePath(record.module, "manifest.module"),
+    moduleFormat: "esm",
     name: asString(record.name, "manifest.name"),
     author: asString(record.author, "manifest.author"),
     presets: record.presets.map((v, i) => parsePreset(v, `manifest.presets[${i}]`)),
   };
+  if (record.moduleFormat !== undefined) {
+    const format = asString(record.moduleFormat, "manifest.moduleFormat");
+    if (format !== "esm" && format !== "umd") {
+      fail(`manifest.moduleFormat is unknown: ${format}`);
+    }
+    manifest.moduleFormat = format;
+  }
+  if (manifest.moduleFormat === "umd") {
+    // ソースへ埋め込む値なので、識別子として妥当なものだけを受け付ける。
+    const exportName = asString(record.exportName, "manifest.exportName");
+    if (!EXPORT_NAME_PATTERN.test(exportName)) {
+      fail(`manifest.exportName must be an identifier: ${exportName}`);
+    }
+    manifest.exportName = exportName;
+  }
   if (record.options !== undefined) {
     if (!Array.isArray(record.options)) {
       fail("manifest.options must be an array");

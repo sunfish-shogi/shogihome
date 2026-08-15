@@ -1,4 +1,4 @@
-# WebAssembly エンジン ABI: `shogihome-wasm-engine/1`
+# WebAssembly エンジン ABI: `shogihome-wasm-engine/2`
 
 ShogiHome の Web 版 (ブラウザ / PWA) に載せる USI エンジンが満たすべき仕様。
 
@@ -11,9 +11,18 @@ ShogiHome 側の仕組みは [`wasm-engine.md`](./wasm-engine.md) を参照。
 
 ## 版
 
-本文書は `shogihome-wasm-engine/1` を定義する。マニフェストの `abi` にこの文字列を書く。
+本文書は `shogihome-wasm-engine/2` を定義する。マニフェストの `abi` にこの文字列を書く。
 非互換な変更を行う場合は版を上げる。ShogiHome は未知の版のマニフェストを読み込まず、
 そのエンジンを一覧から除外する。
+
+版 2 では、モジュールが公開するインターフェースを **YaneuraOu の wasm ビルドと同じ形**
+(`postMessage` / `addMessageListener` / `removeMessageListener` / `terminate` / `FS`) に
+揃えた。版 1 の `usi_init` / `usi_command` / `usi_poll` を C の関数として直接呼ぶ方式は
+廃止したが、それらを JavaScript 側で包む定型のシムを用意してあるので
+(「3. モジュールのインターフェース」を参照)、エンジン側の C++ の作りは変わらない。
+
+ただし**形が揃うことと実際に動くことは別**である。YaneuraOu 本体を載せるには
+pthreads の扱い (「8. 制約」) を解決する必要があり、本仕様の範囲外。
 
 ---
 
@@ -35,8 +44,9 @@ public/engines/<dir>/
 
 ```json
 {
-  "abi": "shogihome-wasm-engine/1",
+  "abi": "shogihome-wasm-engine/2",
   "module": "basic.js",
+  "moduleFormat": "esm",
   "name": "ShogiHome Basic Engine",
   "author": "Kubo, Ryosuke",
   "dataFiles": [{ "url": "eval/nn.bin", "path": "/eval/nn.bin" }],
@@ -59,15 +69,17 @@ public/engines/<dir>/
 }
 ```
 
-| フィールド  | 必須 | 内容                                                  |
-| ----------- | ---- | ----------------------------------------------------- |
-| `abi`       | ○    | `shogihome-wasm-engine/1`                             |
-| `module`    | ○    | グルーコードのファイル名。マニフェストからの相対パス  |
-| `name`      | ○    | エンジンが `id name` で返す名前                       |
-| `author`    | ○    | エンジンが `id author` で返す名前                     |
-| `dataFiles` |      | 起動時に読み込むファイル。「5. データファイル」を参照 |
-| `options`   |      | エンジンが `option` で申告する定義の写し              |
-| `presets`   | ○    | 一覧に並べるエンジンの定義。1 つ以上                  |
+| フィールド     | 必須 | 内容                                                             |
+| -------------- | ---- | ---------------------------------------------------------------- |
+| `abi`          | ○    | `shogihome-wasm-engine/2`                                        |
+| `module`       | ○    | グルーコードのファイル名。マニフェストからの相対パス             |
+| `moduleFormat` |      | `esm` (既定) または `umd`。「4. グルーコードの形式」を参照       |
+| `exportName`   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
+| `name`         | ○    | エンジンが `id name` で返す名前                                  |
+| `author`       | ○    | エンジンが `id author` で返す名前                                |
+| `dataFiles`    |      | 起動時に読み込むファイル。「6. データファイル」を参照            |
+| `options`      |      | エンジンが `option` で申告する定義の写し                         |
+| `presets`      | ○    | 一覧に並べるエンジンの定義。1 つ以上                             |
 
 ### `presets`
 
@@ -93,16 +105,94 @@ public/engines/<dir>/
 取得できる)、適合性テストが `options` とエンジンの申告の一致を検証するので、
 **書く場合は必ず実物と合わせること。**
 
-## 3. エクスポートする関数
+## 3. モジュールのインターフェース
 
-```c
-void usi_init(void);                  // 最初に 1 回だけ呼ばれる
-void usi_command(const char* line);   // USI コマンドを 1 行渡す
-void usi_poll(void);                  // 思考中に一定間隔で呼ばれる
+グルーコードの既定エクスポートは、モジュールを生成する関数でなければならない。
+これは Emscripten の `-sMODULARIZE=1` の出力そのもので、ShogiHome は次のように呼ぶ。
+
+```ts
+const engine = await createEngine({
+  printErr: (line) => {
+    /* 標準エラー出力 */
+  },
+  locateFile: (path) => new URL(path, moduleURL).href,
+});
+```
+
+`printErr` と `locateFile` は Emscripten が解釈する。`locateFile` は `.wasm` や `.data` の
+場所を伝えるためのもので、ShogiHome が必ず渡す (`moduleFormat: "umd"` のときは
+グルーコード自身が自分の位置を知り得ないため必須になる)。
+
+生成されたオブジェクトは次を公開する。**メソッド名は YaneuraOu の wasm ビルドと同じ。**
+
+```ts
+type EngineInstance = {
+  // USI コマンドを 1 行渡す。
+  postMessage(command: string): void;
+  // エンジンの出力を 1 行ずつ受け取るリスナーを登録する。
+  addMessageListener(listener: (line: string) => void): void;
+  removeMessageListener(listener: (line: string) => void): void;
+  // エンジンを終了し、内部のスレッドやリソースを解放する。
+  terminate(): void;
+
+  // 単一スレッドのエンジンが探索を分割実行するためのフック (任意)。
+  poll?(): void;
+  // マニフェストで dataFiles を使う場合のみ必要。
+  FS?: { mkdirTree(path: string): void; writeFile(path: string, data: Uint8Array): void };
+};
+```
+
+`poll()` の有無で ShogiHome の駆動の仕方が変わる。
+
+| `poll()` | ShogiHome の動作                                                                  |
+| -------- | --------------------------------------------------------------------------------- |
+| ある     | `go` / `ponderhit` の後、`bestmove` か `checkmate` を受け取るまで 10ms 間隔で呼ぶ |
+| ない     | 何もしない。エンジンが自力で思考を進めて出力する (マルチスレッド前提)             |
+
+### 守るべき規約
+
+- **`quit` または `terminate()` の後は何も出力してはならない。**
+  思考中であっても `bestmove` を出さない。
+- `go mate` に対応しない場合は `checkmate notimplemented` を返す。
+- `stop` は即座に `bestmove` を返す。
+- `bestmove` / `checkmate` を `postMessage()` の呼び出しの中で同期的に出しても
+  ShogiHome は受け取れるが、その作りでは `stop` が効かなくなる (次項)。
+
+### 実行モデル
+
+既存エンジンは「探索スレッドが走り、メインスレッドが `stop` を受け付ける」前提で
+書かれていることが多いが、単一スレッドの WebAssembly ではその前提が成立しない
+(「8. 制約」を参照)。次のどちらかを選ぶ。
+
+**分割実行 (推奨)**: 探索を中断可能にして `poll()` から少しずつ進める。
+多くのエンジンは探索の内側に時間切れ・停止フラグを確認するフックを持っているので、
+そこを「今回の `poll()` の持ち分を使い切ったら中断して戻る」ように変更し、
+次の `poll()` で再開できるよう状態を保持する。反復深化なら
+「1 回の `poll()` で 1 反復ぶん進める」粒度が実装しやすい。
+`stop` が効き、`go infinite` (検討モード) も扱える。
+
+**同期ブロッキング**: `postMessage("go ...")` の中で最後まで探索する。改造は最小で済むが、
+探索中は Worker のメッセージを処理できないため **`stop` が効かず**、対局中の中断が
+GUI 側から行えない。`go infinite` も終わらないので検討モードには使えない。
+適合性テストの `stop` の項目も通らない。まず動かすことを優先する場合の暫定手段。
+
+### C++ 側との接続 (シム)
+
+エンジン本体を C++ で書く場合、上のインターフェースは JavaScript の定型コードで組み立てる。
+ShogiHome の参照実装は [`engines/core/shim.js`](../engines/core/shim.js) をそのまま
+`--pre-js` に渡している。**このファイルはエンジンを問わず流用できる。**
+
+C 側は次の 2 つをエクスポートすればよい。
+
+```cpp
+extern "C" {
+EMSCRIPTEN_KEEPALIVE void usi_command(const char* line) { handle_command(line ? line : ""); }
+EMSCRIPTEN_KEEPALIVE void usi_poll()                    { /* 探索を少し進める */ }
+}
 ```
 
 出力は標準出力に 1 行ずつ書き、`fflush(stdout)` する。Emscripten が行単位で
-`Module.print` を呼び、Worker がメインスレッドへ中継する。
+`Module.print` を呼び、シムがそれをリスナーへ流す。
 
 ```cpp
 void output(const std::string& line) {
@@ -112,48 +202,50 @@ void output(const std::string& line) {
 }
 ```
 
-### 守るべき規約
+`main()` を持つエンジンは、`while (std::getline(std::cin, line))` の入力ループを
+`usi_command()` に置き換える。Emscripten の標準入力は Worker では実質的に使えない
+(既定で即座に EOF になる) ため、`-sINVOKE_RUN=0` で `main()` を呼ばないようにする。
 
-- **`bestmove` と `checkmate` を `usi_command()` の中で出してはならない。**
-  `go` を受け取った時点で思考を終えていても、結果は `usi_poll()` か `stop` の受信時に出す。
-  Worker は `go` / `ponderhit` を送った後だけ `usi_poll()` を 10ms 間隔で呼び、
-  `bestmove` または `checkmate` の行を見た時点で停止する。
-- **`quit` の後は何も出力してはならない。** 思考中であっても `bestmove` を出さない。
-- `go mate` に対応しない場合は `checkmate notimplemented` を返す。
-- `stop` は即座に `bestmove` を返す。
+マルチスレッドのエンジンや、C++ 以外で書かれたエンジンは、
+シムを使わずに直接このインターフェースを実装してもよい。
 
-### 実行モデル
+## 4. グルーコードの形式
 
-既存エンジンは「探索スレッドが走り、メインスレッドが `stop` を受け付ける」前提で
-書かれていることが多いが、単一スレッドの WebAssembly ではその前提が成立しない
-(「7. 制約」を参照)。次のどちらかを選ぶ。
+| `moduleFormat` | Emscripten のオプション | 読み込み方                                |
+| -------------- | ----------------------- | ----------------------------------------- |
+| `esm` (既定)   | `-sEXPORT_ES6=1`        | `import(moduleURL)` の既定エクスポート    |
+| `umd`          | (指定しない)            | ソースに `export` を足してから `import()` |
 
-**分割実行 (推奨)**: 探索を中断可能にして `usi_poll()` から少しずつ進める。
-多くのエンジンは探索の内側に時間切れ・停止フラグを確認するフックを持っているので、
-そこを「今回の `usi_poll()` の持ち分を使い切ったら中断して戻る」ように変更し、
-次の `usi_poll()` で再開できるよう状態を保持する。反復深化なら
-「1 回の `usi_poll()` で 1 反復ぶん進める」粒度が実装しやすい。
-`stop` が効き、`go infinite` (検討モード) も扱える。
+`umd` は既存の配布物 (YaneuraOu の npm パッケージなど) をそのまま置くための逃げ道である。
+Emscripten の `-sEXPORT_ES6` を付けない出力は `var <exportName> = ...` で終わり、
+CommonJS と AMD への代入を試みるだけなので、ES モジュールとして評価しても値が取り出せない。
+ShogiHome はソースを取得して末尾に `export default <exportName>;` を足し、
+Blob URL 経由で `import()` する。`exportName` はソースへ文字列として埋め込むため、
+識別子として妥当なものだけを受け付ける。
 
-**同期ブロッキング**: `usi_command("go ...")` の中で最後まで探索する。改造は最小で済むが、
-探索中は Worker のメッセージを処理できないため **`stop` が効かず**、対局中の中断が
-GUI 側から行えない。`go infinite` も終わらないので検討モードには使えない。
-適合性テストの `stop` の項目も通らない。まず動かすことを優先する場合の暫定手段。
+**新しく作るエンジンは `esm` にすること。** `umd` は Blob URL からの `import()` を伴うため、
+`script-src` を厳しく設定した環境では動かない可能性がある。
 
-## 4. ビルド設定
+## 5. ビルド設定
 
 必須のリンクオプション。
 
 ```
 -sMODULARIZE=1                  既定エクスポートがモジュール生成関数になる
--sEXPORT_ES6=1                  ES モジュールとして出力する
+-sEXPORT_ES6=1                  ES モジュールとして出力する (moduleFormat: "esm")
 -sEXPORT_NAME=<任意>
 -sENVIRONMENT=worker,node       worker は必須。node は適合性テストで使う
 -sINVOKE_RUN=0                  main() を自動実行しない
 -sALLOW_MEMORY_GROWTH=1
--sEXPORTED_FUNCTIONS=_usi_init,_usi_command,_usi_poll,_malloc,_free
--sEXPORTED_RUNTIME_METHODS=ccall,cwrap
 --no-entry                      main() を持たない場合
+```
+
+`engines/core/shim.js` を使う場合は、加えて次が必要。
+
+```
+--pre-js <path>/shim.js
+-sEXPORTED_FUNCTIONS=_usi_command,_usi_poll,_malloc,_free
+-sEXPORTED_RUNTIME_METHODS=ccall,cwrap
 ```
 
 `dataFiles` を使う場合は `-sEXPORTED_RUNTIME_METHODS` に `FS` を追加する。
@@ -172,23 +264,9 @@ GUI 側から行えない。`go infinite` も終わらないので検討モー�
 `USI_Hash` のようにメモリを確保するオプションには必ず上限を設ける (例: 最大 256MB)。
 確保に失敗するとブラウザのタブごと落ちる。
 
-### `main()` の置き換え
-
-ほとんどのエンジンは `while (std::getline(std::cin, line))` の形をしているが、
-Emscripten の標準入力は Worker では実質的に使えない (既定で即座に EOF になる)。
-`main()` を呼ばずにコマンドの受け口だけを差し替える。
-
-```cpp
-extern "C" {
-EMSCRIPTEN_KEEPALIVE void usi_init()                    { init(); }
-EMSCRIPTEN_KEEPALIVE void usi_command(const char* line) { handle_command(line ? line : ""); }
-EMSCRIPTEN_KEEPALIVE void usi_poll()                    { /* 締切の確認など */ }
-}
-```
-
 ---
 
-## 5. データファイル (評価パラメータ・定跡)
+## 6. データファイル (評価パラメータ・定跡)
 
 強いエンジンは評価パラメータを別ファイルから読み込む。配置方法は 3 つあり、
 **サイズで使い分ける。**
@@ -253,7 +331,7 @@ Worker が `fetch` で取得し、`FS.writeFile` で書き込んでからエン�
 
 ---
 
-## 6. 検証
+## 7. 検証
 
 ShogiHome の適合性テストが `public/engines/` 配下の全エンジンを自動で検証する。
 
@@ -265,13 +343,15 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 - マニフェストがスキーマを満たし、`abi` が対応する版であること
 - `module` と `.wasm`、`dataFiles` の実体が存在すること
+- モジュールが `postMessage` / `addMessageListener` / `removeMessageListener` /
+  `terminate` を公開していること
 - `usi` に対して `id name` / `id author` / `usiok` を返すこと
 - マニフェストの `options` がエンジンの申告と一致すること
 - `isready` に対して `readyok` を返すこと
 - 各プリセットの `setoption` を受け付けること
 - `go` が合法手または `resign` を返すこと (tsshogi で検証)
 - `stop` で即座に `bestmove` を返すこと
-- `quit` の後に出力しないこと
+- `quit` および `terminate()` の後に出力しないこと
 - プリセットの `id` がリポジトリ全体で一意であること
 - 成果物のサイズが妥当であること
 
@@ -280,17 +360,34 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 ---
 
-## 7. 制約
+## 8. 制約
 
-- **単一スレッドのみ。** マルチスレッドの WebAssembly は `SharedArrayBuffer` を必要とし、
-  そのためには `Cross-Origin-Opener-Policy: same-origin` と
-  `Cross-Origin-Embedder-Policy: require-corp` のレスポンスヘッダが要る。
-  ShogiHome の Web 版は GitHub Pages で配信しており、これらを設定できない。
-  `-pthread` を付けたビルドは版 1 では受け付けない。
-  マルチスレッド対応は配信方法の変更 (ヘッダを設定できる配信先、または
-  Service Worker による cross-origin isolation) とセットで検討する必要がある。
+### `-pthread` を付けたビルドは受け付けない
+
+インターフェースを YaneuraOu に揃えたのは形式の話であり、
+**マルチスレッドの wasm が動くようになったわけではない。**
+
+`-pthread` を付けると Emscripten は wasm のメモリを `shared` として宣言する。
+これは起動時に `SharedArrayBuffer` を要求し、ブラウザはページが
+cross-origin isolated でなければそれを拒否する。isolation には
+`Cross-Origin-Opener-Policy: same-origin` と
+`Cross-Origin-Embedder-Policy: require-corp` のレスポンスヘッダが要るが、
+ShogiHome の Web 版は GitHub Pages で配信しており、これらを設定できない。
+
+**実行時のスレッド数を 1 にしても回避できない。** 効くのはビルドフラグの有無であって、
+実際に何本スレッドを作るかではない。既存エンジンを載せる場合は、
+`std::thread` を使う箇所を条件コンパイルで畳んで `-pthread` 無しでビルドし、
+探索を「3. 実行モデル」の分割実行に載せ替える必要がある。
+
+マルチスレッド対応は配信方法の変更 (ヘッダを設定できる配信先、または
+Service Worker による cross-origin isolation) とセットで検討する必要がある。
+
+### その他
+
 - 上記の理由から、`Threads` 相当のオプションはプリセットで 1 に固定すること。
-- `-sPROXY_TO_PTHREAD` は pthreads と同じ制約を受ける。`-sASYNCIFY` は制約を
-  受けないがコードサイズと実行速度の悪化が大きい。
+- `-sPROXY_TO_PTHREAD` は pthreads と同じ制約を受ける。
+  `-sASYNCIFY` は制約を受けず、探索の奥で `emscripten_sleep(0)` を呼ぶだけで
+  分割実行と同じことができる (コードの改造量は小さい) が、
+  コードサイズと実行速度の悪化が大きい。
 - ponder は ShogiHome 側の実装はあるが検証されていない。
   対応しない場合は `USI_Ponder` の既定値を `false` にする。
