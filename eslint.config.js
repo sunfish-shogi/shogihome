@@ -19,7 +19,9 @@ export default defineConfigWithVueTs([
       "coverage/**",
       // Emscripten が生成したグルーコード
       "public/engines/**",
-      "engines/build/**",
+      // ビルドディレクトリ。engines/build (wasm) と engines/build-native の両方。
+      // CMake が拡張子 .ts のタイムスタンプファイルを置くため必ず除外する。
+      "engines/build*/**",
     ],
   },
   js.configs.recommended,
