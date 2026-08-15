@@ -221,10 +221,13 @@ Emscripten を次の順で探す。
 Emscripten の無い環境でも `npm run build` と `npm test` が通り、commit 済みの wasm に対する
 回帰テストを CI で実行できる。
 
-ネイティブビルド (デバッグとテスト用) は次の通り。
+ネイティブビルド (デバッグとテスト用) は Emscripten を必要とせず、
+CMake と C++20 のコンパイラだけで動く。
 
 ```bash
-cmake -S engines -B engines/build-native && cmake --build engines/build-native
-engines/build-native/basic_test     # 移植の同等性を確認するテスト
-engines/build-native/basic          # 標準入出力で対話できる USI エンジン
+npm run engines:test      # ビルドして C++ のテスト (CTest) を実行する
+npm run engines:native    # ビルドのみ。engines/build-native/basic を対話実行できる
 ```
+
+commit 済みの wasm に対するテストは `npm test` に含まれている (`src/tests/engines/`)。
+手順の詳細は [`engines/README.md`](../engines/README.md) を参照。

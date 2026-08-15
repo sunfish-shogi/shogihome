@@ -18,12 +18,56 @@ ShogiHome 自身が持つ WebAssembly エンジンのソース。**参照実装*
 | `basic/`       | `src/renderer/players/basic.ts` (BasicPlayer) を移植したエンジン                  |
 | `tests/`       | ネイティブビルドで動かす移植の同等性テスト                                        |
 
-## ビルド
+## ビルドとテスト
+
+| コマンド                 | 内容                                                       |
+| ------------------------ | ---------------------------------------------------------- |
+| `npm run engines:test`   | C++ のテストをビルドして実行する。**普段はこれだけでよい** |
+| `npm run engines:native` | ネイティブビルドのみ (対話実行用)                          |
+| `npm run engines:build`  | WebAssembly へビルドし `public/engines/` へ配置する        |
+
+### C++ のテスト
 
 ```bash
-npm run engines:build                 # Emscripten でビルドし public/engines/ へ配置する
-
-cmake -S engines -B engines/build-native && cmake --build engines/build-native
-engines/build-native/basic_test       # テスト
-engines/build-native/basic            # 標準入出力で対話できる USI エンジン
+npm run engines:test
 ```
+
+ネイティブビルドして CTest を実行する。必要なのは CMake と C++20 のコンパイラだけで、
+Emscripten は要らない。失敗したテストの出力はそのまま表示される。
+
+テストの中身は [`tests/basic_test.cpp`](./tests/basic_test.cpp) にある。
+局面・指し手生成・USI の解析・評価・探索を、tsshogi 実装との同等性も含めて確認する。
+
+### エンジンを対話的に動かす
+
+```bash
+npm run engines:native
+./engines/build-native/basic
+```
+
+標準入出力で USI コマンドをやり取りできる。例:
+
+```
+usi
+setoption name Style value ranging_rook
+isready
+position startpos moves 7g7f
+go btime 60000 wtime 60000 byoyomi 10000
+quit
+```
+
+`go` の後は `bestmove` が返るまで数百ミリ秒かかる (ネイティブビルドでは
+バックグラウンドのスレッドが `poll()` を回す)。
+
+### WebAssembly のビルド
+
+```bash
+npm run engines:build
+```
+
+Emscripten を「環境変数 `EMSDK` → `PATH` 上の `emcmake` → Docker」の順に探す。
+生成物 (`public/engines/basic/basic.js` と `.wasm`) はリポジトリに commit する。
+
+commit 済みの WebAssembly に対するテストは `npm test` に含まれている
+(`src/tests/engines/`)。エンジンを変更したら `npm run engines:build` で
+再生成してから `npm test` を実行すること。
