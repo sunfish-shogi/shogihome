@@ -12,8 +12,11 @@ export const PUBLIC_ENGINES_DIR = path.join(rootDir, "public", "engines");
 
 // エンジンを起動し、usi と isready を済ませた状態のハンドルを返す。
 // options は setoption で送るオプションの名前と値の組。
+//
+// dir は public/engines/ 配下のディレクトリ名。絶対パスを渡すこともできる。
+// 改良の前後をビルドごと比較したい場合は、古い成果物を別の場所に置いて指定する。
 export async function launchEngine(dir = "basic", options = {}) {
-  const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+  const engineDir = path.isAbsolute(dir) ? dir : path.join(PUBLIC_ENGINES_DIR, dir);
   const manifest = JSON.parse(fs.readFileSync(path.join(engineDir, "engine.json"), "utf8"));
   const modulePath = path.join(engineDir, manifest.module);
   const factory = (await import(pathToFileURL(modulePath).href)).default;

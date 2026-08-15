@@ -6,6 +6,11 @@
 //   npm run engines:selfplay -- --a Style=static_rook --b Style=ranging_rook --games 10
 //   npm run engines:selfplay -- --a Depth=3 --b Depth=3 --games 4 --verbose
 //
+// --a-dir / --b-dir で成果物のディレクトリを指定できる。改良の前後を
+// ビルドごと比較する場合に使う (古い wasm を別の場所へ取り出して指定する)。
+//
+//   npm run engines:selfplay -- --a-dir /tmp/old --a Depth=5 --b Depth=5 --games 20
+//
 // 先後は 1 局ごとに入れ替える (--games は偶数にすること)。
 // 千日手と手数上限は引き分けとして扱う。
 //
@@ -65,8 +70,10 @@ async function playGame(black, white) {
   return { result: "draw", reason: "手数上限", moves };
 }
 
-const engineA = await launchEngine("basic", { MinimumThinkingTime: 0, ...optionsA });
-const engineB = await launchEngine("basic", { MinimumThinkingTime: 0, ...optionsB });
+const dirA = args["a-dir"] || "basic";
+const dirB = args["b-dir"] || "basic";
+const engineA = await launchEngine(dirA, { MinimumThinkingTime: 0, ...optionsA });
+const engineB = await launchEngine(dirB, { MinimumThinkingTime: 0, ...optionsB });
 
 const tally = { a: 0, b: 0, draw: 0 };
 const started = Date.now();
@@ -102,8 +109,8 @@ engineB.terminate();
 const decided = tally.a + tally.b;
 const rate = decided > 0 ? ((tally.a / decided) * 100).toFixed(1) : "-";
 console.log("");
-console.log(`A: ${label(optionsA)}`);
-console.log(`B: ${label(optionsB)}`);
+console.log(`A: ${dirA} ${label(optionsA)}`);
+console.log(`B: ${dirB} ${label(optionsB)}`);
 console.log(`結果  A ${tally.a} 勝 / B ${tally.b} 勝 / 引き分け ${tally.draw}`);
 console.log(`A の勝率 (引き分けを除く): ${rate}%`);
 console.log(`所要時間: ${((Date.now() - started) / 1000).toFixed(1)} 秒`);

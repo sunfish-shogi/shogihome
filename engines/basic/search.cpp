@@ -19,6 +19,8 @@ constexpr int MAX_PLY = 24;
 constexpr int JITTER_RANGE = 3;
 // 千日手になる手に与える罰点。
 constexpr int REPETITION_PENALTY = 1000;
+// null move pruning で減らす深さ。
+constexpr int NULL_MOVE_REDUCTION = 2;
 
 struct Context {
   Style style = STYLE_STATIC_ROOK;
@@ -157,6 +159,30 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
           return alpha;
         }
       }
+    }
+  }
+
+  const bool inCheck = position.inCheck(position.color());
+
+  // null move pruning。
+  // 「1 手パスしても β 以上」なら、実際に指せばもっと良くなるはずなので枝を捨てる。
+  // 将棋は手番を渡すこと自体が損になる局面 (Zugzwang) が稀なので比較的安全だが、
+  // 次の場合は使えない。
+  //   - 王手されている: パスすると玉を取られる手順を読んでしまう
+  //   - β が詰みの評価値: 詰みの有無をパスで判定してはいけない
+  //   - 深さが足りない: 減らした後に残りが無いと意味が無い
+  if (depth >= NULL_MOVE_REDUCTION + 1 && !inCheck && beta < MATE_THRESHOLD) {
+    position.doNullMove();
+    context.nodes++;
+    // β 周りの幅 1 の窓で十分 (β 以上かどうかだけが知りたい)。
+    const int score =
+        -negamax(context, position, depth - 1 - NULL_MOVE_REDUCTION, -beta, -beta + 1, ply + 1);
+    position.undoNullMove();
+    if (context.aborted) {
+      return 0;
+    }
+    if (score >= beta) {
+      return beta;
     }
   }
 

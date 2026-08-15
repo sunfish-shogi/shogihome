@@ -90,6 +90,17 @@ class Position {
   // doMove で指した手を戻す。
   void undoMove(const Move& move);
 
+  // 手番だけを入れ替える (パス)。null move pruning で使う。
+  // 王手がかかっている状態で使ってはならない (玉を取られる手順を読んでしまう)。
+  // 手番の反転だけなので undo も同じ操作でよい。
+  void doNullMove() {
+    color_ = opposite(color_);
+    hashKey_ ^= zobrist::SIDE;
+  }
+  void undoNullMove() {
+    doNullMove();
+  }
+
   // USI 形式の指し手文字列から Move を生成する。非合法な表記の場合は false を返す。
   bool parseUSIMove(const std::string& text, Move* move) const;
 
