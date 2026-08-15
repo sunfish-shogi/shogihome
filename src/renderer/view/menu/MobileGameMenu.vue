@@ -48,6 +48,7 @@ import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { showModalDialog } from "@/renderer/helpers/dialog";
 import { useStore } from "@/renderer/store";
+import { useErrorStore } from "@/renderer/store/error";
 import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
@@ -77,12 +78,21 @@ const selectPlayer = (uri: string) => {
 };
 const selectTurn = async (turn: Color) => {
   // 組み込みの WebAssembly エンジンは USI エンジンとして扱うため、設定の実体を取得する。
-  const engines = await api.loadUSIEngines();
-  const engine = engines.getEngine(playerURI.value);
+  // マニフェストの読み込みに失敗したエンジンは一覧に含まれないので、その場合は対局を始めない。
+  // 設定の実体が無いまま USI のプレイヤーを組み立てると defaultPlayerBuilder が失敗する。
+  let engine;
+  try {
+    engine = (await api.loadUSIEngines()).getEngine(playerURI.value);
+  } catch (e) {
+    useErrorStore().add(e);
+    return;
+  }
+  if (!engine) {
+    useErrorStore().add(new Error(`${t.failedToStartNewGame}: ${playerURI.value}`));
+    return;
+  }
   let black: PlayerSettings = { name: t.human, uri: uri.ES_HUMAN };
-  let white: PlayerSettings = engine
-    ? { name: engine.name, uri: playerURI.value, usi: engine }
-    : { name: uri.basicEngineName(playerURI.value), uri: playerURI.value };
+  let white: PlayerSettings = { name: engine.name, uri: playerURI.value, usi: engine };
   if (turn === Color.WHITE) {
     [black, white] = [white, black];
   }
