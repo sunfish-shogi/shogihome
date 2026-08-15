@@ -49,6 +49,7 @@ class BasicEngine : public Engine {
   Style style_ = STYLE_STATIC_ROOK;
   int maxDepth_ = 3;
   long long minimumThinkingTimeMs_ = 500;
+  bool randomize_ = true;
   long long nodeLimit_ = 3000000;
   std::mt19937 rng_;
 

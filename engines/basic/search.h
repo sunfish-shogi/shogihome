@@ -40,9 +40,14 @@ struct SearchLimits {
 };
 
 // 指定した深さで探索する。historyKeys は初期局面から現局面までの局面キー (千日手回避に使う)。
+//
+// randomize が true のとき、根の評価値に乱数を加えて同じ対局が続くのを避ける。
+// false にすると探索が決定的になり、ノード数が局面と深さだけで決まる。
+// 乱数は根の窓 (alpha) にも影響するため、探索するノード数そのものが変わる。
+// 改良の効果をノード数で測るときは false にすること。
 SearchResult search(Style style, const Position& position,
                     const std::vector<std::string>& historyKeys, int depth,
-                    const SearchLimits& limits, std::mt19937& rng);
+                    const SearchLimits& limits, std::mt19937& rng, bool randomize = true);
 
 // 合法手の中から一様ランダムに 1 手選ぶ。
 SearchResult searchRandom(const Position& position, std::mt19937& rng);

@@ -36,6 +36,8 @@ std::vector<std::string> BasicEngine::optionDefinitions() const {
       " var static_rook var ranging_rook var random",
       "option name Depth type spin default 3 min 1 max 5",
       "option name MinimumThinkingTime type spin default 500 min 0 max 60000",
+      // 無効にすると探索が決定的になる。ベンチマークで改良の効果を測るときに使う。
+      "option name Randomize type check default true",
       // 本エンジンは先読みに対応しない。
       "option name USI_Ponder type check default false",
   };
@@ -55,6 +57,8 @@ void BasicEngine::setOption(const std::string& name, const std::string& value) {
     if (parseInteger(value, &parsed)) {
       minimumThinkingTimeMs_ = std::max(0LL, parsed);
     }
+  } else if (name == "Randomize") {
+    randomize_ = value == "true";
   }
 }
 
@@ -129,7 +133,7 @@ void BasicEngine::runIteration(int depth) {
   limits.deadline = hardDeadline_;
   limits.nodeLimit = nodeLimit_;
   const SearchResult result =
-      search(style_, position_, historyKeys_, depth, limits, rng_);
+      search(style_, position_, historyKeys_, depth, limits, rng_, randomize_);
   nodes_ += result.nodes;
 
   // 打ち切られた反復の結果は信頼できないので、前の深さの結果を残す。

@@ -48,6 +48,7 @@ describe("engines/basic (wasm)", () => {
       "option name Style type combo default static_rook var static_rook var ranging_rook var random",
       "option name Depth type spin default 3 min 1 max 5",
       "option name MinimumThinkingTime type spin default 500 min 0 max 60000",
+      "option name Randomize type check default true",
       "option name USI_Ponder type check default false",
       "usiok",
     ]);
@@ -215,6 +216,28 @@ describe("engines/basic (wasm)", () => {
     engine.quit();
   }, 20000);
 
+  // ベンチマークで改良の効果をノード数で測れるようにするための性質。
+  // 乱数は根の窓にも影響するため、無効にしないとノード数が数 % ぶれる。
+  it("Randomize を無効にすると探索が決定的になること", async () => {
+    const runs = [];
+    for (let i = 0; i < 2; i++) {
+      const engine = await launchBasic("static_rook", { Randomize: "false", Depth: "3" });
+      engine.lines.length = 0;
+      engine.command("position startpos moves 7g7f 3c3d 2g2f");
+      engine.command("go btime 600000 wtime 600000 byoyomi 30000");
+      const result = await engine.waitForResult();
+      const info = engine.lines.filter((line) => line.startsWith("info ")).pop() as string;
+      runs.push({
+        bestMove: result,
+        nodes: /\bnodes (\d+)/.exec(info)?.[1],
+        score: /\bscore cp (-?\d+)/.exec(info)?.[1],
+      });
+      engine.quit();
+    }
+    expect(runs[0].nodes).toBeTruthy();
+    expect(runs[1]).toEqual(runs[0]);
+  }, 30000);
+
   it("ランダムプレイヤーが合法手を返すこと", async () => {
     const engine = await launchBasic("random");
     const position = new Position();
@@ -241,7 +264,8 @@ describe("engines/basic (wasm)", () => {
     const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
     const moves: Record<string, string[]> = {};
     for (const style of ["static_rook", "ranging_rook"]) {
-      const engine = await launchBasic(style);
+      // 乱数が入ると 24 手のうちに囲いへ寄り切らないことがあるので、決定的に指させる。
+      const engine = await launchBasic(style, { Randomize: "false" });
       const played: string[] = [];
       const position = new Position();
       for (let ply = 0; ply < 24; ply++) {

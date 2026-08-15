@@ -6,6 +6,7 @@ ShogiHome 自身が持つ WebAssembly エンジンのソース。**参照実装*
 外部のエンジンはそれぞれのリポジトリでビルドし、成果物を `public/engines/<dir>/` に
 配置するだけでよい。このディレクトリは通らない。
 
+- 実装状況と改良の手引き: [`specs/basic-engine.md`](../specs/basic-engine.md)
 - 仕様 (エンジン側が満たすべきもの): [`specs/wasm-engine-abi.md`](../specs/wasm-engine-abi.md)
 - 仕組み (ShogiHome 側の作り): [`specs/wasm-engine.md`](../specs/wasm-engine.md)
 
@@ -20,11 +21,13 @@ ShogiHome 自身が持つ WebAssembly エンジンのソース。**参照実装*
 
 ## ビルドとテスト
 
-| コマンド                 | 内容                                                       |
-| ------------------------ | ---------------------------------------------------------- |
-| `npm run engines:test`   | C++ のテストをビルドして実行する。**普段はこれだけでよい** |
-| `npm run engines:native` | ネイティブビルドのみ (対話実行用)                          |
-| `npm run engines:build`  | WebAssembly へビルドし `public/engines/` へ配置する        |
+| コマンド                   | 内容                                                       |
+| -------------------------- | ---------------------------------------------------------- |
+| `npm run engines:test`     | C++ のテストをビルドして実行する。**普段はこれだけでよい** |
+| `npm run engines:native`   | ネイティブビルドのみ (対話実行用)                          |
+| `npm run engines:build`    | WebAssembly へビルドし `public/engines/` へ配置する        |
+| `npm run engines:bench`    | 固定局面のベンチマーク (探索の速さ)                        |
+| `npm run engines:selfplay` | 自己対局 (探索の強さ)                                      |
 
 ### C++ のテスト
 
@@ -58,6 +61,16 @@ quit
 
 `go` の後は `bestmove` が返るまで数百ミリ秒かかる (ネイティブビルドでは
 バックグラウンドのスレッドが `poll()` を回す)。
+
+### 強さと速さの計測
+
+```bash
+npm run engines:bench                                        速さ (ノード数・時間)
+npm run engines:selfplay -- --a Depth=5 --b Depth=3 --games 20   強さ (勝率)
+```
+
+探索を改良したときは両方を見る。詳細は
+[`specs/basic-engine.md`](../specs/basic-engine.md) の「動作確認の方法」を参照。
 
 ### WebAssembly のビルド
 

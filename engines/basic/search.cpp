@@ -172,7 +172,7 @@ size_t countKey(const std::vector<std::string>& keys, const std::string& key) {
 
 SearchResult search(Style style, const Position& position,
                     const std::vector<std::string>& historyKeys, int depth,
-                    const SearchLimits& limits, std::mt19937& rng) {
+                    const SearchLimits& limits, std::mt19937& rng, bool randomize) {
   SearchResult result;
   result.depth = depth;
 
@@ -184,7 +184,8 @@ SearchResult search(Style style, const Position& position,
   std::vector<Move> moves = working.listMoves();
   orderMoves(moves);
 
-  std::uniform_int_distribution<int> jitter(0, JITTER_RANGE);
+  const int jitterRange = randomize ? JITTER_RANGE : 0;
+  std::uniform_int_distribution<int> jitter(0, jitterRange);
   int bestScore = -INFINITE_SCORE;
   int bestJittered = -INFINITE_SCORE;
 
@@ -201,7 +202,7 @@ SearchResult search(Style style, const Position& position,
       context.pvLength[1] = 0;
     } else {
       // 乱数の分だけ余裕を持たせた窓で探索する。これを下回る手は選ばれ得ない。
-      const int alpha = bestScore == -INFINITE_SCORE ? -INFINITE_SCORE : bestScore - JITTER_RANGE;
+      const int alpha = bestScore == -INFINITE_SCORE ? -INFINITE_SCORE : bestScore - jitterRange;
       score = -negamax(context, working, depth - 1, -INFINITE_SCORE, -alpha, 1);
     }
     working.undoMove(move);

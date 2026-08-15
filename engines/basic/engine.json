@@ -26,6 +26,11 @@
       "max": 60000
     },
     {
+      "name": "Randomize",
+      "type": "check",
+      "default": "true"
+    },
+    {
       "name": "USI_Ponder",
       "type": "check",
       "default": "false"
