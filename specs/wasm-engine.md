@@ -44,8 +44,24 @@ Electron 版の USI 実装 (`src/background/usi/`) には手を加えていな�
 
 - エンジンの統計情報の収集 (`src/background/stats/`)
 - prompt ウィンドウとの連携 (コマンド履歴の表示・手動送信)
-- 早期 ponder のワークアラウンド
+- 早期 ponder (`enableEarlyPonder`)。`ponderhit` は常に引数無しで送る
 - ファイルシステム上のエンジンの追加 (`showSelectUSIEngineDialog` は従来通りエラーを返す)
+
+## go コマンドの予約
+
+思考中に次の `go` の要求が来ることがある。検討で局面を切り替えたときと、
+ponder が外れたときである。この場合 `go` をすぐには送らず、次の手順を踏む
+(Electron 版の `src/background/usi/engine.ts` と同じ)。
+
+1. `go` を予約して `stop` を送る
+2. `bestmove` を受け取る
+3. 予約しておいた `position` と `go` を送る
+
+`go ponder` を `stop` した場合の `bestmove` は本譜の指し手ではないので、
+`USIPlayer` には報告せずに捨てる (状態 `waitingForPonderBestMove`)。
+これを怠ると、外れた ponder の結果を次の局面に対する着手として採用してしまう。
+
+`isready` の応答を待っている間に来た `go` も同様に予約し、`readyok` の後に送る。
 
 ## エンジンの追加
 
@@ -177,12 +193,6 @@ ABI が定めるインターフェースは `engines/core/shim.js` (`--pre-js`) 
 `go ponder` に渡される局面は、予想した 1 手を指した後のもの
 (`USIPlayer.startPonder` が `bestmove` の `ponder` を局面に追加する) なので、
 予想が当たった場合は読んでいた局面がそのまま本譜になる。
-
-予想が外れた場合、`USIPlayer` は `stop` を送らずに次の `go` を送る
-(`session.ts` の `go()` は Electron 版と違って暗黙の `stop` を送らない)。
-basic エンジンは `go` を受け取った時点で状態を作り直すので問題にならないが、
-`go ponder` の後に `stop` か `ponderhit` 以外を受け取ることを想定していない
-エンジンでは問題になり得る。検討モードで `go infinite` を続けて送る場合も同じ。
 
 ### オプション
 

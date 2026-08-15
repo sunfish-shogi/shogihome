@@ -484,8 +484,8 @@ export const webAPI: Bridge = {
   async usiGoPonder(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
     usiSessions.goPonder(sessionID, usi, JSON.parse(timeStatesJSON) as TimeStates);
   },
-  async usiPonderHit(sessionID: number, timeStatesJSON: string): Promise<void> {
-    usiSessions.ponderHit(sessionID, JSON.parse(timeStatesJSON) as TimeStates);
+  async usiPonderHit(sessionID: number): Promise<void> {
+    usiSessions.ponderHit(sessionID);
   },
   async usiGoInfinite(sessionID: number, usi: string): Promise<void> {
     usiSessions.goInfinite(sessionID, usi);

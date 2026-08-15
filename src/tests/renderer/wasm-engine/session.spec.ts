@@ -101,6 +101,18 @@ const USI_OK_LINES = [
   "usiok",
 ];
 
+// エンジンを起動して READY にする。go 系のコマンドはこの状態から送られる。
+async function launchReady(env: ReturnType<typeof setup>, engine = newEngine()) {
+  const promise = env.manager.setupPlayer(engine);
+  env.transport.receive(...USI_OK_LINES);
+  const sessionID = await promise;
+  const ready = env.manager.ready(sessionID);
+  env.transport.receive("readyok");
+  await ready;
+  env.transport.sent.length = 0;
+  return sessionID;
+}
+
 describe("wasm-engine/session", () => {
   it("setupPlayer/go/bestmove", async () => {
     const env = setup();
@@ -188,10 +200,7 @@ describe("wasm-engine/session", () => {
 
   it("goMate/notImplemented", async () => {
     const env = setup();
-    const promise = env.manager.setupPlayer(newEngine());
-    env.transport.receive(...USI_OK_LINES);
-    const sessionID = await promise;
-    env.transport.sent.length = 0;
+    const sessionID = await launchReady(env);
     env.manager.goMate(sessionID, "position startpos", 5);
     expect(env.transport.sent).toEqual(["position startpos", "go mate 5000"]);
     env.transport.receive("checkmate notimplemented");
@@ -200,10 +209,7 @@ describe("wasm-engine/session", () => {
 
   it("goInfinite/stop", async () => {
     const env = setup();
-    const promise = env.manager.setupPlayer(newEngine());
-    env.transport.receive(...USI_OK_LINES);
-    const sessionID = await promise;
-    env.transport.sent.length = 0;
+    const sessionID = await launchReady(env);
     env.manager.goInfinite(sessionID, "position startpos");
     expect(env.transport.sent).toEqual(["position startpos", "go infinite"]);
     env.manager.stop(sessionID);
@@ -215,6 +221,99 @@ describe("wasm-engine/session", () => {
       "7g7f",
       undefined,
     );
+  });
+
+  // ponder が当たった場合。go ponder で読んでいた局面がそのまま本譜になる。
+  it("goPonder/ponderHit", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.goPonder(sessionID, "position startpos moves 7g7f 3c3d", timeStates);
+    expect(env.transport.sent).toEqual([
+      "position startpos moves 7g7f 3c3d",
+      "go ponder btime 300000 wtime 300000 byoyomi 30000",
+    ]);
+
+    // ponder 中の info は読み筋として扱う。
+    env.transport.receive("info depth 3 nodes 100 score cp 20 pv 2g2f");
+    expect(env.handlers.onUSIInfo).toHaveBeenCalledWith(
+      sessionID,
+      "position startpos moves 7g7f 3c3d",
+      expect.objectContaining({ depth: 3 }),
+    );
+
+    env.transport.sent.length = 0;
+    // 残り時間は go ponder で渡してあるので引数を付けない。
+    env.manager.ponderHit(sessionID);
+    expect(env.transport.sent).toEqual(["ponderhit"]);
+    env.transport.receive("bestmove 2g2f");
+    expect(env.handlers.onUSIBestMove).toHaveBeenCalledWith(
+      sessionID,
+      "position startpos moves 7g7f 3c3d",
+      "2g2f",
+      undefined,
+    );
+  });
+
+  // ponder が外れた場合。stop を送り、bestmove を捨ててから次の go を送る。
+  it("goPonder/ponderMiss", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.goPonder(sessionID, "position startpos moves 7g7f 3c3d", timeStates);
+    env.transport.sent.length = 0;
+
+    // 予想が外れたので別の局面を探索させる。
+    env.manager.go(sessionID, "position startpos moves 7g7f 8c8d", timeStates);
+    // まだ go は送らず、先に stop で ponder を打ち切る。
+    expect(env.transport.sent).toEqual(["stop"]);
+
+    // 打ち切った ponder の bestmove は本譜の指し手ではないので報告しない。
+    env.transport.receive("bestmove 2g2f");
+    expect(env.handlers.onUSIBestMove).not.toHaveBeenCalled();
+    // bestmove を受け取ってから予約しておいた go を送る。
+    expect(env.transport.sent).toEqual([
+      "stop",
+      "position startpos moves 7g7f 8c8d",
+      "go btime 300000 wtime 300000 byoyomi 30000",
+    ]);
+
+    env.transport.receive("bestmove 2g2f");
+    expect(env.handlers.onUSIBestMove).toHaveBeenCalledWith(
+      sessionID,
+      "position startpos moves 7g7f 8c8d",
+      "2g2f",
+      undefined,
+    );
+  });
+
+  // 検討では bestmove を待たずに次の局面の go が来る。
+  it("goInfinite/switchPosition", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.goInfinite(sessionID, "position startpos");
+    env.transport.sent.length = 0;
+    env.manager.goInfinite(sessionID, "position startpos moves 7g7f");
+    expect(env.transport.sent).toEqual(["stop"]);
+    env.transport.receive("bestmove 2g2f");
+    expect(env.transport.sent).toEqual(["stop", "position startpos moves 7g7f", "go infinite"]);
+  });
+
+  // readyok より前に go が来た場合は、readyok の後に送る。
+  it("go/beforeReadyOk", async () => {
+    const env = setup();
+    const promise = env.manager.setupPlayer(newEngine());
+    env.transport.receive(...USI_OK_LINES);
+    const sessionID = await promise;
+    const ready = env.manager.ready(sessionID);
+    env.transport.sent.length = 0;
+    env.manager.go(sessionID, "position startpos", timeStates);
+    expect(env.transport.sent).toEqual([]);
+    env.transport.receive("readyok");
+    await ready;
+    expect(env.transport.sent).toEqual([
+      "usinewgame",
+      "position startpos",
+      "go btime 300000 wtime 300000 byoyomi 30000",
+    ]);
   });
 
   // 連続対局では同じセッションに対して ready() が繰り返し呼ばれる。

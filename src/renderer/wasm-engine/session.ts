@@ -45,9 +45,23 @@ export enum SessionState {
   WAITING_FOR_READYOK = "waitingForReadyOK",
   READY = "ready",
   WAITING_FOR_BEST_MOVE = "waitingForBestMove",
+  PONDER = "ponder",
+  // go ponder を stop した後。届く bestmove は本譜の指し手ではないので捨てる。
+  WAITING_FOR_PONDER_BEST_MOVE = "waitingForPonderBestMove",
   WAITING_FOR_CHECKMATE = "waitingForCheckmate",
   QUIT_COMPLETED = "quitCompleted",
 }
+
+// 送信を待っている go コマンド。
+// 思考中に次の指示が来た場合は、stop を送って bestmove を受け取ってから送る。
+type ReservedGoCommand = {
+  usi: string;
+  // 未指定なら go infinite。
+  timeStates?: TimeStates;
+  ponder?: boolean;
+  mate?: boolean;
+  mateMaxSeconds?: number;
+};
 
 export type USISessionHandlers = {
   onUSIBestMove(sessionID: number, usi: string, usiMove: string, ponder?: string): void;
@@ -74,6 +88,7 @@ class Session {
   private engineAuthor = "";
   private engineOptions: USIEngineOptions = {};
   private currentPosition = "";
+  private reservedGoCommand?: ReservedGoCommand;
   private lastSentCommand?: Command;
   private lastReceivedCommand?: Command;
   private launchTimer?: ReturnType<typeof setTimeout>;
@@ -147,6 +162,8 @@ class Session {
     // 勝敗は判断できないので引き分け扱いにする (Electron 版と同じ)。
     if (
       this.state === SessionState.WAITING_FOR_BEST_MOVE ||
+      this.state === SessionState.PONDER ||
+      this.state === SessionState.WAITING_FOR_PONDER_BEST_MOVE ||
       this.state === SessionState.WAITING_FOR_CHECKMATE
     ) {
       this.gameover(GameResult.DRAW);
@@ -166,36 +183,88 @@ class Session {
   }
 
   go(usi: string, timeStates?: TimeStates): void {
-    this.currentPosition = usi;
-    this.state = SessionState.WAITING_FOR_BEST_MOVE;
-    this.send(usi);
-    this.send(
-      timeStates ? `go ${buildTimeOptions(getNextColorFromUSI(usi), timeStates)}` : "go infinite",
-    );
+    this.reserveGo({ usi, timeStates });
   }
 
   goPonder(usi: string, timeStates: TimeStates): void {
-    this.currentPosition = usi;
-    this.state = SessionState.WAITING_FOR_BEST_MOVE;
-    this.send(usi);
-    this.send(`go ponder ${buildTimeOptions(getNextColorFromUSI(usi), timeStates)}`);
-  }
-
-  ponderHit(timeStates: TimeStates): void {
-    this.send(
-      `ponderhit ${buildTimeOptions(getNextColorFromUSI(this.currentPosition), timeStates)}`,
-    );
+    this.reserveGo({ usi, timeStates, ponder: true });
   }
 
   goMate(usi: string, maxSeconds?: number): void {
-    this.currentPosition = usi;
-    this.state = SessionState.WAITING_FOR_CHECKMATE;
-    this.send(usi);
-    this.send(maxSeconds ? `go mate ${maxSeconds * 1e3}` : "go mate infinite");
+    this.reserveGo({ usi, mate: true, mateMaxSeconds: maxSeconds });
+  }
+
+  // go 系のコマンドを予約し、送れる状態なら送る。
+  // 思考中に次の指示が来た場合は暗黙的に stop を送り、bestmove を受け取ってから送る
+  // (Electron 版と同じ)。検討で局面を切り替えたときや、ponder が外れたときに通る。
+  private reserveGo(command: ReservedGoCommand): void {
+    this.reservedGoCommand = command;
+    switch (this.state) {
+      case SessionState.READY:
+        this.sendReservedGoCommand();
+        break;
+      case SessionState.WAITING_FOR_BEST_MOVE:
+      case SessionState.PONDER:
+      case SessionState.WAITING_FOR_CHECKMATE:
+        this.stop();
+        break;
+      // NOT_READY / WAITING_FOR_READYOK の場合は onReadyOk が送る。
+    }
+  }
+
+  private sendReservedGoCommand(): void {
+    const command = this.reservedGoCommand;
+    if (!command) {
+      return;
+    }
+    this.reservedGoCommand = undefined;
+    this.currentPosition = command.usi;
+    this.send(command.usi);
+    if (command.mate) {
+      this.state = SessionState.WAITING_FOR_CHECKMATE;
+      this.send(
+        command.mateMaxSeconds ? `go mate ${command.mateMaxSeconds * 1e3}` : "go mate infinite",
+      );
+      return;
+    }
+    const timeOptions = command.timeStates
+      ? buildTimeOptions(getNextColorFromUSI(command.usi), command.timeStates)
+      : "";
+    if (command.ponder) {
+      this.state = SessionState.PONDER;
+      this.send(`go ponder${timeOptions ? ` ${timeOptions}` : ""}`);
+      return;
+    }
+    this.state = SessionState.WAITING_FOR_BEST_MOVE;
+    this.send(timeOptions ? `go ${timeOptions}` : "go infinite");
+  }
+
+  ponderHit(): void {
+    if (this.state !== SessionState.PONDER) {
+      this.logger?.(
+        LogLevel.WARN,
+        `usi: sid=${this.sessionID}: ponderhit: unexpected state: ${this.state}`,
+      );
+      return;
+    }
+    // 残り時間は go ponder で渡してあるので引数は付けない (Electron 版と同じ)。
+    this.send("ponderhit");
+    this.state = SessionState.WAITING_FOR_BEST_MOVE;
   }
 
   stop(): void {
+    if (
+      this.state !== SessionState.WAITING_FOR_BEST_MOVE &&
+      this.state !== SessionState.PONDER &&
+      this.state !== SessionState.WAITING_FOR_CHECKMATE
+    ) {
+      return;
+    }
     this.send("stop");
+    if (this.state === SessionState.PONDER) {
+      // ponder を打ち切って得られる bestmove は本譜の指し手ではない。
+      this.state = SessionState.WAITING_FOR_PONDER_BEST_MOVE;
+    }
   }
 
   gameover(result: GameResult): void {
@@ -210,11 +279,14 @@ class Session {
         );
         return;
       case SessionState.WAITING_FOR_BEST_MOVE:
+      case SessionState.PONDER:
       case SessionState.WAITING_FOR_CHECKMATE:
         // 対局を終えるので思考を打ち切る。
         this.stop();
         break;
     }
+    // 予約したままの go は次の対局に持ち越さない。
+    this.reservedGoCommand = undefined;
     switch (result) {
       case GameResult.WIN:
         this.send("gameover win");
@@ -332,17 +404,27 @@ class Session {
     this.state = SessionState.READY;
     this.send("usinewgame");
     this.callbacks.onReady?.();
+    // ready を待っている間に予約された go があれば、ここで送る。
+    this.sendReservedGoCommand();
   }
 
   private onBestMove(args: string): void {
-    if (this.state !== SessionState.WAITING_FOR_BEST_MOVE) {
+    if (
+      this.state !== SessionState.WAITING_FOR_BEST_MOVE &&
+      this.state !== SessionState.WAITING_FOR_PONDER_BEST_MOVE
+    ) {
       return;
     }
-    this.state = SessionState.READY;
     const usi = this.currentPosition;
+    // 打ち切った ponder の bestmove は本譜の指し手ではないので報告しない。
+    if (this.state === SessionState.WAITING_FOR_BEST_MOVE) {
+      const bestMove = parseBestMove(args);
+      this.handlers()?.onUSIBestMove(this.sessionID, usi, bestMove.move, bestMove.ponder);
+    }
+    this.state = SessionState.READY;
     this.currentPosition = "";
-    const bestMove = parseBestMove(args);
-    this.handlers()?.onUSIBestMove(this.sessionID, usi, bestMove.move, bestMove.ponder);
+    // 思考中に予約された go があれば、ここで送る。
+    this.sendReservedGoCommand();
   }
 
   private onCheckmate(args: string): void {
@@ -362,6 +444,8 @@ class Session {
     } else {
       handlers?.onUSICheckmate(this.sessionID, usi, value.split(" "));
     }
+    this.currentPosition = "";
+    this.sendReservedGoCommand();
   }
 
   private onClose(): void {
@@ -531,8 +615,10 @@ export class USISessionManager {
     this.getSession(sessionID).goPonder(usi, timeStates);
   }
 
-  ponderHit(sessionID: number, timeStates: TimeStates): void {
-    this.getSession(sessionID).ponderHit(timeStates);
+  // 残り時間は go ponder で渡してあるので受け取らない。
+  // bridge の usiPonderHit は Electron 版と共通のため引数を持つが、ここでは使わない。
+  ponderHit(sessionID: number): void {
+    this.getSession(sessionID).ponderHit();
   }
 
   goInfinite(sessionID: number, usi: string): void {
