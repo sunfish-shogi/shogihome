@@ -627,6 +627,7 @@ export const vi: Texts = {
   exportProfileToClipboard: "Sao chép cài đặt",
   importProfileFromClipboard: "Dán cài đặt",
   editLayoutWithDragAndDrop: "ドラッグで編集", // TODO: Translate
+  stretchCustomLayout: "ウィンドウに合わせる", // TODO: Translate
   profileExportedToClipboard: "Đã xuất cài đặt.",
   profileImported: "Đã nhập cài đặt.",
   failedToImportProfile: "Nhập cài đặt thất bại.",

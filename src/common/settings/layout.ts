@@ -118,11 +118,32 @@ export enum DialogPosition {
 export type LayoutProfile = {
   uri: string;
   name: string;
+  stretch?: boolean;
   backgroundColor?: string;
   dialogPosition?: DialogPosition;
   dialogBackdrop?: boolean;
   components: UIComponent[];
 };
+
+export function calculateLayoutScale(
+  components: UIComponent[],
+  width: number,
+  height: number,
+): number {
+  if (components.length === 0) {
+    return 1;
+  }
+  const x0 = Math.max(Math.min(...components.map((component) => component.left)), 0);
+  const y0 = Math.max(Math.min(...components.map((component) => component.top)), 0);
+  const maxX = Math.max(...components.map((component) => component.left + component.width));
+  const maxY = Math.max(...components.map((component) => component.top + component.height));
+  const horizontalExtent = maxX + x0;
+  const verticalExtent = maxY + y0;
+  const horizontalScale =
+    horizontalExtent > 0 ? width / horizontalExtent : Number.POSITIVE_INFINITY;
+  const verticalScale = verticalExtent > 0 ? height / verticalExtent : Number.POSITIVE_INFINITY;
+  return Math.max(Math.min(horizontalScale, verticalScale), 0);
+}
 
 export type LayoutProfileList = {
   profiles: LayoutProfile[];

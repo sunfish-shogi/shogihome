@@ -607,6 +607,7 @@ export type Texts = {
   exportProfileToClipboard: string;
   importProfileFromClipboard: string;
   editLayoutWithDragAndDrop: string;
+  stretchCustomLayout: string;
   profileExportedToClipboard: string;
   profileImported: string;
   failedToImportProfile: string;
