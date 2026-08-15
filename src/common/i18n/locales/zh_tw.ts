@@ -703,6 +703,8 @@ export const zh_tw: Texts = {
   staticRook: "居飛車",
   rangingRook: "振飛車",
   threePlySearch: "3手読み", // TODO: Translate
+  fivePlySearch: "5手読み", // TODO: Translate
+  level: "Lv.", // TODO: Translate
   pleaseSelectEngines: "請選擇引擎。",
   thisItemCannotBeMerged: "該項目無法被合併。",
   tryingToConnectAndLoginToCSAServer: "正在連接並登入CSA伺服器。",

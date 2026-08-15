@@ -53,6 +53,8 @@ export function resolveEngineDirURL(path: string): string {
 const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
   "basic-3ply-static-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.staticRook})`,
   "basic-3ply-ranging-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.rangingRook})`,
+  "basic-5ply-static-rook-v1": () => `ShogiHome ${t.fivePlySearch} (${t.staticRook})`,
+  "basic-5ply-ranging-rook-v1": () => `ShogiHome ${t.fivePlySearch} (${t.rangingRook})`,
 };
 
 export function builtinEngineURI(presetID: string): string {

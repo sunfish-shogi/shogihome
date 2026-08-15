@@ -35,12 +35,22 @@
     {
       "id": "basic-3ply-static-rook-v1",
       "displayName": "ShogiHome 3-Ply (Static Rook)",
-      "values": { "Style": "static_rook" }
+      "values": { "Style": "static_rook", "Depth": 3 }
     },
     {
       "id": "basic-3ply-ranging-rook-v1",
       "displayName": "ShogiHome 3-Ply (Ranging Rook)",
-      "values": { "Style": "ranging_rook" }
+      "values": { "Style": "ranging_rook", "Depth": 3 }
+    },
+    {
+      "id": "basic-5ply-static-rook-v1",
+      "displayName": "ShogiHome 5-Ply (Static Rook)",
+      "values": { "Style": "static_rook", "Depth": 5 }
+    },
+    {
+      "id": "basic-5ply-ranging-rook-v1",
+      "displayName": "ShogiHome 5-Ply (Ranging Rook)",
+      "values": { "Style": "ranging_rook", "Depth": 5 }
     }
   ]
 }

@@ -686,6 +686,8 @@ export type Texts = {
   staticRook: string;
   rangingRook: string;
   threePlySearch: string;
+  fivePlySearch: string;
+  level: string;
   pleaseSelectEngines: string;
   thisItemCannotBeMerged: string;
   tryingToConnectAndLoginToCSAServer: string;

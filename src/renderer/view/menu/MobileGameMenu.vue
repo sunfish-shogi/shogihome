@@ -8,13 +8,14 @@
         </button>
       </div>
       <div class="group">
-        <button v-if="!playerURI" @click="selectPlayer(staticRookURI)">
+        <button
+          v-for="player of players"
+          v-show="!playerURI"
+          :key="player.uri"
+          @click="selectPlayer(player.uri)"
+        >
           <Icon :icon="IconType.ROBOT" />
-          <div class="label">{{ `${t.threePlySearch} (${t.staticRook})` }}</div>
-        </button>
-        <button v-if="!playerURI" @click="selectPlayer(rangingRookURI)">
-          <Icon :icon="IconType.ROBOT" />
-          <div class="label">{{ `${t.threePlySearch} (${t.rangingRook})` }}</div>
+          <div class="label">{{ player.label }}</div>
         </button>
         <button v-if="playerURI" @click="selectTurn(Color.BLACK)">
           <Icon :icon="IconType.GAME" />
@@ -53,9 +54,17 @@ import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
 
-// 組み込みの WebAssembly エンジン。モバイル表示は Web 版でのみ使われる。
-const staticRookURI = builtinEngineURI("basic-3ply-static-rook-v1");
-const rangingRookURI = builtinEngineURI("basic-3ply-ranging-rook-v1");
+// モバイル表示では名前が長いと収まらないので、強さをレベルで表す。
+// Lv.1 は TypeScript 実装の簡易エンジン、Lv.2 以降は組み込みの WebAssembly エンジン。
+// (モバイル表示は Web 版でのみ使われる。)
+const players = [
+  { level: 1, uri: uri.ES_BASIC_ENGINE_STATIC_ROOK_V1, style: () => t.staticRook },
+  { level: 1, uri: uri.ES_BASIC_ENGINE_RANGING_ROOK_V1, style: () => t.rangingRook },
+  { level: 2, uri: builtinEngineURI("basic-3ply-static-rook-v1"), style: () => t.staticRook },
+  { level: 2, uri: builtinEngineURI("basic-3ply-ranging-rook-v1"), style: () => t.rangingRook },
+  { level: 3, uri: builtinEngineURI("basic-5ply-static-rook-v1"), style: () => t.staticRook },
+  { level: 3, uri: builtinEngineURI("basic-5ply-ranging-rook-v1"), style: () => t.rangingRook },
+].map((player) => ({ uri: player.uri, label: `${t.level} ${player.level} ${player.style()}` }));
 
 const store = useStore();
 const dialog = ref();
@@ -76,23 +85,33 @@ onBeforeUnmount(() => {
 const selectPlayer = (uri: string) => {
   playerURI.value = uri;
 };
-const selectTurn = async (turn: Color) => {
+// 対局相手の設定を組み立てる。取得に失敗した場合は undefined を返す。
+// 棋譜には正式な名前を残すので、ボタンのレベル表記はここでは使わない。
+const buildOpponentSettings = async (): Promise<PlayerSettings | undefined> => {
+  // TypeScript 実装の簡易エンジンは renderer 内で完結するため、設定の実体を持たない。
+  if (uri.isBasicEngine(playerURI.value)) {
+    return { name: uri.basicEngineName(playerURI.value), uri: playerURI.value };
+  }
   // 組み込みの WebAssembly エンジンは USI エンジンとして扱うため、設定の実体を取得する。
   // マニフェストの読み込みに失敗したエンジンは一覧に含まれないので、その場合は対局を始めない。
   // 設定の実体が無いまま USI のプレイヤーを組み立てると defaultPlayerBuilder が失敗する。
-  let engine;
+  const engine = (await api.loadUSIEngines()).getEngine(playerURI.value);
+  return engine && { name: engine.name, uri: playerURI.value, usi: engine };
+};
+const selectTurn = async (turn: Color) => {
+  let opponent: PlayerSettings | undefined;
   try {
-    engine = (await api.loadUSIEngines()).getEngine(playerURI.value);
+    opponent = await buildOpponentSettings();
   } catch (e) {
     useErrorStore().add(e);
     return;
   }
-  if (!engine) {
+  if (!opponent) {
     useErrorStore().add(new Error(`${t.failedToStartNewGame}: ${playerURI.value}`));
     return;
   }
   let black: PlayerSettings = { name: t.human, uri: uri.ES_HUMAN };
-  let white: PlayerSettings = { name: engine.name, uri: playerURI.value, usi: engine };
+  let white: PlayerSettings = opponent;
   if (turn === Color.WHITE) {
     [black, white] = [white, black];
   }

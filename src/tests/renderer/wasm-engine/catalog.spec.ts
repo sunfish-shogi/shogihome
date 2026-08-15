@@ -74,6 +74,31 @@ describe("wasm-engine/catalog", () => {
     expect(builtinEngineURI("basic-3ply-ranging-rook-v1")).toBe(
       "es://usi-engine/builtin/basic-3ply-ranging-rook-v1",
     );
+    expect(builtinEngineURI("basic-5ply-static-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-5ply-static-rook-v1",
+    );
+    expect(builtinEngineURI("basic-5ply-ranging-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-5ply-ranging-rook-v1",
+    );
+  });
+
+  // 深さ違いは同じ wasm から別のプリセットとして見せている。
+  // プリセットの値がオプションの初期値として入らないと、レベルの違いが出ない。
+  it("buildUSIEngines/presetValues", () => {
+    const engines = buildUSIEngines("basic", {
+      ...manifest,
+      options: [
+        ...(manifest.options || []),
+        { name: "Depth", type: "spin", default: 3, min: 1, max: 5 },
+      ],
+      presets: [
+        { id: "basic-3ply-static-rook-v1", displayName: "3ply", values: { Depth: 3 } },
+        { id: "basic-5ply-static-rook-v1", displayName: "5ply", values: { Depth: 5 } },
+      ],
+    });
+    expect(getUSIEngineOptionCurrentValue(engines[0].options["Depth"])).toBe(3);
+    expect(getUSIEngineOptionCurrentValue(engines[1].options["Depth"])).toBe(5);
+    expect(engines[1].name).toBe(`ShogiHome ${t.fivePlySearch} (${t.staticRook})`);
   });
 
   it("enginePath", () => {

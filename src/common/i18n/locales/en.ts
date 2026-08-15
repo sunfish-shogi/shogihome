@@ -696,6 +696,8 @@ export const en: Texts = {
   staticRook: "Static Rook",
   rangingRook: "Ranging Rook",
   threePlySearch: "3-Ply Search",
+  fivePlySearch: "5-Ply Search",
+  level: "Lv.",
   pleaseSelectEngines: "Please select engines.",
   thisItemCannotBeMerged: "This item cannot be merged.",
   tryingToConnectAndLoginToCSAServer: "Trying to connect and login to CSA server.",

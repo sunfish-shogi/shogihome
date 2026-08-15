@@ -105,6 +105,20 @@ describe("engines/basic (wasm)", () => {
     engine.quit();
   }, 20000);
 
+  // 5 手読みのプリセットが実際に深く読むこと。
+  it("Depth=5 で深さ 5 まで読むこと", async () => {
+    const engine = await launchBasic("static_rook", { Depth: "5" });
+    engine.lines.length = 0;
+    engine.command("position startpos");
+    engine.command("go btime 600000 wtime 600000 byoyomi 30000");
+    await engine.waitForResult();
+    const depths = engine.lines
+      .filter((line) => line.startsWith("info depth "))
+      .map((line) => Number(line.split(" ")[2]));
+    expect(Math.max(...depths)).toBe(5);
+    engine.quit();
+  }, 30000);
+
   it("合法手が無ければ投了すること", async () => {
     const sfen = "5+S2l/1+R7/2p1p+Bsp1/1p1p4p/8k/L3P1p1L/6PPP/1PGB3R1/3K2SNL w 3GS3N6P 1";
     for (const style of ["static_rook", "ranging_rook", "random"]) {
