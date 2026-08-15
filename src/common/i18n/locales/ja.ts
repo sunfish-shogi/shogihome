@@ -617,7 +617,7 @@ export const ja: Texts = {
   exportProfileToClipboard: "プロファイルをクリップボードに出力",
   importProfileFromClipboard: "クリップボードからプロファイルを取り込む",
   editLayoutWithDragAndDrop: "ドラッグで編集",
-  stretchCustomLayout: "画面サイズに合わせて伸縮",
+  stretchCustomLayout: "ウィンドウに合わせる",
   profileExportedToClipboard: "プロファイルをクリップボードに出力しました。",
   profileImported: "プロファイルを取り込みました。",
   failedToImportProfile: "プロファイルの取り込みに失敗しました。",

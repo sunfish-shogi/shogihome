@@ -63,16 +63,8 @@
             @update:value="(value) => updateCustomProfileProp('dialogPosition', value)"
           />
         </div>
-        <div v-if="!draggingMode" class="row">
+        <div v-if="!draggingMode" class="row profile-toggles">
           <ToggleButton
-            :value="!!customProfile.stretch"
-            :label="t.stretchCustomLayout"
-            @update:value="(value) => updateCustomProfileProp('stretch', value)"
-          />
-        </div>
-        <div v-if="!draggingMode" class="row">
-          <ToggleButton
-            class="color-toggle"
             :value="!!customProfile.backgroundColor"
             :label="t.backgroundColor"
             @update:value="
@@ -87,10 +79,14 @@
             @input="(e) => updateCustomProfileProp('backgroundColor', inputEventToString(e))"
           />
           <ToggleButton
-            class="backdrop-toggle"
             :value="!!customProfile.dialogBackdrop"
             :label="t.dialogBackdrop"
             @update:value="(value) => updateCustomProfileProp('dialogBackdrop', value)"
+          />
+          <ToggleButton
+            :value="!!customProfile.stretch"
+            :label="t.stretchCustomLayout"
+            @update:value="(value) => updateCustomProfileProp('stretch', value)"
           />
         </div>
         <div class="row">
@@ -819,16 +815,11 @@ button {
   display: inline-block;
   width: 50px;
 }
-.color-toggle {
+.profile-toggles > * {
   display: inline-block;
   margin-right: 20px;
 }
 .color-selector {
-  display: inline-block;
   height: 24px;
-  margin-right: 20px;
-}
-.backdrop-toggle {
-  display: inline-block;
 }
 </style>
