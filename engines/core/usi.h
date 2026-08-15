@@ -24,6 +24,13 @@ struct GoParams {
 // 1 行出力する。WebAssembly ビルドでは Module.print 経由で Worker に渡る。
 void usiOutput(const std::string& line);
 
+// 10 進数として解釈できた場合だけ *value に書き込み、true を返す。
+//
+// std::stoll / std::stoi は使ってはならない。Emscripten は既定で例外の捕捉を無効にする
+// (-sDISABLE_EXCEPTION_CATCHING=1) ため、throw が catch されずに abort となり、
+// GUI から不正な値を渡されただけでランタイムごと落ちる。try/catch で囲んでも無意味。
+bool parseInteger(const std::string& text, long long* value);
+
 // エンジンの実装が備えるべきインターフェース。
 // 新しいエンジンを追加する場合はこのクラスを継承し、main.cpp で UsiDriver に渡す。
 class Engine {

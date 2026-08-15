@@ -112,6 +112,47 @@ describe("engines/basic (wasm)", () => {
     }
   }, 30000);
 
+  // Emscripten は既定で例外を捕捉できず、throw がそのまま abort になる。
+  // 数値の解析で例外を投げると、GUI から値を渡されただけでランタイムごと落ちる。
+  it("不正な値でランタイムが落ちないこと", async () => {
+    const engine = await launchEngine("basic");
+    await handshake(engine);
+    engine.command("setoption name Depth value abc");
+    engine.command("setoption name MinimumThinkingTime value");
+    engine.command("isready");
+    await engine.waitFor((line) => line === "readyok", "readyok");
+    engine.command("usinewgame");
+    engine.lines.length = 0;
+    // 未知のキーや数値でない値が混ざっていても思考できること。
+    engine.command("position startpos");
+    engine.command("go searchmoves 7g7f btime xyz wtime 60000 byoyomi 10000");
+    const result = await engine.waitForResult();
+    expect(result.startsWith("bestmove ")).toBeTruthy();
+    expect(engine.lines.filter((line) => line.startsWith("ERR "))).toEqual([]);
+    engine.quit();
+  }, 20000);
+
+  // ponderhit は go と同じ形式で時間を受け取る。
+  // 解析を誤ると値のトークンをキーとして扱い、abort してランタイムが落ちる。
+  it("go ponder から ponderhit で着手すること", async () => {
+    const engine = await launchBasic("static_rook", { USI_Ponder: "true" });
+    engine.lines.length = 0;
+    engine.command("position startpos moves 7g7f");
+    engine.command("go ponder btime 300000 wtime 300000 byoyomi 30000");
+    // go ponder の間は bestmove を返さない。
+    for (let i = 0; i < 20; i++) {
+      engine.poll();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(engine.lines.some((line) => line.startsWith("bestmove "))).toBeFalsy();
+
+    engine.command("ponderhit btime 300000 wtime 300000 byoyomi 30000");
+    const result = await engine.waitForResult();
+    expect(result.startsWith("bestmove ")).toBeTruthy();
+    expect(engine.lines.filter((line) => line.startsWith("ERR "))).toEqual([]);
+    engine.quit();
+  }, 20000);
+
   it("goMate/notImplemented", async () => {
     const engine = await launchBasic("static_rook");
     engine.command("position startpos");

@@ -45,16 +45,15 @@ void BasicEngine::setOption(const std::string& name, const std::string& value) {
   if (name == "Style") {
     parseStyle(value, &style_);
   } else if (name == "Depth") {
-    try {
-      maxDepth_ = std::clamp(static_cast<int>(std::stoi(value)), 1, 5);
-    } catch (...) {
-      // 不正な値は無視する。
+    // 不正な値は無視する。try/catch を使ってはならない (usi.h の parseInteger を参照)。
+    long long parsed = 0;
+    if (parseInteger(value, &parsed)) {
+      maxDepth_ = static_cast<int>(std::clamp(parsed, 1LL, 5LL));
     }
   } else if (name == "MinimumThinkingTime") {
-    try {
-      minimumThinkingTimeMs_ = std::max(0LL, std::stoll(value));
-    } catch (...) {
-      // 不正な値は無視する。
+    long long parsed = 0;
+    if (parseInteger(value, &parsed)) {
+      minimumThinkingTimeMs_ = std::max(0LL, parsed);
     }
   }
 }

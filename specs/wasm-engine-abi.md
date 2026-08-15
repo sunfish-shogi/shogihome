@@ -269,6 +269,27 @@ Blob URL 経由で `import()` する。`exportName` はソースへ文字列と�
 `USI_Hash` のようにメモリを確保するオプションには必ず上限を設ける (例: 最大 256MB)。
 確保に失敗するとブラウザのタブごと落ちる。
 
+### 例外に注意する
+
+Emscripten は既定で例外の捕捉を無効にする (`-sDISABLE_EXCEPTION_CATCHING=1`)。
+**`try` / `catch` は取り除かれ、`throw` はそのまま `abort()` になる。**
+ネイティブビルドでは動く防御コードが wasm では機能しないため、次のような書き方は危険。
+
+```cpp
+try {
+  depth = std::stoi(value);   // 数値でなければ throw → catch されず abort
+} catch (...) {
+  // wasm ではここへ来ない
+}
+```
+
+`setoption` の値や `go` の引数は GUI や利用者が与えるもので、必ずしも数値とは限らない。
+`std::stoi` / `std::stoll` / `std::stod` は使わず、`std::from_chars` のように
+例外を投げない方法で変換する (`engines/core/usi.cpp` の `parseInteger` が実装例)。
+
+例外に依存した作りを変えられない場合は `-fexceptions` (または `-fwasm-exceptions`) を
+付ける。コードサイズと実行速度は悪化する。
+
 ---
 
 ## 6. データファイル (評価パラメータ・定跡)

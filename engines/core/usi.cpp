@@ -1,5 +1,6 @@
 #include "usi.h"
 
+#include <charconv>
 #include <cstdio>
 #include <sstream>
 
@@ -9,6 +10,14 @@ void usiOutput(const std::string& line) {
   std::fputs(line.c_str(), stdout);
   std::fputc('\n', stdout);
   std::fflush(stdout);
+}
+
+bool parseInteger(const std::string& text, long long* value) {
+  const char* begin = text.data();
+  const char* end = begin + text.size();
+  // 符号付きの 10 進数のみを受け付ける。前後に余分な文字があれば失敗とする。
+  const std::from_chars_result result = std::from_chars(begin, end, *value);
+  return result.ec == std::errc() && result.ptr == end;
 }
 
 namespace {
@@ -21,6 +30,30 @@ std::vector<std::string> split(const std::string& text) {
     tokens.push_back(token);
   }
   return tokens;
+}
+
+// "btime 300000 wtime 300000 ..." のような時間の指定を読み取る。
+// tokens[i] が既知のキーで、続くトークンが整数のときだけ params を更新して true を返す。
+// 変換はキーを判定した後にのみ行う (未知のキーに非数値が続いても落とさないため)。
+bool parseTimeToken(const std::vector<std::string>& tokens, size_t i, GoParams* params) {
+  if (i + 1 >= tokens.size()) {
+    return false;
+  }
+  long long* target = nullptr;
+  if (tokens[i] == "btime") {
+    target = &params->btime;
+  } else if (tokens[i] == "wtime") {
+    target = &params->wtime;
+  } else if (tokens[i] == "byoyomi") {
+    target = &params->byoyomi;
+  } else if (tokens[i] == "binc") {
+    target = &params->binc;
+  } else if (tokens[i] == "winc") {
+    target = &params->winc;
+  } else {
+    return false;
+  }
+  return parseInteger(tokens[i + 1], target);
 }
 
 // "position" 以降の引数から局面部分と moves 以降を切り分ける。
@@ -94,24 +127,15 @@ void UsiDriver::onGo(const std::string& args) {
     } else if (token == "mate") {
       params.mate = true;
       if (i + 1 < tokens.size()) {
-        params.mateMaxMs = tokens[i + 1] == "infinite" ? -1 : std::stoll(tokens[i + 1]);
-        i++;
+        if (tokens[i + 1] == "infinite") {
+          params.mateMaxMs = -1;
+          i++;
+        } else if (parseInteger(tokens[i + 1], &params.mateMaxMs)) {
+          i++;
+        }
       }
-    } else if (i + 1 < tokens.size()) {
-      const long long value = std::stoll(tokens[i + 1]);
-      if (token == "btime") {
-        params.btime = value;
-      } else if (token == "wtime") {
-        params.wtime = value;
-      } else if (token == "byoyomi") {
-        params.byoyomi = value;
-      } else if (token == "binc") {
-        params.binc = value;
-      } else if (token == "winc") {
-        params.winc = value;
-      } else {
-        continue;
-      }
+    } else if (parseTimeToken(tokens, i, &params)) {
+      // 値のトークンも消費する。
       i++;
     }
   }
@@ -173,18 +197,10 @@ bool UsiDriver::command(const std::string& line) {
   } else if (name == "ponderhit") {
     GoParams params;
     const std::vector<std::string> tokens = split(args);
-    for (size_t i = 0; i + 1 < tokens.size(); i++) {
-      const long long value = std::stoll(tokens[i + 1]);
-      if (tokens[i] == "btime") {
-        params.btime = value;
-      } else if (tokens[i] == "wtime") {
-        params.wtime = value;
-      } else if (tokens[i] == "byoyomi") {
-        params.byoyomi = value;
-      } else if (tokens[i] == "binc") {
-        params.binc = value;
-      } else if (tokens[i] == "winc") {
-        params.winc = value;
+    for (size_t i = 0; i < tokens.size(); i++) {
+      if (parseTimeToken(tokens, i, &params)) {
+        // 値のトークンも消費する。
+        i++;
       }
     }
     engine_.ponderHit(params);

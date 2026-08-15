@@ -10,6 +10,7 @@
 #include "basic/search.h"
 #include "basic/style.h"
 #include "core/position.h"
+#include "core/usi.h"
 
 namespace {
 
@@ -210,9 +211,86 @@ void testSelfPlay() {
   }
 }
 
+// go / ponderhit に渡されたパラメータを記録するだけのエンジン。
+class RecordingEngine : public shogi::Engine {
+ public:
+  std::string name() const override { return "recorder"; }
+  std::string author() const override { return "test"; }
+  std::vector<std::string> optionDefinitions() const override { return {}; }
+  void setOption(const std::string&, const std::string&) override {}
+  void go(const shogi::Position&, const std::vector<std::string>&,
+          const shogi::GoParams& params) override {
+    goParams = params;
+  }
+  void poll() override {}
+  void stop() override {}
+  void ponderHit(const shogi::GoParams& params) override { ponderHitParams = params; }
+
+  shogi::GoParams goParams;
+  shogi::GoParams ponderHitParams;
+};
+
+void testParseInteger() {
+  long long value = -1;
+  expect(shogi::parseInteger("300000", &value) && value == 300000, "parseInteger: 正の数");
+  expect(shogi::parseInteger("-5", &value) && value == -5, "parseInteger: 負の数");
+  // 例外を投げずに false を返すこと。
+  for (const std::string& text : {"", "wtime", "12x", "1 2", " 3", "+4", "1.5"}) {
+    expect(!shogi::parseInteger(text, &value), "parseInteger: 拒否すべき値: " + text);
+  }
+}
+
+// 時間の指定を読み取れること。不正なトークンでも落ちないこと。
+void testCommandParsing() {
+  RecordingEngine engine;
+  shogi::UsiDriver driver(engine);
+  driver.command("position startpos");
+
+  driver.command("go btime 300000 wtime 290000 byoyomi 30000 binc 1000 winc 2000");
+  expect(engine.goParams.btime == 300000, "go: btime");
+  expect(engine.goParams.wtime == 290000, "go: wtime");
+  expect(engine.goParams.byoyomi == 30000, "go: byoyomi");
+  expect(engine.goParams.binc == 1000, "go: binc");
+  expect(engine.goParams.winc == 2000, "go: winc");
+
+  // ponderhit も go と同じ形式で時間を受け取る。
+  // キーと値を 2 つずつ進めないと、値のトークンをキーとして解釈してしまう。
+  engine.ponderHitParams = shogi::GoParams();
+  driver.command("ponderhit btime 123000 wtime 456000 byoyomi 30000");
+  expect(engine.ponderHitParams.btime == 123000, "ponderhit: btime");
+  expect(engine.ponderHitParams.wtime == 456000, "ponderhit: wtime");
+  expect(engine.ponderHitParams.byoyomi == 30000, "ponderhit: byoyomi");
+
+  // 未知のキーに非数値が続いても落とさず、後続の指定は読めること。
+  engine.goParams = shogi::GoParams();
+  driver.command("go searchmoves 7g7f 3c3d btime 1000 wtime 2000");
+  expect(engine.goParams.btime == 1000, "go: 未知のキーの後の btime");
+  expect(engine.goParams.wtime == 2000, "go: 未知のキーの後の wtime");
+
+  // 値が数値でない場合は既定値のままにする。
+  engine.goParams = shogi::GoParams();
+  driver.command("go btime abc wtime 5000");
+  expect(engine.goParams.btime == 0, "go: 不正な btime は無視する");
+  expect(engine.goParams.wtime == 5000, "go: 不正な値の後の wtime");
+
+  engine.goParams = shogi::GoParams();
+  driver.command("go ponder btime 1000");
+  expect(engine.goParams.ponder && engine.goParams.btime == 1000, "go ponder");
+
+  engine.goParams = shogi::GoParams();
+  driver.command("go mate infinite");
+  expect(engine.goParams.mate && engine.goParams.mateMaxMs == -1, "go mate infinite");
+
+  engine.goParams = shogi::GoParams();
+  driver.command("go mate 5000");
+  expect(engine.goParams.mate && engine.goParams.mateMaxMs == 5000, "go mate 5000");
+}
+
 }  // namespace
 
 int main() {
+  testParseInteger();
+  testCommandParsing();
   testSFENRoundTrip();
   testRepetitionKey();
   testPieceSquareTableOrientation();
