@@ -65,6 +65,13 @@
         </div>
         <div v-if="!draggingMode" class="row">
           <ToggleButton
+            :value="!!customProfile.stretch"
+            :label="t.stretchCustomLayout"
+            @update:value="(value) => updateCustomProfileProp('stretch', value)"
+          />
+        </div>
+        <div v-if="!draggingMode" class="row">
+          <ToggleButton
             class="color-toggle"
             :value="!!customProfile.backgroundColor"
             :label="t.backgroundColor"

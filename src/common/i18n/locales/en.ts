@@ -617,6 +617,7 @@ export const en: Texts = {
   exportProfileToClipboard: "Export Profile to Clipboard",
   importProfileFromClipboard: "Import Profile from Clipboard",
   editLayoutWithDragAndDrop: "Edit with Drag and Drop",
+  stretchCustomLayout: "Scale to Fit Screen",
   profileExportedToClipboard: "Profile exported to clipboard.",
   profileImported: "Profile imported.",
   failedToImportProfile: "Failed to import profile.",

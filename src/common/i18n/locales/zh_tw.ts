@@ -624,6 +624,7 @@ export const zh_tw: Texts = {
   exportProfileToClipboard: "將佈局設定複製至剪貼板",
   importProfileFromClipboard: "自剪貼板匯入佈局設定",
   editLayoutWithDragAndDrop: "ドラッグで編集", // TODO: Translate
+  stretchCustomLayout: "縮放以符合螢幕",
   profileExportedToClipboard: "該佈局已複製至剪貼板。",
   profileImported: "該佈局已成功匯入。",
   failedToImportProfile: "佈局匯入失敗。",
