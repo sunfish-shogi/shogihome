@@ -12,6 +12,7 @@ endif()
 add_library(shogi_core STATIC
   core/position.cpp
   core/usi.cpp
+  core/zobrist.cpp
 )
 target_include_directories(shogi_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -21,6 +22,7 @@ add_library(basic_engine STATIC
   basic/pst.cpp
   basic/evaluate.cpp
   basic/search.cpp
+  basic/tt.cpp
   basic/engine.cpp
 )
 target_link_libraries(basic_engine PUBLIC shogi_core)

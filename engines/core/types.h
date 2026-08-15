@@ -101,6 +101,9 @@ enum Piece : int {
 
 constexpr int WHITE_PIECE_OFFSET = 16;
 
+// Piece を添字にする配列の要素数。後手の駒は WHITE_PIECE_OFFSET を足した値になる。
+constexpr int PIECE_COUNT = WHITE_PIECE_OFFSET * 2;
+
 inline Piece makePiece(Color color, PieceType type) {
   return static_cast<Piece>((color == WHITE ? WHITE_PIECE_OFFSET : 0) + type);
 }

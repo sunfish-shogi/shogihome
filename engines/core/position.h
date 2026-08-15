@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "types.h"
+#include "zobrist.h"
 
 namespace shogi {
 
@@ -53,8 +54,15 @@ class Position {
 
   // SFEN 形式 (手数の有無は問わない) から局面を設定する。
   bool setSFEN(const std::string& sfen);
-  // 手数を除いた SFEN 形式 (盤面 + 手番 + 持ち駒) を返す。千日手判定のキーとして使う。
+  // 手数を除いた SFEN 形式 (盤面 + 手番 + 持ち駒) を返す。
+  // 人が読める形が要る場面 (テスト・デバッグ) 用で、探索中は hashKey() を使う。
   std::string key() const;
+
+  // 局面のキー。盤面・持ち駒・手番から決まる。
+  // doMove / undoMove で差分更新するので取得は定数時間。
+  HashKey hashKey() const {
+    return hashKey_;
+  }
   // 手数付きの SFEN 形式を返す。
   std::string sfen(int ply) const;
 
@@ -102,9 +110,17 @@ class Position {
   bool isPawnDropMate(const Move& move) const;
   bool pawnExists(Color color, int file) const;
 
+  // 盤面・持ち駒・手番からキーを計算し直す。setSFEN の後に呼ぶ。
+  void resetHashKey();
+  // 盤上の駒を置き換える。キーの差分更新を伴う。
+  void setPiece(Square square, Piece piece);
+  // 持ち駒の枚数を増減する。キーの差分更新を伴う。
+  void addHand(Color color, PieceType type, int delta);
+
   std::array<Piece, SQUARE_COUNT> board_;
   std::array<std::array<int, PIECE_TYPE_COUNT>, 2> hands_;
   Color color_;
+  HashKey hashKey_ = 0;
 };
 
 }  // namespace shogi

@@ -12,6 +12,7 @@
 #include "core/position.h"
 #include "evaluate.h"
 #include "style.h"
+#include "tt.h"
 
 namespace shogi {
 namespace basic {
@@ -47,7 +48,8 @@ struct SearchLimits {
 // 改良の効果をノード数で測るときは false にすること。
 SearchResult search(Style style, const Position& position,
                     const std::vector<std::string>& historyKeys, int depth,
-                    const SearchLimits& limits, std::mt19937& rng, bool randomize = true);
+                    const SearchLimits& limits, std::mt19937& rng, bool randomize = true,
+                    TranspositionTable* tt = nullptr);
 
 // 合法手の中から一様ランダムに 1 手選ぶ。
 SearchResult searchRandom(const Position& position, std::mt19937& rng);

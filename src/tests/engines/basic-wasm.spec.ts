@@ -48,6 +48,7 @@ describe("engines/basic (wasm)", () => {
       "option name Style type combo default static_rook var static_rook var ranging_rook var random",
       "option name Depth type spin default 3 min 1 max 5",
       "option name MinimumThinkingTime type spin default 500 min 0 max 60000",
+      "option name USI_Hash type spin default 16 min 1 max 256",
       "option name Randomize type check default true",
       "option name USI_Ponder type check default false",
       "usiok",

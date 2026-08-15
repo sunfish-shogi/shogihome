@@ -1,6 +1,8 @@
 // エンジンの評価と探索の基本的な性質を確認する。
 #include <cstdio>
+#include <map>
 #include <random>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -286,9 +288,88 @@ void testCommandParsing() {
   expect(engine.goParams.mate && engine.goParams.mateMaxMs == 5000, "go mate 5000");
 }
 
+// Zobrist キーが SFEN のキーと一対一に対応し、doMove / undoMove の差分更新でも
+// 崩れないことを確認する。置換表はこのキーの正しさに全面的に依存する。
+void testHashKey() {
+  std::mt19937 rng(4649);
+  // SFEN キー -> ハッシュキーの対応表。食い違いがあれば差分更新が壊れている。
+  std::map<std::string, shogi::HashKey> keys;
+  int positions = 0;
+
+  for (int game = 0; game < 30; game++) {
+    shogi::Position position;
+    for (int ply = 0; ply < 60; ply++) {
+      // 別経路で同じ局面に来たら、同じキーになっていること。
+      const std::string sfenKey = position.key();
+      const shogi::HashKey hashKey = position.hashKey();
+      const auto found = keys.find(sfenKey);
+      if (found == keys.end()) {
+        keys.emplace(sfenKey, hashKey);
+      } else {
+        expect(found->second == hashKey, "同じ局面のキーが一致すること: " + sfenKey);
+      }
+      positions++;
+
+      // 局面を作り直したときのキーと、差分更新で得たキーが一致すること。
+      shogi::Position rebuilt;
+      expect(rebuilt.setSFEN(sfenKey), "setSFEN: " + sfenKey);
+      expect(rebuilt.hashKey() == hashKey, "作り直したキーと一致すること: " + sfenKey);
+
+      std::vector<shogi::Move> moves = position.listMoves();
+      if (moves.empty()) {
+        break;
+      }
+      // 合法手をひとつ選んで進める。
+      bool moved = false;
+      for (size_t i = 0; i < moves.size() && !moved; i++) {
+        const shogi::Move& move = moves[rng() % moves.size()];
+        if (position.doMove(move)) {
+          // undo で元のキーに戻ること。
+          const shogi::HashKey afterKey = position.hashKey();
+          position.undoMove(move);
+          expect(position.hashKey() == hashKey, "undoMove でキーが戻ること");
+          expect(position.doMove(move), "doMove の再実行");
+          expect(position.hashKey() == afterKey, "doMove の再実行でキーが一致すること");
+          moved = true;
+        }
+      }
+      if (!moved) {
+        break;
+      }
+    }
+  }
+  expect(positions > 500, "十分な数の局面を確認すること: " + std::to_string(positions));
+  // 異なる局面が同じキーになっていないこと (衝突の検出)。
+  std::set<shogi::HashKey> unique;
+  for (const auto& entry : keys) {
+    expect(unique.insert(entry.second).second, "キーが衝突しないこと: " + entry.first);
+  }
+}
+
+// 持ち駒の枚数がキーに反映されること。盤面が同じでも持ち駒が違えば別局面になる。
+void testHashKeyIncludesHand() {
+  shogi::Position a;
+  shogi::Position b;
+  expect(a.setSFEN("4k4/9/9/9/9/9/9/9/4K4 b P 1"), "setSFEN(a)");
+  expect(b.setSFEN("4k4/9/9/9/9/9/9/9/4K4 b 2P 1"), "setSFEN(b)");
+  expect(a.hashKey() != b.hashKey(), "持ち駒の枚数がキーに反映されること");
+
+  shogi::Position black;
+  shogi::Position white;
+  expect(black.setSFEN("4k4/9/9/9/9/9/9/9/4K4 b P 1"), "setSFEN(black)");
+  expect(white.setSFEN("4k4/9/9/9/9/9/9/9/4K4 b p 1"), "setSFEN(white)");
+  expect(black.hashKey() != white.hashKey(), "持ち駒の持ち主がキーに反映されること");
+
+  shogi::Position turn;
+  expect(turn.setSFEN("4k4/9/9/9/9/9/9/9/4K4 w P 1"), "setSFEN(turn)");
+  expect(black.hashKey() != turn.hashKey(), "手番がキーに反映されること");
+}
+
 }  // namespace
 
 int main() {
+  testHashKey();
+  testHashKeyIncludesHand();
   testParseInteger();
   testCommandParsing();
   testSFENRoundTrip();

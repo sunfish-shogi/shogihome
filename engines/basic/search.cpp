@@ -25,6 +25,7 @@ struct Context {
   long long nodes = 0;
   SearchLimits limits;
   bool aborted = false;
+  TranspositionTable* tt = nullptr;
   // 時刻の確認は頻繁に行うと重いので、一定ノード数ごとに行う。
   int checkCounter = 0;
   // 三角配列による PV の保持。
@@ -55,6 +56,20 @@ void orderMoves(std::vector<Move>& moves) {
   std::stable_sort(moves.begin(), moves.end(), [](const Move& a, const Move& b) {
     return materialDelta(a) > materialDelta(b);
   });
+}
+
+// 置換表に記録された手を先頭へ移す。
+// 前回の探索で最善だった手なので、これを最初に調べると β 遮断が早く起きる。
+// 置換表による枝刈りそのものより、この効果の方が大きいことも多い。
+void orderMovesWithHint(std::vector<Move>& moves, const Move& hint) {
+  orderMoves(moves);
+  if (hint.to == SQ_NONE) {
+    return;
+  }
+  const auto found = std::find(moves.begin(), moves.end(), hint);
+  if (found != moves.end()) {
+    std::rotate(moves.begin(), found, found + 1);
+  }
 }
 
 // ply は根からの手数 (PV の添字)、qply は静止探索に入ってからの手数。
@@ -122,10 +137,34 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
     return quiescence(context, position, alpha, beta, ply, 0);
   }
 
+  // 置換表を引く。深さが足りていれば探索そのものを省ける。
+  const HashKey key = position.hashKey();
+  Move hint;
+  if (context.tt != nullptr) {
+    const TTEntry* entry = context.tt->probe(key);
+    if (entry != nullptr) {
+      hint = entry->move;
+      if (entry->depth >= depth) {
+        const int score = scoreFromTT(entry->score, ply);
+        // fail-hard に合わせて窓の内側へ丸めて返す。
+        if (entry->bound == BOUND_EXACT) {
+          return std::clamp(score, alpha, beta);
+        }
+        if (entry->bound == BOUND_LOWER && score >= beta) {
+          return beta;
+        }
+        if (entry->bound == BOUND_UPPER && score <= alpha) {
+          return alpha;
+        }
+      }
+    }
+  }
+
   std::vector<Move> moves = position.listMoves();
-  orderMoves(moves);
+  orderMovesWithHint(moves, hint);
 
   bool hasLegalMove = false;
+  Move bestMove;
   for (const Move& move : moves) {
     if (!position.doMove(move)) {
       continue;
@@ -138,10 +177,15 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
       return 0;
     }
     if (score >= beta) {
+      // β 以上であることしか分からない (真の値はもっと大きいかもしれない)。
+      if (context.tt != nullptr) {
+        context.tt->store(key, move, scoreToTT(beta, ply), depth, BOUND_LOWER);
+      }
       return beta;
     }
     if (score > alpha) {
       alpha = score;
+      bestMove = move;
       // この手を先頭に、子の PV を連結する。
       context.pv[ply][0] = move;
       for (int i = 0; i < context.pvLength[ply + 1]; i++) {
@@ -154,6 +198,11 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
   if (!hasLegalMove) {
     // 合法手が無い局面は負け。手数が短いほど大きな絶対値にする。
     return -MATE_SCORE + ply;
+  }
+  if (context.tt != nullptr) {
+    // α を更新できた場合は正確な値、できなかった場合は上界。
+    const Bound bound = bestMove.to != SQ_NONE ? BOUND_EXACT : BOUND_UPPER;
+    context.tt->store(key, bestMove, scoreToTT(alpha, ply), depth, bound);
   }
   return alpha;
 }
@@ -172,7 +221,8 @@ size_t countKey(const std::vector<std::string>& keys, const std::string& key) {
 
 SearchResult search(Style style, const Position& position,
                     const std::vector<std::string>& historyKeys, int depth,
-                    const SearchLimits& limits, std::mt19937& rng, bool randomize) {
+                    const SearchLimits& limits, std::mt19937& rng, bool randomize,
+                    TranspositionTable* tt) {
   SearchResult result;
   result.depth = depth;
 
@@ -180,9 +230,13 @@ SearchResult search(Style style, const Position& position,
   Context context;
   context.style = style;
   context.limits = limits;
+  context.tt = tt;
 
+  const HashKey rootKey = working.hashKey();
   std::vector<Move> moves = working.listMoves();
-  orderMoves(moves);
+  // 反復深化では前の深さの最善手が置換表に入っている。それを先に調べる。
+  const TTEntry* rootEntry = tt != nullptr ? tt->probe(rootKey) : nullptr;
+  orderMovesWithHint(moves, rootEntry != nullptr ? rootEntry->move : Move());
 
   const int jitterRange = randomize ? JITTER_RANGE : 0;
   std::uniform_int_distribution<int> jitter(0, jitterRange);
@@ -227,6 +281,39 @@ SearchResult search(Style style, const Position& position,
         result.pv.push_back(context.pv[1][i]);
       }
     }
+  }
+
+  // 置換表で枝刈りした枝は三角配列に読み筋が残らないため、読み筋が途中で切れる。
+  // 足りないぶんを置換表から辿って補い、表示される読み筋が短くならないようにする。
+  if (tt != nullptr && result.found) {
+    Position walk = position;
+    bool ok = true;
+    for (const Move& move : result.pv) {
+      if (!walk.doMove(move)) {
+        ok = false;
+        break;
+      }
+    }
+    // 深さのぶんまで伸ばす。千日手で無限に辿らないよう回数で打ち切る。
+    while (ok && static_cast<int>(result.pv.size()) < depth) {
+      const TTEntry* entry = tt->probe(walk.hashKey());
+      if (entry == nullptr || entry->move.to == SQ_NONE || !walk.doMove(entry->move)) {
+        break;
+      }
+      result.pv.push_back(entry->move);
+    }
+  }
+
+  // 次の反復のために根の最善手を記録する。
+  // 打ち切られた場合の結果は信頼できないので入れない。
+  //
+  // 深さは -1 で記録する。根の評価値は正確とは限らないためで、
+  // 窓を bestScore で絞って探索した手は「これ以下」としか分かっていないし、
+  // 乱数を加えて選んだ場合はその手が最善だとも限らない。
+  // negamax が引くのは depth >= 1 のときだけなので、-1 なら枝刈りには使われず、
+  // 指し手順序付けのヒントとしてだけ働く。
+  if (tt != nullptr && result.found && !result.aborted) {
+    tt->store(rootKey, result.move, scoreToTT(result.score, 0), -1, BOUND_EXACT);
   }
 
   result.nodes = context.nodes;

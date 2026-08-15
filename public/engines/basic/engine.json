@@ -26,6 +26,13 @@
       "max": 60000
     },
     {
+      "name": "USI_Hash",
+      "type": "spin",
+      "default": 16,
+      "min": 1,
+      "max": 256
+    },
+    {
       "name": "Randomize",
       "type": "check",
       "default": "true"
@@ -40,22 +47,34 @@
     {
       "id": "basic-3ply-static-rook-v1",
       "displayName": "ShogiHome 3-Ply (Static Rook)",
-      "values": { "Style": "static_rook", "Depth": 3 }
+      "values": {
+        "Style": "static_rook",
+        "Depth": 3
+      }
     },
     {
       "id": "basic-3ply-ranging-rook-v1",
       "displayName": "ShogiHome 3-Ply (Ranging Rook)",
-      "values": { "Style": "ranging_rook", "Depth": 3 }
+      "values": {
+        "Style": "ranging_rook",
+        "Depth": 3
+      }
     },
     {
       "id": "basic-5ply-static-rook-v1",
       "displayName": "ShogiHome 5-Ply (Static Rook)",
-      "values": { "Style": "static_rook", "Depth": 5 }
+      "values": {
+        "Style": "static_rook",
+        "Depth": 5
+      }
     },
     {
       "id": "basic-5ply-ranging-rook-v1",
       "displayName": "ShogiHome 5-Ply (Ranging Rook)",
-      "values": { "Style": "ranging_rook", "Depth": 5 }
+      "values": {
+        "Style": "ranging_rook",
+        "Depth": 5
+      }
     }
   ]
 }

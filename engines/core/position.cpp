@@ -211,7 +211,37 @@ std::string moveToUSI(const Move& move) {
 }
 
 Position::Position() {
+  zobrist::initialize();
   setSFEN(STARTPOS_SFEN);
+}
+
+void Position::resetHashKey() {
+  hashKey_ = 0;
+  for (Square square = 0; square < SQUARE_COUNT; square++) {
+    hashKey_ ^= zobrist::PIECE[board_[square]][square];
+  }
+  for (int color = 0; color < 2; color++) {
+    for (int type = 0; type < PIECE_TYPE_COUNT; type++) {
+      hashKey_ ^= zobrist::HAND[color][type][hands_[color][type]];
+    }
+  }
+  if (color_ == WHITE) {
+    hashKey_ ^= zobrist::SIDE;
+  }
+}
+
+void Position::setPiece(Square square, Piece piece) {
+  // 置く前の駒を打ち消してから新しい駒を足す。空マスの値は 0 なので何もしないのと同じ。
+  hashKey_ ^= zobrist::PIECE[board_[square]][square];
+  board_[square] = piece;
+  hashKey_ ^= zobrist::PIECE[piece][square];
+}
+
+void Position::addHand(Color color, PieceType type, int delta) {
+  int& count = hands_[color][type];
+  hashKey_ ^= zobrist::HAND[color][type][count];
+  count += delta;
+  hashKey_ ^= zobrist::HAND[color][type][count];
 }
 
 bool Position::setSFEN(const std::string& sfen) {
@@ -281,6 +311,7 @@ bool Position::setSFEN(const std::string& sfen) {
       count = 0;
     }
   }
+  resetHashKey();
   return true;
 }
 
@@ -597,35 +628,36 @@ bool Position::doMove(const Move& move) {
   if (!move.isDrop()) {
     const Piece target = board_[move.from];
     const Piece captured = board_[move.to];
-    board_[move.from] = NO_PIECE;
-    board_[move.to] =
-        move.promote ? makePiece(color_, promotedPieceType(typeOf(target))) : target;
+    setPiece(move.from, NO_PIECE);
+    setPiece(move.to, move.promote ? makePiece(color_, promotedPieceType(typeOf(target))) : target);
     if (!isEmpty(captured) && typeOf(captured) != KING) {
-      hands_[color_][unpromotedPieceType(typeOf(captured))]++;
+      addHand(color_, unpromotedPieceType(typeOf(captured)), 1);
     }
   } else {
-    hands_[color_][move.pieceType]--;
-    board_[move.to] = makePiece(color_, move.pieceType);
+    addHand(color_, move.pieceType, -1);
+    setPiece(move.to, makePiece(color_, move.pieceType));
   }
   color_ = opposite(color_);
+  hashKey_ ^= zobrist::SIDE;
   return true;
 }
 
 void Position::undoMove(const Move& move) {
   color_ = opposite(color_);
+  hashKey_ ^= zobrist::SIDE;
   if (!move.isDrop()) {
-    board_[move.from] = makePiece(color_, move.pieceType);
+    setPiece(move.from, makePiece(color_, move.pieceType));
     if (move.capturedPieceType != NO_PIECE_TYPE) {
-      board_[move.to] = makePiece(opposite(color_), move.capturedPieceType);
+      setPiece(move.to, makePiece(opposite(color_), move.capturedPieceType));
       if (move.capturedPieceType != KING) {
-        hands_[color_][unpromotedPieceType(move.capturedPieceType)]--;
+        addHand(color_, unpromotedPieceType(move.capturedPieceType), -1);
       }
     } else {
-      board_[move.to] = NO_PIECE;
+      setPiece(move.to, NO_PIECE);
     }
   } else {
-    board_[move.to] = NO_PIECE;
-    hands_[color_][move.pieceType]++;
+    setPiece(move.to, NO_PIECE);
+    addHand(color_, move.pieceType, 1);
   }
 }
 

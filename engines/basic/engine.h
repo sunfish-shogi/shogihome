@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include <cstddef>
 #include <random>
 #include <string>
 #include <vector>
@@ -12,6 +13,7 @@
 #include "core/usi.h"
 #include "search.h"
 #include "style.h"
+#include "tt.h"
 
 namespace shogi {
 namespace basic {
@@ -24,6 +26,7 @@ class BasicEngine : public Engine {
   std::string author() const override;
   std::vector<std::string> optionDefinitions() const override;
   void setOption(const std::string& name, const std::string& value) override;
+  void prepare() override;
   void newGame() override;
   void go(const Position& position, const std::vector<std::string>& historyKeys,
           const GoParams& params) override;
@@ -50,6 +53,8 @@ class BasicEngine : public Engine {
   int maxDepth_ = 3;
   long long minimumThinkingTimeMs_ = 500;
   bool randomize_ = true;
+  std::size_t hashSizeMB_ = 16;
+  TranspositionTable tt_;
   long long nodeLimit_ = 3000000;
   std::mt19937 rng_;
 
