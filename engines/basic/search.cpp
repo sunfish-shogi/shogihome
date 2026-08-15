@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <utility>
 
 namespace shogi {
 namespace basic {
@@ -21,6 +22,14 @@ constexpr int JITTER_RANGE = 3;
 constexpr int REPETITION_PENALTY = 1000;
 // null move pruning で減らす深さ。
 constexpr int NULL_MOVE_REDUCTION = 2;
+// 各深さで覚えておく killer move の数。
+constexpr int KILLER_COUNT = 2;
+
+// 指し手の並べ替えに使う点数。駒の価値 (最大 1500、取ると 2 倍で 3000) より
+// 十分大きな間隔を空けて、種別の順序が駒割で逆転しないようにする。
+constexpr int ORDER_HINT = 1000000;
+constexpr int ORDER_CAPTURE = 100000;
+constexpr int ORDER_KILLER = 10000;
 
 struct Context {
   Style style = STYLE_STATIC_ROOK;
@@ -33,6 +42,23 @@ struct Context {
   // 三角配列による PV の保持。
   Move pv[MAX_PLY][MAX_PLY];
   int pvLength[MAX_PLY] = {};
+  // killer move。同じ深さで β 遮断を起こした「駒を取らない手」を覚えておく。
+  // 兄弟ノードでも同じ手が有効なことが多いので、次に調べるときは先に試す。
+  Move killers[MAX_PLY][KILLER_COUNT];
+
+  // β 遮断を起こした手を記録する。駒を取る手は元々先に調べるので対象外。
+  void recordKiller(const Move& move, int ply) {
+    if (move.capturedPieceType != NO_PIECE_TYPE || ply >= MAX_PLY) {
+      return;
+    }
+    if (killers[ply][0] == move) {
+      return;
+    }
+    for (int i = KILLER_COUNT - 1; i > 0; i--) {
+      killers[ply][i] = killers[ply][i - 1];
+    }
+    killers[ply][0] = move;
+  }
 
   bool checkLimits() {
     if (aborted) {
@@ -53,24 +79,43 @@ struct Context {
   }
 };
 
-// 駒を取る手・成る手を先に調べることで α-β の枝刈りが効きやすくなる。
-void orderMoves(std::vector<Move>& moves) {
-  std::stable_sort(moves.begin(), moves.end(), [](const Move& a, const Move& b) {
-    return materialDelta(a) > materialDelta(b);
-  });
+// 指し手の優先度。大きいほど先に調べる。
+//   1. 置換表の手 (前回の探索で最善だった手)
+//   2. 駒を取る手・成る手 (駒割の大きい順)
+//   3. killer move (同じ深さで β 遮断を起こした手)
+//   4. それ以外
+int moveOrderScore(const Move& move, const Move& hint, const Move* killers) {
+  if (hint.to != SQ_NONE && move == hint) {
+    return ORDER_HINT;
+  }
+  const int delta = materialDelta(move);
+  if (delta > 0) {
+    return ORDER_CAPTURE + delta;
+  }
+  if (killers != nullptr) {
+    for (int i = 0; i < KILLER_COUNT; i++) {
+      if (killers[i].to != SQ_NONE && move == killers[i]) {
+        // 先に覚えた方をより優先する。
+        return ORDER_KILLER - i;
+      }
+    }
+  }
+  return delta;
 }
 
-// 置換表に記録された手を先頭へ移す。
-// 前回の探索で最善だった手なので、これを最初に調べると β 遮断が早く起きる。
-// 置換表による枝刈りそのものより、この効果の方が大きいことも多い。
-void orderMovesWithHint(std::vector<Move>& moves, const Move& hint) {
-  orderMoves(moves);
-  if (hint.to == SQ_NONE) {
-    return;
+// 優先度の降順に並べ替える。安定ソートなので同じ点数の手の順序は変わらない。
+// 点数は比較のたびに計算すると O(n log n) 回になるので、先に求めておく。
+void orderMoves(std::vector<Move>& moves, const Move& hint = Move(),
+                const Move* killers = nullptr) {
+  std::vector<std::pair<int, Move>> scored;
+  scored.reserve(moves.size());
+  for (const Move& move : moves) {
+    scored.emplace_back(moveOrderScore(move, hint, killers), move);
   }
-  const auto found = std::find(moves.begin(), moves.end(), hint);
-  if (found != moves.end()) {
-    std::rotate(moves.begin(), found, found + 1);
+  std::stable_sort(scored.begin(), scored.end(),
+                   [](const auto& a, const auto& b) { return a.first > b.first; });
+  for (size_t i = 0; i < scored.size(); i++) {
+    moves[i] = scored[i].second;
   }
 }
 
@@ -187,7 +232,7 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
   }
 
   std::vector<Move> moves = position.listMoves();
-  orderMovesWithHint(moves, hint);
+  orderMoves(moves, hint, context.killers[ply]);
 
   bool hasLegalMove = false;
   Move bestMove;
@@ -203,6 +248,8 @@ int negamax(Context& context, Position& position, int depth, int alpha, int beta
       return 0;
     }
     if (score >= beta) {
+      // 駒を取らない手で遮断できたなら、兄弟ノードでも有効な可能性が高い。
+      context.recordKiller(move, ply);
       // β 以上であることしか分からない (真の値はもっと大きいかもしれない)。
       if (context.tt != nullptr) {
         context.tt->store(key, move, scoreToTT(beta, ply), depth, BOUND_LOWER);
@@ -262,7 +309,7 @@ SearchResult search(Style style, const Position& position,
   std::vector<Move> moves = working.listMoves();
   // 反復深化では前の深さの最善手が置換表に入っている。それを先に調べる。
   const TTEntry* rootEntry = tt != nullptr ? tt->probe(rootKey) : nullptr;
-  orderMovesWithHint(moves, rootEntry != nullptr ? rootEntry->move : Move());
+  orderMoves(moves, rootEntry != nullptr ? rootEntry->move : Move());
 
   const int jitterRange = randomize ? JITTER_RANGE : 0;
   std::uniform_int_distribution<int> jitter(0, jitterRange);
