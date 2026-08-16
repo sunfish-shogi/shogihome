@@ -96,7 +96,14 @@ long long BasicEngine::computeBudgetMs(const GoParams& params) const {
   } else {
     budget = remain / 40;
   }
-  return std::clamp(budget, MIN_BUDGET_MS, MAX_BUDGET_MS);
+  budget = std::clamp(budget, MIN_BUDGET_MS, MAX_BUDGET_MS);
+  // MIN_BUDGET_MS の下限が持ち時間を超えることがあるので、実際に使える時間で頭打ちにする。
+  // 秒読みと加算は持ち時間を使い切った後も使えるため、残り時間に足して考える
+  // (ShogiHome は加算ぶんを引いた btime を送ってくるので、ここで足し戻す)。
+  // 両方が同時に指定されることは無い。
+  const long long available =
+      std::max(0LL, remain) + std::max(0LL, params.byoyomi) + std::max(0LL, increment);
+  return std::min(budget, available);
 }
 
 void BasicEngine::go(const Position& position, const std::vector<std::string>& historyKeys,
@@ -141,12 +148,16 @@ void BasicEngine::go(const Position& position, const std::vector<std::string>& h
   }
 
   // 深さ 1 は必ずこの場で終わらせ、いつ stop されても指し手を返せるようにする。
-  runIteration(1);
+  // 締切を無視するのは、持ち時間を使い切っていても指し手を返せるようにするため。
+  // ここで打ち切られると指し手が 1 つも無いまま bestmove を出すことになり、
+  // flushBestMove() が resign を出してしまう。深さ 1 は静止探索を含めても
+  // 数ミリ秒で終わるので、超過は無視できる。
+  runIteration(1, /* ignoreDeadline = */ true);
 }
 
-void BasicEngine::runIteration(int depth) {
+void BasicEngine::runIteration(int depth, bool ignoreDeadline) {
   SearchLimits limits;
-  limits.deadline = hardDeadline_;
+  limits.deadline = ignoreDeadline ? std::chrono::steady_clock::time_point::max() : hardDeadline_;
   limits.nodeLimit = nodeLimit_;
   const SearchResult result =
       search(style_, position_, historyKeys_, depth, limits, rng_, randomize_, &tt_);

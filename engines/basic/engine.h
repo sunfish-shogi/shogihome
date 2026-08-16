@@ -44,7 +44,8 @@ class BasicEngine : public Engine {
     WAITING,
   };
 
-  void runIteration(int depth);
+  // ignoreDeadline は深さ 1 でのみ使う。理由は go() のコメントを参照。
+  void runIteration(int depth, bool ignoreDeadline = false);
   void outputInfo() const;
   void flushBestMove();
   long long computeBudgetMs(const GoParams& params) const;
