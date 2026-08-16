@@ -2,7 +2,7 @@
   "abi": "shogihome-wasm-engine/1",
   "module": "basic.js",
   "moduleFormat": "esm",
-  "name": "ShogiHome 3-Ply Engine",
+  "name": "ShogiHome Basic Engine",
   "author": "Kubo, Ryosuke",
   "options": [
     {
@@ -45,32 +45,32 @@
   ],
   "presets": [
     {
-      "id": "basic-3ply-static-rook-v1",
-      "displayName": "ShogiHome 3-Ply (Static Rook)",
+      "id": "basic-level2-static-rook-v1",
+      "displayName": "ShogiHome Level 2 (Static Rook)",
       "values": {
         "Style": "static_rook",
         "Depth": 3
       }
     },
     {
-      "id": "basic-3ply-ranging-rook-v1",
-      "displayName": "ShogiHome 3-Ply (Ranging Rook)",
+      "id": "basic-level2-ranging-rook-v1",
+      "displayName": "ShogiHome Level 2 (Ranging Rook)",
       "values": {
         "Style": "ranging_rook",
         "Depth": 3
       }
     },
     {
-      "id": "basic-5ply-static-rook-v1",
-      "displayName": "ShogiHome 5-Ply (Static Rook)",
+      "id": "basic-level3-static-rook-v1",
+      "displayName": "ShogiHome Level 3 (Static Rook)",
       "values": {
         "Style": "static_rook",
         "Depth": 5
       }
     },
     {
-      "id": "basic-5ply-ranging-rook-v1",
-      "displayName": "ShogiHome 5-Ply (Ranging Rook)",
+      "id": "basic-level3-ranging-rook-v1",
+      "displayName": "ShogiHome Level 3 (Ranging Rook)",
       "values": {
         "Style": "ranging_rook",
         "Depth": 5

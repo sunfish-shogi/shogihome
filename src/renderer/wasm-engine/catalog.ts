@@ -49,12 +49,14 @@ export function resolveEngineDirURL(path: string): string {
 }
 
 // 表示名を ShogiHome の i18n で上書きする。
-// TypeScript 実装の簡易エンジン (初心者) と区別できるように、探索の深さを名前に含める。
+// TypeScript 実装の簡易エンジン (Lv. 1) と区別できるように、強さをレベルで名前に含める。
+// モバイル表示のボタン (MobileGameMenu.vue) と同じ表記に揃えてある。
+// 探索の深さ (Depth) はオプションで変更できるため、名前には含めない。
 const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
-  "basic-3ply-static-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.staticRook})`,
-  "basic-3ply-ranging-rook-v1": () => `ShogiHome ${t.threePlySearch} (${t.rangingRook})`,
-  "basic-5ply-static-rook-v1": () => `ShogiHome ${t.fivePlySearch} (${t.staticRook})`,
-  "basic-5ply-ranging-rook-v1": () => `ShogiHome ${t.fivePlySearch} (${t.rangingRook})`,
+  "basic-level2-static-rook-v1": () => `ShogiHome ${t.level} 2 (${t.staticRook})`,
+  "basic-level2-ranging-rook-v1": () => `ShogiHome ${t.level} 2 (${t.rangingRook})`,
+  "basic-level3-static-rook-v1": () => `ShogiHome ${t.level} 3 (${t.staticRook})`,
+  "basic-level3-ranging-rook-v1": () => `ShogiHome ${t.level} 3 (${t.rangingRook})`,
 };
 
 export function builtinEngineURI(presetID: string): string {

@@ -43,7 +43,7 @@ describe("engines/basic (wasm)", () => {
     engine.command("usi");
     await engine.waitFor((line) => line === "usiok", "usiok");
     expect(engine.lines).toEqual([
-      "id name ShogiHome 3-Ply Engine",
+      "id name ShogiHome Basic Engine",
       "id author Kubo, Ryosuke",
       "option name Style type combo default static_rook var static_rook var ranging_rook var random",
       "option name Depth type spin default 3 min 1 max 5",
@@ -86,7 +86,7 @@ describe("engines/basic (wasm)", () => {
     const depths = engine.lines
       .filter((line) => line.startsWith("info depth "))
       .map((line) => Number(line.split(" ")[2]));
-    // 浅い方から順に出力され、最終的に 3 手読みに到達すること。
+    // 浅い方から順に出力され、最終的に深さ 3 に到達すること。
     expect(depths).toContain(1);
     expect(Math.max(...depths)).toBe(3);
     // 読み筋が指し手の列として出ること。
@@ -107,7 +107,7 @@ describe("engines/basic (wasm)", () => {
     engine.quit();
   }, 20000);
 
-  // 5 手読みのプリセットが実際に深く読むこと。
+  // Lv. 3 のプリセット (Depth=5) が実際に深く読むこと。
   it("Depth=5 で深さ 5 まで読むこと", async () => {
     const engine = await launchBasic("static_rook", { Depth: "5" });
     engine.lines.length = 0;

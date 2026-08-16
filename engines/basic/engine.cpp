@@ -23,7 +23,9 @@ constexpr long long INFINITE_BUDGET_MS = 10000;
 BasicEngine::BasicEngine() : rng_(std::random_device{}()) {}
 
 std::string BasicEngine::name() const {
-  return "ShogiHome 3-Ply Engine";
+  // 1 つのバイナリで Depth 1〜5 を賄うため、名前に強さを含めない。
+  // 強さの区別はマニフェストのプリセット (Level 2 / Level 3) が持つ。
+  return "ShogiHome Basic Engine";
 }
 
 std::string BasicEngine::author() const {

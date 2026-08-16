@@ -15,7 +15,7 @@ const manifest: EngineManifest = {
   abi: ENGINE_ABI,
   module: "basic.js",
   moduleFormat: "esm",
-  name: "ShogiHome 3-Ply Engine",
+  name: "ShogiHome Basic Engine",
   author: "Kubo, Ryosuke",
   options: [
     {
@@ -28,13 +28,13 @@ const manifest: EngineManifest = {
   ],
   presets: [
     {
-      id: "basic-3ply-static-rook-v1",
-      displayName: "ShogiHome 3-Ply (Static Rook)",
+      id: "basic-level2-static-rook-v1",
+      displayName: "ShogiHome Level 2 (Static Rook)",
       values: { Style: "static_rook" },
     },
     {
-      id: "basic-3ply-ranging-rook-v1",
-      displayName: "ShogiHome 3-Ply (Ranging Rook)",
+      id: "basic-level2-ranging-rook-v1",
+      displayName: "ShogiHome Level 2 (Ranging Rook)",
       values: { Style: "ranging_rook" },
     },
   ],
@@ -52,7 +52,7 @@ describe("wasm-engine/catalog", () => {
       expect(uri.isUSIEngine(engine.uri)).toBeTruthy();
       // validateUSIEngine が path の非空を要求する。
       expect(engine.path).toBe("engines/basic/");
-      expect(engine.defaultName).toBe("ShogiHome 3-Ply Engine");
+      expect(engine.defaultName).toBe("ShogiHome Basic Engine");
       expect(engine.author).toBe("Kubo, Ryosuke");
       // エンジンが宣言していない予約オプションは補完される。
       expect(engine.options["USI_Hash"]?.type).toBe("spin");
@@ -61,24 +61,24 @@ describe("wasm-engine/catalog", () => {
     expect(getUSIEngineOptionCurrentValue(engines[0].options["Style"])).toBe("static_rook");
     expect(getUSIEngineOptionCurrentValue(engines[1].options["Style"])).toBe("ranging_rook");
     // TypeScript 実装の簡易エンジンと区別できる名前になっていること。
-    expect(engines[0].name).toBe(`ShogiHome ${t.threePlySearch} (${t.staticRook})`);
-    expect(engines[1].name).toBe(`ShogiHome ${t.threePlySearch} (${t.rangingRook})`);
+    expect(engines[0].name).toBe(`ShogiHome ${t.level} 2 (${t.staticRook})`);
+    expect(engines[1].name).toBe(`ShogiHome ${t.level} 2 (${t.rangingRook})`);
     expect(engines[0].name).not.toBe(uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1));
   });
 
   it("stableURIs", () => {
     // URI を変更すると保存済みの対局設定が壊れるため、値そのものを固定する。
-    expect(builtinEngineURI("basic-3ply-static-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-3ply-static-rook-v1",
+    expect(builtinEngineURI("basic-level2-static-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-level2-static-rook-v1",
     );
-    expect(builtinEngineURI("basic-3ply-ranging-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-3ply-ranging-rook-v1",
+    expect(builtinEngineURI("basic-level2-ranging-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-level2-ranging-rook-v1",
     );
-    expect(builtinEngineURI("basic-5ply-static-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-5ply-static-rook-v1",
+    expect(builtinEngineURI("basic-level3-static-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-level3-static-rook-v1",
     );
-    expect(builtinEngineURI("basic-5ply-ranging-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-5ply-ranging-rook-v1",
+    expect(builtinEngineURI("basic-level3-ranging-rook-v1")).toBe(
+      "es://usi-engine/builtin/basic-level3-ranging-rook-v1",
     );
   });
 
@@ -92,13 +92,13 @@ describe("wasm-engine/catalog", () => {
         { name: "Depth", type: "spin", default: 3, min: 1, max: 5 },
       ],
       presets: [
-        { id: "basic-3ply-static-rook-v1", displayName: "3ply", values: { Depth: 3 } },
-        { id: "basic-5ply-static-rook-v1", displayName: "5ply", values: { Depth: 5 } },
+        { id: "basic-level2-static-rook-v1", displayName: "level2", values: { Depth: 3 } },
+        { id: "basic-level3-static-rook-v1", displayName: "level3", values: { Depth: 5 } },
       ],
     });
     expect(getUSIEngineOptionCurrentValue(engines[0].options["Depth"])).toBe(3);
     expect(getUSIEngineOptionCurrentValue(engines[1].options["Depth"])).toBe(5);
-    expect(engines[1].name).toBe(`ShogiHome ${t.fivePlySearch} (${t.staticRook})`);
+    expect(engines[1].name).toBe(`ShogiHome ${t.level} 3 (${t.staticRook})`);
   });
 
   it("enginePath", () => {
@@ -142,7 +142,7 @@ describe("wasm-engine/catalog", () => {
     expect(restored.engineList).toHaveLength(2);
     expect(
       getUSIEngineOptionCurrentValue(
-        restored.getEngine(builtinEngineURI("basic-3ply-static-rook-v1"))?.options["Style"],
+        restored.getEngine(builtinEngineURI("basic-level2-static-rook-v1"))?.options["Style"],
       ),
     ).toBe("static_rook");
   });

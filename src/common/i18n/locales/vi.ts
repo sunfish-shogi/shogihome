@@ -705,8 +705,6 @@ export const vi: Texts = {
   beginner: "Người mới học",
   staticRook: "Cư Phi Xa",
   rangingRook: "Chấn Phi Xa",
-  threePlySearch: "3手読み", // TODO: Translate
-  fivePlySearch: "5手読み", // TODO: Translate
   level: "Lv.", // TODO: Translate
   pleaseSelectEngines: "Vui lòng chọn phần mềm.",
   thisItemCannotBeMerged: "Mục này không thể sáp nhập.",

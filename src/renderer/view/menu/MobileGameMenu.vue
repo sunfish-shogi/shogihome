@@ -60,10 +60,10 @@ import { SearchCommentFormat } from "@/common/settings/comment";
 const players = [
   { level: 1, uri: uri.ES_BASIC_ENGINE_STATIC_ROOK_V1, style: () => t.staticRook },
   { level: 1, uri: uri.ES_BASIC_ENGINE_RANGING_ROOK_V1, style: () => t.rangingRook },
-  { level: 2, uri: builtinEngineURI("basic-3ply-static-rook-v1"), style: () => t.staticRook },
-  { level: 2, uri: builtinEngineURI("basic-3ply-ranging-rook-v1"), style: () => t.rangingRook },
-  { level: 3, uri: builtinEngineURI("basic-5ply-static-rook-v1"), style: () => t.staticRook },
-  { level: 3, uri: builtinEngineURI("basic-5ply-ranging-rook-v1"), style: () => t.rangingRook },
+  { level: 2, uri: builtinEngineURI("basic-level2-static-rook-v1"), style: () => t.staticRook },
+  { level: 2, uri: builtinEngineURI("basic-level2-ranging-rook-v1"), style: () => t.rangingRook },
+  { level: 3, uri: builtinEngineURI("basic-level3-static-rook-v1"), style: () => t.staticRook },
+  { level: 3, uri: builtinEngineURI("basic-level3-ranging-rook-v1"), style: () => t.rangingRook },
 ].map((player) => ({ uri: player.uri, label: `${t.level} ${player.level} ${player.style()}` }));
 
 const store = useStore();

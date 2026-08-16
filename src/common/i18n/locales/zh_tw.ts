@@ -702,8 +702,6 @@ export const zh_tw: Texts = {
   beginner: "初學者",
   staticRook: "居飛車",
   rangingRook: "振飛車",
-  threePlySearch: "3手読み", // TODO: Translate
-  fivePlySearch: "5手読み", // TODO: Translate
   level: "Lv.", // TODO: Translate
   pleaseSelectEngines: "請選擇引擎。",
   thisItemCannotBeMerged: "該項目無法被合併。",
