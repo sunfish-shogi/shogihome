@@ -153,6 +153,7 @@ function copyArtifacts() {
       }
       const dest = path.join(destDir, file.dest);
       fs.copyFileSync(file.src, dest);
+      fs.chmodSync(dest, 0o644);
       const size = fs.statSync(dest).size;
       console.log(`${path.relative(rootDir, dest)} (${(size / 1024).toFixed(1)} KB)`);
     }
