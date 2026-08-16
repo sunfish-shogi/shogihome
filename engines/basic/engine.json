@@ -1,5 +1,5 @@
 {
-  "abi": "shogihome-wasm-engine/2",
+  "abi": "shogihome-wasm-engine/1",
   "module": "basic.js",
   "moduleFormat": "esm",
   "name": "ShogiHome 3-Ply Engine",

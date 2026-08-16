@@ -7,7 +7,7 @@ import { USIEngineOptionType } from "@/common/settings/usi.js";
 import { EXPORT_NAME_PATTERN } from "./loader.js";
 
 // マニフェストの abi フィールドが取り得る値。非互換な変更を入れる際に更新する。
-export const ENGINE_ABI = "shogihome-wasm-engine/2";
+export const ENGINE_ABI = "shogihome-wasm-engine/1";
 
 export const MANIFEST_FILE_NAME = "engine.json";
 

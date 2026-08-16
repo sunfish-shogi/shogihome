@@ -1,4 +1,4 @@
-# WebAssembly エンジン ABI: `shogihome-wasm-engine/2`
+# WebAssembly エンジン ABI: `shogihome-wasm-engine/1`
 
 ShogiHome の Web 版 (ブラウザ / PWA) に載せる USI エンジンが満たすべき仕様。
 
@@ -11,14 +11,14 @@ ShogiHome 側の仕組みは [`wasm-engine.md`](./wasm-engine.md) を参照。
 
 ## 版
 
-本文書は `shogihome-wasm-engine/2` を定義する。マニフェストの `abi` にこの文字列を書く。
+本文書は `shogihome-wasm-engine/1` を定義する。マニフェストの `abi` にこの文字列を書く。
 非互換な変更を行う場合は版を上げる。ShogiHome は未知の版のマニフェストを読み込まず、
 そのエンジンを一覧から除外する。
 
-版 2 では、モジュールが公開するインターフェースを **YaneuraOu の wasm ビルドと同じ形**
+モジュールが公開するインターフェースは **YaneuraOu の wasm ビルドと同じ形**
 (`postMessage` / `addMessageListener` / `removeMessageListener` / `terminate` / `FS`) に
-揃えた。版 1 の `usi_init` / `usi_command` / `usi_poll` を C の関数として直接呼ぶ方式は
-廃止したが、それらを JavaScript 側で包む定型のシムを用意してあるので
+揃えてある。C の関数 (`usi_command` / `usi_poll`) を直接呼ぶ形ではないが、
+それらを JavaScript 側で包む定型のシムを用意してあるので
 (「3. モジュールのインターフェース」を参照)、エンジン側の C++ の作りは変わらない。
 
 ただし**形が揃うことと実際に動くことは別**である。YaneuraOu 本体を載せるには
@@ -44,7 +44,7 @@ public/engines/<dir>/
 
 ```json
 {
-  "abi": "shogihome-wasm-engine/2",
+  "abi": "shogihome-wasm-engine/1",
   "module": "basic.js",
   "moduleFormat": "esm",
   "name": "ShogiHome Basic Engine",
@@ -71,7 +71,7 @@ public/engines/<dir>/
 
 | フィールド     | 必須 | 内容                                                             |
 | -------------- | ---- | ---------------------------------------------------------------- |
-| `abi`          | ○    | `shogihome-wasm-engine/2`                                        |
+| `abi`          | ○    | `shogihome-wasm-engine/1`                                        |
 | `module`       | ○    | グルーコードのファイル名。マニフェストからの相対パス             |
 | `moduleFormat` |      | `esm` (既定) または `umd`。「4. グルーコードの形式」を参照       |
 | `exportName`   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
