@@ -40,11 +40,11 @@ int evaluatePosition(Style style, const Position& position) {
     score += black ? value : -value;
   }
 
-  // 持ち駒: 駒割のみ。
+  // 持ち駒: 駒割のみ。位置が無い代わりに HAND_BONUS を上乗せする。
   for (int i = 0; i < HAND_PIECE_TYPE_COUNT; i++) {
     const PieceType type = HAND_PIECE_TYPES[i];
-    score += position.handCount(BLACK, type) * PIECE_VALUES[type];
-    score -= position.handCount(WHITE, type) * PIECE_VALUES[type];
+    score += position.handCount(BLACK, type) * handValue(type);
+    score -= position.handCount(WHITE, type) * handValue(type);
   }
 
   return position.color() == BLACK ? score : -score;
@@ -54,8 +54,9 @@ int materialDelta(const Move& move) {
   int delta = 0;
   if (move.capturedPieceType != NO_PIECE_TYPE) {
     // 相手の盤上の駒が減り、自分の持ち駒が増えるので 2 倍の差が生じる。
+    // 持ち駒になる側は成りが戻るので、元の駒種で数える。
     const PieceType captured = move.capturedPieceType;
-    delta += PIECE_VALUES[captured] + PIECE_VALUES[unpromotedPieceType(captured)];
+    delta += PIECE_VALUES[captured] + handValue(unpromotedPieceType(captured));
   }
   if (move.promote) {
     delta += PIECE_VALUES[promotedPieceType(move.pieceType)] - PIECE_VALUES[move.pieceType];
