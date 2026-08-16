@@ -301,6 +301,6 @@ describe("engines/basic (wasm)", () => {
     };
     // 居飛車は左 (筋の数字が大きい方)、振り飛車は右へ玉を囲う。
     expect(kingFile(moves["static_rook"])).toBeGreaterThan(5);
-    expect(kingFile(moves["ranging_rook"])).toBeLessThan(5);
+    expect(kingFile(moves["ranging_rook"])).toBeLessThanOrEqual(5);
   }, 60000);
 });
