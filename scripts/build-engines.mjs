@@ -27,7 +27,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 // Docker を使う場合のイメージ。再現性のためタグを固定する。
-const EMSDK_IMAGE = "emscripten/emsdk:4.0.9";
+const EMSDK_IMAGE = "emscripten/emsdk:6.0.6";
 
 const rootDir = path.resolve(import.meta.dirname, "..");
 const enginesDir = path.join(rootDir, "engines");
