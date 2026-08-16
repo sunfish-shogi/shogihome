@@ -1,0 +1,80 @@
+{
+  "abi": "shogihome-wasm-engine/1",
+  "module": "basic.js",
+  "moduleFormat": "esm",
+  "name": "ShogiHome Basic Engine",
+  "author": "Kubo, Ryosuke",
+  "options": [
+    {
+      "name": "Style",
+      "type": "combo",
+      "default": "static_rook",
+      "vars": ["static_rook", "ranging_rook", "random"]
+    },
+    {
+      "name": "Depth",
+      "type": "spin",
+      "default": 3,
+      "min": 1,
+      "max": 5
+    },
+    {
+      "name": "MinimumThinkingTime",
+      "type": "spin",
+      "default": 500,
+      "min": 0,
+      "max": 60000
+    },
+    {
+      "name": "USI_Hash",
+      "type": "spin",
+      "default": 16,
+      "min": 1,
+      "max": 256
+    },
+    {
+      "name": "Randomize",
+      "type": "check",
+      "default": "true"
+    },
+    {
+      "name": "USI_Ponder",
+      "type": "check",
+      "default": "false"
+    }
+  ],
+  "presets": [
+    {
+      "id": "basic-level2-static-rook-v1",
+      "displayName": "ShogiHome Level 2 (Static Rook)",
+      "values": {
+        "Style": "static_rook",
+        "Depth": 3
+      }
+    },
+    {
+      "id": "basic-level2-ranging-rook-v1",
+      "displayName": "ShogiHome Level 2 (Ranging Rook)",
+      "values": {
+        "Style": "ranging_rook",
+        "Depth": 3
+      }
+    },
+    {
+      "id": "basic-level3-static-rook-v1",
+      "displayName": "ShogiHome Level 3 (Static Rook)",
+      "values": {
+        "Style": "static_rook",
+        "Depth": 5
+      }
+    },
+    {
+      "id": "basic-level3-ranging-rook-v1",
+      "displayName": "ShogiHome Level 3 (Ranging Rook)",
+      "values": {
+        "Style": "ranging_rook",
+        "Depth": 5
+      }
+    }
+  ]
+}

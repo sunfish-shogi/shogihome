@@ -6,6 +6,7 @@ node_modules
 /coverage
 /records
 /logs
+/engines/build*
 
 # local env files
 .env.local

@@ -22,6 +22,10 @@ export default defineConfig({
         // 盤・駒の画像は種類が多く合計 4MB 近くあるため、ここには含めず実行時にキャッシュする。
         globPatterns: [
           "**/*.{js,css,html,webmanifest}",
+          // オフラインでも対局できるように、組み込みエンジンの wasm とマニフェストも
+          // 事前キャッシュする。評価パラメータなどの大きなファイルは対象外で、
+          // 下の runtimeCaching で実行時にキャッシュする。
+          "engines/**/*.{wasm,json}",
           "favicon*.png",
           "icon/**/*.svg",
           "arrow/**/*.svg",
@@ -43,6 +47,25 @@ export default defineConfig({
                 maxAgeSeconds: 60 * 60 * 24 * 30, // 30 日
               },
               cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
+          // 負担が大きすぎるため、実際に使われたものだけを保持する。
+          // 新しい拡張子を使う場合はここに追加する。
+          // NOTE: これらは事前キャッシュと違って revision を持たないため、
+          // ファイル名に内容のハッシュを含めること。同じ URL のまま差し替えると
+          // 古いファイルが返り続ける。specs/wasm-engine.md の「キャッシュ」を参照。
+          {
+            urlPattern: /\/engines\/[^?]+\.(?:data|bin|nnue)$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "shogihome-engine-data",
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 90, // 90 日
+              },
+              cacheableResponse: { statuses: [0, 200] },
+              rangeRequests: true,
             },
           },
         ],

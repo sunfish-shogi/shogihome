@@ -2,7 +2,7 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { htmlTemplate } from "./plugins/html_template";
+import { htmlTemplate } from "./plugins/html_template.ts";
 
 const appVersion = process.env.npm_package_version || "0.0.0";
 const buildEnv = process.env.CI === "true" ? "ci" : "local";
