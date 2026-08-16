@@ -230,9 +230,14 @@ npm run engines:build
 
 Emscripten を次の順で探す。
 
-1. 環境変数 `EMSDK` (`emsdk_env.sh` を読み込んだ状態)
-2. `PATH` 上の `emcmake`
-3. Docker (`emscripten/emsdk` イメージ。バージョンは `scripts/build-engines.mjs` で固定)
+1. Docker (`emscripten/emsdk` イメージ。バージョンは `scripts/build-engines.mjs` で固定)
+2. 環境変数 `EMSDK` (`emsdk_env.sh` を読み込んだ状態)
+3. `PATH` 上の `emcmake`
+
+**Docker を優先するのは生成物を commit する運用だから。** バージョンを固定したイメージなら
+誰がビルドしても同じ結果になるが、ローカルの Emscripten はバージョンがまちまちで、
+無関係な差分が commit に混ざる。ローカルを使いたい場合は `ENGINES_NO_DOCKER=1` を指定する
+(Docker のデーモンが動いていない場合も自動でローカルへ切り替わる)。
 
 生成物はリポジトリに commit する。`docs/webapp` を commit している既存の運用と同じ考え方で、
 Emscripten の無い環境でも `npm run build` と `npm test` が通り、commit 済みの wasm に対する

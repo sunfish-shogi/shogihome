@@ -12,9 +12,14 @@
 //
 // WebAssembly ビルドに使う Emscripten は CI にも開発環境にも入っていないのが前提なので、
 // 次の順で探す。
-//   1. 環境変数 EMSDK が指すディレクトリ (emsdk_env.sh を実行済みの場合)
-//   2. PATH 上の emcmake
-//   3. Docker (emscripten/emsdk イメージ)
+//   1. Docker (emscripten/emsdk イメージ)
+//   2. 環境変数 EMSDK が指すディレクトリ (emsdk_env.sh を実行済みの場合)
+//   3. PATH 上の emcmake
+//
+// Docker を優先するのは、生成物を commit する運用だから。バージョンを固定した
+// イメージなら誰がビルドしても同じ結果になるが、ローカルの Emscripten は
+// バージョンがまちまちで、無関係な差分が commit に混ざる。
+// ローカルを使いたい場合は ENGINES_NO_DOCKER=1 を指定する。
 //
 // 生成物 (public/engines/<name>/<name>.js と .wasm) はリポジトリに commit する。
 // これにより Emscripten の無い環境でも npm run build / npm test が通り、
@@ -48,7 +53,13 @@ function hasCommand(command) {
   return !result.error && result.status === 0;
 }
 
-function resolveRunner() {
+// docker --version はデーモンが止まっていても成功するので、実際に繋がるかまで見る。
+function hasDocker() {
+  const result = spawnSync("docker", ["info"], { stdio: "ignore" });
+  return !result.error && result.status === 0;
+}
+
+function resolveLocalRunner() {
   const emsdk = process.env.EMSDK;
   if (emsdk) {
     const emcmake = path.join(emsdk, "upstream", "emscripten", "emcmake");
@@ -59,11 +70,20 @@ function resolveRunner() {
   if (hasCommand("emcmake")) {
     return { kind: "local", emcmake: "emcmake" };
   }
-  if (hasCommand("docker")) {
+  return undefined;
+}
+
+function resolveRunner() {
+  // バージョンを固定した Docker イメージを優先する (先頭のコメントを参照)。
+  if (!process.env.ENGINES_NO_DOCKER && hasDocker()) {
     return { kind: "docker" };
   }
+  const local = resolveLocalRunner();
+  if (local) {
+    return local;
+  }
   throw new Error(
-    "Emscripten が見つかりません。emsdk_env.sh を読み込むか、Docker を利用できるようにしてください。",
+    "Emscripten が見つかりません。Docker を利用できるようにするか、emsdk_env.sh を読み込んでください。",
   );
 }
 
@@ -168,7 +188,12 @@ if (nativeMode) {
     throw new Error("--test は --native と一緒に指定してください。");
   }
   const runner = resolveRunner();
-  console.log(`Emscripten: ${runner.kind === "local" ? runner.emcmake : EMSDK_IMAGE}`);
+  if (runner.kind === "docker") {
+    console.log(`Emscripten: ${EMSDK_IMAGE} (Docker)`);
+  } else {
+    console.log(`Emscripten: ${runner.emcmake} (ローカル)`);
+    console.log(`  生成物を commit する場合は ${EMSDK_IMAGE} でビルドし直すこと。`);
+  }
   buildWasm(runner);
   copyArtifacts();
 }
