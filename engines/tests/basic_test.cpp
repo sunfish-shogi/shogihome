@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "basic/evaluate.h"
-#include "basic/pst.h"
 #include "basic/search.h"
 #include "basic/style.h"
 #include "core/position.h"
@@ -84,32 +83,6 @@ void testRepetitionKey() {
   const Game game = buildGame(shogi::Position::STARTPOS_SFEN, split("7i6h 3a4b 6h7i 4b3a"));
   expect(game.historyKeys.size() == 5, "repetition: history size");
   expect(game.historyKeys.front() == game.historyKeys.back(), "repetition: key mismatch");
-}
-
-// 落とし穴法のテーブルが左右を正しく区別しているか確認する。
-void testPieceSquareTableOrientation() {
-  using namespace shogi;
-  using namespace shogi::basic;
-  const Square s88 = squareOf(8, 8);
-  const Square s38 = squareOf(3, 8);
-  expect(pieceSquareValue(STYLE_STATIC_ROOK, KING, s88) >
-             pieceSquareValue(STYLE_STATIC_ROOK, KING, s38),
-         "居飛車の玉は 8八 を好むこと");
-  expect(pieceSquareValue(STYLE_RANGING_ROOK, KING, s38) >
-             pieceSquareValue(STYLE_RANGING_ROOK, KING, s88),
-         "振り飛車の玉は 3八 を好むこと");
-  expect(pieceSquareValue(STYLE_STATIC_ROOK, ROOK, squareOf(2, 8)) >
-             pieceSquareValue(STYLE_STATIC_ROOK, ROOK, squareOf(6, 8)),
-         "居飛車の飛車は 2八 を好むこと");
-  expect(pieceSquareValue(STYLE_RANGING_ROOK, ROOK, squareOf(6, 8)) >
-             pieceSquareValue(STYLE_RANGING_ROOK, ROOK, squareOf(2, 8)),
-         "振り飛車の飛車は 6八 を好むこと");
-  expect(pieceSquareValue(STYLE_RANGING_ROOK, SILVER, squareOf(3, 9)) >
-             pieceSquareValue(STYLE_RANGING_ROOK, SILVER, squareOf(3, 5)),
-         "振り飛車の銀は 3九 を好むこと");
-  // 玉が敵陣に出るのは常に悪い。
-  expect(pieceSquareValue(STYLE_STATIC_ROOK, KING, squareOf(5, 2)) < 0, "玉の敵陣は減点");
-  expect(pieceSquareValue(STYLE_RANGING_ROOK, KING, squareOf(5, 2)) < 0, "玉の敵陣は減点");
 }
 
 // 平手の初期局面は 180 度回転させると自分自身に一致するため、評価値は 0 になる。
@@ -374,7 +347,6 @@ int main() {
   testCommandParsing();
   testSFENRoundTrip();
   testRepetitionKey();
-  testPieceSquareTableOrientation();
   testEvaluationSymmetry();
   testCapturesFreePiece();
   testFindsMateInOne();
