@@ -52,6 +52,9 @@ export default defineConfig({
           // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
           // 負担が大きすぎるため、実際に使われたものだけを保持する。
           // 新しい拡張子を使う場合はここに追加する。
+          // NOTE: これらは事前キャッシュと違って revision を持たないため、
+          // ファイル名に内容のハッシュを含めること。同じ URL のまま差し替えると
+          // 古いファイルが返り続ける。specs/wasm-engine.md の「キャッシュ」を参照。
           {
             urlPattern: /\/engines\/[^?]+\.(?:data|bin|nnue)$/,
             handler: "CacheFirst",
