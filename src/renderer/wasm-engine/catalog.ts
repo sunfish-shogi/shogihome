@@ -53,10 +53,10 @@ export function resolveEngineDirURL(path: string): string {
 // モバイル表示のボタン (MobileGameMenu.vue) と同じ表記に揃えてある。
 // 探索の深さ (Depth) はオプションで変更できるため、名前には含めない。
 const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
-  "basic-level2-static-rook-v1": () => `ShogiHome ${t.level} 2 (${t.staticRook})`,
-  "basic-level2-ranging-rook-v1": () => `ShogiHome ${t.level} 2 (${t.rangingRook})`,
-  "basic-level3-static-rook-v1": () => `ShogiHome ${t.level} 3 (${t.staticRook})`,
-  "basic-level3-ranging-rook-v1": () => `ShogiHome ${t.level} 3 (${t.rangingRook})`,
+  "basic-level2-static-rook-v1": () => `ShogiHome Lv. 2 (${t.staticRook})`,
+  "basic-level2-ranging-rook-v1": () => `ShogiHome Lv. 2 (${t.rangingRook})`,
+  "basic-level3-static-rook-v1": () => `ShogiHome Lv. 3 (${t.staticRook})`,
+  "basic-level3-ranging-rook-v1": () => `ShogiHome Lv. 3 (${t.rangingRook})`,
 };
 
 export function builtinEngineURI(presetID: string): string {

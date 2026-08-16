@@ -53,7 +53,7 @@ import {
   getUSIEngineMultiPV,
   getPredefinedUSIEngineTag,
 } from "@/common/settings/usi";
-import api from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
@@ -115,11 +115,16 @@ const listItems = computed(() => {
   if (props.containsBasicEngines) {
     for (const playerURI of uri.ES_BASIC_ENGINE_LIST) {
       items.push({
-        label: uri.basicEngineName(playerURI),
+        label: uri.basicEngineName(playerURI, { webapp: !isNative() }),
         value: playerURI,
         tags: [getPredefinedUSIEngineTag("game")],
       });
     }
+  }
+  if (!isNative()) {
+    items.sort((a, b) =>
+      a.value === uri.ES_HUMAN ? -1 : b.value === uri.ES_HUMAN ? 1 : a.label.localeCompare(b.label),
+    );
   }
   return items;
 });

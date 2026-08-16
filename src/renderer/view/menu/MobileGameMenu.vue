@@ -64,7 +64,7 @@ const players = [
   { level: 2, uri: builtinEngineURI("basic-level2-ranging-rook-v1"), style: () => t.rangingRook },
   { level: 3, uri: builtinEngineURI("basic-level3-static-rook-v1"), style: () => t.staticRook },
   { level: 3, uri: builtinEngineURI("basic-level3-ranging-rook-v1"), style: () => t.rangingRook },
-].map((player) => ({ uri: player.uri, label: `${t.level} ${player.level} ${player.style()}` }));
+].map((player) => ({ uri: player.uri, label: `Lv. ${player.level} ${player.style()}` }));
 
 const store = useStore();
 const dialog = ref();

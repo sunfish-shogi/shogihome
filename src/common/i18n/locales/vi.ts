@@ -705,7 +705,6 @@ export const vi: Texts = {
   beginner: "Người mới học",
   staticRook: "Cư Phi Xa",
   rangingRook: "Chấn Phi Xa",
-  level: "Lv.", // TODO: Translate
   pleaseSelectEngines: "Vui lòng chọn phần mềm.",
   thisItemCannotBeMerged: "Mục này không thể sáp nhập.",
   tryingToConnectAndLoginToCSAServer: "Đang kết nối và đăng nhập vào máy chủ CSA.",

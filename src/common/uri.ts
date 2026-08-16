@@ -19,12 +19,15 @@ export function isBasicEngine(uri: string): boolean {
   return uri.startsWith(ES_BASIC_ENGINE_PREFIX);
 }
 
-export function basicEngineName(uri: string): string {
+export function basicEngineName(uri: string, options?: { webapp: boolean }): string {
+  // Web 版では WASM で動作する Lv. 2 や Lv. 3 を導入したので、TS 版は Lv. 1 という表記にする。
+  // Desktop 版では引き続き「初心者」とする。
+  const beginnerName = options?.webapp ? "Lv. 1" : t.beginner;
   switch (uri) {
     case ES_BASIC_ENGINE_STATIC_ROOK_V1:
-      return `ShogiHome ${t.beginner} (${t.staticRook})`;
+      return `ShogiHome ${beginnerName} (${t.staticRook})`;
     case ES_BASIC_ENGINE_RANGING_ROOK_V1:
-      return `ShogiHome ${t.beginner} (${t.rangingRook})`;
+      return `ShogiHome ${beginnerName} (${t.rangingRook})`;
     case ES_BASIC_ENGINE_RANDOM:
       return `ShogiHome ${t.randomPlayer}`;
   }

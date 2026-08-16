@@ -702,7 +702,6 @@ export const zh_tw: Texts = {
   beginner: "初學者",
   staticRook: "居飛車",
   rangingRook: "振飛車",
-  level: "Lv.", // TODO: Translate
   pleaseSelectEngines: "請選擇引擎。",
   thisItemCannotBeMerged: "該項目無法被合併。",
   tryingToConnectAndLoginToCSAServer: "正在連接並登入CSA伺服器。",

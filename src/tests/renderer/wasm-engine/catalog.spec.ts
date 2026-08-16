@@ -61,8 +61,8 @@ describe("wasm-engine/catalog", () => {
     expect(getUSIEngineOptionCurrentValue(engines[0].options["Style"])).toBe("static_rook");
     expect(getUSIEngineOptionCurrentValue(engines[1].options["Style"])).toBe("ranging_rook");
     // TypeScript 実装の簡易エンジンと区別できる名前になっていること。
-    expect(engines[0].name).toBe(`ShogiHome ${t.level} 2 (${t.staticRook})`);
-    expect(engines[1].name).toBe(`ShogiHome ${t.level} 2 (${t.rangingRook})`);
+    expect(engines[0].name).toBe(`ShogiHome Lv. 2 (${t.staticRook})`);
+    expect(engines[1].name).toBe(`ShogiHome Lv. 2 (${t.rangingRook})`);
     expect(engines[0].name).not.toBe(uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1));
   });
 
@@ -98,7 +98,7 @@ describe("wasm-engine/catalog", () => {
     });
     expect(getUSIEngineOptionCurrentValue(engines[0].options["Depth"])).toBe(3);
     expect(getUSIEngineOptionCurrentValue(engines[1].options["Depth"])).toBe(5);
-    expect(engines[1].name).toBe(`ShogiHome ${t.level} 3 (${t.staticRook})`);
+    expect(engines[1].name).toBe(`ShogiHome Lv. 3 (${t.staticRook})`);
   });
 
   it("enginePath", () => {
