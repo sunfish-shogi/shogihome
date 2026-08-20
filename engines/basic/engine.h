@@ -31,7 +31,7 @@ class BasicEngine : public Engine {
   void newGame() override;
   void go(const Position& position, const std::vector<std::string>& historyKeys,
           const GoParams& params) override;
-  void poll() override;
+  bool poll() override;
   void stop() override;
   void ponderHit(const GoParams& params) override;
   void quit() override;

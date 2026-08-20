@@ -214,8 +214,8 @@ bool UsiDriver::command(const std::string& line) {
   return false;
 }
 
-void UsiDriver::poll() {
-  engine_.poll();
+bool UsiDriver::poll() {
+  return engine_.poll();
 }
 
 }  // namespace shogi

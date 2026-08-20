@@ -21,9 +21,6 @@ export type EngineInstance = {
   removeMessageListener(listener: EngineMessageListener): void;
   // エンジンを終了し、内部のスレッドやリソースを解放する。
   terminate(): void;
-  // 単一スレッドのエンジンが探索を分割実行するためのフック。
-  // マルチスレッドのエンジンは自力で動き続けるため公開しなくてよい。
-  poll?(): void;
   FS?: EngineFS;
 };
 

@@ -121,10 +121,7 @@ describe("engines/conformance", () => {
       // 思考中でも terminate() で打ち切れ、以後は何も出力しないこと。
       engine.terminate();
       engine.lines.length = 0;
-      for (let i = 0; i < 20; i++) {
-        engine.poll();
-        await new Promise((resolve) => setTimeout(resolve, 10));
-      }
+      await new Promise((resolve) => setTimeout(resolve, 200));
       expect(engine.lines).toEqual([]);
     }, 30000);
 
@@ -137,10 +134,7 @@ describe("engines/conformance", () => {
       engine.command("go btime 600000 wtime 600000 byoyomi 300000");
       engine.quit();
       engine.lines.length = 0;
-      for (let i = 0; i < 20; i++) {
-        engine.poll();
-        await new Promise((resolve) => setTimeout(resolve, 10));
-      }
+      await new Promise((resolve) => setTimeout(resolve, 200));
       expect(engine.lines).toEqual([]);
     }, 30000);
   });

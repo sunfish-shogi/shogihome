@@ -1,6 +1,6 @@
 // エントリポイント。
-// WebAssembly ビルドでは usi_command / usi_poll をエクスポートし、
-// core/shim.js が postMessage / poll としてこれらを呼び出す。
+// WebAssembly ビルドでは usi_command / usi_poll をエクスポートする。
+// core/shim.js が postMessage からこれらを呼び、探索の分割実行も面倒を見る。
 // ネイティブビルドでは標準入出力で動作する。
 #include <memory>
 #include <string>
@@ -41,10 +41,9 @@ EMSCRIPTEN_KEEPALIVE void usi_command(const char* line) {
   g_driver->command(line != nullptr ? std::string(line) : std::string());
 }
 
-EMSCRIPTEN_KEEPALIVE void usi_poll() {
-  if (g_driver) {
-    g_driver->poll();
-  }
+// 戻り値は「まだ呼ばれる必要があるか」。0 を返すとシムが呼び出しを止める。
+EMSCRIPTEN_KEEPALIVE int usi_poll() {
+  return g_driver && g_driver->poll() ? 1 : 0;
 }
 
 }  // extern "C"

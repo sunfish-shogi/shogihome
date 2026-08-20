@@ -214,9 +214,11 @@ void BasicEngine::outputInfo() const {
   usiOutput(info);
 }
 
-void BasicEngine::poll() {
+bool BasicEngine::poll() {
   if (state_ != State::THINKING) {
-    return;
+    // IDLE は思考していない状態、WAITING は stop か ponderhit を待つだけの状態。
+    // どちらも次の入力があるまで進むものが無いので、呼ばれ続ける必要はない。
+    return false;
   }
 
   // 1 回の poll で 1 反復ぶんだけ深くする。
@@ -225,18 +227,21 @@ void BasicEngine::poll() {
       finishedDeepening_ = true;
     } else {
       runIteration(completedDepth_ + 1);
-      return;
+      return true;
     }
   }
 
   if (infinite_) {
     // go infinite / go ponder では stop か ponderhit を待つ。
     state_ = State::WAITING;
-    return;
+    return false;
   }
   if (std::chrono::steady_clock::now() >= minDeadline_) {
     flushBestMove();
+    return false;
   }
+  // 深さは掘り終えたが、最低思考時間にまだ達していない。
+  return true;
 }
 
 void BasicEngine::stop() {

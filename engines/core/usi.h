@@ -52,8 +52,13 @@ class Engine {
   // historyKeys には初期局面から現局面までの各局面のキーが順に入る (千日手判定用)。
   virtual void go(const Position& position, const std::vector<std::string>& historyKeys,
                   const GoParams& params) = 0;
-  // 一定間隔で呼ばれる。締切に達していれば bestmove を出力する。
-  virtual void poll() = 0;
+  // 思考を少しだけ進める。締切に達していれば bestmove を出力する。
+  //
+  // 戻り値は「まだ呼ばれる必要があるか」。true を返す間だけ呼び出し側が
+  // 一定間隔で呼び続ける。思考していないときや、stop / ponderhit を待つだけの
+  // 状態 (go infinite / go ponder) では false を返すこと。それらのコマンドは
+  // command() 経由で届くので、poll() を回し続ける必要はない。
+  virtual bool poll() = 0;
   virtual void stop() = 0;
   virtual void ponderHit(const GoParams& params) = 0;
   virtual void gameover(const std::string& /* result */) {}
@@ -68,8 +73,8 @@ class UsiDriver {
 
   // 1 行のコマンドを処理する。quit を受け取った場合は true を返す。
   bool command(const std::string& line);
-  // Engine::poll を呼ぶ。
-  void poll();
+  // Engine::poll を呼ぶ。戻り値の意味も Engine::poll と同じ。
+  bool poll();
 
  private:
   void onPosition(const std::string& args);

@@ -13,8 +13,8 @@ function instance(overrides: Record<string, unknown> = {}) {
 describe("wasm-engine/loader", () => {
   it("validateEngineInstance", () => {
     expect(validateEngineInstance(instance())).toBeTruthy();
-    // poll は単一スレッドのエンジンだけが公開する任意のメソッド。
-    expect(validateEngineInstance(instance({ poll: () => {} })).poll).toBeTruthy();
+    // FS は dataFiles を使うエンジンだけが公開する任意のメンバー。
+    expect(validateEngineInstance(instance({ FS: {} })).FS).toBeTruthy();
   });
 
   it("validateEngineInstance/rejectsIncomplete", () => {

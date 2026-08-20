@@ -81,7 +81,7 @@ ShogiHome 側に写しを持つ必要は無い。配置したエンジンは
 ## Worker と WebAssembly の間の契約
 
 エンジンのモジュールが公開する `postMessage` / `addMessageListener` /
-`removeMessageListener` / `terminate` と、任意の `poll` については
+`removeMessageListener` / `terminate` については
 [`wasm-engine-abi.md`](./wasm-engine-abi.md) を参照。
 これらの名前は YaneuraOu の wasm ビルドに合わせてある。
 
@@ -104,8 +104,9 @@ Worker を止めるときは、まず `terminate` を送ってエンジン自身
 これはスレッドを持つエンジンが自前の Worker を畳めるようにするためで、
 探索から制御が戻らず応答が無い場合は 1 秒後に `Worker.terminate()` で強制的に止める。
 
-`poll` を公開しないエンジン (マルチスレッドを前提としたもの) に対しては、
-Worker は何も駆動せずに出力を待つだけになる。
+Worker はエンジンの思考の進行には関与しない。コマンドを渡して出力を受け取るだけで、
+探索を分割実行するための駆動はエンジンのモジュールの内側で完結する
+(参照実装は [`engines/core/shim.js`](../engines/core/shim.js))。
 
 ## 組み込みエンジンの扱い
 
@@ -174,14 +175,17 @@ ShogiHome 自身が持つエンジン。仕様の参照実装と適合性テス�
 [`basic-engine.md`](./basic-engine.md) にまとめてある。** ここでは
 ShogiHome との接点になる部分だけを説明する。
 
-### 反復深化と poll
+### 反復深化と分割実行
 
 深さ 1 の探索は `go` の中で終わらせ、いつ `stop` されても指し手を返せるようにしている。
-深さ 2 以降は `poll()` 1 回につき 1 反復ずつ進めるので、反復の切れ目で `stop` を
-受け付けられる。これは `specs/wasm-engine-abi.md` が推奨する「分割実行」の実装例でもある。
+深さ 2 以降は `usi_poll` 1 回につき 1 反復ずつ進めるので、反復の切れ目で `stop` を
+受け付けられる。これは `specs/wasm-engine-abi.md` が求める「分割実行」の実装例でもある。
 
 C++ 側がエクスポートするのは `usi_command` と `usi_poll` の 2 つだけで、
 ABI が定めるインターフェースは `engines/core/shim.js` (`--pre-js`) が組み立てる。
+**`usi_poll` を 10ms 間隔で呼ぶタイマーもこのシムが持つ**ので、ShogiHome 側からは
+YaneuraOu と同じインターフェースに見える。`usi_poll` が「進めるものが無い」と答えると
+タイマーは止まり、次のコマンドが届くまで何もしない。
 このシムはエンジンに依存しないので、他のエンジンでもそのまま流用できる。
 
 持ち時間から 1 手あたりの上限 (100ms〜3000ms) を決め、ノード数の上限と合わせて

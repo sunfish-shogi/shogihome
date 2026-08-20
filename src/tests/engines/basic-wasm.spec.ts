@@ -156,10 +156,7 @@ describe("engines/basic (wasm)", () => {
     engine.command("position startpos moves 7g7f");
     engine.command("go ponder btime 300000 wtime 300000 byoyomi 30000");
     // go ponder の間は bestmove を返さない。
-    for (let i = 0; i < 20; i++) {
-      engine.poll();
-      await new Promise((resolve) => setTimeout(resolve, 10));
-    }
+    await new Promise((resolve) => setTimeout(resolve, 200));
     expect(engine.lines.some((line) => line.startsWith("bestmove "))).toBeFalsy();
 
     engine.command("ponderhit btime 300000 wtime 300000 byoyomi 30000");
