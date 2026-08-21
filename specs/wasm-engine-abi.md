@@ -409,18 +409,25 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 `-pthread` を付けると Emscripten は wasm のメモリを `shared` として宣言する。
 これは起動時に `SharedArrayBuffer` を要求し、ブラウザはページが
-cross-origin isolated でなければそれを拒否する。isolation には
-`Cross-Origin-Opener-Policy: same-origin` と
-`Cross-Origin-Embedder-Policy: require-corp` のレスポンスヘッダが要るが、
-ShogiHome の Web 版は GitHub Pages で配信しており、これらを設定できない。
+cross-origin isolated でなければそれを拒否する。
+
+Web 版は Service Worker がナビゲーションのレスポンスへ
+`Cross-Origin-Opener-Policy` と `Cross-Origin-Embedder-Policy` を足すため、
+**isolation 自体は成立している** (仕組みは
+[`webapp-update.md`](./webapp-update.md) の「cross-origin isolation」を参照)。
+それでも `-pthread` を受け付けないのは、次が未検証だからである。
+
+- **初回アクセスは isolated にならない。** Service Worker の制御下に入る前に
+  ドキュメントを受け取るため。`SharedArrayBuffer` を前提に作られたモジュールは
+  この状態で生成に失敗するので、検出して再読み込みを促す仕組みが要る。
+- Emscripten の pthreads は Worker をさらに生成する。ShogiHome の Worker から
+  入れ子で起動して問題が出ないか、`terminate()` で確実に畳めるかを確かめていない。
+- スレッド数に応じたメモリ消費と、モバイル端末での挙動。
 
 **実行時のスレッド数を 1 にしても回避できない。** 効くのはビルドフラグの有無であって、
 実際に何本スレッドを作るかではない。既存エンジンを載せる場合は、
 `std::thread` を使う箇所を条件コンパイルで畳んで `-pthread` 無しでビルドし、
 探索を「3. 実行モデル」の分割実行に載せ替える必要がある。
-
-マルチスレッド対応は配信方法の変更 (ヘッダを設定できる配信先、または
-Service Worker による cross-origin isolation) とセットで検討する必要がある。
 
 ### その他
 

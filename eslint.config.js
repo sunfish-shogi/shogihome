@@ -50,6 +50,15 @@ export default defineConfigWithVueTs([
     },
   },
   {
+    // Service Worker として動く JavaScript。
+    files: ["src/sw.js"],
+    languageOptions: {
+      globals: {
+        ...globals.serviceworker,
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

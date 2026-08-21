@@ -17,7 +17,12 @@ GitHub Pages は HTTP ヘッダーを変更できず、配信されるファイ�
 
 ## キャッシュ
 
-`generateSW` モードで Service Worker を生成する。
+`injectManifest` モードを使い、Service Worker の本体は [`src/sw.js`](../src/sw.js) に置く。
+ビルド時に事前キャッシュの一覧だけが差し込まれる。
+
+自動生成 (`generateSW`) ではなく手書きにしているのは、ナビゲーションのレスポンスへ
+cross-origin isolation のヘッダーを足すためである (「cross-origin isolation」を参照)。
+キャッシュの挙動は自動生成のときと同じものを `sw.js` で組み立てている。
 
 ### 事前キャッシュ
 
@@ -55,6 +60,32 @@ GitHub Pages は HTTP ヘッダーを変更できず、配信されるファイ�
 Service Worker の制御下では、ナビゲーションリクエストを `index.html` にフォールバックさせる。
 ただし Electron 専用のページ (`prompt.html`, `monitor.html`, `layout-manager.html`) は
 除外し、それぞれのページを返す。
+
+このルートは事前キャッシュのルートより**先に**登録する。Workbox はルートを登録順に
+照合するため、順序を逆にすると事前キャッシュ側がナビゲーションを拾ってしまい、
+下記のヘッダーが付かなくなる。
+
+## cross-origin isolation
+
+マルチスレッドの WebAssembly は `SharedArrayBuffer` を要求し、これはページが
+cross-origin isolated でなければ使えない。isolation には
+`Cross-Origin-Opener-Policy: same-origin` と
+`Cross-Origin-Embedder-Policy: require-corp` のレスポンスヘッダーが要るが、
+GitHub Pages はヘッダーを設定できない。
+
+そこで Service Worker が返すナビゲーションのレスポンスにこの 2 つを足す。
+ヘッダーが必要なのはドキュメントだけであり、`require-corp` が `CORP` を要求するのは
+**クロスオリジンの**サブリソースに対してである。Web 版は外部のサブリソースを
+一切読み込まないため、他の応答に手を加える必要はない。
+
+- **初回アクセスは isolated にならない。** ドキュメントを受け取った時点では
+  まだ Service Worker の制御下に無いため。次回以降のナビゲーションから有効になる。
+  これを早めるための再読み込みは行わない。現時点で `SharedArrayBuffer` を
+  必要とするエンジンが無く、全ユーザーに再読み込みを課す理由が無いため。
+- `Cross-Origin-Opener-Policy: same-origin` により、`openWebBrowser()` が開いた
+  タブから `window.opener` が辿れなくなる。外部リンクを開くだけなので影響はない。
+
+エンジン側の制約は [`wasm-engine-abi.md`](./wasm-engine-abi.md) の「制約」を参照。
 
 ## 更新の検知
 
