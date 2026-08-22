@@ -27,7 +27,7 @@
   // この打ち切りが無いとアプリが永久に起動しない。
   //
   // 待った末に isolated にならないのが最も損なので、短めに取る。
-  var TIMEOUT_MS = 3000;
+  var TIMEOUT_MS = 5000;
 
   var resolveReady;
   // アプリの起動を待たせる Promise。同期的に置く必要がある。
