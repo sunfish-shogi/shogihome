@@ -21,7 +21,13 @@
   // Service Worker が有効になるのを待つ上限。
   // 有効になるまでには事前キャッシュの完了を含むため、回線が細いと時間がかかる。
   // 待ちきれない場合は isolated でないまま起動し、次回のアクセスで有効になる。
-  var TIMEOUT_MS = 10000;
+  //
+  // これは安全装置でもある。install が失敗すると register() は解決するのに
+  // navigator.serviceWorker.ready は解決も reject もしないため、
+  // この打ち切りが無いとアプリが永久に起動しない。
+  //
+  // 待った末に isolated にならないのが最も損なので、短めに取る。
+  var TIMEOUT_MS = 3000;
 
   var resolveReady;
   // アプリの起動を待たせる Promise。同期的に置く必要がある。
