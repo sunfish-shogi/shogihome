@@ -84,6 +84,25 @@ registerRoute(
   }),
 );
 
+// UI のアイコン・矢印・盤の枠線・駒台・効果音。
+//
+// 事前キャッシュに含めると、初回アクセスで画面が出るまでの待ち時間がそのぶん延びる
+// (coi-bootstrap.js の再読み込みは事前キャッシュの完了を待つ)。これらは描画時に
+// どのみち取得されるので、実行時にキャッシュすれば転送量は変わらない。
+//
+// 事前キャッシュと違って revision を持たないため StaleWhileRevalidate にする。
+// URL にハッシュを含まないので、返した後に取り直して次回以降へ反映する。
+registerRoute(
+  /\/(?:icon|arrow|board)\/[^?]+\.svg$|\/stand\/[^?]+\.png$|\/sound\/[^?]+\.mp3$/,
+  new StaleWhileRevalidate({
+    cacheName: "shogihome-ui-assets",
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+    ],
+  }),
+);
+
 // エンジンの成果物 (マニフェスト・グルーコード・wasm)。
 // 事前キャッシュしないので、初めて使うときはネットワークから取得する
 // (**エンジンの利用はオンラインが前提**)。一度使えば次回以降は速い。
