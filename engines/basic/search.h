@@ -1,9 +1,10 @@
 // α-β 探索と静止探索。
 //
-// 反復深化の 1 反復ぶんを 1 回の呼び出しで行う。エンジン側はこれを usi_poll() から
-// 繰り返し呼ぶことで、探索を中断可能な単位に分割している。
+// 反復深化の 1 反復ぶんを 1 回の呼び出しで行う。エンジンはこれを専用のスレッドから
+// 繰り返し呼ぶ。探索の外から打ち切るには SearchLimits::stop を立てる。
 #pragma once
 
+#include <atomic>
 #include <chrono>
 #include <random>
 #include <string>
@@ -38,6 +39,9 @@ struct SearchLimits {
   std::chrono::steady_clock::time_point deadline;
   // 探索を打ち切るノード数。
   long long nodeLimit = 3000000;
+  // 探索スレッドの外から探索を打ち切るためのフラグ。
+  // stop コマンドを受け取ったときに立てる。nullptr なら打ち切りを見ない。
+  const std::atomic<bool>* stop = nullptr;
 };
 
 // 指定した深さで探索する。historyKeys は初期局面から現局面までの局面キー (千日手回避に使う)。

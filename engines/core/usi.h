@@ -58,7 +58,10 @@ class Engine {
   // 一定間隔で呼び続ける。思考していないときや、stop / ponderhit を待つだけの
   // 状態 (go infinite / go ponder) では false を返すこと。それらのコマンドは
   // command() 経由で届くので、poll() を回し続ける必要はない。
-  virtual bool poll() = 0;
+  //
+  // 探索を専用のスレッドで走らせるエンジンは、自力で思考を進めるため
+  // 実装しなくてよい。既定では常に false を返し、呼び出し側は何も駆動しない。
+  virtual bool poll() { return false; }
   virtual void stop() = 0;
   virtual void ponderHit(const GoParams& params) = 0;
   virtual void gameover(const std::string& /* result */) {}

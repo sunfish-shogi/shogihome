@@ -402,10 +402,7 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 ## 8. 制約
 
-### `-pthread` を付けたビルドは受け付けない
-
-インターフェースを YaneuraOu に揃えたのは形式の話であり、
-**マルチスレッドの wasm が動くようになったわけではない。**
+### `-pthread` は cross-origin isolation を前提とする
 
 `-pthread` を付けると Emscripten は wasm のメモリを `shared` として宣言する。
 これは起動時に `SharedArrayBuffer` を要求し、ブラウザはページが
@@ -413,28 +410,40 @@ cross-origin isolated でなければそれを拒否する。
 
 Web 版は Service Worker がナビゲーションのレスポンスへ
 `Cross-Origin-Opener-Policy` と `Cross-Origin-Embedder-Policy` を足すため、
-**isolation 自体は成立している** (仕組みは
+isolation は成立する (仕組みは
 [`webapp-update.md`](./webapp-update.md) の「cross-origin isolation」を参照)。
-それでも `-pthread` を受け付けないのは、次が未検証だからである。
+ShogiHome の basic エンジンは `-pthread` を付けてビルドしている。
 
-- **初回アクセスは isolated にならない。** Service Worker の制御下に入る前に
-  ドキュメントを受け取るため。`SharedArrayBuffer` を前提に作られたモジュールは
-  この状態で生成に失敗するので、検出して再読み込みを促す仕組みが要る。
-- Emscripten の pthreads は Worker をさらに生成する。ShogiHome の Worker から
-  入れ子で起動して問題が出ないか、`terminate()` で確実に畳めるかを確かめていない。
-- スレッド数に応じたメモリ消費と、モバイル端末での挙動。
+**ただし isolated にならない場合がある。** Service Worker の制御下に入る前に
+ドキュメントを受け取る初回アクセスや、待ち時間の打ち切りに達した場合である。
+その状態では `-pthread` ビルドのモジュールは生成に失敗する。
+`crossOriginIsolated` を確認して再読み込みを促す導線は**まだ用意していない。**
 
-**実行時のスレッド数を 1 にしても回避できない。** 効くのはビルドフラグの有無であって、
-実際に何本スレッドを作るかではない。既存エンジンを載せる場合は、
+**実行時のスレッド数を 1 にしても要求は消えない。** 効くのはビルドフラグの有無であって、
+実際に何本スレッドを作るかではない。isolation に依存したくないエンジンは、
 `std::thread` を使う箇所を条件コンパイルで畳んで `-pthread` 無しでビルドし、
-探索を「3. 実行モデル」の分割実行に載せ替える必要がある。
+探索を「3. 実行モデル」の分割実行に載せ替えること。
+
+### 探索スレッドからの出力
+
+Emscripten は pthread からの `fd_write` をメインスレッドへ同期で代理実行する。
+そのため探索スレッドから `printf` しても、シムがメインスレッドで登録した
+リスナーに届く。エンジン側で出力を受け渡す仕組みを用意する必要はない。
+
+代理実行は同期なので、**メインスレッドを塞いだまま探索スレッドが出力すると
+互いに待つ形になり得る。** `quit` の後に出力しない規約 (「守るべき規約」) は
+これを避ける意味でも守ること。ShogiHome 側は応答が無い場合に 1 秒で
+`Worker.terminate()` する。
 
 ### その他
 
-- 上記の理由から、`Threads` 相当のオプションはプリセットで 1 に固定すること。
-- `-sPROXY_TO_PTHREAD` は pthreads と同じ制約を受ける。
-  `-sASYNCIFY` は制約を受けず、探索の奥で `emscripten_sleep(0)` を呼ぶだけで
-  分割実行と同じことができる (コードの改造量は小さい) が、
+- スレッドを使う場合は `-sPTHREAD_POOL_SIZE` で必要な本数を起動時に確保すること。
+  Worker の生成にはイベントループへ戻る必要があり、確保しておかないと
+  `pthread_create` がその場で完了できない。
+- `Threads` 相当のオプションを公開する場合、上限は控えめにすること。
+  スレッドの本数だけ Worker が生成され、モバイル端末では負担が大きい。
+- `-sASYNCIFY` は isolation を必要とせず、探索の奥で `emscripten_sleep(0)` を
+  呼ぶだけで分割実行と同じことができる (コードの改造量は小さい) が、
   コードサイズと実行速度の悪化が大きい。
 - ponder は ShogiHome 側の実装はあるが検証されていない。
   対応しない場合は `USI_Ponder` の既定値を `false` にする。

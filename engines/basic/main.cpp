@@ -1,6 +1,7 @@
 // エントリポイント。
 // WebAssembly ビルドでは usi_command / usi_poll をエクスポートする。
-// core/shim.js が postMessage からこれらを呼び、探索の分割実行も面倒を見る。
+// core/shim.js が postMessage からこれらを呼ぶ。
+// 探索は専用のスレッドで走るため usi_poll に進めるものは無く、常に 0 を返す。
 // ネイティブビルドでは標準入出力で動作する。
 #include <memory>
 #include <string>
@@ -11,11 +12,7 @@
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
 #else
-#include <atomic>
-#include <chrono>
 #include <iostream>
-#include <mutex>
-#include <thread>
 #endif
 
 namespace {
@@ -52,31 +49,18 @@ EMSCRIPTEN_KEEPALIVE int usi_poll() {
 
 int main() {
   ensureInitialized();
-  std::mutex mutex;
-  std::atomic<bool> running{true};
-  std::thread poller([&running, &mutex]() {
-    while (running.load()) {
-      {
-        const std::lock_guard<std::mutex> lock(mutex);
-        g_driver->poll();
-      }
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-  });
-
+  // 探索はエンジンが自前のスレッドで進めるので、ここは入力を読むだけでよい。
   std::string line;
   while (std::getline(std::cin, line)) {
     if (!line.empty() && line.back() == '\r') {
       line.pop_back();
     }
-    const std::lock_guard<std::mutex> lock(mutex);
     if (g_driver->command(line)) {
       break;
     }
   }
-
-  running.store(false);
-  poller.join();
+  // 標準入力が閉じた場合も、探索スレッドを残さず畳んでから終わる。
+  g_engine.reset();
   return 0;
 }
 

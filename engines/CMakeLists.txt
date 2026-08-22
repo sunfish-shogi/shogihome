@@ -35,6 +35,8 @@ if(EMSCRIPTEN)
   # postMessage / addMessageListener などのインターフェースを Module に生やす JavaScript。
   set(SHIM_JS ${CMAKE_CURRENT_SOURCE_DIR}/core/shim.js)
   set_target_properties(basic PROPERTIES SUFFIX ".js" LINK_DEPENDS ${SHIM_JS})
+  # 探索を専用のスレッドで走らせる。コンパイルとリンクの両方に必要。
+  target_compile_options(shogi_core PUBLIC "-pthread")
   target_link_options(basic PRIVATE
     "-O2"
     "--no-entry"
@@ -49,9 +51,18 @@ if(EMSCRIPTEN)
     "-sINVOKE_RUN=0"
     "-sEXPORTED_FUNCTIONS=_usi_command,_usi_poll,_malloc,_free"
     "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap"
-    # SharedArrayBuffer を必要としない単一スレッド構成にする。
-    # GitHub Pages では COOP/COEP ヘッダを設定できないため。
-    "-sUSE_PTHREADS=0"
+    # 探索用のスレッドを 1 本使う。
+    #
+    # これにより wasm のメモリが shared になり、起動時に SharedArrayBuffer を
+    # 要求する。ページが cross-origin isolated でなければモジュールの生成に失敗する。
+    # GitHub Pages はヘッダを設定できないため、Service Worker が
+    # ナビゲーションのレスポンスへ COOP / COEP を付けて isolation を成立させている
+    # (specs/webapp-update.md の「cross-origin isolation」を参照)。
+    "-pthread"
+    # メインスレッドとは別に探索スレッドを 1 本。起動時に確保しておく。
+    # Worker の生成にはイベントループへ戻る必要があるため、
+    # 事前に確保しておかないと pthread_create がその場で完了できない。
+    "-sPTHREAD_POOL_SIZE=1"
   )
 else()
   find_package(Threads REQUIRED)

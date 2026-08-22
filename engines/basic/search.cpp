@@ -64,6 +64,12 @@ struct Context {
     if (aborted) {
       return true;
     }
+    // 停止フラグは毎ノード見る。stop コマンドへの応答を遅らせないため。
+    // relaxed で十分で、可視性が 1 ノード遅れても実害はない。
+    if (limits.stop != nullptr && limits.stop->load(std::memory_order_relaxed)) {
+      aborted = true;
+      return true;
+    }
     if (nodes >= limits.nodeLimit) {
       aborted = true;
       return true;
