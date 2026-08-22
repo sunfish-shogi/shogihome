@@ -1,12 +1,42 @@
 /// <reference types="vitest" />
-import { defineConfig } from "vite";
+import fs from "node:fs";
+import path from "node:path";
+import { defineConfig, type Plugin } from "vite";
 import base from "./vite.config.mjs";
 import { VitePWA } from "vite-plugin-pwa";
+
+// cross-origin isolation のブートストラップを index.html の <head> へ埋め込む。
+//
+// アプリ本体を読み込む前に再読み込みの要否を決めたいので、外部ファイルではなく
+// インラインにする。Web 版のビルドでしか読まれない設定ファイルに置くことで、
+// Electron 版には混入しない。
+function injectCrossOriginIsolationBootstrap(): Plugin {
+  return {
+    name: "shogihome-coi-bootstrap",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html) {
+        const file = path.resolve(import.meta.dirname, "src/coi-bootstrap.js");
+        return {
+          html,
+          tags: [
+            {
+              tag: "script",
+              injectTo: "head-prepend",
+              children: fs.readFileSync(file, "utf8"),
+            },
+          ],
+        };
+      },
+    },
+  };
+}
 
 export default defineConfig({
   ...base,
   plugins: [
     ...(base.plugins || []),
+    injectCrossOriginIsolationBootstrap(),
     VitePWA({
       // 更新版は自動で適用せず、アプリ内で通知してユーザーの操作で再読み込みする。
       // 対局中や検討中に予期せず画面が再読み込みされるのを防ぐため。
@@ -30,10 +60,6 @@ export default defineConfig({
         // 盤・駒の画像は種類が多く合計 4MB 近くあるため、ここには含めず実行時にキャッシュする。
         globPatterns: [
           "**/*.{js,css,html,webmanifest}",
-          // オフラインでも対局できるように、組み込みエンジンの wasm とマニフェストも
-          // 事前キャッシュする。評価パラメータなどの大きなファイルは対象外で、
-          // sw.js の実行時キャッシュで保持する。
-          "engines/**/*.{wasm,json}",
           "favicon*.png",
           "icon/**/*.svg",
           "arrow/**/*.svg",
@@ -41,6 +67,19 @@ export default defineConfig({
           "stand/**/*.png",
           "sound/**/*.mp3",
         ],
+        // エンジンの成果物は事前キャッシュしない。
+        //
+        // 将来もっと大きなエンジンが載る可能性があり、事前キャッシュに含めると
+        // エンジンを使わない利用者にも転送コストがかかる。加えて初回アクセスは
+        // 事前キャッシュの完了を待ってから再読み込みするため (coi-bootstrap.js)、
+        // ここが重いほど最初の表示が遅れる。
+        //
+        // 実際に使われたものだけを sw.js の実行時キャッシュで保持する。
+        // したがって **エンジンの利用はオンラインを前提とする。**
+        //
+        // globIgnores が必要なのは、上の "**/*.{js,...}" が Emscripten の
+        // グルーコード (engines/<dir>/<module>.js) を拾ってしまうため。
+        globIgnores: ["engines/**"],
         // 実行時キャッシュとナビゲーションの扱いは src/sw.js に書いてある。
       },
       manifest: {

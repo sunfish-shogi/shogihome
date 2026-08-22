@@ -59,6 +59,15 @@ export default defineConfigWithVueTs([
     },
   },
   {
+    // index.html にインラインで埋め込まれる JavaScript。
+    files: ["src/coi-bootstrap.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

@@ -770,6 +770,10 @@ export const zh_tw: Texts = {
   disconnectedFromCSAServer: "與CSA伺服器的連接結束。",
   csaServerLoginDenied: "您對CSA伺服器的登入被拒絕。",
   thisFeatureNotAvailableOnWebApp: "Web版無法使用本機能",
+  // TODO: Translate
+  failedToLoadBuiltinEngine: "組み込みエンジンの読み込みに失敗しました。",
+  // TODO: Translate
+  builtinEngineRequiresOnline: "組み込みエンジンの読み込みにはインターネット接続が必要です。",
   failedToStartNewGame: "對局開始失敗。",
   errorOccuredWhileEndingGame: "在對局結束時發生錯誤。",
   failedToSendGoCommand: "無法送出go指令。",

@@ -746,6 +746,8 @@ export type Texts = {
   disconnectedFromCSAServer: string;
   csaServerLoginDenied: string;
   thisFeatureNotAvailableOnWebApp: string;
+  failedToLoadBuiltinEngine: string;
+  builtinEngineRequiresOnline: string;
   failedToStartNewGame: string;
   errorOccuredWhileEndingGame: string;
   failedToSendGoCommand: string;

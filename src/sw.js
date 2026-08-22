@@ -84,6 +84,24 @@ registerRoute(
   }),
 );
 
+// エンジンの成果物 (マニフェスト・グルーコード・wasm)。
+// 事前キャッシュしないので、初めて使うときはネットワークから取得する
+// (**エンジンの利用はオンラインが前提**)。一度使えば次回以降は速い。
+//
+// 事前キャッシュと違って revision を持たないため StaleWhileRevalidate にして、
+// 返した後に取り直す。ファイル名が変わらないまま中身が差し替わっても、
+// 次回の起動には新しいものが使われる。
+registerRoute(
+  /\/engines\/[^?]+\.(?:json|js|wasm)$/,
+  new StaleWhileRevalidate({
+    cacheName: "shogihome-engine-modules",
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+      new CacheableResponsePlugin({ statuses: [0, 200] }),
+    ],
+  }),
+);
+
 // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
 // 負担が大きすぎるため、実際に使われたものだけを保持する。
 // 新しい拡張子を使う場合はここに追加する。

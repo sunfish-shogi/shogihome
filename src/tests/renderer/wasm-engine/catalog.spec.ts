@@ -6,6 +6,8 @@ import {
   buildUSIEngines,
   enginePathOf,
   isBuiltinEnginePath,
+  describeEngineLoadError,
+  isNetworkError,
   loadBuiltinUSIEngines,
   resolveEngineDirURL,
 } from "@/renderer/wasm-engine/catalog.js";
@@ -145,5 +147,48 @@ describe("wasm-engine/catalog", () => {
         restored.getEngine(builtinEngineURI("basic-level2-static-rook-v1"))?.options["Style"],
       ),
     ).toBe("static_rook");
+  });
+
+  // エンジンの成果物は事前キャッシュされないため、オフラインでは読み込めない。
+  // 内部エラーをそのまま見せず、対処の分かる文言にする。
+  describe("describeEngineLoadError", () => {
+    const onLine = Object.getOwnPropertyDescriptor(window.navigator, "onLine");
+
+    const setOnLine = (value: boolean) => {
+      Object.defineProperty(window.navigator, "onLine", { value, configurable: true });
+    };
+
+    afterEach(() => {
+      if (onLine) {
+        Object.defineProperty(window.navigator, "onLine", onLine);
+      } else {
+        setOnLine(true);
+      }
+    });
+
+    it("オフラインならネットワーク起因として扱うこと", () => {
+      setOnLine(false);
+      expect(isNetworkError(new Error("failed to load foo: 404"))).toBeTruthy();
+      expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
+        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`,
+      );
+    });
+
+    // fetch はネットワークに到達できない場合に TypeError を投げる。
+    it("fetch の TypeError をネットワーク起因として扱うこと", () => {
+      setOnLine(true);
+      expect(isNetworkError(new TypeError("Failed to fetch"))).toBeTruthy();
+      expect(describeEngineLoadError(new TypeError("Failed to fetch"))).toBe(
+        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`,
+      );
+    });
+
+    it("それ以外は内容を添えること", () => {
+      setOnLine(true);
+      expect(isNetworkError(new Error("failed to load foo: 404"))).toBeFalsy();
+      expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
+        `${t.failedToLoadBuiltinEngine} failed to load foo: 404`,
+      );
+    });
   });
 });

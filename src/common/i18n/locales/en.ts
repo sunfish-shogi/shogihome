@@ -768,6 +768,8 @@ export const en: Texts = {
   disconnectedFromCSAServer: "Disconnected from CSA server.",
   csaServerLoginDenied: "CSA server login denied.",
   thisFeatureNotAvailableOnWebApp: "This feature is not available on web app.",
+  failedToLoadBuiltinEngine: "Failed to load the built-in engine.",
+  builtinEngineRequiresOnline: "Loading the built-in engine requires an internet connection.",
   failedToStartNewGame: "Failed to start new game.",
   errorOccuredWhileEndingGame: "An error occured while ending game.",
   failedToSendGoCommand: "Failed to send go-command.",

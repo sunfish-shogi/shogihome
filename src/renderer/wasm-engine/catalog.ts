@@ -140,6 +140,25 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
   }));
 }
 
+// エンジンの成果物は事前キャッシュされないため、初めて使うときはネットワークから
+// 取得する (specs/wasm-engine.md の「キャッシュ」を参照)。オフラインでの失敗は
+// 起こり得る事象なので、内部エラーをそのまま見せず対処の分かる文言にする。
+//
+// fetch はネットワークに到達できない場合に TypeError を投げる。
+// これは 404 などのサーバー応答とは区別される。
+export function isNetworkError(error: unknown): boolean {
+  return !navigator.onLine || error instanceof TypeError;
+}
+
+// 読み込み失敗をユーザーに見せる文言へ変換する。
+export function describeEngineLoadError(error: unknown): string {
+  const detail = error instanceof Error ? error.message : String(error);
+  if (isNetworkError(error)) {
+    return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`;
+  }
+  return `${t.failedToLoadBuiltinEngine} ${detail}`;
+}
+
 // 組み込みエンジンの一覧を返す。web.ts の loadUSIEngines() から使う。
 // 読み込みに失敗したエンジンは一覧から除外し、他のエンジンには影響させない。
 export async function loadBuiltinUSIEngines(
