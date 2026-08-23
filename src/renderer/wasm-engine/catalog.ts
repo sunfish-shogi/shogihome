@@ -155,17 +155,17 @@ export function isNetworkError(error: unknown): boolean {
 export function describeEngineLoadError(error: unknown): string {
   const detail = error instanceof Error ? error.message : String(error);
   if (isNetworkError(error)) {
-    return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`;
+    return `${t.failedToLoadEngine} ${t.engineRequiresOnline}`;
   }
   // Worker が起動前の確認で断った場合。原因が確定しているものだけを言い換える。
   // 再読み込みすれば Service Worker の制御下に入り、isolated になる。
   // (初回アクセスや、その待ち時間の打ち切りでこの状態になる)
   if (detail.includes(CROSS_ORIGIN_ISOLATION_REQUIRED)) {
-    return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`;
+    return `${t.failedToLoadEngine} ${t.engineRequiresReload}`;
   }
   // それ以外は原因を特定できないので、内容をそのまま添える。
   // 起動タイムアウトのように、それ自体が対処を示している文言もある。
-  return `${t.failedToLoadBuiltinEngine} ${detail}`;
+  return `${t.failedToLoadEngine} ${detail}`;
 }
 
 // 組み込みエンジンの一覧を返す。web.ts の loadUSIEngines() から使う。
