@@ -771,11 +771,11 @@ export const zh_tw: Texts = {
   csaServerLoginDenied: "您對CSA伺服器的登入被拒絕。",
   thisFeatureNotAvailableOnWebApp: "Web版無法使用本機能",
   // TODO: Translate
-  failedToLoadBuiltinEngine: "組み込みエンジンの読み込みに失敗しました。",
+  failedToLoadEngine: "エンジンの読み込みに失敗しました。",
   // TODO: Translate
-  builtinEngineRequiresOnline: "組み込みエンジンの読み込みにはインターネット接続が必要です。",
+  engineRequiresOnline: "エンジンの読み込みにはインターネット接続が必要です。",
   // TODO: Translate
-  builtinEngineRequiresReload: "組み込みエンジンを使用するにはページの再読み込みが必要です。",
+  engineRequiresReload: "エンジンを使用するにはページの再読み込みが必要です。",
   failedToStartNewGame: "對局開始失敗。",
   errorOccuredWhileEndingGame: "在對局結束時發生錯誤。",
   failedToSendGoCommand: "無法送出go指令。",

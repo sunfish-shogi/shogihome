@@ -184,7 +184,7 @@ describe("wasm-engine/catalog", () => {
       setOnLine(false);
       expect(isNetworkError(new Error("failed to load foo: 404"))).toBeTruthy();
       expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
-        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`,
+        `${t.failedToLoadEngine} ${t.engineRequiresOnline}`,
       );
     });
 
@@ -193,7 +193,7 @@ describe("wasm-engine/catalog", () => {
       setOnLine(true);
       expect(isNetworkError(new TypeError("Failed to fetch"))).toBeTruthy();
       expect(describeEngineLoadError(new TypeError("Failed to fetch"))).toBe(
-        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`,
+        `${t.failedToLoadEngine} ${t.engineRequiresOnline}`,
       );
     });
 
@@ -201,7 +201,7 @@ describe("wasm-engine/catalog", () => {
     it("isolation が必要と分かっている場合は再読み込みを促すこと", () => {
       setOnLine(true);
       expect(describeEngineLoadError(new Error(CROSS_ORIGIN_ISOLATION_REQUIRED))).toBe(
-        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`,
+        `${t.failedToLoadEngine} ${t.engineRequiresReload}`,
       );
     });
 
@@ -211,7 +211,7 @@ describe("wasm-engine/catalog", () => {
       setOnLine(true);
       setIsolated(false);
       expect(describeEngineLoadError(new Error("エンジンから応答がありません"))).toBe(
-        `${t.failedToLoadBuiltinEngine} エンジンから応答がありません`,
+        `${t.failedToLoadEngine} エンジンから応答がありません`,
       );
     });
 
@@ -219,7 +219,7 @@ describe("wasm-engine/catalog", () => {
       setOnLine(true);
       expect(isNetworkError(new Error("failed to load foo: 404"))).toBeFalsy();
       expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
-        `${t.failedToLoadBuiltinEngine} failed to load foo: 404`,
+        `${t.failedToLoadEngine} failed to load foo: 404`,
       );
     });
   });

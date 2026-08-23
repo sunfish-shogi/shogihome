@@ -776,11 +776,11 @@ export const vi: Texts = {
   csaServerLoginDenied: "Đăng nhập vào máy chủ CSA bị từ chối.",
   thisFeatureNotAvailableOnWebApp: "Tính năng này không có sẵn trên trình duyệt.",
   // TODO: Translate
-  failedToLoadBuiltinEngine: "組み込みエンジンの読み込みに失敗しました。",
+  failedToLoadEngine: "エンジンの読み込みに失敗しました。",
   // TODO: Translate
-  builtinEngineRequiresOnline: "組み込みエンジンの読み込みにはインターネット接続が必要です。",
+  engineRequiresOnline: "エンジンの読み込みにはインターネット接続が必要です。",
   // TODO: Translate
-  builtinEngineRequiresReload: "組み込みエンジンを使用するにはページの再読み込みが必要です。",
+  engineRequiresReload: "エンジンを使用するにはページの再読み込みが必要です。",
   failedToStartNewGame: "Bắt đầu ván mới thất bại.",
   errorOccuredWhileEndingGame: "Đã có lỗi trong khi kết thúc ván.",
   failedToSendGoCommand: "Gửi lệnh go thất bại.",
