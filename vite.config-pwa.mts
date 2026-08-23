@@ -32,6 +32,29 @@ function injectCrossOriginIsolationBootstrap(): Plugin {
   };
 }
 
+// 開発サーバーで /sw.js が index.html にフォールバックするのを防ぐ。
+//
+// Service Worker を無効にしている開発サーバーには sw.js が存在しないが、
+// Vite の SPA フォールバックが index.html を返してしまう。
+// Content-Type が text/html なのでブラウザは登録を拒否するものの、
+// 「200 が返るのに登録できない」という紛らわしい状態になる。
+function blockServiceWorkerFallbackInDev(): Plugin {
+  return {
+    name: "shogihome-block-sw-fallback",
+    apply: "serve",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (req.url && req.url.split("?")[0] === "/sw.js") {
+          res.statusCode = 404;
+          res.end("service worker is disabled on the dev server (set PWA_DEV=1 to enable)");
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
   ...base,
   server: {
@@ -51,6 +74,8 @@ export default defineConfig({
   plugins: [
     ...(base.plugins || []),
     injectCrossOriginIsolationBootstrap(),
+    // PWA_DEV=1 のときは vite-plugin-pwa が本物の sw.js を配信するので邪魔しない。
+    ...(process.env.PWA_DEV === "1" ? [] : [blockServiceWorkerFallbackInDev()]),
     VitePWA({
       // 更新版は自動で適用せず、アプリ内で通知してユーザーの操作で再読み込みする。
       // 対局中や検討中に予期せず画面が再読み込みされるのを防ぐため。
