@@ -158,12 +158,22 @@ describe("wasm-engine/catalog", () => {
       Object.defineProperty(window.navigator, "onLine", { value, configurable: true });
     };
 
+    // jsdom は crossOriginIsolated を持たないため、既定の isolated 扱いで揃える。
+    const setIsolated = (value: boolean) => {
+      Object.defineProperty(globalThis, "crossOriginIsolated", { value, configurable: true });
+    };
+
+    beforeEach(() => {
+      setIsolated(true);
+    });
+
     afterEach(() => {
       if (onLine) {
         Object.defineProperty(window.navigator, "onLine", onLine);
       } else {
         setOnLine(true);
       }
+      setIsolated(true);
     });
 
     it("オフラインならネットワーク起因として扱うこと", () => {
@@ -183,8 +193,19 @@ describe("wasm-engine/catalog", () => {
       );
     });
 
+    // スレッドを使うエンジンは isolated でないと起動できない。
+    // 出るのは DataCloneError などの内部エラーなので、対処が分かる文言にする。
+    it("isolated でなければ再読み込みを促すこと", () => {
+      setOnLine(true);
+      setIsolated(false);
+      expect(describeEngineLoadError(new Error("DataCloneError"))).toBe(
+        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`,
+      );
+    });
+
     it("それ以外は内容を添えること", () => {
       setOnLine(true);
+      setIsolated(true);
       expect(isNetworkError(new Error("failed to load foo: 404"))).toBeFalsy();
       expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
         `${t.failedToLoadBuiltinEngine} failed to load foo: 404`,

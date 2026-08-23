@@ -770,6 +770,7 @@ export const en: Texts = {
   thisFeatureNotAvailableOnWebApp: "This feature is not available on web app.",
   failedToLoadBuiltinEngine: "Failed to load the built-in engine.",
   builtinEngineRequiresOnline: "Loading the built-in engine requires an internet connection.",
+  builtinEngineRequiresReload: "Reload the page to use the built-in engine.",
   failedToStartNewGame: "Failed to start new game.",
   errorOccuredWhileEndingGame: "An error occured while ending game.",
   failedToSendGoCommand: "Failed to send go-command.",

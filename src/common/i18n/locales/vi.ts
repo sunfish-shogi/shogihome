@@ -779,6 +779,8 @@ export const vi: Texts = {
   failedToLoadBuiltinEngine: "組み込みエンジンの読み込みに失敗しました。",
   // TODO: Translate
   builtinEngineRequiresOnline: "組み込みエンジンの読み込みにはインターネット接続が必要です。",
+  // TODO: Translate
+  builtinEngineRequiresReload: "組み込みエンジンを使用するにはページの再読み込みが必要です。",
   failedToStartNewGame: "Bắt đầu ván mới thất bại.",
   errorOccuredWhileEndingGame: "Đã có lỗi trong khi kết thúc ván.",
   failedToSendGoCommand: "Gửi lệnh go thất bại.",

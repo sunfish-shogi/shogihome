@@ -156,6 +156,14 @@ export function describeEngineLoadError(error: unknown): string {
   if (isNetworkError(error)) {
     return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`;
   }
+  // スレッドを使うエンジンは SharedArrayBuffer を要求するため、ページが
+  // cross-origin isolated でないと起動できない。Service Worker がヘッダーを
+  // 付ける前 (初回アクセスや待ち時間の打ち切り) にこの状態になる。
+  // 出るのは DataCloneError などの内部エラーで対処が分からないため言い換える。
+  // 再読み込みすれば Service Worker の制御下に入り、解消することが多い。
+  if (!globalThis.crossOriginIsolated) {
+    return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`;
+  }
   return `${t.failedToLoadBuiltinEngine} ${detail}`;
 }
 

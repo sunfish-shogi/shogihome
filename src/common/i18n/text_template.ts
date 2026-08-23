@@ -748,6 +748,7 @@ export type Texts = {
   thisFeatureNotAvailableOnWebApp: string;
   failedToLoadBuiltinEngine: string;
   builtinEngineRequiresOnline: string;
+  builtinEngineRequiresReload: string;
   failedToStartNewGame: string;
   errorOccuredWhileEndingGame: string;
   failedToSendGoCommand: string;

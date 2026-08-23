@@ -770,6 +770,7 @@ export const ja: Texts = {
   thisFeatureNotAvailableOnWebApp: "Web版では利用できない機能です。",
   failedToLoadBuiltinEngine: "組み込みエンジンの読み込みに失敗しました。",
   builtinEngineRequiresOnline: "組み込みエンジンの読み込みにはインターネット接続が必要です。",
+  builtinEngineRequiresReload: "組み込みエンジンを使用するにはページの再読み込みが必要です。",
   failedToStartNewGame: "対局の開始に失敗しました。",
   errorOccuredWhileEndingGame: "対局の終了中にエラーが発生しました。",
   failedToSendGoCommand: "goコマンドを送信できませんでした。",

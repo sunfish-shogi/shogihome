@@ -34,6 +34,20 @@ function injectCrossOriginIsolationBootstrap(): Plugin {
 
 export default defineConfig({
   ...base,
+  server: {
+    ...base.server,
+    // 開発サーバーでは Service Worker を既定で無効にしているため
+    // (devOptions.enabled)、COOP / COEP を付ける主体が居ない。
+    // ここで直接付けて cross-origin isolated にする。
+    //
+    // 付けないと -pthread でビルドしたエンジンが SharedArrayBuffer を
+    // 共有できず、"SharedArrayBuffer transfer requires self.crossOriginIsolated"
+    // で起動に失敗する。本番では Service Worker が同じヘッダーを付ける。
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
+  },
   plugins: [
     ...(base.plugins || []),
     injectCrossOriginIsolationBootstrap(),
