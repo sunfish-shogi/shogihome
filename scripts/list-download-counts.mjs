@@ -4,7 +4,7 @@ import path from "path";
 import semver from "semver";
 
 const apiURL = "https://api.github.com/repos/sunfish-shogi/shogihome/releases?per_page=100";
-const platformNames = ["win", "mac", "linux"];
+const platformNames = ["win", "mac", "linux", "linux-appimage", "linux-deb", "portable"];
 const distDir = "dist";
 const outputCSV = path.join(distDir, "download-counts.csv");
 
@@ -22,7 +22,7 @@ fetch(apiURL)
       const published = release.published_at;
       const m = Object.fromEntries(
         release.assets.map((asset) => {
-          const platform = asset.name.match(/-([^-]+)\.zip$/)[1];
+          const platform = asset.name.match(/release-v[^-]+-(.+)\.zip$/)[1];
           return [platform, asset.download_count];
         }),
       );
