@@ -21,8 +21,9 @@ ShogiHome 独自の追加は無い。C の関数 (`usi_command` / `usi_poll`) �
 それらを JavaScript 側で包む定型のシムを用意してあるので
 (「3. モジュールのインターフェース」を参照)、エンジン側の C++ の作りは変わらない。
 
-ただし**形が揃うことと実際に動くことは別**である。YaneuraOu 本体を載せるには
-pthreads の扱い (「8. 制約」) を解決する必要があり、本仕様の範囲外。
+スレッド (`-pthread`) を使うエンジンも載せられるが、`SharedArrayBuffer` を
+要求するため cross-origin isolation が前提になる。マニフェストの
+`requiresCrossOriginIsolation` で宣言すること (「8. 制約」も参照)。
 
 ---
 
@@ -49,6 +50,7 @@ public/engines/<dir>/
   "moduleFormat": "esm",
   "name": "ShogiHome Basic Engine",
   "author": "Kubo, Ryosuke",
+  "requiresCrossOriginIsolation": true,
   "dataFiles": [{ "url": "eval/nn.bin", "path": "/eval/nn.bin" }],
   "options": [
     {
@@ -69,17 +71,18 @@ public/engines/<dir>/
 }
 ```
 
-| フィールド     | 必須 | 内容                                                             |
-| -------------- | ---- | ---------------------------------------------------------------- |
-| `abi`          | ○    | `shogihome-wasm-engine/1`                                        |
-| `module`       | ○    | グルーコードのファイル名。マニフェストからの相対パス             |
-| `moduleFormat` |      | `esm` (既定) または `umd`。「4. グルーコードの形式」を参照       |
-| `exportName`   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
-| `name`         | ○    | エンジンが `id name` で返す名前                                  |
-| `author`       | ○    | エンジンが `id author` で返す名前                                |
-| `dataFiles`    |      | 起動時に読み込むファイル。「6. データファイル」を参照            |
-| `options`      |      | エンジンが `option` で申告する定義の写し                         |
-| `presets`      | ○    | 一覧に並べるエンジンの定義。1 つ以上                             |
+| フィールド                     | 必須 | 内容                                                             |
+| ------------------------------ | ---- | ---------------------------------------------------------------- |
+| `abi`                          | ○    | `shogihome-wasm-engine/1`                                        |
+| `module`                       | ○    | グルーコードのファイル名。マニフェストからの相対パス             |
+| `moduleFormat`                 |      | `esm` (既定) または `umd`。「4. グルーコードの形式」を参照       |
+| `exportName`                   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
+| `name`                         | ○    | エンジンが `id name` で返す名前                                  |
+| `author`                       | ○    | エンジンが `id author` で返す名前                                |
+| `requiresCrossOriginIsolation` |      | スレッドを使う場合は `true`。下記を参照                          |
+| `dataFiles`                    |      | 起動時に読み込むファイル。「6. データファイル」を参照            |
+| `options`                      |      | エンジンが `option` で申告する定義の写し                         |
+| `presets`                      | ○    | 一覧に並べるエンジンの定義。1 つ以上                             |
 
 ### `presets`
 
@@ -93,6 +96,19 @@ public/engines/<dir>/
 
 `displayName` は一覧に表示する名前。ShogiHome 側で多言語化したい場合のみ、
 `catalog.ts` の `DISPLAY_NAME_OVERRIDES` で上書きする。
+
+### `requiresCrossOriginIsolation`
+
+`-pthread` を付けてビルドしたエンジンは `true` にする (既定は `false`)。
+
+このようなエンジンは起動時に `SharedArrayBuffer` を要求するため、ページが
+cross-origin isolated でないと動かない。**そして isolated でない場合、
+Emscripten はモジュール生成の Promise を解決も reject もしないまま止まる。**
+呼び出し側からは応答が無いようにしか見えず、起動タイムアウト (既定 10 秒) を
+待った末に「エンジンから応答がありません」という無関係な文言が出てしまう。
+
+宣言しておくと ShogiHome はモジュールを生成する前に確認し、即座に
+「ページの再読み込みが必要」と伝える。**スレッドを使うなら必ず書くこと。**
 
 ### `options`
 
@@ -416,8 +432,12 @@ ShogiHome の basic エンジンは `-pthread` を付けてビルドしている
 
 **ただし isolated にならない場合がある。** Service Worker の制御下に入る前に
 ドキュメントを受け取る初回アクセスや、待ち時間の打ち切りに達した場合である。
-その状態では `-pthread` ビルドのモジュールは生成に失敗する。
-`crossOriginIsolated` を確認して再読み込みを促す導線は**まだ用意していない。**
+
+その状態で `-pthread` ビルドのモジュールを生成しようとすると、Emscripten は
+Promise を解決も reject もしないまま止まる。そのため ShogiHome は
+マニフェストの `requiresCrossOriginIsolation` を見て、**生成を試みる前に**
+`crossOriginIsolated` を確認し、成立していなければ即座に断って
+ページの再読み込みを促す。スレッドを使うエンジンは必ず宣言すること。
 
 **実行時のスレッド数を 1 にしても要求は消えない。** 効くのはビルドフラグの有無であって、
 実際に何本スレッドを作るかではない。isolation に依存したくないエンジンは、

@@ -7,7 +7,12 @@
 // 単一スレッドのエンジンは探索を分割実行する必要があるが、その駆動はエンジンの
 // モジュールの内側で完結する (参照実装は engines/core/shim.js)。この Worker は
 // コマンドを渡して出力を受け取るだけで、思考の進行には関与しない。
-import { EngineManifest, MANIFEST_FILE_NAME, parseEngineManifest } from "./manifest.js";
+import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
+  EngineManifest,
+  MANIFEST_FILE_NAME,
+  parseEngineManifest,
+} from "./manifest.js";
 import { EngineFactory, EngineInstance, validateEngineInstance, wrapUMDSource } from "./loader.js";
 
 let engine: EngineInstance | undefined;
@@ -112,6 +117,13 @@ async function launch(baseURL: string): Promise<void> {
       throw new Error(`failed to load ${manifestURL}: ${response.status}`);
     }
     const manifest = parseEngineManifest(await response.json());
+    // スレッドを使うエンジンは SharedArrayBuffer を要求する。isolated でないと
+    // Emscripten はモジュール生成の Promise を解決も reject もしないまま止まり、
+    // 呼び出し側は起動タイムアウト (既定 10 秒) を待つことになる。
+    // 原因はここで判明しているので、生成を試みる前に断る。
+    if (manifest.requiresCrossOriginIsolation && !self.crossOriginIsolated) {
+      throw new Error(CROSS_ORIGIN_ISOLATION_REQUIRED);
+    }
     const moduleURL = new URL(manifest.module, baseURL).href;
     const factory = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(

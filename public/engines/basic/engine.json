@@ -4,6 +4,7 @@
   "moduleFormat": "esm",
   "name": "ShogiHome Basic Engine",
   "author": "Kubo, Ryosuke",
+  "requiresCrossOriginIsolation": true,
   "options": [
     {
       "name": "Style",

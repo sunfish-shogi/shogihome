@@ -116,4 +116,21 @@ describe("wasm-engine/manifest", () => {
       }),
     ).toThrow(/duplicated preset id/);
   });
+
+  // スレッドを使うエンジンは isolation を宣言する。
+  // 宣言が無ければ既定は false で、単一スレッドのエンジンは影響を受けない。
+  it("requiresCrossOriginIsolation", () => {
+    expect(parseEngineManifest(validManifest()).requiresCrossOriginIsolation).toBeUndefined();
+    expect(
+      parseEngineManifest({ ...validManifest(), requiresCrossOriginIsolation: true })
+        .requiresCrossOriginIsolation,
+    ).toBe(true);
+    expect(
+      parseEngineManifest({ ...validManifest(), requiresCrossOriginIsolation: false })
+        .requiresCrossOriginIsolation,
+    ).toBe(false);
+    expect(() =>
+      parseEngineManifest({ ...validManifest(), requiresCrossOriginIsolation: "yes" }),
+    ).toThrow(/must be a boolean/);
+  });
 });

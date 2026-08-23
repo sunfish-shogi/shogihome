@@ -9,6 +9,10 @@ import { EXPORT_NAME_PATTERN } from "./loader.js";
 // マニフェストの abi フィールドが取り得る値。非互換な変更を入れる際に更新する。
 export const ENGINE_ABI = "shogihome-wasm-engine/1";
 
+// cross-origin isolation が必要なのに成立していない場合に Worker が返すエラー。
+// Worker とメインスレッドの間で例外の型は保てないため、文字列で識別する。
+export const CROSS_ORIGIN_ISOLATION_REQUIRED = "cross-origin isolation is required";
+
 export const MANIFEST_FILE_NAME = "engine.json";
 
 // グルーコードの出力形式。
@@ -49,6 +53,10 @@ export type EngineManifest = {
   exportName?: string;
   name: string;
   author: string;
+  // スレッドを使うエンジン (-pthread) は SharedArrayBuffer を要求するため、
+  // ページが cross-origin isolated でないと起動できない。
+  // 宣言しておくと、モジュールを生成する前に確認して即座に失敗できる。
+  requiresCrossOriginIsolation?: boolean;
   dataFiles?: EngineManifestDataFile[];
   options?: EngineManifestOption[];
   presets: EngineManifestPreset[];
@@ -185,6 +193,12 @@ export function parseEngineManifest(json: unknown): EngineManifest {
       fail(`manifest.exportName must be an identifier: ${exportName}`);
     }
     manifest.exportName = exportName;
+  }
+  if (record.requiresCrossOriginIsolation !== undefined) {
+    if (typeof record.requiresCrossOriginIsolation !== "boolean") {
+      fail("manifest.requiresCrossOriginIsolation must be a boolean");
+    }
+    manifest.requiresCrossOriginIsolation = record.requiresCrossOriginIsolation;
   }
   if (record.options !== undefined) {
     if (!Array.isArray(record.options)) {

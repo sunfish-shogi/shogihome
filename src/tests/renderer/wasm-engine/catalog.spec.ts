@@ -11,7 +11,11 @@ import {
   loadBuiltinUSIEngines,
   resolveEngineDirURL,
 } from "@/renderer/wasm-engine/catalog.js";
-import { EngineManifest, ENGINE_ABI } from "@/renderer/wasm-engine/manifest.js";
+import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
+  EngineManifest,
+  ENGINE_ABI,
+} from "@/renderer/wasm-engine/manifest.js";
 
 const manifest: EngineManifest = {
   abi: ENGINE_ABI,
@@ -193,19 +197,26 @@ describe("wasm-engine/catalog", () => {
       );
     });
 
-    // スレッドを使うエンジンは isolated でないと起動できない。
-    // 出るのは DataCloneError などの内部エラーなので、対処が分かる文言にする。
-    it("isolated でなければ再読み込みを促すこと", () => {
+    // Worker が起動前の確認で断った場合だけ、再読み込みを促す文言にする。
+    it("isolation が必要と分かっている場合は再読み込みを促すこと", () => {
+      setOnLine(true);
+      expect(describeEngineLoadError(new Error(CROSS_ORIGIN_ISOLATION_REQUIRED))).toBe(
+        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`,
+      );
+    });
+
+    // isolated でないことを根拠に言い換えてはならない。
+    // 起動タイムアウトのように、それ自体が対処を示している文言を潰してしまう。
+    it("isolated でなくても原因が別なら内容をそのまま添えること", () => {
       setOnLine(true);
       setIsolated(false);
-      expect(describeEngineLoadError(new Error("DataCloneError"))).toBe(
-        `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`,
+      expect(describeEngineLoadError(new Error("エンジンから応答がありません"))).toBe(
+        `${t.failedToLoadBuiltinEngine} エンジンから応答がありません`,
       );
     });
 
     it("それ以外は内容を添えること", () => {
       setOnLine(true);
-      setIsolated(true);
       expect(isNetworkError(new Error("failed to load foo: 404"))).toBeFalsy();
       expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
         `${t.failedToLoadBuiltinEngine} failed to load foo: 404`,

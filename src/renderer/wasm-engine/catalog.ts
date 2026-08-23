@@ -14,6 +14,7 @@ import {
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
 import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
   EngineManifest,
   isSafeRelativePath,
   MANIFEST_FILE_NAME,
@@ -156,14 +157,14 @@ export function describeEngineLoadError(error: unknown): string {
   if (isNetworkError(error)) {
     return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresOnline}`;
   }
-  // スレッドを使うエンジンは SharedArrayBuffer を要求するため、ページが
-  // cross-origin isolated でないと起動できない。Service Worker がヘッダーを
-  // 付ける前 (初回アクセスや待ち時間の打ち切り) にこの状態になる。
-  // 出るのは DataCloneError などの内部エラーで対処が分からないため言い換える。
-  // 再読み込みすれば Service Worker の制御下に入り、解消することが多い。
-  if (!globalThis.crossOriginIsolated) {
+  // Worker が起動前の確認で断った場合。原因が確定しているものだけを言い換える。
+  // 再読み込みすれば Service Worker の制御下に入り、isolated になる。
+  // (初回アクセスや、その待ち時間の打ち切りでこの状態になる)
+  if (detail.includes(CROSS_ORIGIN_ISOLATION_REQUIRED)) {
     return `${t.failedToLoadBuiltinEngine} ${t.builtinEngineRequiresReload}`;
   }
+  // それ以外は原因を特定できないので、内容をそのまま添える。
+  // 起動タイムアウトのように、それ自体が対処を示している文言もある。
   return `${t.failedToLoadBuiltinEngine} ${detail}`;
 }
 
