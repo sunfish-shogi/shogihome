@@ -155,7 +155,6 @@ function loadMetadataIfNeeded(uri: string) {
 }
 
 const cpuUsage = computed(() => {
-  // 0 は「不明」を意味する。割り算をすると Infinity になり、根拠の無い警告が出てしまう。
   if (machineSpec.value.cpuCores === 0) {
     return 0;
   }
