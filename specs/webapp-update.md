@@ -168,8 +168,21 @@ Web 版は外部のサブリソースを一切読み込まないため、ふつ�
 | 既に isolated (2 回目以降)                 | 即座に起動する         |
 | Service Worker が使えない                  | 再読み込みしない       |
 | `sessionStorage` が使えない                | 再読み込みしない       |
+| 既に Service Worker に制御されている       | 再読み込みしない       |
 | 再読み込み済みなのに isolated にならない   | 再度は読み込み直さない |
 | Service Worker が 5 秒以内に有効にならない | 諦めて起動する         |
+
+**既に制御されているのに isolated でない場合は再読み込みしない。** 制御しているのは
+ヘッダーを付けない古い版である (新しい版が制御していれば、そのドキュメントには既に
+ヘッダーが付いている)。更新版は `registerType: "prompt"` により待機状態に留まるため、
+ここで再読み込みしても応答するのは同じ古い版であり、isolated にならないまま
+上記の記録だけを消費して以後の回復まで止めてしまう。更新は
+[`src/renderer/webapp/update.ts`](../src/renderer/webapp/update.ts) の通知から適用され、
+そのときの再読み込みで isolated になる。ブートストラップは登録だけ行って起動する。
+
+Electron 専用のページ (`prompt.html`, `monitor.html`, `layout-manager.html`) も
+これに該当する。ナビゲーションのルートから除外してあるため、
+何度読み込み直しても isolated にはならない。
 
 **代償は初回アクセスの表示が遅くなること。** Service Worker が有効になるには
 事前キャッシュの完了が必要 (Workbox の `PrecacheController.install()` は
