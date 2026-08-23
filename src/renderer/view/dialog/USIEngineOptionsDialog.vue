@@ -322,7 +322,7 @@
 <script setup lang="ts">
 import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
-import api from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api";
 import {
   BookMoveSelectionRule,
   compressUSIEngineOptionsClipboardData,
@@ -442,7 +442,10 @@ onMounted(async () => {
       ...emptyUSIEngineExtraBookConfig(),
       ...engine.value.extraBook,
     };
-    machineSpec.value = await api.getMachineSpec();
+    // Web 版はブラウザーから実機のスペックを取得できないため、0 (不明) のままにする。
+    if (isNative()) {
+      machineSpec.value = await api.getMachineSpec();
+    }
   } catch (e) {
     useErrorStore().add(e);
     emit("cancel");

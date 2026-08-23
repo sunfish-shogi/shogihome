@@ -440,7 +440,10 @@ onMounted(async () => {
     startPositionListShuffle.value = gameSettings.value.startPositionListOrder === "shuffle";
     startPositionListPlyEnabled.value = gameSettings.value.startPositionListPly !== undefined;
     startPositionListPly.value = gameSettings.value.startPositionListPly ?? 1;
-    machineSpec.value = await api.getMachineSpec();
+    // Web 版はブラウザーから実機のスペックを取得できないため、0 (不明) のままにする。
+    if (isNative()) {
+      machineSpec.value = await api.getMachineSpec();
+    }
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
