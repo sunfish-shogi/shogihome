@@ -152,6 +152,10 @@ function loadMetadataIfNeeded(uri: string) {
 }
 
 const cpuUsage = computed(() => {
+  // 0 は「不明」を意味する。割り算をすると Infinity になり、根拠の無い警告が出てしまう。
+  if (machineSpec.value.cpuCores === 0) {
+    return 0;
+  }
   let threadsSum = 0;
   for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
     const engine = engines.value.getEngine(uri);
@@ -168,6 +172,9 @@ const cpuUsage = computed(() => {
 });
 
 const memoryUsage = computed(() => {
+  if (machineSpec.value.memory === 0) {
+    return 0;
+  }
   let usiHashSum = 0;
   for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
     const engine = engines.value.getEngine(uri);

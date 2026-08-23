@@ -658,7 +658,12 @@ export const webAPI: Bridge = {
     window.open(url, "_blank");
   },
   async getMachineSpec(): Promise<string> {
-    const spec: MachineSpec = { cpuCores: 1, memory: 1024 ** 2 };
+    // ブラウザーからは実機の CPU コア数もメモリー量も分からない。
+    // navigator.hardwareConcurrency は指紋採取の対策で丸められたり詐称されたりするうえ、
+    // メモリー量に至っては取得する手段が無い。
+    // 0 は「不明」を意味し、各ダイアログは使用率の目安や警告の表示を省略する
+    // (シェルスクリプトを経由するエンジンで実体を特定できない場合と同じ扱い)。
+    const spec: MachineSpec = { cpuCores: 0, memory: 0 };
     return JSON.stringify(spec);
   },
   async isEncryptionAvailable(): Promise<boolean> {
