@@ -25,7 +25,7 @@ import { defaultMateSearchSettings } from "@/common/settings/mate.js";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
 import { getEmptyHistory } from "@/common/file/history.js";
 import { VersionStatus } from "@/common/version.js";
-import { blankOSState, SessionStates, MachineSpec } from "@/common/advanced/monitor.js";
+import { blankOSState, SessionStates } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
@@ -659,12 +659,8 @@ export const webAPI: Bridge = {
   },
   async getMachineSpec(): Promise<string> {
     // ブラウザーからは実機の CPU コア数もメモリー量も分からない。
-    // navigator.hardwareConcurrency は指紋採取の対策で丸められたり詐称されたりするうえ、
-    // メモリー量に至っては取得する手段が無い。
-    // 0 は「不明」を意味し、各ダイアログは使用率の目安や警告の表示を省略する
-    // (シェルスクリプトを経由するエンジンで実体を特定できない場合と同じ扱い)。
-    const spec: MachineSpec = { cpuCores: 0, memory: 0 };
-    return JSON.stringify(spec);
+    // 呼び出し側が isNative() で分岐するため、ここへは来ない。
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async isEncryptionAvailable(): Promise<boolean> {
     return false;
