@@ -8,7 +8,13 @@
 // TypeScript ではなく JavaScript なのは、Service Worker のグローバルの型
 // (ServiceWorkerGlobalScope) が DOM の型と衝突し、tsconfig を分けないと
 // 型検査が通らないため。
-import { precache, addRoute, createHandlerBoundToURL } from "workbox-precaching";
+import {
+  precache,
+  addRoute,
+  createHandlerBoundToURL,
+  getCacheKeyForURL,
+  matchPrecache,
+} from "workbox-precaching";
 import { registerRoute, NavigationRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 import { ExpirationPlugin } from "workbox-expiration";
@@ -31,8 +37,9 @@ precache(self.__WB_MANIFEST);
 // レスポンスヘッダーが要るが、GitHub Pages はヘッダーを設定できない。
 // そこで Service Worker が返すナビゲーションのレスポンスに自分で足す。
 //
-// ヘッダーが要るのはドキュメントだけである。COEP の require-corp が
-// CORP を要求するのは**クロスオリジンの**サブリソースに対してで、
+// ヘッダーが要るのはドキュメントと**専用 Worker のスクリプト**である
+// (isWorkerRequest を参照)。それ以外のサブリソースには要らない。COEP の
+// require-corp が CORP を要求するのは**クロスオリジンの**サブリソースに対してで、
 // ShogiHome の Web 版は外部のサブリソースを一切読み込まないため影響がない。
 //
 // 初回アクセスは Service Worker の制御下に無いので isolated にならない。
@@ -63,6 +70,29 @@ registerRoute(
       denylist: [/\/(?:prompt|monitor|layout-manager)\.html$/],
     },
   ),
+);
+
+// 専用 Worker のスクリプトにもヘッダーを付ける。
+//
+// isolated なドキュメントから Worker を起動するには、**Worker のスクリプトの
+// レスポンス自体**が COEP を持っていなければならない。上のクロスオリジンの
+// サブリソースの話とは別の要件で、同一オリジンでも免除されない。付けないと
+// Worker の生成が失敗する (DevTools のレスポンスに
+// cross-origin-embedder-policy: not-set と出る)。
+//
+// 開発サーバーは全てのレスポンスにヘッダーを付ける (vite.config-pwa.mts) ため、
+// この不足は Service Worker が応答する本番でしか現れない。
+function isWorkerRequest({ request }) {
+  return request.destination === "worker" || request.destination === "sharedworker";
+}
+
+// 事前キャッシュした Worker (src/renderer/wasm-engine/engine.worker.ts)。
+// 事前キャッシュのルートより先に登録する。Workbox はルートを登録順に照合するため、
+// 後に回すとそちらが先に拾ってヘッダーが付かない。
+registerRoute(
+  (options) => isWorkerRequest(options) && !!getCacheKeyForURL(options.url.href),
+  async ({ request }) =>
+    withCrossOriginIsolation((await matchPrecache(request.url)) || (await fetch(request))),
 );
 
 // ナビゲーション以外を事前キャッシュから返す。
@@ -110,16 +140,22 @@ registerRoute(
 // 事前キャッシュと違って revision を持たないため StaleWhileRevalidate にして、
 // 返した後に取り直す。ファイル名が変わらないまま中身が差し替わっても、
 // 次回の起動には新しいものが使われる。
-registerRoute(
-  /\/engines\/[^?]+\.(?:json|js|wasm)$/,
-  new StaleWhileRevalidate({
-    cacheName: "shogihome-engine-modules",
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-    ],
-  }),
-);
+const engineModuleStrategy = new StaleWhileRevalidate({
+  cacheName: "shogihome-engine-modules",
+  plugins: [
+    new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+    new CacheableResponsePlugin({ statuses: [0, 200] }),
+  ],
+});
+
+// -pthread でビルドしたエンジンは、グルーコード自身を Worker として読み直す
+// (Emscripten が new Worker(new URL("<module>.js", import.meta.url)) を出力する)。
+// 同じ URL がモジュールとしても Worker としても要求されるため、destination を見て
+// 必要なときだけヘッダーを付ける。キャッシュにはヘッダーを足す前のものが入る。
+registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
+  const response = await engineModuleStrategy.handle(options);
+  return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
+});
 
 // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
 // 負担が大きすぎるため、実際に使われたものだけを保持する。

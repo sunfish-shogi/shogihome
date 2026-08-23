@@ -116,9 +116,27 @@ cross-origin isolated でなければ使えない。isolation には
 GitHub Pages はヘッダーを設定できない。
 
 そこで Service Worker が返すナビゲーションのレスポンスにこの 2 つを足す。
-ヘッダーが必要なのはドキュメントだけであり、`require-corp` が `CORP` を要求するのは
-**クロスオリジンの**サブリソースに対してである。Web 版は外部のサブリソースを
-一切読み込まないため、他の応答に手を加える必要はない。
+
+`require-corp` が `CORP` を要求するのは**クロスオリジンの**サブリソースに対してであり、
+Web 版は外部のサブリソースを一切読み込まないため、ふつうのサブリソースには手を加えなくてよい。
+
+### 専用 Worker には別途ヘッダーが要る
+
+**ドキュメントだけでは足りない。** isolated なドキュメントから専用 Worker を起動するには、
+**Worker のスクリプトのレスポンス自体**が `Cross-Origin-Embedder-Policy` を持っている
+必要がある。上記の `CORP` の規則とは別の要件で、**同一オリジンでも免除されない。**
+付けないと Worker の生成が失敗し、DevTools のレスポンスに
+`cross-origin-embedder-policy: not-set` と表示される。
+
+対象は 2 つある。どちらも `request.destination` が `worker` であることで判別する。
+
+- 事前キャッシュした [`engine.worker.ts`](../src/renderer/wasm-engine/engine.worker.ts) の成果物
+- `-pthread` でビルドしたエンジンのグルーコード。Emscripten は
+  `new Worker(new URL("<module>.js", import.meta.url))` を出力するため、
+  同じ URL がモジュールとしても Worker としても要求される
+
+**開発サーバーではこの不足が現れない。** `vite.config-pwa.mts` の `server.headers` は
+全てのレスポンスにヘッダーを付けるため、Service Worker が応答する本番との差になる。
 
 ### 初回アクセスの再読み込み
 
