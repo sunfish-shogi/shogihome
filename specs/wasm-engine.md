@@ -26,13 +26,6 @@ src/renderer/wasm-engine/           WebAssembly エンジンを動かす rendere
   session.ts                          セッション管理 (状態遷移・タイムアウト)
   transport.ts                        Worker との行単位 I/O
   engine.worker.ts                    Worker エントリ
-
-engines/                            ShogiHome 自身のエンジン (参照実装) のソース
-  core/                               エンジン非依存の将棋コアと USI 入出力
-    shim.js                             ABI のインターフェースを Module に生やす --pre-js
-  basic/                              BasicPlayer を移植したエンジン
-  tests/                              ネイティブビルド用のテスト
-scripts/build-engines.mjs           参照実装の Emscripten ビルドドライバ
 ```
 
 `src/renderer/wasm-engine/` は USI の汎用実装ではなく、WebAssembly として提供される
@@ -75,9 +68,6 @@ ShogiHome 側の作業は次の 2 つだけ。
 ShogiHome 側に写しを持つ必要は無い。配置したエンジンは
 `src/tests/engines/conformance.spec.ts` が自動的に検証対象にする。
 
-`engines/` にソースを置く必要があるのは ShogiHome 自身の参照実装 (`basic`) だけで、
-外部のエンジンはここを通らない。
-
 ## Worker と WebAssembly の間の契約
 
 エンジンのモジュールが公開する `postMessage` / `addMessageListener` /
@@ -105,8 +95,7 @@ Worker を止めるときは、まず `terminate` を送ってエンジン自身
 探索から制御が戻らず応答が無い場合は 1 秒後に `Worker.terminate()` で強制的に止める。
 
 Worker はエンジンの思考の進行には関与しない。コマンドを渡して出力を受け取るだけで、
-探索を分割実行するための駆動はエンジンのモジュールの内側で完結する
-(参照実装は [`engines/core/shim.js`](../engines/core/shim.js))。
+探索を分割実行するための駆動はエンジンのモジュールの内側で完結する。
 
 ## 組み込みエンジンの扱い
 
@@ -124,25 +113,7 @@ Worker はエンジンの思考の進行には関与しない。コマンドを�
   (Electron 版と同じ挙動)。
 
 TypeScript 実装の簡易エンジン (`es://basic-engine/*`、「初心者」) も従来通り一覧に並ぶ。
-組み込みエンジンは「Lv. 2」「Lv. 3」として別の名前で表示されるため、両者は区別できる。
-
-## モバイル表示の対局メニュー
-
-`src/renderer/view/menu/MobileGameMenu.vue` は画面が狭く名前を並べきれないため、
-強さをレベルで表す (`Lv. 1 居飛車` のような表記)。
-
-| レベル | 実体                                         |
-| ------ | -------------------------------------------- |
-| Lv. 1  | TypeScript 実装の簡易エンジン (「初心者」)   |
-| Lv. 2  | 組み込みエンジンの Lv. 2 プリセット (深さ 3) |
-| Lv. 3  | 組み込みエンジンの Lv. 3 プリセット (深さ 5) |
-
-ボタンの表記とプリセットのレベルは揃えてある。棋譜に残る対局者名には
-`ShogiHome Lv. 2 (居飛車)` のような正式な名前を使う。
-
-Lv. 1 は `es://basic-engine/*` なので `PlayerSettings.usi` を持たない。
-Lv. 2 以降は USI エンジンとして扱うので設定の実体が要る。
-`buildOpponentSettings()` がこの違いを吸収する。
+URI 体系が異なるため、組み込みの WebAssembly エンジンとは区別できる。
 
 ## キャッシュ
 
@@ -164,132 +135,3 @@ Lv. 2 以降は USI エンジンとして扱うので設定の実体が要る。
 `StaleWhileRevalidate` に変えるのは避ける。数 MB のファイルを起動のたびに取り直すことになり、
 事前キャッシュを避けた意味が無くなる。名前にハッシュを入れてあれば `CacheFirst` と
 90 日の保持期間がむしろ最適な設定になる。
-
-## 参照実装: basic エンジン
-
-ShogiHome 自身が持つエンジン。仕様の参照実装と適合性テストの被検体を兼ねる。
-`src/renderer/players/basic.ts` (`BasicPlayer`) より強く、TypeScript 実装とは別物として
-「Lv. 2」「Lv. 3」の名前で一覧に並ぶ。
-
-**評価関数・探索・時間制御の中身と、改良の候補・動作確認の手順は
-[`basic-engine.md`](./basic-engine.md) にまとめてある。** ここでは
-ShogiHome との接点になる部分だけを説明する。
-
-### 探索スレッド
-
-**探索は専用のスレッドで走る** (`-pthread`)。`go` で起こし、停止フラグが立つか
-目標深さに到達するまで独立して進む。メインスレッドはコマンドを解釈するだけなので、
-探索中でも `stop` や `ponderhit` を即座に受け取れる。
-
-- `stop` — 停止フラグを立てるだけ。探索は毎ノードこれを見ており、
-  打ち切った後に探索スレッド自身が `bestmove` を出す
-- `ponderhit` — `infinite` を下ろして最低思考時間を測り直し、条件変数で起こす
-- `quit` / デストラクタ — 出力を禁じるフラグを立ててから合流する
-
-深さ 1 だけは締切を無視して必ず最後まで探索する。持ち時間を使い切っていても
-指し手を返せるようにするため。ただし停止フラグでは打ち切る。
-
-C++ 側がエクスポートするのは `usi_command` と `usi_poll` の 2 つだけで、
-ABI が定めるインターフェースは `engines/core/shim.js` (`--pre-js`) が組み立てる。
-探索が自力で進むため `usi_poll` に進めるものは無く、常に 0 を返す
-(シムのタイマーは 1 回で止まる)。このシムはエンジンに依存しないので、
-単一スレッドのエンジンでもそのまま流用できる。
-
-探索スレッドからの出力は、Emscripten が `fd_write` をメインスレッドへ
-代理実行するため、シムが登録したリスナーに届く。
-
-**この構成は cross-origin isolation を必要とする。** 成立しない状態では
-モジュールの生成に失敗する。`specs/webapp-update.md` の
-「初回アクセスの再読み込み」を参照。
-
-持ち時間から 1 手あたりの上限 (100ms〜3000ms) を決め、ノード数の上限と合わせて
-探索を打ち切る。打ち切られた反復の結果は破棄し、1 つ前の深さの結果を採用する。
-
-### ponder
-
-`USI_Ponder` の既定値は `false` で、**先読みは実装していない。**
-
-そもそも `bestmove` に `ponder <指し手>` を付けていないため、
-利用者がオプションで `USI_Ponder` を有効にしても、`USIPlayer.startPonder` は
-予想手を取り出せずに何もしない。つまり**対局中に `go ponder` が送られることはない。**
-以下は手動でコマンドを送った場合や、将来 `ponder` を出すようにした場合の挙動である。
-
-- `go ponder` は `go infinite` と同じ扱いで、相手の指し手を仮定せずに
-  **`position` で渡された局面をそのまま読む。** 深さを掘り終えると `WAITING` に入り、
-  `stop` か `ponderhit` を待つ。この間 `bestmove` は返さない。
-- `ponderhit` を受け取ると `THINKING` に戻り、最低思考時間を計り直して `bestmove` を返す。
-  読んでいた局面は本譜と一致しているので、結果はそのまま使える。
-- `stop` を受け取った場合はその時点の最善手を返す。
-
-つまり「相手の手番の間に自分の手番の局面を読む」という本来の ponder ではなく、
-**ponder の手順に付き合うだけ**である。相手の思考中に CPU を回す価値が薄い
-(Lv. 2 は数十ミリ秒で終わる) ため、既定では無効にしている。
-
-`go ponder` に渡される局面は、予想した 1 手を指した後のもの
-(`USIPlayer.startPonder` が `bestmove` の `ponder` を局面に追加する) なので、
-予想が当たった場合は読んでいた局面がそのまま本譜になる。
-
-### プリセット
-
-`Style` (居飛車・振り飛車) と `Depth` (3・5) の組み合わせを 4 つのプリセットとして公開する。
-
-| プリセット ID                  | 表示名           | `Style`        | `Depth` |
-| ------------------------------ | ---------------- | -------------- | ------- |
-| `basic-level2-static-rook-v1`  | Lv. 2 (居飛車)   | `static_rook`  | 3       |
-| `basic-level2-ranging-rook-v1` | Lv. 2 (振り飛車) | `ranging_rook` | 3       |
-| `basic-level3-static-rook-v1`  | Lv. 3 (居飛車)   | `static_rook`  | 5       |
-| `basic-level3-ranging-rook-v1` | Lv. 3 (振り飛車) | `ranging_rook` | 5       |
-
-**名前と ID は深さではなくレベルで表す。** `Depth` はオプションとして 1〜5 の範囲で
-変更できてしまい、変更するとモバイル表示のレベルとも一覧の名前とも食い違うため、
-深さを名前に含めない。エンジン自身の名前 (`id name`) も同じ理由で
-`ShogiHome Basic Engine` とし、強さを含めない。
-
-深さ違いを `Depth` オプションの変更ではなく別のプリセットにしているのは、
-
-- 一覧に並ぶ名前と実際の強さが (既定値のままなら) 一致する
-- モバイル表示は URI を選ぶだけで済み、オプション値を上書きしなくてよい
-- Lv. 2 対 Lv. 3 の対局や連続対局をそのまま組める
-
-ため。
-
-`Style` の `random` は TypeScript 実装のランダムプレイヤーと重複するため、
-プリセットには含めていない。
-
-深さ 5 は序盤なら 150ms 程度で読み切るが、中盤以降は 1 手あたりの上限
-(3000ms) に達して深さ 4 で打ち切られることが多い。
-
-### ビルド
-
-```bash
-npm run engines:build
-```
-
-Emscripten を次の順で探す。
-
-1. Docker (`emscripten/emsdk` イメージ。バージョンは `scripts/build-engines.mjs` で固定)
-2. 環境変数 `EMSDK` (`emsdk_env.sh` を読み込んだ状態)
-3. `PATH` 上の `emcmake`
-
-**Docker を優先するのは生成物を commit する運用だから。** バージョンを固定したイメージなら
-誰がビルドしても同じ結果になるが、ローカルの Emscripten はバージョンがまちまちで、
-無関係な差分が commit に混ざる。ローカルを使いたい場合は `ENGINES_NO_DOCKER=1` を指定する
-(Docker のデーモンが動いていない場合も自動でローカルへ切り替わる)。
-
-生成物はリポジトリに commit する。`docs/webapp` を commit している既存の運用と同じ考え方で、
-Emscripten の無い環境でも `npm run build` と `npm test` が通り、commit 済みの wasm に対する
-回帰テストを CI で実行できる。
-
-ネイティブビルド (デバッグとテスト用) は Emscripten を必要とせず、
-CMake と C++20 のコンパイラだけで動く。
-
-```bash
-npm run engines:test      # ビルドして C++ のテスト (CTest) を実行する
-npm run engines:native    # ビルドのみ。engines/build-native/basic を対話実行できる
-```
-
-エンジンを改良したときの確認手順 (ベンチマーク・自己対局) は
-[`basic-engine.md`](./basic-engine.md) の「動作確認の方法」を参照。
-
-commit 済みの wasm に対するテストは `npm test` に含まれている (`src/tests/engines/`)。
-手順の詳細は [`engines/README.md`](../engines/README.md) を参照。

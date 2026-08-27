@@ -7,7 +7,6 @@ dev-dist
 dist_electron
 coverage
 public/engines
-engines/build*
 .github/*TEMPLATE*
 .gitignore
 LICENSE.md
