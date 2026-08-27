@@ -6,10 +6,16 @@ import {
   buildUSIEngines,
   enginePathOf,
   isBuiltinEnginePath,
+  describeEngineLoadError,
+  isNetworkError,
   loadBuiltinUSIEngines,
   resolveEngineDirURL,
 } from "@/renderer/wasm-engine/catalog.js";
-import { EngineManifest, ENGINE_ABI } from "@/renderer/wasm-engine/manifest.js";
+import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
+  EngineManifest,
+  ENGINE_ABI,
+} from "@/renderer/wasm-engine/manifest.js";
 
 const manifest: EngineManifest = {
   abi: ENGINE_ABI,
@@ -145,5 +151,76 @@ describe("wasm-engine/catalog", () => {
         restored.getEngine(builtinEngineURI("basic-level2-static-rook-v1"))?.options["Style"],
       ),
     ).toBe("static_rook");
+  });
+
+  // エンジンの成果物は事前キャッシュされないため、オフラインでは読み込めない。
+  // 内部エラーをそのまま見せず、対処の分かる文言にする。
+  describe("describeEngineLoadError", () => {
+    const onLine = Object.getOwnPropertyDescriptor(window.navigator, "onLine");
+
+    const setOnLine = (value: boolean) => {
+      Object.defineProperty(window.navigator, "onLine", { value, configurable: true });
+    };
+
+    // jsdom は crossOriginIsolated を持たないため、既定の isolated 扱いで揃える。
+    const setIsolated = (value: boolean) => {
+      Object.defineProperty(globalThis, "crossOriginIsolated", { value, configurable: true });
+    };
+
+    beforeEach(() => {
+      setIsolated(true);
+    });
+
+    afterEach(() => {
+      if (onLine) {
+        Object.defineProperty(window.navigator, "onLine", onLine);
+      } else {
+        setOnLine(true);
+      }
+      setIsolated(true);
+    });
+
+    it("オフラインならネットワーク起因として扱うこと", () => {
+      setOnLine(false);
+      expect(isNetworkError(new Error("failed to load foo: 404"))).toBeTruthy();
+      expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
+        `${t.failedToLoadEngine} ${t.engineRequiresOnline}`,
+      );
+    });
+
+    // fetch はネットワークに到達できない場合に TypeError を投げる。
+    it("fetch の TypeError をネットワーク起因として扱うこと", () => {
+      setOnLine(true);
+      expect(isNetworkError(new TypeError("Failed to fetch"))).toBeTruthy();
+      expect(describeEngineLoadError(new TypeError("Failed to fetch"))).toBe(
+        `${t.failedToLoadEngine} ${t.engineRequiresOnline}`,
+      );
+    });
+
+    // Worker が起動前の確認で断った場合だけ、再読み込みを促す文言にする。
+    it("isolation が必要と分かっている場合は再読み込みを促すこと", () => {
+      setOnLine(true);
+      expect(describeEngineLoadError(new Error(CROSS_ORIGIN_ISOLATION_REQUIRED))).toBe(
+        `${t.failedToLoadEngine} ${t.engineRequiresReload}`,
+      );
+    });
+
+    // isolated でないことを根拠に言い換えてはならない。
+    // 起動タイムアウトのように、それ自体が対処を示している文言を潰してしまう。
+    it("isolated でなくても原因が別なら内容をそのまま添えること", () => {
+      setOnLine(true);
+      setIsolated(false);
+      expect(describeEngineLoadError(new Error("エンジンから応答がありません"))).toBe(
+        `${t.failedToLoadEngine} エンジンから応答がありません`,
+      );
+    });
+
+    it("それ以外は内容を添えること", () => {
+      setOnLine(true);
+      expect(isNetworkError(new Error("failed to load foo: 404"))).toBeFalsy();
+      expect(describeEngineLoadError(new Error("failed to load foo: 404"))).toBe(
+        `${t.failedToLoadEngine} failed to load foo: 404`,
+      );
+    });
   });
 });

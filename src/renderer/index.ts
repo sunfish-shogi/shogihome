@@ -114,7 +114,14 @@ Promise.allSettled([
     .catch((e) => {
       useErrorStore().add(new Error("起動パラメーターの取得に失敗しました: " + e));
     }),
-]).finally(() => {
+]).finally(async () => {
+  // cross-origin isolation の判定が終わるまで描画しない。
+  // Web 版では、初回アクセスに限り Service Worker を登録してから画面を作り直す
+  // (src/coi-bootstrap.js)。判定の前に描画すると、直後の再読み込みで
+  // 画面がちらついた上に描画の処理も無駄になる。
+  // Electron 版ではこのグローバルが存在しないため、待たずに進む。
+  await (window as unknown as { __shogihomeCOIReady?: Promise<void> }).__shogihomeCOIReady;
+
   // 言語設定の反映
   const language = useAppSettings().language;
   api.log(LogLevel.INFO, `set language: ${language}`);

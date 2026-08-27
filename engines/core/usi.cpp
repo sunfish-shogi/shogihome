@@ -2,11 +2,15 @@
 
 #include <charconv>
 #include <cstdio>
+#include <mutex>
 #include <sstream>
 
 namespace shogi {
 
 void usiOutput(const std::string& line) {
+  // 探索スレッドとメインスレッドの両方から呼ばれるため、行が混ざらないよう直列化する。
+  static std::mutex mutex;
+  const std::lock_guard<std::mutex> lock(mutex);
   std::fputs(line.c_str(), stdout);
   std::fputc('\n', stdout);
   std::fflush(stdout);
@@ -214,8 +218,8 @@ bool UsiDriver::command(const std::string& line) {
   return false;
 }
 
-void UsiDriver::poll() {
-  engine_.poll();
+bool UsiDriver::poll() {
+  return engine_.poll();
 }
 
 }  // namespace shogi

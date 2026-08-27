@@ -50,6 +50,24 @@ export default defineConfigWithVueTs([
     },
   },
   {
+    // Service Worker として動く JavaScript。
+    files: ["src/sw.js"],
+    languageOptions: {
+      globals: {
+        ...globals.serviceworker,
+      },
+    },
+  },
+  {
+    // index.html にインラインで埋め込まれる JavaScript。
+    files: ["src/coi-bootstrap.js"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",

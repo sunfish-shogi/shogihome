@@ -197,7 +197,7 @@ class RecordingEngine : public shogi::Engine {
           const shogi::GoParams& params) override {
     goParams = params;
   }
-  void poll() override {}
+  bool poll() override { return false; }
   void stop() override {}
   void ponderHit(const shogi::GoParams& params) override { ponderHitParams = params; }
 

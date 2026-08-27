@@ -2,20 +2,22 @@
 //
 // エンジンのディレクトリ URL を受け取り、engine.json を読んでモジュールを起動する。
 // エンジンとのやり取りは postMessage / addMessageListener で行う
-// (specs/wasm-engine-abi.md 版 2。YaneuraOu の wasm ビルドと同じインターフェース)。
-// 単一スレッドのエンジンは poll() を公開し、こちらから定期的に呼んで探索を進める。
-import { EngineManifest, MANIFEST_FILE_NAME, parseEngineManifest } from "./manifest.js";
+// (specs/wasm-engine-abi.md 版 1。YaneuraOu の wasm ビルドと同じインターフェース)。
+//
+// 単一スレッドのエンジンは探索を分割実行する必要があるが、その駆動はエンジンの
+// モジュールの内側で完結する (参照実装は engines/core/shim.js)。この Worker は
+// コマンドを渡して出力を受け取るだけで、思考の進行には関与しない。
+import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
+  EngineManifest,
+  MANIFEST_FILE_NAME,
+  parseEngineManifest,
+} from "./manifest.js";
 import { EngineFactory, EngineInstance, validateEngineInstance, wrapUMDSource } from "./loader.js";
-
-// 思考中に poll() を呼ぶ間隔 (ミリ秒)。
-const POLL_INTERVAL_MS = 10;
 
 let engine: EngineInstance | undefined;
 // モジュールの読み込みが終わるまでに届いたコマンドを保持する。
 const pendingCommands: string[] = [];
-let pollTimer: ReturnType<typeof setInterval> | undefined;
-// bestmove / checkmate をまだ受け取っていない状態かどうか。
-let awaitingResult = false;
 let terminated = false;
 
 function post(message: unknown): void {
@@ -27,26 +29,7 @@ function log(message: string): void {
 }
 
 function onEngineOutput(line: string): void {
-  if (line.startsWith("bestmove ") || line.startsWith("checkmate ")) {
-    awaitingResult = false;
-    stopPolling();
-  }
   post({ type: "receive", line });
-}
-
-function stopPolling(): void {
-  if (pollTimer !== undefined) {
-    clearInterval(pollTimer);
-    pollTimer = undefined;
-  }
-}
-
-function startPolling(): void {
-  // poll() を公開しないエンジンは自力で探索を進めるため、呼ぶ必要がない。
-  if (pollTimer !== undefined || !engine?.poll) {
-    return;
-  }
-  pollTimer = setInterval(() => engine?.poll?.(), POLL_INTERVAL_MS);
 }
 
 function sendToEngine(line: string): void {
@@ -57,16 +40,7 @@ function sendToEngine(line: string): void {
     pendingCommands.push(line);
     return;
   }
-  // 思考の開始を伴うコマンドは、結果が出るまで poll() を回す必要がある。
-  const needsResult = line === "go" || line.startsWith("go ") || line.startsWith("ponderhit");
-  if (needsResult) {
-    awaitingResult = true;
-  }
   engine.postMessage(line);
-  // 同期的に結果が出た場合 (stop 直後や go mate など) は awaitingResult が下りている。
-  if (awaitingResult) {
-    startPolling();
-  }
 }
 
 function terminate(): void {
@@ -74,7 +48,6 @@ function terminate(): void {
     return;
   }
   terminated = true;
-  stopPolling();
   try {
     engine?.terminate();
   } catch {
@@ -144,6 +117,13 @@ async function launch(baseURL: string): Promise<void> {
       throw new Error(`failed to load ${manifestURL}: ${response.status}`);
     }
     const manifest = parseEngineManifest(await response.json());
+    // スレッドを使うエンジンは SharedArrayBuffer を要求する。isolated でないと
+    // Emscripten はモジュール生成の Promise を解決も reject もしないまま止まり、
+    // 呼び出し側は起動タイムアウト (既定 10 秒) を待つことになる。
+    // 原因はここで判明しているので、生成を試みる前に断る。
+    if (manifest.requiresCrossOriginIsolation && !self.crossOriginIsolated) {
+      throw new Error(CROSS_ORIGIN_ISOLATION_REQUIRED);
+    }
     const moduleURL = new URL(manifest.module, baseURL).href;
     const factory = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(

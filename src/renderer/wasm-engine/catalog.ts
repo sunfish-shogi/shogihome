@@ -14,6 +14,7 @@ import {
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
 import {
+  CROSS_ORIGIN_ISOLATION_REQUIRED,
   EngineManifest,
   isSafeRelativePath,
   MANIFEST_FILE_NAME,
@@ -138,6 +139,33 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     options: buildOptions(manifest, preset.id),
     tags: [getPredefinedUSIEngineTag("game")],
   }));
+}
+
+// エンジンの成果物は事前キャッシュされないため、初めて使うときはネットワークから
+// 取得する (specs/wasm-engine.md の「キャッシュ」を参照)。オフラインでの失敗は
+// 起こり得る事象なので、内部エラーをそのまま見せず対処の分かる文言にする。
+//
+// fetch はネットワークに到達できない場合に TypeError を投げる。
+// これは 404 などのサーバー応答とは区別される。
+export function isNetworkError(error: unknown): boolean {
+  return !navigator.onLine || error instanceof TypeError;
+}
+
+// 読み込み失敗をユーザーに見せる文言へ変換する。
+export function describeEngineLoadError(error: unknown): string {
+  const detail = error instanceof Error ? error.message : String(error);
+  if (isNetworkError(error)) {
+    return `${t.failedToLoadEngine} ${t.engineRequiresOnline}`;
+  }
+  // Worker が起動前の確認で断った場合。原因が確定しているものだけを言い換える。
+  // 再読み込みすれば Service Worker の制御下に入り、isolated になる。
+  // (初回アクセスや、その待ち時間の打ち切りでこの状態になる)
+  if (detail.includes(CROSS_ORIGIN_ISOLATION_REQUIRED)) {
+    return `${t.failedToLoadEngine} ${t.engineRequiresReload}`;
+  }
+  // それ以外は原因を特定できないので、内容をそのまま添える。
+  // 起動タイムアウトのように、それ自体が対処を示している文言もある。
+  return `${t.failedToLoadEngine} ${detail}`;
 }
 
 // 組み込みエンジンの一覧を返す。web.ts の loadUSIEngines() から使う。

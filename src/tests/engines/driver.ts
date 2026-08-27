@@ -16,9 +16,8 @@ export const PUBLIC_ENGINES_DIR = path.resolve(import.meta.dirname, "../../../pu
 export type EngineHandle = {
   manifest: EngineManifest;
   command(line: string): void;
-  poll(): void;
   lines: string[];
-  // 条件を満たす行が現れるまで poll しながら待つ。
+  // 条件を満たす行が現れるまで待つ。探索はエンジンが自力で進める。
   waitFor(matcher: (line: string) => boolean, label?: string): Promise<string>;
   // bestmove または checkmate が現れるまで待つ。
   waitForResult(): Promise<string>;
@@ -88,14 +87,12 @@ export async function launchEngine(dir: string): Promise<EngineHandle> {
     manifest,
     lines,
     command: (line) => engine.postMessage(line),
-    poll: () => engine.poll?.(),
     async waitFor(matcher, label) {
       for (let i = 0; i < 500; i++) {
         const found = lines.find(matcher);
         if (found !== undefined) {
           return found;
         }
-        handle.poll();
         await new Promise((resolve) => setTimeout(resolve, 10));
       }
       throw new Error(`timeout waiting for ${label || "line"}: ${lines.join(" / ")}`);

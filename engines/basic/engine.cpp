@@ -22,6 +22,12 @@ constexpr long long INFINITE_BUDGET_MS = 10000;
 
 BasicEngine::BasicEngine() : rng_(std::random_device{}()) {}
 
+BasicEngine::~BasicEngine() {
+  // 探索スレッドを残したまま壊すと未定義動作になる。
+  quitFlag_.store(true);
+  joinSearch();
+}
+
 std::string BasicEngine::name() const {
   // 1 つのバイナリで Depth 1〜5 を賄うため、名前に強さを含めない。
   // 強さの区別はマニフェストのプリセット (Level 2 / Level 3) が持つ。
@@ -77,7 +83,8 @@ void BasicEngine::prepare() {
 }
 
 void BasicEngine::newGame() {
-  state_ = State::IDLE;
+  // 対局をまたいで探索が残らないようにする。
+  joinSearch();
   pendingBestMove_.clear();
   // 前の対局の結果を引きずらないようにする。
   tt_.clear();
@@ -115,10 +122,14 @@ void BasicEngine::go(const Position& position, const std::vector<std::string>& h
     usiOutput("checkmate notimplemented");
     return;
   }
+  // 前の探索が残っていれば畳んでから始める。通常は起こらない。
+  joinSearch();
+  if (quitFlag_.load()) {
+    return;
+  }
 
   position_ = position;
   historyKeys_ = historyKeys;
-  infinite_ = params.infinite || params.ponder;
   completedDepth_ = 0;
   finishedDeepening_ = false;
   pendingBestMove_.clear();
@@ -129,38 +140,75 @@ void BasicEngine::go(const Position& position, const std::vector<std::string>& h
   // 前の手のエントリは指し手順序付けに使えるので残しつつ、置き換えの対象にする。
   tt_.newSearch();
   hardDeadline_ = startedAt_ + std::chrono::milliseconds(computeBudgetMs(params));
-  // 最低思考時間は持ち時間の範囲に収める。
-  // 切れ負け (秒読みも加算も無い設定) で残りが少なくなると
-  // computeBudgetMs() が最低思考時間を下回り、探索を終えた後もただ待つことになる。
-  // それでは USI で与えられた持ち時間を超えて時間切れ負けになってしまう。
-  minDeadline_ =
-      std::min(startedAt_ + std::chrono::milliseconds(minimumThinkingTimeMs_), hardDeadline_);
-  state_ = State::THINKING;
 
+  {
+    const std::lock_guard<std::mutex> lock(mutex_);
+    infinite_ = params.infinite || params.ponder;
+    // 最低思考時間は持ち時間の範囲に収める。
+    // 切れ負け (秒読みも加算も無い設定) で残りが少なくなると
+    // computeBudgetMs() が最低思考時間を下回り、探索を終えた後もただ待つことになる。
+    // それでは USI で与えられた持ち時間を超えて時間切れ負けになってしまう。
+    minDeadline_ =
+        std::min(startedAt_ + std::chrono::milliseconds(minimumThinkingTimeMs_), hardDeadline_);
+    searching_ = true;
+  }
+  stopFlag_.store(false);
+  searchThread_ = std::thread([this]() { searchLoop(); });
+}
+
+// 探索スレッドの本体。停止フラグが立つか目標深さに到達するまで独立して走る。
+void BasicEngine::searchLoop() {
   if (style_ == STYLE_RANDOM) {
     const SearchResult result = searchRandom(position_, rng_);
     nodes_ = result.nodes;
     pendingBestMove_ = result.found ? moveToUSI(result.move) : "resign";
     pv_ = result.pv;
-    finishedDeepening_ = true;
     if (result.found) {
       outputInfo();
     }
-    return;
+  } else {
+    // 深さ 1 は締切を無視して必ず最後まで探索する。持ち時間を使い切っていても
+    // 指し手を返せるようにするため。ここで打ち切られると指し手が 1 つも無いまま
+    // bestmove を出すことになり、flushBestMove() が resign を出してしまう。
+    // 深さ 1 は静止探索を含めても数ミリ秒で終わるので、超過は無視できる。
+    runIteration(1, /* ignoreDeadline = */ true);
+    for (int depth = 2; depth <= maxDepth_ && !finishedDeepening_; depth++) {
+      if (stopFlag_.load() || std::chrono::steady_clock::now() >= hardDeadline_) {
+        break;
+      }
+      runIteration(depth);
+    }
   }
 
-  // 深さ 1 は必ずこの場で終わらせ、いつ stop されても指し手を返せるようにする。
-  // 締切を無視するのは、持ち時間を使い切っていても指し手を返せるようにするため。
-  // ここで打ち切られると指し手が 1 つも無いまま bestmove を出すことになり、
-  // flushBestMove() が resign を出してしまう。深さ 1 は静止探索を含めても
-  // 数ミリ秒で終わるので、超過は無視できる。
-  runIteration(1, /* ignoreDeadline = */ true);
+  std::unique_lock<std::mutex> lock(mutex_);
+  // go infinite / go ponder は stop か ponderhit が来るまで結果を出さない。
+  cv_.wait(lock, [this]() { return stopFlag_.load() || !infinite_; });
+  if (!stopFlag_.load()) {
+    // 最低思考時間まで待つ。ponderhit で minDeadline_ が更新されている場合がある。
+    cv_.wait_until(lock, minDeadline_, [this]() { return stopFlag_.load(); });
+  }
+  searching_ = false;
+  lock.unlock();
+
+  flushBestMove();
+}
+
+// 走っている探索を止めて合流する。メインスレッドからのみ呼ぶ。
+void BasicEngine::joinSearch() {
+  if (!searchThread_.joinable()) {
+    return;
+  }
+  stopFlag_.store(true);
+  cv_.notify_all();
+  searchThread_.join();
 }
 
 void BasicEngine::runIteration(int depth, bool ignoreDeadline) {
   SearchLimits limits;
   limits.deadline = ignoreDeadline ? std::chrono::steady_clock::time_point::max() : hardDeadline_;
   limits.nodeLimit = nodeLimit_;
+  // 深さ 1 も stop では打ち切る。締切だけを無視する。
+  limits.stop = &stopFlag_;
   const SearchResult result =
       search(style_, position_, historyKeys_, depth, limits, rng_, randomize_, &tt_);
   nodes_ += result.nodes;
@@ -194,6 +242,10 @@ void BasicEngine::runIteration(int depth, bool ignoreDeadline) {
 }
 
 void BasicEngine::outputInfo() const {
+  // quit / terminate の後は info も出さない。
+  if (quitFlag_.load()) {
+    return;
+  }
   std::string info = "info depth " + std::to_string(std::max(completedDepth_, 1)) + " nodes " +
                      std::to_string(nodes_) + " time " + std::to_string(elapsedMs(startedAt_));
   if (style_ != STYLE_RANDOM) {
@@ -214,58 +266,39 @@ void BasicEngine::outputInfo() const {
   usiOutput(info);
 }
 
-void BasicEngine::poll() {
-  if (state_ != State::THINKING) {
-    return;
-  }
-
-  // 1 回の poll で 1 反復ぶんだけ深くする。
-  if (!finishedDeepening_) {
-    if (std::chrono::steady_clock::now() >= hardDeadline_) {
-      finishedDeepening_ = true;
-    } else {
-      runIteration(completedDepth_ + 1);
-      return;
-    }
-  }
-
-  if (infinite_) {
-    // go infinite / go ponder では stop か ponderhit を待つ。
-    state_ = State::WAITING;
-    return;
-  }
-  if (std::chrono::steady_clock::now() >= minDeadline_) {
-    flushBestMove();
-  }
-}
-
+// 停止フラグを立てるだけ。bestmove は探索スレッドが出す。
+// 探索は毎ノード停止フラグを見ているので、ここで待たなくてもすぐに応答する。
 void BasicEngine::stop() {
-  if (state_ == State::IDLE) {
-    return;
-  }
-  flushBestMove();
+  stopFlag_.store(true);
+  cv_.notify_all();
 }
 
 void BasicEngine::ponderHit(const GoParams& /* params */) {
-  if (state_ != State::WAITING && state_ != State::THINKING) {
+  const std::lock_guard<std::mutex> lock(mutex_);
+  if (!searching_) {
     return;
   }
   infinite_ = false;
-  state_ = State::THINKING;
-  minDeadline_ = std::chrono::steady_clock::now() +
-                 std::chrono::milliseconds(minimumThinkingTimeMs_);
+  minDeadline_ =
+      std::chrono::steady_clock::now() + std::chrono::milliseconds(minimumThinkingTimeMs_);
+  cv_.notify_all();
 }
 
 void BasicEngine::quit() {
-  // 以降 poll() が呼ばれても何も出力しない。
-  state_ = State::IDLE;
+  // 以降は一切出力しない。探索スレッドが bestmove を出す前に止める必要があるので、
+  // フラグを立ててから合流する。
+  quitFlag_.store(true);
+  joinSearch();
   pendingBestMove_.clear();
 }
 
 void BasicEngine::flushBestMove() {
-  state_ = State::IDLE;
   const std::string move = pendingBestMove_.empty() ? "resign" : pendingBestMove_;
   pendingBestMove_.clear();
+  // quit / terminate の後は思考中であっても bestmove を出してはならない。
+  if (quitFlag_.load()) {
+    return;
+  }
   usiOutput("bestmove " + move);
 }
 

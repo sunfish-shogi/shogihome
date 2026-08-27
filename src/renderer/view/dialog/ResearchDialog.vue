@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import api from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api";
 import {
   defaultResearchSettings,
   ResearchSettings,
@@ -122,7 +122,10 @@ onMounted(async () => {
     engineURI.value = researchSettings.value.usi?.uri || "";
     secondaryEngineURIs.value =
       researchSettings.value.secondaries?.map((engine) => engine.usi?.uri || "") || [];
-    machineSpec.value = await api.getMachineSpec();
+    // Web 版はブラウザーから実機のスペックを取得できないため、0 (不明) のままにする。
+    if (isNative()) {
+      machineSpec.value = await api.getMachineSpec();
+    }
   } catch (e) {
     useErrorStore().add(e);
     store.destroyModalDialog();
@@ -152,6 +155,9 @@ function loadMetadataIfNeeded(uri: string) {
 }
 
 const cpuUsage = computed(() => {
+  if (machineSpec.value.cpuCores === 0) {
+    return 0;
+  }
   let threadsSum = 0;
   for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
     const engine = engines.value.getEngine(uri);
@@ -168,6 +174,9 @@ const cpuUsage = computed(() => {
 });
 
 const memoryUsage = computed(() => {
+  if (machineSpec.value.memory === 0) {
+    return 0;
+  }
   let usiHashSum = 0;
   for (const uri of [engineURI.value, ...secondaryEngineURIs.value]) {
     const engine = engines.value.getEngine(uri);

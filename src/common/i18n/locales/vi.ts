@@ -775,6 +775,12 @@ export const vi: Texts = {
   disconnectedFromCSAServer: "Đã ngắt kết nối khỏi máy chủ CSA.",
   csaServerLoginDenied: "Đăng nhập vào máy chủ CSA bị từ chối.",
   thisFeatureNotAvailableOnWebApp: "Tính năng này không có sẵn trên trình duyệt.",
+  // TODO: Translate
+  failedToLoadEngine: "エンジンの読み込みに失敗しました。",
+  // TODO: Translate
+  engineRequiresOnline: "エンジンの読み込みにはインターネット接続が必要です。",
+  // TODO: Translate
+  engineRequiresReload: "エンジンを使用するにはページの再読み込みが必要です。",
   failedToStartNewGame: "Bắt đầu ván mới thất bại.",
   errorOccuredWhileEndingGame: "Đã có lỗi trong khi kết thúc ván.",
   failedToSendGoCommand: "Gửi lệnh go thất bại.",

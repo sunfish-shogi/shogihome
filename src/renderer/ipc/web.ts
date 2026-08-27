@@ -17,14 +17,15 @@ import { GameResult } from "@/common/game/result.js";
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { USISessionHandlers, USISessionManager } from "@/renderer/wasm-engine/session.js";
 import { createWasmEngineTransportFactory } from "@/renderer/wasm-engine/transport.js";
-import { loadBuiltinUSIEngines } from "@/renderer/wasm-engine/catalog.js";
+import { describeEngineLoadError, loadBuiltinUSIEngines } from "@/renderer/wasm-engine/catalog.js";
+import { useErrorStore } from "@/renderer/store/error.js";
 import { t } from "@/common/i18n/index.js";
 import { defaultCSAGameSettingsHistory } from "@/common/settings/csa.js";
 import { defaultMateSearchSettings } from "@/common/settings/mate.js";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion.js";
 import { getEmptyHistory } from "@/common/file/history.js";
 import { VersionStatus } from "@/common/version.js";
-import { blankOSState, SessionStates, MachineSpec } from "@/common/advanced/monitor.js";
+import { blankOSState, SessionStates } from "@/common/advanced/monitor.js";
 import { emptyLayoutProfileList } from "@/common/settings/layout.js";
 import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
@@ -226,9 +227,12 @@ export const webAPI: Bridge = {
     const engines = new USIEngines(localStorage.getItem(STORAGE_KEY.USI_ENGINES) || undefined);
     // 組み込みの WebAssembly エンジンを常に一覧へ含める。
     // 既に保存されている場合は、ユーザーが編集したオプション値を引き継ぐ。
-    const builtins = await loadBuiltinUSIEngines((e) =>
-      usiLogger(LogLevel.ERROR, `failed to load builtin engine: ${e.message}`),
-    );
+    const builtins = await loadBuiltinUSIEngines((e) => {
+      usiLogger(LogLevel.ERROR, `failed to load builtin engine: ${e.message}`);
+      // 読み込めなかったエンジンは一覧に出ない。理由を伝えないと
+      // 「エンジンが存在しない」ようにしか見えないため、画面にも出す。
+      useErrorStore().add(new Error(describeEngineLoadError(e)));
+    });
     for (const builtin of builtins) {
       const local = engines.getEngine(builtin.uri);
       if (local) {
@@ -467,10 +471,16 @@ export const webAPI: Bridge = {
     await usiSessions.sendOptionButtonSignal(path, name, timeoutSeconds);
   },
   async usiLaunch(json: string, options: string): Promise<number> {
-    return usiSessions.setupPlayer(
-      JSON.parse(json) as USIEngine,
-      JSON.parse(options) as USIEngineLaunchOptions,
-    );
+    try {
+      return await usiSessions.setupPlayer(
+        JSON.parse(json) as USIEngine,
+        JSON.parse(options) as USIEngineLaunchOptions,
+      );
+    } catch (e) {
+      // 成果物は事前キャッシュされないので、オフラインでは起動に失敗する。
+      // 内部エラーのままでは対処が分からないため言い換える。
+      throw new Error(describeEngineLoadError(e));
+    }
   },
   async usiReady(sessionID: number): Promise<void> {
     await usiSessions.ready(sessionID);
@@ -648,8 +658,9 @@ export const webAPI: Bridge = {
     window.open(url, "_blank");
   },
   async getMachineSpec(): Promise<string> {
-    const spec: MachineSpec = { cpuCores: 1, memory: 1024 ** 2 };
-    return JSON.stringify(spec);
+    // ブラウザーからは実機の CPU コア数もメモリー量も分からない。
+    // 呼び出し側が isNative() で分岐するため、ここへは来ない。
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
   async isEncryptionAvailable(): Promise<boolean> {
     return false;
