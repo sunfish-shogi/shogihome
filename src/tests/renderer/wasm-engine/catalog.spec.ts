@@ -19,29 +19,24 @@ import {
 
 const manifest: EngineManifest = {
   abi: ENGINE_ABI,
-  module: "basic.js",
+  module: "sunfish4.js",
   moduleFormat: "esm",
-  name: "ShogiHome Basic Engine",
+  name: "Sunfish4 Lite",
   author: "Kubo, Ryosuke",
   options: [
-    {
-      name: "Style",
-      type: "combo",
-      default: "static_rook",
-      vars: ["static_rook", "ranging_rook", "random"],
-    },
-    { name: "MinimumThinkingTime", type: "spin", default: 500, min: 0, max: 60000 },
+    { name: "Threads", type: "spin", default: 1, min: 1, max: 4 },
+    { name: "MaxDepth", type: "spin", default: 64, min: 1, max: 64 },
   ],
   presets: [
     {
-      id: "basic-level2-static-rook-v1",
-      displayName: "ShogiHome Level 2 (Static Rook)",
-      values: { Style: "static_rook" },
+      id: "sunfish4-lite-wasm-v1-d1",
+      displayName: "Sunfish Lv. 1",
+      values: { MaxDepth: 1 },
     },
     {
-      id: "basic-level2-ranging-rook-v1",
-      displayName: "ShogiHome Level 2 (Ranging Rook)",
-      values: { Style: "ranging_rook" },
+      id: "sunfish4-lite-wasm-v1-d5",
+      displayName: "Sunfish Lv. 2",
+      values: { MaxDepth: 5 },
     },
   ],
 };
@@ -52,74 +47,67 @@ describe("wasm-engine/catalog", () => {
   });
 
   it("buildUSIEngines", () => {
-    const engines = buildUSIEngines("basic", manifest);
+    const engines = buildUSIEngines("sunfish4-lite", manifest);
     expect(engines).toHaveLength(2);
     for (const engine of engines) {
       expect(uri.isUSIEngine(engine.uri)).toBeTruthy();
       // validateUSIEngine が path の非空を要求する。
-      expect(engine.path).toBe("engines/basic/");
-      expect(engine.defaultName).toBe("ShogiHome Basic Engine");
+      expect(engine.path).toBe("engines/sunfish4-lite/");
+      expect(engine.defaultName).toBe("Sunfish4 Lite");
       expect(engine.author).toBe("Kubo, Ryosuke");
       // エンジンが宣言していない予約オプションは補完される。
       expect(engine.options["USI_Hash"]?.type).toBe("spin");
       expect(engine.options["USI_Ponder"]?.type).toBe("check");
     }
-    expect(getUSIEngineOptionCurrentValue(engines[0].options["Style"])).toBe("static_rook");
-    expect(getUSIEngineOptionCurrentValue(engines[1].options["Style"])).toBe("ranging_rook");
-    // TypeScript 実装の簡易エンジンと区別できる名前になっていること。
-    expect(engines[0].name).toBe(`ShogiHome Lv. 2 (${t.staticRook})`);
-    expect(engines[1].name).toBe(`ShogiHome Lv. 2 (${t.rangingRook})`);
-    expect(engines[0].name).not.toBe(uri.basicEngineName(uri.ES_BASIC_ENGINE_STATIC_ROOK_V1));
+    expect(getUSIEngineOptionCurrentValue(engines[0].options["MaxDepth"])).toBe(1);
+    expect(getUSIEngineOptionCurrentValue(engines[1].options["MaxDepth"])).toBe(5);
+    expect(engines[0].name).toBe("Sunfish Lv. 1");
+    expect(engines[1].name).toBe("Sunfish Lv. 2");
   });
 
   it("stableURIs", () => {
     // URI を変更すると保存済みの対局設定が壊れるため、値そのものを固定する。
-    expect(builtinEngineURI("basic-level2-static-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-level2-static-rook-v1",
+    expect(builtinEngineURI("sunfish4-lite-wasm-v1")).toBe(
+      "es://usi-engine/builtin/sunfish4-lite-wasm-v1",
     );
-    expect(builtinEngineURI("basic-level2-ranging-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-level2-ranging-rook-v1",
+    expect(builtinEngineURI("sunfish4-lite-wasm-v1-d1")).toBe(
+      "es://usi-engine/builtin/sunfish4-lite-wasm-v1-d1",
     );
-    expect(builtinEngineURI("basic-level3-static-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-level3-static-rook-v1",
+    expect(builtinEngineURI("sunfish4-lite-wasm-v1-d5")).toBe(
+      "es://usi-engine/builtin/sunfish4-lite-wasm-v1-d5",
     );
-    expect(builtinEngineURI("basic-level3-ranging-rook-v1")).toBe(
-      "es://usi-engine/builtin/basic-level3-ranging-rook-v1",
+    expect(builtinEngineURI("sunfish4-lite-wasm-v1-d9")).toBe(
+      "es://usi-engine/builtin/sunfish4-lite-wasm-v1-d9",
     );
   });
 
-  // 深さ違いは同じ wasm から別のプリセットとして見せている。
   // プリセットの値がオプションの初期値として入らないと、レベルの違いが出ない。
   it("buildUSIEngines/presetValues", () => {
-    const engines = buildUSIEngines("basic", {
+    const engines = buildUSIEngines("sunfish4-lite", {
       ...manifest,
-      options: [
-        ...(manifest.options || []),
-        { name: "Depth", type: "spin", default: 3, min: 1, max: 5 },
-      ],
       presets: [
-        { id: "basic-level2-static-rook-v1", displayName: "level2", values: { Depth: 3 } },
-        { id: "basic-level3-static-rook-v1", displayName: "level3", values: { Depth: 5 } },
+        { id: "sunfish4-lite-wasm-v1-d1", displayName: "level1", values: { MaxDepth: 1 } },
+        { id: "sunfish4-lite-wasm-v1-d9", displayName: "level3", values: { MaxDepth: 9 } },
       ],
     });
-    expect(getUSIEngineOptionCurrentValue(engines[0].options["Depth"])).toBe(3);
-    expect(getUSIEngineOptionCurrentValue(engines[1].options["Depth"])).toBe(5);
-    expect(engines[1].name).toBe(`ShogiHome Lv. 3 (${t.staticRook})`);
+    expect(getUSIEngineOptionCurrentValue(engines[0].options["MaxDepth"])).toBe(1);
+    expect(getUSIEngineOptionCurrentValue(engines[1].options["MaxDepth"])).toBe(9);
+    expect(engines[1].name).toBe("level3");
   });
 
   it("enginePath", () => {
-    expect(enginePathOf("basic")).toBe("engines/basic/");
-    expect(isBuiltinEnginePath("engines/basic/")).toBeTruthy();
+    expect(enginePathOf("sunfish4-lite")).toBe("engines/sunfish4-lite/");
+    expect(isBuiltinEnginePath("engines/sunfish4-lite/")).toBeTruthy();
     // 任意の URL やディレクトリ traversal を許可しない。
-    expect(isBuiltinEnginePath("engines/basic")).toBeFalsy();
+    expect(isBuiltinEnginePath("engines/sunfish4-lite")).toBeFalsy();
     expect(isBuiltinEnginePath("engines/../secret/")).toBeFalsy();
     expect(isBuiltinEnginePath("engines/../")).toBeFalsy();
     expect(isBuiltinEnginePath("engines/./")).toBeFalsy();
     expect(isBuiltinEnginePath("https://example.com/evil/")).toBeFalsy();
     expect(isBuiltinEnginePath("/usr/local/bin/engine")).toBeFalsy();
     expect(() => resolveEngineDirURL("https://example.com/evil/")).toThrow();
-    expect(resolveEngineDirURL("engines/basic/")).toBe(
-      new URL("engines/basic/", document.baseURI).href,
+    expect(resolveEngineDirURL("engines/sunfish4-lite/")).toBe(
+      new URL("engines/sunfish4-lite/", document.baseURI).href,
     );
   });
 
@@ -127,7 +115,7 @@ describe("wasm-engine/catalog", () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async (url: string) => {
-        expect(url).toBe(new URL("engines/basic/engine.json", document.baseURI).href);
+        expect(url).toBe(new URL("engines/sunfish4-lite/engine.json", document.baseURI).href);
         return { ok: true, json: async () => manifest } as Response;
       }),
     );
@@ -141,16 +129,16 @@ describe("wasm-engine/catalog", () => {
   it("USIEngines/serialization", () => {
     // 一覧に組み込んだ後もシリアライズして復元できること。
     const engines = new USIEngines();
-    for (const engine of buildUSIEngines("basic", manifest)) {
+    for (const engine of buildUSIEngines("sunfish4-lite", manifest)) {
       engines.addEngine(engine);
     }
     const restored = new USIEngines(engines.json);
     expect(restored.engineList).toHaveLength(2);
     expect(
       getUSIEngineOptionCurrentValue(
-        restored.getEngine(builtinEngineURI("basic-level2-static-rook-v1"))?.options["Style"],
+        restored.getEngine(builtinEngineURI("sunfish4-lite-wasm-v1-d1"))?.options["MaxDepth"],
       ),
-    ).toBe("static_rook");
+    ).toBe(1);
   });
 
   // エンジンの成果物は事前キャッシュされないため、オフラインでは読み込めない。

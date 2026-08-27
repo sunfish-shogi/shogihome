@@ -115,7 +115,7 @@ const listItems = computed(() => {
   if (props.containsBasicEngines) {
     for (const playerURI of uri.ES_BASIC_ENGINE_LIST) {
       items.push({
-        label: uri.basicEngineName(playerURI, { webapp: !isNative() }),
+        label: uri.basicEngineName(playerURI),
         value: playerURI,
         tags: [getPredefinedUSIEngineTag("game")],
       });
