@@ -53,7 +53,7 @@ import {
   getUSIEngineMultiPV,
   getPredefinedUSIEngineTag,
 } from "@/common/settings/usi";
-import api, { isNative } from "@/renderer/ipc/api";
+import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
@@ -120,11 +120,6 @@ const listItems = computed(() => {
         tags: [getPredefinedUSIEngineTag("game")],
       });
     }
-  }
-  if (!isNative()) {
-    items.sort((a, b) =>
-      a.value === uri.ES_HUMAN ? -1 : b.value === uri.ES_HUMAN ? 1 : a.label.localeCompare(b.label),
-    );
   }
   return items;
 });

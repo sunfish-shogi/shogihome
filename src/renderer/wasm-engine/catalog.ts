@@ -126,7 +126,7 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     author: manifest.author,
     path: enginePathOf(dir),
     options: buildOptions(manifest, preset.id),
-    tags: [getPredefinedUSIEngineTag("game")],
+    tags: preset.tags?.map(getPredefinedUSIEngineTag),
   }));
 }
 
