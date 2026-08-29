@@ -46,26 +46,21 @@ public/engines/<dir>/
 ```json
 {
   "abi": "shogihome-wasm-engine/1",
-  "module": "basic.js",
+  "module": "engine.js",
   "moduleFormat": "esm",
-  "name": "ShogiHome Basic Engine",
-  "author": "Kubo, Ryosuke",
+  "name": "Example Engine",
+  "author": "Author Name",
   "requiresCrossOriginIsolation": true,
   "dataFiles": [{ "url": "eval/nn.bin", "path": "/eval/nn.bin" }],
   "options": [
-    {
-      "name": "Style",
-      "type": "combo",
-      "default": "static_rook",
-      "vars": ["static_rook", "ranging_rook", "random"]
-    },
+    { "name": "Style", "type": "combo", "default": "a", "vars": ["a", "b"] },
     { "name": "MinimumThinkingTime", "type": "spin", "default": 500, "min": 0, "max": 60000 }
   ],
   "presets": [
     {
-      "id": "basic-static-rook-v1",
-      "displayName": "ShogiHome Basic (Static Rook)",
-      "values": { "Style": "static_rook" }
+      "id": "example-engine-v1",
+      "displayName": "Example Engine",
+      "values": { "Style": "a" }
     }
   ]
 }
@@ -87,15 +82,14 @@ public/engines/<dir>/
 ### `presets`
 
 1 つの wasm から複数のエンジンを見せるための仕組み。`values` に指定した値が
-起動後に `setoption` で送られる。ShogiHome の basic エンジンは 1 つの wasm から
-居飛車・振り飛車・ランダムの 3 つを見せている。
+起動後に `setoption` で送られる。強さやスタイルの異なる複数のプリセットを、
+1 つの wasm から見せることができる。
 
 **`id` はそのまま `es://usi-engine/builtin/<id>` という URI になる。**
 利用者の対局設定に保存されるため、**一度公開したら変更してはならない。**
 仕様や強さを変える場合は `-v2` のように別の `id` を持つプリセットを追加する。
 
-`displayName` は一覧に表示する名前。ShogiHome 側で多言語化したい場合のみ、
-`catalog.ts` の `DISPLAY_NAME_OVERRIDES` で上書きする。
+`displayName` は一覧に表示する名前。そのまま利用者に見せる文字列になる。
 
 ### `requiresCrossOriginIsolation`
 
@@ -202,9 +196,8 @@ C++ で書く場合は次項のシムがこれを引き受けるので、エン�
 
 ### C++ 側との接続 (シム)
 
-エンジン本体を C++ で書く場合、上のインターフェースは JavaScript の定型コードで組み立てる。
-ShogiHome の参照実装は [`engines/core/shim.js`](../engines/core/shim.js) をそのまま
-`--pre-js` に渡している。**このファイルはエンジンを問わず流用できる。**
+エンジン本体を C++ で書く場合、上のインターフェースは `--pre-js` で渡す JavaScript の
+定型コード (シム) で組み立てる。シムの実装はエンジン側で用意する。
 
 C 側は次の 2 つをエクスポートすればよい。
 
@@ -275,7 +268,7 @@ Blob URL 経由で `import()` する。`exportName` はソースへ文字列と�
 --no-entry                      main() を持たない場合
 ```
 
-`engines/core/shim.js` を使う場合は、加えて次が必要。
+シムを使う場合は、加えて次が必要。
 
 ```
 --pre-js <path>/shim.js
@@ -315,7 +308,7 @@ try {
 
 `setoption` の値や `go` の引数は GUI や利用者が与えるもので、必ずしも数値とは限らない。
 `std::stoi` / `std::stoll` / `std::stod` は使わず、`std::from_chars` のように
-例外を投げない方法で変換する (`engines/core/usi.cpp` の `parseInteger` が実装例)。
+例外を投げない方法で変換する。
 
 例外に依存した作りを変えられない場合は `-fexceptions` (または `-fwasm-exceptions`) を
 付ける。コードサイズと実行速度は悪化する。
@@ -428,7 +421,6 @@ Web 版は Service Worker がナビゲーションのレスポンスへ
 `Cross-Origin-Opener-Policy` と `Cross-Origin-Embedder-Policy` を足すため、
 isolation は成立する (仕組みは
 [`webapp-update.md`](./webapp-update.md) の「cross-origin isolation」を参照)。
-ShogiHome の basic エンジンは `-pthread` を付けてビルドしている。
 
 **ただし isolated にならない場合がある。** Service Worker の制御下に入る前に
 ドキュメントを受け取る初回アクセスや、待ち時間の打ち切りに達した場合である。

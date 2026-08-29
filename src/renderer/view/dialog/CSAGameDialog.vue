@@ -242,7 +242,7 @@ import YAML from "yaml";
 import { t } from "@/common/i18n";
 import { USIEngine, USIEngines, getPredefinedUSIEngineTag } from "@/common/settings/usi";
 import { ref, onMounted, computed } from "vue";
-import api, { isNative } from "@/renderer/ipc/api";
+import api from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import {
   CSAProtocolVersion,
@@ -334,9 +334,7 @@ const buildPlayerSettings = (playerURI: string): PlayerSettings => {
     };
   }
   return {
-    name: uri.isBasicEngine(playerURI)
-      ? uri.basicEngineName(playerURI, { webapp: !isNative() })
-      : t.human,
+    name: uri.isBasicEngine(playerURI) ? uri.basicEngineName(playerURI) : t.human,
     uri: uri.ES_HUMAN,
   };
 };

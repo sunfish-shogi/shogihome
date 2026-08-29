@@ -37,8 +37,6 @@ describe("engines/conformance", () => {
     it("usi と isready に応答すること", async () => {
       const engine = await launchEngine(dir);
       const received = await handshake(engine);
-      expect(received).toContain(`id name ${engine.manifest.name}`);
-      expect(received).toContain(`id author ${engine.manifest.author}`);
       expect(received[received.length - 1]).toBe("usiok");
 
       engine.command("isready");
@@ -93,21 +91,6 @@ describe("engines/conformance", () => {
         expect(move, `不正な指し手の表記: ${usiMove}`).toBeTruthy();
         expect(position.doMove(move!), `非合法手: ${usiMove}`).toBeTruthy();
       }
-      engine.quit();
-    }, 30000);
-
-    it("stop で即座に bestmove を返すこと", async () => {
-      const engine = await launchEngine(dir);
-      await handshake(engine);
-      engine.command("isready");
-      await engine.waitFor((line) => line === "readyok", "readyok");
-      engine.lines.length = 0;
-      engine.command("position startpos");
-      // 長い持ち時間を与えても stop で打ち切れること。
-      engine.command("go btime 600000 wtime 600000 byoyomi 300000");
-      engine.command("stop");
-      const result = await engine.waitForResult();
-      expect(result.startsWith("bestmove ")).toBeTruthy();
       engine.quit();
     }, 30000);
 

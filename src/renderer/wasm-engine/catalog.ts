@@ -22,7 +22,7 @@ import {
 } from "./manifest.js";
 
 // 読み込む組み込みエンジンのディレクトリ名。
-export const BUILTIN_ENGINE_DIRS = ["basic"];
+export const BUILTIN_ENGINE_DIRS = ["sunfish4-lite"];
 
 // public/ からエンジンのディレクトリまでの相対パス。USIEngine.path にもこの形で入る。
 export const ENGINE_DIR_PREFIX = "engines/";
@@ -48,17 +48,6 @@ export function resolveEngineDirURL(path: string): string {
   }
   return new URL(path, document.baseURI).href;
 }
-
-// 表示名を ShogiHome の i18n で上書きする。
-// TypeScript 実装の簡易エンジン (Lv. 1) と区別できるように、強さをレベルで名前に含める。
-// モバイル表示のボタン (MobileGameMenu.vue) と同じ表記に揃えてある。
-// 探索の深さ (Depth) はオプションで変更できるため、名前には含めない。
-const DISPLAY_NAME_OVERRIDES: { [presetID: string]: () => string } = {
-  "basic-level2-static-rook-v1": () => `ShogiHome Lv. 2 (${t.staticRook})`,
-  "basic-level2-ranging-rook-v1": () => `ShogiHome Lv. 2 (${t.rangingRook})`,
-  "basic-level3-static-rook-v1": () => `ShogiHome Lv. 3 (${t.staticRook})`,
-  "basic-level3-ranging-rook-v1": () => `ShogiHome Lv. 3 (${t.rangingRook})`,
-};
 
 export function builtinEngineURI(presetID: string): string {
   return `${uri.ES_USI_ENGINE_PREFIX}builtin/${presetID}`;
@@ -132,7 +121,7 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
   return manifest.presets.map((preset) => ({
     ...emptyUSIEngine(),
     uri: builtinEngineURI(preset.id),
-    name: (DISPLAY_NAME_OVERRIDES[preset.id] || (() => preset.displayName))(),
+    name: preset.displayName,
     defaultName: manifest.name,
     author: manifest.author,
     path: enginePathOf(dir),

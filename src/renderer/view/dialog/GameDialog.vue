@@ -536,9 +536,7 @@ const buildPlayerSettings = (playerURI: string): PlayerSettings => {
     };
   }
   return {
-    name: uri.isBasicEngine(playerURI)
-      ? uri.basicEngineName(playerURI, { webapp: !isNative() })
-      : t.human,
+    name: uri.isBasicEngine(playerURI) ? uri.basicEngineName(playerURI) : t.human,
     uri: playerURI,
   };
 };

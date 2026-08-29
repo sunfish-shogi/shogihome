@@ -54,17 +54,36 @@ import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
 
-// モバイル表示では名前が長いと収まらないので、強さをレベルで表す。
-// Lv.1 は TypeScript 実装の簡易エンジン、Lv.2 以降は組み込みの WebAssembly エンジン。
-// (モバイル表示は Web 版でのみ使われる。)
 const players = [
-  { level: 1, uri: uri.ES_BASIC_ENGINE_STATIC_ROOK_V1, style: () => t.staticRook },
-  { level: 1, uri: uri.ES_BASIC_ENGINE_RANGING_ROOK_V1, style: () => t.rangingRook },
-  { level: 2, uri: builtinEngineURI("basic-level2-static-rook-v1"), style: () => t.staticRook },
-  { level: 2, uri: builtinEngineURI("basic-level2-ranging-rook-v1"), style: () => t.rangingRook },
-  { level: 3, uri: builtinEngineURI("basic-level3-static-rook-v1"), style: () => t.staticRook },
-  { level: 3, uri: builtinEngineURI("basic-level3-ranging-rook-v1"), style: () => t.rangingRook },
-].map((player) => ({ uri: player.uri, label: `Lv. ${player.level} ${player.style()}` }));
+  {
+    uri: uri.ES_BASIC_ENGINE_STATIC_ROOK_V1,
+    label: `${t.beginner} (${t.staticRook})`,
+  },
+  {
+    uri: uri.ES_BASIC_ENGINE_RANGING_ROOK_V1,
+    label: `${t.beginner} (${t.rangingRook})`,
+  },
+  {
+    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d3"),
+    label: "Sunfish Lv.1",
+  },
+  {
+    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
+    label: "Sunfish Lv.2",
+  },
+  {
+    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d7"),
+    label: "Sunfish Lv.3",
+  },
+  {
+    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d9"),
+    label: "Sunfish Lv.4",
+  },
+  {
+    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d11"),
+    label: "Sunfish Lv.5",
+  },
+];
 
 const store = useStore();
 const dialog = ref();
