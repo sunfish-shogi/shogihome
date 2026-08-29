@@ -16,7 +16,7 @@
       <button v-show="!inGame" @click="store.removeCurrentMove()">
         <Icon :icon="IconType.DELETE" />
       </button>
-      <button v-show="inGame" class="close" @click="resign()">
+      <button v-show="inGame" :disabled="!canResign" class="close" @click="resign()">
         <Icon :icon="IconType.RESIGN" />
       </button>
       <button @click="isMobileMenuVisible = true">Menu</button>
@@ -39,6 +39,7 @@ import { t } from "@/common/i18n";
 const store = useStore();
 const isMobileMenuVisible = ref(false);
 const inGame = computed(() => store.appState === AppState.GAME);
+const canResign = computed(() => inGame.value && store.isMovableByUser);
 
 function resign() {
   useConfirmationStore().show({
