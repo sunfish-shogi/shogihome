@@ -148,7 +148,7 @@ const selectTurn = async (turn: Color) => {
     startPositionListOrder: "sequential",
     enableEngineTimeout: false,
     humanIsFront: true,
-    enableComment: false,
+    enableComment: true,
     enableAutoSave: false,
     autoSaveDirectory: "",
     repeat: 1,
