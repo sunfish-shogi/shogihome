@@ -2,7 +2,7 @@
   "abi": "shogihome-wasm-engine/1",
   "module": "sunfish4.js",
   "moduleFormat": "esm",
-  "name": "Sunfish4 Lite",
+  "name": "Sunfish4-Lite",
   "author": "Kubo, Ryosuke",
   "requiresCrossOriginIsolation": true,
   "dataFiles": [
@@ -19,58 +19,64 @@
   "presets": [
     {
       "id": "sunfish4-lite-wasm-v1",
-      "displayName": "Sunfish4 Lite",
-      "values": {}
+      "displayName": "Sunfish4-Lite",
+      "values": {},
+      "tags": ["game", "research"]
     },
     {
       "id": "sunfish4-lite-wasm-v1-d3",
-      "displayName": "Sunfish Lv. 1",
+      "displayName": "Sunfish4-Lite Depth-03",
       "values": {
         "Threads": 1,
         "USI_Hash": 8,
         "USI_Ponder": "false",
         "MaxDepth": 3
-      }
+      },
+      "tags": []
     },
     {
       "id": "sunfish4-lite-wasm-v1-d5",
-      "displayName": "Sunfish Lv. 2",
+      "displayName": "Sunfish4-Lite Depth-05",
       "values": {
         "Threads": 1,
         "USI_Hash": 16,
         "USI_Ponder": "false",
         "MaxDepth": 5
-      }
+      },
+      "tags": []
     },
     {
       "id": "sunfish4-lite-wasm-v1-d7",
-      "displayName": "Sunfish Lv. 3",
+      "displayName": "Sunfish4-Lite Depth-07",
       "values": {
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
         "MaxDepth": 7
-      }
+      },
+      "tags": []
     },
     {
       "id": "sunfish4-lite-wasm-v1-d9",
-      "displayName": "Sunfish Lv. 4",
+      "displayName": "Sunfish4-Lite Depth-09",
       "values": {
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
         "MaxDepth": 9
-      }
+      },
+      "tags": []
     },
     {
       "id": "sunfish4-lite-wasm-v1-d11",
-      "displayName": "Sunfish Lv. 5",
+      "displayName": "Sunfish4-Lite Depth-11",
       "values": {
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
         "MaxDepth": 11
-      }
+      },
+      "tags": []
     }
   ]
 }

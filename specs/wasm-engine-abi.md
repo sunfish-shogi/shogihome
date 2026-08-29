@@ -60,7 +60,8 @@ public/engines/<dir>/
     {
       "id": "example-engine-v1",
       "displayName": "Example Engine",
-      "values": { "Style": "a" }
+      "values": { "Style": "a" },
+      "tags": ["game"]
     }
   ]
 }
@@ -90,6 +91,9 @@ public/engines/<dir>/
 仕様や強さを変える場合は `-v2` のように別の `id` を持つプリセットを追加する。
 
 `displayName` は一覧に表示する名前。そのまま利用者に見せる文字列になる。
+
+`tags` にはエンジンの用途に応じて `game` `research` `mate` の組み合わせを指定する。
+ユーザー定義のタグは現在サポートされていない。
 
 ### `requiresCrossOriginIsolation`
 

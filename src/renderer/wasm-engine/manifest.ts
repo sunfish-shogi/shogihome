@@ -36,6 +36,7 @@ export type EngineManifestPreset = {
   id: string;
   displayName: string;
   values?: { [name: string]: string | number };
+  tags?: ("game" | "research" | "mate")[];
 };
 
 // 評価パラメータや定跡など、実行時に読み込むファイル。
@@ -156,6 +157,18 @@ function parsePreset(value: unknown, path: string): EngineManifestPreset {
         fail(`${path}.values.${name} must be a string or a number`);
       }
       preset.values[name] = v;
+    }
+  }
+  if (record.tags !== undefined) {
+    if (!Array.isArray(record.tags)) {
+      fail(`${path}.tags must be an array`);
+    }
+    preset.tags = [];
+    for (const tag of record.tags as unknown[]) {
+      if (tag !== "game" && tag !== "research" && tag !== "mate") {
+        fail(`${path}.tags[] must be one of "game", "research", or "mate"`);
+      }
+      preset.tags.push(tag);
     }
   }
   return preset;
