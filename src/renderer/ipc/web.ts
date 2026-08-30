@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { defaultAnalysisSettings } from "@/common/settings/analysis.js";
-import { defaultAppSettings } from "@/common/settings/app.js";
+import { AppSettings, defaultAppSettings, PromotionSelectorStyle } from "@/common/settings/app.js";
 import { defaultGameSettings } from "@/common/settings/game.js";
 import { defaultResearchSettings } from "@/common/settings/research.js";
 import {
@@ -124,12 +124,17 @@ export const webAPI: Bridge = {
 
   // Settings
   async loadAppSettings(): Promise<string> {
+    const defaultSettings: AppSettings = {
+      ...defaultAppSettings(),
+      promotionSelectorStyle: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
+      enableDragAndDrop: false,
+    };
     const json = localStorage.getItem(STORAGE_KEY.APP_SETTINGS);
     if (!json) {
-      return JSON.stringify(defaultAppSettings());
+      return JSON.stringify(defaultSettings);
     }
     return JSON.stringify({
-      ...defaultAppSettings(),
+      ...defaultSettings,
       ...JSON.parse(json),
     });
   },
