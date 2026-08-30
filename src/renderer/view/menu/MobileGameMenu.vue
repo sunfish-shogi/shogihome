@@ -129,19 +129,19 @@ const selectTurn = async (turn: Color) => {
     useErrorStore().add(new Error(`${t.failedToStartNewGame}: ${playerURI.value}`));
     return;
   }
-  let black: PlayerSettings = { name: t.human, uri: uri.ES_HUMAN };
-  let white: PlayerSettings = opponent;
+  let black = { name: t.human, uri: uri.ES_HUMAN };
+  let white = opponent;
+  let blackTimeLimit = { timeSeconds: 900, byoyomi: 30, increment: 0 };
+  let whiteTimeLimit = { timeSeconds: 0, byoyomi: 10, increment: 0 };
   if (turn === Color.WHITE) {
     [black, white] = [white, black];
+    [blackTimeLimit, whiteTimeLimit] = [whiteTimeLimit, blackTimeLimit];
   }
   store.startGame({
     black,
     white,
-    timeLimit: {
-      timeSeconds: 900,
-      byoyomi: 30,
-      increment: 0,
-    },
+    timeLimit: blackTimeLimit,
+    whiteTimeLimit: whiteTimeLimit,
     startPosition: InitialPositionType.STANDARD,
     startPositionSFEN: "",
     startPositionListFile: "",
