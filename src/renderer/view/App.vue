@@ -94,6 +94,7 @@
     <!-- https://github.com/sunfish-shogi/shogihome/issues/1114 -->
     <div ref="clipboard" hidden>
       <button data-hotkey="Mod+c" @click="onCopy"></button>
+      <button data-hotkey="Mod+b" @click="onCopyBoard"></button>
       <button data-hotkey="Mod+v" @click="onPaste"></button>
     </div>
   </div>
@@ -164,7 +165,11 @@ const confirmation = useConfirmationStore();
 const nextMoveQuiz = useNextMoveQuizStore();
 
 const onCopy = () => {
-  store.copyRecordKIF();
+  store.copyRecord();
+};
+
+const onCopyBoard = () => {
+  store.copyBoard();
 };
 
 const onPaste = () => {

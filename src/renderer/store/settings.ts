@@ -6,6 +6,8 @@ import {
   BoardLabelType,
   BranchListMode,
   ClockSoundTarget,
+  CopyPositionFormat,
+  CopyRecordFormat,
   EvaluationViewFrom,
   HandPieceOrder,
   KingPieceType,
@@ -159,6 +161,12 @@ class AppSettingsStore {
   }
   get defaultRecordFileFormat(): RecordFileFormat {
     return this.merged.defaultRecordFileFormat;
+  }
+  get copyRecordFormat(): CopyRecordFormat {
+    return this.merged.copyRecordFormat;
+  }
+  get copyPositionFormat(): CopyPositionFormat {
+    return this.merged.copyPositionFormat;
   }
   get textDecodingRule(): TextDecodingRule {
     return this.merged.textDecodingRule;

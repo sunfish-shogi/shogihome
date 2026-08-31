@@ -420,6 +420,38 @@
           ]"
         />
       </div>
+      <!-- 棋譜コピーの形式 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">
+          {{ t.copyRecordFormat }}
+        </div>
+        <HorizontalSelector
+          v-model:value="update.copyRecordFormat"
+          class="selector"
+          :items="[
+            { label: 'KIF', value: CopyRecordFormat.KIF },
+            { label: 'KI2', value: CopyRecordFormat.KI2 },
+            { label: 'CSA', value: CopyRecordFormat.CSA },
+            { label: 'USI', value: CopyRecordFormat.USI },
+            { label: 'JKF', value: CopyRecordFormat.JKF },
+            { label: 'USEN', value: CopyRecordFormat.USEN },
+          ]"
+        />
+      </div>
+      <!-- 局面コピーの形式 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">
+          {{ t.copyPositionFormat }}
+        </div>
+        <HorizontalSelector
+          v-model:value="update.copyPositionFormat"
+          class="selector"
+          :items="[
+            { label: 'SFEN', value: CopyPositionFormat.SFEN },
+            { label: 'BOD', value: CopyPositionFormat.BOD },
+          ]"
+        />
+      </div>
       <!-- 文字コード -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -847,6 +879,8 @@ import {
   AppSettingsUpdate,
   NodeCountFormat,
   RecordShortcutKeys,
+  CopyRecordFormat,
+  CopyPositionFormat,
 } from "@/common/settings/app";
 import ImageSelector from "@/renderer/view/dialog/ImageSelector.vue";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
@@ -923,6 +957,8 @@ const update = ref({
   clockSoundTarget: org.clockSoundTarget,
   recordShortcutKeys: org.recordShortcutKeys,
   defaultRecordFileFormat: org.defaultRecordFileFormat,
+  copyRecordFormat: org.copyRecordFormat,
+  copyPositionFormat: org.copyPositionFormat,
   textDecodingRule: org.textDecodingRule,
   returnCode: org.returnCode,
   recordFileNameTemplate: org.recordFileNameTemplate,

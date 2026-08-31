@@ -164,6 +164,22 @@ export enum BranchListMode {
   NEXT_MOVE = "nextMove",
 }
 
+// Ctrl/Cmd+C でコピーする棋譜のフォーマット
+export enum CopyRecordFormat {
+  KIF = "kif",
+  KI2 = "ki2",
+  CSA = "csa",
+  USI = "usi",
+  JKF = "jkf",
+  USEN = "usen",
+}
+
+// Ctrl/Cmd+B でコピーする局面のフォーマット
+export enum CopyPositionFormat {
+  SFEN = "sfen",
+  BOD = "bod",
+}
+
 export type AppSettings = {
   // Language
   language: Language;
@@ -217,6 +233,8 @@ export type AppSettings = {
 
   // Record File
   defaultRecordFileFormat: RecordFileFormat;
+  copyRecordFormat: CopyRecordFormat;
+  copyPositionFormat: CopyPositionFormat;
   textDecodingRule: TextDecodingRule;
   returnCode: string;
   autoSaveDirectory: string; // Deprecated
@@ -387,6 +405,8 @@ export function defaultAppSettings(opt?: {
     topPanePreviousHeightPercentage: 60,
     bottomLeftPaneWidthPercentage: 60,
     defaultRecordFileFormat: RecordFileFormat.KIF,
+    copyRecordFormat: CopyRecordFormat.KIF,
+    copyPositionFormat: CopyPositionFormat.SFEN,
     textDecodingRule: TextDecodingRule.AUTO_DETECT,
     returnCode: opt?.returnCode || "\r\n",
     autoSaveDirectory: opt?.autoSaveDirectory || "",

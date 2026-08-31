@@ -22,7 +22,7 @@ import { convert } from "encoding-japanese";
 import fs from "node:fs";
 import { Mocked, MockedClass } from "vitest";
 import { useAppSettings } from "@/renderer/store/settings.js";
-import { defaultAppSettings } from "@/common/settings/app.js";
+import { CopyPositionFormat, CopyRecordFormat, defaultAppSettings } from "@/common/settings/app.js";
 import { useMessageStore } from "@/renderer/store/message.js";
 import { useBusyState } from "@/renderer/store/busy.js";
 import { useErrorStore } from "@/renderer/store/error.js";
@@ -787,6 +787,93 @@ describe("store/index", () => {
     );
 
     store.copyBoardBOD();
+    expect(writeText).lastCalledWith(`後手の持駒：なし
+  ９ ８ ７ ６ ５ ４ ３ ２ １
++---------------------------+
+|v香v桂v銀v金v玉v金v銀v桂v香|一
+| ・v飛 ・ ・ ・ ・ ・v角 ・|二
+|v歩v歩v歩v歩v歩v歩v歩v歩v歩|三
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|四
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|五
+| ・ ・ ・ ・ ・ ・ ・ ・ ・|六
+| 歩 歩 歩 歩 歩 歩 歩 歩 歩|七
+| ・ 角 ・ ・ ・ ・ ・ 飛 ・|八
+| 香 桂 銀 金 玉 金 銀 桂 香|九
++---------------------------+
+先手の持駒：なし
+先手番
+手数＝0    まで
+`);
+  });
+
+  it("copyRecord/configuredFormat", async () => {
+    const writeText = vi.fn();
+    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
+      Object.assign(navigator, {
+        clipboard: {
+          writeText,
+        },
+      }),
+    );
+    const store = createStore();
+    store.pasteRecord("position startpos moves 2g2f 3c3d 7g7f 4a3b");
+    store.changePly(2);
+
+    // 既定値は KIF 形式
+    store.copyRecord();
+    expect(writeText).lastCalledWith(
+      "手合割：平手\r\n" +
+        "手数----指手---------消費時間--\r\n" +
+        "   1 ２六歩(27)   ( 0:00/00:00:00)\r\n" +
+        "   2 ３四歩(33)   ( 0:00/00:00:00)\r\n" +
+        "   3 ７六歩(77)   ( 0:00/00:00:00)\r\n" +
+        "   4 ３二金(41)   ( 0:00/00:00:00)\r\n",
+    );
+
+    await useAppSettings().updateAppSettings({ copyRecordFormat: CopyRecordFormat.KI2 });
+    store.copyRecord();
+    expect(writeText).lastCalledWith("手合割：平手\r\n▲２六歩    △３四歩    ▲７六歩    △３二金");
+
+    await useAppSettings().updateAppSettings({ copyRecordFormat: CopyRecordFormat.CSA });
+    store.copyRecord();
+    expect(writeText).lastCalledWith(
+      "V2.2\r\nPI\r\n+\r\n+2726FU\r\nT0\r\n-3334FU\r\nT0\r\n+7776FU\r\nT0\r\n-4132KI\r\nT0\r\n",
+    );
+
+    // USI 形式は現在の指し手までではなく全ての指し手を出力する。
+    await useAppSettings().updateAppSettings({ copyRecordFormat: CopyRecordFormat.USI });
+    store.copyRecord();
+    expect(writeText).lastCalledWith("position startpos moves 2g2f 3c3d 7g7f 4a3b");
+
+    await useAppSettings().updateAppSettings({ copyRecordFormat: CopyRecordFormat.JKF });
+    store.copyRecord();
+    expect(writeText).lastCalledWith(expect.stringContaining('"preset":"HIRATE"'));
+
+    await useAppSettings().updateAppSettings({ copyRecordFormat: CopyRecordFormat.USEN });
+    store.copyRecord();
+    expect(writeText).lastCalledWith("~0.6y22jm7ku0e4.");
+  });
+
+  it("copyBoard/configuredFormat", async () => {
+    const writeText = vi.fn();
+    vi.spyOn(global, "navigator", "get").mockReturnValueOnce(
+      Object.assign(navigator, {
+        clipboard: {
+          writeText,
+        },
+      }),
+    );
+    const store = createStore();
+    store.pasteRecord(sampleKIF);
+
+    // 既定値は SFEN 形式
+    store.copyBoard();
+    expect(writeText).lastCalledWith(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+    );
+
+    await useAppSettings().updateAppSettings({ copyPositionFormat: CopyPositionFormat.BOD });
+    store.copyBoard();
     expect(writeText).lastCalledWith(`後手の持駒：なし
   ９ ８ ７ ６ ５ ４ ３ ２ １
 +---------------------------+

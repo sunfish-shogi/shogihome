@@ -316,6 +316,8 @@ export const zh_tw: Texts = {
   anyTurn: "所有手番",
   onlyHumanTurn: "只有玩家手番",
   defaultRecordFileFormat: "預設保存格式",
+  copyRecordFormat: "棋譜コピーの形式", // TODO: Translate
+  copyPositionFormat: "局面コピーの形式", // TODO: Translate
   textEncoding: "文字編碼",
   strict: "檔案原始編碼",
   autoDetect: "自動判定",

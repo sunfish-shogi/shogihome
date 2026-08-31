@@ -24,7 +24,13 @@ import {
 } from "tsshogi";
 import { reactive, UnwrapNestedRefs } from "vue";
 import { defaultGameSettings, GameSettings } from "@/common/settings/game.js";
-import { ClockSoundTarget, Tab, TextDecodingRule } from "@/common/settings/app.js";
+import {
+  ClockSoundTarget,
+  CopyPositionFormat,
+  CopyRecordFormat,
+  Tab,
+  TextDecodingRule,
+} from "@/common/settings/app.js";
 import { beepShort, beepUnlimited, playPieceBeat, stopBeep } from "@/renderer/devices/audio.js";
 import { SearchInfoSenderType, SearchInfo as SearchInfoParam } from "@/common/record/types.js";
 import {
@@ -1481,6 +1487,40 @@ class Store {
       return this.recordManager.jumpToBookmark(bookmark);
     }
     return false;
+  }
+
+  copyRecord(): void {
+    switch (useAppSettings().copyRecordFormat) {
+      case CopyRecordFormat.KI2:
+        this.copyRecordKI2();
+        break;
+      case CopyRecordFormat.CSA:
+        this.copyRecordCSA();
+        break;
+      case CopyRecordFormat.USI:
+        this.copyRecordUSI("all");
+        break;
+      case CopyRecordFormat.JKF:
+        this.copyRecordJKF();
+        break;
+      case CopyRecordFormat.USEN:
+        this.copyRecordUSEN();
+        break;
+      default:
+        this.copyRecordKIF();
+        break;
+    }
+  }
+
+  copyBoard(): void {
+    switch (useAppSettings().copyPositionFormat) {
+      case CopyPositionFormat.BOD:
+        this.copyBoardBOD();
+        break;
+      default:
+        this.copyBoardSFEN();
+        break;
+    }
   }
 
   copyRecordKIF(options?: { fromCurrentPosition?: boolean }): void {

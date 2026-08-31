@@ -319,6 +319,8 @@ export const vi: Texts = {
   anyTurn: "Tất cả",
   onlyHumanTurn: "Nước của người chơi",
   defaultRecordFileFormat: "Định dạng kỳ phổ mặc định",
+  copyRecordFormat: "棋譜コピーの形式", // TODO: Translate
+  copyPositionFormat: "局面コピーの形式", // TODO: Translate
   textEncoding: "Bộ mã chữ",
   strict: "Bắt buộc",
   autoDetect: "Tự động",

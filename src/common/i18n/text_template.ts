@@ -301,6 +301,8 @@ export type Texts = {
   anyTurn: string;
   onlyHumanTurn: string;
   defaultRecordFileFormat: string;
+  copyRecordFormat: string;
+  copyPositionFormat: string;
   textEncoding: string;
   strict: string;
   autoDetect: string;

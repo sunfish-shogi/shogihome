@@ -309,6 +309,8 @@ export const en: Texts = {
   anyTurn: "Any",
   onlyHumanTurn: "Human",
   defaultRecordFileFormat: "Default Record Format",
+  copyRecordFormat: "Record Copy Format",
+  copyPositionFormat: "Position Copy Format",
   textEncoding: "Text Encoding",
   strict: "Strict",
   autoDetect: "Auto Detect",

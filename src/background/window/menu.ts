@@ -152,7 +152,10 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.copyRecordAll,
           submenu: [
-            menuItem(t.asKIF, MenuEvent.COPY_RECORD, null, isMac ? undefined : "CmdOrCtrl+C"),
+            // NOTE: Ctrl/Cmd+C と Ctrl/Cmd+B はコピーする形式をアプリ設定で切り替えられる。
+            //   メニューは起動時に一度だけ構築されるためアクセラレータは付けず、
+            //   レンダラー側 (App.vue) のホットキーで処理する。
+            menuItem(t.asKIF, MenuEvent.COPY_RECORD, null),
             menuItem(t.asKI2, MenuEvent.COPY_RECORD_KI2, null),
             menuItem(t.asCSA, MenuEvent.COPY_RECORD_CSA, null),
             menuItem(t.asUSIUntilCurrentMove, MenuEvent.COPY_RECORD_USI_BEFORE, null),
