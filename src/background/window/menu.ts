@@ -175,7 +175,7 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.copyPosition,
           submenu: [
-            menuItem(t.asSFEN, MenuEvent.COPY_BOARD_SFEN, null),
+            menuItem(t.asSFEN, MenuEvent.COPY_BOARD_SFEN, null, "CmdOrCtrl+B"),
             menuItem(t.asBOD, MenuEvent.COPY_BOARD_BOD, null),
           ],
         },
