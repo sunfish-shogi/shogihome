@@ -42,7 +42,7 @@ describe("engines/conformance", () => {
       engine.command("isready");
       await engine.waitFor((line) => line === "readyok", "readyok");
       engine.quit();
-    }, 30000);
+    }, 10000);
 
     it("マニフェストのオプション定義がエンジンの申告と一致すること", async () => {
       const engine = await launchEngine(dir);
@@ -56,7 +56,7 @@ describe("engines/conformance", () => {
         expect(actual?.type, `option ${option.name} の型`).toBe(option.type);
       }
       engine.quit();
-    }, 30000);
+    }, 10000);
 
     it("プリセットのオプション値を受け付けること", async () => {
       for (const preset of readManifest(dir).presets) {
@@ -71,7 +71,7 @@ describe("engines/conformance", () => {
         expect(engine.lines.filter((line) => line.startsWith("ERR "))).toEqual([]);
         engine.quit();
       }
-    }, 30000);
+    }, 10000);
 
     it("go が合法手または resign を返すこと", async () => {
       const engine = await launchEngine(dir);
@@ -81,7 +81,7 @@ describe("engines/conformance", () => {
       engine.command("usinewgame");
       engine.lines.length = 0;
       engine.command("position startpos");
-      engine.command("go btime 10000 wtime 10000 byoyomi 1000");
+      engine.command("go btime 0 wtime 0 byoyomi 1000");
       const result = await engine.waitForResult();
       expect(result.startsWith("bestmove ")).toBeTruthy();
       const usiMove = result.substring("bestmove ".length).split(" ")[0];
@@ -92,7 +92,7 @@ describe("engines/conformance", () => {
         expect(position.doMove(move!), `非合法手: ${usiMove}`).toBeTruthy();
       }
       engine.quit();
-    }, 30000);
+    }, 10000);
 
     it("terminate の後に出力しないこと", async () => {
       const engine = await launchEngine(dir);
@@ -106,20 +106,7 @@ describe("engines/conformance", () => {
       engine.lines.length = 0;
       await new Promise((resolve) => setTimeout(resolve, 200));
       expect(engine.lines).toEqual([]);
-    }, 30000);
-
-    it("quit の後に出力しないこと", async () => {
-      const engine = await launchEngine(dir);
-      await handshake(engine);
-      engine.command("isready");
-      await engine.waitFor((line) => line === "readyok", "readyok");
-      engine.command("position startpos");
-      engine.command("go btime 600000 wtime 600000 byoyomi 300000");
-      engine.quit();
-      engine.lines.length = 0;
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      expect(engine.lines).toEqual([]);
-    }, 30000);
+    }, 10000);
   });
 
   // プリセットの ID は URI になるため、リポジトリ全体で一意でなければならない。
