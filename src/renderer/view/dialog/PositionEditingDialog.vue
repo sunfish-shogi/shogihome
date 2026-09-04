@@ -76,12 +76,7 @@
               <Icon :icon="IconType.UNDO" />
               <div class="label">{{ t.undo }}</div>
             </button>
-            <button
-              class="icon-button"
-              data-hotkey="Mod+Shift+z"
-              :disabled="!canRedo"
-              @click="redo"
-            >
+            <button class="icon-button" data-hotkey="Mod+y" :disabled="!canRedo" @click="redo">
               <Icon :icon="IconType.REDO" />
               <div class="label">{{ t.redo }}</div>
             </button>
@@ -91,7 +86,7 @@
               <Icon :icon="IconType.REFRESH" />
               <div class="label">{{ t.initializePosition }}</div>
             </button>
-            <button class="icon-button" @click="onChangeTurn">
+            <button class="icon-button" data-hotkey="Mod+t" @click="onChangeTurn">
               <Icon :icon="IconType.SWAP" />
               <div class="label">{{ t.changeTurn }}</div>
             </button>
@@ -102,7 +97,7 @@
             @close="isInitialPositionMenuVisible = false"
           />
           <div class="icon-button-row">
-            <button class="icon-button" @click="onCopySFEN">
+            <button class="icon-button" data-hotkey="Mod+c,Mod+b" @click="onCopySFEN">
               <Icon :icon="IconType.COPY" />
               <div class="label">{{ t.copy }}(SFEN)</div>
             </button>
@@ -110,7 +105,7 @@
               <Icon :icon="IconType.COPY" />
               <div class="label">{{ t.copy }}(BOD)</div>
             </button>
-            <button class="icon-button" @click="onPaste">
+            <button class="icon-button" data-hotkey="Mod+v" @click="onPaste">
               <Icon :icon="IconType.PASTE" />
               <div class="label">{{ t.paste }}</div>
             </button>
