@@ -11,7 +11,7 @@
         ]"
         @update:value="(value: string) => quiz.setShuffled(value === 'shuffle')"
       />
-      <ToggleButton v-model:value="hintEnabled" class="header-item" :label="t.hint" />
+      <ToggleButton v-model:value="showChoices" class="header-item" :label="t.showChoices" />
       <span class="header-item">
         {{ t.correct }}: {{ quiz.correctCount }} / {{ quiz.answeredCount }}
         <span v-if="quiz.answeredCount">
@@ -149,7 +149,7 @@ const {
   flip,
   doFlip,
   onMove,
-  hintEnabled,
+  showChoices,
   choiceRows,
   onChoice,
   candidateRows,

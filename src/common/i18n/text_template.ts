@@ -95,7 +95,7 @@ export type Texts = {
   outputFile: string;
   problemNofM(n: number, m: number): string;
   findTheNextMove: string;
-  hint: string;
+  showChoices: string;
   correct: string;
   incorrect: string;
   correctRate: string;

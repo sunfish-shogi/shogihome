@@ -7,7 +7,7 @@ export type NextMoveQuizJudgement =
   | "actual" // 実戦で指された手 (不正解)
   | "incorrect"; // その他の不正解
 
-/** 出題時に表示する選択肢 (ヒント) の 1 つ。 */
+/** 出題時に表示する選択肢の 1 つ。 */
 export type NextMoveQuizChoice = {
   usi: string; // 指し手 (USI 形式)
   correct: boolean; // 正解として扱う手かどうか
@@ -45,7 +45,7 @@ export function isCorrectNextMoveQuizJudgement(judgement: NextMoveQuizJudgement)
 }
 
 /**
- * 出題時に表示する選択肢 (ヒント) を作成します。
+ * 出題時に表示する選択肢を作成します。
  *
  * - 最善手と実戦の手は必ず含める。
  * - 実戦の手と異なる不正解の候補手がわかっていれば 3 つ目の選択肢として加える。

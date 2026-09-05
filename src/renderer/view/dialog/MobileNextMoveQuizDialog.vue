@@ -64,7 +64,7 @@
         :height="26"
         @update:value="(value: string) => quiz.setShuffled(value === 'shuffle')"
       />
-      <ToggleButton v-model:value="hintEnabled" :label="t.hint" />
+      <ToggleButton v-model:value="showChoices" :label="t.showChoices" />
     </div>
     <div class="informations">
       <template v-if="!quiz.done">
@@ -144,7 +144,7 @@ const {
   lastMove,
   flip,
   onMove,
-  hintEnabled,
+  showChoices,
   choiceRows,
   onChoice,
   candidateRows,

@@ -88,15 +88,15 @@ export function useNextMoveQuizController() {
     }
   };
 
-  // 選択肢 (ヒント) の表示切り替え。この設定は永続化しない。
-  const hintEnabled = computed({
-    get: () => quiz.hintEnabled,
-    set: (value: boolean) => quiz.setHintEnabled(value),
+  // 選択肢の表示切り替え。この設定は永続化しない。
+  const showChoices = computed({
+    get: () => quiz.showChoices,
+    set: (value: boolean) => quiz.setShowChoices(value),
   });
 
   // 正解が DOM に現れないように、選択肢は指し手のみを渡す。
   const choiceRows = computed<NextMoveQuizChoiceRow[]>(() => {
-    if (!quiz.hintEnabled || quiz.done) {
+    if (!quiz.showChoices || quiz.done) {
       return [];
     }
     return quiz.choices
@@ -219,7 +219,7 @@ export function useNextMoveQuizController() {
     flip,
     doFlip,
     onMove,
-    hintEnabled,
+    showChoices,
     choiceRows,
     onChoice,
     candidateRows,

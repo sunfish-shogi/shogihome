@@ -437,7 +437,7 @@ export class NextMoveQuizState {
   private _lastJudgement?: NextMoveQuizJudgement;
   private _shuffled = false;
   private _visible = false;
-  private _hintEnabled = false;
+  private _showChoices = false;
   private _choices: NextMoveQuizChoice[] = [];
 
   /** 出題セッションを保持しているかどうかを返します。非表示中も true です。 */
@@ -480,7 +480,7 @@ export class NextMoveQuizState {
     this._shuffled = shuffle;
     this._lastJudgement = undefined;
     this._visible = true;
-    this._hintEnabled = false;
+    this._showChoices = false;
     this.updatePosition();
   }
 
@@ -493,27 +493,27 @@ export class NextMoveQuizState {
    */
   setShuffled(shuffle: boolean): void {
     if (this._collection && this._filePath !== undefined) {
-      // 出題順の切り替えでは選択肢 (ヒント) の表示状態を維持する。
-      const hintEnabled = this._hintEnabled;
+      // 出題順の切り替えでは選択肢の表示状態を維持する。
+      const showChoices = this._showChoices;
       this.open(this._collection, this._filePath, shuffle);
-      this._hintEnabled = hintEnabled;
+      this._showChoices = showChoices;
     }
   }
 
   /**
-   * 選択肢 (ヒント) を表示するかどうかを返します。
+   * 選択肢を表示するかどうかを返します。
    * 既定では非表示で、この設定は永続化されません。
    */
-  get hintEnabled(): boolean {
-    return this._hintEnabled;
+  get showChoices(): boolean {
+    return this._showChoices;
   }
 
-  setHintEnabled(enabled: boolean): void {
-    this._hintEnabled = enabled;
+  setShowChoices(enabled: boolean): void {
+    this._showChoices = enabled;
   }
 
   /**
-   * 現在の問題の選択肢 (ヒント) をランダムな並び順で返します。
+   * 現在の問題の選択肢をランダムな並び順で返します。
    * 選択肢を作成できない問題では空配列を返します。
    */
   get choices(): NextMoveQuizChoice[] {
