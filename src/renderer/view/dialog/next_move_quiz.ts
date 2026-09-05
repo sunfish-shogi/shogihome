@@ -11,6 +11,11 @@ import { useConfirmationStore } from "@/renderer/store/confirm";
 import { useNextMoveQuizStore } from "@/renderer/store/nextmove";
 import { isNative } from "@/renderer/ipc/api";
 
+export type NextMoveQuizChoiceRow = {
+  usi: string;
+  text: string;
+};
+
 export type NextMoveQuizMoveRow = {
   text: string;
   scoreText: string;
@@ -80,6 +85,33 @@ export function useNextMoveQuizController() {
           onCancel: () => quiz.reveal(),
         });
         break;
+    }
+  };
+
+  // 選択肢 (ヒント) の表示切り替え。この設定は永続化しない。
+  const hintEnabled = computed({
+    get: () => quiz.hintEnabled,
+    set: (value: boolean) => quiz.setHintEnabled(value),
+  });
+
+  // 正解が DOM に現れないように、選択肢は指し手のみを渡す。
+  const choiceRows = computed<NextMoveQuizChoiceRow[]>(() => {
+    if (!quiz.hintEnabled || quiz.done) {
+      return [];
+    }
+    return quiz.choices
+      .map((choice) => {
+        const move = position.value.createMoveByUSI(choice.usi);
+        return move && { usi: choice.usi, text: formatMove(position.value, move) };
+      })
+      .filter((row): row is NextMoveQuizChoiceRow => !!row);
+  });
+
+  // 選択肢は盤上で指すのと同じ扱いで解答する。
+  const onChoice = (usi: string) => {
+    const move = position.value.createMoveByUSI(usi);
+    if (move) {
+      onMove(move);
     }
   };
 
@@ -187,6 +219,9 @@ export function useNextMoveQuizController() {
     flip,
     doFlip,
     onMove,
+    hintEnabled,
+    choiceRows,
+    onChoice,
     candidateRows,
     actualMoveRow,
     sourceText,

@@ -109,6 +109,7 @@ export const vi: Texts = {
   outputFile: "出力ファイル", // TODO: Translate
   problemNofM: (n: number, m: number) => `問題 ${n} / ${m}`, // TODO: Translate
   findTheNextMove: "次の一手は？", // TODO: Translate
+  hint: "ヒント", // TODO: Translate
   correct: "正解", // TODO: Translate
   incorrect: "不正解", // TODO: Translate
   correctRate: "正解率", // TODO: Translate

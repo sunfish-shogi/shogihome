@@ -64,12 +64,26 @@
         :height="26"
         @update:value="(value: string) => quiz.setShuffled(value === 'shuffle')"
       />
+      <ToggleButton v-model:value="hintEnabled" :label="t.hint" />
     </div>
     <div class="informations">
-      <div v-if="!quiz.done" class="information">
-        <span class="question">{{ t.findTheNextMove }}</span>
-        <button class="thin" @click="quiz.reveal()">{{ t.showAnswer }}</button>
-      </div>
+      <template v-if="!quiz.done">
+        <div class="information">
+          <span class="question">{{ t.findTheNextMove }}</span>
+          <button class="thin" @click="quiz.reveal()">{{ t.showAnswer }}</button>
+        </div>
+        <div v-if="choiceRows.length" class="information choices-list">
+          <button
+            v-for="(row, index) in choiceRows"
+            :key="index"
+            class="choice-button"
+            :disabled="!!quiz.playedMove"
+            @click="onChoice(row.usi)"
+          >
+            {{ row.text }}
+          </button>
+        </div>
+      </template>
       <template v-else>
         <div class="information candidates-list">
           <button
@@ -99,6 +113,7 @@ import { BoardLayoutType } from "@/common/settings/layout";
 import { fileURLToCustomSchemeURL } from "@/common/url";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -129,6 +144,9 @@ const {
   lastMove,
   flip,
   onMove,
+  hintEnabled,
+  choiceRows,
+  onChoice,
   candidateRows,
   actualMoveRow,
   sourceText,
@@ -248,6 +266,18 @@ dialog.mobile-quiz {
 .question {
   font-weight: bold;
   margin-right: 10px;
+}
+.choices-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.choice-button {
+  white-space: nowrap;
+  margin: 0;
+  padding: 2px 8px;
 }
 .candidates-list {
   display: flex;
