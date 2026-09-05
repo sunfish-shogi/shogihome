@@ -99,6 +99,7 @@ export const ja: Texts = {
   outputFile: "出力ファイル",
   problemNofM: (n: number, m: number) => `問題 ${n} / ${m}`,
   findTheNextMove: "次の一手は？",
+  showChoices: "選択肢を表示",
   correct: "正解",
   incorrect: "不正解",
   correctRate: "正解率",

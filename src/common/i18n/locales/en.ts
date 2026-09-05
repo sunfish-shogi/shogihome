@@ -100,6 +100,7 @@ export const en: Texts = {
   outputFile: "Output File",
   problemNofM: (n: number, m: number) => `Problem ${n} / ${m}`,
   findTheNextMove: "Find the next move!",
+  showChoices: "Show choices",
   correct: "Correct",
   incorrect: "Incorrect",
   correctRate: "Accuracy",

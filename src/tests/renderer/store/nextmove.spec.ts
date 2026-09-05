@@ -305,6 +305,35 @@ describe("store/nextmove", () => {
       expect(state.problemNumber).toBe(1);
     });
 
+    it("choices", () => {
+      const state = new NextMoveQuizState();
+      state.open(collection, "/path/to/problems.json", false);
+      // 選択肢は既定で非表示。
+      expect(state.showChoices).toBe(false);
+      state.setShowChoices(true);
+      expect(state.showChoices).toBe(true);
+      // 最善手・実戦の手・不正解の候補手・最善手以外の正解手の 4 択。
+      expect([...state.choices].map((choice) => choice.usi).sort()).toEqual([
+        "2g2f",
+        "5g5f",
+        "7g7f",
+        "9g9f",
+      ]);
+      expect(state.choices.filter((choice) => choice.correct)).toHaveLength(2);
+      // 出題順を切り替えても選択肢の表示状態は維持される。
+      state.setShuffled(true);
+      expect(state.showChoices).toBe(true);
+      // 問題を移動すると選択肢も切り替わる。
+      state.setShuffled(false);
+      state.goNext();
+      expect([...state.choices].map((choice) => choice.usi).sort()).toEqual(["8c8d", "9c9d"]);
+      // 選択肢は盤上で指すのと同じように解答できる。
+      expect(state.answer(createMove(state, "8c8d"))).toBe("best");
+      // 別の問題集を開くと選択肢の表示状態は初期化される。
+      state.open(collection, "/path/to/problems.json", false);
+      expect(state.showChoices).toBe(false);
+    });
+
     it("hide-and-resume", () => {
       const state = new NextMoveQuizState();
       state.open(collection, "/path/to/problems.json", false);

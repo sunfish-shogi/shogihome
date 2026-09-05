@@ -24,6 +24,13 @@ import {
   importRecordFromBuffer,
   RecordFileFormat,
 } from "@/common/file/record.js";
+import {
+  buildNextMoveQuizChoices,
+  isCorrectNextMoveQuizJudgement,
+  judgeNextMoveQuizAnswer,
+  NextMoveQuizChoice,
+  NextMoveQuizJudgement,
+} from "@/common/nextmove/quiz.js";
 import { parseUSIPV, USIInfoCommand } from "@/common/game/usi.js";
 import { TextDecodingRule } from "@/common/settings/app.js";
 import { LogLevel } from "@/common/log.js";
@@ -409,11 +416,7 @@ export class NextMoveGenerationManager {
   }
 }
 
-export type NextMoveQuizJudgement =
-  | "best" // 最善手
-  | "accepted" // 最善手以外の正解
-  | "actual" // 実戦で指された手 (不正解)
-  | "incorrect"; // その他の不正解
+export type { NextMoveQuizChoice, NextMoveQuizJudgement };
 
 type NextMoveQuizProblemState = {
   done: boolean; // 解答済み (正解または「答えを見る」)
@@ -434,6 +437,8 @@ export class NextMoveQuizState {
   private _lastJudgement?: NextMoveQuizJudgement;
   private _shuffled = false;
   private _visible = false;
+  private _showChoices = false;
+  private _choices: NextMoveQuizChoice[] = [];
 
   /** 出題セッションを保持しているかどうかを返します。非表示中も true です。 */
   get isActive(): boolean {
@@ -475,6 +480,7 @@ export class NextMoveQuizState {
     this._shuffled = shuffle;
     this._lastJudgement = undefined;
     this._visible = true;
+    this._showChoices = false;
     this.updatePosition();
   }
 
@@ -487,8 +493,31 @@ export class NextMoveQuizState {
    */
   setShuffled(shuffle: boolean): void {
     if (this._collection && this._filePath !== undefined) {
+      // 出題順の切り替えでは選択肢の表示状態を維持する。
+      const showChoices = this._showChoices;
       this.open(this._collection, this._filePath, shuffle);
+      this._showChoices = showChoices;
     }
+  }
+
+  /**
+   * 選択肢を表示するかどうかを返します。
+   * 既定では非表示で、この設定は永続化されません。
+   */
+  get showChoices(): boolean {
+    return this._showChoices;
+  }
+
+  setShowChoices(enabled: boolean): void {
+    this._showChoices = enabled;
+  }
+
+  /**
+   * 現在の問題の選択肢をランダムな並び順で返します。
+   * 選択肢を作成できない問題では空配列を返します。
+   */
+  get choices(): NextMoveQuizChoice[] {
+    return this._choices;
   }
 
   /**
@@ -548,6 +577,7 @@ export class NextMoveQuizState {
     }
     this._playedMove = undefined;
     this._positionAfterPlayedMove = undefined;
+    this._choices = problem ? buildNextMoveQuizChoices(problem) : [];
   }
 
   get problemNumber(): number {
@@ -600,20 +630,8 @@ export class NextMoveQuizState {
     }
     this._playedMove = move;
     this._positionAfterPlayedMove = positionAfterPlayedMove;
-    const usi = move.usi;
-    const candidateIndex = problem.candidates.findIndex((candidate) => candidate.usi === usi);
-    let judgement: NextMoveQuizJudgement;
-    if (candidateIndex === 0) {
-      // 先頭の候補手 (最善手) は常に正解として扱う。
-      judgement = "best";
-    } else if (candidateIndex > 0 && problem.candidates[candidateIndex].accepted) {
-      judgement = "accepted";
-    } else if (problem.actualMove.usi === usi) {
-      judgement = "actual";
-    } else {
-      judgement = "incorrect";
-    }
-    const correct = judgement === "best" || judgement === "accepted";
+    const judgement = judgeNextMoveQuizAnswer(problem, move.usi);
+    const correct = isCorrectNextMoveQuizJudgement(judgement);
     if (!state.answered) {
       state.answered = true;
       state.correct = correct;

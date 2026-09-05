@@ -11,6 +11,7 @@
         ]"
         @update:value="(value: string) => quiz.setShuffled(value === 'shuffle')"
       />
+      <ToggleButton v-model:value="showChoices" class="header-item" :label="t.showChoices" />
       <span class="header-item">
         {{ t.correct }}: {{ quiz.correctCount }} / {{ quiz.answeredCount }}
         <span v-if="quiz.answeredCount">
@@ -77,9 +78,22 @@
       </div>
     </div>
     <div class="informations">
-      <div v-if="!quiz.done" class="information">
-        <span class="question">{{ t.findTheNextMove }}</span>
-      </div>
+      <template v-if="!quiz.done">
+        <div class="information">
+          <span class="question">{{ t.findTheNextMove }}</span>
+        </div>
+        <div v-if="choiceRows.length" class="information choices-list">
+          <button
+            v-for="(row, index) in choiceRows"
+            :key="index"
+            class="choice-button"
+            :disabled="!!quiz.playedMove"
+            @click="onChoice(row.usi)"
+          >
+            {{ row.text }}
+          </button>
+        </div>
+      </template>
       <template v-else>
         <div class="information candidates-list">
           <button
@@ -113,6 +127,7 @@ import { getPieceImageURLTemplate } from "@/common/settings/app";
 import { fileURLToCustomSchemeURL } from "@/common/url";
 import BoardView from "@/renderer/view/primitive/BoardView.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useAppSettings } from "@/renderer/store/settings";
@@ -134,6 +149,9 @@ const {
   flip,
   doFlip,
   onMove,
+  showChoices,
+  choiceRows,
+  onChoice,
   candidateRows,
   actualMoveRow,
   sourceText,
@@ -234,6 +252,18 @@ const onClose = () => {
 .question {
   font-weight: bold;
   margin-right: 10px;
+}
+.choices-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.choice-button {
+  white-space: nowrap;
+  margin: 0;
+  padding: 2px 8px;
 }
 .candidates-list {
   display: flex;
