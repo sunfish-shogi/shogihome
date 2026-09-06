@@ -372,7 +372,6 @@ export const zh_tw: Texts = {
   nextMoveBranches: "次の手", // TODO: Translate
   bookmark: "書籤",
   bookmarkList: "書籤一覽",
-  useBookmarkAsHeader: "將書籤名稱作為標題",
   moveComments: "棋步備註",
   searchLog: "思考",
   pv: "預測手順",

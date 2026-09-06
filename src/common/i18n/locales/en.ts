@@ -365,7 +365,6 @@ export const en: Texts = {
   nextMoveBranches: "Next Move Branches",
   bookmark: "Bookmark",
   bookmarkList: "Bookmarks",
-  useBookmarkAsHeader: "Use Bookmark as Header",
   moveComments: "Move Comments",
   searchLog: "Search Log",
   pv: "PV",

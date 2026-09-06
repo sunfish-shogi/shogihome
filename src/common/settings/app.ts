@@ -151,6 +151,22 @@ export enum PositionImageTypeface {
   MINCHO = "mincho",
 }
 
+export enum PositionImageHeaderType {
+  NONE = "none",
+  BOOKMARK = "bookmark",
+  CUSTOM = "custom",
+  LAST_MOVE = "lastMove",
+  PLY_AND_LAST_MOVE = "plyAndLastMove",
+  BOOKMARK_AND_LAST_MOVE = "bookmarkAndLastMove",
+  CUSTOM_AND_LAST_MOVE = "customAndLastMove",
+  BRACKETED_BOOKMARK = "bracketedBookmark",
+  BRACKETED_CUSTOM = "bracketedCustom",
+  BRACKETED_LAST_MOVE = "bracketedLastMove",
+  BRACKETED_PLY_AND_LAST_MOVE = "bracketedPlyAndLastMove",
+  BRACKETED_BOOKMARK_AND_LAST_MOVE = "bracketedBookmarkAndLastMove",
+  BRACKETED_CUSTOM_AND_LAST_MOVE = "bracketedCustomAndLastMove",
+}
+
 export enum PositionImageHandLabelType {
   PLAYER_NAME = "playerName",
   SENTE_GOTE = "senteGote",
@@ -273,7 +289,8 @@ export type AppSettings = {
   positionImageSize: number;
   positionImageTypeface: PositionImageTypeface;
   positionImageHandLabelType: PositionImageHandLabelType;
-  useBookmarkAsPositionImageHeader: boolean;
+  useBookmarkAsPositionImageHeader: boolean; // Deprecated
+  positionImageHeaderType: PositionImageHeaderType;
   positionImageHeader: string;
   positionImageCharacterY: number; // Deprecated
   positionImageFontScale: number;
@@ -432,6 +449,7 @@ export function defaultAppSettings(opt?: {
     positionImageTypeface: PositionImageTypeface.GOTHIC,
     positionImageHandLabelType: PositionImageHandLabelType.PLAYER_NAME,
     useBookmarkAsPositionImageHeader: false,
+    positionImageHeaderType: PositionImageHeaderType.PLY_AND_LAST_MOVE,
     positionImageHeader: "",
     positionImageCharacterY: 0,
     positionImageFontScale: 1,
@@ -511,6 +529,14 @@ export function normalizeAppSettings(
         result.positionImageFontWeight = PositionImageFontWeight.W700X;
         break;
     }
+  }
+  // 旧バージョンでは局面図の見出しの形式が「しおりを使うかどうか」のトグルだけだった。
+  if (settings.positionImageHeaderType === undefined) {
+    result.positionImageHeaderType = settings.useBookmarkAsPositionImageHeader
+      ? PositionImageHeaderType.BOOKMARK
+      : settings.positionImageHeader
+        ? PositionImageHeaderType.CUSTOM
+        : PositionImageHeaderType.PLY_AND_LAST_MOVE;
   }
   // 旧バージョンの USI 棋譜では resign のみに対応していた。
   if (settings.enableUSIFileSpecialMoves === undefined) {

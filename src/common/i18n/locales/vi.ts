@@ -375,7 +375,6 @@ export const vi: Texts = {
   nextMoveBranches: "Nước tiếp theo",
   bookmark: "Đánh dấu",
   bookmarkList: "Đánh dấu",
-  useBookmarkAsHeader: "Sử dụng đánh dấu làm đầu đề",
   moveComments: "Bình luận nước đi",
   searchLog: "Lịch sử tìm kiếm",
   pv: "PV",

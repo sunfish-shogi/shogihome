@@ -355,7 +355,6 @@ export type Texts = {
   nextMoveBranches: string;
   bookmark: string;
   bookmarkList: string;
-  useBookmarkAsHeader: string;
   moveComments: string;
   searchLog: string;
   pv: string;

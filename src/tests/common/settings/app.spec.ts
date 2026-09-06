@@ -2,7 +2,9 @@ import {
   normalizeAppSettings,
   getPieceImageURLTemplate,
   defaultAppSettings,
+  AppSettings,
   PieceImageType,
+  PositionImageHeaderType,
 } from "@/common/settings/app.js";
 
 describe("settings/app", () => {
@@ -12,6 +14,28 @@ describe("settings/app", () => {
       autoSaveDirectory: "/tmp",
     });
     expect(result).toStrictEqual(defaultAppSettings());
+  });
+
+  it("normalize/positionImageHeaderType", () => {
+    // 旧バージョンの設定では見出しの形式を持たない。
+    const legacy = (props: Partial<AppSettings>) => {
+      const settings = { ...defaultAppSettings(), ...props };
+      delete (settings as Partial<AppSettings>).positionImageHeaderType;
+      return normalizeAppSettings(settings).positionImageHeaderType;
+    };
+    expect(legacy({})).toBe(PositionImageHeaderType.PLY_AND_LAST_MOVE);
+    expect(legacy({ useBookmarkAsPositionImageHeader: true })).toBe(
+      PositionImageHeaderType.BOOKMARK,
+    );
+    expect(legacy({ positionImageHeader: "第1図" })).toBe(PositionImageHeaderType.CUSTOM);
+    // 新バージョンの設定はそのまま維持する。
+    expect(
+      normalizeAppSettings({
+        ...defaultAppSettings(),
+        useBookmarkAsPositionImageHeader: true,
+        positionImageHeaderType: PositionImageHeaderType.BRACKETED_LAST_MOVE,
+      }).positionImageHeaderType,
+    ).toBe(PositionImageHeaderType.BRACKETED_LAST_MOVE);
   });
 
   it("pieceImageBaseURL", () => {

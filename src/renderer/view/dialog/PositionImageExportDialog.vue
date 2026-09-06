@@ -105,16 +105,21 @@
         </div>
         <div class="form-item">
           {{ t.header }}
+          <select
+            class="header-type"
+            :value="appSettings.positionImageHeaderType"
+            @change="changeHeaderType"
+          >
+            <option v-for="item of headerTypeItems" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
           <input
             class="header"
             :value="appSettings.positionImageHeader"
             :placeholder="t.typeCustomTitleHere"
+            :disabled="!isCustomTextAvailable"
             @input="changeHeaderText"
-          />
-          <ToggleButton
-            :value="appSettings.useBookmarkAsPositionImageHeader"
-            :label="t.useBookmarkAsHeader"
-            @update:value="changeWhetherToUseBookmark"
           />
         </div>
       </div>
@@ -171,9 +176,7 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { Rect, RectSize } from "@/common/assets/geometry";
 import {
-  Color,
   Move,
-  formatMove,
   getBlackPlayerName,
   getBlackPlayerNamePreferShort,
   getWhitePlayerName,
@@ -185,6 +188,7 @@ import api from "@/renderer/ipc/api";
 import { Lazy } from "@/common/helpers/lazy";
 import {
   PositionImageHandLabelType,
+  PositionImageHeaderType,
   PositionImageStyle,
   PositionImageTypeface,
   getPieceImageURLTemplate,
@@ -196,6 +200,11 @@ import { useErrorStore } from "@/renderer/store/error";
 import DialogFrame from "./DialogFrame.vue";
 import { PositionImageFontWeight } from "@/common/settings/layout";
 import { fileURLToCustomSchemeURL } from "@/common/url";
+import {
+  buildPositionImageHeader,
+  usesBookmark,
+  usesCustomText,
+} from "@/renderer/helpers/positionImage";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;
@@ -259,18 +268,63 @@ const maxSize = computed(() => {
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
-const header = computed(() => {
-  const record = store.record;
-  return (
-    (appSettings.useBookmarkAsPositionImageHeader && record.current.bookmark) ||
-    appSettings.positionImageHeader ||
-    (lastMove.value
-      ? `${record.current.ply}手目 ${formatMove(record.position, lastMove.value)}まで`
-      : record.current.nextColor === Color.BLACK
-        ? "先手番"
-        : "後手番")
-  );
+// 短いものを先に、括弧付きを後にまとめて並べる。
+const headerTypes = [
+  PositionImageHeaderType.NONE,
+  PositionImageHeaderType.BOOKMARK,
+  PositionImageHeaderType.CUSTOM,
+  PositionImageHeaderType.LAST_MOVE,
+  PositionImageHeaderType.PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BOOKMARK_AND_LAST_MOVE,
+  PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_BOOKMARK,
+  PositionImageHeaderType.BRACKETED_CUSTOM,
+  PositionImageHeaderType.BRACKETED_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_BOOKMARK_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
+];
+
+const bookmark = computed(() => store.record.current.bookmark || "");
+
+const headerTypeItems = computed(() => {
+  const items = headerTypes
+    // しおりが無い局面ではしおりを使う形式を表示しない。（選択中の形式は残す。）
+    .filter(
+      (type) =>
+        !usesBookmark(type) || bookmark.value || type === appSettings.positionImageHeaderType,
+    )
+    .map((type) => ({
+      value: type,
+      // 現在の局面で実際に出力される文字列をそのままラベルにする。
+      // テキストが空の場合は、置き換わる部分をプレースホルダーで埋める。
+      label:
+        type === PositionImageHeaderType.NONE
+          ? "無し"
+          : buildPositionImageHeader(store.record, type, {
+              bookmark: bookmark.value || "<しおり>",
+              custom: appSettings.positionImageHeader || "<自由入力>",
+            }),
+    }));
+  // 手数が出ない局面では「手数と最終手」と「最終手」のように同じ文字列になる項目があるので、
+  // 重複する項目は 1 つだけ表示する。（選択中の形式は残す。）
+  const uniqueTypes = new Map<string, PositionImageHeaderType>();
+  for (const item of items) {
+    if (!uniqueTypes.has(item.label) || item.value === appSettings.positionImageHeaderType) {
+      uniqueTypes.set(item.label, item.value);
+    }
+  }
+  return items.filter((item) => uniqueTypes.get(item.label) === item.value);
 });
+
+const isCustomTextAvailable = computed(() => usesCustomText(appSettings.positionImageHeaderType));
+
+const header = computed(() =>
+  buildPositionImageHeader(store.record, appSettings.positionImageHeaderType, {
+    bookmark: bookmark.value,
+    custom: appSettings.positionImageHeader,
+  }),
+);
 
 const blackName = computed(() => {
   const record = store.record;
@@ -325,9 +379,10 @@ const changeHeaderText = (e: Event) => {
   });
 };
 
-const changeWhetherToUseBookmark = (value: boolean) => {
+const changeHeaderType = (e: Event) => {
+  const elem = e.target as HTMLSelectElement;
   appSettings.updateAppSettings({
-    useBookmarkAsPositionImageHeader: value,
+    positionImageHeaderType: elem.value as PositionImageHeaderType,
   });
 };
 
@@ -409,6 +464,9 @@ input.number {
   text-align: right;
 }
 input.header {
+  width: 80%;
+}
+select.header-type {
   width: 100%;
 }
 </style>

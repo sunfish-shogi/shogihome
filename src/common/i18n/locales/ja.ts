@@ -365,7 +365,6 @@ export const ja: Texts = {
   nextMoveBranches: "次の手",
   bookmark: "しおり",
   bookmarkList: "しおり一覧",
-  useBookmarkAsHeader: "しおりを見出しに使う",
   moveComments: "指し手コメント",
   searchLog: "思考",
   pv: "読み筋",
