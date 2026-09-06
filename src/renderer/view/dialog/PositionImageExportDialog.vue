@@ -200,7 +200,11 @@ import { useErrorStore } from "@/renderer/store/error";
 import DialogFrame from "./DialogFrame.vue";
 import { PositionImageFontWeight } from "@/common/settings/layout";
 import { fileURLToCustomSchemeURL } from "@/common/url";
-import { buildPositionImageHeader } from "@/renderer/helpers/positionImage";
+import {
+  buildPositionImageHeader,
+  usesBookmark,
+  usesCustomText,
+} from "@/renderer/helpers/positionImage";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;
@@ -264,52 +268,53 @@ const maxSize = computed(() => {
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
+// 短いものを先に、括弧付きを後にまとめて並べる。
 const headerTypes = [
   PositionImageHeaderType.NONE,
-  PositionImageHeaderType.PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BOOKMARK,
   PositionImageHeaderType.CUSTOM,
   PositionImageHeaderType.LAST_MOVE,
+  PositionImageHeaderType.PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BOOKMARK_AND_LAST_MOVE,
   PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
-  PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_BOOKMARK,
   PositionImageHeaderType.BRACKETED_CUSTOM,
   PositionImageHeaderType.BRACKETED_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_BOOKMARK_AND_LAST_MOVE,
   PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
 ];
 
-// 現在の局面で実際に出力される文字列をそのままラベルにする。
-// しおりも入力テキストも空の場合は、置き換わる部分をプレースホルダーで埋める。
+const bookmark = computed(() => store.record.current.bookmark || "");
+
 const headerTypeItems = computed(() =>
-  headerTypes.map((type) => ({
-    value: type,
-    label:
-      type === PositionImageHeaderType.NONE
-        ? "無し"
-        : buildPositionImageHeader(
-            store.record,
-            type,
-            appSettings.positionImageHeader || "<自由入力>",
-          ),
-  })),
+  headerTypes
+    // しおりが無い局面ではしおりを使う形式を表示しない。（選択中の形式は残す。）
+    .filter(
+      (type) =>
+        !usesBookmark(type) || bookmark.value || type === appSettings.positionImageHeaderType,
+    )
+    .map((type) => ({
+      value: type,
+      // 現在の局面で実際に出力される文字列をそのままラベルにする。
+      // テキストが空の場合は、置き換わる部分をプレースホルダーで埋める。
+      label:
+        type === PositionImageHeaderType.NONE
+          ? "無し"
+          : buildPositionImageHeader(store.record, type, {
+              bookmark: bookmark.value || "<しおり>",
+              custom: appSettings.positionImageHeader || "<自由入力>",
+            }),
+    })),
 );
 
-const isCustomTextAvailable = computed(() => {
-  switch (appSettings.positionImageHeaderType) {
-    case PositionImageHeaderType.CUSTOM:
-    case PositionImageHeaderType.CUSTOM_AND_LAST_MOVE:
-    case PositionImageHeaderType.BRACKETED_CUSTOM:
-    case PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE:
-      return true;
-    default:
-      return false;
-  }
-});
+const isCustomTextAvailable = computed(() => usesCustomText(appSettings.positionImageHeaderType));
 
 const header = computed(() =>
-  buildPositionImageHeader(
-    store.record,
-    appSettings.positionImageHeaderType,
-    appSettings.positionImageHeader,
-  ),
+  buildPositionImageHeader(store.record, appSettings.positionImageHeaderType, {
+    bookmark: bookmark.value,
+    custom: appSettings.positionImageHeader,
+  }),
 );
 
 const blackName = computed(() => {

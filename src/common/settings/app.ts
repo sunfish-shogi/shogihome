@@ -153,13 +153,17 @@ export enum PositionImageTypeface {
 
 export enum PositionImageHeaderType {
   NONE = "none",
-  PLY_AND_LAST_MOVE = "plyAndLastMove",
+  BOOKMARK = "bookmark",
   CUSTOM = "custom",
   LAST_MOVE = "lastMove",
+  PLY_AND_LAST_MOVE = "plyAndLastMove",
+  BOOKMARK_AND_LAST_MOVE = "bookmarkAndLastMove",
   CUSTOM_AND_LAST_MOVE = "customAndLastMove",
-  BRACKETED_PLY_AND_LAST_MOVE = "bracketedPlyAndLastMove",
+  BRACKETED_BOOKMARK = "bracketedBookmark",
   BRACKETED_CUSTOM = "bracketedCustom",
   BRACKETED_LAST_MOVE = "bracketedLastMove",
+  BRACKETED_PLY_AND_LAST_MOVE = "bracketedPlyAndLastMove",
+  BRACKETED_BOOKMARK_AND_LAST_MOVE = "bracketedBookmarkAndLastMove",
   BRACKETED_CUSTOM_AND_LAST_MOVE = "bracketedCustomAndLastMove",
 }
 
@@ -528,8 +532,9 @@ export function normalizeAppSettings(
   }
   // 旧バージョンでは局面図の見出しの形式が「しおりを使うかどうか」のトグルだけだった。
   if (settings.positionImageHeaderType === undefined) {
-    result.positionImageHeaderType =
-      settings.useBookmarkAsPositionImageHeader || settings.positionImageHeader
+    result.positionImageHeaderType = settings.useBookmarkAsPositionImageHeader
+      ? PositionImageHeaderType.BOOKMARK
+      : settings.positionImageHeader
         ? PositionImageHeaderType.CUSTOM
         : PositionImageHeaderType.PLY_AND_LAST_MOVE;
   }

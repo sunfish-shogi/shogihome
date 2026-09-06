@@ -24,7 +24,9 @@ describe("settings/app", () => {
       return normalizeAppSettings(settings).positionImageHeaderType;
     };
     expect(legacy({})).toBe(PositionImageHeaderType.PLY_AND_LAST_MOVE);
-    expect(legacy({ useBookmarkAsPositionImageHeader: true })).toBe(PositionImageHeaderType.CUSTOM);
+    expect(legacy({ useBookmarkAsPositionImageHeader: true })).toBe(
+      PositionImageHeaderType.BOOKMARK,
+    );
     expect(legacy({ positionImageHeader: "第1図" })).toBe(PositionImageHeaderType.CUSTOM);
     // 新バージョンの設定はそのまま維持する。
     expect(
