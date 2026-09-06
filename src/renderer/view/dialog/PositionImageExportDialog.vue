@@ -287,8 +287,8 @@ const headerTypes = [
 
 const bookmark = computed(() => store.record.current.bookmark || "");
 
-const headerTypeItems = computed(() =>
-  headerTypes
+const headerTypeItems = computed(() => {
+  const items = headerTypes
     // しおりが無い局面ではしおりを使う形式を表示しない。（選択中の形式は残す。）
     .filter(
       (type) =>
@@ -305,8 +305,17 @@ const headerTypeItems = computed(() =>
               bookmark: bookmark.value || "<しおり>",
               custom: appSettings.positionImageHeader || "<自由入力>",
             }),
-    })),
-);
+    }));
+  // 手数が出ない局面では「手数と最終手」と「最終手」のように同じ文字列になる項目があるので、
+  // 重複する項目は 1 つだけ表示する。（選択中の形式は残す。）
+  const uniqueTypes = new Map<string, PositionImageHeaderType>();
+  for (const item of items) {
+    if (!uniqueTypes.has(item.label) || item.value === appSettings.positionImageHeaderType) {
+      uniqueTypes.set(item.label, item.value);
+    }
+  }
+  return items.filter((item) => uniqueTypes.get(item.label) === item.value);
+});
 
 const isCustomTextAvailable = computed(() => usesCustomText(appSettings.positionImageHeaderType));
 
