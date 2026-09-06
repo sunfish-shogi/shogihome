@@ -264,28 +264,24 @@ const maxSize = computed(() => {
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
-const headerTypeItems = computed(() => [
-  { value: PositionImageHeaderType.PLY_AND_LAST_MOVE, label: t.plyAndLastMove },
-  { value: PositionImageHeaderType.CUSTOM, label: t.bookmarkOrCustomText },
-  { value: PositionImageHeaderType.LAST_MOVE, label: t.lastMoveOnly },
+// 出力される見出しの形式をそのままラベルにする。
+// 「n手目」「最終手」「しおり・入力テキスト」の部分が局面に応じて置き換わる。
+const headerTypeItems = [
+  { value: PositionImageHeaderType.PLY_AND_LAST_MOVE, label: "n手目 最終手まで" },
+  { value: PositionImageHeaderType.CUSTOM, label: "しおり・入力テキスト" },
+  { value: PositionImageHeaderType.LAST_MOVE, label: "最終手まで" },
   {
     value: PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
-    label: t.bookmarkOrCustomTextAndLastMove,
+    label: "しおり・入力テキスト は 最終手まで",
   },
-  {
-    value: PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
-    label: t.withBrackets(t.plyAndLastMove),
-  },
-  {
-    value: PositionImageHeaderType.BRACKETED_CUSTOM,
-    label: t.withBrackets(t.bookmarkOrCustomText),
-  },
-  { value: PositionImageHeaderType.BRACKETED_LAST_MOVE, label: t.withBrackets(t.lastMoveOnly) },
+  { value: PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE, label: "【n手目 最終手まで】" },
+  { value: PositionImageHeaderType.BRACKETED_CUSTOM, label: "【しおり・入力テキスト】" },
+  { value: PositionImageHeaderType.BRACKETED_LAST_MOVE, label: "【最終手まで】" },
   {
     value: PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
-    label: t.withBrackets(t.bookmarkOrCustomTextAndLastMove),
+    label: "【しおり・入力テキスト は 最終手まで】",
   },
-]);
+];
 
 const isCustomTextAvailable = computed(() => {
   switch (appSettings.positionImageHeaderType) {

@@ -570,11 +570,6 @@ export const vi: Texts = {
   weight: "Độ đậm nhạt",
   handLabel: "Tên quân trên tay",
   header: "Đầu đề",
-  plyAndLastMove: "手数と最終手", // TODO: Translate
-  bookmarkOrCustomText: "しおり・入力テキスト", // TODO: Translate
-  lastMoveOnly: "最終手のみ", // TODO: Translate
-  bookmarkOrCustomTextAndLastMove: "しおり・入力テキストと最終手", // TODO: Translate
-  withBrackets: (format) => `${format}（【】付き）`, // TODO: Translate
   vertical: "Dọc",
   size: "Kích cỡ",
   none: "Không",

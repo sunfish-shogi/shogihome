@@ -567,11 +567,6 @@ export const zh_tw: Texts = {
   weight: "字體粗細",
   handLabel: "持駒標題",
   header: "標題",
-  plyAndLastMove: "手数と最終手", // TODO: Translate
-  bookmarkOrCustomText: "しおり・入力テキスト", // TODO: Translate
-  lastMoveOnly: "最終手のみ", // TODO: Translate
-  bookmarkOrCustomTextAndLastMove: "しおり・入力テキストと最終手", // TODO: Translate
-  withBrackets: (format) => `${format}（【】付き）`, // TODO: Translate
   vertical: "垂直調整",
   size: "大小",
   none: "無",
