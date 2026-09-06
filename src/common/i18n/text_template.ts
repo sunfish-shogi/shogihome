@@ -355,7 +355,6 @@ export type Texts = {
   nextMoveBranches: string;
   bookmark: string;
   bookmarkList: string;
-  useBookmarkAsHeader: string;
   moveComments: string;
   searchLog: string;
   pv: string;
@@ -551,6 +550,11 @@ export type Texts = {
   weight: string;
   handLabel: string;
   header: string;
+  plyAndLastMove: string;
+  bookmarkOrCustomText: string;
+  lastMoveOnly: string;
+  bookmarkOrCustomTextAndLastMove: string;
+  withBrackets: (format: string) => string;
   vertical: string;
   size: string;
   none: string;

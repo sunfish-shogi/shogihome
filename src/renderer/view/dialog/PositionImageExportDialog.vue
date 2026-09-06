@@ -105,16 +105,21 @@
         </div>
         <div class="form-item">
           {{ t.header }}
+          <select
+            class="header-type"
+            :value="appSettings.positionImageHeaderType"
+            @change="changeHeaderType"
+          >
+            <option v-for="item of headerTypeItems" :key="item.value" :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
           <input
             class="header"
             :value="appSettings.positionImageHeader"
             :placeholder="t.typeCustomTitleHere"
+            :disabled="!isCustomTextAvailable"
             @input="changeHeaderText"
-          />
-          <ToggleButton
-            :value="appSettings.useBookmarkAsPositionImageHeader"
-            :label="t.useBookmarkAsHeader"
-            @update:value="changeWhetherToUseBookmark"
           />
         </div>
       </div>
@@ -171,9 +176,7 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { Rect, RectSize } from "@/common/assets/geometry";
 import {
-  Color,
   Move,
-  formatMove,
   getBlackPlayerName,
   getBlackPlayerNamePreferShort,
   getWhitePlayerName,
@@ -185,6 +188,7 @@ import api from "@/renderer/ipc/api";
 import { Lazy } from "@/common/helpers/lazy";
 import {
   PositionImageHandLabelType,
+  PositionImageHeaderType,
   PositionImageStyle,
   PositionImageTypeface,
   getPieceImageURLTemplate,
@@ -196,6 +200,7 @@ import { useErrorStore } from "@/renderer/store/error";
 import DialogFrame from "./DialogFrame.vue";
 import { PositionImageFontWeight } from "@/common/settings/layout";
 import { fileURLToCustomSchemeURL } from "@/common/url";
+import { buildPositionImageHeader } from "@/renderer/helpers/positionImage";
 
 const lazyUpdateDelay = 100;
 const windowMarginHor = 150;
@@ -259,18 +264,48 @@ const maxSize = computed(() => {
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
-const header = computed(() => {
-  const record = store.record;
-  return (
-    (appSettings.useBookmarkAsPositionImageHeader && record.current.bookmark) ||
-    appSettings.positionImageHeader ||
-    (lastMove.value
-      ? `${record.current.ply}手目 ${formatMove(record.position, lastMove.value)}まで`
-      : record.current.nextColor === Color.BLACK
-        ? "先手番"
-        : "後手番")
-  );
+const headerTypeItems = computed(() => [
+  { value: PositionImageHeaderType.PLY_AND_LAST_MOVE, label: t.plyAndLastMove },
+  { value: PositionImageHeaderType.CUSTOM, label: t.bookmarkOrCustomText },
+  { value: PositionImageHeaderType.LAST_MOVE, label: t.lastMoveOnly },
+  {
+    value: PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
+    label: t.bookmarkOrCustomTextAndLastMove,
+  },
+  {
+    value: PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
+    label: t.withBrackets(t.plyAndLastMove),
+  },
+  {
+    value: PositionImageHeaderType.BRACKETED_CUSTOM,
+    label: t.withBrackets(t.bookmarkOrCustomText),
+  },
+  { value: PositionImageHeaderType.BRACKETED_LAST_MOVE, label: t.withBrackets(t.lastMoveOnly) },
+  {
+    value: PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
+    label: t.withBrackets(t.bookmarkOrCustomTextAndLastMove),
+  },
+]);
+
+const isCustomTextAvailable = computed(() => {
+  switch (appSettings.positionImageHeaderType) {
+    case PositionImageHeaderType.CUSTOM:
+    case PositionImageHeaderType.CUSTOM_AND_LAST_MOVE:
+    case PositionImageHeaderType.BRACKETED_CUSTOM:
+    case PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE:
+      return true;
+    default:
+      return false;
+  }
 });
+
+const header = computed(() =>
+  buildPositionImageHeader(
+    store.record,
+    appSettings.positionImageHeaderType,
+    appSettings.positionImageHeader,
+  ),
+);
 
 const blackName = computed(() => {
   const record = store.record;
@@ -325,9 +360,10 @@ const changeHeaderText = (e: Event) => {
   });
 };
 
-const changeWhetherToUseBookmark = (value: boolean) => {
+const changeHeaderType = (e: Event) => {
+  const elem = e.target as HTMLSelectElement;
   appSettings.updateAppSettings({
-    useBookmarkAsPositionImageHeader: value,
+    positionImageHeaderType: elem.value as PositionImageHeaderType,
   });
 };
 
@@ -409,6 +445,9 @@ input.number {
   text-align: right;
 }
 input.header {
+  width: 100%;
+}
+select.header-type {
   width: 100%;
 }
 </style>

@@ -14,6 +14,7 @@ import {
   PieceImageType,
   PieceStandImageType,
   PositionImageHandLabelType,
+  PositionImageHeaderType,
   PositionImageStyle,
   PositionImageTypeface,
   PromotionSelectorStyle,
@@ -297,6 +298,9 @@ class AppSettingsStore {
   }
   get useBookmarkAsPositionImageHeader(): boolean {
     return this.merged.useBookmarkAsPositionImageHeader;
+  }
+  get positionImageHeaderType(): PositionImageHeaderType {
+    return this.merged.positionImageHeaderType;
   }
   get positionImageHeader(): string {
     return this.merged.positionImageHeader;

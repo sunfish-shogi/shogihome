@@ -372,7 +372,6 @@ export const zh_tw: Texts = {
   nextMoveBranches: "次の手", // TODO: Translate
   bookmark: "書籤",
   bookmarkList: "書籤一覽",
-  useBookmarkAsHeader: "將書籤名稱作為標題",
   moveComments: "棋步備註",
   searchLog: "思考",
   pv: "預測手順",
@@ -568,6 +567,11 @@ export const zh_tw: Texts = {
   weight: "字體粗細",
   handLabel: "持駒標題",
   header: "標題",
+  plyAndLastMove: "手数と最終手", // TODO: Translate
+  bookmarkOrCustomText: "しおり・入力テキスト", // TODO: Translate
+  lastMoveOnly: "最終手のみ", // TODO: Translate
+  bookmarkOrCustomTextAndLastMove: "しおり・入力テキストと最終手", // TODO: Translate
+  withBrackets: (format) => `${format}（【】付き）`, // TODO: Translate
   vertical: "垂直調整",
   size: "大小",
   none: "無",
