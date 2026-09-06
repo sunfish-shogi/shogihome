@@ -264,24 +264,29 @@ const maxSize = computed(() => {
   return new RectSize(Math.min(width, maxWidth), Math.min(height, maxHeight));
 });
 
-// 出力される見出しの形式をそのままラベルにする。
-// 「n手目」「最終手」「しおり・入力テキスト」の部分が局面に応じて置き換わる。
-const headerTypeItems = [
-  { value: PositionImageHeaderType.PLY_AND_LAST_MOVE, label: "n手目 最終手まで" },
-  { value: PositionImageHeaderType.CUSTOM, label: "しおり・入力テキスト" },
-  { value: PositionImageHeaderType.LAST_MOVE, label: "最終手まで" },
-  {
-    value: PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
-    label: "しおり・入力テキスト は 最終手まで",
-  },
-  { value: PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE, label: "【n手目 最終手まで】" },
-  { value: PositionImageHeaderType.BRACKETED_CUSTOM, label: "【しおり・入力テキスト】" },
-  { value: PositionImageHeaderType.BRACKETED_LAST_MOVE, label: "【最終手まで】" },
-  {
-    value: PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
-    label: "【しおり・入力テキスト は 最終手まで】",
-  },
+const headerTypes = [
+  PositionImageHeaderType.PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.CUSTOM,
+  PositionImageHeaderType.LAST_MOVE,
+  PositionImageHeaderType.CUSTOM_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_PLY_AND_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_CUSTOM,
+  PositionImageHeaderType.BRACKETED_LAST_MOVE,
+  PositionImageHeaderType.BRACKETED_CUSTOM_AND_LAST_MOVE,
 ];
+
+// 現在の局面で実際に出力される文字列をそのままラベルにする。
+// しおりも入力テキストも空の場合は、置き換わる部分を示す文字列で埋める。
+const headerTypeItems = computed(() =>
+  headerTypes.map((type) => ({
+    value: type,
+    label: buildPositionImageHeader(
+      store.record,
+      type,
+      appSettings.positionImageHeader || "しおり・入力テキスト",
+    ),
+  })),
+);
 
 const isCustomTextAvailable = computed(() => {
   switch (appSettings.positionImageHeaderType) {
