@@ -265,6 +265,7 @@ const maxSize = computed(() => {
 });
 
 const headerTypes = [
+  PositionImageHeaderType.NONE,
   PositionImageHeaderType.PLY_AND_LAST_MOVE,
   PositionImageHeaderType.CUSTOM,
   PositionImageHeaderType.LAST_MOVE,
@@ -280,7 +281,14 @@ const headerTypes = [
 const headerTypeItems = computed(() =>
   headerTypes.map((type) => ({
     value: type,
-    label: buildPositionImageHeader(store.record, type, appSettings.positionImageHeader || "〜"),
+    label:
+      type === PositionImageHeaderType.NONE
+        ? "無し"
+        : buildPositionImageHeader(
+            store.record,
+            type,
+            appSettings.positionImageHeader || "<自由入力>",
+          ),
   })),
 );
 

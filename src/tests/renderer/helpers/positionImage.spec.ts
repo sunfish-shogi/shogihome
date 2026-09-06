@@ -13,6 +13,7 @@ describe("helpers/positionImage", () => {
     record.goto(3);
     const build = (type: PositionImageHeaderType, custom: string = "") =>
       buildPositionImageHeader(record, type, custom);
+    expect(build(PositionImageHeaderType.NONE)).toBe("");
     expect(build(PositionImageHeaderType.PLY_AND_LAST_MOVE)).toBe("3手目 ☗２五歩まで");
     expect(build(PositionImageHeaderType.LAST_MOVE)).toBe("☗２五歩まで");
     expect(build(PositionImageHeaderType.CUSTOM, "第1図")).toBe("第1図");
@@ -49,6 +50,7 @@ describe("helpers/positionImage", () => {
 
   it("buildPositionImageHeader/noLastMove", () => {
     const record = new Record();
+    expect(buildPositionImageHeader(record, PositionImageHeaderType.NONE, "第1図")).toBe("");
     expect(buildPositionImageHeader(record, PositionImageHeaderType.PLY_AND_LAST_MOVE, "")).toBe(
       "先手番",
     );

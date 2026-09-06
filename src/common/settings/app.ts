@@ -152,6 +152,7 @@ export enum PositionImageTypeface {
 }
 
 export enum PositionImageHeaderType {
+  NONE = "none",
   PLY_AND_LAST_MOVE = "plyAndLastMove",
   CUSTOM = "custom",
   LAST_MOVE = "lastMove",

@@ -19,6 +19,9 @@ export function buildPositionImageHeader(
   type: PositionImageHeaderType,
   customText: string,
 ): string {
+  if (type === PositionImageHeaderType.NONE) {
+    return "";
+  }
   const custom = record.current.bookmark || customText;
   const lastMove = record.current.move instanceof Move ? record.current.move : null;
   // 最終手が無い場合は手番を表示する。
