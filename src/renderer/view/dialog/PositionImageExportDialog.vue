@@ -464,7 +464,7 @@ input.number {
   text-align: right;
 }
 input.header {
-  width: 100%;
+  width: 80%;
 }
 select.header-type {
   width: 100%;
