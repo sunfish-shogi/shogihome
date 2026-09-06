@@ -276,15 +276,11 @@ const headerTypes = [
 ];
 
 // 現在の局面で実際に出力される文字列をそのままラベルにする。
-// しおりも入力テキストも空の場合は、置き換わる部分を示す文字列で埋める。
+// しおりも入力テキストも空の場合は、置き換わる部分をプレースホルダーで埋める。
 const headerTypeItems = computed(() =>
   headerTypes.map((type) => ({
     value: type,
-    label: buildPositionImageHeader(
-      store.record,
-      type,
-      appSettings.positionImageHeader || "しおり・入力テキスト",
-    ),
+    label: buildPositionImageHeader(store.record, type, appSettings.positionImageHeader || "〜"),
   })),
 );
 
