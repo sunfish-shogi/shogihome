@@ -685,6 +685,7 @@ export const en: Texts = {
   removeSpaceFromBothEnds: "Remove Space from Both Ends",
   collapseSequentialSpaces: "Collapse Sequential Spaces",
   typeCustomTitleHere: "Type custom title here",
+  typeCustomCommentHere: "Type custom comment here",
   displayEmptyElements: "Display Empty Elements",
   share: "Share",
   waitingForNewGame: "Waiting for new game.",

@@ -305,6 +305,12 @@ class AppSettingsStore {
   get positionImageHeader(): string {
     return this.merged.positionImageHeader;
   }
+  get positionImageCommentVisible(): boolean {
+    return this.merged.positionImageCommentVisible;
+  }
+  get positionImageComment(): string {
+    return this.merged.positionImageComment;
+  }
   get positionImageCharacterY(): number {
     return this.merged.positionImageCharacterY;
   }
@@ -376,7 +382,7 @@ class AppSettingsStore {
       throw error;
     }
     const updated = await this.applyCustomPieceImages(candidate);
-    await api.saveAppSettings(updated);
+    api.saveAppSettings(updated);
     this.merged = this.settings = updated;
   }
 

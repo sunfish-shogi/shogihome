@@ -50,8 +50,8 @@ const api: Bridge = {
   async loadAppSettings(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_APP_SETTINGS);
   },
-  async saveAppSettings(json: string): Promise<void> {
-    await ipcRenderer.invoke(Background.SAVE_APP_SETTINGS, json);
+  saveAppSettings(json: string): void {
+    ipcRenderer.send(Background.SAVE_APP_SETTINGS, json);
   },
   async loadBatchConversionSettings(): Promise<string> {
     return await ipcRenderer.invoke(Background.LOAD_BATCH_CONVERSION_SETTINGS);

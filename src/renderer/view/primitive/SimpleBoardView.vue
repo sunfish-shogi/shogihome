@@ -4,7 +4,12 @@
       <div v-if="header" class="header" :class="layout.typefaceClass" :style="layout.headerStyle">
         {{ header }}
       </div>
-      <div v-if="footer" class="footer" :class="layout.typefaceClass" :style="layout.footerStyle">
+      <div
+        v-if="!hideFooter && footer"
+        class="footer"
+        :class="layout.typefaceClass"
+        :style="layout.footerStyle"
+      >
         {{ footer }}
       </div>
       <svg style="top: 0; left: 0" :width="layout.svgSize" :height="layout.svgSize">
@@ -113,26 +118,41 @@ function buildHandText(name: string, hand: ImmutableHand) {
 </script>
 
 <script setup lang="ts">
-function buildParams(size: number) {
+function buildParams(
+  size: number,
+  options: { headerVisible: boolean; footerVisible: boolean; fontScale: number },
+) {
+  const headerTop = size * 0.017;
+  const labelSize = size * 0.05;
+  const labelFontSize = size * 0.03;
+  const boardTop = size * 0.12;
+  const boardBorderSize = size * 0.004;
+  const boardBottom = boardTop + size * 0.7 + boardBorderSize;
+  // 見出しが無い場合は筋のラベルが一番上に来る。
+  const contentTop = options.headerVisible
+    ? headerTop
+    : boardTop - labelSize / 2 - (labelFontSize * options.fontScale) / 2;
+  // フッターが無い場合は上下の余白が均等になるように全体をずらす。
+  const offsetY = options.footerVisible ? 0 : (size - (boardBottom - contentTop)) / 2 - contentTop;
   return {
     size: size,
     headerX: size * 0.5,
-    headerY: size * 0.01,
+    headerY: headerTop + offsetY,
     footerX: size * 0.01,
     footerY: size * 0.83,
     boardLeft: size * 0.15,
-    boardTop: size * 0.12,
+    boardTop: boardTop + offsetY,
     boardSize: size * 0.7,
-    boardBorderSize: size * 0.004,
-    labelSize: size * 0.05,
-    labelFontSize: size * 0.03,
+    boardBorderSize: boardBorderSize,
+    labelSize: labelSize,
+    labelFontSize: labelFontSize,
     pieceSize: (size * 0.7) / 9,
     fontSize: size * 0.038,
     maxHandFontSize: size * 0.048,
     blackHandLeft: size * 0.9,
-    blackHandTop: size * 0.12,
+    blackHandTop: boardTop + offsetY,
     whiteHandLeft: size * (0.1 - 0.042),
-    whiteHandTop: size * 0.12,
+    whiteHandTop: boardTop + offsetY,
   };
 }
 
@@ -175,6 +195,11 @@ const props = defineProps({
     required: false,
     default: null,
   },
+  hideFooter: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   lastMove: {
     type: Object as PropType<Move | null>,
     required: false,
@@ -204,7 +229,11 @@ const props = defineProps({
 
 const layout = computed(() => {
   const size = Math.min(props.maxSize.width, props.maxSize.height);
-  const param = buildParams(size);
+  const param = buildParams(size, {
+    headerVisible: !!props.header,
+    footerVisible: !props.hideFooter,
+    fontScale: props.fontScale,
+  });
   const isWindows = /Windows/i.test(navigator.userAgent);
   const needsCharacterYOffset = isWindows && props.typeface === "mincho";
   const characterYOffsetRatio = needsCharacterYOffset ? windowsCharacterYOffsetRatio : 0;
@@ -349,6 +378,7 @@ const layout = computed(() => {
 }
 .header {
   white-space: nowrap;
+  line-height: 1;
 }
 .footer {
   white-space: pre-wrap;

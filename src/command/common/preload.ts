@@ -64,7 +64,7 @@ const bridge: Bridge = {
   async loadAppSettings(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
-  async saveAppSettings(): Promise<void> {
+  saveAppSettings(): void {
     throw new Error("This feature is not available on command line tool");
   },
   async loadBatchConversionSettings(): Promise<string> {

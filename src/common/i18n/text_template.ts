@@ -675,6 +675,7 @@ export type Texts = {
   removeSpaceFromBothEnds: string;
   collapseSequentialSpaces: string;
   typeCustomTitleHere: string;
+  typeCustomCommentHere: string;
   displayEmptyElements: string;
   share: string;
   waitingForNewGame: string;

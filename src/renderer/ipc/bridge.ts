@@ -21,7 +21,7 @@ export interface Bridge {
 
   // Settings
   loadAppSettings(): Promise<string>;
-  saveAppSettings(settings: string): Promise<void>;
+  saveAppSettings(settings: string): void;
   loadBatchConversionSettings(): Promise<string>;
   saveBatchConversionSettings(settings: string): Promise<void>;
   loadResearchSettings(): Promise<string>;
