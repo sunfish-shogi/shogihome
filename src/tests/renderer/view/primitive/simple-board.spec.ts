@@ -31,6 +31,38 @@ const mountSimpleBoardWithTypeface = (typeface: "gothic" | "mincho") => {
   });
 };
 
+const mountSimpleBoardWithHeaderAndFooter = (options: {
+  header: string;
+  hideFooter: boolean;
+  fontScale?: number;
+}) => {
+  return shallowMount(SimpleBoardView, {
+    props: {
+      maxSize: new RectSize(500, 500),
+      position: new Position(),
+      header: options.header,
+      footer: "コメント",
+      hideFooter: options.hideFooter,
+      fontScale: options.fontScale ?? 1,
+    },
+  });
+};
+
+const getVerticalGeometry = (wrapper: ReturnType<typeof mountSimpleBoardWithHeaderAndFooter>) => {
+  const header = wrapper.find(".header");
+  const image = wrapper.find("image");
+  const boardImageTop = Number(image.attributes("y"));
+  const fileLabel = wrapper.findAll("text")[0];
+  return {
+    headerTop: header.exists()
+      ? Number.parseFloat((header.element as HTMLElement).style.top)
+      : undefined,
+    fileLabelTop: Number(fileLabel.attributes("y")) - Number(fileLabel.attributes("font-size")) / 2,
+    boardImageTop,
+    bottomMargin: 500 - (boardImageTop + Number(image.attributes("height"))),
+  };
+};
+
 const parseDy = (dy: string | undefined) => {
   return Number.parseFloat(dy ?? "0");
 };
@@ -69,6 +101,40 @@ describe("SimpleBoardView", () => {
 
     expect(whiteDy).toBeGreaterThan(0);
     expect(blackDy).toBeGreaterThan(0);
+  });
+
+  it("keeps the layout as is when the footer is visible", () => {
+    const wrapper = mountSimpleBoardWithHeaderAndFooter({ header: "見出し", hideFooter: false });
+    expect(wrapper.find(".footer").exists()).toBe(true);
+    const geometry = getVerticalGeometry(wrapper);
+    expect(geometry.headerTop).toBeCloseTo(500 * 0.017);
+    expect(geometry.boardImageTop).toBeCloseTo(500 * (0.12 - 0.004));
+  });
+
+  it("balances the margins above the header and below the board when the footer is hidden", () => {
+    const wrapper = mountSimpleBoardWithHeaderAndFooter({ header: "見出し", hideFooter: true });
+    expect(wrapper.find(".footer").exists()).toBe(false);
+    const geometry = getVerticalGeometry(wrapper);
+    expect(geometry.headerTop).toBeCloseTo(geometry.bottomMargin);
+    const withFooterGeometry = getVerticalGeometry(
+      mountSimpleBoardWithHeaderAndFooter({ header: "見出し", hideFooter: false }),
+    );
+    expect(geometry.boardImageTop - (geometry.headerTop as number)).toBeCloseTo(
+      withFooterGeometry.boardImageTop - (withFooterGeometry.headerTop as number),
+    );
+  });
+
+  it("balances the margins above the file labels when the header is empty", () => {
+    for (const fontScale of [1, 2]) {
+      const wrapper = mountSimpleBoardWithHeaderAndFooter({
+        header: "",
+        hideFooter: true,
+        fontScale,
+      });
+      const geometry = getVerticalGeometry(wrapper);
+      expect(geometry.headerTop).toBeUndefined();
+      expect(geometry.fileLabelTop).toBeCloseTo(geometry.bottomMargin);
+    }
   });
 
   it("does not apply dy correction to gothic on Windows", () => {

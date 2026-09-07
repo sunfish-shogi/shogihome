@@ -13,7 +13,6 @@ describe("store/index", () => {
   });
 
   it("updateAppSettings/success", async () => {
-    mockAPI.saveAppSettings.mockResolvedValue();
     const store = createAppSettings();
     expect(store.thema).toBe(Thema.STANDARD);
     expect(store.pieceVolume).toBe(30);

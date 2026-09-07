@@ -292,6 +292,8 @@ export type AppSettings = {
   useBookmarkAsPositionImageHeader: boolean; // Deprecated
   positionImageHeaderType: PositionImageHeaderType;
   positionImageHeader: string;
+  positionImageCommentVisible: boolean;
+  positionImageComment: string;
   positionImageCharacterY: number; // Deprecated
   positionImageFontScale: number;
   positionImageFontWeight: PositionImageFontWeight;
@@ -451,6 +453,8 @@ export function defaultAppSettings(opt?: {
     useBookmarkAsPositionImageHeader: false,
     positionImageHeaderType: PositionImageHeaderType.PLY_AND_LAST_MOVE,
     positionImageHeader: "",
+    positionImageCommentVisible: false,
+    positionImageComment: "",
     positionImageCharacterY: 0,
     positionImageFontScale: 1,
     positionImageFontWeight: PositionImageFontWeight.W400X,

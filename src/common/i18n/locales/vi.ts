@@ -695,6 +695,7 @@ export const vi: Texts = {
   removeSpaceFromBothEnds: "Xóa dấu cách ở hai đầu",
   collapseSequentialSpaces: "Gộp dấu cách liền nhau",
   typeCustomTitleHere: "Nhập tiêu đề",
+  typeCustomCommentHere: "ここにコメントを入力", // TODO: Translate
   displayEmptyElements: "Hiện các mục trống",
   share: "Chia sẻ",
   waitingForNewGame: "Đang chờ ván mới.",

@@ -692,6 +692,7 @@ export const zh_tw: Texts = {
   removeSpaceFromBothEnds: "消除前後空白",
   collapseSequentialSpaces: "整理連續空白",
   typeCustomTitleHere: "輸入自定義標題",
+  typeCustomCommentHere: "ここにコメントを入力", // TODO: Translate
   displayEmptyElements: "顯示未定義資料",
   share: "分享",
   waitingForNewGame: "正在等待下一場對局開始。",

@@ -138,7 +138,7 @@ export const webAPI: Bridge = {
       ...JSON.parse(json),
     });
   },
-  async saveAppSettings(json: string): Promise<void> {
+  saveAppSettings(json: string): void {
     localStorage.setItem(STORAGE_KEY.APP_SETTINGS, json);
   },
   async loadBatchConversionSettings(): Promise<string> {

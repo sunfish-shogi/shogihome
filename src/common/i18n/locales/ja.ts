@@ -685,6 +685,7 @@ export const ja: Texts = {
   removeSpaceFromBothEnds: "両端の空白を削除",
   collapseSequentialSpaces: "連続する空白をまとめる",
   typeCustomTitleHere: "ここに見出しを入力",
+  typeCustomCommentHere: "ここにコメントを入力",
   displayEmptyElements: "未入力の項目を表示",
   share: "シェア",
   waitingForNewGame: "対局開始を待っています。",

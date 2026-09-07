@@ -56,7 +56,7 @@ export interface API {
 
   // Settings
   loadAppSettings(): Promise<AppSettings>;
-  saveAppSettings(settings: AppSettings): Promise<void>;
+  saveAppSettings(settings: AppSettings): void;
   loadBatchConversionSettings(): Promise<BatchConversionSettings>;
   saveBatchConversionSettings(settings: BatchConversionSettings): Promise<void>;
   loadResearchSettings(): Promise<ResearchSettings>;
@@ -210,8 +210,8 @@ const api: API = {
   async loadAppSettings(): Promise<AppSettings> {
     return JSON.parse(await bridge.loadAppSettings());
   },
-  saveAppSettings(settings: AppSettings): Promise<void> {
-    return bridge.saveAppSettings(JSON.stringify(settings));
+  saveAppSettings(settings: AppSettings): void {
+    bridge.saveAppSettings(JSON.stringify(settings));
   },
   async loadBatchConversionSettings(): Promise<BatchConversionSettings> {
     return JSON.parse(await bridge.loadBatchConversionSettings());

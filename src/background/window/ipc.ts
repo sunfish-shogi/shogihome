@@ -541,10 +541,16 @@ ipcMain.handle(Background.LOAD_APP_SETTINGS, async (event): Promise<string> => {
   return JSON.stringify(await loadAppSettings());
 });
 
-ipcMain.handle(Background.SAVE_APP_SETTINGS, async (event, json: string): Promise<void> => {
+const appSettingsLazySaver = new Lazy();
+
+ipcMain.on(Background.SAVE_APP_SETTINGS, (event, json: string) => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("save app settings");
-  await saveAppSettings(JSON.parse(json));
+  appSettingsLazySaver.after(() => {
+    saveAppSettings(JSON.parse(json)).catch((e) => {
+      sendError(new Error(`failed to save app settings: ${e}`));
+    });
+  }, 500);
 });
 
 ipcMain.handle(Background.LOAD_BATCH_CONVERSION_SETTINGS, async (event): Promise<string> => {

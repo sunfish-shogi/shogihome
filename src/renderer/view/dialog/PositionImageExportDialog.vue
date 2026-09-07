@@ -12,7 +12,8 @@
               appSettings.positionImageHandLabelType === PositionImageHandLabelType.TSUME_SHOGI
             "
             :header="header"
-            :footer="store.record.current.comment"
+            :footer="comment"
+            :hide-footer="!appSettings.positionImageCommentVisible"
             :last-move="lastMove"
             :flip="appSettings.boardFlipping"
             :typeface="appSettings.positionImageTypeface"
@@ -120,6 +121,29 @@
             :placeholder="t.typeCustomTitleHere"
             :disabled="!isCustomTextAvailable"
             @input="changeHeaderText"
+          />
+        </div>
+        <div class="form-item">
+          <div class="comment-header row">
+            <ToggleButton
+              :value="appSettings.positionImageCommentVisible"
+              :label="t.comments"
+              @update:value="changeCommentVisible"
+            />
+            <button
+              class="clear-comment"
+              :disabled="!appSettings.positionImageComment"
+              @click="clearCommentText"
+            >
+              {{ t.clear }}
+            </button>
+          </div>
+          <textarea
+            class="comment"
+            :value="appSettings.positionImageComment"
+            :placeholder="t.typeCustomCommentHere"
+            :disabled="!appSettings.positionImageCommentVisible"
+            @input="changeCommentText"
           />
         </div>
       </div>
@@ -326,6 +350,9 @@ const header = computed(() =>
   }),
 );
 
+// 自由入力が空の場合は棋譜のコメントを使う。
+const comment = computed(() => appSettings.positionImageComment || store.record.current.comment);
+
 const blackName = computed(() => {
   const record = store.record;
   switch (appSettings.positionImageHandLabelType) {
@@ -376,6 +403,25 @@ const changeHeaderText = (e: Event) => {
   const elem = e.target as HTMLInputElement;
   appSettings.updateAppSettings({
     positionImageHeader: elem.value,
+  });
+};
+
+const changeCommentVisible = (value: boolean) => {
+  appSettings.updateAppSettings({
+    positionImageCommentVisible: value,
+  });
+};
+
+const changeCommentText = (e: Event) => {
+  const elem = e.target as HTMLTextAreaElement;
+  appSettings.updateAppSettings({
+    positionImageComment: elem.value,
+  });
+};
+
+const clearCommentText = () => {
+  appSettings.updateAppSettings({
+    positionImageComment: "",
   });
 };
 
@@ -465,6 +511,21 @@ input.number {
 }
 input.header {
   width: 80%;
+}
+.comment-header {
+  align-items: center;
+}
+button.clear-comment {
+  margin: 0 0 0 auto;
+  padding: 0 10px;
+  height: 20px;
+  box-sizing: border-box;
+}
+textarea.comment {
+  width: 100%;
+  height: 4em;
+  box-sizing: border-box;
+  resize: vertical;
 }
 select.header-type {
   width: 100%;
