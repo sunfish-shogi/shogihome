@@ -7,6 +7,7 @@ import {
 import { GameSettings } from "@/common/settings/game.js";
 import { AppSettings } from "@/common/settings/app.js";
 import { webAPI } from "./web.js";
+import { hasMobileQueryParam } from "@/renderer/helpers/env.js";
 import { ResearchSettings } from "@/common/settings/research.js";
 import { AppState, ResearchState } from "@/common/control/state.js";
 import { GameResult } from "@/common/game/result.js";
@@ -396,6 +397,5 @@ export function isMobileWebApp(): boolean {
   if (isNative()) {
     return false;
   }
-  const urlParams = new URL(window.location.toString()).searchParams;
-  return urlParams.has("mobile");
+  return hasMobileQueryParam();
 }
