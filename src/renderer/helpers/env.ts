@@ -3,3 +3,8 @@ export const isIOS = () => {
   const isNewiPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
   return isOldiOS || isNewiPadOS;
 };
+
+export const hasMobileQueryParam = (): boolean => {
+  const urlParams = new URL(window.location.toString()).searchParams;
+  return urlParams.has("mobile");
+};

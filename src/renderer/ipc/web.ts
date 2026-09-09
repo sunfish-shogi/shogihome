@@ -31,6 +31,12 @@ import * as uri from "@/common/uri.js";
 import { basename } from "@/renderer/helpers/path.js";
 import { ProcessArgs } from "@/common/ipc/process";
 import { BookFormat } from "@/common/book.js";
+import { hasMobileQueryParam } from "@/renderer/helpers/env.js";
+
+// モバイルウェブ版では軽量エンジンと人が対局する専用メニューがあるため、
+// 軽量エンジンの着手を 500ms まで強制的に遅らせる。
+const MOBILE_MIN_RESPONSE_TIME_MS = 500;
+const goStartTimes = new Map<number, number>();
 
 enum STORAGE_KEY {
   APP_SETTINGS = "appSetting",
@@ -57,8 +63,19 @@ const usiHandlers: Partial<{
 }> = {};
 
 const usiSessionHandlers: USISessionHandlers = {
-  onUSIBestMove: (sessionID, usi, usiMove, ponder) =>
-    usiHandlers.onUSIBestMove?.(sessionID, usi, usiMove, ponder),
+  onUSIBestMove: (sessionID, usi, usiMove, ponder) => {
+    const goStartTime = goStartTimes.get(sessionID);
+    goStartTimes.delete(sessionID);
+    const notify = () => usiHandlers.onUSIBestMove?.(sessionID, usi, usiMove, ponder);
+    if (hasMobileQueryParam() && goStartTime !== undefined) {
+      const remaining = MOBILE_MIN_RESPONSE_TIME_MS - (Date.now() - goStartTime);
+      if (remaining > 0) {
+        setTimeout(notify, remaining);
+        return;
+      }
+    }
+    notify();
+  },
   onUSICheckmate: (sessionID, usi, usiMoves) =>
     usiHandlers.onUSICheckmate?.(sessionID, usi, usiMoves),
   onUSICheckmateNotImplemented: (sessionID) =>
@@ -494,12 +511,14 @@ export const webAPI: Bridge = {
     usiSessions.setOption(sessionID, name, value);
   },
   async usiGo(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
+    goStartTimes.set(sessionID, Date.now());
     usiSessions.go(sessionID, usi, JSON.parse(timeStatesJSON) as TimeStates);
   },
   async usiGoPonder(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
     usiSessions.goPonder(sessionID, usi, JSON.parse(timeStatesJSON) as TimeStates);
   },
   async usiPonderHit(sessionID: number): Promise<void> {
+    goStartTimes.set(sessionID, Date.now());
     usiSessions.ponderHit(sessionID);
   },
   async usiGoInfinite(sessionID: number, usi: string): Promise<void> {
@@ -515,6 +534,7 @@ export const webAPI: Bridge = {
     usiSessions.gameover(sessionID, result);
   },
   async usiQuit(sessionID: number): Promise<void> {
+    goStartTimes.delete(sessionID);
     usiSessions.quit(sessionID);
   },
   onUSIBestMove(
