@@ -41,10 +41,10 @@
           v-if="showRecordViewOnBottom"
           v-model:value="bottomUIType"
           :items="[
-            { label: t.record, value: BottomUIType.RECORD },
-            { label: t.tree, value: BottomUIType.BRANCH_TREE },
-            { label: t.comments, value: BottomUIType.COMMENT },
-            { label: t.recordProperties, value: BottomUIType.INFO },
+            { label: t.record, icon: IconType.DESCRIPTION, value: BottomUIType.RECORD },
+            { label: t.tree, icon: IconType.TREE, value: BottomUIType.BRANCH_TREE },
+            { label: t.comments, icon: IconType.COMMENT, value: BottomUIType.COMMENT },
+            { label: t.recordProperties, icon: IconType.INFO, value: BottomUIType.INFO },
           ]"
           :height="selectorHeight"
         />
@@ -81,9 +81,9 @@
         <HorizontalSelector
           v-model:value="sideUIType"
           :items="[
-            { label: t.record, value: SideUIType.RECORD },
-            { label: t.tree, value: SideUIType.BRANCH_TREE },
-            { label: t.recordProperties, value: SideUIType.INFO },
+            { label: t.record, icon: IconType.DESCRIPTION, value: SideUIType.RECORD },
+            { label: t.tree, icon: IconType.TREE, value: SideUIType.BRANCH_TREE },
+            { label: t.recordProperties, icon: IconType.INFO, value: SideUIType.INFO },
           ]"
           :height="selectorHeight"
         />
@@ -119,6 +119,7 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 import { isIOS } from "@/renderer/helpers/env";
+import { IconType } from "@/renderer/assets/icons";
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;
