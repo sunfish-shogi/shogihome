@@ -7,10 +7,13 @@
           :name="name"
           :checked="item.value === value"
           :value="item.value"
+          :title="item.icon ? item.label : undefined"
+          :aria-label="item.label"
           @change="emit('update:value', item.value)"
         />
-        <div class="button" :style="buttonStyle">
-          <div class="label">{{ item.label }}</div>
+        <div class="button" :style="buttonStyle(item)">
+          <div v-if="item.icon" class="symbol" :style="symbolStyle(item.icon)" />
+          <div v-else class="label">{{ item.label }}</div>
         </div>
       </div>
     </div>
@@ -18,11 +21,14 @@
 </template>
 
 <script setup lang="ts">
+import { IconType, iconSourceMap } from "@/renderer/assets/icons";
 import { issueDOMID } from "@/renderer/helpers/unique";
-import { PropType, Ref, computed, ref } from "vue";
+import { PropType, Ref, ref } from "vue";
 
 type Item = {
   label: string;
+  // アイコンを指定した場合はラベルの代わりにアイコンを表示する。
+  icon?: IconType;
   value: string;
 };
 
@@ -50,17 +56,27 @@ const emit = defineEmits<{
 
 const container = ref() as Ref<HTMLDivElement>;
 const name = issueDOMID();
-const buttonStyle = computed(() => {
+const buttonStyle = (item: Item) => {
   const r = `${props.height * 0.25}px`;
   return {
     height: `${props.height}px`,
-    minWidth: `${props.height * 2.5}px`,
+    minWidth: `${props.height * (item.icon ? 1.6 : 2.5)}px`,
     fontSize: `${props.height * 0.5}px`,
     borderRadius: props.tab ? `${r} ${r} 0 0` : r,
     paddingLeft: r,
     paddingRight: r,
   };
-});
+};
+const symbolStyle = (icon: IconType) => {
+  const size = `${props.height * 0.7}px`;
+  const source = `url(${iconSourceMap[icon]})`;
+  return {
+    width: size,
+    height: size,
+    "-webkit-mask-image": source,
+    "mask-image": source,
+  };
+};
 
 const setValue = (value: string) => {
   for (const input of container.value.querySelectorAll("input")) {
@@ -140,5 +156,18 @@ input:focus ~ .button {
   pointer-events: none;
   text-align: center;
   width: 100%;
+}
+/* アイコンは mask で描画してボタンの文字色を継承させる。 */
+.symbol {
+  pointer-events: none;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 </style>
