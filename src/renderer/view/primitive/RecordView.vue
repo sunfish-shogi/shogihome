@@ -29,7 +29,7 @@
             {{ move.ply !== 0 ? move.ply : "" }}
           </div>
           <div class="move-text">{{ move.displayText }}</div>
-          <div v-if="showElapsedTime" class="move-time">{{ move.ply ? move.timeText : "" }}</div>
+          <div v-if="showElapsedTime" class="move-time">{{ moveTimeText(move) }}</div>
           <div v-if="showComment" class="move-comment">
             <button
               v-if="operational && (positionCounts.get(move.sfen) || 0) >= 2"
@@ -147,7 +147,7 @@
 </template>
 
 <script setup lang="ts">
-import { ImmutableRecord, ImmutableNode } from "tsshogi";
+import { ImmutableRecord, ImmutableNode, millisecondsToMSS } from "tsshogi";
 import { computed, ref, PropType, onUpdated, onMounted, onBeforeUnmount, watch } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
@@ -215,6 +215,11 @@ const props = defineProps({
     type: String as PropType<BranchListMode>,
     required: false,
     default: BranchListMode.SIBLING,
+  },
+  omitTotalElapsedTime: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
@@ -324,6 +329,13 @@ const swapWithNextBranch = () => {
   if (props.operational) {
     emit("swapWithNextBranch");
   }
+};
+
+const moveTimeText = (move: ImmutableNode) => {
+  if (!move.ply) {
+    return "";
+  }
+  return props.omitTotalElapsedTime ? millisecondsToMSS(move.elapsedMs) : move.timeText;
 };
 
 const showDuplicatePositions = (sfen: string) => {

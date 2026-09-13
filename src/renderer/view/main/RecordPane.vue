@@ -15,6 +15,7 @@
         :show-branches="showBranches"
         :shortcut-keys="getRecordShortcutKeys(appSettings.recordShortcutKeys)"
         :branch-list-mode="appSettings.branchListMode"
+        :omit-total-elapsed-time="omitTotalElapsedTime"
         @go-begin="store.changePly(0)"
         @go-back="store.goBack()"
         @go-forward="store.goForward()"
@@ -57,6 +58,7 @@ import { t } from "@/common/i18n";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import RecordView from "@/renderer/view/primitive/RecordView.vue";
 import { useStore } from "@/renderer/store";
+import { isMobileWebApp } from "@/renderer/ipc/api";
 import { AppState } from "@/common/control/state.js";
 import {
   installHotKeyForMainWindow,
@@ -100,6 +102,7 @@ defineProps({
 
 const store = useStore();
 const appSettings = useAppSettings();
+const omitTotalElapsedTime = isMobileWebApp();
 const root = ref();
 const duplicatePositionsDialog = ref("");
 
