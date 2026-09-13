@@ -143,9 +143,13 @@ const updateSize = () => {
 };
 
 const showRecordViewOnBottom = computed(() => windowSize.height >= windowSize.width);
-const controlPaneHeight = computed(() =>
-  Math.min(windowSize.height * 0.08, windowSize.width * 0.12),
-);
+const controlPaneHeight = computed(() => {
+  if (showRecordViewOnBottom.value) {
+    return windowSize.height * 0.06;
+  } else {
+    return windowSize.height * 0.1;
+  }
+});
 const boardPaneMaxSize = computed(() => {
   const maxSize = new RectSize(windowSize.width, windowSize.height);
   if (showRecordViewOnBottom.value) {
