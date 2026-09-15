@@ -5,6 +5,13 @@
   "name": "Sunfish4-Lite",
   "author": "Kubo, Ryosuke",
   "requiresCrossOriginIsolation": true,
+  "licenses": [
+    {
+      "spdx": "MIT",
+      "file": "LICENSE.txt",
+      "source": "https://github.com/sunfish-shogi/sunfish4"
+    }
+  ],
   "dataFiles": [
     { "url": "eval-20260829.bin", "path": "/eval.bin" }
   ],

@@ -49,6 +49,14 @@ export function resolveEngineDirURL(path: string): string {
   return new URL(path, document.baseURI).href;
 }
 
+// エンジンのディレクトリに置かれたファイルの絶対 URL を返す。
+export function resolveEngineFileURL(dir: string, file: string): string {
+  if (!isSafeRelativePath(file)) {
+    throw new Error(`invalid engine file: ${file}`);
+  }
+  return new URL(file, resolveEngineDirURL(enginePathOf(dir))).href;
+}
+
 export function builtinEngineURI(presetID: string): string {
   return `${uri.ES_USI_ENGINE_PREFIX}builtin/${presetID}`;
 }
@@ -128,6 +136,42 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     options: buildOptions(manifest, preset.id),
     tags: preset.tags?.map(getPredefinedUSIEngineTag),
   }));
+}
+
+// ライセンス表示に出す組み込みエンジンのライセンス。
+export type BuiltinEngineLicense = {
+  // ライセンスの対象の表示名。
+  subject: string;
+  // SPDX 識別子。
+  spdx: string;
+  // 同梱されたライセンス全文の URL。
+  url: string;
+  // ソースコードの入手先。
+  source?: string;
+};
+
+// 組み込みエンジンのライセンスを集める。ライセンス表示 (copyright.ts) から使う。
+// マニフェストを読めなかったエンジンは除外する。ライセンス表示そのものは妨げない。
+export async function loadBuiltinEngineLicenses(
+  onError?: (error: Error) => void,
+): Promise<BuiltinEngineLicense[]> {
+  const licenses: BuiltinEngineLicense[] = [];
+  for (const dir of BUILTIN_ENGINE_DIRS) {
+    try {
+      const manifest = await loadEngineManifest(dir);
+      for (const license of manifest.licenses || []) {
+        licenses.push({
+          subject: license.subject || manifest.name,
+          spdx: license.spdx,
+          url: resolveEngineFileURL(dir, license.file),
+          source: license.source,
+        });
+      }
+    } catch (e) {
+      onError?.(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
+  return licenses;
 }
 
 // エンジンの成果物は事前キャッシュされないため、初めて使うときはネットワークから

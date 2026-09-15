@@ -34,6 +34,19 @@ describe("engines/conformance", () => {
       }
     });
 
+    // 配布物にエンジンを含む以上、ライセンスの提示も配布物だけで完結していなければならない。
+    // ShogiHome は engine.json の licenses を読んでライセンス表示に載せる。
+    it("ライセンスが宣言され、全文が同梱されていること", () => {
+      const manifest = readManifest(dir);
+      const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+      expect(manifest.licenses?.length, "licenses").toBeTruthy();
+      for (const license of manifest.licenses || []) {
+        const file = path.join(engineDir, license.file);
+        expect(fs.existsSync(file), license.file).toBeTruthy();
+        expect(fs.statSync(file).size, license.file).toBeGreaterThan(0);
+      }
+    });
+
     it("usi と isready に応答すること", async () => {
       const engine = await launchEngine(dir);
       const received = await handshake(engine);

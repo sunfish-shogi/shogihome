@@ -17,6 +17,7 @@ Electron 版はローカルの実行ファイルを子プロセスとして起�
 public/engines/<dir>/               ビルド済みの成果物 (リポジトリに commit する)
   engine.json                         エンジンのマニフェスト
   <module>.js / <module>.wasm
+  LICENSE.txt                         ライセンス全文
 
 src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
   catalog.ts                          組み込みエンジンのカタログ
@@ -61,12 +62,40 @@ ponder が外れたときである。この場合 `go` をすぐには送らず�
 エンジンはそれぞれのリポジトリでビルドし、成果物を `public/engines/<dir>/` に配置する。
 ShogiHome 側の作業は次の 2 つだけ。
 
-1. 成果物 (`engine.json`・`<module>.js`・`<module>.wasm`・データファイル) を配置する
+1. 成果物 (`engine.json`・`<module>.js`・`<module>.wasm`・データファイル・
+   ライセンス全文) を配置する
 2. `src/renderer/wasm-engine/catalog.ts` の `BUILTIN_ENGINE_DIRS` に `<dir>` を追加する
 
-名前・作者・オプション定義・プリセットは `engine.json` から読み取るため、
+名前・作者・オプション定義・プリセット・ライセンスは `engine.json` から読み取るため、
 ShogiHome 側に写しを持つ必要は無い。配置したエンジンは
 `src/tests/engines/conformance.spec.ts` が自動的に検証対象にする。
+
+## ライセンス表示
+
+**Web 版はエンジンを配布物に含むため、そのライセンスを表示する義務を負う。**
+(Electron 版は `.electron-builder.config.mjs` の `files` に `engines/` を含めないため、
+エンジンを配布しない。)
+
+エンジンのライセンスはマニフェストの `licenses` が持ち、全文はエンジンのディレクトリに
+同梱される ([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「9. ライセンス」)。
+`catalog.ts` の `loadBuiltinEngineLicenses()` が `BUILTIN_ENGINE_DIRS` の
+マニフェストからこれを集め、`renderer/helpers/copyright.ts` が
+ライセンス表示 (メニューの「ライセンス」) の項目に変換する。
+
+```
+Copyright and License
+├ ShogiHome                      MIT (リポジトリの LICENSE)
+├ Third Party Libraries          third-party-licenses.html (npm の依存)
+├ Material Icons
+├ Sunfish4-Lite (MIT)            engines/sunfish4-lite/LICENSE.txt (同梱)
+└ Sunfish4-Lite Source Code      licenses[].source
+```
+
+`third-party-licenses.html` は `scripts/report-license.mjs` が npm の依存から生成するもので、
+**npm パッケージではないエンジンはそこに現れない。** エンジンのライセンスがマニフェスト
+経由で表示に載るのはこのためである。
+
+マニフェストを読み込めなかったエンジンは項目から除外する。表示そのものは妨げない。
 
 ## Worker と WebAssembly の間の契約
 
@@ -121,10 +150,10 @@ URI 体系が異なるため、組み込みの WebAssembly エンジンとは区
 [`webapp-update.md`](./webapp-update.md) を参照。エンジンの成果物は**事前キャッシュせず**、
 実際に使われたものだけを実行時キャッシュに保持する (エンジンの利用はオンラインが前提)。
 
-| 対象                                          | 方式                      | 保持          |
-| --------------------------------------------- | ------------------------- | ------------- |
-| `engines/**/*.{json,js,wasm}`                 | `StaleWhileRevalidate`    | 60 件 / 90 日 |
-| 評価パラメータ・定跡 (`.data`/`.bin`/`.nnue`) | `CacheFirst` (Range 対応) | 20 件 / 90 日 |
+| 対象                                           | 方式                      | 保持          |
+| ---------------------------------------------- | ------------------------- | ------------- |
+| `engines/**/*.{json,js,wasm}` とライセンス全文 | `StaleWhileRevalidate`    | 60 件 / 90 日 |
+| 評価パラメータ・定跡 (`.data`/`.bin`/`.nnue`)  | `CacheFirst` (Range 対応) | 20 件 / 90 日 |
 
 `StaleWhileRevalidate` は返した後に取り直すため、同じ URL のまま中身を差し替えても
 次回の起動には新しいものが使われる。いっぽう `CacheFirst` は取得済みならネットワークへ
