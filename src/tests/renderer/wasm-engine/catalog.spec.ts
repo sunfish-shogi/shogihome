@@ -26,7 +26,11 @@ const manifest: EngineManifest = {
   name: "Sunfish4 Lite",
   author: "Kubo, Ryosuke",
   licenses: [
-    { spdx: "MIT", file: "LICENSE.txt", source: "https://github.com/sunfish-shogi/sunfish4" },
+    {
+      spdx: "MIT",
+      file: "LICENSE.txt",
+      source: "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite",
+    },
   ],
   options: [
     { name: "Threads", type: "spin", default: 1, min: 1, max: 4 },
@@ -142,7 +146,7 @@ describe("wasm-engine/catalog", () => {
         subject: "Sunfish4 Lite",
         spdx: "MIT",
         url: new URL("engines/sunfish4-lite/LICENSE.txt", document.baseURI).href,
-        source: "https://github.com/sunfish-shogi/sunfish4",
+        source: "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite",
       },
     ]);
   });

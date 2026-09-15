@@ -9,7 +9,7 @@
     {
       "spdx": "MIT",
       "file": "LICENSE.txt",
-      "source": "https://github.com/sunfish-shogi/sunfish4"
+      "source": "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite"
     }
   ],
   "dataFiles": [
