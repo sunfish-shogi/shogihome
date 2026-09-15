@@ -153,13 +153,26 @@ describe("wasm-engine/manifest", () => {
         licenses: [{ spdx: "MIT", file: "../../secret" }],
       }),
     ).toThrow();
-    // source はリンクとして開くため、スキームを限定する。
-    expect(() =>
-      parseEngineManifest({
-        ...validManifest(),
-        licenses: [{ spdx: "MIT", file: "LICENSE.txt", source: "javascript:alert(1)" }],
-      }),
-    ).toThrow(/must be an https URL/);
+    // source はそのままブラウザへ渡すため、URL として成立していることまで確かめる。
+    const withSource = (source: string) => ({
+      ...validManifest(),
+      licenses: [{ spdx: "MIT", file: "LICENSE.txt", source }],
+    });
+    expect(() => parseEngineManifest(withSource("javascript:alert(1)"))).toThrow(
+      /must be an https URL/,
+    );
+    expect(() => parseEngineManifest(withSource("http://example.com/engine"))).toThrow(
+      /must be an https URL/,
+    );
+    // スキームだけの文字列や URL として壊れているものを通さない。
+    expect(() => parseEngineManifest(withSource("https://"))).toThrow(/must be a valid URL/);
+    expect(() => parseEngineManifest(withSource("example.com/engine"))).toThrow(
+      /must be a valid URL/,
+    );
+    // ホストがあれば通す。
+    expect(parseEngineManifest(withSource("https://example.com/engine")).licenses?.[0].source).toBe(
+      "https://example.com/engine",
+    );
   });
 
   // スレッドを使うエンジンは isolation を宣言する。

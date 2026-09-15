@@ -88,9 +88,6 @@ const OPTION_TYPES: USIEngineOptionType[] = [
   "filename",
 ];
 
-// ライセンスの source として許可する形式。リンクとして開くため、スキームを限定する。
-const LICENSE_SOURCE_URL_PATTERN = /^https:\/\/\S+$/;
-
 // ディレクトリ名や相対パスに使える文字。
 const SAFE_PATH_PATTERN = /^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/;
 
@@ -173,8 +170,17 @@ function parseLicense(value: unknown, path: string): EngineManifestLicense {
   }
   if (record.source !== undefined) {
     const source = asString(record.source, `${path}.source`);
-    if (!LICENSE_SOURCE_URL_PATTERN.test(source)) {
-      fail(`${path}.source must be an https URL: ${source}`);
+    // そのままブラウザ (または Electron の外部リンク) へ渡す値なので、
+    // 文字列の形だけでなく URL として成立していることを確かめる。
+    // 前方一致の検査では "https://" のようなホストの無い値を通してしまう。
+    let url: URL;
+    try {
+      url = new URL(source);
+    } catch {
+      fail(`${path}.source must be a valid URL: ${source}`);
+    }
+    if (url.protocol !== "https:" || !url.hostname) {
+      fail(`${path}.source must be an https URL with a host: ${source}`);
     }
     license.source = source;
   }

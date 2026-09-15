@@ -157,10 +157,6 @@ registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
   return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
 });
 
-// エンジンのライセンス全文。ライセンス表示から開く小さなファイルで、
-// モジュールと同じ扱いでよい (Worker として要求されることはない)。
-registerRoute(/\/engines\/[^?]+\.txt$/, engineModuleStrategy);
-
 // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
 // 負担が大きすぎるため、実際に使われたものだけを保持する。
 // 新しい拡張子を使う場合はここに追加する。
