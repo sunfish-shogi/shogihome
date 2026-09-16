@@ -549,6 +549,7 @@ export type Texts = {
   typeface: string;
   weight: string;
   handLabel: string;
+  lastMoveColor: string;
   header: string;
   vertical: string;
   size: string;

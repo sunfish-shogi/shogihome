@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import { Position } from "tsshogi";
+import { Move, Position } from "tsshogi";
 import { RectSize } from "@/common/assets/geometry.js";
 import SimpleBoardView from "@/renderer/view/primitive/SimpleBoardView.vue";
 
@@ -17,6 +17,20 @@ const mountSimpleBoard = () => {
     props: {
       maxSize: new RectSize(500, 500),
       position: new Position(),
+    },
+  });
+};
+
+const mountSimpleBoardWithLastMove = (lastMoveColor?: string) => {
+  const position = new Position();
+  const move = position.createMoveByUSI("7g7f") as Move;
+  position.doMove(move);
+  return shallowMount(SimpleBoardView, {
+    props: {
+      maxSize: new RectSize(500, 500),
+      position,
+      lastMove: move,
+      ...(lastMoveColor ? { lastMoveColor } : {}),
     },
   });
 };
@@ -135,6 +149,15 @@ describe("SimpleBoardView", () => {
       expect(geometry.headerTop).toBeUndefined();
       expect(geometry.fileLabelTop).toBeCloseTo(geometry.bottomMargin);
     }
+  });
+
+  it("fills the last move square with the specified color", () => {
+    expect(mountSimpleBoardWithLastMove().find("rect").attributes("fill")).toBe("#ffd700");
+    expect(mountSimpleBoardWithLastMove("#88ccff").find("rect").attributes("fill")).toBe("#88ccff");
+  });
+
+  it("does not draw the last move square when there is no last move", () => {
+    expect(mountSimpleBoard().find("rect").exists()).toBe(false);
   });
 
   it("does not apply dy correction to gothic on Windows", () => {

@@ -559,6 +559,7 @@ export const en: Texts = {
   typeface: "Typeface",
   weight: "Weight",
   handLabel: "Hand Label",
+  lastMoveColor: "Last Move Color",
   header: "Header",
   vertical: "Vertical",
   size: "Size",

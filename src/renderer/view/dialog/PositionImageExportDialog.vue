@@ -15,6 +15,7 @@
             :footer="comment"
             :hide-footer="!appSettings.positionImageCommentVisible"
             :last-move="lastMove"
+            :last-move-color="appSettings.positionImageLastMoveColor"
             :flip="appSettings.boardFlipping"
             :typeface="appSettings.positionImageTypeface"
             :font-weight="fontWeight"
@@ -103,6 +104,17 @@
             ]"
             @update:value="changeHandLabel"
           />
+        </div>
+        <div class="form-item">
+          <div>
+            {{ t.lastMoveColor }}
+            <input
+              class="color-selector"
+              type="color"
+              :value="appSettings.positionImageLastMoveColor"
+              @input="changeLastMoveColor"
+            />
+          </div>
         </div>
         <div class="form-item">
           {{ t.header }}
@@ -399,6 +411,13 @@ const changeHandLabel = (value: string) => {
   });
 };
 
+const changeLastMoveColor = (e: Event) => {
+  const elem = e.target as HTMLInputElement;
+  appSettings.updateAppSettings({
+    positionImageLastMoveColor: elem.value,
+  });
+};
+
 const changeHeaderText = (e: Event) => {
   const elem = e.target as HTMLInputElement;
   appSettings.updateAppSettings({
@@ -511,6 +530,13 @@ input.number {
 }
 input.header {
   width: 80%;
+}
+input.color-selector {
+  padding: 0;
+  width: 60px;
+  height: 20px;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 .comment-header {
   align-items: center;

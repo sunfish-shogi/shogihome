@@ -175,6 +175,9 @@ export enum PositionImageHandLabelType {
   NONE = "none",
 }
 
+/** 局面図の最終手ハイライトの既定色 (gold) */
+export const defaultPositionImageLastMoveColor = "#ffd700";
+
 export enum BranchListMode {
   SIBLING = "sibling",
   NEXT_MOVE = "nextMove",
@@ -297,6 +300,7 @@ export type AppSettings = {
   positionImageCharacterY: number; // Deprecated
   positionImageFontScale: number;
   positionImageFontWeight: PositionImageFontWeight;
+  positionImageLastMoveColor: string;
 
   // File Path
   lastRecordFilePath: string;
@@ -458,6 +462,7 @@ export function defaultAppSettings(opt?: {
     positionImageCharacterY: 0,
     positionImageFontScale: 1,
     positionImageFontWeight: PositionImageFontWeight.W400X,
+    positionImageLastMoveColor: defaultPositionImageLastMoveColor,
     lastRecordFilePath: "",
     lastBookFilePath: "",
     lastUSIEngineFilePath: "",

@@ -19,7 +19,7 @@
           :y="layout.lastMoveRect.y"
           :width="layout.lastMoveRect.width"
           :height="layout.lastMoveRect.height"
-          fill="gold"
+          :fill="lastMoveColor"
         />
         <image
           href="/board/grid_square.svg"
@@ -96,6 +96,7 @@ import {
 } from "tsshogi";
 import { computed, PropType } from "vue";
 import { RectSize } from "@/common/assets/geometry";
+import { defaultPositionImageLastMoveColor } from "@/common/settings/app";
 
 const fileNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const rankNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九"];
@@ -204,6 +205,11 @@ const props = defineProps({
     type: Object as PropType<Move | null>,
     required: false,
     default: null,
+  },
+  lastMoveColor: {
+    type: String,
+    required: false,
+    default: defaultPositionImageLastMoveColor,
   },
   typeface: {
     type: String as PropType<"gothic" | "mincho">,
