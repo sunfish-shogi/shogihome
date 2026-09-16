@@ -1,9 +1,64 @@
 /// <reference types="vitest" />
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin } from "vite";
 import base from "./vite.config.mjs";
 import { VitePWA } from "vite-plugin-pwa";
+
+// ライセンス表示に必要なファイルを事前キャッシュの一覧へ足す。
+//
+// エンジンの成果物は事前キャッシュしない方針だが (下の globIgnores を参照)、
+// ライセンスの提示は配布物だけで完結していなければならず、エンジンを一度も
+// 使っていない利用者がオフラインで開いても出せる必要がある。対象は
+// engine.json と、そこで宣言されたライセンス全文だけで、合計でも数 KB に収まる。
+//
+// **どのファイルが必要かはマニフェストが知っている。** 拡張子や名前を決め打ちせず、
+// licenses[].file の宣言をそのまま読む (specs/wasm-engine-abi.md の「9. ライセンス」)。
+// マニフェストの本検証は適合性テストが行うため、ここでは読めない・宣言が無いものを
+// 飛ばすだけにして、ビルドを止めない。
+function engineLicenseManifestEntries(): { url: string; revision: string }[] {
+  const enginesDir = path.resolve(import.meta.dirname, "public/engines");
+  if (!fs.existsSync(enginesDir)) {
+    return [];
+  }
+  const entries: { url: string; revision: string }[] = [];
+  const add = (file: string) => {
+    const fullPath = path.join(enginesDir, file);
+    if (!fs.existsSync(fullPath)) {
+      return;
+    }
+    entries.push({
+      url: `engines/${file}`,
+      // 事前キャッシュは URL と revision の組で更新を判断する。
+      // エンジンの成果物はファイル名にハッシュを持たないため、内容から作る。
+      revision: crypto.createHash("sha256").update(fs.readFileSync(fullPath)).digest("hex"),
+    });
+  };
+  for (const entry of fs.readdirSync(enginesDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) {
+      continue;
+    }
+    const manifestPath = path.join(enginesDir, entry.name, "engine.json");
+    if (!fs.existsSync(manifestPath)) {
+      continue;
+    }
+    let manifest;
+    try {
+      manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    } catch {
+      continue;
+    }
+    add(`${entry.name}/engine.json`);
+    for (const license of manifest.licenses || []) {
+      // 上位ディレクトリを参照するパスは適合性テストが弾く。ここでは無視する。
+      if (typeof license?.file === "string" && !license.file.split("/").includes("..")) {
+        add(`${entry.name}/${license.file}`);
+      }
+    }
+  }
+  return entries;
+}
 
 // cross-origin isolation のブートストラップを index.html の <head> へ埋め込む。
 //
@@ -94,6 +149,8 @@ export default defineConfig({
         // globIgnores が必要なのは、上の "**/*.{js,...}" が Emscripten の
         // グルーコード (engines/<dir>/<module>.js) を拾ってしまうため。
         globIgnores: ["engines/**"],
+        // 例外はライセンス表示に要るものだけ。上の関数を参照。
+        additionalManifestEntries: engineLicenseManifestEntries(),
         // 実行時キャッシュとナビゲーションの扱いは src/sw.js に書いてある。
       },
       manifest: {

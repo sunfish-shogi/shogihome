@@ -67,7 +67,13 @@ registerRoute(
     async (options) => withCrossOriginIsolation(await navigationHandler(options)),
     {
       // Electron 専用のページは index.html にフォールバックさせない。
-      denylist: [/\/(?:prompt|monitor|layout-manager)\.html$/],
+      //
+      // エンジンのディレクトリも同様である。ライセンス表示から開くライセンス全文は
+      // 同一オリジンの URL を window.open() したもの、つまり**ナビゲーション**として
+      // 届く。ここで除外しないと、事前キャッシュしてあってもアプリ本体の index.html を
+      // 返してしまい、全文の代わりにアプリがもう 1 つ開く。
+      // 除外した後は、下の addRoute() が事前キャッシュから text/plain のまま返す。
+      denylist: [/\/(?:prompt|monitor|layout-manager)\.html$/, /\/engines\//],
     },
   ),
 );

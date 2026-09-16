@@ -117,6 +117,64 @@ describe("wasm-engine/manifest", () => {
     ).toThrow(/duplicated preset id/);
   });
 
+  // ライセンスは表示に使うため、全文のファイルを同梱した形でしか受け付けない。
+  it("licenses", () => {
+    const manifest = parseEngineManifest({
+      ...validManifest(),
+      licenses: [
+        { spdx: "MIT", file: "LICENSE.txt", source: "https://example.com/engine" },
+        { subject: "評価関数パラメータ", spdx: "CC0-1.0", file: "eval/LICENSE.txt" },
+      ],
+    });
+    expect(manifest.licenses).toEqual([
+      { spdx: "MIT", file: "LICENSE.txt", source: "https://example.com/engine" },
+      { subject: "評価関数パラメータ", spdx: "CC0-1.0", file: "eval/LICENSE.txt" },
+    ]);
+    // 省略は許す (適合性テストが public/engines/ 配下のエンジンに対して要求する)。
+    expect(parseEngineManifest(validManifest()).licenses).toBeUndefined();
+  });
+
+  it("rejectsInvalidLicenses", () => {
+    // 宣言するなら中身が要る。
+    expect(() => parseEngineManifest({ ...validManifest(), licenses: [] })).toThrow(
+      /must be a non-empty array/,
+    );
+    // 全文の同梱が前提なので file は省略できない。
+    expect(() => parseEngineManifest({ ...validManifest(), licenses: [{ spdx: "MIT" }] })).toThrow(
+      /licenses\[0\].file/,
+    );
+    expect(() =>
+      parseEngineManifest({ ...validManifest(), licenses: [{ file: "LICENSE.txt" }] }),
+    ).toThrow(/licenses\[0\].spdx/);
+    // ディレクトリ traversal や任意の URL を許可しない。
+    expect(() =>
+      parseEngineManifest({
+        ...validManifest(),
+        licenses: [{ spdx: "MIT", file: "../../secret" }],
+      }),
+    ).toThrow();
+    // source はそのままブラウザへ渡すため、URL として成立していることまで確かめる。
+    const withSource = (source: string) => ({
+      ...validManifest(),
+      licenses: [{ spdx: "MIT", file: "LICENSE.txt", source }],
+    });
+    expect(() => parseEngineManifest(withSource("javascript:alert(1)"))).toThrow(
+      /must be an https URL/,
+    );
+    expect(() => parseEngineManifest(withSource("http://example.com/engine"))).toThrow(
+      /must be an https URL/,
+    );
+    // スキームだけの文字列や URL として壊れているものを通さない。
+    expect(() => parseEngineManifest(withSource("https://"))).toThrow(/must be a valid URL/);
+    expect(() => parseEngineManifest(withSource("example.com/engine"))).toThrow(
+      /must be a valid URL/,
+    );
+    // ホストがあれば通す。
+    expect(parseEngineManifest(withSource("https://example.com/engine")).licenses?.[0].source).toBe(
+      "https://example.com/engine",
+    );
+  });
+
   // スレッドを使うエンジンは isolation を宣言する。
   // 宣言が無ければ既定は false で、単一スレッドのエンジンは影響を受けない。
   it("requiresCrossOriginIsolation", () => {

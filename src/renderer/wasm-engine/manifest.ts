@@ -39,6 +39,21 @@ export type EngineManifestPreset = {
   tags?: ("game" | "research" | "mate")[];
 };
 
+// エンジンとその同梱物のライセンス。ライセンス表示 (renderer/helpers/copyright.ts) に出す。
+// 全文は必ずエンジンのディレクトリに同梱する。配布物だけでライセンスの提示を
+// 完結させるためで、外部サイトへのリンクだけでは代えられない。
+export type EngineManifestLicense = {
+  // ライセンスの対象の表示名。省略時はエンジンの name を使う。
+  // 評価パラメータや定跡がエンジン本体と別のライセンスの場合に、対象が分かる名前を書く。
+  subject?: string;
+  // SPDX 識別子 (例: "MIT", "GPL-3.0-or-later")。そのまま表示に使う。
+  spdx: string;
+  // ライセンス全文のファイル。マニフェストからの相対パス。
+  file: string;
+  // ソースコードの入手先。コピーレフトのライセンスでは必須。
+  source?: string;
+};
+
 // 評価パラメータや定跡など、実行時に読み込むファイル。
 // url はマニフェストからの相対パスで、Emscripten の仮想ファイルシステム上の path に書き込む。
 export type EngineManifestDataFile = {
@@ -58,6 +73,7 @@ export type EngineManifest = {
   // ページが cross-origin isolated でないと起動できない。
   // 宣言しておくと、モジュールを生成する前に確認して即座に失敗できる。
   requiresCrossOriginIsolation?: boolean;
+  licenses?: EngineManifestLicense[];
   dataFiles?: EngineManifestDataFile[];
   options?: EngineManifestOption[];
   presets: EngineManifestPreset[];
@@ -143,6 +159,34 @@ function parseOption(value: unknown, path: string): EngineManifestOption {
   return option;
 }
 
+function parseLicense(value: unknown, path: string): EngineManifestLicense {
+  const record = asRecord(value, path);
+  const license: EngineManifestLicense = {
+    spdx: asString(record.spdx, `${path}.spdx`),
+    file: asSafePath(record.file, `${path}.file`),
+  };
+  if (record.subject !== undefined) {
+    license.subject = asString(record.subject, `${path}.subject`);
+  }
+  if (record.source !== undefined) {
+    const source = asString(record.source, `${path}.source`);
+    // そのままブラウザ (または Electron の外部リンク) へ渡す値なので、
+    // 文字列の形だけでなく URL として成立していることを確かめる。
+    // 前方一致の検査では "https://" のようなホストの無い値を通してしまう。
+    let url: URL;
+    try {
+      url = new URL(source);
+    } catch {
+      fail(`${path}.source must be a valid URL: ${source}`);
+    }
+    if (url.protocol !== "https:" || !url.hostname) {
+      fail(`${path}.source must be an https URL with a host: ${source}`);
+    }
+    license.source = source;
+  }
+  return license;
+}
+
 function parsePreset(value: unknown, path: string): EngineManifestPreset {
   const record = asRecord(value, path);
   const preset: EngineManifestPreset = {
@@ -212,6 +256,12 @@ export function parseEngineManifest(json: unknown): EngineManifest {
       fail("manifest.requiresCrossOriginIsolation must be a boolean");
     }
     manifest.requiresCrossOriginIsolation = record.requiresCrossOriginIsolation;
+  }
+  if (record.licenses !== undefined) {
+    if (!Array.isArray(record.licenses) || record.licenses.length === 0) {
+      fail("manifest.licenses must be a non-empty array");
+    }
+    manifest.licenses = record.licenses.map((v, i) => parseLicense(v, `manifest.licenses[${i}]`));
   }
   if (record.options !== undefined) {
     if (!Array.isArray(record.options)) {
