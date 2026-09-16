@@ -1,5 +1,11 @@
 <template>
-  <svg width="439.21539mm" height="479.79199mm" viewBox="0 0 439.21539 479.79199">
+  <!-- マス目が正方形のレイアウトでは盤の縦横比が変わるため、枠線を領域いっぱいに引き伸ばす。 -->
+  <svg
+    width="439.21539mm"
+    height="479.79199mm"
+    viewBox="0 0 439.21539 479.79199"
+    preserveAspectRatio="none"
+  >
     <g transform="translate(-225.09593,-247.17041)">
       <g transform="matrix(0.49900175,0,0,0.49800041,222.93016,244.53834)">
         <g :style="`stroke: ${color}; stroke-width: 2`">

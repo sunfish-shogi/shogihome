@@ -279,6 +279,7 @@ export const vi: Texts = {
   boardLayout: "Bố cục bàn cờ",
   compact: "Gọn",
   portrait: "Dọc",
+  portraitSquare: "ポートレイト(正方形マス)", // TODO: Translate
   piece: "Quân",
   singleKanjiPiece: "Nhất tự",
   singleKanjiWoodPiece: "Nhất tự (Gỗ)",

@@ -9,7 +9,13 @@ import {
 } from "tsshogi";
 import { Config } from "./config.js";
 import { HandPieceOrder, PieceStandImageType } from "@/common/settings/app.js";
-import { commonParams, compactHandParams, handParams, portraitHandParams } from "./params.js";
+import {
+  commonParams,
+  compactHandParams,
+  handParams,
+  PortraitHandParams,
+  portraitHandParams,
+} from "./params.js";
 import { Hand, HandNumber, HandPiece, HandPointer } from "./layout.js";
 import { Point } from "@/common/assets/geometry.js";
 
@@ -258,6 +264,7 @@ export class PortraitHandLayoutBuilder {
   constructor(
     private config: Config,
     private ratio: number,
+    private params: PortraitHandParams = portraitHandParams,
   ) {}
 
   centerOfPieceType(hand: ImmutableHand, color: Color, type: PieceType): Point {
@@ -271,8 +278,8 @@ export class PortraitHandLayoutBuilder {
         continue;
       }
       const index = displayColor === Color.BLACK ? count : handPieceTypes.length - count - 1;
-      const x = portraitHandParams.squareWidth * (index + 0.5);
-      const y = portraitHandParams.squareHeight * 0.5;
+      const x = this.params.squareWidth * (index + 0.5);
+      const y = this.params.squareHeight * 0.5;
       return new Point(x, y).multiply(this.ratio);
     }
     return new Point(0, 0);
@@ -286,8 +293,8 @@ export class PortraitHandLayoutBuilder {
   ): Hand {
     const displayColor = this.config.flip ? reverseColor(color) : color;
     const bgColor = pieceStandBackgroundColorMap[this.config.pieceStandImageType];
-    const standWidth = portraitHandParams.width * this.ratio;
-    const standHeight = portraitHandParams.height * this.ratio;
+    const standWidth = this.params.width * this.ratio;
+    const standHeight = this.params.height * this.ratio;
     const touchAreaStyle = {
       left: "0px",
       top: "0px",
@@ -313,13 +320,13 @@ export class PortraitHandLayoutBuilder {
         displayColor === Color.BLACK ? pieces.length : handPieceTypes.length - pieces.length - 1;
       const id = type;
       const imagePath = this.config.pieceImages[displayColor][type];
-      const left = portraitHandParams.squareWidth * index * this.ratio;
+      const left = this.params.squareWidth * index * this.ratio;
       pieces.push({
         id,
         imagePath,
         style: {
-          left: left + portraitHandParams.leftPiecePadding * this.ratio + "px",
-          top: portraitHandParams.topPiecePadding * this.ratio + "px",
+          left: left + this.params.leftPiecePadding * this.ratio + "px",
+          top: this.params.topPiecePadding * this.ratio + "px",
           width: commonParams.piece.width * this.ratio + "px",
           height: commonParams.piece.height * this.ratio + "px",
           opacity: type === dragSourceType ? "0.3" : "1",
@@ -333,8 +340,8 @@ export class PortraitHandLayoutBuilder {
           id: type,
           character: hand.count(type).toString(),
           style: {
-            left: left + portraitHandParams.squareWidth * x * this.ratio + "px",
-            top: portraitHandParams.squareHeight * 0.5 * this.ratio + "px",
+            left: left + this.params.squareWidth * x * this.ratio + "px",
+            top: this.params.squareHeight * 0.5 * this.ratio + "px",
             "font-size": 40 * this.ratio + "px",
             "font-weight": "900",
             color: "#fff",
@@ -345,14 +352,14 @@ export class PortraitHandLayoutBuilder {
       const squareStyle = {
         left: left + "px",
         top: "0px",
-        width: portraitHandParams.squareWidth * this.ratio + "px",
-        height: portraitHandParams.squareHeight * this.ratio + "px",
+        width: this.params.squareWidth * this.ratio + "px",
+        height: this.params.squareHeight * this.ratio + "px",
       };
       let backgroundStyle = squareStyle;
       if (pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type) {
         backgroundStyle = {
           ...backgroundStyle,
-          ...portraitHandParams.highlight.selected,
+          ...this.params.highlight.selected,
         };
       }
       pointers.push({

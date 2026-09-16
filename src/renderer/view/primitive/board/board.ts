@@ -1,6 +1,6 @@
 import { BoardImageType, BoardLabelType, PromotionSelectorStyle } from "@/common/settings/app.js";
 import { Config } from "./config.js";
-import { boardParams, commonParams } from "./params.js";
+import { BoardParams, boardParams, commonParams } from "./params.js";
 import { Color, ImmutableBoard, Move, Piece, PieceType, reverseColor, Square } from "tsshogi";
 import {
   Board,
@@ -46,16 +46,17 @@ export class BoardLayoutBuilder {
   constructor(
     private config: Config,
     private ratio: number,
+    private params: BoardParams = boardParams,
   ) {}
 
   centerOfSquare(square: Square): Point {
     const x =
-      (boardParams.leftSquarePadding +
-        boardParams.squareWidth * ((this.config.flip ? square.opposite : square).x + 0.5)) *
+      (this.params.leftSquarePadding +
+        this.params.squareWidth * ((this.config.flip ? square.opposite : square).x + 0.5)) *
       this.ratio;
     const y =
-      (boardParams.topSquarePadding +
-        boardParams.squareHeight * ((this.config.flip ? square.opposite : square).y + 0.5)) *
+      (this.params.topSquarePadding +
+        this.params.squareHeight * ((this.config.flip ? square.opposite : square).y + 0.5)) *
       this.ratio;
     return new Point(x, y);
   }
@@ -66,8 +67,8 @@ export class BoardLayoutBuilder {
       "background-color": bgColor,
       left: "0px",
       top: "0px",
-      height: boardParams.height * this.ratio + "px",
-      width: boardParams.width * this.ratio + "px",
+      height: this.params.height * this.ratio + "px",
+      width: this.params.width * this.ratio + "px",
       opacity: this.config.boardImageOpacity.toString(),
     };
     return {
@@ -82,7 +83,7 @@ export class BoardLayoutBuilder {
       return [];
     }
     const labels: BoardLabel[] = [];
-    const fontSize = boardParams.label.fontSize * this.ratio;
+    const fontSize = this.params.label.fontSize * this.ratio;
     const shadow = fontSize * 0.1;
     const commonStyle = {
       color: "black",
@@ -92,12 +93,12 @@ export class BoardLayoutBuilder {
     };
     for (let rank = 1; rank <= 9; rank++) {
       const x =
-        boardParams.leftPiecePadding * 0.5 * this.ratio * (this.config.flip ? 1 : -1) -
+        this.params.leftLabelPadding * 0.5 * this.ratio * (this.config.flip ? 1 : -1) -
         fontSize * 0.5 +
-        (this.config.flip ? 0 : boardParams.width) * this.ratio;
+        (this.config.flip ? 0 : this.params.width) * this.ratio;
       const y =
-        (boardParams.topSquarePadding +
-          ((this.config.flip ? 10 - rank : rank) - 0.5) * boardParams.squareHeight) *
+        (this.params.topSquarePadding +
+          ((this.config.flip ? 10 - rank : rank) - 0.5) * this.params.squareHeight) *
           this.ratio -
         fontSize * 0.5;
       labels.push({
@@ -112,13 +113,13 @@ export class BoardLayoutBuilder {
     }
     for (let file = 1; file <= 9; file++) {
       const x =
-        (boardParams.leftPiecePadding +
-          (9.5 - (this.config.flip ? 10 - file : file)) * boardParams.squareWidth) *
+        (this.params.leftLabelPadding +
+          (9.5 - (this.config.flip ? 10 - file : file)) * this.params.squareWidth) *
           this.ratio -
         fontSize * 0.5;
       const y =
-        (this.config.flip ? boardParams.height : 0) * this.ratio +
-        boardParams.topSquarePadding * 0.7 * this.ratio * (this.config.flip ? -1 : 1) -
+        (this.config.flip ? this.params.height : 0) * this.ratio +
+        this.params.topSquarePadding * 0.7 * this.ratio * (this.config.flip ? -1 : 1) -
         fontSize * 0.6;
       labels.push({
         id: "file" + file,
@@ -146,12 +147,12 @@ export class BoardLayoutBuilder {
         piece.type == PieceType.KING && piece.color == Color.BLACK ? "king2" : piece.type;
       const imagePath = this.config.pieceImages[displayColor][pieceType];
       const x =
-        (boardParams.leftPiecePadding +
-          boardParams.squareWidth * (this.config.flip ? square.opposite : square).x) *
+        (this.params.leftPiecePadding +
+          this.params.squareWidth * (this.config.flip ? square.opposite : square).x) *
         this.ratio;
       const y =
-        (boardParams.topPiecePadding +
-          boardParams.squareHeight * (this.config.flip ? square.opposite : square).y) *
+        (this.params.topPiecePadding +
+          this.params.squareHeight * (this.config.flip ? square.opposite : square).y) *
         this.ratio;
       const width = commonParams.piece.width * this.ratio;
       const height = commonParams.piece.height * this.ratio;
@@ -176,15 +177,15 @@ export class BoardLayoutBuilder {
       const { file } = square;
       const { rank } = square;
       const x =
-        (boardParams.leftSquarePadding +
-          boardParams.squareWidth * (this.config.flip ? square.opposite : square).x) *
+        (this.params.leftSquarePadding +
+          this.params.squareWidth * (this.config.flip ? square.opposite : square).x) *
         this.ratio;
       const y =
-        (boardParams.topSquarePadding +
-          boardParams.squareHeight * (this.config.flip ? square.opposite : square).y) *
+        (this.params.topSquarePadding +
+          this.params.squareHeight * (this.config.flip ? square.opposite : square).y) *
         this.ratio;
-      const width = boardParams.squareWidth * this.ratio;
-      const height = boardParams.squareHeight * this.ratio;
+      const width = this.params.squareWidth * this.ratio;
+      const height = this.params.squareHeight * this.ratio;
       const style = {
         left: x + "px",
         top: y + "px",
@@ -195,19 +196,19 @@ export class BoardLayoutBuilder {
       if (lastMove && square.equals(lastMove.to)) {
         backgroundStyle = {
           ...backgroundStyle,
-          ...boardParams.highlight.lastMoveTo,
+          ...this.params.highlight.lastMoveTo,
         };
       }
       if (lastMove && lastMove.from instanceof Square && square.equals(lastMove.from)) {
         backgroundStyle = {
           ...backgroundStyle,
-          ...boardParams.highlight.lastMoveFrom,
+          ...this.params.highlight.lastMoveFrom,
         };
       }
       if (pointer instanceof Square && pointer.equals(square)) {
         backgroundStyle = {
           ...backgroundStyle,
-          ...boardParams.highlight.selected,
+          ...this.params.highlight.selected,
         };
       }
       squares.push({
@@ -232,26 +233,26 @@ export class BoardLayoutBuilder {
     const notPromoted = piece.unpromoted();
     const promoteImagePath = this.config.pieceImages[color][promoted.type];
     const notPromoteImagePath = this.config.pieceImages[color][notPromoted.type];
-    const width = boardParams.squareWidth * this.ratio;
-    const height = boardParams.squareHeight * this.ratio;
+    const width = this.params.squareWidth * this.ratio;
+    const height = this.params.squareHeight * this.ratio;
     let x1, y1, x2, y2: number;
     switch (this.config.promotionSelectorStyle) {
       case PromotionSelectorStyle.HORIZONTAL:
         x1 =
-          (boardParams.leftSquarePadding +
-            boardParams.squareWidth * (square.x === 0 ? 0 : square.x === 8 ? 7 : square.x - 0.5)) *
+          (this.params.leftSquarePadding +
+            this.params.squareWidth * (square.x === 0 ? 0 : square.x === 8 ? 7 : square.x - 0.5)) *
           this.ratio;
-        y1 = y2 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        y1 = y2 = (this.params.topSquarePadding + this.params.squareHeight * square.y) * this.ratio;
         x2 = x1 + width;
         break;
       case PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM:
-        x1 = x2 = (boardParams.leftSquarePadding + boardParams.squareWidth * square.x) * this.ratio;
-        y1 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        x1 = x2 = (this.params.leftSquarePadding + this.params.squareWidth * square.x) * this.ratio;
+        y1 = (this.params.topSquarePadding + this.params.squareHeight * square.y) * this.ratio;
         y2 = y1 + (square.y === 8 ? -height : height);
         break;
       case PromotionSelectorStyle.HORIZONTAL_PREFER_RIGHT:
-        x1 = (boardParams.leftSquarePadding + boardParams.squareWidth * square.x) * this.ratio;
-        y1 = y2 = (boardParams.topSquarePadding + boardParams.squareHeight * square.y) * this.ratio;
+        x1 = (this.params.leftSquarePadding + this.params.squareWidth * square.x) * this.ratio;
+        y1 = y2 = (this.params.topSquarePadding + this.params.squareHeight * square.y) * this.ratio;
         x2 = x1 + (square.x === 8 ? -width : width);
         break;
     }

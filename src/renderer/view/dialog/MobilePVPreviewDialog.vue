@@ -170,10 +170,11 @@ const boardMaxSize = computed(
     ),
 );
 
-// 盤面の領域が縦長なら縦型レイアウト、横長ならコンパクトレイアウトを使用する。
+// 盤面の領域が縦長なら縦型レイアウト(縦幅の消費を抑えるため正方形マス)、
+// 横長ならコンパクトレイアウトを使用する。
 const layoutType = computed(() =>
   boardMaxSize.value.height >= boardMaxSize.value.width
-    ? BoardLayoutType.PORTRAIT
+    ? BoardLayoutType.PORTRAIT_SQUARE
     : BoardLayoutType.COMPACT,
 );
 

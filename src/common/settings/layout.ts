@@ -12,6 +12,7 @@ export enum BoardLayoutType {
   STANDARD = "standard",
   COMPACT = "compact",
   PORTRAIT = "portrait",
+  PORTRAIT_SQUARE = "portraitSquare",
 }
 
 export enum PositionImageFontWeight {

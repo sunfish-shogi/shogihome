@@ -269,6 +269,7 @@ export const en: Texts = {
   boardLayout: "Board Layout",
   compact: "Compact",
   portrait: "Portrait",
+  portraitSquare: "Portrait (Square Cells)",
   piece: "Piece",
   singleKanjiPiece: "Single Kanji",
   singleKanjiWoodPiece: "Single Kanji (Wood)",

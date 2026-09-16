@@ -276,6 +276,7 @@ export const zh_tw: Texts = {
   boardLayout: "棋盤設計",
   compact: "緊湊",
   portrait: "直向",
+  portraitSquare: "ポートレイト(正方形マス)", // TODO: Translate
   piece: "棋駒",
   singleKanjiPiece: "一文字駒",
   singleKanjiWoodPiece: "一文字駒（木目）",

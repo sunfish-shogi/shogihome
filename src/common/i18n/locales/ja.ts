@@ -269,6 +269,7 @@ export const ja: Texts = {
   boardLayout: "盤レイアウト",
   compact: "コンパクト",
   portrait: "ポートレイト",
+  portraitSquare: "ポートレイト(正方形マス)",
   piece: "駒",
   singleKanjiPiece: "一文字駒",
   singleKanjiWoodPiece: "一文字駒（木目）",

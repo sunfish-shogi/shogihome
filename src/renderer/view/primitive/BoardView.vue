@@ -251,6 +251,9 @@ import {
   handParams,
   compactHandParams,
   portraitHandParams,
+  portraitSquareBoardParams,
+  portraitSquareHandParams,
+  portraitSquareViewParams,
 } from "./board/params";
 
 type CandidateMove = {
@@ -581,18 +584,14 @@ const getSquareFromClientPoint = (clientX: number, clientY: number): Square | nu
   const ratio = main.value.ratio;
   const localX = clientX - rect.left;
   const localY = clientY - rect.top;
-  if (
-    localX < 0 ||
-    localX > boardParams.width * ratio ||
-    localY < 0 ||
-    localY > boardParams.height * ratio
-  ) {
+  const params = currentBoardParams.value;
+  if (localX < 0 || localX > params.width * ratio || localY < 0 || localY > params.height * ratio) {
     return null;
   }
-  const squareW = boardParams.squareWidth * ratio;
-  const squareH = boardParams.squareHeight * ratio;
-  const leftPad = boardParams.leftSquarePadding * ratio;
-  const topPad = boardParams.topSquarePadding * ratio;
+  const squareW = params.squareWidth * ratio;
+  const squareH = params.squareHeight * ratio;
+  const leftPad = params.leftSquarePadding * ratio;
+  const topPad = params.topSquarePadding * ratio;
   const xi = Math.floor((localX - leftPad) / squareW);
   const yi = Math.floor((localY - topPad) / squareH);
   if (xi < 0 || xi > 8 || yi < 0 || yi > 8) {
@@ -616,6 +615,10 @@ const getHandColorFromClientPoint = (clientX: number, clientY: number): Color | 
     case BoardLayoutType.PORTRAIT:
       handW = portraitHandParams.width * ratio;
       handH = portraitHandParams.height * ratio;
+      break;
+    case BoardLayoutType.PORTRAIT_SQUARE:
+      handW = portraitSquareHandParams.width * ratio;
+      handH = portraitSquareHandParams.height * ratio;
       break;
     default:
       handW = handParams.width * ratio;
@@ -912,6 +915,8 @@ const layoutBuilder = computed(() => {
       return new CompactLayoutBuilder(config.value);
     case BoardLayoutType.PORTRAIT:
       return new PortraitLayoutBuilder(config.value);
+    case BoardLayoutType.PORTRAIT_SQUARE:
+      return new PortraitLayoutBuilder(config.value, portraitSquareViewParams);
   }
 });
 
@@ -925,8 +930,13 @@ const main = computed(() => {
   return main;
 });
 
+// ポートレイト(正方形マス)では X 方向に引き伸ばした盤面パラメーターを使用する。
+const currentBoardParams = computed(() =>
+  props.layoutType === BoardLayoutType.PORTRAIT_SQUARE ? portraitSquareBoardParams : boardParams,
+);
+
 const boardLayoutBuilder = computed(() => {
-  return new BoardLayoutBuilder(config.value, main.value.ratio);
+  return new BoardLayoutBuilder(config.value, main.value.ratio, currentBoardParams.value);
 });
 
 const board = computed(() => {
@@ -948,6 +958,12 @@ const handLayoutBuilder = computed(() => {
       return new CompactHandLayoutBuilder(config.value, main.value.ratio);
     case BoardLayoutType.PORTRAIT:
       return new PortraitHandLayoutBuilder(config.value, main.value.ratio);
+    case BoardLayoutType.PORTRAIT_SQUARE:
+      return new PortraitHandLayoutBuilder(
+        config.value,
+        main.value.ratio,
+        portraitSquareHandParams,
+      );
   }
 });
 
