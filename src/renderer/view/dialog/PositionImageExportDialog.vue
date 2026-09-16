@@ -106,8 +106,8 @@
           />
         </div>
         <div class="form-item">
-          <div class="last-move-color row">
-            <span>{{ t.lastMoveColor }}</span>
+          <div>
+            {{ t.lastMoveColor }}
             <input
               class="color-selector"
               type="color"
@@ -531,15 +531,12 @@ input.number {
 input.header {
   width: 80%;
 }
-.last-move-color {
-  align-items: center;
-}
 input.color-selector {
-  margin-left: auto;
   padding: 0;
   width: 60px;
   height: 20px;
   box-sizing: border-box;
+  vertical-align: middle;
 }
 .comment-header {
   align-items: center;
