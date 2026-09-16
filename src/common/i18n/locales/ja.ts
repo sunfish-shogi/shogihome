@@ -559,6 +559,7 @@ export const ja: Texts = {
   typeface: "書体",
   weight: "太さ",
   handLabel: "持ち駒ラベル",
+  lastMoveColor: "最終手の色",
   header: "見出し",
   vertical: "垂直方向",
   size: "サイズ",

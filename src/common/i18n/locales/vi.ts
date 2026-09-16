@@ -569,6 +569,7 @@ export const vi: Texts = {
   typeface: "Kiểu chữ",
   weight: "Độ đậm nhạt",
   handLabel: "Tên quân trên tay",
+  lastMoveColor: "最終手の色", // TODO: Translate
   header: "Đầu đề",
   vertical: "Dọc",
   size: "Kích cỡ",

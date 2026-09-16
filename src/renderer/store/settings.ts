@@ -320,6 +320,9 @@ class AppSettingsStore {
   get positionImageFontWeight(): PositionImageFontWeight {
     return this.merged.positionImageFontWeight;
   }
+  get positionImageLastMoveColor(): string {
+    return this.merged.positionImageLastMoveColor;
+  }
   get lastRecordFilePath(): string {
     return this.merged.lastRecordFilePath;
   }
