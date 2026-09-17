@@ -2,8 +2,8 @@
 name: 不具合報告 / Bug report
 about: アプリの改善のための報告
 title: ''
-labels: bug
-assignees: sunfish-shogi
+labels: bug, question
+assignees: ''
 
 ---
 

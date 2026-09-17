@@ -3,13 +3,13 @@ name: 提案 / Suggestion
 about: 新しいアイデア、技術的な知見、または翻訳
 title: ''
 labels: enhancement
-assignees: sunfish-shogi
+assignees: ''
 
 ---
 
 ## Checklist
 
-- [ ] understand [CONTRIBUTING.md](https://github.com/sunfish-shogi/shogihome/blob/main/CONTRIBUTING.md)
+- [ ] understand [CONTRIBUTING.md](https://github.com/thirota/shogihome/blob/main/CONTRIBUTING.md)
 - [ ] I am human
 - [ ] do not remove following sections
 
