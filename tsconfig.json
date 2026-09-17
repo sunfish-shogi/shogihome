@@ -12,7 +12,8 @@
     "outDir": "dist/src",
     "types": ["vitest/globals"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@plugins/*": ["./plugins/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
