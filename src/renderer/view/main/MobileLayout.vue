@@ -161,8 +161,7 @@ const boardPaneMaxSize = computed(() => {
 });
 const boardLayoutType = computed(() => {
   if (showRecordViewOnBottom.value) {
-    // 縦画面では盤を画面の横幅に合わせるため、マス目が正方形のレイアウトを使用して縦幅の消費を抑える。
-    return windowSize.width < windowSize.height * 0.57
+    return windowSize.width < windowSize.height * 0.59
       ? BoardLayoutType.PORTRAIT_SQUARE
       : BoardLayoutType.COMPACT;
   } else {
