@@ -367,6 +367,13 @@ function createMenuTemplate(window: BrowserWindow) {
               },
               accelerator: "CmdOrCtrl+3",
             },
+            {
+              label: t.portraitSquare,
+              click: () => {
+                updateAppSettings({ boardLayoutType: BoardLayoutType.PORTRAIT_SQUARE });
+              },
+              accelerator: "CmdOrCtrl+4",
+            },
           ],
         },
         {

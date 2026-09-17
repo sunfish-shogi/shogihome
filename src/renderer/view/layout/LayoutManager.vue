@@ -198,6 +198,7 @@
                     { label: t.standard, value: BoardLayoutType.STANDARD },
                     { label: t.compact, value: BoardLayoutType.COMPACT },
                     { label: t.portrait, value: BoardLayoutType.PORTRAIT },
+                    { label: t.portraitSquare, value: BoardLayoutType.PORTRAIT_SQUARE },
                   ]"
                   @update:value="
                     (value) => updateCustomProfileComponent(index, 'layoutType', value)

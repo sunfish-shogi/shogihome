@@ -261,6 +261,7 @@ export type Texts = {
   boardLayout: string;
   compact: string;
   portrait: string;
+  portraitSquare: string;
   piece: string;
   singleKanjiPiece: string;
   singleKanjiWoodPiece: string;
