@@ -276,6 +276,7 @@ export const zh_tw: Texts = {
   boardLayout: "棋盤設計",
   compact: "緊湊",
   portrait: "直向",
+  portraitSquare: "ポートレイト(正方形マス)", // TODO: Translate
   piece: "棋駒",
   singleKanjiPiece: "一文字駒",
   singleKanjiWoodPiece: "一文字駒（木目）",
@@ -566,6 +567,7 @@ export const zh_tw: Texts = {
   typeface: "字體",
   weight: "字體粗細",
   handLabel: "持駒標題",
+  lastMoveColor: "最終手の色", // TODO: Translate
   header: "標題",
   vertical: "垂直調整",
   size: "大小",

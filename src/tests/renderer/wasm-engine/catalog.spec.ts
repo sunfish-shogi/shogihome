@@ -8,8 +8,10 @@ import {
   isBuiltinEnginePath,
   describeEngineLoadError,
   isNetworkError,
+  loadBuiltinEngineLicenses,
   loadBuiltinUSIEngines,
   resolveEngineDirURL,
+  resolveEngineFileURL,
 } from "@/renderer/wasm-engine/catalog.js";
 import {
   CROSS_ORIGIN_ISOLATION_REQUIRED,
@@ -23,6 +25,13 @@ const manifest: EngineManifest = {
   moduleFormat: "esm",
   name: "Sunfish4 Lite",
   author: "Kubo, Ryosuke",
+  licenses: [
+    {
+      spdx: "MIT",
+      file: "LICENSE.txt",
+      source: "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite",
+    },
+  ],
   options: [
     { name: "Threads", type: "spin", default: 1, min: 1, max: 4 },
     { name: "MaxDepth", type: "spin", default: 64, min: 1, max: 64 },
@@ -124,6 +133,32 @@ describe("wasm-engine/catalog", () => {
     // 2 回目はキャッシュから返るため fetch は増えない。
     await loadBuiltinUSIEngines();
     expect(fetch).toHaveBeenCalledTimes(1);
+  });
+
+  // 配布物に含まれるエンジンのライセンスは、同梱した全文へのリンクとして表示する。
+  it("loadBuiltinEngineLicenses", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => manifest }) as Response),
+    );
+    expect(await loadBuiltinEngineLicenses()).toEqual([
+      {
+        subject: "Sunfish4 Lite",
+        spdx: "MIT",
+        url: new URL("engines/sunfish4-lite/LICENSE.txt", document.baseURI).href,
+        source: "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite",
+      },
+    ]);
+  });
+
+  it("resolveEngineFileURL", () => {
+    expect(resolveEngineFileURL("sunfish4-lite", "LICENSE.txt")).toBe(
+      new URL("engines/sunfish4-lite/LICENSE.txt", document.baseURI).href,
+    );
+    // ディレクトリ traversal や任意の URL を許可しない。
+    expect(() => resolveEngineFileURL("sunfish4-lite", "../../secret")).toThrow();
+    expect(() => resolveEngineFileURL("sunfish4-lite", "https://example.com/evil")).toThrow();
+    expect(() => resolveEngineFileURL("../secret", "LICENSE.txt")).toThrow();
   });
 
   it("USIEngines/serialization", () => {

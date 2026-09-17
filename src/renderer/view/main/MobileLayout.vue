@@ -161,8 +161,8 @@ const boardPaneMaxSize = computed(() => {
 });
 const boardLayoutType = computed(() => {
   if (showRecordViewOnBottom.value) {
-    return windowSize.width < windowSize.height * 0.57
-      ? BoardLayoutType.PORTRAIT
+    return windowSize.width < windowSize.height * 0.59
+      ? BoardLayoutType.PORTRAIT_SQUARE
       : BoardLayoutType.COMPACT;
   } else {
     return windowSize.width < windowSize.height * 1.77

@@ -34,6 +34,7 @@ public/engines/<dir>/
   engine.json        マニフェスト (必須)
   <module>.js        Emscripten のグルーコード (必須)
   <module>.wasm      (必須)
+  LICENSE.txt        ライセンス全文 (必須。「9. ライセンス」を参照)
   <module>.data      --preload-file を使う場合
   ...                その他のデータファイル
 ```
@@ -51,6 +52,9 @@ public/engines/<dir>/
   "name": "Example Engine",
   "author": "Author Name",
   "requiresCrossOriginIsolation": true,
+  "licenses": [
+    { "spdx": "MIT", "file": "LICENSE.txt", "source": "https://github.com/example/engine" }
+  ],
   "dataFiles": [{ "url": "eval/nn.bin", "path": "/eval/nn.bin" }],
   "options": [
     { "name": "Style", "type": "combo", "default": "a", "vars": ["a", "b"] },
@@ -76,6 +80,7 @@ public/engines/<dir>/
 | `name`                         | ○    | エンジンが `id name` で返す名前                                  |
 | `author`                       | ○    | エンジンが `id author` で返す名前                                |
 | `requiresCrossOriginIsolation` |      | スレッドを使う場合は `true`。下記を参照                          |
+| `licenses`                     | ○    | ライセンスの申告。「9. ライセンス」を参照                        |
 | `dataFiles`                    |      | 起動時に読み込むファイル。「6. データファイル」を参照            |
 | `options`                      |      | エンジンが `option` で申告する定義の写し                         |
 | `presets`                      | ○    | 一覧に並べるエンジンの定義。1 つ以上                             |
@@ -396,6 +401,7 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 - マニフェストがスキーマを満たし、`abi` が対応する版であること
 - `module` と `.wasm`、`dataFiles` の実体が存在すること
+- `licenses` が宣言され、その `file` が存在して空でないこと
 - モジュールが `postMessage` / `addMessageListener` / `removeMessageListener` /
   `terminate` を公開していること
 - `usi` に対して `id name` / `id author` / `usiok` を返すこと
@@ -463,3 +469,60 @@ Emscripten は pthread からの `fd_write` をメインスレッドへ同期で
   コードサイズと実行速度の悪化が大きい。
 - ponder は ShogiHome 側の実装はあるが検証されていない。
   対応しない場合は `USI_Ponder` の既定値を `false` にする。
+
+---
+
+## 9. ライセンス
+
+**エンジンは ShogiHome の Web 版の配布物の一部として配信される。**
+したがってライセンスの提示も配布物の側で完結していなければならない。
+マニフェストの `licenses` に申告し、**全文をエンジンのディレクトリに同梱する。**
+
+```json
+"licenses": [
+  { "spdx": "MIT", "file": "LICENSE.txt", "source": "https://github.com/example/engine" },
+  { "subject": "評価関数パラメータ", "spdx": "CC0-1.0", "file": "eval/LICENSE.txt" }
+]
+```
+
+| フィールド | 必須 | 内容                                                                              |
+| ---------- | ---- | --------------------------------------------------------------------------------- |
+| `spdx`     | ○    | SPDX 識別子 (`MIT` / `GPL-3.0-or-later` など)。一覧に無いものは任意の文字列でよい |
+| `file`     | ○    | ライセンス全文のファイル。マニフェストからの相対パス。**必ず同梱すること**        |
+| `subject`  |      | ライセンスの対象の表示名。省略時はエンジンの `name`                               |
+| `source`   |      | ソースコードの入手先。https の URL のみ。コピーレフトのライセンスでは必須         |
+
+配列なのは、エンジン本体と評価パラメータ・定跡でライセンスが異なることがあるため。
+分かれる場合は `subject` に対象が分かる名前を書く。
+
+ShogiHome はこれを読み、ライセンス表示 (メニューの「ライセンス」) に
+`<subject> (<spdx>)` の項目を並べ、同梱した全文へのリンクとして開く。
+`source` があれば `<subject> Source Code` の項目も並べる。
+
+**外部サイトへのリンクだけで済ませてはならない。** リンク先は消えることがあり、
+オフラインでは開けない。全文の同梱が要件で、`source` はそれを補うものである。
+
+`engine.json` と `file` が指すファイルは事前キャッシュに含まれる。エンジンを一度も
+使っていない利用者がオフラインで開いても表示できるようにするためで、
+エンジンの成果物を事前キャッシュしない方針 (「6. データファイル」) の唯一の例外である。
+**ライセンス全文以外のファイルをここへ書いてはならない。**
+
+`file` の拡張子は `.txt` を推奨する。ブラウザが全文をその場で表示できるかは配信される
+Content-Type 次第で、これは拡張子で決まる (GitHub Pages では `.txt` が `text/plain`、
+拡張子が無いと `application/octet-stream` になり、表示ではなく保存になる)。
+
+パーサは後方互換のため `licenses` の無いマニフェストも受け付けるが、
+適合性テストが `public/engines/` 配下の全エンジンに対してこれを要求する。
+
+`file` と `source` は検証を通らなければマニフェストごと拒否される。`file` は
+上位ディレクトリを参照しない相対パスであること、`source` は URL として成立していて
+スキームが https でホストを持つこと。どちらもそのままリンクとして開く値だからである
+(Web 版の `openWebBrowser` は `window.open` を呼ぶだけで、他に検証する場所が無い)。
+
+### コピーレフトのライセンス
+
+GPL / LGPL / AGPL のエンジンを組み込むと、**結合したソフトウェア全体が
+そのライセンスの条件に従う。** ShogiHome 本体は MIT で配布しているため、
+このようなエンジンはこのリポジトリには置かず、別のリポジトリでビルドと配信を行う。
+その配布物のライセンス表示には、エンジンのライセンスに加えて、
+結合物自身のライセンスとソースの入手先も載せなければならない。
