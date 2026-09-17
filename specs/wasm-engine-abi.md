@@ -4,8 +4,8 @@ ShogiHome の Web 版 (ブラウザ / PWA) に載せる USI エンジンが満�
 
 エンジンはそれぞれのリポジトリでビルドし、**成果物一式を ShogiHome の
 `public/engines/<dir>/` に配置する。** ShogiHome 側に C++ のソースやビルド環境は不要で、
-登録作業は `src/renderer/wasm-engine/catalog.ts` の `BUILTIN_ENGINE_DIRS` に
-ディレクトリ名を 1 行足すだけである。
+`engine.json` を持つディレクトリはビルド時に自動で一覧に載るため、
+**ShogiHome のソースを編集する必要も無い。**
 
 ShogiHome 側の仕組みは [`wasm-engine.md`](./wasm-engine.md) を参照。
 

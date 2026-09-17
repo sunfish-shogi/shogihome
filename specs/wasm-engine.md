@@ -19,6 +19,8 @@ public/engines/<dir>/               ビルド済みの成果物 (リポジトリ
   <module>.js / <module>.wasm
   LICENSE.txt                         ライセンス全文
 
+plugins/builtin_engines.ts          public/engines/ を走査して一覧を作るビルド時のプラグイン
+
 src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
   catalog.ts                          組み込みエンジンのカタログ
   manifest.ts                         engine.json の型と検証
@@ -59,16 +61,21 @@ ponder が外れたときである。この場合 `go` をすぐには送らず�
 
 ## エンジンの追加
 
-エンジンはそれぞれのリポジトリでビルドし、成果物を `public/engines/<dir>/` に配置する。
-ShogiHome 側の作業は次の 2 つだけ。
+エンジンはそれぞれのリポジトリでビルドし、**成果物 (`engine.json`・`<module>.js`・
+`<module>.wasm`・データファイル・ライセンス全文) を `public/engines/<dir>/` に置くだけでよい。**
 
-1. 成果物 (`engine.json`・`<module>.js`・`<module>.wasm`・データファイル・
-   ライセンス全文) を配置する
-2. `src/renderer/wasm-engine/catalog.ts` の `BUILTIN_ENGINE_DIRS` に `<dir>` を追加する
+`engine.json` を持つディレクトリはビルド時に自動で列挙され
+([`plugins/builtin_engines.ts`](../plugins/builtin_engines.ts))、`catalog.ts` の
+`BUILTIN_ENGINE_DIRS` になる。**ShogiHome のソースを編集する必要は無い。**
+別のリポジトリのビルドスクリプトから成果物を配置してビルドすれば、
+エンジンを足した版を作れる。
 
 名前・作者・オプション定義・プリセット・ライセンスは `engine.json` から読み取るため、
-ShogiHome 側に写しを持つ必要は無い。配置したエンジンは
+ShogiHome 側に写しを持つ必要も無い。配置したエンジンは
 `src/tests/engines/conformance.spec.ts` が自動的に検証対象にする。
+
+一覧はビルド時に確定するため、開発サーバーの起動中にエンジンを追加した場合は
+サーバーを再起動する。
 
 ## ライセンス表示
 
