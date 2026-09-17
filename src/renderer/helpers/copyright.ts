@@ -5,6 +5,34 @@ import { Attachment } from "@/common/message.js";
 import { isNative } from "@/renderer/ipc/api.js";
 import { loadBuiltinEngineLicenses } from "@/renderer/wasm-engine/catalog.js";
 import { useMessageStore } from "@/renderer/store/message.js";
+import { buildProfile } from "virtual:shogihome/build-profile";
+
+// 配布物 (結合物) 自身のライセンス。
+//
+// 本家の配布物は MIT で、上の t.shogiHome のリンクがそれにあたる。特別版では
+// 組み込んだエンジンのライセンス次第で結合物全体の条件が変わるため
+// (GPL のエンジンを組み込めば結合物も GPL になる)、ビルドプロファイルで足せるようにしてある。
+function distributionAttachments(): Attachment[] {
+  const distribution = buildProfile.license.distribution;
+  if (!distribution) {
+    return [];
+  }
+  const attachments: Attachment[] = [
+    {
+      type: "link",
+      text: distribution.text,
+      url: distribution.url,
+    },
+  ];
+  if (distribution.sourceURL) {
+    attachments.push({
+      type: "link",
+      text: `${distribution.text} Source Code`,
+      url: distribution.sourceURL,
+    });
+  }
+  return attachments;
+}
 
 // 組み込み WebAssembly エンジンのライセンス。
 //
@@ -43,10 +71,12 @@ export async function openCopyright(): Promise<void> {
         text: t.shogiHome,
         url: licenseURL,
       },
+      ...distributionAttachments(),
       {
         type: "link",
         text: "Third Party Libraries",
-        url: thirdPartyLicenseURL,
+        // 依存するライブラリは配布物ごとに変わり得るため、一覧の URL も差し替えられる。
+        url: buildProfile.license.thirdPartyURL || thirdPartyLicenseURL,
       },
       {
         type: "link",
