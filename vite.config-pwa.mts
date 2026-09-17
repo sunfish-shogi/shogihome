@@ -5,6 +5,7 @@ import path from "node:path";
 import { defineConfig, type Plugin } from "vite";
 import base from "./vite.config.mjs";
 import { VitePWA } from "vite-plugin-pwa";
+import { listBuiltinEngineDirs } from "./plugins/builtin_engines.ts";
 
 // ライセンス表示に必要なファイルを事前キャッシュの一覧へ足す。
 //
@@ -35,25 +36,19 @@ function engineLicenseManifestEntries(): { url: string; revision: string }[] {
       revision: crypto.createHash("sha256").update(fs.readFileSync(fullPath)).digest("hex"),
     });
   };
-  for (const entry of fs.readdirSync(enginesDir, { withFileTypes: true })) {
-    if (!entry.isDirectory()) {
-      continue;
-    }
-    const manifestPath = path.join(enginesDir, entry.name, "engine.json");
-    if (!fs.existsSync(manifestPath)) {
-      continue;
-    }
+  // 対象のディレクトリは仮想モジュールの一覧と同じものを使う (名前の検証もそこで行う)。
+  for (const dir of listBuiltinEngineDirs(enginesDir)) {
     let manifest;
     try {
-      manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+      manifest = JSON.parse(fs.readFileSync(path.join(enginesDir, dir, "engine.json"), "utf8"));
     } catch {
       continue;
     }
-    add(`${entry.name}/engine.json`);
+    add(`${dir}/engine.json`);
     for (const license of manifest.licenses || []) {
       // 上位ディレクトリを参照するパスは適合性テストが弾く。ここでは無視する。
       if (typeof license?.file === "string" && !license.file.split("/").includes("..")) {
-        add(`${entry.name}/${license.file}`);
+        add(`${dir}/${license.file}`);
       }
     }
   }

@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { Position } from "tsshogi";
+import { enginePathOf, isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog.js";
 import {
   handshake,
   launchEngine,
@@ -22,6 +23,13 @@ describe("engines/conformance", () => {
   });
 
   describe.each(engineDirs)("%s", (dir) => {
+    // ディレクトリ名は実行時の path の検証を通らなければならない。
+    // 通らない名前を置くとビルドが失敗するが (plugins/builtin_engines.ts)、
+    // その規則が実行時とずれていないことをここで実物の判定に当てて確かめる。
+    it("ディレクトリ名が実行時の検証を通ること", () => {
+      expect(isBuiltinEnginePath(enginePathOf(dir)), dir).toBeTruthy();
+    });
+
     it("マニフェストと成果物が揃っていること", () => {
       const manifest = readManifest(dir);
       const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
