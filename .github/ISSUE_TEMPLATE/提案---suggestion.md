@@ -3,7 +3,7 @@ name: 提案 / Suggestion
 about: 新しいアイデア、技術的な知見、または翻訳
 title: ''
 labels: enhancement
-assignees: ''
+assignees: thirota
 
 ---
 

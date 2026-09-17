@@ -2,14 +2,14 @@
 name: 不具合報告 / Bug report
 about: アプリの改善のための報告
 title: ''
-labels: bug, question
-assignees: ''
+labels: bug
+assignees: thirota
 
 ---
 
 ## Checklist
 
-- [ ] understand [CONTRIBUTING.md](https://github.com/sunfish-shogi/shogihome/blob/main/CONTRIBUTING.md)
+- [ ] understand [CONTRIBUTING.md](https://github.com/thirota/shogihome/blob/main/CONTRIBUTING.md)
 - [ ] I am human
 - [ ] do not remove following sections
 
