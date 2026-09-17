@@ -37,15 +37,21 @@
           v-show="bottomUIType === BottomUIType.INFO"
           :size="bottomViewSize"
         />
+        <EngineAnalytics
+          v-if="showRecordViewOnBottom && showSearchTab"
+          v-show="bottomUIType === BottomUIType.SEARCH"
+          class="search-view"
+          :style="{
+            width: `${windowSize.width}px`,
+            height: `${bottomViewSize.height}px`,
+          }"
+          :size="bottomViewSize"
+          v-bind="searchTabProps"
+        />
         <HorizontalSelector
           v-if="showRecordViewOnBottom"
           v-model:value="bottomUIType"
-          :items="[
-            { label: t.record, icon: IconType.DESCRIPTION, value: BottomUIType.RECORD },
-            { label: t.tree, icon: IconType.TREE, value: BottomUIType.BRANCH_TREE },
-            { label: t.comments, icon: IconType.COMMENT, value: BottomUIType.COMMENT },
-            { label: t.recordProperties, icon: IconType.INFO, value: BottomUIType.INFO },
-          ]"
+          :items="bottomUIItems"
           :height="selectorHeight"
         />
       </div>
@@ -78,13 +84,17 @@
           }"
         />
         <RecordInfo v-show="sideUIType === SideUIType.INFO" :size="sideViewSize" />
+        <EngineAnalytics
+          v-if="showSearchTab"
+          v-show="sideUIType === SideUIType.SEARCH"
+          class="search-view"
+          :style="{ height: `${sideViewSize.height}px` }"
+          :size="sideViewSize"
+          v-bind="searchTabProps"
+        />
         <HorizontalSelector
           v-model:value="sideUIType"
-          :items="[
-            { label: t.record, icon: IconType.DESCRIPTION, value: SideUIType.RECORD },
-            { label: t.tree, icon: IconType.TREE, value: SideUIType.BRANCH_TREE },
-            { label: t.recordProperties, icon: IconType.INFO, value: SideUIType.INFO },
-          ]"
+          :items="sideUIItems"
           :height="selectorHeight"
         />
       </div>
@@ -98,11 +108,13 @@ enum BottomUIType {
   BRANCH_TREE = "branchTree",
   COMMENT = "comment",
   INFO = "info",
+  SEARCH = "search",
 }
 enum SideUIType {
   RECORD = "record",
   BRANCH_TREE = "branchTree",
   INFO = "info",
+  SEARCH = "search",
 }
 </script>
 
@@ -118,8 +130,10 @@ import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
+import EngineAnalytics from "@/renderer/view/tab/EngineAnalytics.vue";
 import { isIOS } from "@/renderer/helpers/env";
 import { IconType } from "@/renderer/assets/icons";
+import { buildProfile } from "virtual:shogihome/build-profile";
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;
@@ -130,9 +144,43 @@ const minRecordViewHeight = 130;
 // それ以外の環境もドロップシャドウの高さを考慮してマージンを持たせる。
 const safeAreaMarginY = isIOS() ? 21 : 10;
 
+// 「思考」タブ (エンジンの読み筋) を出すかどうか。
+//
+// モバイルの UI は画面が狭く、既定では出さない。WebAssembly エンジンを足した版を
+// 作る場合に、ビルドプロファイルで有効にする (specs/build-profile.md)。
+const showSearchTab = buildProfile.features.mobileSearchTab;
+
+// 狭い画面に収めるため、列は読み筋の判断に要るものだけに絞る。
+// 検討中に開くものなので、指し手を送るボタンも出さない。
+const searchTabProps = {
+  historyMode: false,
+  showHeader: false,
+  showTimeColumn: false,
+  showNodesColumn: false,
+  showPlayButton: false,
+};
+
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight - safeAreaMarginY));
 const bottomUIType = ref(BottomUIType.RECORD);
 const sideUIType = ref(SideUIType.RECORD);
+
+const bottomUIItems = computed(() => [
+  { label: t.record, icon: IconType.DESCRIPTION, value: BottomUIType.RECORD },
+  { label: t.tree, icon: IconType.TREE, value: BottomUIType.BRANCH_TREE },
+  { label: t.comments, icon: IconType.COMMENT, value: BottomUIType.COMMENT },
+  { label: t.recordProperties, icon: IconType.INFO, value: BottomUIType.INFO },
+  ...(showSearchTab
+    ? [{ label: t.searchLog, icon: IconType.BRAIN, value: BottomUIType.SEARCH }]
+    : []),
+]);
+const sideUIItems = computed(() => [
+  { label: t.record, icon: IconType.DESCRIPTION, value: SideUIType.RECORD },
+  { label: t.tree, icon: IconType.TREE, value: SideUIType.BRANCH_TREE },
+  { label: t.recordProperties, icon: IconType.INFO, value: SideUIType.INFO },
+  ...(showSearchTab
+    ? [{ label: t.searchLog, icon: IconType.BRAIN, value: SideUIType.SEARCH }]
+    : []),
+]);
 
 const windowLazyUpdate = new Lazy();
 const updateSize = () => {
@@ -206,5 +254,11 @@ onUnmounted(() => {
 }
 .controls button .icon {
   height: 68%;
+}
+/* EngineAnalytics は文字色と背景を親からもらう作りになっている
+   (TabPane / CustomLayout の .tab-content と同じ)。指定しないと文字が見えない。 */
+.search-view {
+  color: var(--text-color);
+  background-color: var(--tab-content-bg-color);
 }
 </style>
