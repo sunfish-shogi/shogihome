@@ -226,6 +226,15 @@ export const zh_tw: Texts = {
   startResearch: "檢討開始",
   endResearch: "結束檢討",
   startEndResearch: "檢討開始/結束",
+  copyAnalysisForLLM: "LLM解説用にコピー", // TODO: Translate
+  analysisCopyPrompt: "LLM解説用プロンプト", // TODO: Translate
+  defaultAnalysisCopyPrompt:
+    "以下の将棋の局面とエンジンの読み筋をもとに、局面の特徴、各候補手の狙い、注意すべき応手を日本語で解説してください。\n提供された読み筋と評価値を根拠にし、推測は推測と明記してください。", // TODO: Translate
+  noAnalysisToCopy:
+    "現在の局面に対応する読み筋がありません。検討を開始し、読み筋が表示されてからコピーしてください。", // TODO: Translate
+  analysisCopyScoreNote:
+    "評価値はこの局面の手番側から見た値です。cp はエンジンの評価値（正は有利、負は不利）、mate は詰み手数（正は詰ませる側、負は詰まされる側、0 は詰まされた状態）です。mate の + / - は手数未確定を示します。>= / <= は評価値の下限 / 上限です。候補ごとの探索深さは異なる場合があります。", // TODO: Translate
+  analysisCopyTruncatedPV: "解釈できない指し手以降を省略", // TODO: Translate
   recordAnalysis: "棋譜解析",
   analysis: "解析",
   analyze: "解析開始",

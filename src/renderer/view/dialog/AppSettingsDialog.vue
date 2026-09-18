@@ -729,6 +729,18 @@
           ]"
         />
       </div>
+      <div v-if="isNative()" class="form-item">
+        <label for="analysis-copy-prompt" class="form-item-label-wide">
+          {{ t.analysisCopyPrompt }}
+        </label>
+        <textarea
+          id="analysis-copy-prompt"
+          v-model="update.analysisCopyPrompt"
+          class="analysis-copy-prompt"
+          rows="6"
+          @keydown.enter.stop
+        ></textarea>
+      </div>
     </div>
     <!-- アプリバージョン -->
     <div
@@ -950,6 +962,7 @@ const update = ref({
   badMoveLevelThreshold3: org.badMoveLevelThreshold3,
   badMoveLevelThreshold4: org.badMoveLevelThreshold4,
   maxPVTextLength: org.maxPVTextLength,
+  analysisCopyPrompt: org.analysisCopyPrompt,
   searchCommentFormat: org.searchCommentFormat,
   enableAppLog: org.enableAppLog,
   enableUSILog: org.enableUSILog,
@@ -1065,6 +1078,11 @@ input.file-path {
 }
 .selector {
   max-width: 400px;
+}
+.analysis-copy-prompt {
+  width: 340px;
+  max-width: 100%;
+  resize: vertical;
 }
 button.auxiliary {
   margin-left: 5px;

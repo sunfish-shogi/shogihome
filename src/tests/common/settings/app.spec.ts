@@ -8,6 +8,19 @@ import {
 } from "@/common/settings/app.js";
 
 describe("settings/app", () => {
+  it("normalizes legacy settings and preserves custom or empty analysis prompts", () => {
+    const legacy: Partial<AppSettings> = { ...defaultAppSettings() };
+    delete legacy.analysisCopyPrompt;
+    expect(normalizeAppSettings(legacy as AppSettings).analysisCopyPrompt).toBe(
+      defaultAppSettings().analysisCopyPrompt,
+    );
+    for (const analysisCopyPrompt of ["説明してください。\n具体的に。", ""]) {
+      expect(
+        normalizeAppSettings({ ...defaultAppSettings(), analysisCopyPrompt }).analysisCopyPrompt,
+      ).toBe(analysisCopyPrompt);
+    }
+  });
+
   it("normalize", () => {
     const result = normalizeAppSettings(defaultAppSettings(), {
       returnCode: "\r\n",

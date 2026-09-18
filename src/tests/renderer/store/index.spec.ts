@@ -30,6 +30,7 @@ import { useConfirmationStore } from "@/renderer/store/confirm.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { mateSearchSettings } from "@/tests/mock/mate.js";
 import { MateSearchManager } from "@/renderer/store/mate.js";
+import { t } from "@/common/i18n/index.js";
 
 vi.mock("@/renderer/devices/audio.js");
 vi.mock("@/renderer/ipc/api.js");
@@ -767,6 +768,71 @@ describe("store/index", () => {
 
     store.copyRecordUSEN();
     expect(writeText).lastCalledWith("~0.6y22jm7ku0e4.");
+  });
+
+  describe("copyAnalysisForLLM", () => {
+    const writeText = vi.fn();
+    let restoreNavigator: () => void;
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+      writeText.mockReset().mockResolvedValue(undefined);
+      const spy = vi.spyOn(global, "navigator", "get").mockReturnValue({
+        clipboard: { writeText },
+      } as unknown as Navigator);
+      restoreNavigator = () => spy.mockRestore();
+    });
+
+    afterEach(() => restoreNavigator());
+
+    const createStoreWithAnalysis = () => {
+      const store = createStore();
+      store.updateUSIInfo(101, store.record.position, "Test engine", {
+        pv: ["7g7f", "3c3d"],
+        scoreCP: 120,
+      });
+      vi.runOnlyPendingTimers();
+      return store;
+    };
+
+    it("copies a snapshot with the configured prompt without a success notification", async () => {
+      await useAppSettings().updateAppSettings({ analysisCopyPrompt: "独自のプロンプト" });
+      const store = createStoreWithAnalysis();
+      let finishWrite!: () => void;
+      writeText.mockImplementationOnce(
+        () => new Promise<void>((resolve) => (finishWrite = resolve)),
+      );
+      const pending = store.copyAnalysisForLLM();
+      expect(writeText).toHaveBeenCalledOnce();
+      expect(writeText.mock.calls[0][0]).toMatch(/^独自のプロンプト\n\n## BOD/);
+      expect(writeText.mock.calls[0][0]).toContain("Test engine");
+      expect(writeText.mock.calls[0][0]).toContain("▲７六歩△３四歩");
+      expect(useMessageStore().hasMessage).toBe(false);
+      finishWrite();
+      await pending;
+      expect(useMessageStore().hasMessage).toBe(false);
+    });
+
+    it("leaves the clipboard unchanged without analysis", async () => {
+      await createStore().copyAnalysisForLLM();
+      expect(writeText).not.toHaveBeenCalled();
+      expect(useMessageStore().message.text).toBe(t.noAnalysisToCopy);
+    });
+
+    it("rejects old analysis immediately after a position change", async () => {
+      const store = createStoreWithAnalysis();
+      store.pasteRecord("position startpos moves 2g2f");
+      await store.copyAnalysisForLLM();
+      expect(writeText).not.toHaveBeenCalled();
+      expect(useMessageStore().message.text).toBe(t.noAnalysisToCopy);
+    });
+
+    it("reports clipboard failure without a success notification", async () => {
+      writeText.mockRejectedValueOnce(new Error("Clipboard unavailable"));
+      await createStoreWithAnalysis().copyAnalysisForLLM();
+      expect(useErrorStore().errors).toEqual([{ message: "Clipboard unavailable", count: 1 }]);
+      expect(useMessageStore().hasMessage).toBe(false);
+    });
   });
 
   it("copyBoard", () => {

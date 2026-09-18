@@ -259,6 +259,10 @@ function createMenuTemplate(window: BrowserWindow) {
       label: t.research,
       submenu: [
         menuItem(t.startEndResearch, MenuEvent.TOGGLE_RESEARCH, null, "CmdOrCtrl+R"),
+        menuItem(t.copyAnalysisForLLM, MenuEvent.COPY_ANALYSIS_FOR_LLM, [
+          AppState.NORMAL,
+          AppState.ANALYSIS,
+        ]),
         { type: "separator" },
         menuItem(
           t.analyze,

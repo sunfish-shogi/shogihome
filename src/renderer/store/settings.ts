@@ -257,6 +257,9 @@ class AppSettingsStore {
   get maxPVTextLength(): number {
     return this.merged.maxPVTextLength;
   }
+  get analysisCopyPrompt(): string {
+    return this.merged.analysisCopyPrompt;
+  }
   get searchCommentFormat(): SearchCommentFormat {
     return this.merged.searchCommentFormat;
   }

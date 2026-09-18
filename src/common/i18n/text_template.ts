@@ -212,6 +212,12 @@ export type Texts = {
   startResearch: string;
   endResearch: string;
   startEndResearch: string;
+  copyAnalysisForLLM: string;
+  analysisCopyPrompt: string;
+  defaultAnalysisCopyPrompt: string;
+  noAnalysisToCopy: string;
+  analysisCopyScoreNote: string;
+  analysisCopyTruncatedPV: string;
   recordAnalysis: string;
   analysis: string;
   analyze: string;

@@ -8,6 +8,22 @@ vi.mock("@/renderer/ipc/api.js");
 const mockAPI = api as Mocked<API>;
 
 describe("store/index", () => {
+  it("updates, saves and cancels edits to the analysis prompt", async () => {
+    const store = createAppSettings();
+    const analysisCopyPrompt = "局面を解説してください。\n候補手を比較してください。";
+    await store.updateAppSettings({ analysisCopyPrompt });
+    expect(store.analysisCopyPrompt).toBe(analysisCopyPrompt);
+    expect(mockAPI.saveAppSettings).toHaveBeenCalledWith(
+      expect.objectContaining({ analysisCopyPrompt }),
+    );
+    store.setTemporaryUpdate({ analysisCopyPrompt: "一時的な編集" });
+    expect(store.analysisCopyPrompt).toBe("一時的な編集");
+    store.clearTemporaryUpdate();
+    expect(store.analysisCopyPrompt).toBe(analysisCopyPrompt);
+    await store.updateAppSettings({ analysisCopyPrompt: "" });
+    expect(store.analysisCopyPrompt).toBe("");
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
   });

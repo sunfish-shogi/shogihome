@@ -44,6 +44,7 @@ export enum MenuEvent {
   REMOVE_CURRENT_MOVE = "remvoeCurrentMove",
   START_POSITION_EDITING = "startPositionEditing",
   TOGGLE_RESEARCH = "toggleResearch",
+  COPY_ANALYSIS_FOR_LLM = "copyAnalysisForLLM",
   START_ANALYSIS = "startAnalysis",
   STOP_ANALYSIS = "stopAnalysis",
   START_BATCH_ANALYSIS = "startBatchAnalysis",

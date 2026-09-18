@@ -219,6 +219,15 @@ export const en: Texts = {
   startResearch: "Start Research",
   endResearch: "End Research",
   startEndResearch: "Start/End Research",
+  copyAnalysisForLLM: "Copy for LLM commentary",
+  analysisCopyPrompt: "Prompt for LLM commentary",
+  defaultAnalysisCopyPrompt:
+    "Explain the following shogi position and engine principal variations, including the features of the position, the ideas behind each candidate move, and important replies.\nBase your explanation on the supplied variations and scores, and clearly identify speculation.",
+  noAnalysisToCopy:
+    "No principal variations are available for the current position. Start research and wait for variations before copying.",
+  analysisCopyScoreNote:
+    "Scores are from the side to move in this position. cp is the engine score (positive is favorable; negative is unfavorable). mate is the number of moves to mate (positive: delivering mate; negative: being mated; zero: already mated). A mate value of + / - means the distance is unknown. >= / <= denotes a lower / upper bound. Search depths may differ between candidates.",
+  analysisCopyTruncatedPV: "truncated before an uninterpretable move",
   recordAnalysis: "Record Analysis",
   analysis: "Analyze",
   analyze: "Analyze",

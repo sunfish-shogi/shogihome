@@ -162,6 +162,9 @@ export function setup(): void {
       case MenuEvent.COPY_BOARD_BOD:
         store.copyBoardBOD();
         break;
+      case MenuEvent.COPY_ANALYSIS_FOR_LLM:
+        store.copyAnalysisForLLM();
+        break;
       case MenuEvent.PASTE_RECORD:
         store.showPasteDialog();
         break;

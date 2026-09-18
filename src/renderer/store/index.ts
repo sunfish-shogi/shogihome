@@ -83,6 +83,7 @@ import {
 } from "./nextmove.js";
 import { NextMoveGenerationSettings } from "@/common/settings/nextmove.js";
 import { NextMoveCollection } from "@/common/nextmove/collection.js";
+import { formatAnalysisClipboard } from "@/renderer/helpers/analysisClipboard.js";
 
 type CandidateMove = {
   move: Move;
@@ -1558,6 +1559,23 @@ class Store {
   copyBoardBOD(): void {
     const str = exportBOD(this.recordManager.record);
     navigator.clipboard.writeText(str);
+  }
+
+  async copyAnalysisForLLM(): Promise<void> {
+    try {
+      const text = formatAnalysisClipboard(
+        this.recordManager.record,
+        this.usiMonitors,
+        useAppSettings().analysisCopyPrompt,
+      );
+      if (!text) {
+        useMessageStore().enqueue({ text: t.noAnalysisToCopy });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      useErrorStore().add(e);
+    }
   }
 
   pasteRecord(

@@ -273,6 +273,7 @@ export type AppSettings = {
   badMoveLevelThreshold3: number;
   badMoveLevelThreshold4: number;
   maxPVTextLength: number;
+  analysisCopyPrompt: string;
   searchCommentFormat: SearchCommentFormat;
 
   // Record View
@@ -441,6 +442,7 @@ export function defaultAppSettings(opt?: {
     badMoveLevelThreshold3: 20,
     badMoveLevelThreshold4: 50,
     maxPVTextLength: 15,
+    analysisCopyPrompt: t.defaultAnalysisCopyPrompt,
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     showElapsedTimeInRecordView: true,
     showCommentInRecordView: true,

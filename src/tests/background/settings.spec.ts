@@ -96,6 +96,7 @@ describe("background/settings", () => {
     await saveUSIEngines(usiEngines);
     const appSettings = defaultAppSettings();
     appSettings.autoSaveDirectory = "path/to/autoSaveDirectory";
+    appSettings.analysisCopyPrompt = "局面を解説してください。\n候補手を比較してください。";
     await saveAppSettings(appSettings);
     const batchConversionSettings = defaultBatchConversionSettings();
     batchConversionSettings.source = "path/to/source";
@@ -129,6 +130,7 @@ describe("background/settings", () => {
     expect(loadWindowSettings().width).toBe(777);
     expect((await loadUSIEngines()).engineList).toEqual([testUSIEngine]);
     expect((await loadAppSettings()).autoSaveDirectory).toBe("path/to/autoSaveDirectory");
+    expect((await loadAppSettings()).analysisCopyPrompt).toBe(appSettings.analysisCopyPrompt);
     expect((await loadBatchConversionSettings()).source).toBe("path/to/source");
     expect((await loadGameSettings()).black.uri).toBe("test-uri-player");
     expect((await loadCSAGameSettingsHistory()).player.uri).toBe("test-usi-player");
