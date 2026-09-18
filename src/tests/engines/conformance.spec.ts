@@ -7,13 +7,7 @@ import path from "node:path";
 import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { Position } from "tsshogi";
 import { enginePathOf, isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog.js";
-import {
-  handshake,
-  launchEngine,
-  listEngineDirs,
-  PUBLIC_ENGINES_DIR,
-  readManifest,
-} from "./driver.js";
+import { engineDirPath, handshake, launchEngine, listEngineDirs, readManifest } from "./driver.js";
 
 const engineDirs = listEngineDirs();
 
@@ -32,7 +26,7 @@ describe("engines/conformance", () => {
 
     it("マニフェストと成果物が揃っていること", () => {
       const manifest = readManifest(dir);
-      const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+      const engineDir = engineDirPath(dir);
       expect(fs.existsSync(path.join(engineDir, manifest.module))).toBeTruthy();
       // Emscripten の出力は <module>.js と同じ場所に .wasm を置く。
       const wasm = manifest.module.replace(/\.js$/, ".wasm");
@@ -46,7 +40,7 @@ describe("engines/conformance", () => {
     // ShogiHome は engine.json の licenses を読んでライセンス表示に載せる。
     it("ライセンスが宣言され、全文が同梱されていること", () => {
       const manifest = readManifest(dir);
-      const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+      const engineDir = engineDirPath(dir);
       expect(manifest.licenses?.length, "licenses").toBeTruthy();
       for (const license of manifest.licenses || []) {
         const file = path.join(engineDir, license.file);
@@ -156,7 +150,7 @@ describe("engines/conformance", () => {
   it("成果物のサイズが妥当であること", () => {
     const LIMIT_MB = 8;
     for (const dir of engineDirs) {
-      const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+      const engineDir = engineDirPath(dir);
       let total = 0;
       const walk = (target: string) => {
         for (const entry of fs.readdirSync(target, { withFileTypes: true })) {

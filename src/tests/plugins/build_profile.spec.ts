@@ -4,8 +4,12 @@ import path from "node:path";
 import {
   defaultBuildProfile,
   loadBuildProfile,
-  parseBuildProfile,
+  parseBuildProfile as parse,
+  rendererBuildProfile,
 } from "@plugins/build_profile.js";
+
+// 相対パスの基準。engines.dirs を使わないケースでは参照されない。
+const parseBuildProfile = (json: unknown, baseDir = os.tmpdir()) => parse(json, baseDir);
 
 const validProfile = () => ({
   features: { mobileSearchTab: true },
@@ -79,6 +83,31 @@ describe("plugins/build_profile", () => {
     );
   });
 
+  // 別のリポジトリが public/engines/ へコピーせずにエンジンを組み込むための項目。
+  // パスはプロファイルからの相対で書く。
+  it("engineDirs", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-engines-"));
+    fs.mkdirSync(path.join(dir, "engines"));
+    expect(parseBuildProfile({ engines: { dirs: ["./engines"] } }, dir).engineDirs).toEqual([
+      path.join(dir, "engines"),
+    ]);
+
+    // 置いたつもりのエンジンが黙って消えるのを防ぐため、無い場所はビルドを止める。
+    expect(() => parseBuildProfile({ engines: { dirs: ["./missing"] } }, dir)).toThrow(
+      /engines.dirs\[0\] does not exist/,
+    );
+    expect(() => parseBuildProfile({ engines: { dirs: "./engines" } }, dir)).toThrow(
+      /engines.dirs must be an array/,
+    );
+    fs.rmSync(dir, { recursive: true });
+  });
+
+  // ビルド機のパスは配布物に混ぜない。renderer へ渡すのは features と license だけ。
+  it("rendererBuildProfile", () => {
+    const profile = parseBuildProfile(validProfile());
+    expect(Object.keys(rendererBuildProfile(profile))).toEqual(["features", "license"]);
+  });
+
   it("loadBuildProfile", () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-profile-"));
     const file = path.join(dir, "profile.json");
@@ -98,8 +127,14 @@ describe("plugins/build_profile", () => {
   // 同じ JSON が仕様書の例としても載っているため、ずれていないことも見る
   // (書式を変えたときに片方だけ直して、複製した側が弾かれるのを防ぐ)。
   it("sample", () => {
+    // サンプルは仕様書が示す配置 (プロファイルの隣に engines/) でそのまま読めること。
     const file = "specs/build-profile.sample.json";
-    const profile = loadBuildProfile(file);
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-sample-"));
+    fs.mkdirSync(path.join(dir, "engines"));
+    fs.copyFileSync(file, path.join(dir, "profile.json"));
+    const profile = loadBuildProfile(path.join(dir, "profile.json"));
+    expect(profile.engineDirs).toEqual([path.join(dir, "engines")]);
+    fs.rmSync(dir, { recursive: true });
     expect(profile.features.mobileSearchTab).toBe(true);
     expect(profile.license.distribution?.text).toBeTruthy();
     expect(profile.license.distribution?.url).toBeTruthy();

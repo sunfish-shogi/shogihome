@@ -36,6 +36,10 @@ export type BuildProfileDistribution = {
 };
 
 export type BuildProfile = {
+  // 追加で読み込むエンジンのディレクトリ (プロファイルからの相対で書き、ここでは絶対パス)。
+  // public/engines/ へコピーせずに、別のリポジトリに置いたままエンジンを組み込むためのもの。
+  // **ビルド時にだけ使う。** ビルド機のパスなので renderer へは渡さない。
+  engineDirs: string[];
   features: {
     // モバイルウェブの UI に「思考」タブを出す。
     mobileSearchTab: boolean;
@@ -51,11 +55,17 @@ export type BuildProfile = {
 
 export function defaultBuildProfile(): BuildProfile {
   return {
+    engineDirs: [],
     features: {
       mobileSearchTab: false,
     },
     license: {},
   };
+}
+
+// renderer へ渡す部分。ビルド時にだけ使う項目はここで落とす。
+export function rendererBuildProfile(profile: BuildProfile) {
+  return { features: profile.features, license: profile.license };
 }
 
 function fail(message: string): never {
@@ -107,9 +117,31 @@ function asHttpsURL(value: unknown, path: string): string {
   return text;
 }
 
-export function parseBuildProfile(json: unknown): BuildProfile {
-  const record = asRecord(json, "profile", ["features", "license"]);
+// エンジンのディレクトリはプロファイルからの相対で書く。
+// **存在しないディレクトリはビルドを失敗させる。** 黙って無視すると、組み込んだつもりの
+// エンジンが一覧から消えたまま配布物ができてしまうため (名前の検証と同じ考え方)。
+function asEngineDirs(value: unknown, key: string, baseDir: string): string[] {
+  if (!Array.isArray(value)) {
+    fail(`${key} must be an array`);
+  }
+  return value.map((entry, i) => {
+    const dir = path.resolve(baseDir, asString(entry, `${key}[${i}]`));
+    if (!fs.existsSync(dir)) {
+      fail(`${key}[${i}] does not exist: ${dir}`);
+    }
+    return dir;
+  });
+}
+
+export function parseBuildProfile(json: unknown, baseDir: string): BuildProfile {
+  const record = asRecord(json, "profile", ["engines", "features", "license"]);
   const profile = defaultBuildProfile();
+  if (record.engines !== undefined) {
+    const engines = asRecord(record.engines, "profile.engines", ["dirs"]);
+    if (engines.dirs !== undefined) {
+      profile.engineDirs = asEngineDirs(engines.dirs, "profile.engines.dirs", baseDir);
+    }
+  }
   if (record.features !== undefined) {
     const features = asRecord(record.features, "profile.features", ["mobileSearchTab"]);
     if (features.mobileSearchTab !== undefined) {
@@ -159,7 +191,12 @@ export function loadBuildProfile(file?: string): BuildProfile {
   } catch (e) {
     throw new Error(`failed to parse build profile: ${fullPath}: ${e}`);
   }
-  return parseBuildProfile(json);
+  return parseBuildProfile(json, path.dirname(fullPath));
+}
+
+// 環境変数で指定されたプロファイル。ビルドの設定 (vite.config.mts) から読むためのもの。
+export function buildProfileFromEnv(): BuildProfile {
+  return loadBuildProfile(process.env[BUILD_PROFILE_ENV_NAME]);
 }
 
 export function buildProfile(): Plugin {
@@ -180,7 +217,9 @@ export function buildProfile(): Plugin {
       if (id !== RESOLVED_MODULE_ID) {
         return undefined;
       }
-      return `export const buildProfile = ${JSON.stringify(loadBuildProfile(file))};\n`;
+      // ビルド機のパスをバンドルへ混ぜないため、renderer 向けの部分だけを渡す。
+      const profile = rendererBuildProfile(loadBuildProfile(file));
+      return `export const buildProfile = ${JSON.stringify(profile)};\n`;
     },
   };
 }

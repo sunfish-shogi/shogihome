@@ -24,10 +24,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    // 組み込みエンジンの一覧は public/engines/ の内容からビルド時に決める。
-    // Electron 版と単体テストでも同じ仮想モジュールを解決する必要があるため、
-    // Web 版だけの設定 (vite.config-pwa.mts) ではなくここに置く。
-    builtinEngines(resolve(import.meta.dirname, "public/engines")),
+    // 組み込みエンジンの一覧は public/engines/ とビルドプロファイルの
+    // engines.dirs からビルド時に決める。Electron 版と単体テストでも同じ仮想モジュールを
+    // 解決する必要があるため、Web 版だけの設定 (vite.config-pwa.mts) ではなくここに置く。
+    builtinEngines(),
     // 特別版のビルドの設定 (SHOGIHOME_BUILD_PROFILE)。
     // 指定が無ければ既定のプロファイルになり、通常のビルドの挙動は変わらない。
     buildProfile(),

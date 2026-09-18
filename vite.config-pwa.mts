@@ -5,7 +5,11 @@ import path from "node:path";
 import { defineConfig, type Plugin } from "vite";
 import base from "./vite.config.mjs";
 import { VitePWA } from "vite-plugin-pwa";
-import { listBuiltinEngineDirs } from "./plugins/builtin_engines.ts";
+import {
+  builtinEngineRoots,
+  listBuiltinEngines,
+  type BuiltinEngine,
+} from "./plugins/builtin_engines.ts";
 
 // ライセンス表示に必要なファイルを事前キャッシュの一覧へ足す。
 //
@@ -19,36 +23,34 @@ import { listBuiltinEngineDirs } from "./plugins/builtin_engines.ts";
 // マニフェストの本検証は適合性テストが行うため、ここでは読めない・宣言が無いものを
 // 飛ばすだけにして、ビルドを止めない。
 function engineLicenseManifestEntries(): { url: string; revision: string }[] {
-  const enginesDir = path.resolve(import.meta.dirname, "public/engines");
-  if (!fs.existsSync(enginesDir)) {
-    return [];
-  }
   const entries: { url: string; revision: string }[] = [];
-  const add = (file: string) => {
-    const fullPath = path.join(enginesDir, file);
+  const add = (engine: BuiltinEngine, file: string) => {
+    const fullPath = path.join(engine.dir, file);
     if (!fs.existsSync(fullPath)) {
       return;
     }
     entries.push({
-      url: `engines/${file}`,
+      // 成果物の置き場所は public/engines/ の外のこともあるが (ビルドプロファイルの
+      // engines.dirs)、配信される URL は常に engines/<dir>/ である。
+      url: `engines/${engine.name}/${file}`,
       // 事前キャッシュは URL と revision の組で更新を判断する。
       // エンジンの成果物はファイル名にハッシュを持たないため、内容から作る。
       revision: crypto.createHash("sha256").update(fs.readFileSync(fullPath)).digest("hex"),
     });
   };
-  // 対象のディレクトリは仮想モジュールの一覧と同じものを使う (名前の検証もそこで行う)。
-  for (const dir of listBuiltinEngineDirs(enginesDir)) {
+  // 対象のエンジンは仮想モジュールの一覧と同じものを使う (名前の検証もそこで行う)。
+  for (const engine of listBuiltinEngines(builtinEngineRoots())) {
     let manifest;
     try {
-      manifest = JSON.parse(fs.readFileSync(path.join(enginesDir, dir, "engine.json"), "utf8"));
+      manifest = JSON.parse(fs.readFileSync(path.join(engine.dir, "engine.json"), "utf8"));
     } catch {
       continue;
     }
-    add(`${dir}/engine.json`);
+    add(engine, "engine.json");
     for (const license of manifest.licenses || []) {
       // 上位ディレクトリを参照するパスは適合性テストが弾く。ここでは無視する。
       if (typeof license?.file === "string" && !license.file.split("/").includes("..")) {
-        add(`${dir}/${license.file}`);
+        add(engine, license.file);
       }
     }
   }

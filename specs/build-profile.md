@@ -22,6 +22,9 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 
 ```json
 {
+  "engines": {
+    "dirs": ["./engines"]
+  },
   "features": {
     "mobileSearchTab": true
   },
@@ -38,6 +41,7 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 
 | 項目                             | 既定    | 内容                                                             |
 | -------------------------------- | ------- | ---------------------------------------------------------------- |
+| `engines.dirs`                   | (無し)  | エンジンの置き場所。プロファイルからの相対で書く                 |
 | `features.mobileSearchTab`       | `false` | モバイルウェブの UI に「思考」タブ (読み筋と評価値グラフ) を出す |
 | `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                             |
 | `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                            |
@@ -57,14 +61,14 @@ URL はライセンス表示からそのままブラウザへ渡すため、**ht
 
 ## エンジンを組み込む
 
-エンジンの成果物は `public/engines/<dir>/` に置く。`engine.json` を持つディレクトリは
-ビルド時に自動で一覧に載るため、プロファイルに書く項目は無い
-([`wasm-engine.md`](./wasm-engine.md) の「エンジンの追加」)。
+**エンジンの成果物は別のリポジトリに置いたままでよい。** `engines.dirs` でその場所を指すと、
+`engine.json` を持つディレクトリがビルド時に一覧へ載り、`engines/<dir>/` として配信される
+(本家が `public/engines/` に置いているものと同じ扱い。開発サーバーでも配信される)。
 
 ```
 shogihome-plus/                  別のリポジトリ
 ├── shogihome/                   ShogiHome (submodule など。無改変)
-├── engines/
+├── engines/                     ← engines.dirs で指す
 │   └── example/                 エンジン側リポジトリのビルド成果物
 │       ├── engine.json
 │       ├── example.js / example.wasm
@@ -78,18 +82,21 @@ shogihome-plus/                  別のリポジトリ
 #!/bin/bash
 # build.sh
 set -eu
-cd "$(dirname "$0")"
-cp -r engines/* shogihome/public/engines/
-cd shogihome
+cd "$(dirname "$0")"/shogihome
 npm ci
 SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json \
   npx vite build -c vite.config-pwa.mts --outDir ../../dist
 ```
 
-エンジンが仕様を満たしているかは、成果物を配置した状態で適合性テストを走らせて確認できる。
+ディレクトリ名がそのまま実行時の `engines/<dir>/` になるため、**名前は
+`[A-Za-z0-9._-]+` でなければならず、本家のエンジンと重複してもいけない。**
+どちらもビルドを失敗させる (置いたエンジンが黙って消えるのを防ぐため)。
+
+エンジンが仕様を満たしているかは、同じプロファイルを渡して適合性テストを走らせれば
+確認できる。`engines.dirs` のエンジンも対象になる。
 
 ```bash
-npx vitest run src/tests/engines/
+SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npx vitest run src/tests/engines/
 ```
 
 ## ライセンスの注意
