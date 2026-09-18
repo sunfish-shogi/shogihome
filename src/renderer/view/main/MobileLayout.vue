@@ -37,17 +37,23 @@
           v-show="bottomUIType === BottomUIType.INFO"
           :size="bottomViewSize"
         />
-        <EngineAnalytics
+        <div
           v-if="showRecordViewOnBottom && showSearchTab"
           v-show="bottomUIType === BottomUIType.SEARCH"
-          class="search-view"
+          class="column"
           :style="{
             width: `${windowSize.width}px`,
             height: `${bottomViewSize.height}px`,
           }"
-          :size="bottomViewSize"
-          v-bind="searchTabProps"
-        />
+        >
+          <EngineAnalytics
+            class="search-view"
+            :style="{ height: `${bottomSearchView.analytics.height}px` }"
+            :size="bottomSearchView.analytics"
+            v-bind="searchTabProps"
+          />
+          <EvaluationChart :size="bottomSearchView.chart" v-bind="searchTabChartProps" />
+        </div>
         <HorizontalSelector
           v-if="showRecordViewOnBottom"
           v-model:value="bottomUIType"
@@ -84,14 +90,20 @@
           }"
         />
         <RecordInfo v-show="sideUIType === SideUIType.INFO" :size="sideViewSize" />
-        <EngineAnalytics
+        <div
           v-if="showSearchTab"
           v-show="sideUIType === SideUIType.SEARCH"
-          class="search-view"
+          class="column"
           :style="{ height: `${sideViewSize.height}px` }"
-          :size="sideViewSize"
-          v-bind="searchTabProps"
-        />
+        >
+          <EngineAnalytics
+            class="search-view"
+            :style="{ height: `${sideSearchView.analytics.height}px` }"
+            :size="sideSearchView.analytics"
+            v-bind="searchTabProps"
+          />
+          <EvaluationChart :size="sideSearchView.chart" v-bind="searchTabChartProps" />
+        </div>
         <HorizontalSelector
           v-model:value="sideUIType"
           :items="sideUIItems"
@@ -120,7 +132,7 @@ enum SideUIType {
 
 <script setup lang="ts">
 import { RectSize } from "@/common/assets/geometry";
-import { BoardLayoutType } from "@/common/settings/layout";
+import { BoardLayoutType, EvaluationChartType } from "@/common/settings/layout";
 import { Lazy } from "@/common/helpers/lazy";
 import BoardPane from "@/renderer/view/main/BoardPane.vue";
 import RecordPane from "@/renderer/view/main/RecordPane.vue";
@@ -131,6 +143,8 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import { t } from "@/common/i18n";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
 import EngineAnalytics from "@/renderer/view/tab/EngineAnalytics.vue";
+import EvaluationChart from "@/renderer/view/tab/EvaluationChart.vue";
+import { useAppSettings } from "@/renderer/store/settings";
 import { isIOS } from "@/renderer/helpers/env";
 import { IconType } from "@/renderer/assets/icons";
 import { buildProfile } from "virtual:shogihome/build-profile";
@@ -159,6 +173,17 @@ const searchTabProps = {
   showNodesColumn: false,
   showPlayButton: false,
 };
+
+const appSettings = useAppSettings();
+
+// 評価値グラフは生の評価値のみを出す。勝率換算は別に場所を要するので置かない。
+// 凡例も画面の幅に対して大きいため出さない。
+const searchTabChartProps = computed(() => ({
+  type: EvaluationChartType.RAW,
+  thema: appSettings.thema,
+  coefficientInSigmoid: appSettings.coefficientInSigmoid,
+  showLegend: false,
+}));
 
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight - safeAreaMarginY));
 const bottomUIType = ref(BottomUIType.RECORD);
@@ -236,6 +261,17 @@ const sideViewSize = computed(() => {
     windowSize.height - controlPaneHeight.value - selectorHeight,
   );
 });
+
+// 「思考」タブは上に読み筋、下に評価値グラフを並べる。
+const splitSearchView = (size: RectSize) => {
+  const chartHeight = Math.floor(size.height / 2);
+  return {
+    analytics: new RectSize(size.width, size.height - chartHeight),
+    chart: new RectSize(size.width, chartHeight),
+  };
+};
+const bottomSearchView = computed(() => splitSearchView(bottomViewSize.value));
+const sideSearchView = computed(() => splitSearchView(sideViewSize.value));
 
 onMounted(() => {
   window.addEventListener("resize", updateSize);

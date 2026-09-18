@@ -36,13 +36,13 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 }
 ```
 
-| 項目                             | 既定    | 内容                                                         |
-| -------------------------------- | ------- | ------------------------------------------------------------ |
-| `features.mobileSearchTab`       | `false` | モバイルウェブの UI に「思考」タブ (エンジンの読み筋) を出す |
-| `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                         |
-| `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                        |
-| `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須     |
-| `license.thirdPartyURL`          | 本家    | npm の依存のライセンス一覧の URL                             |
+| 項目                             | 既定    | 内容                                                             |
+| -------------------------------- | ------- | ---------------------------------------------------------------- |
+| `features.mobileSearchTab`       | `false` | モバイルウェブの UI に「思考」タブ (読み筋と評価値グラフ) を出す |
+| `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                             |
+| `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                            |
+| `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須         |
+| `license.thirdPartyURL`          | 本家    | npm の依存のライセンス一覧の URL                                 |
 
 ### 検証
 
