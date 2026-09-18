@@ -17,6 +17,9 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 
 ## 書式
 
+全ての項目を含んだサンプルを [`build-profile.sample.json`](./build-profile.sample.json) に
+置いてある (下の例と同じ内容)。これを複製して書き換えるとよい。
+
 ```json
 {
   "features": {

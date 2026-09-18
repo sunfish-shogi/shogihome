@@ -1,0 +1,13 @@
+{
+  "features": {
+    "mobileSearchTab": true
+  },
+  "license": {
+    "distribution": {
+      "text": "ShogiHome+Example (GPLv3)",
+      "url": "https://github.com/example/shogihome-plus/blob/main/LICENSE",
+      "sourceURL": "https://github.com/example/shogihome-plus"
+    },
+    "thirdPartyURL": "https://example.github.io/shogihome-plus/third-party-licenses.html"
+  }
+}

@@ -93,4 +93,20 @@ describe("plugins/build_profile", () => {
     expect(() => loadBuildProfile(file)).toThrow(/failed to parse build profile/);
     fs.rmSync(dir, { recursive: true });
   });
+
+  // サンプルは配布者がそのまま複製する出発点なので、検証を通ることを実物で確かめる。
+  // 同じ JSON が仕様書の例としても載っているため、ずれていないことも見る
+  // (書式を変えたときに片方だけ直して、複製した側が弾かれるのを防ぐ)。
+  it("sample", () => {
+    const file = "specs/build-profile.sample.json";
+    const profile = loadBuildProfile(file);
+    expect(profile.features.mobileSearchTab).toBe(true);
+    expect(profile.license.distribution?.text).toBeTruthy();
+    expect(profile.license.distribution?.url).toBeTruthy();
+    expect(profile.license.distribution?.sourceURL).toBeTruthy();
+    expect(profile.license.thirdPartyURL).toBeTruthy();
+
+    const doc = fs.readFileSync("specs/build-profile.md", "utf8");
+    expect(doc.match(/```json\n([\s\S]*?)```/)?.[1]).toBe(fs.readFileSync(file, "utf8"));
+  });
 });
