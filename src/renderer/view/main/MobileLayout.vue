@@ -52,7 +52,11 @@
             :size="bottomSearchView.analytics"
             v-bind="searchTabProps"
           />
-          <EvaluationChart :size="bottomSearchView.chart" v-bind="searchTabChartProps" />
+          <EvaluationChart
+            v-if="bottomSearchView.chart"
+            :size="bottomSearchView.chart"
+            v-bind="searchTabChartProps"
+          />
         </div>
         <HorizontalSelector
           v-if="showRecordViewOnBottom"
@@ -102,7 +106,11 @@
             :size="sideSearchView.analytics"
             v-bind="searchTabProps"
           />
-          <EvaluationChart :size="sideSearchView.chart" v-bind="searchTabChartProps" />
+          <EvaluationChart
+            v-if="sideSearchView.chart"
+            :size="sideSearchView.chart"
+            v-bind="searchTabChartProps"
+          />
         </div>
         <HorizontalSelector
           v-model:value="sideUIType"
@@ -153,6 +161,7 @@ const lazyUpdateDelay = 80;
 const selectorHeight = 30;
 const minRecordViewWidth = 250;
 const minRecordViewHeight = 130;
+const minChartHeight = 80;
 
 // iOS の多くのバージョンでは safe-area-inset-bottom が 21px になる。
 // それ以外の環境もドロップシャドウの高さを考慮してマージンを持たせる。
@@ -263,8 +272,13 @@ const sideViewSize = computed(() => {
 });
 
 // 「思考」タブは上に読み筋、下に評価値グラフを並べる。
+// ただしグラフは高さを確保できないと目盛りが潰れて読めないため、
+// 足りない画面では出さず、読み筋に全てを充てる。
 const splitSearchView = (size: RectSize) => {
   const chartHeight = Math.floor(size.height / 2);
+  if (chartHeight < minChartHeight) {
+    return { analytics: size, chart: undefined };
+  }
   return {
     analytics: new RectSize(size.width, size.height - chartHeight),
     chart: new RectSize(size.width, chartHeight),
