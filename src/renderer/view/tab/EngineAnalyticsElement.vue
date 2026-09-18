@@ -188,7 +188,15 @@ const columnStyleMap = reactive({} as { [key: string]: { minWidth: string } });
 const multiPVInput = ref();
 
 onBeforeUpdate(() => {
-  for (const column of (listHeader.value as HTMLElement).childNodes) {
+  // テンプレート ref の設定は描画後のジョブなので、マウントと同じ更新の波で
+  // もう一度描画されると、まだ設定されていないことがある。
+  // (モバイルの画面を回転させると、レイアウトの切り替えと盤面のリサイズが続けて起きる。)
+  // 列幅は次の更新で測り直せるため、ここでは何もしない。
+  const header = listHeader.value as HTMLElement | undefined;
+  if (!header) {
+    return;
+  }
+  for (const column of header.childNodes) {
     if (column instanceof HTMLElement) {
       const className = column.className;
       const width = column.offsetWidth;
