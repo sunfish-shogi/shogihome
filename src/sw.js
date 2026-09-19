@@ -28,7 +28,8 @@ import { RangeRequestsPlugin } from "workbox-range-requests";
 // 照合するので、先に事前キャッシュのルートを足すとそちらがナビゲーションを
 // 拾ってしまい、下の cross-origin isolation のヘッダーが付かない。
 // なお createHandlerBoundToURL() は一覧の登録後でなければ使えない。
-precache(self.__WB_MANIFEST);
+const precacheManifest = self.__WB_MANIFEST;
+precache(precacheManifest);
 
 // --- cross-origin isolation ---------------------------------------------
 //
@@ -104,6 +105,65 @@ registerRoute(
 // ナビゲーション以外を事前キャッシュから返す。
 addRoute();
 
+// --- 外部オリジンに置かれたエンジンのアセット ----------------------------
+//
+// マニフェストが assetBaseURL を宣言している場合、wasm と評価パラメータは別の
+// オリジンから配信される (specs/wasm-engine-abi.md の「6. (d)」)。**Workbox の
+// 正規表現ルートは、クロスオリジンの URL には先頭から一致しなければ当たらない**ため、
+// 下のパスで書いたルートでは拾えず、そのままでは実行時キャッシュが効かない。
+//
+// どのオリジンが対象かはマニフェストが知っている。engine.json はライセンス表示のために
+// 事前キャッシュされているので、**ビルド時に値を注入する仕組みを足さなくても
+// Service Worker 自身が読める。** 配信物と食い違わないのが利点である。
+//
+// 読み込みは非同期だが、**ルートの照合は同期でなければならない**
+// (Workbox の findMatchingRoute は Promise を真として扱うため、非同期のマッチャは
+// 全ての要求に一致してしまう)。そこで照合は拡張子だけで行い、宣言されたオリジンか
+// どうかの判定はハンドラで行って、対象外ならそのまま素通しする。
+const ENGINE_MANIFEST_ENTRY = /(?:^|\/)engines\/[^/]+\/engine\.json$/;
+
+let engineAssetOriginsPromise;
+
+function engineAssetOrigins() {
+  engineAssetOriginsPromise =
+    engineAssetOriginsPromise ||
+    (async () => {
+      const origins = new Set();
+      for (const entry of precacheManifest || []) {
+        const url = typeof entry === "string" ? entry : entry.url;
+        if (!ENGINE_MANIFEST_ENTRY.test(url)) {
+          continue;
+        }
+        try {
+          const response = await matchPrecache(url);
+          const manifest = response && (await response.json());
+          if (manifest && typeof manifest.assetBaseURL === "string") {
+            origins.add(new URL(manifest.assetBaseURL).origin);
+          }
+        } catch {
+          // 読めないマニフェストは飛ばす。キャッシュの対象から漏れるだけで、
+          // 取得そのものは素通しで成立する。
+        }
+      }
+      return origins;
+    })();
+  return engineAssetOriginsPromise;
+}
+
+// このオリジンのものか、マニフェストが宣言した取得先のものか。
+async function isEngineAssetURL(url) {
+  return url.origin === self.location.origin || (await engineAssetOrigins()).has(url.origin);
+}
+
+// 同一オリジンでは engines/ の下にあるものだけを、外部オリジンでは拡張子だけを見る
+// (取得先のパスの形は ShogiHome の関知するところではない)。
+function engineAssetMatcher(pathPattern, externalPattern) {
+  return ({ url }) =>
+    url.origin === self.location.origin
+      ? pathPattern.test(url.pathname)
+      : externalPattern.test(url.pathname);
+}
+
 // --- 実行時キャッシュ ----------------------------------------------------
 
 // 実際に使用された盤・駒の画像だけをキャッシュする。
@@ -158,10 +218,18 @@ const engineModuleStrategy = new StaleWhileRevalidate({
 // (Emscripten が new Worker(new URL("<module>.js", import.meta.url)) を出力する)。
 // 同じ URL がモジュールとしても Worker としても要求されるため、destination を見て
 // 必要なときだけヘッダーを付ける。キャッシュにはヘッダーを足す前のものが入る。
-registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
-  const response = await engineModuleStrategy.handle(options);
-  return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
-});
+// グルーコードとマニフェストは常にこのオリジンから配信される
+// (assetBaseURL の対象は wasm と評価パラメータだけ)。外部オリジンで拾うのは .wasm のみ。
+registerRoute(
+  engineAssetMatcher(/\/engines\/[^?]+\.(?:json|js|wasm)$/, /\.wasm$/),
+  async (options) => {
+    if (!(await isEngineAssetURL(options.url))) {
+      return fetch(options.request);
+    }
+    const response = await engineModuleStrategy.handle(options);
+    return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
+  },
+);
 
 // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
 // 負担が大きすぎるため、実際に使われたものだけを保持する。
@@ -169,16 +237,23 @@ registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
 // NOTE: これらは事前キャッシュと違って revision を持たないため、
 // ファイル名に内容のハッシュを含めること。同じ URL のまま差し替えると
 // 古いファイルが返り続ける。specs/wasm-engine.md の「キャッシュ」を参照。
+const engineDataStrategy = new CacheFirst({
+  cacheName: "shogihome-engine-data",
+  plugins: [
+    new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+    new CacheableResponsePlugin({ statuses: [0, 200] }),
+    new RangeRequestsPlugin(),
+  ],
+});
+
 registerRoute(
-  /\/engines\/[^?]+\.(?:data|bin|nnue)$/,
-  new CacheFirst({
-    cacheName: "shogihome-engine-data",
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new RangeRequestsPlugin(),
-    ],
-  }),
+  engineAssetMatcher(/\/engines\/[^?]+\.(?:data|bin|nnue)$/, /\.(?:data|bin|nnue)$/),
+  async (options) => {
+    if (!(await isEngineAssetURL(options.url))) {
+      return fetch(options.request);
+    }
+    return engineDataStrategy.handle(options);
+  },
 );
 
 // --- 更新 ----------------------------------------------------------------

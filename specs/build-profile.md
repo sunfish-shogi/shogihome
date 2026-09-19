@@ -95,6 +95,12 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json \
   npx vite build -c vite.config-pwa.mts --outDir ../../dist
 ```
 
+**大きな成果物は置かずに済む。** wasm と評価パラメータは `engine.json` の `assetBaseURL` で
+別のオリジン (オブジェクトストレージや CDN) から配信できる
+([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「6. (d)」)。この場合 `engines.dirs` の
+ディレクトリに要るのは `engine.json`・グルーコード・ライセンス全文だけで、
+リポジトリにも配布物にも大きなファイルが入らない。
+
 ディレクトリ名がそのまま実行時の `engines/<dir>/` になるため、**名前は
 `[A-Za-z0-9._-]+` でなければならず、本家のエンジンと重複してもいけない。**
 どちらもビルドを失敗させる (置いたエンジンが黙って消えるのを防ぐため)。

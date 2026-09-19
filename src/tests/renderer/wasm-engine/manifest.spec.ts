@@ -175,6 +175,31 @@ describe("wasm-engine/manifest", () => {
     );
   });
 
+  // wasm と評価パラメータを外部のオリジンから配信する場合の取得先。
+  it("assetBaseURL", () => {
+    const withBase = (assetBaseURL: string) => ({ ...validManifest(), assetBaseURL });
+    expect(parseEngineManifest(validManifest()).assetBaseURL).toBeUndefined();
+    expect(parseEngineManifest(withBase("https://assets.example.com/v1/")).assetBaseURL).toBe(
+      "https://assets.example.com/v1/",
+    );
+    // ホストを持つ https の URL であること (licenses[].source と同じ規則)。
+    expect(() => parseEngineManifest(withBase("http://assets.example.com/v1/"))).toThrow(
+      /must be an https URL/,
+    );
+    expect(() => parseEngineManifest(withBase("https://"))).toThrow(/must be a valid URL/);
+    // 末尾が "/" でないと最後の要素が捨てられ、別の場所を指してしまう。
+    expect(() => parseEngineManifest(withBase("https://assets.example.com/v1"))).toThrow(
+      /must end with/,
+    );
+    // クエリとフラグメントは解決の際に捨てられるので受け付けない。
+    expect(() => parseEngineManifest(withBase("https://assets.example.com/v1/?v=2"))).toThrow(
+      /must not have a query or fragment/,
+    );
+    expect(() => parseEngineManifest(withBase("https://assets.example.com/v1/#a"))).toThrow(
+      /must not have a query or fragment/,
+    );
+  });
+
   // スレッドを使うエンジンは isolation を宣言する。
   // 宣言が無ければ既定は false で、単一スレッドのエンジンは影響を受けない。
   it("requiresCrossOriginIsolation", () => {

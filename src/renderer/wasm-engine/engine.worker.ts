@@ -81,7 +81,7 @@ async function importFactory(manifest: EngineManifest, moduleURL: string): Promi
 // 評価パラメータや定跡を取得し、Emscripten の仮想ファイルシステムへ書き込む。
 async function loadDataFiles(
   instance: EngineInstance,
-  baseURL: string,
+  assetBaseURL: string,
   dataFiles: { url: string; path: string }[],
 ): Promise<void> {
   if (dataFiles.length === 0) {
@@ -93,7 +93,7 @@ async function loadDataFiles(
     );
   }
   for (const file of dataFiles) {
-    const url = new URL(file.url, baseURL).href;
+    const url = new URL(file.url, assetBaseURL).href;
     log(`loading data file: ${url}`);
     const response = await fetch(url);
     if (!response.ok) {
@@ -124,7 +124,13 @@ async function launch(baseURL: string): Promise<void> {
     if (manifest.requiresCrossOriginIsolation && !self.crossOriginIsolated) {
       throw new Error(CROSS_ORIGIN_ISOLATION_REQUIRED);
     }
+    // グルーコードはエンジンのディレクトリから読む。**assetBaseURL の対象外である。**
+    // スレッドを使うエンジンはこれ自身を Worker として読み直すが、Worker のスクリプトは
+    // 同一オリジンでなければならないため (specs/wasm-engine-abi.md の「6. (d)」)。
     const moduleURL = new URL(manifest.module, baseURL).href;
+    // wasm と評価パラメータの取得先。宣言が無ければ従来通りの基準で解決する。
+    // (.wasm / .data はグルーコードの隣、dataFiles はマニフェストからの相対)
+    const assetBaseURL = manifest.assetBaseURL;
     const factory = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(
       await factory({
@@ -134,14 +140,17 @@ async function launch(baseURL: string): Promise<void> {
         // エラーとして扱うと起動できたはずのエンジンが使えなくなる。
         // 本当に致命的な場合は例外が Worker の外へ出るので onerror が拾う。
         printErr: (line: string) => log(`stderr: ${line}`),
-        // .wasm や .data はグルーコードと同じ場所に置かれる。
-        // UMD を Blob URL から読み込む場合は自力で解決できないため、こちらから渡す。
-        locateFile: (path: string) => new URL(path, moduleURL).href,
+        // .wasm や .data の場所を伝える。既定ではグルーコードと同じ場所で、
+        // assetBaseURL が宣言されていればそちら。**Emscripten が渡すのはファイル名
+        // だけ**なので、その場合は assetBaseURL の直下に置かれている必要がある。
+        // UMD を Blob URL から読み込む場合はグルーコード自身が自分の位置を
+        // 知り得ないため、いずれにせよこちらから渡す。
+        locateFile: (path: string) => new URL(path, assetBaseURL || moduleURL).href,
       }),
     );
     instance.addMessageListener(onEngineOutput);
     // データファイルの読み込みはコマンドを処理する前に済ませる。
-    await loadDataFiles(instance, baseURL, manifest.dataFiles || []);
+    await loadDataFiles(instance, assetBaseURL || baseURL, manifest.dataFiles || []);
     if (terminated) {
       instance.terminate();
       return;
