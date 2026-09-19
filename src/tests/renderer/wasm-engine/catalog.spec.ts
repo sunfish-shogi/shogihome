@@ -1,8 +1,6 @@
 import { getUSIEngineOptionCurrentValue, USIEngines } from "@/common/settings/usi.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
-import fs from "node:fs";
-import path from "node:path";
 import {
   BUILTIN_ENGINE_DIRS,
   builtinEngineURI,
@@ -16,6 +14,7 @@ import {
   resolveEngineDirURL,
   resolveEngineFileURL,
 } from "@/renderer/wasm-engine/catalog.js";
+import { builtinEngineRoots, listBuiltinEngines } from "@plugins/builtin_engines.js";
 import {
   CROSS_ORIGIN_ISOLATION_REQUIRED,
   EngineManifest,
@@ -77,18 +76,10 @@ describe("wasm-engine/catalog", () => {
     expect(engines[1].name).toBe("Sunfish Lv. 2");
   });
 
-  // 一覧は public/engines/ の内容からビルド時に作られる (plugins/builtin_engines.ts)。
+  // 一覧はエンジンの置き場所からビルド時に作られる (plugins/builtin_engines.ts)。
   // エンジンを追加するのにソースを編集しなくてよいことを、この経路で担保している。
   it("BUILTIN_ENGINE_DIRS", () => {
-    const enginesDir = path.resolve(import.meta.dirname, "../../../../public/engines");
-    const expected = fs
-      .readdirSync(enginesDir, { withFileTypes: true })
-      .filter(
-        (entry) =>
-          entry.isDirectory() && fs.existsSync(path.join(enginesDir, entry.name, "engine.json")),
-      )
-      .map((entry) => entry.name)
-      .sort();
+    const expected = listBuiltinEngines(builtinEngineRoots()).map((engine) => engine.name);
     expect(expected).toContain("sunfish4-lite");
     expect(BUILTIN_ENGINE_DIRS).toEqual(expected);
   });
@@ -139,19 +130,23 @@ describe("wasm-engine/catalog", () => {
     );
   });
 
+  // 組み込むエンジンはビルドプロファイルで増えるため、件数は一覧から決める。
   it("loadBuiltinUSIEngines", async () => {
+    const manifestURLs = BUILTIN_ENGINE_DIRS.map(
+      (dir) => new URL(`engines/${dir}/engine.json`, document.baseURI).href,
+    );
     vi.stubGlobal(
       "fetch",
       vi.fn(async (url: string) => {
-        expect(url).toBe(new URL("engines/sunfish4-lite/engine.json", document.baseURI).href);
+        expect(manifestURLs).toContain(url);
         return { ok: true, json: async () => manifest } as Response;
       }),
     );
     const engines = await loadBuiltinUSIEngines();
-    expect(engines).toHaveLength(2);
+    expect(engines).toHaveLength(manifest.presets.length * BUILTIN_ENGINE_DIRS.length);
     // 2 回目はキャッシュから返るため fetch は増えない。
     await loadBuiltinUSIEngines();
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledTimes(BUILTIN_ENGINE_DIRS.length);
   });
 
   // 配布物に含まれるエンジンのライセンスは、同梱した全文へのリンクとして表示する。
@@ -160,14 +155,14 @@ describe("wasm-engine/catalog", () => {
       "fetch",
       vi.fn(async () => ({ ok: true, json: async () => manifest }) as Response),
     );
-    expect(await loadBuiltinEngineLicenses()).toEqual([
-      {
+    expect(await loadBuiltinEngineLicenses()).toEqual(
+      BUILTIN_ENGINE_DIRS.map((dir) => ({
         subject: "Sunfish4 Lite",
         spdx: "MIT",
-        url: new URL("engines/sunfish4-lite/LICENSE.txt", document.baseURI).href,
+        url: new URL(`engines/${dir}/LICENSE.txt`, document.baseURI).href,
         source: "https://github.com/sunfish-shogi/sunfish4/tree/v0.1.3-lite",
-      },
-    ]);
+      })),
+    );
   });
 
   it("resolveEngineFileURL", () => {

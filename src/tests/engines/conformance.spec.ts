@@ -1,7 +1,11 @@
 // @vitest-environment node
 //
-// public/engines/ に置かれた全てのエンジンが specs/wasm-engine-abi.md の仕様を
+// 組み込み対象に置かれた全てのエンジンが specs/wasm-engine-abi.md の仕様を
 // 満たしていることを確認する。エンジンを追加すると自動的に検証対象になる。
+//
+// 置き場所は public/engines/ と、ビルドプロファイルの engines.dirs
+// (specs/build-profile.md)。別のリポジトリは自分のプロファイルを
+// SHOGIHOME_BUILD_PROFILE で渡せば、組み込むエンジンをここで検証できる。
 import fs from "node:fs";
 import path from "node:path";
 import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
@@ -142,7 +146,7 @@ describe("engines/conformance", () => {
       expect(BUILTIN_ENGINE_DIRS, `${dir} が BUILTIN_ENGINE_DIRS に無い`).toContain(dir);
     }
     for (const dir of BUILTIN_ENGINE_DIRS) {
-      expect(engineDirs, `${dir} の成果物が public/engines/ に無い`).toContain(dir);
+      expect(engineDirs, `${dir} の成果物が置き場所に無い`).toContain(dir);
     }
   });
 
