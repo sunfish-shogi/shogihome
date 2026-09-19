@@ -1,4 +1,4 @@
-// public/engines/ に配置された WebAssembly エンジンを Node から直接動かすためのヘルパー。
+// 組み込み WebAssembly エンジンを Node から直接動かすためのヘルパー。
 // Worker (src/renderer/wasm-engine/engine.worker.ts) と同じ手順でモジュールを起動する。
 import fs from "node:fs";
 import path from "node:path";
@@ -10,8 +10,30 @@ import {
   wrapUMDSource,
 } from "@/renderer/wasm-engine/loader.js";
 import { EngineManifest, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
+import { builtinEngineRoots } from "@plugins/builtin_engines.js";
 
-export const PUBLIC_ENGINES_DIR = path.resolve(import.meta.dirname, "../../../public/engines");
+// 検証の対象はビルドと同じ置き場所に置かれたディレクトリ全て
+// (public/engines/ と、ビルドプロファイルの engines.dirs)。
+// **engine.json の有無では絞らない。** 置いたのに一覧へ載らないものをここで落とすため。
+const engineDirs = new Map<string, string>(
+  builtinEngineRoots().flatMap((root) =>
+    fs.existsSync(root)
+      ? fs
+          .readdirSync(root, { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => [entry.name, path.join(root, entry.name)] as [string, string])
+      : [],
+  ),
+);
+
+// エンジンの成果物が置かれた場所。
+export function engineDirPath(dir: string): string {
+  const resolved = engineDirs.get(dir);
+  if (!resolved) {
+    throw new Error(`engine directory not found: ${dir}`);
+  }
+  return resolved;
+}
 
 export type EngineHandle = {
   manifest: EngineManifest;
@@ -28,18 +50,11 @@ export type EngineHandle = {
 };
 
 export function listEngineDirs(): string[] {
-  if (!fs.existsSync(PUBLIC_ENGINES_DIR)) {
-    return [];
-  }
-  return fs
-    .readdirSync(PUBLIC_ENGINES_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
-    .sort();
+  return [...engineDirs.keys()].sort();
 }
 
 export function readManifest(dir: string): EngineManifest {
-  const file = path.join(PUBLIC_ENGINES_DIR, dir, "engine.json");
+  const file = path.join(engineDirPath(dir), "engine.json");
   return parseEngineManifest(JSON.parse(fs.readFileSync(file, "utf8")));
 }
 
@@ -57,7 +72,7 @@ async function importFactory(manifest: EngineManifest, modulePath: string): Prom
 }
 
 export async function launchEngine(dir: string): Promise<EngineHandle> {
-  const engineDir = path.join(PUBLIC_ENGINES_DIR, dir);
+  const engineDir = engineDirPath(dir);
   const manifest = readManifest(dir);
   const modulePath = path.join(engineDir, manifest.module);
   const factory = await importFactory(manifest, modulePath);

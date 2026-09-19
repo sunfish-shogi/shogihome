@@ -109,7 +109,11 @@ export default defineConfigWithVueTs([
       },
       "import/ignore": ["node_modules"],
       // ビルド時に生成される仮想モジュール (plugins/builtin_engines.ts)。
-      "import/core-modules": ["typescript-eslint", "virtual:shogihome/builtin-engines"],
+      "import/core-modules": [
+        "typescript-eslint",
+        "virtual:shogihome/builtin-engines",
+        "virtual:shogihome/build-profile",
+      ],
     },
   },
   prettierConfig,

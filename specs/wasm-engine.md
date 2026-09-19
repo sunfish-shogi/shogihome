@@ -19,7 +19,7 @@ public/engines/<dir>/               ビルド済みの成果物 (リポジトリ
   <module>.js / <module>.wasm
   LICENSE.txt                         ライセンス全文
 
-plugins/builtin_engines.ts          public/engines/ を走査して一覧を作るビルド時のプラグイン
+plugins/builtin_engines.ts          エンジンの置き場所を走査して一覧を作るビルド時のプラグイン
 
 src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
   catalog.ts                          組み込みエンジンのカタログ
@@ -70,12 +70,20 @@ ponder が外れたときである。この場合 `go` をすぐには送らず�
 別のリポジトリのビルドスクリプトから成果物を配置してビルドすれば、
 エンジンを足した版を作れる。
 
+別のリポジトリでは `public/engines/` へコピーせず、ビルドプロファイルの `engines.dirs` で
+置き場所を指すこともできる ([`build-profile.md`](./build-profile.md))。この場合も
+実行時のパスは `engines/<dir>/` で変わらず、ビルドの出力と開発サーバーの配信は
+同じプラグインが受け持つ。
+
 名前・作者・オプション定義・プリセット・ライセンスは `engine.json` から読み取るため、
 ShogiHome 側に写しを持つ必要も無い。配置したエンジンは
 `src/tests/engines/conformance.spec.ts` が自動的に検証対象にする。
 
 一覧はビルド時に確定するため、開発サーバーの起動中にエンジンを追加した場合は
 サーバーを再起動する。
+
+別のリポジトリからエンジンを組み込んだ版をビルドする手順は
+[`build-profile.md`](./build-profile.md) を参照。
 
 ## ライセンス表示
 

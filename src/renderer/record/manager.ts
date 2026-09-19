@@ -111,6 +111,9 @@ export class RecordManager {
   constructor(private _record: Record = new Record()) {
     this.resetPositionCounts();
     this.bindRecordHandlers();
+    // 評価値などはコメントとして保存され、customData はそこから復元する。
+    // 外から渡された棋譜 (Web 版が localStorage から読んだもの) にもこれが要る。
+    restoreCustomData(this._record);
   }
 
   get record(): ImmutableRecord {

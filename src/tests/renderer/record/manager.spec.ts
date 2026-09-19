@@ -1,10 +1,12 @@
 import { CommentBehavior, SearchCommentFormat } from "@/common/settings/comment.js";
 import {
   Color,
+  importKIF,
   InitialPositionSFEN,
   InitialPositionType,
   Move,
   PieceType,
+  Record,
   RecordFormatType,
   RecordMetadataKey,
   SpecialMoveType,
@@ -24,6 +26,21 @@ describe("record/manager", () => {
     expect(recordManager.record.moves).toHaveLength(1);
     expect(recordManager.positionCounts.size).toBe(1);
     expect(recordManager.positionCounts.get(InitialPositionSFEN.STANDARD)).toBe(1);
+  });
+
+  // Web 版はリロード時に localStorage から読んだ棋譜をコンストラクタへ渡す。
+  // 評価値はコメントとして保存されているので、この経路でも customData の復元が要る。
+  it("new/withRecord", () => {
+    const record = importKIF(`手合割：平手
+手数----指手---------消費時間--
+   1 ７六歩(77)   ( 0:00/00:00:00)
+**評価値=80
+`) as Record;
+    const recordManager = new RecordManager(record);
+    recordManager.changePly(1);
+    expect(recordManager.record.current.customData).toStrictEqual({
+      playerSearchInfo: { score: 80 },
+    });
   });
 
   it("reset", () => {

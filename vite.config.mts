@@ -4,6 +4,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { htmlTemplate } from "./plugins/html_template.ts";
 import { builtinEngines } from "./plugins/builtin_engines.ts";
+import { buildProfile } from "./plugins/build_profile.ts";
 
 const appVersion = process.env.npm_package_version || "0.0.0";
 const buildEnv = process.env.CI === "true" ? "ci" : "local";
@@ -14,14 +15,22 @@ const buildVersion = process.env.BUILD_VERSION || `${buildEnv}-${buildNumber}`;
 
 export default defineConfig({
   resolve: {
-    alias: [{ find: "@", replacement: "/src" }],
+    alias: [
+      // "@" は前方一致で照合されるため、より長い別名を先に置く。
+      // ビルド時のプラグインを単体テストから読むために使う。
+      { find: "@plugins", replacement: "/plugins" },
+      { find: "@", replacement: "/src" },
+    ],
   },
   plugins: [
     vue(),
-    // 組み込みエンジンの一覧は public/engines/ の内容からビルド時に決める。
-    // Electron 版と単体テストでも同じ仮想モジュールを解決する必要があるため、
-    // Web 版だけの設定 (vite.config-pwa.mts) ではなくここに置く。
-    builtinEngines(resolve(import.meta.dirname, "public/engines")),
+    // 組み込みエンジンの一覧は public/engines/ とビルドプロファイルの
+    // engines.dirs からビルド時に決める。Electron 版と単体テストでも同じ仮想モジュールを
+    // 解決する必要があるため、Web 版だけの設定 (vite.config-pwa.mts) ではなくここに置く。
+    builtinEngines(),
+    // 特別版のビルドの設定 (SHOGIHOME_BUILD_PROFILE)。
+    // 指定が無ければ既定のプロファイルになり、通常のビルドの挙動は変わらない。
+    buildProfile(),
     htmlTemplate({
       APP_VERSION: appVersion,
       BUILD_VERSION: buildVersion,
