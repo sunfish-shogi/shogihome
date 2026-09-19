@@ -12,6 +12,7 @@ import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { Position } from "tsshogi";
 import { enginePathOf, isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog.js";
 import { engineDirPath, handshake, launchEngine, listEngineDirs, readManifest } from "./driver.js";
+import { PUBLIC_ENGINES_DIR } from "@plugins/builtin_engines.js";
 
 const engineDirs = listEngineDirs();
 
@@ -151,10 +152,17 @@ describe("engines/conformance", () => {
   });
 
   // 意図せず巨大な成果物を commit していないか確認する。
+  //
+  // **対象は本家が抱えるものだけ。** ビルドプロファイルが指す外部のエンジンは
+  // このリポジトリに commit されないので、リポジトリの都合を当てはめない
+  // (大きな評価パラメータを持つエンジンが適合性テストを通れなくなる)。
   it("成果物のサイズが妥当であること", () => {
     const LIMIT_MB = 8;
     for (const dir of engineDirs) {
       const engineDir = engineDirPath(dir);
+      if (path.dirname(engineDir) !== PUBLIC_ENGINES_DIR) {
+        continue;
+      }
       let total = 0;
       const walk = (target: string) => {
         for (const entry of fs.readdirSync(target, { withFileTypes: true })) {

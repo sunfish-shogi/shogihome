@@ -147,7 +147,8 @@ export function builtinEngines(): Plugin {
       if (external.length === 0) {
         return;
       }
-      const dirs = new Map(external.map((engine) => [engine.name, engine.dir]));
+      // 実体のパスで持つ。下で読み出し先がこの内側に収まっていることを実体で確かめるため。
+      const dirs = new Map(external.map((engine) => [engine.name, fs.realpathSync(engine.dir)]));
       // Vite の静的配信と同じヘッダーを付ける。
       //
       // **Web 版の開発サーバーは cross-origin isolation を要求する**
@@ -164,10 +165,22 @@ export function builtinEngines(): Plugin {
         const pathname = new URL(req.url || "/", "http://localhost").pathname;
         const matched = /^\/engines\/([^/]+)\/(.+)$/.exec(pathname);
         const dir = matched && dirs.get(matched[1]);
+        if (!dir) {
+          next();
+          return;
+        }
         // 任意のファイルを読み出させないため、エンジンのディレクトリの内側に
-        // 収まっていることを解決後のパスで確かめる。
-        const file = dir && path.resolve(dir, decodeURIComponent(matched[2]));
-        if (!file || !file.startsWith(dir + path.sep) || !fs.existsSync(file)) {
+        // 収まっていることを確かめる。**シンボリックリンクは path.resolve では
+        // 解決されない**ので、実体のパスで判定する。
+        // 壊れた百分率エンコード (%zz) は decodeURIComponent が投げる。
+        let file;
+        try {
+          file = fs.realpathSync(path.resolve(dir, decodeURIComponent(matched[2])));
+        } catch {
+          next();
+          return;
+        }
+        if (!file.startsWith(dir + path.sep)) {
           next();
           return;
         }

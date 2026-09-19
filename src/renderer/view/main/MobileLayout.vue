@@ -53,7 +53,7 @@
             v-bind="searchTabProps"
           />
           <EvaluationChart
-            v-if="bottomSearchView.chart"
+            v-if="bottomSearchView.chart && bottomUIType === BottomUIType.SEARCH"
             :size="bottomSearchView.chart"
             v-bind="searchTabChartProps"
           />
@@ -107,7 +107,7 @@
             v-bind="searchTabProps"
           />
           <EvaluationChart
-            v-if="sideSearchView.chart"
+            v-if="sideSearchView.chart && sideUIType === SideUIType.SEARCH"
             :size="sideSearchView.chart"
             v-bind="searchTabChartProps"
           />
@@ -274,6 +274,9 @@ const sideViewSize = computed(() => {
 // 「思考」タブは上に読み筋、下に評価値グラフを並べる。
 // ただしグラフは高さを確保できないと目盛りが潰れて読めないため、
 // 足りない画面では出さず、読み筋に全てを充てる。
+//
+// グラフは選択中だけ描画する (v-show ではなく v-if)。棋譜の更新を購読していて、
+// 隠れていても局面が進むたびに描き直してしまうため。
 const splitSearchView = (size: RectSize) => {
   const chartHeight = Math.floor(size.height / 2);
   if (chartHeight < minChartHeight) {
