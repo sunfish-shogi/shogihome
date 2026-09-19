@@ -2,8 +2,7 @@
 //
 // 実体は public/engines/<dir>/ に置かれたビルド済みの成果物で、エンジン自身が出力した
 // engine.json (マニフェスト) から名前やオプション定義を読み取る。
-// エンジンを追加する場合は成果物を public/engines/<dir>/ に置き、
-// BUILTIN_ENGINE_DIRS に <dir> を追加するだけでよい。
+// エンジンを追加する場合は成果物を public/engines/<dir>/ に置くだけでよい。
 import {
   emptyUSIEngine,
   getPredefinedUSIEngineTag,
@@ -13,6 +12,7 @@ import {
 } from "@/common/settings/usi.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
+import { BUILTIN_ENGINE_DIRS } from "virtual:shogihome/builtin-engines";
 import {
   CROSS_ORIGIN_ISOLATION_REQUIRED,
   EngineManifest,
@@ -22,7 +22,8 @@ import {
 } from "./manifest.js";
 
 // 読み込む組み込みエンジンのディレクトリ名。
-export const BUILTIN_ENGINE_DIRS = ["sunfish4-lite"];
+// engine.json を持つディレクトリをビルド時に列挙したもの (plugins/builtin_engines.ts)。
+export { BUILTIN_ENGINE_DIRS };
 
 // public/ からエンジンのディレクトリまでの相対パス。USIEngine.path にもこの形で入る。
 export const ENGINE_DIR_PREFIX = "engines/";
