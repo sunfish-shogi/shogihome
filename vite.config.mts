@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { htmlTemplate } from "./plugins/html_template.ts";
+import { builtinEngines } from "./plugins/builtin_engines.ts";
 
 const appVersion = process.env.npm_package_version || "0.0.0";
 const buildEnv = process.env.CI === "true" ? "ci" : "local";
@@ -17,6 +18,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    // 組み込みエンジンの一覧は public/engines/ の内容からビルド時に決める。
+    // Electron 版と単体テストでも同じ仮想モジュールを解決する必要があるため、
+    // Web 版だけの設定 (vite.config-pwa.mts) ではなくここに置く。
+    builtinEngines(resolve(import.meta.dirname, "public/engines")),
     htmlTemplate({
       APP_VERSION: appVersion,
       BUILD_VERSION: buildVersion,

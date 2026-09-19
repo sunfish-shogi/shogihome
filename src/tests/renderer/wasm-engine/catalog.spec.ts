@@ -1,7 +1,10 @@
 import { getUSIEngineOptionCurrentValue, USIEngines } from "@/common/settings/usi.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
+import fs from "node:fs";
+import path from "node:path";
 import {
+  BUILTIN_ENGINE_DIRS,
   builtinEngineURI,
   buildUSIEngines,
   enginePathOf,
@@ -72,6 +75,22 @@ describe("wasm-engine/catalog", () => {
     expect(getUSIEngineOptionCurrentValue(engines[1].options["MaxDepth"])).toBe(5);
     expect(engines[0].name).toBe("Sunfish Lv. 1");
     expect(engines[1].name).toBe("Sunfish Lv. 2");
+  });
+
+  // 一覧は public/engines/ の内容からビルド時に作られる (plugins/builtin_engines.ts)。
+  // エンジンを追加するのにソースを編集しなくてよいことを、この経路で担保している。
+  it("BUILTIN_ENGINE_DIRS", () => {
+    const enginesDir = path.resolve(import.meta.dirname, "../../../../public/engines");
+    const expected = fs
+      .readdirSync(enginesDir, { withFileTypes: true })
+      .filter(
+        (entry) =>
+          entry.isDirectory() && fs.existsSync(path.join(enginesDir, entry.name, "engine.json")),
+      )
+      .map((entry) => entry.name)
+      .sort();
+    expect(expected).toContain("sunfish4-lite");
+    expect(BUILTIN_ENGINE_DIRS).toEqual(expected);
   });
 
   it("stableURIs", () => {
