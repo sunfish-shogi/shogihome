@@ -1,7 +1,4 @@
 {
-  "engines": {
-    "dirs": ["./engines"]
-  },
   "features": {
     "mobileSearchTab": true
   },

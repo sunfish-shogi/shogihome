@@ -17,14 +17,13 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 
 ## 書式
 
-全ての項目を含んだサンプルを [`build-profile.sample.json`](./build-profile.sample.json) に
-置いてある (下の例と同じ内容)。これを複製して書き換えるとよい。
+サンプルを [`build-profile.sample.json`](./build-profile.sample.json) に置いてある
+(下の例と同じ内容)。これを複製して書き換えるとよい。エンジンの置き場所を指す
+`engines.dirs` だけは、置いた側でしか成立しないためサンプルには入れていない
+(「エンジンを組み込む」を参照)。
 
 ```json
 {
-  "engines": {
-    "dirs": ["./engines"]
-  },
   "features": {
     "mobileSearchTab": true
   },
@@ -76,6 +75,14 @@ shogihome-plus/                  別のリポジトリ
 ├── shogihome-plus.json          ビルドプロファイル
 ├── LICENSE                      配布物自身のライセンス
 └── build.sh
+```
+
+```json
+{
+  "engines": {
+    "dirs": ["./engines"]
+  }
+}
 ```
 
 ```bash

@@ -127,14 +127,11 @@ describe("plugins/build_profile", () => {
   // 同じ JSON が仕様書の例としても載っているため、ずれていないことも見る
   // (書式を変えたときに片方だけ直して、複製した側が弾かれるのを防ぐ)。
   it("sample", () => {
-    // サンプルは仕様書が示す配置 (プロファイルの隣に engines/) でそのまま読めること。
+    // **サンプルはそのまま読めなければならない。** 複製する前に指定して試せるように、
+    // 置いた側でしか成立しない engines.dirs はサンプルに入れない。
     const file = "specs/build-profile.sample.json";
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-sample-"));
-    fs.mkdirSync(path.join(dir, "engines"));
-    fs.copyFileSync(file, path.join(dir, "profile.json"));
-    const profile = loadBuildProfile(path.join(dir, "profile.json"));
-    expect(profile.engineDirs).toEqual([path.join(dir, "engines")]);
-    fs.rmSync(dir, { recursive: true });
+    const profile = loadBuildProfile(file);
+    expect(profile.engineDirs).toEqual([]);
     expect(profile.features.mobileSearchTab).toBe(true);
     expect(profile.license.distribution?.text).toBeTruthy();
     expect(profile.license.distribution?.url).toBeTruthy();
