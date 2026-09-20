@@ -1,4 +1,25 @@
-import { validateEngineInstance, wrapUMDSource } from "@/renderer/wasm-engine/loader.js";
+import {
+  EngineFS,
+  makeParentDirs,
+  validateEngineInstance,
+  wrapUMDSource,
+} from "@/renderer/wasm-engine/loader.js";
+
+// Emscripten の FS のうち、makeParentDirs が使う部分だけを模したもの。
+function fakeFS(): EngineFS & { dirs: string[] } {
+  const dirs: string[] = [];
+  return {
+    dirs,
+    mkdir(path: string) {
+      // 既存のディレクトリに対する mkdir は EEXIST の例外になる。
+      if (dirs.includes(path)) {
+        throw new Error("FS error");
+      }
+      dirs.push(path);
+    },
+    writeFile() {},
+  };
+}
 
 function instance(overrides: Record<string, unknown> = {}) {
   return {
@@ -31,6 +52,32 @@ describe("wasm-engine/loader", () => {
         new RegExp(`does not expose ${method}`),
       );
     }
+  });
+
+  it("makeParentDirs", () => {
+    const fs = fakeFS();
+    makeParentDirs(fs, "/eval/nn.bin");
+    expect(fs.dirs).toEqual(["/eval"]);
+    makeParentDirs(fs, "/book/standard/book.db");
+    expect(fs.dirs).toEqual(["/eval", "/book", "/book/standard"]);
+    // 相対パスは cwd を基準にする。
+    makeParentDirs(fs, "data/eval.bin");
+    expect(fs.dirs).toEqual(["/eval", "/book", "/book/standard", "./data"]);
+  });
+
+  it("makeParentDirs/tolerant", () => {
+    const fs = fakeFS();
+    // 親ディレクトリが無い場合は何もしない。
+    makeParentDirs(fs, "/eval.bin");
+    makeParentDirs(fs, "eval.bin");
+    expect(fs.dirs).toEqual([]);
+    // 既存のディレクトリに対する mkdir の失敗は無視する。
+    makeParentDirs(fs, "/eval/nn.bin");
+    makeParentDirs(fs, "/eval/nn2.bin");
+    expect(fs.dirs).toEqual(["/eval"]);
+    // 余分な区切りがあっても階層が増えないこと。
+    makeParentDirs(fs, "//eval//sub//nn.bin");
+    expect(fs.dirs).toEqual(["/eval", "/eval/sub"]);
   });
 
   it("wrapUMDSource/rejectsInvalidExportName", () => {

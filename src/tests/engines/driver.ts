@@ -2,12 +2,14 @@
 // Worker (src/renderer/wasm-engine/engine.worker.ts) と同じ手順でモジュールを起動する。
 import fs from "node:fs";
 import path from "node:path";
+import vm from "node:vm";
+import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import {
   EngineFactory,
   EngineInstance,
+  makeParentDirs,
   validateEngineInstance,
-  wrapUMDSource,
 } from "@/renderer/wasm-engine/loader.js";
 import { EngineManifest, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
 import { builtinEngineRoots } from "@plugins/builtin_engines.js";
@@ -58,15 +60,39 @@ export function readManifest(dir: string): EngineManifest {
   return parseEngineManifest(JSON.parse(fs.readFileSync(file, "utf8")));
 }
 
+// UMD の成果物を CommonJS として評価する。
+//
+// Worker では末尾に export 文を足して Blob URL から import() するが、Node で同じことを
+// すると ES モジュールとして評価され、Emscripten の Node 向けの経路が壊れる
+// (require や __dirname が無いため ReferenceError になる)。このリポジトリは
+// "type": "module" なので require() でも同じ結果になる。
+// 適合性テストではエンジンの振る舞いを見たいので、素直に CommonJS のスコープを与える。
+function evaluateUMD(modulePath: string, exportName: string): EngineFactory {
+  const source = fs.readFileSync(modulePath, "utf8");
+  const wrapper = vm.runInThisContext(
+    `(function (exports, require, module, __filename, __dirname) {${source}\nreturn ${exportName};\n})`,
+    { filename: modulePath },
+  ) as (
+    exports: unknown,
+    require: unknown,
+    module: unknown,
+    filename: string,
+    dirname: string,
+  ) => EngineFactory;
+  const module = { exports: {} };
+  return wrapper(
+    module.exports,
+    createRequire(modulePath),
+    module,
+    modulePath,
+    path.dirname(modulePath),
+  );
+}
+
 // Worker では fetch と Blob URL を使う部分を、ここではファイルと data URL で置き換える。
 async function importFactory(manifest: EngineManifest, modulePath: string): Promise<EngineFactory> {
   if (manifest.moduleFormat === "umd") {
-    const source = wrapUMDSource(
-      fs.readFileSync(modulePath, "utf8"),
-      manifest.exportName as string,
-    );
-    const url = `data:text/javascript;base64,${Buffer.from(source, "utf8").toString("base64")}`;
-    return (await import(url)).default;
+    return evaluateUMD(modulePath, manifest.exportName as string);
   }
   return (await import(pathToFileURL(modulePath).href)).default;
 }
@@ -80,7 +106,10 @@ export async function launchEngine(dir: string): Promise<EngineHandle> {
   const engine: EngineInstance = validateEngineInstance(
     await factory({
       printErr: (line: string) => lines.push(`ERR ${line}`),
-      locateFile: (file: string) => new URL(file, pathToFileURL(modulePath)).href,
+      // Node の Worker は file:// の文字列を受け付けないため、URL ではなくパスを渡す。
+      // Emscripten の Node 向けの経路はどちらの形式でもファイルを読める。
+      locateFile: (file: string) => path.join(engineDir, file),
+      mainScriptUrlOrBlob: modulePath,
     }),
   );
   engine.addMessageListener((line) => lines.push(line));
@@ -91,10 +120,7 @@ export async function launchEngine(dir: string): Promise<EngineHandle> {
       throw new Error("engine does not expose FS but declares dataFiles");
     }
     const data = fs.readFileSync(path.join(engineDir, file.url));
-    const parent = file.path.substring(0, file.path.lastIndexOf("/"));
-    if (parent) {
-      engine.FS.mkdirTree(parent);
-    }
+    makeParentDirs(engine.FS, file.path);
     engine.FS.writeFile(file.path, new Uint8Array(data));
   }
 

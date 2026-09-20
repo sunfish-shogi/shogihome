@@ -13,7 +13,13 @@ import {
   MANIFEST_FILE_NAME,
   parseEngineManifest,
 } from "./manifest.js";
-import { EngineFactory, EngineInstance, validateEngineInstance, wrapUMDSource } from "./loader.js";
+import {
+  EngineFactory,
+  EngineInstance,
+  makeParentDirs,
+  validateEngineInstance,
+  wrapUMDSource,
+} from "./loader.js";
 
 let engine: EngineInstance | undefined;
 // モジュールの読み込みが終わるまでに届いたコマンドを保持する。
@@ -100,10 +106,7 @@ async function loadDataFiles(
       throw new Error(`failed to load ${url}: ${response.status}`);
     }
     const data = new Uint8Array(await response.arrayBuffer());
-    const dir = file.path.substring(0, file.path.lastIndexOf("/"));
-    if (dir) {
-      instance.FS.mkdirTree(dir);
-    }
+    makeParentDirs(instance.FS, file.path);
     instance.FS.writeFile(file.path, data);
     log(`loaded data file: ${file.path} (${data.byteLength} bytes)`);
   }
@@ -137,6 +140,12 @@ async function launch(baseURL: string): Promise<void> {
         // .wasm や .data はグルーコードと同じ場所に置かれる。
         // UMD を Blob URL から読み込む場合は自力で解決できないため、こちらから渡す。
         locateFile: (path: string) => new URL(path, moduleURL).href,
+        // pthread の Worker はグルーコードを importScripts で読み直す。その URL は
+        // Emscripten が document.currentScript や import.meta.url から求めるが、
+        // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
+        // Blob URL ではなく元のファイルの URL を渡すこと (importScripts される側は
+        // クラシックスクリプトとして評価されるため、export 文を足したものは読めない)。
+        mainScriptUrlOrBlob: moduleURL,
       }),
     );
     instance.addMessageListener(onEngineOutput);
