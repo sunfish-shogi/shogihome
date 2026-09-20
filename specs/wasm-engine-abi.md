@@ -138,12 +138,17 @@ const engine = await createEngine({
     /* 標準エラー出力 */
   },
   locateFile: (path) => new URL(path, moduleURL).href,
+  mainScriptUrlOrBlob: moduleURL,
 });
 ```
 
-`printErr` と `locateFile` は Emscripten が解釈する。`locateFile` は `.wasm` や `.data` の
-場所を伝えるためのもので、ShogiHome が必ず渡す (`moduleFormat: "umd"` のときは
-グルーコード自身が自分の位置を知り得ないため必須になる)。
+いずれも Emscripten が解釈する。`locateFile` は `.wasm` や `.data` の場所を伝えるためのもので、
+ShogiHome が必ず渡す (`moduleFormat: "umd"` のときはグルーコード自身が自分の位置を
+知り得ないため必須になる)。
+
+`mainScriptUrlOrBlob` は pthread の Worker がグルーコードを読み直すための URL で、
+やはり ShogiHome が必ず渡す。詳細は「8. 制約」の
+「モジュール Worker と UMD の組み合わせ」を参照。
 
 標準エラー出力は**診断情報として記録するだけで、起動の失敗とは扱わない。**
 Emscripten 自身が回復可能な状況 (MIME が `application/wasm` でないために
@@ -163,9 +168,15 @@ type EngineInstance = {
   terminate(): void;
 
   // マニフェストで dataFiles を使う場合のみ必要。
-  FS?: { mkdirTree(path: string): void; writeFile(path: string, data: Uint8Array): void };
+  FS?: { mkdir(path: string): void; writeFile(path: string, data: Uint8Array): void };
 };
 ```
+
+`FS` に求めるのは `mkdir` と `writeFile` だけである。Emscripten の `FS` には
+`mkdirTree` や `analyzePath` のような補助もあるが、**closure コンパイラを通した
+ビルド (YaneuraOu の配布物がこれ) では名前が保たれず呼び出せない。**
+ShogiHome は親ディレクトリを `mkdir` で 1 階層ずつ作る
+(既存のディレクトリで例外になった場合は無視し、結果は `writeFile` で判定する)。
 
 **ShogiHome 独自の追加は無く、YaneuraOu の wasm ビルドと過不足なく同じである。**
 ShogiHome はコマンドを渡して出力を受け取るだけで、思考を進めるためにモジュールの
@@ -264,7 +275,9 @@ Blob URL 経由で `import()` する。`exportName` はソースへ文字列と�
 識別子として妥当なものだけを受け付ける。
 
 **新しく作るエンジンは `esm` にすること。** `umd` は Blob URL からの `import()` を伴うため、
-`script-src` を厳しく設定した環境では動かない可能性がある。
+`script-src` を厳しく設定した環境では動かない可能性がある。加えて、モジュール Worker では
+Emscripten の環境判別が働かず、スレッドを使うエンジンでは制約が増える
+(「8. 制約」の「モジュール Worker と UMD の組み合わせ」を参照)。
 
 ## 5. ビルド設定
 
@@ -531,6 +544,38 @@ Promise を解決も reject もしないまま止まる。そのため ShogiHome
 実際に何本スレッドを作るかではない。isolation に依存したくないエンジンは、
 `std::thread` を使う箇所を条件コンパイルで畳んで `-pthread` 無しでビルドし、
 探索を「3. 実行モデル」の分割実行に載せ替えること。
+
+### モジュール Worker と UMD の組み合わせ
+
+ShogiHome はエンジンを `type: "module"` の Worker で動かす。**モジュール Worker には
+`importScripts` が無い。** Emscripten はこれで環境を判別しているため
+(`ENVIRONMENT_IS_WORKER = typeof importScripts === "function"`)、
+`-sEXPORT_ES6` を付けずに出力した UMD の成果物は、自分が Worker で動いていることを
+認識できない。`document.currentScript` も `import.meta.url` も無いので、
+**グルーコードは自分の URL を知り得ない。**
+
+これが実際に問題になるのは pthread ビルドである。Emscripten はスレッド用の Worker へ
+`Module.mainScriptUrlOrBlob || _scriptDir` を送り、受け取った側がそれを `importScripts` して
+グルーコードを読み直す。どちらも無いと `undefined` が渡り、スレッド用の Worker が
+その場で例外を投げる。それはメインのモジュール Worker へ再送出されて外へ出るため、
+ShogiHome には Worker の `error` イベントとしてしか見えない
+(**`検討の初期化中にエラーが出ました: エンジンの読み込みに失敗しました。
+failed to start engine worker`**)。マニフェストにも起動処理にも誤りが無いように見えるので、
+この文言が出たらここを疑うこと。
+
+そのため ShogiHome はモジュール生成時に `mainScriptUrlOrBlob` を渡す。
+**値は Blob URL ではなく元のグルーコードの URL である。**
+`importScripts` される側はクラシックスクリプトとして評価されるため、
+`umd` の読み込みのために末尾へ `export default` を足したソースは読めない。
+
+`ENVIRONMENT_IS_WORKER` が偽のままである影響は他にも残る。
+
+- wasm の取得は `WebAssembly.instantiateStreaming` を使う経路だけが生きている。
+  MIME が `application/wasm` でないなどで streaming に失敗すると、
+  同期 XHR による代替経路が用意されていないため、そこで起動に失敗する。
+- `emscripten_is_main_browser_thread()` が真を返す。
+
+いずれも `esm` では起こらない。**新しく作るエンジンを `esm` にすべき理由の一つである。**
 
 ### 探索スレッドからの出力
 
