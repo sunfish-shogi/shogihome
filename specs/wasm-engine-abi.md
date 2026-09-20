@@ -412,24 +412,30 @@ Worker が `fetch` で取得し、`FS.writeFile` で書き込んでからエン�
 
 #### 対象と対象外
 
+**対象は JS 以外のアセットだけである。**
+
 | ファイル                              | 基準                                            |
 | ------------------------------------- | ----------------------------------------------- |
 | `.wasm` / `--preload-file` の `.data` | `assetBaseURL` (無ければグルーコードの隣)       |
 | `dataFiles[].url`                     | `assetBaseURL` (無ければマニフェストからの相対) |
 | `engine.json`                         | **常に `engines/<dir>/`**                       |
 | `module` (グルーコード)               | **常に `engines/<dir>/`**                       |
+| `.js` / `.mjs` (`<module>.worker.js`) | **常に `engines/<dir>/`**                       |
 | `licenses[].file`                     | **常に `engines/<dir>/`**                       |
 
-後の3つが対象外なのには理由がある。
+後の4つが対象外なのには理由がある。
 
 - `engine.json` とライセンス全文は**事前キャッシュの対象**で、エンジンを使っていない
   利用者がオフラインで開いてもライセンスを表示できなければならない (「9. ライセンス」)
-- **グルーコードは Worker のスクリプトとして読み直される。** `-pthread` でビルドした
-  エンジンは Emscripten が `new Worker(new URL("<module>.js", import.meta.url))` を
-  出力するが、**Worker のスクリプトは同一オリジンでなければ読み込めない。**
-  外部に置くと `SecurityError` で起動しなくなる
+- **JS は Worker のスクリプトとして読み直される。** `-pthread` でビルドしたエンジンは
+  Emscripten が `new Worker(new URL("<module>.js", import.meta.url))` を出力し、
+  古い版はスレッド用に別ファイル (`<module>.worker.js`) を出して `locateFile` で
+  解決する。**Worker のスクリプトは同一オリジンでなければ構築できない**ため、
+  外部に置くと `Failed to construct 'Worker': Script at '...' cannot be accessed
+from origin '...'` で起動しなくなる。CORS を設定しても解決しない
 
-グルーコードは数百 KB にとどまるため、配布物に含めても負担にならない。
+そのため `locateFile` が返す先も、**JS だけはグルーコードの隣に固定する。**
+これらは数百 KB にとどまるため、配布物に含めても負担にならない。
 
 #### 書式と配置
 

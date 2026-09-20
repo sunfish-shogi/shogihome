@@ -148,7 +148,13 @@ async function launch(baseURL: string): Promise<void> {
         // だけ**なので、その場合は assetBaseURL の直下に置かれている必要がある。
         // UMD を Blob URL から読み込む場合はグルーコード自身が自分の位置を
         // 知り得ないため、いずれにせよこちらから渡す。
-        locateFile: (path: string) => new URL(path, assetBaseURL || moduleURL).href,
+        //
+        // **JS だけは assetBaseURL の対象外で、常にグルーコードの隣を指す。**
+        // 古い Emscripten の pthread ビルドはスレッド用のスクリプト
+        // (<module>.worker.js) をここで解決するが、**Worker のスクリプトは
+        // 同一オリジンでなければ構築できない** (specs/wasm-engine-abi.md の「6. (d)」)。
+        locateFile: (path: string) =>
+          new URL(path, assetBaseURL && !/\.m?js$/.test(path) ? assetBaseURL : moduleURL).href,
         // pthread の Worker はグルーコードを importScripts で読み直す。その URL は
         // Emscripten が document.currentScript や import.meta.url から求めるが、
         // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
