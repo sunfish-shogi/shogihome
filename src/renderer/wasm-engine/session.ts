@@ -52,6 +52,13 @@ export enum SessionState {
   QUIT_COMPLETED = "quitCompleted",
 }
 
+// 送信を待っている setoption コマンド。
+// 思考中の setoption は USI 上不正なので、bestmove を受け取ってから送る。
+type ReservedSetOptionCommand = {
+  name: string;
+  value?: string | number;
+};
+
 // 送信を待っている go コマンド。
 // 思考中に次の指示が来た場合は、stop を送って bestmove を受け取ってから送る。
 type ReservedGoCommand = {
@@ -89,6 +96,7 @@ class Session {
   private engineOptions: USIEngineOptions = {};
   private currentPosition = "";
   private reservedGoCommand?: ReservedGoCommand;
+  private reservedSetOptionCommands: ReservedSetOptionCommand[] = [];
   private lastSentCommand?: Command;
   private lastReceivedCommand?: Command;
   private launchTimer?: ReturnType<typeof setTimeout>;
@@ -176,10 +184,34 @@ class Session {
     this.send("isready");
   }
 
+  // 思考中はオプションを変更できないので、bestmove を受け取るまで送信を遅らせる
+  // (Electron 版と同じ)。検討中に MultiPV を変更したときに通る。
+  // Ponder は対局専用の状態であり、対局中に設定を変更することはないので対象外。
   setOption(name: string, value?: string | number): void {
+    switch (this.state) {
+      case SessionState.WAITING_FOR_BEST_MOVE:
+      case SessionState.WAITING_FOR_PONDER_BEST_MOVE:
+      case SessionState.WAITING_FOR_CHECKMATE:
+        this.reservedSetOptionCommands.push({ name, value });
+        break;
+      default:
+        this.sendSetOption(name, value);
+        break;
+    }
+  }
+
+  private sendSetOption(name: string, value?: string | number): void {
     this.send(
       value !== undefined ? `setoption name ${name} value ${value}` : `setoption name ${name}`,
     );
+  }
+
+  private sendReservedSetOptionCommands(): void {
+    const commands = this.reservedSetOptionCommands;
+    this.reservedSetOptionCommands = [];
+    for (const command of commands) {
+      this.sendSetOption(command.name, command.value);
+    }
   }
 
   go(usi: string, timeStates?: TimeStates): void {
@@ -258,6 +290,10 @@ class Session {
       this.state !== SessionState.PONDER &&
       this.state !== SessionState.WAITING_FOR_CHECKMATE
     ) {
+      return;
+    }
+    if (this.lastSentCommand?.command === "stop") {
+      // stop コマンドは連続して送信しない (Electron 版と同じ)。
       return;
     }
     this.send("stop");
@@ -409,6 +445,8 @@ class Session {
   }
 
   private onBestMove(args: string): void {
+    // 思考中に予約された setoption があれば、go より先にここで送る。
+    this.sendReservedSetOptionCommands();
     if (
       this.state !== SessionState.WAITING_FOR_BEST_MOVE &&
       this.state !== SessionState.WAITING_FOR_PONDER_BEST_MOVE
@@ -428,6 +466,8 @@ class Session {
   }
 
   private onCheckmate(args: string): void {
+    // 思考中に予約された setoption があれば、go より先にここで送る。
+    this.sendReservedSetOptionCommands();
     if (this.state !== SessionState.WAITING_FOR_CHECKMATE) {
       return;
     }
