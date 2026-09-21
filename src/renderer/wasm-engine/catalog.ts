@@ -116,11 +116,16 @@ function buildOptions(manifest: EngineManifest, preset: string): USIEngineOption
       default: "true",
     };
   }
+  // プリセットの値は value (ユーザーが編集した値) ではなく default に入れる。
+  // このプリセットにとっての「エンジンの既定値」がそれであり、オプション画面の
+  // 「エンジンの既定値に戻す」が戻す先にもなる。value に入れると、リセットで
+  // 素のエンジンの既定値まで戻ってしまい、プリセットの意味が無くなる。
+  // (value を空にしておくことで、ユーザーが編集したかどうかの区別も保てる。)
   const values = manifest.presets.find((p) => p.id === preset)?.values || {};
   for (const [name, value] of Object.entries(values)) {
     const option = options[name];
     if (option && option.type !== "button") {
-      option.value = value as never;
+      option.default = value as never;
     }
   }
   return options;
@@ -131,7 +136,10 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     ...emptyUSIEngine(),
     uri: builtinEngineURI(preset.id),
     name: preset.displayName,
-    defaultName: manifest.name,
+    // プリセットごとに別のエンジンとして並ぶため、既定の名前もプリセットのものにする。
+    // マニフェストの name を入れると、表示名をリセットしたときに全てのプリセットが
+    // 同じ名前になり、一覧で見分けが付かなくなる。
+    defaultName: preset.displayName,
     author: manifest.author,
     path: enginePathOf(dir),
     options: buildOptions(manifest, preset.id),
