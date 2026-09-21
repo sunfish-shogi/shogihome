@@ -815,6 +815,10 @@
         </button>
       </div>
     </div>
+    <!-- ライセンス -->
+    <div v-if="!isNative()" v-show="selectedTab === 'license'" class="form-group scroll settings">
+      <button @click="openCopyright">Confirm copyright and license</button>
+    </div>
     <div class="main-buttons">
       <button data-hotkey="Enter" autofocus @click="saveAndClose()">
         {{ t.saveAndClose }}
@@ -871,6 +875,7 @@ import { useBusyState } from "@/renderer/store/busy";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { SearchCommentFormat } from "@/common/settings/comment";
 import DialogFrame from "./DialogFrame.vue";
+import { openCopyright } from "@/renderer/helpers/copyright.js";
 
 const store = useStore();
 const selectedTab = ref("view");
@@ -888,6 +893,7 @@ const tabItems = computed(() => [
         { label: t.forDevelopers, value: "developer" },
       ]
     : []),
+  ...(!isNative() ? [{ label: t.license, value: "license" }] : []),
 ]);
 const busyState = useBusyState();
 const org = useAppSettings();
