@@ -105,10 +105,26 @@ export default (env = {}) => {
       },
       module: moduleForCJS,
       resolve: resolveForCJS,
-      externals: /^[^.@].*$/,
+      // 先頭が "." でも "@" でもない request は npm のパッケージとみなして外部化する。
+      //
+      // **仮想モジュール (virtual:) は外部化しない。** 外部化してしまうと、解決先の
+      // 無い仮想モジュールが npm のパッケージとして扱われ、ビルドは成功するのに
+      // 実行時に MODULE_NOT_FOUND で落ちる成果物ができる。除外しておけば、下の
+      // NormalModuleReplacementPlugin で差し替え忘れた仮想モジュールは
+      // UnhandledSchemeError としてビルド時に露見する。
+      //
+      // なお externals の判定は元の request で行われるため、この除外なしでは
+      // NormalModuleReplacementPlugin も resolve.alias も効かない。
+      externals: /^(?!virtual:)[^.@].*$/,
       optimization,
       cache,
       plugins: [
+        // Vite のプラグインが作る仮想モジュール (plugins/builtin_engines.ts) は
+        // webpack では解決できないため、CLI 用の実装へ差し替える。
+        new webpack.NormalModuleReplacementPlugin(
+          /^virtual:shogihome\/builtin-engines$/,
+          path.resolve(import.meta.dirname, "src/command/common/builtin-engines.ts"),
+        ),
         new webpack.NormalModuleReplacementPlugin(/^.*-electron\.js$/, (resource) => {
           const newResource = resource.request.replace(/^(.*)-electron\.js$/, "$1-cmd.js");
           resource.request = newResource;

@@ -6,6 +6,8 @@ permissions:
 on:
   push:
     branches: [main, "support-*"]
+  pull_request:
+    branches: [main, "support-*"]
 
 jobs:
   build:
