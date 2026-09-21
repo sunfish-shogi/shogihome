@@ -47,7 +47,8 @@
             <div class="row space-evenly">
               <button @click="openOptions(engine.uri)">{{ t.config }}</button>
               <button @click="duplicate(engine.uri)">{{ t.duplicate }}</button>
-              <button @click="remove(engine.uri)">{{ t.remove }}</button>
+              <!-- プリセットのエンジンは次回の読み込みで戻るため、削除ボタンを出さない。 -->
+              <button v-if="!engine.builtin" @click="remove(engine.uri)">{{ t.remove }}</button>
             </div>
           </div>
         </div>
@@ -170,6 +171,7 @@ const engines = computed(() => {
       name: engine.name,
       tags,
       visible: wordMatch && tagMatch,
+      builtin: isBuiltinUSIEngine(engine.uri),
     };
   });
 });

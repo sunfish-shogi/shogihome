@@ -4,7 +4,6 @@ import { AppSettings, defaultAppSettings, PromotionSelectorStyle } from "@/commo
 import { defaultGameSettings } from "@/common/settings/game.js";
 import { defaultResearchSettings } from "@/common/settings/research.js";
 import {
-  mergeUSIEngine,
   USIEngine,
   USIEngineLaunchOptions,
   USIEngineMetadata,
@@ -248,7 +247,9 @@ export const webAPI: Bridge = {
   async loadUSIEngines(): Promise<string> {
     const engines = new USIEngines(localStorage.getItem(STORAGE_KEY.USI_ENGINES) || undefined);
     // 組み込みの WebAssembly エンジンを常に一覧へ含める。
-    // 既に保存されている場合は、ユーザーが編集したオプション値を引き継ぐ。
+    // 保存されている内容は見ずにマニフェストの通りに上書きする。プリセットはアプリが
+    // 管理するもので、内容を変えたい利用者にはコピーを作ってもらう
+    // (specs/wasm-engine.md の「プリセットのエンジンは編集させない」)。
     const builtins = await loadBuiltinUSIEngines((e) => {
       usiLogger(LogLevel.ERROR, `failed to load builtin engine: ${e.message}`);
       // 読み込めなかったエンジンは一覧に出ない。理由を伝えないと
@@ -256,13 +257,7 @@ export const webAPI: Bridge = {
       useErrorStore().add(new Error(describeEngineLoadError(e)));
     });
     for (const builtin of builtins) {
-      const local = engines.getEngine(builtin.uri);
-      if (local) {
-        mergeUSIEngine(builtin, local);
-        engines.updateEngine(builtin);
-      } else {
-        engines.addEngine(builtin);
-      }
+      engines.addEngine(builtin);
     }
     return engines.json;
   },
