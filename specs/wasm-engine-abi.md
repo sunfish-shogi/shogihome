@@ -88,11 +88,29 @@ public/engines/<dir>/
 | `options`                      |      | エンジンが `option` で申告する定義の写し                         |
 | `presets`                      | ○    | 一覧に並べるエンジンの定義。1 つ以上                             |
 
+### `options`
+
+エンジンが `usi` に応えて `option` で申告する定義の写し。名前と型が申告と一致して
+いなければならない (`src/tests/engines/conformance.spec.ts` が確かめる)。
+
+**プリセットごとの違いを書く場所ではない。** 既定値を変えたい場合は
+`presets[].values` に書く。`options` は実物と一致していればよく、
+次のスクリプトが実際の wasm を起動して差を埋める。
+
+```
+npx tsx scripts/sync-engine-options.ts public/engines/<dir>/engine.json
+npx tsx scripts/sync-engine-options.ts <engine.json> --check   # 書き換えずに差分だけ見る
+```
+
 ### `presets`
 
 1 つの wasm から複数のエンジンを見せるための仕組み。`values` に指定した値が
 起動後に `setoption` で送られる。強さやスタイルの異なる複数のプリセットを、
 1 つの wasm から見せることができる。
+
+`values` は**そのプリセットにとっての既定値**として扱う。`options[].default`
+(素のエンジンの申告の写し) より優先し、利用者がオプション画面で
+「エンジンの既定値に戻す」を押したときに戻る先にもなる。
 
 **`id` はそのまま `es://usi-engine/builtin/<id>` という URI になる。**
 利用者の対局設定に保存されるため、**一度公開したら変更してはならない。**

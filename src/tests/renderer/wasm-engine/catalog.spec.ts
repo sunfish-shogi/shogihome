@@ -1,4 +1,9 @@
-import { getUSIEngineOptionCurrentValue, USIEngines } from "@/common/settings/usi.js";
+import {
+  getUSIEngineOptionCurrentValue,
+  mergeUSIEngine,
+  USIEngine,
+  USIEngines,
+} from "@/common/settings/usi.js";
 import { t } from "@/common/i18n/index.js";
 import * as uri from "@/common/uri.js";
 import {
@@ -64,7 +69,9 @@ describe("wasm-engine/catalog", () => {
       expect(uri.isUSIEngine(engine.uri)).toBeTruthy();
       // validateUSIEngine が path の非空を要求する。
       expect(engine.path).toBe("engines/sunfish4-lite/");
-      expect(engine.defaultName).toBe("Sunfish4 Lite");
+      // 既定の名前はプリセットごとに異なる。表示名をリセットしたときに
+      // 全てのプリセットが同じ名前にならないようにするため。
+      expect(engine.defaultName).toBe(engine.name);
       expect(engine.author).toBe("Kubo, Ryosuke");
       // エンジンが宣言していない予約オプションは補完される。
       expect(engine.options["USI_Hash"]?.type).toBe("spin");
@@ -112,6 +119,31 @@ describe("wasm-engine/catalog", () => {
     expect(getUSIEngineOptionCurrentValue(engines[0].options["MaxDepth"])).toBe(1);
     expect(getUSIEngineOptionCurrentValue(engines[1].options["MaxDepth"])).toBe(9);
     expect(engines[1].name).toBe("level3");
+  });
+
+  // プリセットの値は、そのプリセットにとっての「エンジンの既定値」として入らなければ
+  // ならない。オプション画面の「エンジンの既定値に戻す」が戻す先が default であり、
+  // value に入れているとリセットで素のエンジンの既定値 (ここでは 64) に戻ってしまう。
+  it("buildUSIEngines/presetValuesAreDefaults", () => {
+    const engines = buildUSIEngines("sunfish4-lite", manifest);
+    const option = engines[0].options["MaxDepth"];
+    expect(option?.type === "spin" && option.default).toBe(1);
+    // ユーザーが編集したかどうかの区別を保つため、value は空のままにする。
+    expect(option?.type === "spin" && option.value).toBeUndefined();
+    // プリセットが触れていないオプションはマニフェストの申告どおり。
+    const threads = engines[0].options["Threads"];
+    expect(threads?.type === "spin" && threads.default).toBe(1);
+  });
+
+  // 保存済みの設定を引き継ぐときに、ユーザーが編集していないオプションの
+  // プリセット値が消えてはならない (mergeUSIEngine は value だけを引き継ぐ)。
+  it("buildUSIEngines/mergeKeepsPresetDefaults", () => {
+    const engines = buildUSIEngines("sunfish4-lite", manifest);
+    const local: USIEngine = JSON.parse(JSON.stringify(engines[0]));
+    local.name = "編集した名前";
+    mergeUSIEngine(engines[0], local);
+    expect(getUSIEngineOptionCurrentValue(engines[0].options["MaxDepth"])).toBe(1);
+    expect(engines[0].name).toBe("編集した名前");
   });
 
   it("enginePath", () => {
