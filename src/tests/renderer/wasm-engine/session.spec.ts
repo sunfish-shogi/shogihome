@@ -297,6 +297,49 @@ describe("wasm-engine/session", () => {
     expect(env.transport.sent).toEqual(["stop", "position startpos moves 7g7f", "go infinite"]);
   });
 
+  // 検討中の MultiPV 変更。 setoption -> stop -> go の順で呼ばれるが、
+  // 思考中の setoption は不正なので bestmove を待ってから送る (Electron 版と同じ)。
+  it("setOption/whileThinking", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.goInfinite(sessionID, "position startpos");
+    env.transport.sent.length = 0;
+    // 検討画面から MultiPV の変更が要求される。
+    env.manager.setOption(sessionID, "MultiPV", "3");
+    env.manager.stop(sessionID);
+    env.manager.goInfinite(sessionID, "position startpos");
+    // setoption はまだ送らない。 stop も連投しない。
+    expect(env.transport.sent).toEqual(["stop"]);
+    env.transport.receive("bestmove 2g2f");
+    // bestmove の後に setoption を送り、続けて go を送る。
+    expect(env.transport.sent).toEqual([
+      "stop",
+      "setoption name MultiPV value 3",
+      "position startpos",
+      "go infinite",
+    ]);
+  });
+
+  // 詰将棋探索中の setoption も bestmove (checkmate) を待ってから送る。
+  it("setOption/whileSearchingCheckmate", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.goMate(sessionID, "position startpos");
+    env.transport.sent.length = 0;
+    env.manager.setOption(sessionID, "MultiPV", "3");
+    expect(env.transport.sent).toEqual([]);
+    env.transport.receive("checkmate 1g1f");
+    expect(env.transport.sent).toEqual(["setoption name MultiPV value 3"]);
+  });
+
+  // 思考中でなければ setoption はそのまま送る。
+  it("setOption/whileReady", async () => {
+    const env = setup();
+    const sessionID = await launchReady(env);
+    env.manager.setOption(sessionID, "MultiPV", "3");
+    expect(env.transport.sent).toEqual(["setoption name MultiPV value 3"]);
+  });
+
   // readyok より前に go が来た場合は、readyok の後に送る。
   it("go/beforeReadyOk", async () => {
     const env = setup();
