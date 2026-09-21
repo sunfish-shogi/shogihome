@@ -868,6 +868,8 @@ export const en: Texts = {
   playerNameNotSet: "Player name is not set.",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "Incompatible options will be discarded. Do you really want to replace the engine path?",
+  presetEngineOptionsCannotBeChangedDoYouWantToCopy:
+    "Options of a preset engine cannot be changed. Do you want to create a copy and open its settings?",
   largeSuggestionsCountMayCausePerformanceDegradation:
     "Large suggestions count may cause performance degradation.",
   doYouReallyWantToIncreaseTheSuggestionsCount:

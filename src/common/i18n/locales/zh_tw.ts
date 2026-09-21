@@ -868,6 +868,9 @@ export const zh_tw: Texts = {
   playerNameNotSet: "尚未設定對局者名稱。",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "不相容的設定將自動被移除。您確認要更換引擎嗎？",
+  // TODO: Translate
+  presetEngineOptionsCannotBeChangedDoYouWantToCopy:
+    "プリセットのエンジンはオプションを変更できません。コピーを作成して設定を開きますか？",
   largeSuggestionsCountMayCausePerformanceDegradation: "增加候補手可能會導致效能下降。",
   doYouReallyWantToIncreaseTheSuggestionsCount: "您確定要增加候選手數嗎？",
   recommendLowerSettingsForDailyUse: "日常利用のPCでは低めの設定を推奨します。", // TODO: Translate

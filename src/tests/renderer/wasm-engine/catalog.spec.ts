@@ -100,6 +100,15 @@ describe("wasm-engine/catalog", () => {
     );
   });
 
+  // プリセットかどうかで UI の振る舞いが変わる (コピーを促す) ため、判定を固定する。
+  // Electron 版のエンジンは issueEngineURI() の URI を持つので該当しない。
+  it("isBuiltinUSIEngine", () => {
+    expect(uri.isBuiltinUSIEngine(builtinEngineURI("sunfish4-lite-wasm-v1"))).toBe(true);
+    expect(uri.isBuiltinUSIEngine(uri.issueEngineURI())).toBe(false);
+    expect(uri.isBuiltinUSIEngine(uri.ES_BASIC_ENGINE_RANDOM)).toBe(false);
+    expect(uri.isBuiltinUSIEngine(uri.ES_HUMAN)).toBe(false);
+  });
+
   // プリセットの値がオプションの初期値として入らないと、レベルの違いが出ない。
   it("buildUSIEngines/presetValues", () => {
     const engines = buildUSIEngines("sunfish4-lite", {

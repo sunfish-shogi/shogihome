@@ -834,6 +834,7 @@ export type Texts = {
   minPlyMustBeLessThanMaxPly: string;
   playerNameNotSet: string;
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath: string;
+  presetEngineOptionsCannotBeChangedDoYouWantToCopy: string;
   largeSuggestionsCountMayCausePerformanceDegradation: string;
   doYouReallyWantToIncreaseTheSuggestionsCount: string;
   recommendLowerSettingsForDailyUse: string;

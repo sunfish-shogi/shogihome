@@ -91,12 +91,14 @@ import { t } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api from "@/renderer/ipc/api";
 import { duplicateEngine, USIEngine, USIEngines, ImmutableUSIEngines } from "@/common/settings/usi";
+import { isBuiltinUSIEngine } from "@/common/uri";
 import { useStore } from "@/renderer/store";
 import { ref, onMounted, computed, onBeforeUnmount, reactive } from "vue";
 import USIEngineOptionsDialog from "@/renderer/view/dialog/USIEngineOptionsDialog.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import { useConfirmationStore } from "@/renderer/store/confirm";
 import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
 import DialogFrame from "./DialogFrame.vue";
 import AddEngineTagDialog from "./AddEngineTagDialog.vue";
@@ -245,6 +247,19 @@ const removeTag = (uri: string, tag: string) => {
 };
 
 const openOptions = (uri: string) => {
+  // プリセットのエンジンはアプリが管理していて、オプションを変更しても保持されない。
+  // (Web 版の組み込みエンジンだけが該当する。Electron 版には存在しない URI。)
+  // 代わりにコピーを作り、そちらの設定を開く。
+  if (isBuiltinUSIEngine(uri)) {
+    useConfirmationStore().show({
+      message: t.presetEngineOptionsCannotBeChangedDoYouWantToCopy,
+      onOk: () => {
+        const copied = duplicate(uri);
+        optionDialog.value = usiEngines.value.getEngine(copied.uri) as USIEngine;
+      },
+    });
+    return;
+  }
   optionDialog.value = usiEngines.value.getEngine(uri) as USIEngine;
 };
 
@@ -252,11 +267,12 @@ const openMerge = () => {
   mergeDialog.value = true;
 };
 
-const duplicate = (uri: string) => {
+const duplicate = (uri: string): USIEngine => {
   const src = usiEngines.value.getEngine(uri) as USIEngine;
   const engine = duplicateEngine(src);
   usiEngines.value.addEngine(engine);
   lastAdded.value = scrollTo = engine.uri;
+  return engine;
 };
 
 const saveAndClose = async () => {

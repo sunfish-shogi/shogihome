@@ -11,6 +11,9 @@ export const ES_BASIC_ENGINE_LIST = [
   ES_BASIC_ENGINE_RANDOM,
 ] as const;
 export const ES_USI_ENGINE_PREFIX = "es://usi-engine/";
+// Web 版に同梱された WebAssembly エンジンのプリセットに割り当てる URI の接頭辞。
+// 実際の URI の組み立ては renderer 側 (wasm-engine/catalog.ts) が行う。
+export const ES_USI_ENGINE_BUILTIN_PREFIX = `${ES_USI_ENGINE_PREFIX}builtin/`;
 export const ES_STANDARD_LAYOUT_PROFILE = "es://layout-profile/standard";
 export const ES_CUSTOM_LAYOUT_PROFILE_PREFIX = "es://layout-profile/custom/";
 export const ES_TEMP_FILE_PREFIX = "es://temp-file/";
@@ -33,6 +36,13 @@ export function basicEngineName(uri: string): string {
 
 export function isUSIEngine(uri: string): boolean {
   return uri.startsWith(ES_USI_ENGINE_PREFIX);
+}
+
+// アプリに同梱されたプリセットのエンジンかどうかを判定する。
+// これらはアプリ側が管理するため利用者は編集できず、変更したい場合は複製して使う。
+// Electron 版のエンジンは issueEngineURI() が発行する URI を持つので、常に false になる。
+export function isBuiltinUSIEngine(uri: string): boolean {
+  return uri.startsWith(ES_USI_ENGINE_BUILTIN_PREFIX);
 }
 
 export function issueEngineURI(): string {

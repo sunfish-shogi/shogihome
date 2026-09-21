@@ -59,7 +59,7 @@ export function resolveEngineFileURL(dir: string, file: string): string {
 }
 
 export function builtinEngineURI(presetID: string): string {
-  return `${uri.ES_USI_ENGINE_PREFIX}builtin/${presetID}`;
+  return `${uri.ES_USI_ENGINE_BUILTIN_PREFIX}${presetID}`;
 }
 
 const manifestCache = new Map<string, Promise<EngineManifest>>();

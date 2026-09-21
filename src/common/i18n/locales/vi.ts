@@ -879,6 +879,9 @@ export const vi: Texts = {
   playerNameNotSet: "Tên người chơi chưa được đặt.",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "Các cài đặt không tương thích sẽ bị xóa bỏ. Bạn có thực sự muốn thay đổi đường dẫn phần mềm?",
+  // TODO: Translate
+  presetEngineOptionsCannotBeChangedDoYouWantToCopy:
+    "プリセットのエンジンはオプションを変更できません。コピーを作成して設定を開きますか？",
   largeSuggestionsCountMayCausePerformanceDegradation:
     "Số nước đề xuất quá lớn có thể làm ứng dụng chậm đi đáng kể.",
   doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?",

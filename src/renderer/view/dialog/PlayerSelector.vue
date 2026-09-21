@@ -52,10 +52,12 @@ import {
   getUSIEngineThreads,
   getUSIEngineMultiPV,
   getPredefinedUSIEngineTag,
+  duplicateEngine,
 } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import { useConfirmationStore } from "@/renderer/store/confirm";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
 
 const selectedPlayerURI = defineModel<string>("playerUri", { required: true });
@@ -169,7 +171,34 @@ const openPlayerSettings = () => {
       useErrorStore().add("利用可能なエンジンが選択されていません。");
       return;
     }
+    // プリセットのエンジンはアプリが管理していて、オプションを変更しても保持されない。
+    // (Web 版の組み込みエンジンだけが該当する。Electron 版には存在しない URI。)
+    // 代わりにコピーを作り、そちらに切り替えた上で設定を開く。
+    if (uri.isBuiltinUSIEngine(engine.uri)) {
+      useConfirmationStore().show({
+        message: t.presetEngineOptionsCannotBeChangedDoYouWantToCopy,
+        onOk: () => copyAndOpenPlayerSettings(engine),
+      });
+      return;
+    }
     engineOptionsDialog.value = engine;
+  }
+};
+
+const copyAndOpenPlayerSettings = async (src: USIEngine) => {
+  const copied = duplicateEngine(src);
+  const clone = props.engines.getClone();
+  clone.addEngine(copied);
+  busyState.retain();
+  try {
+    await api.saveUSIEngines(clone);
+    emit("updateEngines", clone);
+    selectedPlayerURI.value = copied.uri;
+    engineOptionsDialog.value = copied;
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
   }
 };
 
