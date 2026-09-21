@@ -16,7 +16,7 @@
     { "url": "eval-20260829.bin", "path": "/eval.bin" }
   ],
   "options": [
-    { "name": "UseBook", "type": "check", "default": "false" },
+    { "name": "UseBook", "type": "check", "default": "true" },
     { "name": "Snappy", "type": "check", "default": "true" },
     { "name": "Threads", "type": "spin", "default": 1, "min": 1, "max": 4 },
     { "name": "MarginMs", "type": "spin", "default": 500, "min": 0, "max": 2000 },
@@ -27,13 +27,16 @@
     {
       "id": "sunfish4-lite-wasm-v1",
       "displayName": "Sunfish4-Lite",
-      "values": {},
+      "values": {
+        "UseBook": "false"
+      },
       "tags": ["game", "research"]
     },
     {
       "id": "sunfish4-lite-wasm-v1-d3",
       "displayName": "Sunfish4-Lite Depth-03",
       "values": {
+        "UseBook": "false",
         "Threads": 1,
         "USI_Hash": 8,
         "USI_Ponder": "false",
@@ -45,6 +48,7 @@
       "id": "sunfish4-lite-wasm-v1-d5",
       "displayName": "Sunfish4-Lite Depth-05",
       "values": {
+        "UseBook": "false",
         "Threads": 1,
         "USI_Hash": 16,
         "USI_Ponder": "false",
@@ -56,6 +60,7 @@
       "id": "sunfish4-lite-wasm-v1-d7",
       "displayName": "Sunfish4-Lite Depth-07",
       "values": {
+        "UseBook": "false",
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
@@ -67,6 +72,7 @@
       "id": "sunfish4-lite-wasm-v1-d9",
       "displayName": "Sunfish4-Lite Depth-09",
       "values": {
+        "UseBook": "false",
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
@@ -78,6 +84,7 @@
       "id": "sunfish4-lite-wasm-v1-d11",
       "displayName": "Sunfish4-Lite Depth-11",
       "values": {
+        "UseBook": "false",
         "Threads": 1,
         "USI_Hash": 32,
         "USI_Ponder": "false",
