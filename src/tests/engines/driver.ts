@@ -110,6 +110,12 @@ export async function resolveEngineAsset(
   return resolved;
 }
 
+// Emscripten はグルーコードと同じ名前で .wasm や .data を出力する。
+// **グルーコードの拡張子は .js とは限らない** (ESM の出力は .mjs のこともある)。
+export function engineAssetName(manifest: EngineManifest, extension: string): string {
+  return manifest.module.replace(/\.m?js$/, extension);
+}
+
 // UMD の成果物を CommonJS として評価する。
 //
 // Worker では末尾に export 文を足して Blob URL から import() するが、Node で同じことを
@@ -156,10 +162,7 @@ export async function launchEngine(dir: string): Promise<EngineHandle> {
   // **locateFile は同期なので、要求され得るファイルは先に用意しておく。**
   // Emscripten がグルーコードの隣から読むのは .wasm と (--preload-file の) .data である。
   const assets = new Map<string, string>();
-  for (const file of [
-    manifest.module.replace(/\.js$/, ".wasm"),
-    manifest.module.replace(/\.js$/, ".data"),
-  ]) {
+  for (const file of [engineAssetName(manifest, ".wasm"), engineAssetName(manifest, ".data")]) {
     const resolved = await resolveEngineAsset(dir, file, path.basename(file));
     if (resolved) {
       // Emscripten が locateFile へ渡すのはファイル名だけである。

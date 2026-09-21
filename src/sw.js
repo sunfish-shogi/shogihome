@@ -105,30 +105,36 @@ registerRoute(
 // ナビゲーション以外を事前キャッシュから返す。
 addRoute();
 
-// --- 外部オリジンに置かれたエンジンのアセット ----------------------------
+// --- assetBaseURL で外部に置かれたエンジンのアセット ----------------------
 //
-// マニフェストが assetBaseURL を宣言している場合、wasm と評価パラメータは別の
-// オリジンから配信される (specs/wasm-engine-abi.md の「6. (d)」)。**Workbox の
-// 正規表現ルートは、クロスオリジンの URL には先頭から一致しなければ当たらない**ため、
-// 下のパスで書いたルートでは拾えず、そのままでは実行時キャッシュが効かない。
+// マニフェストが assetBaseURL を宣言している場合、wasm と評価パラメータは
+// engines/<dir>/ の外から配信される (specs/wasm-engine-abi.md の「6. (d)」)。
+// **Workbox の正規表現ルートは、クロスオリジンの URL には先頭から一致しなければ
+// 当たらない**ため、下のパスで書いたルートでは拾えず、実行時キャッシュが効かない。
 //
-// どのオリジンが対象かはマニフェストが知っている。engine.json はライセンス表示のために
+// どこを指しているかはマニフェストが知っている。engine.json はライセンス表示のために
 // 事前キャッシュされているので、**ビルド時に値を注入する仕組みを足さなくても
 // Service Worker 自身が読める。** 配信物と食い違わないのが利点である。
 //
 // 読み込みは非同期だが、**ルートの照合は同期でなければならない**
 // (Workbox の findMatchingRoute は Promise を真として扱うため、非同期のマッチャは
-// 全ての要求に一致してしまう)。そこで照合は拡張子だけで行い、宣言されたオリジンか
-// どうかの判定はハンドラで行って、対象外ならそのまま素通しする。
+// 全ての要求に一致してしまう)。そこで照合は拡張子で行い、エンジンのものかどうかの
+// 判定はハンドラで行って、対象外ならそのまま素通しする。
 const ENGINE_MANIFEST_ENTRY = /(?:^|\/)engines\/[^/]+\/engine\.json$/;
 
-let engineAssetOriginsPromise;
+// 同一オリジンの本来の置き場所。
+const ENGINE_DIR_PATH = /\/engines\/[^?]+$/;
 
-function engineAssetOrigins() {
-  engineAssetOriginsPromise =
-    engineAssetOriginsPromise ||
+let engineAssetBasesPromise;
+
+// 宣言された取得先の一覧。**オリジンではなく URL の前方一致で持つ。**
+// assetBaseURL は同じオリジンの engines/ の外を指すこともあり、オリジンだけでは
+// 絞り込みにならない (逆に、取得先と無関係なファイルまで拾ってしまう)。
+function engineAssetBases() {
+  engineAssetBasesPromise =
+    engineAssetBasesPromise ||
     (async () => {
-      const origins = new Set();
+      const bases = [];
       for (const entry of precacheManifest || []) {
         const url = typeof entry === "string" ? entry : entry.url;
         if (!ENGINE_MANIFEST_ENTRY.test(url)) {
@@ -138,30 +144,32 @@ function engineAssetOrigins() {
           const response = await matchPrecache(url);
           const manifest = response && (await response.json());
           if (manifest && typeof manifest.assetBaseURL === "string") {
-            origins.add(new URL(manifest.assetBaseURL).origin);
+            // マニフェストの検証で末尾は "/" に限られる (manifest.ts)。
+            bases.push(new URL(manifest.assetBaseURL).href);
           }
         } catch {
           // 読めないマニフェストは飛ばす。キャッシュの対象から漏れるだけで、
           // 取得そのものは素通しで成立する。
         }
       }
-      return origins;
+      return bases;
     })();
-  return engineAssetOriginsPromise;
+  return engineAssetBasesPromise;
 }
 
-// このオリジンのものか、マニフェストが宣言した取得先のものか。
+// エンジンの置き場所のものか。同一オリジンの engines/ の下か、
+// マニフェストが宣言した取得先の下にあるもの。
 async function isEngineAssetURL(url) {
-  return url.origin === self.location.origin || (await engineAssetOrigins()).has(url.origin);
+  if (url.origin === self.location.origin && ENGINE_DIR_PATH.test(url.pathname)) {
+    return true;
+  }
+  return (await engineAssetBases()).some((base) => url.href.startsWith(base));
 }
 
-// 同一オリジンでは engines/ の下にあるものだけを、外部オリジンでは拡張子だけを見る
-// (取得先のパスの形は ShogiHome の関知するところではない)。
-function engineAssetMatcher(pathPattern, externalPattern) {
-  return ({ url }) =>
-    url.origin === self.location.origin
-      ? pathPattern.test(url.pathname)
-      : externalPattern.test(url.pathname);
+// 本来の置き場所のパスか、assetBaseURL が担う拡張子か。
+// **オリジンでは分けない。** assetBaseURL は同じオリジンを指すこともある。
+function engineAssetMatcher(pathPattern, assetPattern) {
+  return ({ url }) => pathPattern.test(url.pathname) || assetPattern.test(url.pathname);
 }
 
 // --- 実行時キャッシュ ----------------------------------------------------
@@ -218,8 +226,8 @@ const engineModuleStrategy = new StaleWhileRevalidate({
 // (Emscripten が new Worker(new URL("<module>.js", import.meta.url)) を出力する)。
 // 同じ URL がモジュールとしても Worker としても要求されるため、destination を見て
 // 必要なときだけヘッダーを付ける。キャッシュにはヘッダーを足す前のものが入る。
-// グルーコードとマニフェストは常にこのオリジンから配信される
-// (assetBaseURL の対象は wasm と評価パラメータだけ)。外部オリジンで拾うのは .wasm のみ。
+// グルーコードとマニフェストは常に engines/<dir>/ から配信される
+// (assetBaseURL の対象は JS 以外のアセットだけ)。その外で拾うのは .wasm のみ。
 registerRoute(
   engineAssetMatcher(/\/engines\/[^?]+\.(?:json|js|wasm)$/, /\.wasm$/),
   async (options) => {

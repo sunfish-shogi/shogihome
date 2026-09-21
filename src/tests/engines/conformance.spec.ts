@@ -12,6 +12,7 @@ import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { Position } from "tsshogi";
 import { enginePathOf, isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog.js";
 import {
+  engineAssetName,
   engineDirPath,
   handshake,
   launchEngine,
@@ -45,8 +46,8 @@ describe("engines/conformance", () => {
       // **グルーコードは配布物に含まれていなければならない。** assetBaseURL の
       // 対象外で、常に engines/<dir>/ から読まれる。
       expect(fs.existsSync(path.join(engineDirPath(dir), manifest.module))).toBeTruthy();
-      // Emscripten の出力は <module>.js と同じ場所に .wasm を置く。
-      const wasm = manifest.module.replace(/\.js$/, ".wasm");
+      // Emscripten の出力はグルーコードと同じ場所に同じ名前で .wasm を置く。
+      const wasm = engineAssetName(manifest, ".wasm");
       expect(await resolveEngineAsset(dir, wasm, path.basename(wasm)), wasm).toBeTruthy();
       for (const file of manifest.dataFiles || []) {
         expect(await resolveEngineAsset(dir, file.url), file.url).toBeTruthy();
