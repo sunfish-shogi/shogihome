@@ -102,6 +102,63 @@ describe("plugins/build_profile", () => {
     fs.rmSync(dir, { recursive: true });
   });
 
+  // PWA のマニフェストに差す値。指定した項目だけが差し替わる。
+  it("pwa", () => {
+    const profile = parseBuildProfile({
+      pwa: {
+        id: "/shogihome-plus/",
+        name: "ShogiHome+Example",
+        shortName: "ShogiHome+",
+        description: "エンジンを組み込んだ ShogiHome",
+        themeColor: "#5f8f5f",
+        backgroundColor: "#2f4f4f",
+        lang: "en",
+      },
+    });
+    expect(profile.pwa).toEqual({
+      id: "/shogihome-plus/",
+      name: "ShogiHome+Example",
+      shortName: "ShogiHome+",
+      description: "エンジンを組み込んだ ShogiHome",
+      themeColor: "#5f8f5f",
+      backgroundColor: "#2f4f4f",
+      lang: "en",
+    });
+    expect(parseBuildProfile({ pwa: { name: "x" } }).pwa).toEqual({ name: "x" });
+    expect(parseBuildProfile({}).pwa).toEqual({});
+
+    expect(() => parseBuildProfile({ pwa: { shortname: "x" } })).toThrow(
+      /profile.pwa.shortname is not a known/,
+    );
+    expect(() => parseBuildProfile({ pwa: { name: 1 } })).toThrow(
+      /profile.pwa.name must be a non-empty string/,
+    );
+  });
+
+  // アイコンはプロファイルからの相対で書く。実体が無ければビルドを止める。
+  it("pwaIcons", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-icons-"));
+    fs.writeFileSync(path.join(dir, "icon-192.png"), "192");
+    fs.writeFileSync(path.join(dir, "icon-512.png"), "512");
+    const icons = { "192": "./icon-192.png", "512": "./icon-512.png" };
+    expect(parseBuildProfile({ pwa: { icons } }, dir).pwa.icons).toEqual({
+      "192": path.join(dir, "icon-192.png"),
+      "512": path.join(dir, "icon-512.png"),
+    });
+
+    // **片方だけの差し替えは認めない。** 本家のアイコンが混ざった配布物ができるため。
+    expect(() => parseBuildProfile({ pwa: { icons: { "192": "./icon-192.png" } } }, dir)).toThrow(
+      /profile.pwa.icons.512 must be a non-empty string/,
+    );
+    expect(() =>
+      parseBuildProfile({ pwa: { icons: { ...icons, "256": "./icon-192.png" } } }, dir),
+    ).toThrow(/profile.pwa.icons.256 is not a known/);
+    expect(() =>
+      parseBuildProfile({ pwa: { icons: { ...icons, "512": "./missing.png" } } }, dir),
+    ).toThrow(/profile.pwa.icons.512 does not exist/);
+    fs.rmSync(dir, { recursive: true });
+  });
+
   // ビルド機のパスは配布物に混ぜない。renderer へ渡すのは features と license だけ。
   it("rendererBuildProfile", () => {
     const profile = parseBuildProfile(validProfile());
@@ -137,6 +194,8 @@ describe("plugins/build_profile", () => {
     expect(profile.license.distribution?.url).toBeTruthy();
     expect(profile.license.distribution?.sourceURL).toBeTruthy();
     expect(profile.license.thirdPartyURL).toBeTruthy();
+    expect(profile.pwa.id).toBeTruthy();
+    expect(profile.pwa.name).toBeTruthy();
 
     const doc = fs.readFileSync("specs/build-profile.md", "utf8");
     expect(doc.match(/```json\n([\s\S]*?)```/)?.[1]).toBe(fs.readFileSync(file, "utf8"));

@@ -27,6 +27,14 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
   "features": {
     "mobileSearchTab": true
   },
+  "pwa": {
+    "id": "/shogihome-plus/",
+    "name": "ShogiHome+Example",
+    "shortName": "ShogiHome+",
+    "description": "エンジンを組み込んだ ShogiHome",
+    "themeColor": "#5f8f5f",
+    "backgroundColor": "#2f4f4f"
+  },
   "license": {
     "distribution": {
       "text": "ShogiHome+Example (GPLv3)",
@@ -42,6 +50,14 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 | -------------------------------- | ------- | ---------------------------------------------------------------- |
 | `engines.dirs`                   | (無し)  | エンジンの置き場所。プロファイルからの相対で書く                 |
 | `features.mobileSearchTab`       | `false` | モバイルウェブの UI に「思考」タブ (読み筋と評価値グラフ) を出す |
+| `pwa.id`                         | (無し)  | インストール済み PWA の識別子。「PWA の設定」を参照              |
+| `pwa.name`                       | 本家    | ホーム画面などに出る名前                                         |
+| `pwa.shortName`                  | 本家    | 表示幅が狭い場合に使われる名前                                   |
+| `pwa.description`                | 本家    | ストアや情報表示に出る説明                                       |
+| `pwa.themeColor`                 | 本家    | ツールバーなどの配色                                             |
+| `pwa.backgroundColor`            | 本家    | 起動時のスプラッシュの配色                                       |
+| `pwa.lang`                       | `ja`    | マニフェストの言語                                               |
+| `pwa.icons`                      | 本家    | アイコンの差し替え。「PWA の設定」を参照                         |
 | `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                             |
 | `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                            |
 | `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須         |
@@ -57,6 +73,39 @@ URL はライセンス表示からそのままブラウザへ渡すため、**ht
 [`wasm-engine-abi.md`](./wasm-engine-abi.md) の「9. ライセンス」を参照)。
 
 プロファイルはビルド時に読み込まれる。開発サーバーの起動中に書き換えた場合は再起動すること。
+
+## PWA の設定
+
+`pwa` はウェブアプリマニフェスト (`manifest.webmanifest`) に差す値で、**指定した項目だけが
+差し替わる。** 書かなかった項目は本家の値のままになる。
+
+### アイコン
+
+`pwa.icons` はサイズ (px) から実体へのパスで、プロファイルからの相対で書く。
+
+```json
+{
+  "pwa": {
+    "icons": {
+      "192": "./icons/app-192.png",
+      "512": "./icons/app-512.png"
+    }
+  }
+}
+```
+
+- **両方のサイズを指定しなければならない。** 片方だけにすると本家のアイコンが混ざる
+- **存在しないファイルはビルドを失敗させる** (`engines.dirs` と同じ考え方)
+- 配信されるファイル名は本家と同じ (`favicon-192.png` / `favicon.png`) で、中身だけが
+  差し替わる。事前キャッシュとマニフェストの参照を揃えたままにするため
+- 開発サーバーでも差し替えたものが返る
+
+### `pwa.id`
+
+**本家と同じオリジンに特別版を置く場合は指定する。** ウェブアプリマニフェストの `id` は
+既定では `start_url` から導かれるため、名前やアイコンを変えても、同じ場所に置いた
+特別版はインストール済みの PWA と同じものとして扱われる。オリジンからの相対で書く
+(例: `/shogihome-plus/`)。別のドメインで配信する場合は指定しなくてよい。
 
 ## エンジンを組み込む
 

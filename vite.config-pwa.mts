@@ -10,6 +10,78 @@ import {
   listBuiltinEngines,
   type BuiltinEngine,
 } from "./plugins/builtin_engines.ts";
+import { buildProfileFromEnv, type BuildProfilePWA } from "./plugins/build_profile.ts";
+
+// PWA のマニフェスト (manifest.webmanifest)。
+//
+// **プロファイルが指定した項目だけを差し替える** (specs/build-profile.md)。
+// 指定が無ければ本家の値になり、通常のビルドの出力は変わらない。
+function webAppManifest(pwa: BuildProfilePWA) {
+  return {
+    // id は既定では start_url から導かれる。本家と同じオリジンに特別版を置く場合、
+    // これを分けないとインストール済みの PWA が同じものとして扱われる。
+    ...(pwa.id ? { id: pwa.id } : {}),
+    name: pwa.name || "ShogiHome",
+    short_name: pwa.shortName || "ShogiHome",
+    description: pwa.description || "将棋の対局や棋譜の編集ができるアプリ",
+    background_color: pwa.backgroundColor || "#2f4f4f",
+    theme_color: pwa.themeColor || "#5f8f5f",
+    display: "standalone" as const,
+    lang: pwa.lang || "ja",
+    icons: [
+      { sizes: "192x192", src: "favicon-192.png", type: "image/png", purpose: "any" },
+      { sizes: "512x512", src: "favicon.png", type: "image/png", purpose: "any" },
+    ],
+  };
+}
+
+// プロファイルのアイコンの出力先。サイズ (px) から public/ のファイル名へ。
+//
+// **名前は本家と同じままにして、中身だけを差し替える。** 事前キャッシュの
+// globPatterns (favicon*.png)、上のマニフェストの icons、index.html の link が
+// この名前を前提にしているため。
+const PWA_ICON_FILES: { [size: string]: string } = {
+  "192": "favicon-192.png",
+  "512": "favicon.png",
+};
+
+// プロファイルが指定したアイコンで public/ のものを差し替える。
+//
+// publicDir のコピーはビルドの開始時に行われるので、ここで出力したものが後から
+// 上書きする形になる。事前キャッシュの一覧は VitePWA がビルド後の出力ディレクトリから
+// 作るため、差し替え後の内容で revision が決まる。
+function replacePWAIcons(icons: { [size: string]: string }): Plugin {
+  return {
+    name: "shogihome-pwa-icons",
+
+    generateBundle() {
+      for (const [size, file] of Object.entries(icons)) {
+        this.emitFile({
+          type: "asset",
+          fileName: PWA_ICON_FILES[size],
+          source: fs.readFileSync(file),
+        });
+      }
+    },
+
+    configureServer(server) {
+      // 開発サーバーでも差し替えたものを返す。
+      // 何もしないと public/ の本家のアイコンがそのまま出る。
+      const files = new Map(
+        Object.entries(icons).map(([size, file]) => [`/${PWA_ICON_FILES[size]}`, file]),
+      );
+      server.middlewares.use((req, res, next) => {
+        const file = files.get(new URL(req.url || "/", "http://localhost").pathname);
+        if (!file) {
+          next();
+          return;
+        }
+        res.setHeader("Content-Type", "image/png");
+        res.end(fs.readFileSync(file));
+      });
+    },
+  };
+}
 
 // ライセンス表示に必要なファイルを事前キャッシュの一覧へ足す。
 //
@@ -84,6 +156,10 @@ function injectCrossOriginIsolationBootstrap(): Plugin {
   };
 }
 
+// 特別版のビルドの設定 (SHOGIHOME_BUILD_PROFILE)。PWA のマニフェストとアイコンは
+// renderer へ渡らないビルド時の設定なので、ここで読んで使う。
+const buildProfile = buildProfileFromEnv();
+
 export default defineConfig({
   ...base,
   server: {
@@ -103,6 +179,9 @@ export default defineConfig({
   plugins: [
     ...(base.plugins || []),
     injectCrossOriginIsolationBootstrap(),
+    // アイコンの差し替えは VitePWA より前に置く。事前キャッシュの一覧を作る前に
+    // 出力を確定させるため。
+    ...(buildProfile.pwa.icons ? [replacePWAIcons(buildProfile.pwa.icons)] : []),
     VitePWA({
       // 更新版は自動で適用せず、アプリ内で通知してユーザーの操作で再読み込みする。
       // 対局中や検討中に予期せず画面が再読み込みされるのを防ぐため。
@@ -113,6 +192,13 @@ export default defineConfig({
       strategies: "injectManifest",
       srcDir: "src",
       filename: "sw.js",
+      // マニフェストの icons を事前キャッシュへ足す既定の動作を切る。
+      //
+      // **これは public/ の実体から revision を作る。** アイコンは下の globPatterns
+      // (favicon*.png) が出力から拾っているため二重になり、ビルドプロファイルで
+      // 差し替えた場合は同じ URL に異なる revision が並んで、Service Worker が
+      // add-to-cache-list-conflicting-entries で install に失敗する。
+      includeManifestIcons: false,
       devOptions: {
         // 開発サーバーでは既定で Service Worker を無効にする。
         // 古いキャッシュが返ることによる混乱を避けるため。
@@ -150,19 +236,7 @@ export default defineConfig({
         additionalManifestEntries: engineLicenseManifestEntries(),
         // 実行時キャッシュとナビゲーションの扱いは src/sw.js に書いてある。
       },
-      manifest: {
-        name: "ShogiHome",
-        short_name: "ShogiHome",
-        description: "将棋の対局や棋譜の編集ができるアプリ",
-        background_color: "#2f4f4f",
-        theme_color: "#5f8f5f",
-        display: "standalone",
-        lang: "ja",
-        icons: [
-          { sizes: "192x192", src: "favicon-192.png", type: "image/png", purpose: "any" },
-          { sizes: "512x512", src: "favicon.png", type: "image/png", purpose: "any" },
-        ],
-      },
+      manifest: webAppManifest(buildProfile.pwa),
     }),
   ],
 });
