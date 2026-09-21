@@ -28,7 +28,8 @@ import { RangeRequestsPlugin } from "workbox-range-requests";
 // 照合するので、先に事前キャッシュのルートを足すとそちらがナビゲーションを
 // 拾ってしまい、下の cross-origin isolation のヘッダーが付かない。
 // なお createHandlerBoundToURL() は一覧の登録後でなければ使えない。
-precache(self.__WB_MANIFEST);
+const precacheManifest = self.__WB_MANIFEST;
+precache(precacheManifest);
 
 // --- cross-origin isolation ---------------------------------------------
 //
@@ -104,6 +105,73 @@ registerRoute(
 // ナビゲーション以外を事前キャッシュから返す。
 addRoute();
 
+// --- assetBaseURL で外部に置かれたエンジンのアセット ----------------------
+//
+// マニフェストが assetBaseURL を宣言している場合、wasm と評価パラメータは
+// engines/<dir>/ の外から配信される (specs/wasm-engine-abi.md の「6. (d)」)。
+// **Workbox の正規表現ルートは、クロスオリジンの URL には先頭から一致しなければ
+// 当たらない**ため、下のパスで書いたルートでは拾えず、実行時キャッシュが効かない。
+//
+// どこを指しているかはマニフェストが知っている。engine.json はライセンス表示のために
+// 事前キャッシュされているので、**ビルド時に値を注入する仕組みを足さなくても
+// Service Worker 自身が読める。** 配信物と食い違わないのが利点である。
+//
+// 読み込みは非同期だが、**ルートの照合は同期でなければならない**
+// (Workbox の findMatchingRoute は Promise を真として扱うため、非同期のマッチャは
+// 全ての要求に一致してしまう)。そこで照合は拡張子で行い、エンジンのものかどうかの
+// 判定はハンドラで行って、対象外ならそのまま素通しする。
+const ENGINE_MANIFEST_ENTRY = /(?:^|\/)engines\/[^/]+\/engine\.json$/;
+
+// 同一オリジンの本来の置き場所。
+const ENGINE_DIR_PATH = /\/engines\/[^?]+$/;
+
+let engineAssetBasesPromise;
+
+// 宣言された取得先の一覧。**オリジンではなく URL の前方一致で持つ。**
+// assetBaseURL は同じオリジンの engines/ の外を指すこともあり、オリジンだけでは
+// 絞り込みにならない (逆に、取得先と無関係なファイルまで拾ってしまう)。
+function engineAssetBases() {
+  engineAssetBasesPromise =
+    engineAssetBasesPromise ||
+    (async () => {
+      const bases = [];
+      for (const entry of precacheManifest || []) {
+        const url = typeof entry === "string" ? entry : entry.url;
+        if (!ENGINE_MANIFEST_ENTRY.test(url)) {
+          continue;
+        }
+        try {
+          const response = await matchPrecache(url);
+          const manifest = response && (await response.json());
+          if (manifest && typeof manifest.assetBaseURL === "string") {
+            // マニフェストの検証で末尾は "/" に限られる (manifest.ts)。
+            bases.push(new URL(manifest.assetBaseURL).href);
+          }
+        } catch {
+          // 読めないマニフェストは飛ばす。キャッシュの対象から漏れるだけで、
+          // 取得そのものは素通しで成立する。
+        }
+      }
+      return bases;
+    })();
+  return engineAssetBasesPromise;
+}
+
+// エンジンの置き場所のものか。同一オリジンの engines/ の下か、
+// マニフェストが宣言した取得先の下にあるもの。
+async function isEngineAssetURL(url) {
+  if (url.origin === self.location.origin && ENGINE_DIR_PATH.test(url.pathname)) {
+    return true;
+  }
+  return (await engineAssetBases()).some((base) => url.href.startsWith(base));
+}
+
+// 本来の置き場所のパスか、assetBaseURL が担う拡張子か。
+// **オリジンでは分けない。** assetBaseURL は同じオリジンを指すこともある。
+function engineAssetMatcher(pathPattern, assetPattern) {
+  return ({ url }) => pathPattern.test(url.pathname) || assetPattern.test(url.pathname);
+}
+
 // --- 実行時キャッシュ ----------------------------------------------------
 
 // 実際に使用された盤・駒の画像だけをキャッシュする。
@@ -158,10 +226,18 @@ const engineModuleStrategy = new StaleWhileRevalidate({
 // (Emscripten が new Worker(new URL("<module>.js", import.meta.url)) を出力する)。
 // 同じ URL がモジュールとしても Worker としても要求されるため、destination を見て
 // 必要なときだけヘッダーを付ける。キャッシュにはヘッダーを足す前のものが入る。
-registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
-  const response = await engineModuleStrategy.handle(options);
-  return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
-});
+// グルーコードとマニフェストは常に engines/<dir>/ から配信される
+// (assetBaseURL の対象は JS 以外のアセットだけ)。その外で拾うのは .wasm のみ。
+registerRoute(
+  engineAssetMatcher(/\/engines\/[^?]+\.(?:json|js|wasm)$/, /\.wasm$/),
+  async (options) => {
+    if (!(await isEngineAssetURL(options.url))) {
+      return fetch(options.request);
+    }
+    const response = await engineModuleStrategy.handle(options);
+    return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
+  },
+);
 
 // エンジンの評価パラメータや定跡。事前キャッシュすると初回アクセスの
 // 負担が大きすぎるため、実際に使われたものだけを保持する。
@@ -169,16 +245,23 @@ registerRoute(/\/engines\/[^?]+\.(?:json|js|wasm)$/, async (options) => {
 // NOTE: これらは事前キャッシュと違って revision を持たないため、
 // ファイル名に内容のハッシュを含めること。同じ URL のまま差し替えると
 // 古いファイルが返り続ける。specs/wasm-engine.md の「キャッシュ」を参照。
+const engineDataStrategy = new CacheFirst({
+  cacheName: "shogihome-engine-data",
+  plugins: [
+    new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+    new CacheableResponsePlugin({ statuses: [0, 200] }),
+    new RangeRequestsPlugin(),
+  ],
+});
+
 registerRoute(
-  /\/engines\/[^?]+\.(?:data|bin|nnue)$/,
-  new CacheFirst({
-    cacheName: "shogihome-engine-data",
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new RangeRequestsPlugin(),
-    ],
-  }),
+  engineAssetMatcher(/\/engines\/[^?]+\.(?:data|bin|nnue)$/, /\.(?:data|bin|nnue)$/),
+  async (options) => {
+    if (!(await isEngineAssetURL(options.url))) {
+      return fetch(options.request);
+    }
+    return engineDataStrategy.handle(options);
+  },
 );
 
 // --- 更新 ----------------------------------------------------------------

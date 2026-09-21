@@ -11,7 +11,15 @@ import path from "node:path";
 import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { Position } from "tsshogi";
 import { enginePathOf, isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog.js";
-import { engineDirPath, handshake, launchEngine, listEngineDirs, readManifest } from "./driver.js";
+import {
+  engineAssetName,
+  engineDirPath,
+  handshake,
+  launchEngine,
+  listEngineDirs,
+  readManifest,
+  resolveEngineAsset,
+} from "./driver.js";
 import { PUBLIC_ENGINES_DIR } from "@plugins/builtin_engines.js";
 
 const engineDirs = listEngineDirs();
@@ -29,17 +37,22 @@ describe("engines/conformance", () => {
       expect(isBuiltinEnginePath(enginePathOf(dir)), dir).toBeTruthy();
     });
 
-    it("マニフェストと成果物が揃っていること", () => {
+    // wasm とデータファイルは assetBaseURL で外部のオリジンに置ける。その場合は
+    // 実体がネットワーク越しにあるため、取得できることをもって「揃っている」とみなす
+    // (resolveEngineAsset が取得して一時ディレクトリへ残す)。大きなファイルの
+    // ダウンロードを伴い得るので、他の項目より長い時間を認める。
+    it("マニフェストと成果物が揃っていること", async () => {
       const manifest = readManifest(dir);
-      const engineDir = engineDirPath(dir);
-      expect(fs.existsSync(path.join(engineDir, manifest.module))).toBeTruthy();
-      // Emscripten の出力は <module>.js と同じ場所に .wasm を置く。
-      const wasm = manifest.module.replace(/\.js$/, ".wasm");
-      expect(fs.existsSync(path.join(engineDir, wasm))).toBeTruthy();
+      // **グルーコードは配布物に含まれていなければならない。** assetBaseURL の
+      // 対象外で、常に engines/<dir>/ から読まれる。
+      expect(fs.existsSync(path.join(engineDirPath(dir), manifest.module))).toBeTruthy();
+      // Emscripten の出力はグルーコードと同じ場所に同じ名前で .wasm を置く。
+      const wasm = engineAssetName(manifest, ".wasm");
+      expect(await resolveEngineAsset(dir, wasm, path.basename(wasm)), wasm).toBeTruthy();
       for (const file of manifest.dataFiles || []) {
-        expect(fs.existsSync(path.join(engineDir, file.url)), file.url).toBeTruthy();
+        expect(await resolveEngineAsset(dir, file.url), file.url).toBeTruthy();
       }
-    });
+    }, 120000);
 
     // 配布物にエンジンを含む以上、ライセンスの提示も配布物だけで完結していなければならない。
     // ShogiHome は engine.json の licenses を読んでライセンス表示に載せる。

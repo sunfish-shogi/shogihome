@@ -5,10 +5,38 @@
 // 仕様は specs/wasm-engine-abi.md を参照。
 
 // Emscripten の仮想ファイルシステム。マニフェストの dataFiles を使うエンジンだけが公開する。
+//
+// Emscripten には mkdirTree もあるが、closure コンパイラを通したビルド
+// (YaneuraOu の配布物がこれ) では名前が保たれず呼び出せない。
+// 名前が残るのは mkdir や writeFile など一部に限られるため、それだけで組み立てる。
 export type EngineFS = {
-  mkdirTree(path: string): void;
+  mkdir(path: string): void;
   writeFile(path: string, data: Uint8Array): void;
 };
+
+// dataFiles の書き込み先の親ディレクトリを 1 階層ずつ作る。
+//
+// 既存のディレクトリに対する mkdir は EEXIST の例外になるが、Emscripten の
+// ErrnoError が errno を載せるプロパティ名も closure で潰れており判別できない。
+// ディレクトリを用意できたかどうかは後続の writeFile が示すので、ここでは失敗を無視する。
+export function makeParentDirs(fs: EngineFS, filePath: string): void {
+  const dir = filePath.substring(0, filePath.lastIndexOf("/"));
+  if (!dir) {
+    return;
+  }
+  let current = dir.startsWith("/") ? "" : ".";
+  for (const segment of dir.split("/")) {
+    if (segment === "") {
+      continue;
+    }
+    current += `/${segment}`;
+    try {
+      fs.mkdir(current);
+    } catch {
+      // 既に存在する場合を含め、ここでは失敗を無視する。
+    }
+  }
+}
 
 export type EngineMessageListener = (line: string) => void;
 
@@ -29,6 +57,11 @@ export type EngineInstance = {
 export type EngineModuleOptions = {
   printErr?: (line: string) => void;
   locateFile?: (path: string, prefix: string) => string;
+  // pthread の Worker がグルーコードを読み直すための URL。
+  // Emscripten は自分の位置を document.currentScript や import.meta.url から求めるが、
+  // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
+  // 与えないと pthread の Worker が undefined を読み込もうとして落ちる。
+  mainScriptUrlOrBlob?: string;
 };
 
 export type EngineFactory = (options?: EngineModuleOptions) => Promise<EngineInstance>;

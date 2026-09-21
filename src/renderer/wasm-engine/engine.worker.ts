@@ -13,7 +13,13 @@ import {
   MANIFEST_FILE_NAME,
   parseEngineManifest,
 } from "./manifest.js";
-import { EngineFactory, EngineInstance, validateEngineInstance, wrapUMDSource } from "./loader.js";
+import {
+  EngineFactory,
+  EngineInstance,
+  makeParentDirs,
+  validateEngineInstance,
+  wrapUMDSource,
+} from "./loader.js";
 
 let engine: EngineInstance | undefined;
 // モジュールの読み込みが終わるまでに届いたコマンドを保持する。
@@ -81,7 +87,7 @@ async function importFactory(manifest: EngineManifest, moduleURL: string): Promi
 // 評価パラメータや定跡を取得し、Emscripten の仮想ファイルシステムへ書き込む。
 async function loadDataFiles(
   instance: EngineInstance,
-  baseURL: string,
+  assetBaseURL: string,
   dataFiles: { url: string; path: string }[],
 ): Promise<void> {
   if (dataFiles.length === 0) {
@@ -93,17 +99,14 @@ async function loadDataFiles(
     );
   }
   for (const file of dataFiles) {
-    const url = new URL(file.url, baseURL).href;
+    const url = new URL(file.url, assetBaseURL).href;
     log(`loading data file: ${url}`);
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`failed to load ${url}: ${response.status}`);
     }
     const data = new Uint8Array(await response.arrayBuffer());
-    const dir = file.path.substring(0, file.path.lastIndexOf("/"));
-    if (dir) {
-      instance.FS.mkdirTree(dir);
-    }
+    makeParentDirs(instance.FS, file.path);
     instance.FS.writeFile(file.path, data);
     log(`loaded data file: ${file.path} (${data.byteLength} bytes)`);
   }
@@ -124,7 +127,13 @@ async function launch(baseURL: string): Promise<void> {
     if (manifest.requiresCrossOriginIsolation && !self.crossOriginIsolated) {
       throw new Error(CROSS_ORIGIN_ISOLATION_REQUIRED);
     }
+    // グルーコードはエンジンのディレクトリから読む。**assetBaseURL の対象外である。**
+    // スレッドを使うエンジンはこれ自身を Worker として読み直すが、Worker のスクリプトは
+    // 同一オリジンでなければならないため (specs/wasm-engine-abi.md の「6. (d)」)。
     const moduleURL = new URL(manifest.module, baseURL).href;
+    // wasm と評価パラメータの取得先。宣言が無ければ従来通りの基準で解決する。
+    // (.wasm / .data はグルーコードの隣、dataFiles はマニフェストからの相対)
+    const assetBaseURL = manifest.assetBaseURL;
     const factory = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(
       await factory({
@@ -134,14 +143,29 @@ async function launch(baseURL: string): Promise<void> {
         // エラーとして扱うと起動できたはずのエンジンが使えなくなる。
         // 本当に致命的な場合は例外が Worker の外へ出るので onerror が拾う。
         printErr: (line: string) => log(`stderr: ${line}`),
-        // .wasm や .data はグルーコードと同じ場所に置かれる。
-        // UMD を Blob URL から読み込む場合は自力で解決できないため、こちらから渡す。
-        locateFile: (path: string) => new URL(path, moduleURL).href,
+        // .wasm や .data の場所を伝える。既定ではグルーコードと同じ場所で、
+        // assetBaseURL が宣言されていればそちら。**Emscripten が渡すのはファイル名
+        // だけ**なので、その場合は assetBaseURL の直下に置かれている必要がある。
+        // UMD を Blob URL から読み込む場合はグルーコード自身が自分の位置を
+        // 知り得ないため、いずれにせよこちらから渡す。
+        //
+        // **JS だけは assetBaseURL の対象外で、常にグルーコードの隣を指す。**
+        // 古い Emscripten の pthread ビルドはスレッド用のスクリプト
+        // (<module>.worker.js) をここで解決するが、**Worker のスクリプトは
+        // 同一オリジンでなければ構築できない** (specs/wasm-engine-abi.md の「6. (d)」)。
+        locateFile: (path: string) =>
+          new URL(path, assetBaseURL && !/\.m?js$/.test(path) ? assetBaseURL : moduleURL).href,
+        // pthread の Worker はグルーコードを importScripts で読み直す。その URL は
+        // Emscripten が document.currentScript や import.meta.url から求めるが、
+        // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
+        // Blob URL ではなく元のファイルの URL を渡すこと (importScripts される側は
+        // クラシックスクリプトとして評価されるため、export 文を足したものは読めない)。
+        mainScriptUrlOrBlob: moduleURL,
       }),
     );
     instance.addMessageListener(onEngineOutput);
     // データファイルの読み込みはコマンドを処理する前に済ませる。
-    await loadDataFiles(instance, baseURL, manifest.dataFiles || []);
+    await loadDataFiles(instance, assetBaseURL || baseURL, manifest.dataFiles || []);
     if (terminated) {
       instance.terminate();
       return;

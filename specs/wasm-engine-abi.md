@@ -81,6 +81,7 @@ public/engines/<dir>/
 | `exportName`                   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
 | `name`                         | ○    | エンジンが `id name` で返す名前                                  |
 | `author`                       | ○    | エンジンが `id author` で返す名前                                |
+| `assetBaseURL`                 |      | wasm とデータファイルの取得先。「6. (d)」を参照                  |
 | `requiresCrossOriginIsolation` |      | スレッドを使う場合は `true`。下記を参照                          |
 | `licenses`                     | ○    | ライセンスの申告。「9. ライセンス」を参照                        |
 | `dataFiles`                    |      | 起動時に読み込むファイル。「6. データファイル」を参照            |
@@ -137,12 +138,17 @@ const engine = await createEngine({
     /* 標準エラー出力 */
   },
   locateFile: (path) => new URL(path, moduleURL).href,
+  mainScriptUrlOrBlob: moduleURL,
 });
 ```
 
-`printErr` と `locateFile` は Emscripten が解釈する。`locateFile` は `.wasm` や `.data` の
-場所を伝えるためのもので、ShogiHome が必ず渡す (`moduleFormat: "umd"` のときは
-グルーコード自身が自分の位置を知り得ないため必須になる)。
+いずれも Emscripten が解釈する。`locateFile` は `.wasm` や `.data` の場所を伝えるためのもので、
+ShogiHome が必ず渡す (`moduleFormat: "umd"` のときはグルーコード自身が自分の位置を
+知り得ないため必須になる)。
+
+`mainScriptUrlOrBlob` は pthread の Worker がグルーコードを読み直すための URL で、
+やはり ShogiHome が必ず渡す。詳細は「8. 制約」の
+「モジュール Worker と UMD の組み合わせ」を参照。
 
 標準エラー出力は**診断情報として記録するだけで、起動の失敗とは扱わない。**
 Emscripten 自身が回復可能な状況 (MIME が `application/wasm` でないために
@@ -162,9 +168,15 @@ type EngineInstance = {
   terminate(): void;
 
   // マニフェストで dataFiles を使う場合のみ必要。
-  FS?: { mkdirTree(path: string): void; writeFile(path: string, data: Uint8Array): void };
+  FS?: { mkdir(path: string): void; writeFile(path: string, data: Uint8Array): void };
 };
 ```
+
+`FS` に求めるのは `mkdir` と `writeFile` だけである。Emscripten の `FS` には
+`mkdirTree` や `analyzePath` のような補助もあるが、**closure コンパイラを通した
+ビルド (YaneuraOu の配布物がこれ) では名前が保たれず呼び出せない。**
+ShogiHome は親ディレクトリを `mkdir` で 1 階層ずつ作る
+(既存のディレクトリで例外になった場合は無視し、結果は `writeFile` で判定する)。
 
 **ShogiHome 独自の追加は無く、YaneuraOu の wasm ビルドと過不足なく同じである。**
 ShogiHome はコマンドを渡して出力を受け取るだけで、思考を進めるためにモジュールの
@@ -263,7 +275,9 @@ Blob URL 経由で `import()` する。`exportName` はソースへ文字列と�
 識別子として妥当なものだけを受け付ける。
 
 **新しく作るエンジンは `esm` にすること。** `umd` は Blob URL からの `import()` を伴うため、
-`script-src` を厳しく設定した環境では動かない可能性がある。
+`script-src` を厳しく設定した環境では動かない可能性がある。加えて、モジュール Worker では
+Emscripten の環境判別が働かず、スレッドを使うエンジンでは制約が増える
+(「8. 制約」の「モジュール Worker と UMD の組み合わせ」を参照)。
 
 ## 5. ビルド設定
 
@@ -329,7 +343,8 @@ try {
 ## 6. データファイル (評価パラメータ・定跡)
 
 強いエンジンは評価パラメータを別ファイルから読み込む。配置方法は 3 つあり、
-**サイズで使い分ける。**
+**サイズで使い分ける。** 加えて (d) で、wasm とデータファイルだけを配布物の外
+(別のオリジン) から配信できる。
 
 ### (a) バイナリに埋め込む — 数百 KB まで
 
@@ -380,6 +395,80 @@ Worker が `fetch` で取得し、`FS.writeFile` で書き込んでからエン�
 - ファイルは ShogiHome のリポジトリに commit されるため、リポジトリと配信物の
   サイズに直接効く。適合性テストは 1 エンジンあたり 8MB を上限として警告する
 
+### (d) `assetBaseURL` で外部のオリジンから配信する
+
+(a)〜(c) はいずれもファイルが配布物に含まれることを前提にしている。**`assetBaseURL` を
+宣言すると、wasm とデータファイルだけを別の場所から取得できる。**
+
+```json
+"assetBaseURL": "https://assets.example.com/yaneuraou/v1/"
+```
+
+リポジトリと配布物にファイルを持たずに済むため、数十 MB の wasm や評価パラメータを
+オブジェクトストレージ (S3 / R2 / GCS など) や CDN から配信したい場合に使う。
+ホスティングの容量やファイルサイズの制限を避ける目的にも使える。
+
+**ShogiHome は取得先を問わない。** 同一オリジンである必要も、特定の事業者である必要も無い。
+
+#### 対象と対象外
+
+**対象は JS 以外のアセットだけである。**
+
+| ファイル                              | 基準                                            |
+| ------------------------------------- | ----------------------------------------------- |
+| `.wasm` / `--preload-file` の `.data` | `assetBaseURL` (無ければグルーコードの隣)       |
+| `dataFiles[].url`                     | `assetBaseURL` (無ければマニフェストからの相対) |
+| `engine.json`                         | **常に `engines/<dir>/`**                       |
+| `module` (グルーコード)               | **常に `engines/<dir>/`**                       |
+| `.js` / `.mjs` (`<module>.worker.js`) | **常に `engines/<dir>/`**                       |
+| `licenses[].file`                     | **常に `engines/<dir>/`**                       |
+
+後の4つが対象外なのには理由がある。
+
+- `engine.json` とライセンス全文は**事前キャッシュの対象**で、エンジンを使っていない
+  利用者がオフラインで開いてもライセンスを表示できなければならない (「9. ライセンス」)
+- **JS は Worker のスクリプトとして読み直される。** `-pthread` でビルドしたエンジンは
+  Emscripten が `new Worker(new URL("<module>.js", import.meta.url))` を出力し、
+  古い版はスレッド用に別ファイル (`<module>.worker.js`) を出して `locateFile` で
+  解決する。**Worker のスクリプトは同一オリジンでなければ構築できない**ため、
+  外部に置くと `Failed to construct 'Worker': Script at '...' cannot be accessed
+from origin '...'` で起動しなくなる。CORS を設定しても解決しない
+
+そのため `locateFile` が返す先も、**JS だけはグルーコードの隣に固定する。**
+これらは数百 KB にとどまるため、配布物に含めても負担にならない。
+
+#### 書式と配置
+
+- **https でホストを持つ URL で、末尾は `/`。** 相対パスを解決する基準になるため、
+  `/` が無いと最後の要素が捨てられて別の場所を指す。クエリとフラグメントは
+  解決の際に捨てられるので受け付けない。違反はマニフェストごと拒否する
+- **`.wasm` と `.data` は `assetBaseURL` の直下に置く。** Emscripten が `locateFile` へ
+  渡すのはファイル名だけで、エンジンのディレクトリ内の階層は伝わらない
+- `dataFiles[].url` は相対パスがそのまま連結されるため、`eval/nn.bin` のような
+  階層を保ったまま置ける
+
+#### 配信側の要件
+
+- **CORS。** `Access-Control-Allow-Origin` が無いと、モジュールの読み込みも
+  `fetch` も失敗する
+- **`Cross-Origin-Resource-Policy: cross-origin`。** Web 版のページは
+  cross-origin isolated になる (「8. 制約」) ため、これが無い応答は `require-corp` に
+  弾かれ得る。CORS が通っていれば読める経路もあるが、宣言しておくのが確実である
+- **`.wasm` は `Content-Type: application/wasm`。** 違うと Emscripten が
+  streaming compile を諦め、起動が遅くなる
+
+#### キャッシュ
+
+実行時キャッシュは外部オリジンのものも対象になる。Service Worker が事前キャッシュ済みの
+`engine.json` から `assetBaseURL` を読んで、**宣言されたオリジンだけ**を対象にする
+([`wasm-engine.md`](./wasm-engine.md) の「キャッシュ」)。保持の方式と期間は
+同一オリジンに置いた場合と変わらない。
+
+#### 検証
+
+適合性テストは実体をネットワークから取得して実行する (一時ディレクトリに残すため、
+2 回目以降は取り直さない)。**外部に置いた場合、テストの実行にはネットワークが要る。**
+
 ### どれを選ぶか
 
 | サイズ       | 推奨                                  |
@@ -388,6 +477,19 @@ Worker が `fetch` で取得し、`FS.writeFile` で書き込んでからエン�
 | ～数 MB      | (b) `--preload-file`                  |
 | 数 MB 以上   | (c) `dataFiles`                       |
 | 数十 MB 以上 | (c)。加えて配信サイズが妥当か検討する |
+
+(d) は大きさではなく**置き場所**の選択で、(b) (c) と組み合わせて使う。
+配布物にファイルを含めたくない場合にだけ必要になる。
+
+### ファイルの命名
+
+`engine.json` が指すファイルは、**内容を変えたら名前も変える** (`nn-20260901.bin` のように
+日付や内容のハッシュを入れる)。評価パラメータと定跡は `CacheFirst` で保持されるため、
+同じ URL のままでは最大 90 日 古いものが返り続ける。
+
+URL を安定させてよいのは `engine.json` だけである。グルーコードと wasm は
+`StaleWhileRevalidate` で返した後に取り直されるため、同じ名前のままでも次回の起動には
+新しいものが使われる。
 
 ---
 
@@ -403,6 +505,7 @@ npx vitest run src/tests/engines/conformance.spec.ts
 
 - マニフェストがスキーマを満たし、`abi` が対応する版であること
 - `module` と `.wasm`、`dataFiles` の実体が存在すること
+  (`assetBaseURL` を宣言した場合は、その取得先から取得できること)
 - `licenses` が宣言され、その `file` が存在して空でないこと
 - モジュールが `postMessage` / `addMessageListener` / `removeMessageListener` /
   `terminate` を公開していること
@@ -447,6 +550,38 @@ Promise を解決も reject もしないまま止まる。そのため ShogiHome
 実際に何本スレッドを作るかではない。isolation に依存したくないエンジンは、
 `std::thread` を使う箇所を条件コンパイルで畳んで `-pthread` 無しでビルドし、
 探索を「3. 実行モデル」の分割実行に載せ替えること。
+
+### モジュール Worker と UMD の組み合わせ
+
+ShogiHome はエンジンを `type: "module"` の Worker で動かす。**モジュール Worker には
+`importScripts` が無い。** Emscripten はこれで環境を判別しているため
+(`ENVIRONMENT_IS_WORKER = typeof importScripts === "function"`)、
+`-sEXPORT_ES6` を付けずに出力した UMD の成果物は、自分が Worker で動いていることを
+認識できない。`document.currentScript` も `import.meta.url` も無いので、
+**グルーコードは自分の URL を知り得ない。**
+
+これが実際に問題になるのは pthread ビルドである。Emscripten はスレッド用の Worker へ
+`Module.mainScriptUrlOrBlob || _scriptDir` を送り、受け取った側がそれを `importScripts` して
+グルーコードを読み直す。どちらも無いと `undefined` が渡り、スレッド用の Worker が
+その場で例外を投げる。それはメインのモジュール Worker へ再送出されて外へ出るため、
+ShogiHome には Worker の `error` イベントとしてしか見えない
+(**`検討の初期化中にエラーが出ました: エンジンの読み込みに失敗しました。
+failed to start engine worker`**)。マニフェストにも起動処理にも誤りが無いように見えるので、
+この文言が出たらここを疑うこと。
+
+そのため ShogiHome はモジュール生成時に `mainScriptUrlOrBlob` を渡す。
+**値は Blob URL ではなく元のグルーコードの URL である。**
+`importScripts` される側はクラシックスクリプトとして評価されるため、
+`umd` の読み込みのために末尾へ `export default` を足したソースは読めない。
+
+`ENVIRONMENT_IS_WORKER` が偽のままである影響は他にも残る。
+
+- wasm の取得は `WebAssembly.instantiateStreaming` を使う経路だけが生きている。
+  MIME が `application/wasm` でないなどで streaming に失敗すると、
+  同期 XHR による代替経路が用意されていないため、そこで起動に失敗する。
+- `emscripten_is_main_browser_thread()` が真を返す。
+
+いずれも `esm` では起こらない。**新しく作るエンジンを `esm` にすべき理由の一つである。**
 
 ### 探索スレッドからの出力
 
