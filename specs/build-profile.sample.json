@@ -2,6 +2,14 @@
   "features": {
     "mobileSearchTab": true
   },
+  "pwa": {
+    "id": "/shogihome-plus/",
+    "name": "ShogiHome+Example",
+    "shortName": "ShogiHome+",
+    "description": "エンジンを組み込んだ ShogiHome",
+    "themeColor": "#5f8f5f",
+    "backgroundColor": "#2f4f4f"
+  },
   "license": {
     "distribution": {
       "text": "ShogiHome+Example (GPLv3)",

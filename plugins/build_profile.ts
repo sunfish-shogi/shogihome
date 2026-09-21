@@ -35,11 +35,34 @@ export type BuildProfileDistribution = {
   sourceURL?: string;
 };
 
+// 差し替えるアイコンのサイズ (px)。**片方だけの差し替えは認めない。**
+// 本家のアイコンが混ざった配布物ができるのを防ぐため。
+export const PWA_ICON_SIZES = ["192", "512"];
+
+// PWA のマニフェスト (manifest.webmanifest) に差す値。
+// **ビルド時にだけ使う。** renderer へは渡さない。
+export type BuildProfilePWA = {
+  // インストール済みの PWA を識別する値。名前を変えても identity は分かれないため、
+  // 本家と同じオリジンに置く場合は指定する。
+  id?: string;
+  name?: string;
+  shortName?: string;
+  description?: string;
+  themeColor?: string;
+  backgroundColor?: string;
+  lang?: string;
+  // アイコンの差し替え。サイズ (px) から実体へのパス
+  // (プロファイルからの相対で書き、ここでは絶対パス)。
+  icons?: { [size: string]: string };
+};
+
 export type BuildProfile = {
   // 追加で読み込むエンジンのディレクトリ (プロファイルからの相対で書き、ここでは絶対パス)。
   // public/engines/ へコピーせずに、別のリポジトリに置いたままエンジンを組み込むためのもの。
   // **ビルド時にだけ使う。** ビルド機のパスなので renderer へは渡さない。
   engineDirs: string[];
+  // PWA のマニフェストに差す値。**ビルド時にだけ使う。**
+  pwa: BuildProfilePWA;
   features: {
     // モバイルウェブの UI に「思考」タブを出す。
     mobileSearchTab: boolean;
@@ -56,6 +79,7 @@ export type BuildProfile = {
 export function defaultBuildProfile(): BuildProfile {
   return {
     engineDirs: [],
+    pwa: {},
     features: {
       mobileSearchTab: false,
     },
@@ -133,13 +157,52 @@ function asEngineDirs(value: unknown, key: string, baseDir: string): string[] {
   });
 }
 
+// PWA のマニフェストの文字列の項目。指定が無ければ本家の値のままになる。
+const PWA_TEXT_FIELDS = [
+  "id",
+  "name",
+  "shortName",
+  "description",
+  "themeColor",
+  "backgroundColor",
+  "lang",
+] as const;
+
+// アイコンはプロファイルからの相対で書く。
+// **存在しないファイルはビルドを失敗させる** (engines.dirs と同じ考え方)。
+function asPWAIcons(value: unknown, key: string, baseDir: string): { [size: string]: string } {
+  const record = asRecord(value, key, PWA_ICON_SIZES);
+  const icons: { [size: string]: string } = {};
+  for (const size of PWA_ICON_SIZES) {
+    // 省略はここで弾かれる。全てのサイズを差し替えなければならない。
+    const file = path.resolve(baseDir, asString(record[size], `${key}.${size}`));
+    if (!fs.existsSync(file)) {
+      fail(`${key}.${size} does not exist: ${file}`);
+    }
+    icons[size] = file;
+  }
+  return icons;
+}
+
 export function parseBuildProfile(json: unknown, baseDir: string): BuildProfile {
-  const record = asRecord(json, "profile", ["engines", "features", "license"]);
+  const record = asRecord(json, "profile", ["engines", "pwa", "features", "license"]);
   const profile = defaultBuildProfile();
   if (record.engines !== undefined) {
     const engines = asRecord(record.engines, "profile.engines", ["dirs"]);
     if (engines.dirs !== undefined) {
       profile.engineDirs = asEngineDirs(engines.dirs, "profile.engines.dirs", baseDir);
+    }
+  }
+  if (record.pwa !== undefined) {
+    const key = "profile.pwa";
+    const pwa = asRecord(record.pwa, key, [...PWA_TEXT_FIELDS, "icons"]);
+    for (const field of PWA_TEXT_FIELDS) {
+      if (pwa[field] !== undefined) {
+        profile.pwa[field] = asString(pwa[field], `${key}.${field}`);
+      }
+    }
+    if (pwa.icons !== undefined) {
+      profile.pwa.icons = asPWAIcons(pwa.icons, `${key}.icons`, baseDir);
     }
   }
   if (record.features !== undefined) {
