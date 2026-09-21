@@ -148,39 +148,52 @@ export async function launchEngine(engineDir: string): Promise<EngineHandle> {
         }
       : await importESM(modulePath);
 
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-engine-"));
-  const assets = await fetchRemoteAssets(manifest, tempDir);
-  const lines: string[] = [];
-  const engine: EngineInstance = validateEngineInstance(
-    await loaded.factory({
-      printErr: (line: string) => lines.push(`ERR ${line}`),
-      // Node の Emscripten はファイルとしてしか読めないため、URL ではなくパスを渡す。
-      locateFile: (file: string) => assets.get(file) || path.join(engineDir, file),
-      mainScriptUrlOrBlob: loaded.path,
-    }),
-  );
-  engine.addMessageListener((line) => lines.push(line));
-
-  return {
-    manifest,
-    lines,
-    command: (line) => engine.postMessage(line),
-    async waitFor(matcher, label) {
-      for (let i = 0; i < 3000; i++) {
-        const found = lines.find(matcher);
-        if (found !== undefined) {
-          return found;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 10));
-      }
-      throw new Error(`${label || "応答"} を待っている間にタイムアウトしました`);
-    },
-    terminate() {
-      engine.terminate();
-      loaded.cleanup();
+  // 起動に失敗した場合も、そこまでに作った一時ファイルを残さない。
+  // 起動できなければ terminate() を呼ぶ相手が居ないため、ここで片付ける。
+  let tempDir: string | undefined;
+  const cleanup = () => {
+    loaded.cleanup();
+    if (tempDir) {
       fs.rmSync(tempDir, { recursive: true, force: true });
-    },
+    }
   };
+  try {
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-engine-"));
+    const assets = await fetchRemoteAssets(manifest, tempDir);
+    const lines: string[] = [];
+    const engine: EngineInstance = validateEngineInstance(
+      await loaded.factory({
+        printErr: (line: string) => lines.push(`ERR ${line}`),
+        // Node の Emscripten はファイルとしてしか読めないため、URL ではなくパスを渡す。
+        locateFile: (file: string) => assets.get(file) || path.join(engineDir, file),
+        mainScriptUrlOrBlob: loaded.path,
+      }),
+    );
+    engine.addMessageListener((line) => lines.push(line));
+
+    return {
+      manifest,
+      lines,
+      command: (line) => engine.postMessage(line),
+      async waitFor(matcher, label) {
+        for (let i = 0; i < 3000; i++) {
+          const found = lines.find(matcher);
+          if (found !== undefined) {
+            return found;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 10));
+        }
+        throw new Error(`${label || "応答"} を待っている間にタイムアウトしました`);
+      },
+      terminate() {
+        engine.terminate();
+        cleanup();
+      },
+    };
+  } catch (e) {
+    cleanup();
+    throw e;
+  }
 }
 
 // usi コマンドを送り、エンジンが申告するオプションの定義を読み取る。
