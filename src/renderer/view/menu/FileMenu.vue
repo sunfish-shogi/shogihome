@@ -129,7 +129,7 @@
           <div class="label">{{ t.appSettings }}</div>
         </button>
       </div>
-      <div v-if="isMobileWebApp()" class="group">
+      <div v-if="!isNative()" class="group">
         <button @click="openCopyright">
           <Icon :icon="IconType.LICENSE" />
           <div class="label">{{ t.license }}</div>
