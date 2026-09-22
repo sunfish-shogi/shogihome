@@ -56,8 +56,7 @@
         <li><a href="#milestones">開發期程</a></li>
         <li><a href="#faq">常見問題</a></li>
         <li><a href="#contact">聯絡方式</a></li>
-        <li><a href="#images">棋盤棋駒圖片</a></li>
-        <!-- TODO: Update section title and tag ID -->
+        <li><a href="#relatedprojects">相關專案</a></li>
       </ul>
     </nav>
     <article>
@@ -65,26 +64,19 @@
         <h2>ShogiHome是什麼？</h2>
         <div class="images">
           <a href="./screenshots/screenshot001.png"
-            ><img src="./screenshots/screenshot001.png?202606182200" alt="スクリーンショット001"
+            ><img src="./screenshots/screenshot001.png?202606182200" alt="螢幕截圖001"
           /></a>
           <a href="./screenshots/screenshot002.png"
-            ><img src="./screenshots/screenshot002.png?202606182200" alt="スクリーンショット002"
+            ><img src="./screenshots/screenshot002.png?202606182200" alt="螢幕截圖002"
           /></a>
         </div>
         <div class="long-text">
-          ShogiHome 是一款使用
-          <a href="https://www.electronjs.org/" target="_blank"
-            >Electron<img class="small-icon" src="./icons/open_in_new_black_24dp.svg"
-          /></a>
-          框架開發的開源將棋應用程式， 並可以在 Windows、macOS、Linux 作業系統上運行。
-          任何人都可以參與開發或創建自己的版本並發布。
+          ShogiHome 是一款可以在 Windows、macOS、Linux 作業系統上運行的將棋應用程式。
+          任何人都可以使用公開的原始碼創建自己的版本並發布。
         </div>
         <div class="images">
           <a href="./screenshots/screenshot004.png"
-            ><img
-              class="wide"
-              src="./screenshots/screenshot004.png?202606182200"
-              alt="スクリーンショット004"
+            ><img class="wide" src="./screenshots/screenshot004.png?202606182200" alt="螢幕截圖004"
           /></a>
         </div>
         <div class="long-text">
@@ -97,10 +89,7 @@
         </div>
         <div class="images">
           <a href="./screenshots/screenshot003.png"
-            ><img
-              class="wide"
-              src="./screenshots/screenshot003.png?202606182200"
-              alt="スクリーンショット003"
+            ><img class="wide" src="./screenshots/screenshot003.png?202606182200" alt="螢幕截圖003"
           /></a>
         </div>
         <div class="long-text">
@@ -130,7 +119,7 @@
                 href="https://www.slideshare.net/slideshow/5-ai-shogihome/273744458"
                 title="第5回世界将棋AI電竜戦 講演資料「ShogiHome - 新しい将棋の基盤を作る」"
                 target="_blank"
-                >第5回世界将棋AI電竜戦 講演資料「ShogiHome - 新しい将棋の基盤を作る」</a
+                >第5屆世界將棋AI電龍戰 演講資料「ShogiHome - 打造將棋的新基礎」</a
               ></strong
             >
           </div>
@@ -161,6 +150,7 @@
           <br />
           Electron、Electron Builder 及 Chromium 的授權並不包含於上方連結，但會與本程式一同安裝。
         </div>
+        <div class="long-text">網頁應用程式所內建的引擎授權，可以從應用程式內的選單確認。</div>
       </section>
       <section id="pcapp">
         <h2>電腦應用程式</h2>
@@ -191,7 +181,7 @@
           作業系統請使用<b>-win.zip</b>、MacOS請使用<b>-mac.zip</b>、Linux請使用<b>-linux.zip</b>結尾的檔案進行下載。
           選擇版本時請參考<a
             href="https://github.com/sunfish-shogi/shogihome/wiki/%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E9%81%B8%E3%81%B3%E6%96%B9"
-            >「バージョンの選び方」</a
+            >「版本的選擇方式」</a
           >使用。
         </div>
       </section>
@@ -202,18 +192,31 @@
             ><img class="wide" src="./screenshots/mobile001.png?202606182200" alt="Mobile"
           /></a>
         </div>
+        <h3>引擎功能強化測試版</h3>
         <ul class="row">
           <li class="link-box">
-            <a href="webapp/index.html?mobile" target="_blank">Smartphone / Tablet</a>
+            <a href="https://analysis.shogihome.com?mobile" target="_blank">智慧型手機・平板</a>
           </li>
           <li class="link-box">
-            <a href="webapp/index.html" target="_blank">PC</a>
+            <a href="https://analysis.shogihome.com" target="_blank">電腦瀏覽器</a>
           </li>
         </ul>
         <div>
-          無法使用部分功能（如使用引擎對局與檔案讀寫等）。 <br />
-          尚未在 Chrome 以外的瀏覽器確認運行狀況。若有錯誤或異常狀況，歡迎回報。
+          目前試驗性公開的測試版可以使用引擎進行檢討。
+          <a href="https://note.com/ryosuke_kubo/n/n38b6c90da525" target="_blank">
+            (note<img class="small-icon" src="./icons/open_in_new_black_24dp.svg" />)
+          </a>
         </div>
+        <h3>一般版</h3>
+        <ul class="row">
+          <li class="link-box">
+            <a href="webapp/index.html?mobile" target="_blank">智慧型手機・平板</a>
+          </li>
+          <li class="link-box">
+            <a href="webapp/index.html" target="_blank">電腦瀏覽器</a>
+          </li>
+        </ul>
+        <div>一般版無法使用引擎進行檢討。</div>
       </section>
       <section id="howtouse">
         <h2>使用方法</h2>
@@ -240,6 +243,17 @@
         <h2>常見問題</h2>
         <ul class="faq">
           <li>
+            Q. 要如何變更顯示語言呢？
+            <ul>
+              <li>
+                A. 請參考<a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/How-to-change-your-language-settings"
+                  >「How to change your language settings」</a
+                >。
+              </li>
+            </ul>
+          </li>
+          <li>
             Q. 對應 USI 協定的將棋 AI 可以在哪邊下載到呢？
             <ul>
               <li>
@@ -253,6 +267,17 @@
             <ul>
               <li>
                 A. 請參考<a href="https://github.com/sunfish-shogi/shogihome/wiki/Links">其他連結</a
+                >。
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. 我想協助翻譯。
+            <ul>
+              <li>
+                A. 請參考<a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E7%BF%BB%E8%A8%B3%E3%81%AB%E5%8D%94%E5%8A%9B%E3%81%99%E3%82%8B"
+                  >Wiki</a
                 >。
               </li>
             </ul>
@@ -275,6 +300,17 @@
                   href="https://github.com/sunfish-shogi/shogihome/wiki/%E4%BD%BF%E3%81%84%E6%96%B9#%E3%83%AD%E3%82%B0%E5%87%BA%E5%8A%9B"
                   >此處</a
                 >來設定並確認儲存檔案的位置。
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. 無法啟動應用程式。／啟動後畫面沒有顯示。
+            <ul>
+              <li>
+                A. 請參考<a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"
+                  >疑難排解</a
+                >。
               </li>
             </ul>
           </li>
@@ -308,12 +344,55 @@
           </div>
         </div>
       </section>
-      <!-- TODO: Update following section -->
-      <section id="images">
-        <h2>棋盤棋駒圖片</h2>
-        <div>ShogiHome使用的棋駒、盤面的圖像以限制更少的授權條款公開使用。</div>
-        <div class="link-box">
-          <a href="https://sunfish-shogi.github.io/shogi-images/" target="_blank">Shogi Images</a>
+      <section id="relatedprojects">
+        <h2>相關專案</h2>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://www.npmjs.com/package/tsshogi" target="_blank">tsshogi</a>
+            </div>
+            <div>將棋規則與資料格式的函式庫</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://www.npmjs.com/package/usi-csa-bridge" target="_blank"
+                >usi-csa-bridge</a
+              >
+            </div>
+            <div>將 USI 橋接至 CSA 協定的 CLI 工具</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://sunfish-shogi.github.io/shogi-validator/" target="_blank"
+                >shogi-validator</a
+              >
+            </div>
+            <div>棋譜資料的檢查工具</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://github.com/sunfish-shogi/usi-engine-delayer" target="_blank"
+                >usi-engine-delayer</a
+              >
+            </div>
+            <div>延遲 USI 引擎回應的測試工具</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://sunfish-shogi.github.io/shogi-images/" target="_blank"
+                >Shogi Images</a
+              >
+            </div>
+            <div>限制非常少的棋駒與棋盤圖片素材</div>
+          </div>
         </div>
       </section>
     </article>
