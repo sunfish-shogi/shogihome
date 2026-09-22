@@ -193,9 +193,9 @@ describe("wasm-engine/catalog", () => {
     );
     // 宣言の無いプリセット (d1) は並ばない。
     expect(await loadMobileGamePlayers()).toEqual(
-      BUILTIN_ENGINE_DIRS.map(() => ({
+      BUILTIN_ENGINE_DIRS.map((dir) => ({
         uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
-        dir: "sunfish4-lite",
+        dir,
         label: "Sunfish Lv.2",
       })),
     );
