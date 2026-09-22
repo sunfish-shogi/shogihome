@@ -147,6 +147,40 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
   }));
 }
 
+// モバイルウェブの対局メニュー (MobileGameMenu) に並べる対局相手。
+export type MobileGamePlayer = {
+  uri: string;
+  // ボタンに出す名前。マニフェストの mobileGame.label をそのまま使う。
+  label: string;
+};
+
+// モバイルの対局メニューに並べるプリセットを集める。
+// マニフェストで mobileGame を宣言したプリセットだけが対象になる。
+//
+// 並び順はエンジンのディレクトリの順 (BUILTIN_ENGINE_DIRS) と、その中では
+// presets の配列の順。マニフェストをまたぐ順序の指定は持たない。
+// 独立に管理されるマニフェストの間で順序の尺度を合わせる手段が無いため。
+//
+// マニフェストを読めなかったエンジンは除外する。メニューそのものは妨げない。
+export async function loadMobileGamePlayers(
+  onError?: (error: Error) => void,
+): Promise<MobileGamePlayer[]> {
+  const players: MobileGamePlayer[] = [];
+  for (const dir of BUILTIN_ENGINE_DIRS) {
+    try {
+      const manifest = await loadEngineManifest(dir);
+      for (const preset of manifest.presets) {
+        if (preset.mobileGame) {
+          players.push({ uri: builtinEngineURI(preset.id), label: preset.mobileGame.label });
+        }
+      }
+    } catch (e) {
+      onError?.(e instanceof Error ? e : new Error(String(e)));
+    }
+  }
+  return players;
+}
+
 // ライセンス表示に出す組み込みエンジンのライセンス。
 export type BuiltinEngineLicense = {
   // ライセンスの対象の表示名。
