@@ -195,6 +195,7 @@ describe("wasm-engine/catalog", () => {
     expect(await loadMobileGamePlayers()).toEqual(
       BUILTIN_ENGINE_DIRS.map(() => ({
         uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
+        dir: "sunfish4-lite",
         label: "Sunfish Lv.2",
       })),
     );
