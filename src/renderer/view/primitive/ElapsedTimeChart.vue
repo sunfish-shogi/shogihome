@@ -11,6 +11,7 @@ import { Color, ImmutableNode, ImmutableRecord, Move, reverseColor } from "tssho
 import { Thema } from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { RectSize } from "@/common/assets/geometry";
+import { isMobileWebApp } from "@/renderer/ipc/api";
 
 type ColorPalette = {
   main: string;
@@ -201,7 +202,9 @@ onMounted(() => {
   };
 
   const context = canvas.value!.getContext("2d", {
-    desynchronized: true,
+    // desynchronized は描画負荷を下げられるが、 Android 実機では Canvas が独立したレイヤーへ
+    // 合成されて透過部分が黒く表示されるため、モバイル版では無効にする。
+    desynchronized: !isMobileWebApp(),
   }) as CanvasRenderingContext2D;
   chart = new Chart(context, {
     type: "bar",

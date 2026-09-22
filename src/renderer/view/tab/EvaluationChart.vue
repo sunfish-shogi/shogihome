@@ -18,6 +18,7 @@ import { Thema } from "@/common/settings/app";
 import { t } from "@/common/i18n";
 import { Lazy } from "@/common/helpers/lazy";
 import { EvaluationChartType } from "@/common/settings/layout";
+import { isMobileWebApp } from "@/renderer/ipc/api";
 
 const MATE_SCORE = 1000000;
 const MAX_SCORE = 2000;
@@ -326,7 +327,11 @@ const updateChartLazy = () => {
 
 onMounted(() => {
   const element = canvas.value as HTMLCanvasElement;
-  const context = element.getContext("2d", { desynchronized: true }) as CanvasRenderingContext2D;
+  const context = element.getContext("2d", {
+    // desynchronized は描画負荷を下げられるが、 Android 実機では Canvas が独立したレイヤーへ
+    // 合成されて透過部分が黒く表示されるため、モバイル版では無効にする。
+    desynchronized: !isMobileWebApp(),
+  }) as CanvasRenderingContext2D;
   chart = new Chart(context, {
     type: "scatter",
     data: {
