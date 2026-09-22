@@ -185,6 +185,24 @@ Worker はエンジンの思考の進行には関与しない。コマンドを�
 TypeScript 実装の簡易エンジン (`es://basic-engine/*`、「初心者」) も従来通り一覧に並ぶ。
 URI 体系が異なるため、組み込みの WebAssembly エンジンとは区別できる。
 
+## モバイルの対局メニュー
+
+モバイルウェブの対局メニュー (`MobileGameMenu.vue`) に並ぶ対局相手も、マニフェストが
+決める。`catalog.ts` の `loadMobileGamePlayers()` が `BUILTIN_ENGINE_DIRS` の
+マニフェストから `mobileGame` を宣言したプリセットを集め、その `label` をボタンに出す
+([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「`mobileGame`」)。**プリセットの追加・
+削除・レベル名の変更は `engine.json` の編集だけで反映され、ShogiHome 側にプリセットの
+一覧を持たない。**
+
+- 並び順はエンジンのディレクトリの順と、その中では `presets` の配列の順
+- 棋譜に残す名前は `mobileGame.label` ではなくエンジンの正式な名前 (`displayName`)。
+  メニューのラベルはボタンの幅に合わせた短い表記でしかない
+- 簡易エンジン (`es://basic-engine/*`) はマニフェストを持たないため、従来通り
+  `MobileGameMenu.vue` が持ち、一覧の先頭に並ぶ
+- マニフェストの読み込みは非同期なので、終わるまでは簡易エンジンだけが並ぶ。
+  読み込めなかったエンジンはメニューから除外し、理由を画面に出す
+  (組み込みエンジンの一覧と同じ扱い)
+
 ## キャッシュ
 
 設定は [`src/sw.js`](../src/sw.js)、全体像は

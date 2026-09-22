@@ -16,6 +16,7 @@ import {
   isNetworkError,
   loadBuiltinEngineLicenses,
   loadBuiltinUSIEngines,
+  loadMobileGamePlayers,
   resolveEngineDirURL,
   resolveEngineFileURL,
 } from "@/renderer/wasm-engine/catalog.js";
@@ -53,6 +54,7 @@ const manifest: EngineManifest = {
       id: "sunfish4-lite-wasm-v1-d5",
       displayName: "Sunfish Lv. 2",
       values: { MaxDepth: 5 },
+      mobileGame: { label: "Sunfish Lv.2" },
     },
   ],
 };
@@ -179,6 +181,23 @@ describe("wasm-engine/catalog", () => {
     // 2 回目はキャッシュから返るため fetch は増えない。
     await loadBuiltinUSIEngines();
     expect(fetch).toHaveBeenCalledTimes(BUILTIN_ENGINE_DIRS.length);
+  });
+
+  // モバイルの対局メニューに並べるプリセットはマニフェストが宣言する。
+  // 何を出すかを engine.json だけで決められることを、この経路で担保している。
+  // (マニフェストは上のテストでキャッシュ済みのため、ここでの fetch は呼ばれない。)
+  it("loadMobileGamePlayers", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({ ok: true, json: async () => manifest }) as Response),
+    );
+    // 宣言の無いプリセット (d1) は並ばない。
+    expect(await loadMobileGamePlayers()).toEqual(
+      BUILTIN_ENGINE_DIRS.map(() => ({
+        uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
+        label: "Sunfish Lv.2",
+      })),
+    );
   });
 
   // 配布物に含まれるエンジンのライセンスは、同梱した全文へのリンクとして表示する。

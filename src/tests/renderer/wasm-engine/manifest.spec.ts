@@ -200,6 +200,37 @@ describe("wasm-engine/manifest", () => {
     );
   });
 
+  // モバイルの対局メニューに並べるかどうかはプリセットが宣言する。
+  // 宣言の無いプリセットはメニューに出ない (既定はメニューに出さない)。
+  it("mobileGame", () => {
+    expect(parseEngineManifest(validManifest()).presets[0].mobileGame).toBeUndefined();
+    const manifest = parseEngineManifest({
+      ...validManifest(),
+      presets: [
+        { id: "test-v1", displayName: "Test Engine Level 1", mobileGame: { label: "Test Lv.1" } },
+        { id: "test-v2", displayName: "Test Engine Level 2" },
+      ],
+    });
+    expect(manifest.presets[0].mobileGame).toEqual({ label: "Test Lv.1" });
+    expect(manifest.presets[1].mobileGame).toBeUndefined();
+  });
+
+  it("rejectsInvalidMobileGame", () => {
+    const withMobileGame = (mobileGame: unknown) => ({
+      ...validManifest(),
+      presets: [{ id: "test-v1", displayName: "Test", mobileGame }],
+    });
+    // ボタンに出す名前は省略できない。
+    expect(() => parseEngineManifest(withMobileGame({}))).toThrow(/presets\[0\].mobileGame.label/);
+    expect(() => parseEngineManifest(withMobileGame({ label: "" }))).toThrow(
+      /presets\[0\].mobileGame.label/,
+    );
+    // 真偽値で宣言する形は受け付けない (名前が無いとボタンを描けない)。
+    expect(() => parseEngineManifest(withMobileGame(true))).toThrow(
+      /presets\[0\].mobileGame must be an object/,
+    );
+  });
+
   // スレッドを使うエンジンは isolation を宣言する。
   // 宣言が無ければ既定は false で、単一スレッドのエンジンは影響を受けない。
   it("requiresCrossOriginIsolation", () => {

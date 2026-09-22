@@ -67,7 +67,8 @@ public/engines/<dir>/
       "id": "example-engine-v1",
       "displayName": "Example Engine",
       "values": { "Style": "a" },
-      "tags": ["game"]
+      "tags": ["game"],
+      "mobileGame": { "label": "Example Lv.1" }
     }
   ]
 }
@@ -120,6 +121,35 @@ npx tsx scripts/sync-engine-options.ts <engine.json> --check   # 書き換えず
 
 `tags` にはエンジンの用途に応じて `game` `research` `mate` の組み合わせを指定する。
 ユーザー定義のタグは現在サポートされていない。
+
+#### `mobileGame`
+
+モバイルウェブの対局メニュー (メニュー → 対局) に並べるプリセットの宣言。
+
+```json
+{
+  "id": "example-engine-v1-lv1",
+  "displayName": "Example Engine Depth-03",
+  "values": { "MaxDepth": 3 },
+  "mobileGame": { "label": "Example Lv.1" }
+}
+```
+
+| フィールド | 必須 | 内容                                                               |
+| ---------- | ---- | ------------------------------------------------------------------ |
+| `label`    | ○    | ボタンに出す名前。`displayName` より短い、レベルの分かるものを書く |
+
+**宣言のあるプリセットだけがメニューに並ぶ。** 省略した場合は並ばない
+(通常のエンジン選択には `tags` に従って従来どおり現れる)。ShogiHome 側に
+プリセットの一覧を書く場所は無く、**メニューの内容はマニフェストだけで決まる。**
+
+`displayName` と分けてあるのは、メニューのボタンが狭く、棋譜に残る正式な名前
+(`displayName`) をそのまま置けないためである。棋譜には `displayName` が残る。
+
+並ぶ順序はエンジンのディレクトリの順と、その中では `presets` の配列の順になる。
+**順序を指定するフィールドは持たない。** 独立に管理されるマニフェストの間で
+順序の尺度を合わせる手段が無く、書いても意図どおりに効くとは限らないため。
+1 つのマニフェストの中では配列の順に並ぶので、弱い順に並べて書けばよい。
 
 ### `requiresCrossOriginIsolation`
 

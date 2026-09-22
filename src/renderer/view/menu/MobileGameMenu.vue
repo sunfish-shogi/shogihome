@@ -43,7 +43,11 @@ import { JishogiRule } from "@/common/settings/game";
 import { PlayerSettings } from "@/common/settings/player";
 import * as uri from "@/common/uri";
 import api from "@/renderer/ipc/api";
-import { builtinEngineURI } from "@/renderer/wasm-engine/catalog";
+import {
+  describeEngineLoadError,
+  loadMobileGamePlayers,
+  MobileGamePlayer,
+} from "@/renderer/wasm-engine/catalog";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
@@ -54,7 +58,8 @@ import { Color, InitialPositionType } from "tsshogi";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { SearchCommentFormat } from "@/common/settings/comment";
 
-const players = [
+// TypeScript 実装の簡易エンジン。マニフェストを持たないためここに書く。
+const basicPlayers: MobileGamePlayer[] = [
   {
     uri: uri.ES_BASIC_ENGINE_STATIC_ROOK_V1,
     label: `${t.beginner} (${t.staticRook})`,
@@ -63,40 +68,29 @@ const players = [
     uri: uri.ES_BASIC_ENGINE_RANGING_ROOK_V1,
     label: `${t.beginner} (${t.rangingRook})`,
   },
-  {
-    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d3"),
-    label: "Sunfish Lv.1",
-  },
-  {
-    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
-    label: "Sunfish Lv.2",
-  },
-  {
-    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d7"),
-    label: "Sunfish Lv.3",
-  },
-  {
-    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d9"),
-    label: "Sunfish Lv.4",
-  },
-  {
-    uri: builtinEngineURI("sunfish4-lite-wasm-v1-d11"),
-    label: "Sunfish Lv.5",
-  },
 ];
 
 const store = useStore();
 const dialog = ref();
 const playerURI = ref("");
+// 組み込みの WebAssembly エンジンは、マニフェストが mobileGame を宣言したプリセットが並ぶ。
+// 読み込みが終わるまでは簡易エンジンだけを出す。
+const players = ref(basicPlayers);
 const emit = defineEmits<{
   close: [];
 }>();
 const onClose = () => {
   emit("close");
 };
-onMounted(() => {
+onMounted(async () => {
   showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
+  const builtins = await loadMobileGamePlayers((e) => {
+    // 読み込めなかったエンジンはメニューに出ない。理由を伝えないと
+    // 「エンジンが存在しない」ようにしか見えないため、画面にも出す。
+    useErrorStore().add(new Error(describeEngineLoadError(e)));
+  });
+  players.value = [...basicPlayers, ...builtins];
 });
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);

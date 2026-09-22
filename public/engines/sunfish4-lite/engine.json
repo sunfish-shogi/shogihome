@@ -42,7 +42,8 @@
         "USI_Ponder": "false",
         "MaxDepth": 3
       },
-      "tags": []
+      "tags": [],
+      "mobileGame": { "label": "Sunfish Lv.1" }
     },
     {
       "id": "sunfish4-lite-wasm-v1-d5",
@@ -54,7 +55,8 @@
         "USI_Ponder": "false",
         "MaxDepth": 5
       },
-      "tags": []
+      "tags": [],
+      "mobileGame": { "label": "Sunfish Lv.2" }
     },
     {
       "id": "sunfish4-lite-wasm-v1-d7",
@@ -66,7 +68,8 @@
         "USI_Ponder": "false",
         "MaxDepth": 7
       },
-      "tags": []
+      "tags": [],
+      "mobileGame": { "label": "Sunfish Lv.3" }
     },
     {
       "id": "sunfish4-lite-wasm-v1-d9",
@@ -78,7 +81,8 @@
         "USI_Ponder": "false",
         "MaxDepth": 9
       },
-      "tags": []
+      "tags": [],
+      "mobileGame": { "label": "Sunfish Lv.4" }
     },
     {
       "id": "sunfish4-lite-wasm-v1-d11",
@@ -90,7 +94,8 @@
         "USI_Ponder": "false",
         "MaxDepth": 11
       },
-      "tags": []
+      "tags": [],
+      "mobileGame": { "label": "Sunfish Lv.5" }
     }
   ]
 }

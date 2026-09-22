@@ -30,6 +30,13 @@ export type EngineManifestOption = {
   vars?: string[];
 };
 
+// モバイルウェブの対局メニュー (MobileGameMenu) に並べるための宣言。
+// 宣言のあるプリセットだけがメニューに載る。
+export type EngineManifestMobileGame = {
+  // ボタンに出す名前。displayName (一覧や棋譜に使う正式な名前) より短いものを書く。
+  label: string;
+};
+
 // 1 つの wasm から複数のエンジンを見せるための定義。
 // id はそのまま URI になるため、一度公開したら変更してはならない。
 export type EngineManifestPreset = {
@@ -37,6 +44,7 @@ export type EngineManifestPreset = {
   displayName: string;
   values?: { [name: string]: string | number };
   tags?: ("game" | "research" | "mate")[];
+  mobileGame?: EngineManifestMobileGame;
 };
 
 // エンジンとその同梱物のライセンス。ライセンス表示 (renderer/helpers/copyright.ts) に出す。
@@ -223,6 +231,10 @@ function parsePreset(value: unknown, path: string): EngineManifestPreset {
       }
       preset.tags.push(tag);
     }
+  }
+  if (record.mobileGame !== undefined) {
+    const mobileGame = asRecord(record.mobileGame, `${path}.mobileGame`);
+    preset.mobileGame = { label: asString(mobileGame.label, `${path}.mobileGame.label`) };
   }
   return preset;
 }
