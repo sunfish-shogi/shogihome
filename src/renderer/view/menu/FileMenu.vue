@@ -18,10 +18,20 @@
           <Icon :icon="IconType.GAME" />
           <div class="label">{{ t.game }}</div>
         </button>
-        <button v-if="states.stopGame" @click="onStopGame">
+        <button v-if="states.stopGame" class="close" @click="onStopGame">
           <Icon :icon="IconType.STOP" />
           <div class="label">{{ t.stopGame }}</div>
         </button>
+        <span v-if="buildProfile.features.mobileSearchTab">
+          <button v-if="states.research" @click="onResearch">
+            <Icon :icon="IconType.RESEARCH" />
+            <div class="label">{{ t.research }}</div>
+          </button>
+          <button v-else class="close" @click="onStopResearch">
+            <Icon :icon="IconType.STOP" />
+            <div class="label">{{ t.endResearch }}</div>
+          </button>
+        </span>
       </div>
       <div class="group">
         <button :disabled="!states.newFile" @click="onNewFile">
@@ -152,7 +162,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { useStore } from "@/renderer/store";
-import { AppState } from "@/common/control/state.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
 import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api";
 import { useAppSettings } from "@/renderer/store/settings";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
@@ -160,6 +170,7 @@ import { openCopyright } from "@/renderer/helpers/copyright";
 import { RecordFileFormat } from "@/common/file/record";
 import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
 import MobileGameMenu from "@/renderer/view/menu/MobileGameMenu.vue";
+import { buildProfile } from "virtual:shogihome/build-profile";
 
 const emit = defineEmits<{
   close: [];
@@ -188,6 +199,14 @@ const onGame = () => {
 };
 const onStopGame = () => {
   store.stopGame();
+  emit("close");
+};
+const onResearch = () => {
+  store.showResearchDialog();
+  emit("close");
+};
+const onStopResearch = () => {
+  store.stopResearch();
   emit("close");
 };
 const onNewFile = () => {
@@ -291,6 +310,7 @@ const states = computed(() => {
   return {
     game: store.appState === AppState.NORMAL,
     stopGame: store.appState === AppState.GAME,
+    research: store.researchState === ResearchState.IDLE,
     newFile: store.appState === AppState.NORMAL,
     open: store.appState === AppState.NORMAL,
     save: store.appState === AppState.NORMAL,

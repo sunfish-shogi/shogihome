@@ -8,7 +8,8 @@
           :engines="engines"
           :default-tag="getPredefinedUSIEngineTag('research')"
           :display-thread-state="true"
-          :display-multi-pv-state="true"
+          :display-multi-pv-state="!isMobileWebApp()"
+          :enable-edit-button="!isMobileWebApp()"
           @update-engines="onUpdatePlayerSettings"
         />
       </div>
@@ -37,13 +38,13 @@
       <div v-else-if="memoryUsage > 0.9" class="form-group warning">
         <div class="note">{{ t.totalUSIHashExceedsNPercentOfMemory(90) }}</div>
       </div>
-      <button class="center thin" @click="secondaryEngineURIs.push('')">
+      <button v-if="!isMobileWebApp()" class="center thin" @click="secondaryEngineURIs.push('')">
         <Icon :icon="IconType.ADD" />
         {{ t.addNthEngine(secondaryEngineURIs.length + 2) }}
       </button>
       <div class="form-group">
         <div class="form-item">
-          <div class="form-item-label-wide">{{ t.timePerPosition }}</div>
+          <div class="form-item-label">{{ t.timePerPosition }}</div>
           <ToggleButton v-model:value="researchSettings.enableMaxSeconds" />
           <input
             v-model.number="researchSettings.maxSeconds"
@@ -54,7 +55,7 @@
           />
         </div>
         <div class="form-item">
-          <div class="form-item-label-wide">{{ t.suggestionsCount }}</div>
+          <div class="form-item-label">{{ t.suggestionsCount }}</div>
           <ToggleButton v-model:value="researchSettings.overrideMultiPV" />
           <input
             v-model.number="researchSettings.multiPV"
@@ -79,7 +80,7 @@
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import api, { isNative } from "@/renderer/ipc/api";
+import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api";
 import {
   defaultResearchSettings,
   ResearchSettings,
@@ -122,6 +123,12 @@ onMounted(async () => {
     engineURI.value = researchSettings.value.usi?.uri || "";
     secondaryEngineURIs.value =
       researchSettings.value.secondaries?.map((engine) => engine.usi?.uri || "") || [];
+    // Mobile Web 版は複数エンジンを無効にする。
+    // 理由は PC よりも発熱に弱いことと、スマートフォンの画面に複数の探索結果を表示しづらいこと。
+    // 通常の Web 版を開いて設定を保存されている可能性もあるので消す。
+    if (isMobileWebApp()) {
+      secondaryEngineURIs.value = [];
+    }
     // Web 版はブラウザーから実機のスペックを取得できないため、0 (不明) のままにする。
     if (isNative()) {
       machineSpec.value = await api.getMachineSpec();
@@ -225,7 +232,7 @@ const onUpdatePlayerSettings = async (val: USIEngines) => {
 
 <style scoped>
 .root {
-  width: 450px;
+  width: min(450px, calc(100vw - 80px));
 }
 .remove-button {
   margin-top: 5px;

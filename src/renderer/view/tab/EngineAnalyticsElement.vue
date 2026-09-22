@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="full column root" :class="{ paused }">
-      <div v-if="showHeader && isResearchSession" class="overlay-control row reverse">
+      <div v-if="isResearchSession" class="overlay-control row" :class="{ bottom: !showHeader }">
         <button v-if="paused" @click="onUnpause">
           <Icon :icon="IconType.RESUME" />
           <span>{{ t.resume }}</span>
@@ -9,6 +9,10 @@
         <button v-else @click="onPause">
           <Icon :icon="IconType.PAUSE" />
           <span>{{ t.stop }}</span>
+        </button>
+        <button v-if="isMobileWebApp()" class="close" @click="onStopResearch">
+          <Icon :icon="IconType.STOP" />
+          <span>{{ t.endResearch }}</span>
         </button>
       </div>
       <div v-if="showHeader" class="row headers">
@@ -165,6 +169,7 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { useStore } from "@/renderer/store";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import { isMobileWebApp } from "@/renderer/ipc/api";
 
 const props = defineProps({
   historyMode: { type: Boolean, required: true },
@@ -284,6 +289,10 @@ const onUnpause = () => {
   store.unpauseResearchEngine(props.monitor.sessionID);
 };
 
+const onStopResearch = () => {
+  store.stopResearch();
+};
+
 const updateMultiPV = (add: number) => {
   const value = readInputAsNumber(multiPVInput.value);
   if (!value) {
@@ -326,8 +335,14 @@ const updateMultiPV = (add: number) => {
 }
 .overlay-control {
   position: absolute;
-  width: 100%;
   margin: 0px 0px 0px 0px;
+  right: 0;
+}
+.overlay-control.bottom {
+  bottom: 0;
+}
+.overlay-control > *:not(:first-child) {
+  margin-left: 2px;
 }
 .headers {
   width: 100%;

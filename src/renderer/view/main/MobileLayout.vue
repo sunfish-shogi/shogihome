@@ -144,7 +144,7 @@ import { BoardLayoutType, EvaluationChartType } from "@/common/settings/layout";
 import { Lazy } from "@/common/helpers/lazy";
 import BoardPane from "@/renderer/view/main/BoardPane.vue";
 import RecordPane from "@/renderer/view/main/RecordPane.vue";
-import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 import MobileControls from "./MobileControls.vue";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
@@ -156,6 +156,8 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { isIOS } from "@/renderer/helpers/env";
 import { IconType } from "@/renderer/assets/icons";
 import { buildProfile } from "virtual:shogihome/build-profile";
+import { useStore } from "@/renderer/store/index.js";
+import { ResearchState } from "@/common/control/state.js";
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;
@@ -183,6 +185,7 @@ const searchTabProps = {
   showPlayButton: false,
 };
 
+const store = useStore();
 const appSettings = useAppSettings();
 
 // 評価値グラフは生の評価値のみを出す。勝率換算は別に場所を要するので置かない。
@@ -197,6 +200,19 @@ const searchTabChartProps = computed(() => ({
 const windowSize = reactive(new RectSize(window.innerWidth, window.innerHeight - safeAreaMarginY));
 const bottomUIType = ref(BottomUIType.RECORD);
 const sideUIType = ref(SideUIType.RECORD);
+
+if (showSearchTab) {
+  watch(
+    () => store.researchState,
+    (researchState) => {
+      // 検討を開始した時に思考タブへ切り替える。
+      if (researchState === ResearchState.RUNNING) {
+        bottomUIType.value = BottomUIType.SEARCH;
+        sideUIType.value = SideUIType.SEARCH;
+      }
+    },
+  );
+}
 
 const bottomUIItems = computed(() => [
   { label: t.record, icon: IconType.DESCRIPTION, value: BottomUIType.RECORD },
