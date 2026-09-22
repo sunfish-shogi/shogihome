@@ -7,7 +7,21 @@
           <div class="label">{{ t.back }}</div>
         </button>
       </div>
-      <div class="group">
+      <div v-if="playerURI" class="group">
+        <button @click="selectTurn(Color.BLACK)">
+          <Icon :icon="IconType.GAME" />
+          <div class="label">{{ t.sente }}</div>
+        </button>
+        <button @click="selectTurn(Color.WHITE)">
+          <Icon :icon="IconType.GAME" />
+          <div class="label">{{ t.gote }}</div>
+        </button>
+        <button @click="selectTurn(Math.random() * 2 >= 1 ? Color.BLACK : Color.WHITE)">
+          <Icon :icon="IconType.GAME" />
+          <div class="label">{{ t.pieceToss }}</div>
+        </button>
+      </div>
+      <div v-for="(players, index) of playerGroups" :key="index" class="group">
         <button
           v-for="player of players"
           v-show="!playerURI"
@@ -16,21 +30,6 @@
         >
           <Icon :icon="IconType.ROBOT" />
           <div class="label">{{ player.label }}</div>
-        </button>
-        <button v-if="playerURI" @click="selectTurn(Color.BLACK)">
-          <Icon :icon="IconType.GAME" />
-          <div class="label">{{ t.sente }}</div>
-        </button>
-        <button v-if="playerURI" @click="selectTurn(Color.WHITE)">
-          <Icon :icon="IconType.GAME" />
-          <div class="label">{{ t.gote }}</div>
-        </button>
-        <button
-          v-if="playerURI"
-          @click="selectTurn(Math.random() * 2 >= 1 ? Color.BLACK : Color.WHITE)"
-        >
-          <Icon :icon="IconType.GAME" />
-          <div class="label">{{ t.pieceToss }}</div>
         </button>
       </div>
     </dialog>
@@ -75,7 +74,7 @@ const dialog = ref();
 const playerURI = ref("");
 // 組み込みの WebAssembly エンジンは、マニフェストが mobileGame を宣言したプリセットが並ぶ。
 // 読み込みが終わるまでは簡易エンジンだけを出す。
-const players = ref(basicPlayers);
+const playerGroups = ref([basicPlayers]);
 const emit = defineEmits<{
   close: [];
 }>();
@@ -85,12 +84,17 @@ const onClose = () => {
 onMounted(async () => {
   showModalDialog(dialog.value, onClose);
   installHotKeyForDialog(dialog.value);
-  const builtins = await loadMobileGamePlayers((e) => {
-    // 読み込めなかったエンジンはメニューに出ない。理由を伝えないと
-    // 「エンジンが存在しない」ようにしか見えないため、画面にも出す。
-    useErrorStore().add(new Error(describeEngineLoadError(e)));
-  });
-  players.value = [...basicPlayers, ...builtins];
+  const builtins = Object.values(
+    Object.groupBy(
+      await loadMobileGamePlayers((e) => {
+        // 読み込めなかったエンジンはメニューに出ない。理由を伝えないと
+        // 「エンジンが存在しない」ようにしか見えないため、画面にも出す。
+        useErrorStore().add(new Error(describeEngineLoadError(e)));
+      }),
+      (player) => player.dir || "/",
+    ),
+  ) as MobileGamePlayer[][];
+  playerGroups.value = [basicPlayers, ...builtins];
 });
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);

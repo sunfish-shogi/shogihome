@@ -152,6 +152,7 @@ export type MobileGamePlayer = {
   uri: string;
   // ボタンに出す名前。マニフェストの mobileGame.label をそのまま使う。
   label: string;
+  dir?: string;
 };
 
 // モバイルの対局メニューに並べるプリセットを集める。
@@ -171,7 +172,7 @@ export async function loadMobileGamePlayers(
       const manifest = await loadEngineManifest(dir);
       for (const preset of manifest.presets) {
         if (preset.mobileGame) {
-          players.push({ uri: builtinEngineURI(preset.id), label: preset.mobileGame.label });
+          players.push({ uri: builtinEngineURI(preset.id), dir, label: preset.mobileGame.label });
         }
       }
     } catch (e) {
