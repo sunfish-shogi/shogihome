@@ -511,11 +511,18 @@ onUpdated(() => {
   height: 100%;
 }
 .branch-side-control button {
+  position: relative;
   height: 50%;
   width: 100%;
   padding: 0;
 }
+/* Safari ではボタン内の画像に対する max-height: 100% が期待通りに効かず、
+   縦幅が狭い時にアイコンが下にずれるため、絶対配置で中央に置く。 */
 .branch-side-control button .icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   height: 40px;
   max-height: 100%;
 }
