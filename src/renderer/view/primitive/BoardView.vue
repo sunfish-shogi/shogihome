@@ -66,14 +66,15 @@
         </div>
       </div>
 
-      <img
+      <svg
         v-for="arrow in arrows"
         :key="arrow.id"
         class="arrows"
-        src="/arrow/arrow.svg"
         :style="arrow.style"
-        style="object-fit: cover; object-position: left top"
-      />
+        :viewBox="arrow.viewBox"
+      >
+        <polygon :points="arrow.points" fill="#fe0000" />
+      </svg>
       <div
         v-for="arrow in arrows"
         v-show="arrow.labelText"
@@ -1048,9 +1049,28 @@ const arrows = computed(() => {
     const dy = end.y - start.y;
     const horizontalFactor = distance > 0 ? Math.abs(dx) / distance : 0;
     const labelOffsetY = dy > 0 ? -horizontalFactor * 12 : horizontalFactor * 12;
+    // 矢印の形状 (左端が終点)
+    // NOTE: Safari では <img> の SVG に object-fit/object-position が正しく適用されないため、
+    //       インライン SVG で直接描画する。
+    const headLength = Math.min(arrowWidth * 0.79, distance);
+    const shaftTop = arrowWidth * 0.31;
+    const shaftBottom = arrowWidth * 0.665;
+    const points = [
+      [0, arrowWidth / 2],
+      [headLength, 0],
+      [headLength, shaftTop],
+      [distance, shaftTop],
+      [distance, shaftBottom],
+      [headLength, shaftBottom],
+      [headLength, arrowWidth],
+    ]
+      .map(([px, py]) => `${px},${py}`)
+      .join(" ");
     return {
       id: move.usi,
       labelText,
+      viewBox: `0 0 ${distance} ${arrowWidth}`,
+      points,
       style: {
         left: x + "px",
         top: y + "px",
