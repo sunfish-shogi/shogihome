@@ -335,6 +335,8 @@ const updateMultiPV = (add: number) => {
 <style scoped>
 .root {
   position: relative;
+  /* .full で height: 100% を指定しているため、padding を含めて高さに収める。 */
+  box-sizing: border-box;
   /* NOTE: 変更する場合はスクリプト側の rootPaddingBottom も合わせて変更すること。 */
   padding-bottom: 2px;
   background-color: var(--active-tab-bg-color);

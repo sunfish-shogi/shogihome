@@ -517,7 +517,7 @@ onUpdated(() => {
   padding: 0;
 }
 /* Safari ではボタン内の画像に対する max-height: 100% が期待通りに効かず、
-   縦幅が狭い時にアイコンが下にずれるため、絶対配置で中央に置く。 */
+   縦幅が狭い時にアイコンが下にずれるため、position: absolute で中央に配置する。 */
 .branch-side-control button .icon {
   position: absolute;
   top: 50%;
