@@ -1,6 +1,6 @@
 import { exportKIF, ImmutableRecord, importKIF, Record, RecordMetadataKey } from "tsshogi";
 import { useErrorStore } from "./error.js";
-import { isMobileWebApp, isNative } from "@/renderer/ipc/api.js";
+import { isNative } from "@/renderer/ipc/api.js";
 
 const mobileRecordStorageKey = "mobile:record";
 const mobilePlyStorageKey = "mobile:ply";
@@ -27,10 +27,6 @@ export function loadRecordForWebApp(): Record | undefined {
     return record;
   }
 
-  if (!isMobileWebApp()) {
-    return;
-  }
-
   const data = localStorage.getItem(mobileRecordStorageKey);
   if (data === null) {
     return;
@@ -50,7 +46,7 @@ function hasUSENParam(): boolean {
 }
 
 export function saveRecordForWebApp(record: ImmutableRecord): void {
-  if (!isMobileWebApp()) {
+  if (isNative()) {
     return;
   }
   if (hasUSENParam()) {
