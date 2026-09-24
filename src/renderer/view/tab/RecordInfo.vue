@@ -1,13 +1,7 @@
 <template>
   <div>
-    <div class="full column root">
-      <div
-        ref="root"
-        class="full column main"
-        :style="{ height: `${size.height - 25}px` }"
-        @copy.stop
-        @paste.stop
-      >
+    <div class="column root" :style="{ height: `${size.height}px` }">
+      <div ref="root" class="auto column main" @copy.stop @paste.stop>
         <div class="row element">
           <div class="key">{{ t.file }}</div>
           <div class="value">
@@ -90,6 +84,7 @@ const changeEmptyInfoVisibility = (visible: boolean) => {
   background-color: var(--text-bg-color);
 }
 .main {
+  min-height: 0;
   overflow: auto;
 }
 .element {
@@ -108,6 +103,8 @@ input.value {
   width: min(500px, calc(100% - 200px));
 }
 .options {
+  flex: none;
+  box-sizing: border-box;
   padding: 2px 5px 2px 5px;
   height: 24px;
   text-align: left;

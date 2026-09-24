@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="full column" :style="{ width: `${size.width}px` }">
-      <div class="row tabs">
+      <div class="row tabs" :style="{ height: `${headerHeight}px` }">
         <div
           v-for="tab in visibleTabs"
           :key="tab"
@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-export const headerHeight = 30;
+export const headerHeight = 28;
 </script>
 
 <script setup lang="ts">
@@ -148,6 +148,8 @@ const tabs = {
 
 <style scoped>
 .tabs {
+  flex: none;
+  box-sizing: border-box;
   width: 100%;
   user-select: none;
   background: linear-gradient(to top, var(--tab-bg-color) 80%, white 140%);
