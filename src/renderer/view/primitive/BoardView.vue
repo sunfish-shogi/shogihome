@@ -1050,8 +1050,6 @@ const arrows = computed(() => {
     const horizontalFactor = distance > 0 ? Math.abs(dx) / distance : 0;
     const labelOffsetY = dy > 0 ? -horizontalFactor * 12 : horizontalFactor * 12;
     // 矢印の形状 (左端が終点)
-    // NOTE: Safari では <img> の SVG に object-fit/object-position が正しく適用されないため、
-    //       インライン SVG で直接描画する。
     const headLength = Math.min(arrowWidth * 0.79, distance);
     const shaftTop = arrowWidth * 0.31;
     const shaftBottom = arrowWidth * 0.665;
