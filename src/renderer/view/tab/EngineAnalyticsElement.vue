@@ -330,7 +330,6 @@ const updateMultiPV = (add: number) => {
 <style scoped>
 .root {
   position: relative;
-  padding-bottom: 2px;
   background-color: var(--active-tab-bg-color);
 }
 .overlay-control {
