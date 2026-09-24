@@ -50,8 +50,7 @@ cross-origin isolation のヘッダーを足すためである (「cross-origin 
 
 #### UI の静的ファイル
 
-アイコン (`icon/**/*.svg`)、矢印 (`arrow/**/*.svg`)、盤の枠線 (`board/**/*.svg`)、
-駒台 (`stand/**/*.png`)、効果音 (`sound/**/*.mp3`)。
+アイコン (`icon/**/*.svg`)、盤の枠線 (`board/**/*.svg`)、駒台 (`stand/**/*.png`)、効果音 (`sound/**/*.mp3`)。
 
 - キャッシュ名: `shogihome-ui-assets`
 - 方式: `StaleWhileRevalidate`
