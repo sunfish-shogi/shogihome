@@ -106,7 +106,7 @@ input.value {
   flex: none;
   box-sizing: border-box;
   padding: 2px 5px 2px 5px;
-  height: 28px;
+  height: 24px;
   text-align: left;
   color: var(--main-color);
   background-color: var(--main-bg-color);
