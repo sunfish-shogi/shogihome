@@ -49,10 +49,7 @@
           <span>{{ monitor.hashfull ? (monitor.hashfull * 100).toFixed(1) : "---" }} %</span>
         </div>
       </div>
-      <div
-        class="list-area"
-        :style="{ height: `${height - (showHeader ? 22 : 0) - rootPaddingBottom}px` }"
-      >
+      <div class="list-area" :style="{ height: `${height - (showHeader ? 22 : 0)}px` }">
         <table class="list">
           <thead>
             <tr ref="listHeader" class="list-header">
@@ -157,8 +154,6 @@
 
 <script lang="ts">
 const suggestionsCountLimit = 10;
-// .root の padding-bottom と同じ値。list-area の高さから差し引かないと height をはみ出す。
-const rootPaddingBottom = 2;
 let ignoreSuggestionsCountLimit = false;
 </script>
 
@@ -335,10 +330,6 @@ const updateMultiPV = (add: number) => {
 <style scoped>
 .root {
   position: relative;
-  /* .full で height: 100% を指定しているため、padding を含めて高さに収める。 */
-  box-sizing: border-box;
-  /* NOTE: 変更する場合はスクリプト側の rootPaddingBottom も合わせて変更すること。 */
-  padding-bottom: 2px;
   background-color: var(--active-tab-bg-color);
 }
 .overlay-control {
