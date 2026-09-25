@@ -726,6 +726,7 @@ export type Texts = {
   yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue: string;
   translationHelpNeeded: string;
   restartRequiredAfterLocaleChange: string;
+  confirmSwitchLanguage: (languageName: string) => string;
   createDesktopShortcut: string;
   desktopShortcutCreated: string;
   areYouSureWantToResign: string;

@@ -7,7 +7,7 @@ import { Texts } from "./text_template.js";
 
 export const t = ja;
 
-function getTranslationTable(language: Language): Texts {
+export function getTranslationTable(language: Language): Texts {
   switch (language) {
     case Language.JA:
       return ja;

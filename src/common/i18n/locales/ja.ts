@@ -747,6 +747,8 @@ export const ja: Texts = {
     "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？",
   translationHelpNeeded: "翻訳の改善にご協力ください。",
   restartRequiredAfterLocaleChange: "言語の変更には再起動が必要です。",
+  confirmSwitchLanguage: (languageName: string) =>
+    `表示言語を「${languageName}」に切り替えますか？`,
   createDesktopShortcut: "デスクトップにショートカットを作成",
   desktopShortcutCreated: "デスクトップにショートカットを作成しました。",
   areYouSureWantToResign: "投了しますか？",

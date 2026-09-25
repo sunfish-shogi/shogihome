@@ -745,6 +745,8 @@ export const en: Texts = {
     "Your password does not meet Floodgate's requirements. Do you still want to continue?",
   translationHelpNeeded: "We'd like your help to translate.",
   restartRequiredAfterLocaleChange: "You should restart this app to change the language.",
+  confirmSwitchLanguage: (languageName: string) =>
+    `Do you want to switch the display language to "${languageName}"?`,
   createDesktopShortcut: "Create desktop shortcut",
   desktopShortcutCreated: "Desktop shortcut created.",
   areYouSureWantToResign: "Are you sure you want to resign?",

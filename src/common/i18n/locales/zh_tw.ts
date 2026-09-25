@@ -749,6 +749,7 @@ export const zh_tw: Texts = {
     "密碼可能不符合Floodgate之要求。您仍要繼續嗎？",
   translationHelpNeeded: "我們正在招募翻譯人員。",
   restartRequiredAfterLocaleChange: "更改語言後，請重新啟動本程式。",
+  confirmSwitchLanguage: (languageName: string) => `要將顯示語言切換為「${languageName}」嗎？`,
   createDesktopShortcut: "デスクトップにショートカットを作成", // TODO: Translate
   desktopShortcutCreated: "デスクトップにショートカットを作成しました。", // TODO: Translate
   areYouSureWantToResign: "確定要投了嗎？",
