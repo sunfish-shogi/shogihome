@@ -465,7 +465,7 @@
         />
       </div>
       <!-- 棋譜ファイル名-->
-      <div class="form-item row">
+      <div class="form-item">
         <div class="form-item-label-wide">
           {{ t.recordFileName }}
         </div>
@@ -480,7 +480,7 @@
         <ToggleButton v-model:value="update.useCSAV3" />
       </div>
       <!-- USI の局面表記 -->
-      <div class="form-item row">
+      <div class="form-item">
         <div class="form-item-label-wide">{{ t.positionOfUSIOutput }}</div>
         <HorizontalSelector
           v-once
@@ -498,7 +498,7 @@
         />
       </div>
       <!-- USI の指し手表記 -->
-      <div class="form-item row">
+      <div class="form-item">
         <div class="form-item-label-wide">{{ t.movesOfUSIOutput }}</div>
         <HorizontalSelector
           class="selector"
@@ -1058,7 +1058,7 @@ const cancel = () => {
   padding-left: 10px;
 }
 input.file-path {
-  width: 250px;
+  width: min(250px, 60vw);
 }
 .image-selector {
   display: inline-block;
