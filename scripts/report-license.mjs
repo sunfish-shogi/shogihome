@@ -2,7 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { init } from "license-checker";
 
-const rootDir = "./docs";
+// Usage: node scripts/report-license.mjs [outputDir]
+// outputDir defaults to ./docs
+const rootDir = process.argv[2] || "./docs";
 const licenseFileDir = "third-party-licenses";
 
 function writeHeader(stream) {
@@ -60,8 +62,8 @@ init(
     if (fs.existsSync(path.join(rootDir, licenseFileDir))) {
       fs.rmSync(path.join(rootDir, licenseFileDir), { recursive: true });
     }
-    fs.mkdirSync(path.join(rootDir, licenseFileDir));
-    const stream = fs.createWriteStream(path.join(rootDir, "/third-party-licenses.html"));
+    fs.mkdirSync(path.join(rootDir, licenseFileDir), { recursive: true });
+    const stream = fs.createWriteStream(path.join(rootDir, "third-party-licenses.html"));
     writeHeader(stream);
     let index = 0;
     Object.entries(packages).forEach(([name, props]) => {
