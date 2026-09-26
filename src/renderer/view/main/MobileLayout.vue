@@ -58,6 +58,16 @@
             v-bind="searchTabChartProps"
           />
         </div>
+        <EvaluationChart
+          v-if="
+            showRecordViewOnBottom &&
+            showSearchTab &&
+            !bottomSearchView.chart &&
+            bottomUIType === BottomUIType.CHART
+          "
+          :size="bottomViewSize"
+          v-bind="searchTabChartProps"
+        />
         <HorizontalSelector
           v-if="showRecordViewOnBottom"
           v-model:value="bottomUIType"
@@ -112,6 +122,11 @@
             v-bind="searchTabChartProps"
           />
         </div>
+        <EvaluationChart
+          v-if="showSearchTab && !sideSearchView.chart && sideUIType === SideUIType.CHART"
+          :size="sideViewSize"
+          v-bind="searchTabChartProps"
+        />
         <HorizontalSelector
           v-model:value="sideUIType"
           :items="sideUIItems"
@@ -129,12 +144,14 @@ enum BottomUIType {
   COMMENT = "comment",
   INFO = "info",
   SEARCH = "search",
+  CHART = "chart",
 }
 enum SideUIType {
   RECORD = "record",
   BRANCH_TREE = "branchTree",
   INFO = "info",
   SEARCH = "search",
+  CHART = "chart",
 }
 </script>
 
@@ -222,6 +239,9 @@ const bottomUIItems = computed(() => [
   ...(showSearchTab
     ? [{ label: t.searchLog, icon: IconType.BRAIN, value: BottomUIType.SEARCH }]
     : []),
+  ...(showSearchTab && !bottomSearchView.value.chart
+    ? [{ label: t.chart, icon: IconType.CHART, value: BottomUIType.CHART }]
+    : []),
 ]);
 const sideUIItems = computed(() => [
   { label: t.record, icon: IconType.DESCRIPTION, value: SideUIType.RECORD },
@@ -229,6 +249,9 @@ const sideUIItems = computed(() => [
   { label: t.recordProperties, icon: IconType.INFO, value: SideUIType.INFO },
   ...(showSearchTab
     ? [{ label: t.searchLog, icon: IconType.BRAIN, value: SideUIType.SEARCH }]
+    : []),
+  ...(showSearchTab && !sideSearchView.value.chart
+    ? [{ label: t.chart, icon: IconType.CHART, value: SideUIType.CHART }]
     : []),
 ]);
 
@@ -305,6 +328,25 @@ const splitSearchView = (size: RectSize) => {
 };
 const bottomSearchView = computed(() => splitSearchView(bottomViewSize.value));
 const sideSearchView = computed(() => splitSearchView(sideViewSize.value));
+
+// 思考タブにグラフを出せない画面では、グラフを独立したタブとして出す。
+// 画面の回転などで思考タブにグラフが戻った場合は、グラフタブを消して思考タブへ移る。
+watch(
+  () => !!bottomSearchView.value.chart,
+  (hasChart) => {
+    if (hasChart && bottomUIType.value === BottomUIType.CHART) {
+      bottomUIType.value = BottomUIType.SEARCH;
+    }
+  },
+);
+watch(
+  () => !!sideSearchView.value.chart,
+  (hasChart) => {
+    if (hasChart && sideUIType.value === SideUIType.CHART) {
+      sideUIType.value = SideUIType.SEARCH;
+    }
+  },
+);
 
 onMounted(() => {
   window.addEventListener("resize", updateSize);
