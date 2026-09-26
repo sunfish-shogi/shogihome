@@ -217,25 +217,40 @@ const onClose = () => {
   width: 100%;
 }
 .header {
-  display: table;
+  display: flex;
+  align-items: center;
   width: 100%;
 }
 .header > .left {
-  display: table-cell;
+  flex-grow: 1;
   text-align: left;
 }
 .header > .right {
-  display: table-cell;
-  text-align: right;
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
 }
 .header * button {
   width: 80px;
 }
+/*
+ * アイコンボタンの高さは隣の文字ボタンに合わせる。
+ * アイコンを絶対配置にしてボタンの高さに影響しないようにし、
+ * フォントや言語によって文字の高さが変わっても揃うようにする。
+ */
 .header * button.open-directory {
-  width: auto;
+  position: relative;
+  width: 2.4em;
   margin-right: 5px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 0;
+}
+.header * button.open-directory .icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 80%;
+  transform: translate(-50%, -50%);
 }
 .class {
   display: inline-block;
