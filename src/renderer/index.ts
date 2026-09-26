@@ -32,6 +32,11 @@ import * as _zh_tw from "dayjs/locale/zh-tw";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useErrorStore } from "@/renderer/store/error.js";
 import { setupUpdateNotification } from "@/renderer/webapp/update.js";
+import {
+  applyLanguageQueryParam,
+  confirmLanguageQueryParam,
+  takeLanguageQueryParam,
+} from "@/renderer/webapp/language.js";
 
 api.log(LogLevel.INFO, `start renderer process: APP_VERSION=${appInfo.appVersion}`);
 
@@ -122,6 +127,16 @@ Promise.allSettled([
   // Electron 版ではこのグローバルが存在しないため、待たずに進む。
   await (window as unknown as { __shogihomeCOIReady?: Promise<void> }).__shogihomeCOIReady;
 
+  // Web 版の言語指定クエリ (?lang=xx) を読み取って URL から取り除く。
+  // 初回アクセス時の再読み込み (coi-bootstrap) でクエリが失われないよう、判定を待ってから行う。
+  const languageQueryParam = takeLanguageQueryParam();
+  // 言語指定クエリの反映（アプリ設定が未保存の場合のみ）
+  if (languageQueryParam) {
+    await applyLanguageQueryParam(languageQueryParam).catch((e) => {
+      useErrorStore().add(new Error("言語設定の保存に失敗しました: " + e));
+    });
+  }
+
   // 言語設定の反映
   const language = useAppSettings().language;
   api.log(LogLevel.INFO, `set language: ${language}`);
@@ -132,6 +147,11 @@ Promise.allSettled([
 
   api.log(LogLevel.INFO, "mount app");
   createApp(App).mount("#app");
+
+  // 言語指定クエリがアプリ設定と異なる場合は切り替えるかを確認する。
+  if (languageQueryParam) {
+    confirmLanguageQueryParam(languageQueryParam);
+  }
 
   // Web アプリの更新を検知して通知する。
   setupUpdateNotification().catch((e) => {

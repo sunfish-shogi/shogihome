@@ -3,7 +3,7 @@ import * as translate from "./translation_table.js";
 import * as usi from "./usi.js";
 
 export * from "./languages.js";
-export { t } from "./translation_table.js";
+export { t, getTranslationTable } from "./translation_table.js";
 export * from "./errors.js";
 export * from "./record.js";
 export { usiOptionNameMap } from "./usi.js";

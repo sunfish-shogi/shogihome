@@ -112,6 +112,13 @@ const usiSessions = new USISessionManager(
 usiSessions.setHandlers(usiSessionHandlers);
 
 // Electron を使わずにシンプルな Web アプリケーションとして実行した場合に使用します。
+/**
+ * アプリ設定が保存済みかどうかを返します。
+ */
+export function hasSavedAppSettings(): boolean {
+  return localStorage.getItem(STORAGE_KEY.APP_SETTINGS) !== null;
+}
+
 export const webAPI: Bridge = {
   // Core
   updateAppState(): void {
