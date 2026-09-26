@@ -39,6 +39,12 @@ import {
 import { BookImportSettings } from "@/common/settings/book.js";
 import { ProcessArgs } from "@/common/ipc/process.js";
 import {
+  EngineIndex,
+  EnginePackageInstallResult,
+  EnginePackageLicense,
+  InstalledEnginePackageInfo,
+} from "@/common/wasm-engine/package.js";
+import {
   NextMoveCollection,
   parseNextMoveCollection,
   serializeNextMoveCollection,
@@ -124,6 +130,12 @@ export interface API {
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine>;
+  fetchEngineIndex(): Promise<EngineIndex>;
+  listInstalledEnginePackages(): Promise<InstalledEnginePackageInfo[]>;
+  fetchEnginePackageLicenses(id: string): Promise<EnginePackageLicense[]>;
+  installEnginePackage(id: string, timeoutSeconds: number): Promise<EnginePackageInstallResult>;
+  cancelEnginePackageInstall(id: string): Promise<void>;
+  uninstallEnginePackage(id: string, version: string): Promise<void>;
   getUSIEngineMetadata(path: string): Promise<USIEngineMetadata>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
   usiLaunch(engine: USIEngine, options?: USIEngineLaunchOptions): Promise<number>;
@@ -324,6 +336,21 @@ const api: API = {
   async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine> {
     const engine = await bridge.getUSIEngineInfo(path, timeoutSeconds);
     return JSON.parse(engine);
+  },
+  async fetchEngineIndex(): Promise<EngineIndex> {
+    return JSON.parse(await bridge.fetchEngineIndex());
+  },
+  async listInstalledEnginePackages(): Promise<InstalledEnginePackageInfo[]> {
+    return JSON.parse(await bridge.listInstalledEnginePackages());
+  },
+  async fetchEnginePackageLicenses(id: string): Promise<EnginePackageLicense[]> {
+    return JSON.parse(await bridge.fetchEnginePackageLicenses(id));
+  },
+  async installEnginePackage(
+    id: string,
+    timeoutSeconds: number,
+  ): Promise<EnginePackageInstallResult> {
+    return JSON.parse(await bridge.installEnginePackage(id, timeoutSeconds));
   },
   async getUSIEngineMetadata(path: string): Promise<USIEngineMetadata> {
     const metadata = await bridge.getUSIEngineMetadata(path);

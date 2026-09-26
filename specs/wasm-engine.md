@@ -9,7 +9,8 @@ Electron 版はローカルの実行ファイルを子プロセスとして起�
 そのまま利用できる。
 
 エンジン側が満たすべき仕様は [`wasm-engine-abi.md`](./wasm-engine-abi.md) にある。
-本文書は ShogiHome 側の作りを説明する。
+本文書は ShogiHome 側の作りを説明する。デスクトップ版で同じエンジンをダウンロードして
+使う仕組みは [`wasm-engine-desktop.md`](./wasm-engine-desktop.md) を参照。
 
 ## 全体構成
 
@@ -21,10 +22,13 @@ public/engines/<dir>/               ビルド済みの成果物 (リポジトリ
 
 plugins/builtin_engines.ts          エンジンの置き場所を走査して一覧を作るビルド時のプラグイン
 
-src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
-  catalog.ts                          組み込みエンジンのカタログ
+src/common/wasm-engine/             Web 版とデスクトップ版で共有するもの
   manifest.ts                         engine.json の型と検証
   loader.ts                           エンジンモジュールのインターフェースと読み込み補助
+  preset.ts                           プリセットの値をオプションへ反映する
+
+src/renderer/wasm-engine/           WebAssembly エンジンを動かす renderer 側のランタイム
+  catalog.ts                          組み込みエンジンのカタログ
   protocol.ts                         USI の行の解析と組み立て
   session.ts                          セッション管理 (状態遷移・タイムアウト)
   transport.ts                        Worker との行単位 I/O
@@ -89,7 +93,8 @@ ShogiHome 側に写しを持つ必要も無い。配置したエンジンは
 
 **Web 版はエンジンを配布物に含むため、そのライセンスを表示する義務を負う。**
 (Electron 版は `.electron-builder.config.mjs` の `files` に `engines/` を含めないため、
-エンジンを配布しない。)
+エンジンを配布しない。利用者がダウンロードする場合の扱いは
+[`wasm-engine-desktop.md`](./wasm-engine-desktop.md) の「ライセンス」を参照。)
 
 エンジンのライセンスはマニフェストの `licenses` が持ち、全文はエンジンのディレクトリに
 同梱される ([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「9. ライセンス」)。

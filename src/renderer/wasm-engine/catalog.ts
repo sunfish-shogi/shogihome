@@ -19,7 +19,8 @@ import {
   isSafeRelativePath,
   MANIFEST_FILE_NAME,
   parseEngineManifest,
-} from "./manifest.js";
+} from "@/common/wasm-engine/manifest.js";
+import { applyPresetValues } from "@/common/wasm-engine/preset.js";
 
 // 読み込む組み込みエンジンのディレクトリ名。
 // engine.json を持つディレクトリをビルド時に列挙したもの (plugins/builtin_engines.ts)。
@@ -116,18 +117,10 @@ function buildOptions(manifest: EngineManifest, preset: string): USIEngineOption
       default: "true",
     };
   }
-  // プリセットの値は value (ユーザーが編集した値) ではなく default に入れる。
-  // このプリセットにとっての「エンジンの既定値」がそれであり、オプション画面の
-  // 「エンジンの既定値に戻す」が戻す先にもなる。value に入れると、リセットで
-  // 素のエンジンの既定値まで戻ってしまい、プリセットの意味が無くなる。
-  // (value を空にしておくことで、ユーザーが編集したかどうかの区別も保てる。)
-  const values = manifest.presets.find((p) => p.id === preset)?.values || {};
-  for (const [name, value] of Object.entries(values)) {
-    const option = options[name];
-    if (option && option.type !== "button") {
-      option.default = value as never;
-    }
-  }
+  applyPresetValues(
+    options,
+    manifest.presets.find((p) => p.id === preset),
+  );
   return options;
 }
 

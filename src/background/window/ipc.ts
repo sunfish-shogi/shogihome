@@ -60,6 +60,14 @@ import {
   invokeCommand as invokeUSICommand,
   setHandlers as setUSIHandlers,
 } from "@/background/usi/index.js";
+import {
+  cancelEnginePackageInstall,
+  fetchEngineIndex,
+  fetchEnginePackageLicenses,
+  installEnginePackage,
+  listInstalledEnginePackages,
+  uninstallEnginePackage,
+} from "@/background/usi/wasm/install.js";
 import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
 import { getAppLogger, getFilePath as getLogFilePath } from "@/background/log.js";
@@ -918,6 +926,51 @@ ipcMain.handle(
   async (event, path: string, timeoutSeconds: number): Promise<string> => {
     validateIPCSender(event.senderFrame);
     return JSON.stringify(await usiGetUSIEngineInfo(path, timeoutSeconds));
+  },
+);
+
+ipcMain.handle(Background.FETCH_ENGINE_INDEX, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await fetchEngineIndex());
+});
+
+ipcMain.handle(Background.LIST_INSTALLED_ENGINE_PACKAGES, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  return JSON.stringify(await listInstalledEnginePackages());
+});
+
+ipcMain.handle(
+  Background.FETCH_ENGINE_PACKAGE_LICENSES,
+  async (event, id: string): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    return JSON.stringify(await fetchEnginePackageLicenses(id));
+  },
+);
+
+ipcMain.handle(
+  Background.INSTALL_ENGINE_PACKAGE,
+  async (event, id: string, timeoutSeconds: number): Promise<string> => {
+    validateIPCSender(event.senderFrame);
+    const sender = event.sender;
+    const result = await installEnginePackage(id, timeoutSeconds, (progress) => {
+      if (!sender.isDestroyed()) {
+        sender.send(Renderer.ENGINE_PACKAGE_INSTALL_PROGRESS, JSON.stringify(progress));
+      }
+    });
+    return JSON.stringify(result);
+  },
+);
+
+ipcMain.handle(Background.CANCEL_ENGINE_PACKAGE_INSTALL, (event, id: string): void => {
+  validateIPCSender(event.senderFrame);
+  cancelEnginePackageInstall(id);
+});
+
+ipcMain.handle(
+  Background.UNINSTALL_ENGINE_PACKAGE,
+  async (event, id: string, version: string): Promise<void> => {
+    validateIPCSender(event.senderFrame);
+    await uninstallEnginePackage(id, version);
   },
 );
 

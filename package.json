@@ -35,7 +35,7 @@
     "electron:compile": "npm run install:electron && tsc --project ./tsconfig.bg.json && tsc-alias --project ./tsconfig.bg.json && webpack --config-name preload",
     "electron:compile:serve": "npm run install:electron && tsc --project ./tsconfig.bg.json && tsc-alias --project ./tsconfig.bg.json && webpack --config-name preload --env dev",
     "electron:compile-all": "npm run compile && npm run electron:compile",
-    "electron:pack": "npm run electron:compile-all && webpack --config-name background",
+    "electron:pack": "npm run electron:compile-all && webpack --config-name background --config-name wasm-engine-host",
     "electron:serve": "npm run electron:compile:serve && concurrently --kill-others vite \"electron --remote-debugging-port=9223 .\" \"tsc --project ./tsconfig.bg.json --sourceMap -w\" \"tsc-alias --project ./tsconfig.bg.json -w\" \"node ./scripts/fake-release-api.mjs\"",
     "electron:build": "npm run electron:pack && node scripts/build.mjs",
     "electron:portable": "npm run electron:pack && node scripts/build.mjs portable",

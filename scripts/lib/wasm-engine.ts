@@ -18,12 +18,12 @@ import {
   EngineFactory,
   EngineInstance,
   validateEngineInstance,
-} from "@/renderer/wasm-engine/loader.js";
+} from "@/common/wasm-engine/loader.js";
 import {
   EngineManifest,
   MANIFEST_FILE_NAME,
   parseEngineManifest,
-} from "@/renderer/wasm-engine/manifest.js";
+} from "@/common/wasm-engine/manifest.js";
 import { parseOptionCommand } from "@/renderer/wasm-engine/protocol.js";
 import { USIEngineOption } from "@/common/settings/usi.js";
 

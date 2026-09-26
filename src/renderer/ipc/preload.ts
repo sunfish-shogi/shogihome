@@ -249,6 +249,24 @@ const api: Bridge = {
   async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_USI_ENGINE_INFO, path, timeoutSeconds);
   },
+  async fetchEngineIndex(): Promise<string> {
+    return await ipcRenderer.invoke(Background.FETCH_ENGINE_INDEX);
+  },
+  async listInstalledEnginePackages(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LIST_INSTALLED_ENGINE_PACKAGES);
+  },
+  async fetchEnginePackageLicenses(id: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.FETCH_ENGINE_PACKAGE_LICENSES, id);
+  },
+  async installEnginePackage(id: string, timeoutSeconds: number): Promise<string> {
+    return await ipcRenderer.invoke(Background.INSTALL_ENGINE_PACKAGE, id, timeoutSeconds);
+  },
+  async cancelEnginePackageInstall(id: string): Promise<void> {
+    await ipcRenderer.invoke(Background.CANCEL_ENGINE_PACKAGE_INSTALL, id);
+  },
+  async uninstallEnginePackage(id: string, version: string): Promise<void> {
+    await ipcRenderer.invoke(Background.UNINSTALL_ENGINE_PACKAGE, id, version);
+  },
   async getUSIEngineMetadata(path: string): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_USI_ENGINE_METADATA, path);
   },
@@ -322,6 +340,11 @@ const api: Bridge = {
   onUSIInfo(callback: (sessionID: number, usi: string, json: string) => void): void {
     ipcRenderer.on(Renderer.USI_INFO, (_, sessionID, usi, json) => {
       callback(sessionID, usi, json);
+    });
+  },
+  onEnginePackageInstallProgress(callback: (json: string) => void): void {
+    ipcRenderer.on(Renderer.ENGINE_PACKAGE_INSTALL_PROGRESS, (_, json) => {
+      callback(json);
     });
   },
 

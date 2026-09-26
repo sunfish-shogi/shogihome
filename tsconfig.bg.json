@@ -5,5 +5,5 @@
     "tsBuildInfoFile": "./dist/tsconfig.bg.tsbuildinfo",
     "rootDir": "./src"
   },
-  "include": ["src/background/index.ts"]
+  "include": ["src/background/index.ts", "src/background/usi/wasm/host.ts"]
 }

@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { Plugin } from "vite";
@@ -97,6 +98,94 @@ function listFiles(dir: string): string[] {
   });
 }
 
+// デスクトップ版がダウンロードするエンジンの一覧 (specs/wasm-engine-desktop.md)。
+// Web 版の配信物の engines/index.json として出力する。
+export const ENGINE_INDEX_FILE = "engines/index.json";
+
+// 本家のリポジトリに置かず、外部で配信されているエンジンの一覧。
+// 内容はそのままインデックスに載る。書式はインデックスの engines の要素と同じで、
+// scripts/engine-package-entry.ts がパッケージの URL から生成する。
+export const EXTERNAL_ENGINES_FILE = path.resolve(import.meta.dirname, "external_engines.json");
+
+// インデックスに載せるファイル名の規則。実行時の検証 (isSafeRelativePath) と揃える。
+// 外れる名前があるとインデックスごと拒否されるため、ここでビルドを失敗させる。
+const SAFE_FILE_PATH_PATTERN = /^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/;
+
+type EngineIndexFile = { path: string; sha256: string; size: number };
+
+type EngineIndexEntry = {
+  id: string;
+  version: string;
+  name: string;
+  author: string;
+  licenses: string[];
+  packageURL: string;
+  files: EngineIndexFile[];
+};
+
+function sha256(data: Buffer): string {
+  return crypto.createHash("sha256").update(data).digest("hex");
+}
+
+function buildEngineIndexEntry(engine: BuiltinEngine): EngineIndexEntry | undefined {
+  const manifest = JSON.parse(fs.readFileSync(path.join(engine.dir, "engine.json"), "utf8"));
+  // wasm や評価パラメータが外部にある場合は、ビルド時に中身を確かめられない。
+  // 外部で配信されるエンジンと同じく EXTERNAL_ENGINES_FILE に載せる。
+  if (manifest.assetBaseURL) {
+    return undefined;
+  }
+  const files = listFiles(engine.dir)
+    .map((file) => file.split(path.sep).join("/"))
+    // .DS_Store などの隠しファイルは配らない。
+    .filter((file) => !file.split("/").some((segment) => segment.startsWith(".")))
+    .sort()
+    .map((file) => {
+      if (!SAFE_FILE_PATH_PATTERN.test(file)) {
+        throw new Error(`invalid engine file name: "${engine.name}/${file}"`);
+      }
+      const data = fs.readFileSync(path.join(engine.dir, file));
+      return { path: file, sha256: sha256(data), size: data.byteLength };
+    });
+  // 版は内容から決める。ファイルが 1 つでも変われば別の版になる。
+  const version = sha256(
+    Buffer.from(files.map((file) => `${file.path}:${file.sha256}\n`).join("")),
+  ).substring(0, 16);
+  return {
+    id: engine.name,
+    version,
+    name: manifest.name,
+    author: manifest.author,
+    licenses: (manifest.licenses || []).map((license: { spdx: string }) => license.spdx),
+    // インデックスからの相対。実行時に index.json の URL を基準に解決する。
+    packageURL: `${engine.name}/`,
+    files,
+  };
+}
+
+// インデックスを作る。本家のエンジンと EXTERNAL_ENGINES_FILE の内容を並べる。
+export function buildEngineIndex(
+  engines: BuiltinEngine[],
+  externalFile = EXTERNAL_ENGINES_FILE,
+): { format: string; engines: unknown[] } {
+  const entries: { id: string }[] = [];
+  for (const engine of engines) {
+    const entry = buildEngineIndexEntry(engine);
+    if (entry) {
+      entries.push(entry);
+    }
+  }
+  if (fs.existsSync(externalFile)) {
+    const external = JSON.parse(fs.readFileSync(externalFile, "utf8"));
+    for (const entry of external.engines || []) {
+      if (entries.some((e) => e.id === entry.id)) {
+        throw new Error(`duplicated engine id in ${externalFile}: "${entry.id}"`);
+      }
+      entries.push(entry);
+    }
+  }
+  return { format: "shogihome-engine-index/1", engines: entries };
+}
+
 // 開発サーバーで返す Content-Type。
 //
 // **.wasm は application/wasm でなければならない。** Emscripten の
@@ -132,6 +221,11 @@ export function builtinEngines(): Plugin {
     },
 
     generateBundle() {
+      this.emitFile({
+        type: "asset",
+        fileName: ENGINE_INDEX_FILE,
+        source: JSON.stringify(buildEngineIndex(engines), null, 2) + "\n",
+      });
       for (const engine of external) {
         for (const file of listFiles(engine.dir)) {
           this.emitFile({
@@ -144,9 +238,6 @@ export function builtinEngines(): Plugin {
     },
 
     configureServer(server) {
-      if (external.length === 0) {
-        return;
-      }
       // 実体のパスで持つ。下で読み出し先がこの内側に収まっていることを実体で確かめるため。
       const dirs = new Map(external.map((engine) => [engine.name, fs.realpathSync(engine.dir)]));
       // Vite の静的配信と同じヘッダーを付ける。
@@ -163,6 +254,13 @@ export function builtinEngines(): Plugin {
       const headers = server.config.server.headers || {};
       server.middlewares.use((req, res, next) => {
         const pathname = new URL(req.url || "/", "http://localhost").pathname;
+        // デスクトップ版の開発時は、ここからインデックスを取得する。
+        // 置いたエンジンの変更をすぐに反映するため、要求のたびに作り直す。
+        if (pathname === `/${ENGINE_INDEX_FILE}`) {
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify(buildEngineIndex(engines)));
+          return;
+        }
         const matched = /^\/engines\/([^/]+)\/(.+)$/.exec(pathname);
         const dir = matched && dirs.get(matched[1]);
         if (!dir) {

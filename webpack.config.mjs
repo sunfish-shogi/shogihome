@@ -78,6 +78,25 @@ export default (env = {}) => {
       cache,
     },
     {
+      // WebAssembly エンジンを動かす utility プロセスのエントリ (src/background/usi/wasm/host.ts)。
+      // background と同じく tsc の出力をまとめる。
+      name: "wasm-engine-host",
+      mode: "production",
+      entry: "./dist/src/background/usi/wasm/host.js",
+      target: "electron-main",
+      output: {
+        filename: "wasm-engine-host.js",
+        path: import.meta.dirname + "/dist/packed",
+      },
+      externals: ["electron"],
+      experiments: {
+        outputModule: true,
+        typescript: false,
+      },
+      optimization,
+      cache,
+    },
+    {
       name: "preload",
       mode: "production",
       entry: "./src/renderer/ipc/preload.ts",

@@ -485,6 +485,21 @@ export function quitAll(): void {
   });
 }
 
+// 指定したパスのエンジンが動いているかどうか。
+// ダウンロードしたエンジンのファイルを、使用中に削除しないために使う。
+export function isEnginePathInUse(enginePath: string): boolean {
+  const target = resolveEnginePath(enginePath);
+  for (const session of sessions.values()) {
+    if (
+      session.process.state !== State.QuitCompleted &&
+      resolveEnginePath(session.engine.path) === target
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function isActiveSessionExists(): boolean {
   for (const session of sessions.values()) {
     if (session.process.state !== State.QuitCompleted) {

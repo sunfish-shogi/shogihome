@@ -255,6 +255,24 @@ const bridge: Bridge = {
   async getUSIEngineInfo(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
+  async fetchEngineIndex(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async listInstalledEnginePackages(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async fetchEnginePackageLicenses(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async installEnginePackage(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async cancelEnginePackageInstall(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
+  async uninstallEnginePackage(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async getUSIEngineMetadata(): Promise<string> {
     throw new Error("This feature is not available on command line tool");
   },
@@ -312,6 +330,9 @@ const bridge: Bridge = {
     // Do Nothing
   },
   onUSIInfo(): void {
+    // Do Nothing
+  },
+  onEnginePackageInstallProgress(): void {
     // Do Nothing
   },
 

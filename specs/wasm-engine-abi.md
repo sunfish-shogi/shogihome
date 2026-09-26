@@ -335,7 +335,7 @@ Emscripten の環境判別が働かず、スレッドを使うエンジンでは
 -sMODULARIZE=1                  既定エクスポートがモジュール生成関数になる
 -sEXPORT_ES6=1                  ES モジュールとして出力する (moduleFormat: "esm")
 -sEXPORT_NAME=<任意>
--sENVIRONMENT=worker,node       worker は必須。node は適合性テストで使う
+-sENVIRONMENT=worker,node       worker は Web 版、node はデスクトップ版と適合性テストで使う
 -sINVOKE_RUN=0                  main() を自動実行しない
 -sALLOW_MEMORY_GROWTH=1
 --no-entry                      main() を持たない場合

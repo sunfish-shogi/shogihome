@@ -486,6 +486,38 @@ export const zh_tw: Texts = {
   noEngineRegistered: "尚未登錄引擎。",
   duplicate: "複製",
   add: "追加",
+  addFromFile: "ファイルから追加", // TODO: Translate
+  downloadEngines: "ダウンロード", // TODO: Translate
+  downloadAnEngine: "エンジンをダウンロード", // TODO: Translate
+  engineDownload: "エンジンのダウンロード", // TODO: Translate
+  availableEngines: "入手可能", // TODO: Translate
+  installedEngines: "インストール済み", // TODO: Translate
+  install: "インストール", // TODO: Translate
+  reinstall: "再インストール", // TODO: Translate
+  uninstall: "アンインストール", // TODO: Translate
+  notInstalled: "未インストール", // TODO: Translate
+  updateAvailable: "更新あり", // TODO: Translate
+  needsRepair: "修復が必要", // TODO: Translate
+  unused: "未使用", // TODO: Translate
+  inUse: "使用中", // TODO: Translate
+  publisher: "配布者", // TODO: Translate
+  downloadSize: "ダウンロードサイズ", // TODO: Translate
+  agreeAndDownload: "同意してダウンロード", // TODO: Translate
+  sourceCodeURL: "ソースコード", // TODO: Translate
+  noDownloadableEngine: "ダウンロードできるエンジンがありません。", // TODO: Translate
+  noInstalledEngine: "インストール済みのエンジンはありません。", // TODO: Translate
+  engineDistributedByThirdParty: (publisher) =>
+    `このエンジンは ${publisher} が配布しています。ShogiHome の一部ではありません。`, // TODO: Translate
+  copyleftLicenseNotice:
+    "このエンジンにはコピーレフトのライセンスが含まれています。再配布する場合はライセンスの条件に従ってください。", // TODO: Translate
+  enginesAddedPleaseSave:
+    "エンジン一覧に追加しました。エンジン管理画面で「保存して閉じる」を押すと確定します。", // TODO: Translate
+  enginesUpdatedPleaseSave:
+    "エンジンを更新しました。エンジン管理画面で「保存して閉じる」を押すと確定します。", // TODO: Translate
+  areYouSureWantToUninstallEngine: (name) => `${name} のダウンロードしたファイルを削除しますか？`, // TODO: Translate
+  failedToFetchEngineList: "エンジンの一覧を取得できませんでした", // TODO: Translate
+  downloadedFileIsCorrupted: "ダウンロードしたファイルが壊れています", // TODO: Translate
+  engineIsInUse: "エンジンが使用中です。対局や検討を終了してからやり直してください。", // TODO: Translate
   compareAndMerge: "比較並合併",
   compareEngineSettings: "引擎設定比較",
   noDifference: "無更改",

@@ -25,7 +25,7 @@ import {
   CROSS_ORIGIN_ISOLATION_REQUIRED,
   EngineManifest,
   ENGINE_ABI,
-} from "@/renderer/wasm-engine/manifest.js";
+} from "@/common/wasm-engine/manifest.js";
 
 const manifest: EngineManifest = {
   abi: ENGINE_ABI,

@@ -90,6 +90,12 @@ export interface Bridge {
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string>;
+  fetchEngineIndex(): Promise<string>;
+  listInstalledEnginePackages(): Promise<string>;
+  fetchEnginePackageLicenses(id: string): Promise<string>;
+  installEnginePackage(id: string, timeoutSeconds: number): Promise<string>;
+  cancelEnginePackageInstall(id: string): Promise<void>;
+  uninstallEnginePackage(id: string, version: string): Promise<void>;
   getUSIEngineMetadata(path: string): Promise<string>;
   sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
   usiLaunch(json: string, options: string): Promise<number>;
@@ -111,6 +117,7 @@ export interface Bridge {
   onUSICheckmateTimeout(callback: (sessionID: number, usi: string) => void): void;
   onUSINoMate(callback: (sessionID: number, usi: string) => void): void;
   onUSIInfo(callback: (sessionID: number, usi: string, json: string) => void): void;
+  onEnginePackageInstallProgress(callback: (json: string) => void): void;
 
   // CSA
   csaLogin(json: string): Promise<number>;

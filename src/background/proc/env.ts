@@ -41,6 +41,14 @@ export function getPreloadPath(): string {
     : path.join(import.meta.dirname, "../../../packed/preload.js");
 }
 
+// WebAssembly エンジンを動かす utility プロセスのエントリ (usi/wasm/host.ts)。
+// 本番では webpack でまとめたものを、それ以外では tsc の出力をそのまま使う。
+export function getWasmEngineHostPath(): string {
+  return isProduction()
+    ? path.join(process.resourcesPath, "app.asar/dist/packed/wasm-engine-host.js")
+    : path.join(import.meta.dirname, "../usi/wasm/host.js");
+}
+
 export function getBundlePath(): string {
   return isProduction()
     ? path.join(process.resourcesPath, "app.asar/dist")

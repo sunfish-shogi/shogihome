@@ -4,7 +4,18 @@ import path from "node:path";
 
 const isWin = process.platform === "win32";
 
-export class ChildProcess {
+// EngineProcess (engine.ts) から見たエンジンのプロセス。
+// プロセス型のエンジン (ChildProcess) と WebAssembly エンジン (wasm/process-electron.ts) がある。
+export interface EngineProcessHandle {
+  readonly pid: number | undefined;
+  on(event: "receive", listener: (line: string) => void): this;
+  on(event: "error", listener: (err: Error) => void): this;
+  on(event: "close", listener: (code: number | null, signal: NodeJS.Signals | null) => void): this;
+  send(line: string): void;
+  kill(): void;
+}
+
+export class ChildProcess implements EngineProcessHandle {
   private handle: ChildProcessWithoutNullStreams;
   private readline: Readline | null = null;
 

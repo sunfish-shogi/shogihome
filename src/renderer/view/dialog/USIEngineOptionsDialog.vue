@@ -324,6 +324,7 @@ import { t, usiOptionNameMap } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
 import api, { isNative } from "@/renderer/ipc/api";
 import { isBuiltinEnginePath } from "@/renderer/wasm-engine/catalog";
+import { isEngineManifestPath } from "@/common/wasm-engine/package";
 import {
   BookMoveSelectionRule,
   compressUSIEngineOptionsClipboardData,
@@ -428,12 +429,19 @@ function optionOrder(option: USIEngineOption): number {
 busyState.retain();
 onMounted(async () => {
   try {
-    if (!isNative() && isBuiltinEnginePath(props.latest.path)) {
+    if (
+      (!isNative() && isBuiltinEnginePath(props.latest.path)) ||
+      (isNative() && isEngineManifestPath(props.latest.path))
+    ) {
       // 組み込みの WebAssembly エンジンはマニフェスト (engine.json) が定義の出どころで、
       // プリセットごとの既定値も含めて一覧に載る時点で反映済みになっている
       // (renderer/wasm-engine/catalog.ts)。ここで実機から取り直すと、素のエンジンが
       // 申告する定義に置き換わり、マニフェストの既定値とプリセットの値が失われる。
       // エンジンを起動しないので、成果物 (wasm・評価パラメータ) の取得も伴わない。
+      //
+      // デスクトップ版でダウンロードしたエンジンも同じで、インストール時に実機から取得した
+      // 定義にプリセットの値を反映したものが一覧に載っている
+      // (background/usi/wasm/install.ts)。
       engine.value = JSON.parse(JSON.stringify(props.latest)) as USIEngine;
     } else {
       const timeoutSeconds = appSettings.engineTimeoutSeconds;
