@@ -30,9 +30,10 @@
             <button
               v-if="entry.class === HistoryClass.USER"
               class="open-directory"
+              :title="t.openDirectory"
               @click="openDirectory(entry.userFilePath)"
             >
-              {{ t.openDirectory }}
+              <Icon :icon="IconType.OPEN_FOLDER" />
             </button>
             <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
               {{ t.open }}
@@ -86,6 +87,8 @@ import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import { filter as filterString } from "@/common/helpers/string";
 import { LogLevel } from "@/common/log";
+import Icon from "@/renderer/view/primitive/Icon.vue";
+import { IconType } from "@/renderer/assets/icons";
 import DialogFrame from "./DialogFrame.vue";
 
 const entries = ref([] as RecordFileHistoryEntry[]);
@@ -231,6 +234,8 @@ const onClose = () => {
 .header * button.open-directory {
   width: auto;
   margin-right: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .class {
   display: inline-block;
