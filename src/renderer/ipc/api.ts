@@ -86,6 +86,7 @@ export interface API {
   loadRecordFileHistory(): Promise<RecordFileHistory>;
   addRecordFileHistory(path: string): void;
   clearRecordFileHistory(): Promise<void>;
+  loadRecordFileHistoryContents(): Promise<{ [id: string]: string }>;
   saveRecordFileBackup(kif: string): Promise<void>;
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
@@ -258,6 +259,9 @@ const api: API = {
   },
   async loadRecordFileHistory(): Promise<RecordFileHistory> {
     return JSON.parse(await bridge.loadRecordFileHistory());
+  },
+  async loadRecordFileHistoryContents(): Promise<{ [id: string]: string }> {
+    return JSON.parse(await bridge.loadRecordFileHistoryContents());
   },
   async loadUSIEngines(): Promise<USIEngines> {
     return new USIEngines(await bridge.loadUSIEngines());

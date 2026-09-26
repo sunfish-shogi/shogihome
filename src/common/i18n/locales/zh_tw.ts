@@ -501,6 +501,8 @@ export const zh_tw: Texts = {
   userFile: "使用者檔案",
   automaticBackup: "自動備份",
   restore: "復原",
+  filterByFilePathOrContent: "ファイルパスまたは内容で検索", // TODO: Translate
+  loadingFileContents: "ファイルを読み込み中...", // TODO: Translate
   loadRecordFromWeb: "從網際網路取得棋譜",
   backToMainBranch: "回到本譜",
   fetchLatestData: "取得最新資料",

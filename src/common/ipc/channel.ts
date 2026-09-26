@@ -44,6 +44,7 @@ export enum Background {
   LOAD_RECORD_FILE_HISTORY = "loadRecordFileHistory",
   ADD_RECORD_FILE_HISTORY = "addRecordFileHistory",
   CLEAR_RECORD_FILE_HISTORY = "clearRecordFileHistory",
+  LOAD_RECORD_FILE_HISTORY_CONTENTS = "loadRecordFileHistoryContents",
   SAVE_RECORD_FILE_BACKUP = "saveRecordFileBackup",
   LOAD_RECORD_FILE_BACKUP = "loadRecordFileBackup",
   SHOW_OPEN_BOOK_DIALOG = "showOpenBookDialog",

@@ -150,6 +150,9 @@ const bridge: Bridge = {
   async clearRecordFileHistory(): Promise<void> {
     // Do Nothing
   },
+  async loadRecordFileHistoryContents(): Promise<string> {
+    throw new Error("This feature is not available on command line tool");
+  },
   async saveRecordFileBackup(): Promise<void> {
     // Do Nothing
   },

@@ -347,6 +347,9 @@ export const webAPI: Bridge = {
   async clearRecordFileHistory(): Promise<void> {
     // Do Nothing
   },
+  async loadRecordFileHistoryContents(): Promise<string> {
+    return "{}";
+  },
   async saveRecordFileBackup(): Promise<void> {
     // Do Nothing
   },

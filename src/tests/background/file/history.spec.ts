@@ -5,6 +5,7 @@ import {
   clearHistory,
   getHistory,
   loadBackup,
+  loadUserFileContents,
   saveBackup,
 } from "@/background/file/history.js";
 import { getAppPath } from "@/background/proc/path-electron.js";
@@ -53,21 +54,44 @@ describe("history", () => {
     expect((history.entries[2] as UserFileEntry).userFilePath).toBe("/path/to/file2.kif");
     expect((history.entries[3] as UserFileEntry).userFilePath).toBe("/path/to/file1.kif"); // 末尾に移動する。
 
-    // 20 件ちょうどまで追加する。
-    for (let i = 3; i <= 18; i++) {
+    // ユーザーファイルを 100 件ちょうどまで追加する。
+    for (let i = 3; i <= 100; i++) {
       addHistory(`/path/to/file${i}.kif`);
     }
 
     history = await getHistory();
-    expect(history.entries).toHaveLength(20);
-    expect((history.entries[0] as BackupEntryV2).kif).toMatch(backup1);
+    expect(history.entries).toHaveLength(102);
+    expect((history.entries[0] as BackupEntryV2).kif).toBe(backup1);
+    expect((history.entries[1] as BackupEntryV2).kif).toBe(backup2);
+    expect((history.entries[2] as UserFileEntry).userFilePath).toBe("/path/to/file2.kif");
 
-    // 20 件を超えたので最初の 1 件が削除される。
-    addHistory("/path/to/file19.kif");
+    // ユーザーファイルが 100 件を超えたので最も古いユーザーファイルが削除される。
+    addHistory("/path/to/file101.kif");
 
     history = await getHistory();
-    expect(history.entries).toHaveLength(20);
-    expect((history.entries[0] as BackupEntryV2).kif).toMatch(backup2);
+    expect(history.entries).toHaveLength(102);
+    expect((history.entries[0] as BackupEntryV2).kif).toBe(backup1);
+    expect((history.entries[1] as BackupEntryV2).kif).toBe(backup2);
+    expect((history.entries[2] as UserFileEntry).userFilePath).toBe("/path/to/file1.kif");
+    expect(history.entries.filter((e) => e.class === "user")).toHaveLength(100);
+
+    // バックアップを 20 件ちょうどまで追加する。
+    for (let i = 3; i <= 20; i++) {
+      await saveBackup(`test-kif-data${i}`);
+    }
+
+    history = await getHistory();
+    expect(history.entries).toHaveLength(120);
+    expect((history.entries[0] as BackupEntryV2).kif).toBe(backup1);
+
+    // バックアップが 20 件を超えたので最も古いバックアップが削除される。
+    await saveBackup("test-kif-data21");
+
+    history = await getHistory();
+    expect(history.entries).toHaveLength(120);
+    expect((history.entries[0] as BackupEntryV2).kif).toBe(backup2);
+    expect(history.entries.filter((e) => e.class === "user")).toHaveLength(100);
+    expect(history.entries.filter((e) => e.class === "backupV2")).toHaveLength(20);
 
     // 履歴をクリアする。
     await clearHistory();
@@ -100,20 +124,55 @@ describe("history", () => {
 
     expect((await getHistory()).entries).toHaveLength(20);
 
-    // remove user-1
-    await saveBackup("test-kif-data11");
+    // 新しいバックアップ 10 件を追加する。旧バックアップと合わせて上限の 20 件になる。
+    for (let i = 11; i <= 20; i++) {
+      await saveBackup(`test-kif-data${i}`);
+    }
+    expect((await getHistory()).entries).toHaveLength(30);
     await expect(loadBackup("backup1.kifu")).resolves.toBe("test-kif-data1");
 
-    // remove backup-1
-    await saveBackup("test-kif-data12");
+    // remove backup-1 (ユーザーファイルは削除されない)
+    await saveBackup("test-kif-data21");
     await expect(loadBackup("backup1.kifu")).rejects.toThrow();
-
-    // remove user-2
-    await saveBackup("test-kif-data13");
     await expect(loadBackup("backup2.kifu")).resolves.toBe("test-kif-data2");
+    let history = await getHistory();
+    expect(history.entries).toHaveLength(30);
+    expect(history.entries[0].id).toBe("user-1");
 
     // remove backup-2
-    await saveBackup("test-kif-data14");
+    await saveBackup("test-kif-data22");
     await expect(loadBackup("backup2.kifu")).rejects.toThrow();
+    history = await getHistory();
+    expect(history.entries.filter((e) => e.class === "user")).toHaveLength(10);
+  });
+
+  it("loadUserFileContents", async () => {
+    await clearHistory();
+    const testDir = path.join(userDir, "history-contents-test");
+    fs.mkdirSync(testDir, { recursive: true });
+    const utf8Path = path.join(testDir, "utf8.kif");
+    const sjisPath = path.join(testDir, "sjis.kif");
+    const unsupportedPath = path.join(testDir, "unsupported.txt");
+    const missingPath = path.join(testDir, "missing.kif");
+    fs.copyFileSync("src/tests/testdata/encoding/utf8.kif", utf8Path);
+    fs.copyFileSync("src/tests/testdata/encoding/sjis.kif", sjisPath);
+    fs.writeFileSync(unsupportedPath, "text", "utf8");
+    addHistory(utf8Path);
+    addHistory(sjisPath);
+    addHistory(unsupportedPath);
+    addHistory(missingPath);
+    await saveBackup("test-kif-data");
+
+    const history = await getHistory();
+    const ids = Object.fromEntries(
+      history.entries
+        .filter((e) => e.class === HistoryClass.USER)
+        .map((e) => [(e as UserFileEntry).userFilePath, e.id]),
+    );
+
+    const contents = await loadUserFileContents({ autoDetect: true });
+    expect(Object.keys(contents)).toHaveLength(2);
+    expect(contents[ids[utf8Path]]).toContain("*#評価値=-60");
+    expect(contents[ids[sjisPath]]).toContain("*#評価値=-60");
   });
 });

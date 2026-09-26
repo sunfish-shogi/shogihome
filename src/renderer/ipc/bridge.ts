@@ -51,6 +51,7 @@ export interface Bridge {
   loadRecordFileHistory(): Promise<string>;
   addRecordFileHistory(path: string): void;
   clearRecordFileHistory(): Promise<void>;
+  loadRecordFileHistoryContents(): Promise<string>;
   saveRecordFileBackup(kif: string): Promise<void>;
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;

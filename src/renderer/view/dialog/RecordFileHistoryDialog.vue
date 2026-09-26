@@ -1,11 +1,20 @@
 <template>
   <DialogFrame limited @cancel="onClose">
     <div class="title">{{ t.history }}</div>
+    <div class="row filter">
+      <input
+        v-model.trim="filter"
+        class="filter-words"
+        type="text"
+        :placeholder="t.filterByFilePathOrContent"
+      />
+      <span v-if="filter && loadingContents" class="loading">{{ t.loadingFileContents }}</span>
+    </div>
     <div class="form-group scroll list-area">
-      <div v-if="entries.length === 0">
+      <div v-if="filteredEntries.length === 0">
         {{ t.noHistory }}
       </div>
-      <div v-for="(entry, index) of entries" :key="index" class="entry">
+      <div v-for="(entry, index) of filteredEntries" :key="entry.id" class="entry">
         <hr v-if="index !== 0" />
         <div class="header">
           <span class="left">
@@ -18,6 +27,13 @@
             <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
           </span>
           <span class="right">
+            <button
+              v-if="entry.class === HistoryClass.USER"
+              class="open-directory"
+              @click="openDirectory(entry.userFilePath)"
+            >
+              {{ t.openDirectory }}
+            </button>
             <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
               {{ t.open }}
             </button>
@@ -59,7 +75,7 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
 import { useStore } from "@/renderer/store";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { HistoryClass, RecordFileHistoryEntry } from "@/common/file/history";
 import api from "@/renderer/ipc/api";
 import { getDateTimeString } from "@/common/helpers/datetime";
@@ -68,9 +84,14 @@ import { useAppSettings } from "@/renderer/store/settings";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
+import { filter as filterString } from "@/common/helpers/string";
+import { LogLevel } from "@/common/log";
 import DialogFrame from "./DialogFrame.vue";
 
 const entries = ref([] as RecordFileHistoryEntry[]);
+const filter = ref("");
+const userFileContents = ref<{ [id: string]: string } | undefined>();
+const loadingContents = ref(false);
 const store = useStore();
 const busyState = useBusyState();
 const appSettings = useAppSettings();
@@ -87,6 +108,57 @@ onMounted(async () => {
     busyState.release();
   }
 });
+
+// ユーザーファイルの内容はフィルタが初めて入力された時に読み込む。
+const loadUserFileContents = async () => {
+  if (userFileContents.value || loadingContents.value) {
+    return;
+  }
+  loadingContents.value = true;
+  try {
+    userFileContents.value = await api.loadRecordFileHistoryContents();
+  } catch (e) {
+    api.log(LogLevel.WARN, `RecordFileHistoryDialog: failed to load file contents: ${e}`);
+    userFileContents.value = {};
+  } finally {
+    loadingContents.value = false;
+  }
+};
+
+watch(filter, (value) => {
+  if (value) {
+    loadUserFileContents();
+  }
+});
+
+const getSearchTarget = (entry: RecordFileHistoryEntry): string | undefined => {
+  switch (entry.class) {
+    case HistoryClass.USER: {
+      const content = userFileContents.value?.[entry.id];
+      return content !== undefined ? entry.userFilePath + "\n" + content : entry.userFilePath;
+    }
+    case HistoryClass.BACKUP_V2:
+      return entry.kif;
+    default:
+      // 旧バージョンのバックアップは検索対象外とする。
+      return;
+  }
+};
+
+const filteredEntries = computed(() => {
+  const filterWords = filter.value.split(/\s+/).filter((s) => s);
+  if (!filterWords.length) {
+    return entries.value;
+  }
+  return entries.value.filter((entry) => {
+    const target = getSearchTarget(entry);
+    return target !== undefined && filterString(target, filterWords);
+  });
+});
+
+const openDirectory = (path: string) => {
+  api.openExplorer(path);
+};
 
 const open = (path: string) => {
   store.closeModalDialog();
@@ -121,6 +193,17 @@ const onClose = () => {
 </script>
 
 <style scoped>
+.filter {
+  margin: 0px 5px 5px 5px;
+  align-items: center;
+}
+.filter-words {
+  width: 300px;
+}
+.loading {
+  margin-left: 0.5em;
+  font-size: 0.8em;
+}
 .list-area {
   max-width: 800px;
   width: 80vw;
@@ -144,6 +227,10 @@ const onClose = () => {
 }
 .header * button {
   width: 80px;
+}
+.header * button.open-directory {
+  width: auto;
+  margin-right: 5px;
 }
 .class {
   display: inline-block;

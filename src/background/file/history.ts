@@ -14,8 +14,11 @@ import { exists } from "@/background/helpers/file.js";
 import { writeFileAtomic } from "./atomic.js";
 import { getBlackPlayerName, getWhitePlayerName, importKIF, Record } from "tsshogi";
 import { getRecordTitleFromMetadata } from "@/common/helpers/metadata.js";
+import { detectRecordFileFormatByPath, decodeRecordFileContent } from "@/common/file/record.js";
 
-const historyMaxLength = 20;
+const userFileMaxLength = 100;
+const backupMaxLength = 20;
+const contentMaxSize = 10 * 1024 * 1024; // 10MB
 
 const userDir = getAppPath("userData");
 const historyPath = path.join(userDir, "record_file_history.json");
@@ -57,9 +60,25 @@ function removeBackupFile(fileName: string): void {
   });
 }
 
-function trancate(history: RecordFileHistory): void {
-  while (history.entries.length > historyMaxLength) {
-    const entry = history.entries.shift() as RecordFileHistoryEntry;
+function truncate(history: RecordFileHistory): void {
+  // ユーザーファイルとバックアップはそれぞれ別の上限を持つ。
+  // 新しいエントリから数えて上限を超えた古いエントリを削除する。
+  let userFileCount = 0;
+  let backupCount = 0;
+  const removed: RecordFileHistoryEntry[] = [];
+  const kept: RecordFileHistoryEntry[] = [];
+  for (let i = history.entries.length - 1; i >= 0; i--) {
+    const entry = history.entries[i];
+    const isUserFile = entry.class === HistoryClass.USER;
+    const count = isUserFile ? ++userFileCount : ++backupCount;
+    if (count > (isUserFile ? userFileMaxLength : backupMaxLength)) {
+      removed.push(entry);
+    } else {
+      kept.push(entry);
+    }
+  }
+  history.entries = kept.reverse();
+  for (const entry of removed) {
     if (entry.class === HistoryClass.BACKUP && entry.backupFileName) {
       removeBackupFile(entry.backupFileName);
     }
@@ -85,7 +104,7 @@ export function addHistory(path: string): void {
         class: HistoryClass.USER,
         userFilePath: path,
       });
-      trancate(history);
+      truncate(history);
       await saveHistories(history);
     } catch (e) {
       getAppLogger().error("failed to add history: %s", e);
@@ -126,7 +145,7 @@ export function saveBackup(kif: string): Promise<void> {
       time: new Date().toISOString(),
       ...entry,
     });
-    trancate(history);
+    truncate(history);
     await saveHistories(history);
   });
 }
@@ -134,4 +153,47 @@ export function saveBackup(kif: string): Promise<void> {
 export async function loadBackup(fileName: string): Promise<string> {
   const filePath = path.join(backupDir, fileName);
   return await fs.readFile(filePath, "utf8");
+}
+
+async function loadUserFileContent(
+  filePath: string,
+  autoDetect: boolean,
+): Promise<string | undefined> {
+  const format = detectRecordFileFormatByPath(filePath);
+  if (!format) {
+    return;
+  }
+  try {
+    const stat = await fs.stat(filePath);
+    if (!stat.isFile() || stat.size > contentMaxSize) {
+      return;
+    }
+    const data = await fs.readFile(filePath);
+    return decodeRecordFileContent(data, format, { autoDetect });
+  } catch (e) {
+    getAppLogger().debug("failed to load record file for history search: [%s]: %s", filePath, e);
+  }
+}
+
+/**
+ * 履歴に含まれるユーザーファイルの内容を読み込む。
+ * 読み込めなかったファイルは結果に含まれない。
+ * @returns エントリ ID をキー、ファイルの内容を値とするオブジェクト
+ */
+export async function loadUserFileContents(option: {
+  autoDetect: boolean;
+}): Promise<{ [id: string]: string }> {
+  const history = await getHistory();
+  const entries = history.entries.filter((entry) => entry.class === HistoryClass.USER);
+  const contents = await Promise.all(
+    entries.map((entry) => loadUserFileContent(entry.userFilePath, option.autoDetect)),
+  );
+  const result: { [id: string]: string } = {};
+  entries.forEach((entry, index) => {
+    const content = contents[index];
+    if (content !== undefined) {
+      result[entry.id] = content;
+    }
+  });
+  return result;
 }
