@@ -201,10 +201,11 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
   validateIPCSender(event.senderFrame);
   try {
     const fullPath = resolveEnginePath(targetPath);
-    const stats = await fs.stat(fullPath);
-    if (stats.isDirectory()) {
+    const stats = await fs.stat(fullPath).catch(() => undefined);
+    if (stats?.isDirectory()) {
       await openPath(fullPath);
     } else {
+      // ファイルが存在しない場合も親ディレクトリが存在すれば開く。
       await openPath(path.dirname(fullPath));
     }
   } catch {
