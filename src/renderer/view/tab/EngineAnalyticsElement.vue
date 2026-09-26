@@ -2,6 +2,14 @@
   <div>
     <div class="full column root" :class="{ paused }">
       <div v-if="isResearchSession" class="overlay-control row" :class="{ bottom: !showHeader }">
+        <button
+          v-if="isMobileWebApp() && !isOnMainBranch"
+          :disabled="store.appState !== AppState.NORMAL"
+          @click="store.backToMainBranch()"
+        >
+          <Icon :icon="IconType.UNDO" />
+          <span>{{ t.backToMainBranch }}</span>
+        </button>
         <button v-if="paused" @click="onUnpause">
           <Icon :icon="IconType.RESUME" />
           <span>{{ t.resume }}</span>
@@ -164,12 +172,13 @@ import { computed, onBeforeUpdate, reactive, ref } from "vue";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { EvaluationViewFrom, NodeCountFormat } from "@/common/settings/app";
-import { Color, Move, Position } from "tsshogi";
+import { Color, ImmutableNode, Move, Position } from "tsshogi";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useStore } from "@/renderer/store";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import { isMobileWebApp } from "@/renderer/ipc/api";
+import { AppState } from "@/common/control/state";
 
 const props = defineProps({
   historyMode: { type: Boolean, required: true },
@@ -220,6 +229,18 @@ const isResearchSession = computed(() => {
 
 const paused = computed(() => {
   return store.isPausedResearchEngine(props.monitor.sessionID);
+});
+
+// 本譜 (各ノードで選択中の分岐を辿った先) に現在の局面があるかどうか。
+// RecordView の「本譜に戻る」ボタンと同じ条件で表示する。
+const isOnMainBranch = computed(() => {
+  const record = store.record;
+  for (let node: ImmutableNode | null = record.first; node && node.activeBranch; node = node.next) {
+    if (node === record.current) {
+      return true;
+    }
+  }
+  return false;
 });
 
 const formatNodeCount = computed(() => {
