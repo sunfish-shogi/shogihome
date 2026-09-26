@@ -201,15 +201,25 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
   validateIPCSender(event.senderFrame);
   try {
     const fullPath = resolveEnginePath(targetPath);
-    const stats = await fs.stat(fullPath).catch(() => undefined);
-    if (stats?.isDirectory()) {
+    const stats = await fs.stat(fullPath);
+    if (stats.isDirectory()) {
       await openPath(fullPath);
     } else {
-      // ファイルが存在しない場合も親ディレクトリが存在すれば開く。
       await openPath(path.dirname(fullPath));
     }
   } catch {
     sendError(new Error(t.failedToOpenDirectory(targetPath)));
+  }
+});
+
+ipcMain.on(Background.OPEN_PARENT_DIRECTORY, async (event, filePath: string) => {
+  validateIPCSender(event.senderFrame);
+  // ファイル自体が存在しなくても親ディレクトリが存在すれば開く。
+  const dirPath = path.dirname(filePath);
+  try {
+    await openPath(dirPath);
+  } catch {
+    sendError(new Error(t.failedToOpenDirectory(dirPath)));
   }
 });
 

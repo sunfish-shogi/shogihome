@@ -435,6 +435,9 @@ const bridge: Bridge = {
   openExplorer() {
     throw new Error("This feature is not available on command line tool");
   },
+  openParentDirectory() {
+    throw new Error("This feature is not available on command line tool");
+  },
   openWebBrowser() {
     throw new Error("This feature is not available on command line tool");
   },

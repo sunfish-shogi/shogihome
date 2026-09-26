@@ -157,7 +157,7 @@ const filteredEntries = computed(() => {
 });
 
 const openDirectory = (path: string) => {
-  api.openExplorer(path);
+  api.openParentDirectory(path);
 };
 
 const open = (path: string) => {

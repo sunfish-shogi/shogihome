@@ -2,6 +2,7 @@ export enum Background {
   FETCH_PROCESS_ARGS = "fetchProcessArgs",
   UPDATE_APP_STATE = "updateAppState",
   OPEN_EXPLORER = "openExplorer",
+  OPEN_PARENT_DIRECTORY = "openParentDirectory",
   OPEN_WEB_BROWSER = "openWebBrowser",
   SHOW_OPEN_RECORD_DIALOG = "showOpenRecordDialog",
   OPEN_RECORD = "openRecord",

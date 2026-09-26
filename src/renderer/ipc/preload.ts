@@ -455,6 +455,9 @@ const api: Bridge = {
   openExplorer(path: string) {
     ipcRenderer.send(Background.OPEN_EXPLORER, path);
   },
+  openParentDirectory(path: string) {
+    ipcRenderer.send(Background.OPEN_PARENT_DIRECTORY, path);
+  },
   openWebBrowser(url: string) {
     ipcRenderer.send(Background.OPEN_WEB_BROWSER, url);
   },

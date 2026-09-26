@@ -689,6 +689,9 @@ export const webAPI: Bridge = {
   openExplorer() {
     // DO NOTHING
   },
+  openParentDirectory() {
+    // DO NOTHING
+  },
   openWebBrowser(url: string) {
     window.open(url, "_blank");
   },
