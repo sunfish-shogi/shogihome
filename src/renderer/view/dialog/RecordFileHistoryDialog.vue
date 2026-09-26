@@ -230,27 +230,19 @@ const onClose = () => {
   flex-shrink: 0;
   align-items: stretch;
 }
+/*
+ * ボタンの高さを言語やフォントに依存させないために行の高さを固定する。
+ * (アイコンの高さ 1.4em に合わせる)
+ */
 .header * button {
   width: 80px;
+  line-height: 1.4em;
 }
-/*
- * アイコンボタンの高さは隣の文字ボタンに合わせる。
- * アイコンを絶対配置にしてボタンの高さに影響しないようにし、
- * フォントや言語によって文字の高さが変わっても揃うようにする。
- */
 .header * button.open-directory {
-  position: relative;
-  width: 2.4em;
-  margin-right: 5px;
-  padding: 0;
-}
-.header * button.open-directory .icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   width: auto;
-  height: 80%;
-  transform: translate(-50%, -50%);
+  margin-right: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .class {
   display: inline-block;
