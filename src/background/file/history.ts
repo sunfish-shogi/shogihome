@@ -158,26 +158,44 @@ export async function loadBackup(fileName: string): Promise<string> {
   return await fs.readFile(filePath, "utf8");
 }
 
+async function getUserFileSize(filePath: string): Promise<number | undefined> {
+  if (!detectRecordFileFormatByPath(filePath)) {
+    return;
+  }
+  try {
+    const stat = await fs.stat(filePath);
+    return stat.isFile() ? stat.size : undefined;
+  } catch (e) {
+    getAppLogger().debug("failed to stat record file for history search: [%s]: %s", filePath, e);
+  }
+}
+
 async function loadUserFileContent(
   filePath: string,
   autoDetect: boolean,
-  budget: { remaining: number },
 ): Promise<string | undefined> {
   const format = detectRecordFileFormatByPath(filePath);
   if (!format) {
     return;
   }
   try {
-    const stat = await fs.stat(filePath);
-    if (!stat.isFile() || stat.size > contentMaxFileSize || stat.size > budget.remaining) {
-      return;
-    }
-    budget.remaining -= stat.size;
     const data = await fs.readFile(filePath);
     return decodeRecordFileContent(data, format, { autoDetect });
   } catch (e) {
     getAppLogger().debug("failed to load record file for history search: [%s]: %s", filePath, e);
   }
+}
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  fn: (item: T) => Promise<R>,
+): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += concurrency) {
+    results.push(...(await Promise.all(items.slice(i, i + concurrency).map(fn))));
+  }
+  return results;
 }
 
 /**
@@ -191,19 +209,30 @@ export async function loadUserFileContents(option: {
 }): Promise<{ [id: string]: string }> {
   const history = await getHistory();
   const entries = history.entries.filter((entry) => entry.class === HistoryClass.USER).reverse();
-  const budget = { remaining: contentMaxTotalSize };
+
+  // 新しいエントリから順に、合計サイズの上限に収まるファイルを選ぶ。
+  const sizes = await mapWithConcurrency(entries, contentLoadConcurrency, (entry) =>
+    getUserFileSize(entry.userFilePath),
+  );
+  let remaining = contentMaxTotalSize;
+  const targets = entries.filter((_, index) => {
+    const size = sizes[index];
+    if (size === undefined || size > contentMaxFileSize || size > remaining) {
+      return false;
+    }
+    remaining -= size;
+    return true;
+  });
+
+  const contents = await mapWithConcurrency(targets, contentLoadConcurrency, (entry) =>
+    loadUserFileContent(entry.userFilePath, option.autoDetect),
+  );
   const result: { [id: string]: string } = {};
-  for (let i = 0; i < entries.length; i += contentLoadConcurrency) {
-    const chunk = entries.slice(i, i + contentLoadConcurrency);
-    const contents = await Promise.all(
-      chunk.map((entry) => loadUserFileContent(entry.userFilePath, option.autoDetect, budget)),
-    );
-    chunk.forEach((entry, index) => {
-      const content = contents[index];
-      if (content !== undefined) {
-        result[entry.id] = content;
-      }
-    });
-  }
+  targets.forEach((entry, index) => {
+    const content = contents[index];
+    if (content !== undefined) {
+      result[entry.id] = content;
+    }
+  });
   return result;
 }
