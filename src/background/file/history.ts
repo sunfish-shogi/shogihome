@@ -18,7 +18,10 @@ import { detectRecordFileFormatByPath, decodeRecordFileContent } from "@/common/
 
 const userFileMaxLength = 100;
 const backupMaxLength = 20;
-const contentMaxSize = 10 * 1024 * 1024; // 10MB
+// 履歴検索のために読み込むユーザーファイルの上限
+const contentMaxFileSize = 2 * 1024 * 1024; // 2MB
+const contentMaxTotalSize = 32 * 1024 * 1024; // 32MB
+const contentLoadConcurrency = 8;
 
 const userDir = getAppPath("userData");
 const historyPath = path.join(userDir, "record_file_history.json");
@@ -158,6 +161,7 @@ export async function loadBackup(fileName: string): Promise<string> {
 async function loadUserFileContent(
   filePath: string,
   autoDetect: boolean,
+  budget: { remaining: number },
 ): Promise<string | undefined> {
   const format = detectRecordFileFormatByPath(filePath);
   if (!format) {
@@ -165,9 +169,10 @@ async function loadUserFileContent(
   }
   try {
     const stat = await fs.stat(filePath);
-    if (!stat.isFile() || stat.size > contentMaxSize) {
+    if (!stat.isFile() || stat.size > contentMaxFileSize || stat.size > budget.remaining) {
       return;
     }
+    budget.remaining -= stat.size;
     const data = await fs.readFile(filePath);
     return decodeRecordFileContent(data, format, { autoDetect });
   } catch (e) {
@@ -177,23 +182,28 @@ async function loadUserFileContent(
 
 /**
  * 履歴に含まれるユーザーファイルの内容を読み込む。
- * 読み込めなかったファイルは結果に含まれない。
+ * メモリ使用量を抑えるため、新しいエントリから順に合計サイズの上限まで読み込む。
+ * 読み込めなかったファイルや上限を超えたファイルは結果に含まれない。
  * @returns エントリ ID をキー、ファイルの内容を値とするオブジェクト
  */
 export async function loadUserFileContents(option: {
   autoDetect: boolean;
 }): Promise<{ [id: string]: string }> {
   const history = await getHistory();
-  const entries = history.entries.filter((entry) => entry.class === HistoryClass.USER);
-  const contents = await Promise.all(
-    entries.map((entry) => loadUserFileContent(entry.userFilePath, option.autoDetect)),
-  );
+  const entries = history.entries.filter((entry) => entry.class === HistoryClass.USER).reverse();
+  const budget = { remaining: contentMaxTotalSize };
   const result: { [id: string]: string } = {};
-  entries.forEach((entry, index) => {
-    const content = contents[index];
-    if (content !== undefined) {
-      result[entry.id] = content;
-    }
-  });
+  for (let i = 0; i < entries.length; i += contentLoadConcurrency) {
+    const chunk = entries.slice(i, i + contentLoadConcurrency);
+    const contents = await Promise.all(
+      chunk.map((entry) => loadUserFileContent(entry.userFilePath, option.autoDetect, budget)),
+    );
+    chunk.forEach((entry, index) => {
+      const content = contents[index];
+      if (content !== undefined) {
+        result[entry.id] = content;
+      }
+    });
+  }
   return result;
 }

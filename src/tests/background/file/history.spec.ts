@@ -156,11 +156,14 @@ describe("history", () => {
     const missingPath = path.join(testDir, "missing.kif");
     fs.copyFileSync("src/tests/testdata/encoding/utf8.kif", utf8Path);
     fs.copyFileSync("src/tests/testdata/encoding/sjis.kif", sjisPath);
+    const largePath = path.join(testDir, "large.kif");
     fs.writeFileSync(unsupportedPath, "text", "utf8");
+    fs.writeFileSync(largePath, "a".repeat(2 * 1024 * 1024 + 1), "utf8");
     addHistory(utf8Path);
     addHistory(sjisPath);
     addHistory(unsupportedPath);
     addHistory(missingPath);
+    addHistory(largePath);
     await saveBackup("test-kif-data");
 
     const history = await getHistory();

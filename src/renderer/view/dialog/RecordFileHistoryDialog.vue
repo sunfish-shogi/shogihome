@@ -86,6 +86,7 @@ import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import { filter as filterString } from "@/common/helpers/string";
 import { LogLevel } from "@/common/log";
+import { dirname } from "@/renderer/helpers/path";
 import DialogFrame from "./DialogFrame.vue";
 
 const entries = ref([] as RecordFileHistoryEntry[]);
@@ -157,7 +158,8 @@ const filteredEntries = computed(() => {
 });
 
 const openDirectory = (path: string) => {
-  api.openExplorer(path);
+  // ファイルが削除されていてもフォルダを開けるように、ファイルではなくフォルダのパスを渡す。
+  api.openExplorer(dirname(path) || path);
 };
 
 const open = (path: string) => {
