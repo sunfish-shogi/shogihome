@@ -12,11 +12,6 @@ import {
   setFetchForTesting,
   uninstallEnginePackage,
 } from "@/background/usi/wasm/install.js";
-import {
-  buildEngineIndex,
-  listBuiltinEngines,
-  PUBLIC_ENGINES_DIR,
-} from "@plugins/builtin_engines.js";
 import * as usi from "@/background/usi/index.js";
 import { emptyUSIEngine } from "@/common/settings/usi.js";
 import * as log from "@/background/log.js";
@@ -33,9 +28,12 @@ const mockLog = log as Mocked<typeof log>;
 
 const ENGINE_ID = "sunfish4-lite";
 
-// 配信側。インデックスと本家のエンジンの成果物を返す。
+// GitHub Pages の配信物。一覧 (docs/engine-index.json) と本家のエンジンの成果物を返す。
+const DOCS_DIR = path.resolve("docs");
+const ENGINE_DIR = path.join(DOCS_DIR, "webapp", "engines", ENGINE_ID);
+
 type Server = {
-  index: ReturnType<typeof buildEngineIndex>;
+  index: unknown;
   requested: string[];
   // 差し替える応答の内容 (URL の末尾で照合する)。
   overrides: Map<string, Buffer>;
@@ -43,7 +41,7 @@ type Server = {
 
 function setupServer(): Server {
   const server: Server = {
-    index: buildEngineIndex(listBuiltinEngines([PUBLIC_ENGINES_DIR])),
+    index: JSON.parse(fs.readFileSync(path.join(DOCS_DIR, "engine-index.json"), "utf8")),
     requested: [],
     overrides: new Map(),
   };
@@ -59,8 +57,8 @@ function setupServer(): Server {
     if (url === indexURL) {
       return new Response(JSON.stringify(server.index));
     }
-    const file = path.join(PUBLIC_ENGINES_DIR, url.substring(base.length));
-    if (!url.startsWith(base) || !fs.existsSync(file)) {
+    const file = path.join(DOCS_DIR, url.substring(base.length));
+    if (!url.startsWith(`${base}webapp/engines/`) || !fs.existsSync(file)) {
       return new Response("not found", { status: 404 });
     }
     return new Response(new Uint8Array(fs.readFileSync(file)));
@@ -101,7 +99,7 @@ describe("background/usi/wasm/install", () => {
     expect(path.basename(result.installed.enginePath)).toBe("engine.json");
     for (const file of result.installed.files) {
       const installed = path.join(path.dirname(result.installed.enginePath), file.path);
-      const original = path.join(PUBLIC_ENGINES_DIR, ENGINE_ID, file.path);
+      const original = path.join(ENGINE_DIR, file.path);
       expect(fs.readFileSync(installed).equals(fs.readFileSync(original))).toBeTruthy();
     }
     expect(progress[progress.length - 1]).toBe(
@@ -109,9 +107,7 @@ describe("background/usi/wasm/install", () => {
     );
 
     // プリセットごとに項目が作られ、プリセットの値が既定値に入る。
-    const manifest = JSON.parse(
-      fs.readFileSync(path.join(PUBLIC_ENGINES_DIR, ENGINE_ID, "engine.json"), "utf8"),
-    );
+    const manifest = JSON.parse(fs.readFileSync(path.join(ENGINE_DIR, "engine.json"), "utf8"));
     expect(result.engines.map((e) => e.name)).toEqual(
       manifest.presets.map((p: { displayName: string }) => p.displayName),
     );

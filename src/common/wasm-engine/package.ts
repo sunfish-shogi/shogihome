@@ -1,8 +1,8 @@
 // デスクトップ版でダウンロードする WebAssembly エンジンのパッケージと、その一覧 (インデックス)。
 //
-// インデックスは Web 版のビルドが engines/index.json として出力する
-// (plugins/builtin_engines.ts)。本家に置いたエンジンに加えて、外部で配信されている
-// エンジンも載せられる。仕様は specs/wasm-engine-desktop.md を参照。
+// インデックスはリポジトリの docs/engine-index.json で管理し、GitHub Pages から配信する。
+// 本家のエンジンも外部で配信されているエンジンも同じ配列に載せる。
+// 仕様は specs/wasm-engine-desktop.md を参照。
 //
 // **ダウンロードしたグルーコードは Node の権限で動く。** そのためインデックスは
 // パッケージを構成する全ファイルの sha256 を持ち、ダウンロードしたものは全て照合する。
@@ -11,8 +11,8 @@ import { isSafeRelativePath, MANIFEST_FILE_NAME } from "./manifest.js";
 
 export const ENGINE_INDEX_FORMAT = "shogihome-engine-index/1";
 
-// インデックスの置き場所。Web 版の配信物の engines/ からの相対パス。
-export const ENGINE_INDEX_FILE_NAME = "index.json";
+// インデックスのファイル名。リポジトリの docs/ 直下に置き、GitHub Pages の直下で配信する。
+export const ENGINE_INDEX_FILE_NAME = "engine-index.json";
 
 export type EnginePackageFile = {
   // パッケージのディレクトリからの相対パス。インストール先でもこの位置に置く。
@@ -45,6 +45,8 @@ export type EnginePackage = {
 export type EngineIndex = {
   format: string;
   engines: EnginePackage[];
+  // 検証に失敗して除外した項目の理由。
+  errors: string[];
 };
 
 const ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
@@ -173,8 +175,12 @@ function parsePackage(value: unknown, indexURL: string, path: string): EnginePac
 }
 
 // インデックスを検証し、URL を絶対 URL に解決する。
-// 不正なパッケージが 1 つでもあればインデックスごと拒否する。
-// (配信側の誤りを黙って隠すと、一覧からエンジンが消えた理由が分からなくなるため。)
+//
+// **不正な項目は除外し、他の項目には影響させない。** 1 件の誤りで全員がどのエンジンも
+// ダウンロードできなくなるのを避けるため。除外した理由は errors に残す。
+// 誤りそのものは公開前に単体テスト (src/tests/engines/index.spec.ts) が検出する。
+//
+// 全体の形式が違う場合 (format や engines の型) は、項目を読み進められないので例外を投げる。
 export function parseEngineIndex(json: unknown, indexURL: string): EngineIndex {
   const record = asRecord(json, "index");
   if (record.format !== ENGINE_INDEX_FORMAT) {
@@ -183,17 +189,26 @@ export function parseEngineIndex(json: unknown, indexURL: string): EngineIndex {
   if (!Array.isArray(record.engines)) {
     fail("engines must be an array");
   }
-  const engines = record.engines.map((engine, i) =>
-    parsePackage(engine, indexURL, `engines[${i}]`),
-  );
+  const engines: EnginePackage[] = [];
+  const errors: string[] = [];
   const ids = new Set<string>();
-  for (const engine of engines) {
+  record.engines.forEach((value, i) => {
+    let engine: EnginePackage;
+    try {
+      engine = parsePackage(value, indexURL, `engines[${i}]`);
+    } catch (e) {
+      errors.push(e instanceof Error ? e.message : String(e));
+      return;
+    }
+    // 同じ id が複数あれば先のものを採る。
     if (ids.has(engine.id)) {
-      fail(`duplicated id: ${engine.id}`);
+      errors.push(`invalid engine index: engines[${i}].id is duplicated: ${engine.id}`);
+      return;
     }
     ids.add(engine.id);
-  }
-  return { format: ENGINE_INDEX_FORMAT, engines };
+    engines.push(engine);
+  });
+  return { format: ENGINE_INDEX_FORMAT, engines, errors };
 }
 
 export function getEnginePackageSize(files: { size: number }[]): number {

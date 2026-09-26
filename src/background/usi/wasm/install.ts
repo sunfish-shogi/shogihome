@@ -1,7 +1,7 @@
 // WebAssembly エンジンのパッケージのダウンロードとインストール。
 //
-// 一覧 (インデックス) は Web 版の配信物の engines/index.json で、本家のエンジンと外部で
-// 配信されているエンジンが載る。パッケージは <engines>/<id>@<version>/ に置き、
+// 一覧 (インデックス) は GitHub Pages で配信する engine-index.json (リポジトリの
+// docs/engine-index.json) で、本家のエンジンと外部で配信されているエンジンが載る。パッケージは <engines>/<id>@<version>/ に置き、
 // USIEngine.path にはその engine.json のパスを入れる。仕様は specs/wasm-engine-desktop.md。
 //
 // **ダウンロードしたものは全てインデックスの sha256 と照合する。** グルーコードは
@@ -14,6 +14,7 @@ import { pipeline } from "node:stream/promises";
 import { ReadableStream as NodeReadableStream } from "node:stream/web";
 import { net } from "electron";
 import {
+  ENGINE_INDEX_FILE_NAME,
   EngineIndex,
   EnginePackage,
   EnginePackageFile,
@@ -51,11 +52,12 @@ export function getEngineIndexURL(): string {
   if (!isProduction() && process.env.SHOGIHOME_ENGINE_INDEX_URL) {
     return process.env.SHOGIHOME_ENGINE_INDEX_URL;
   }
+  // docs/ 直下のファイルとして GitHub Pages から配信する。release.json と同じ置き場所で、
+  // 開発時は同じく scripts/fake-release-api.mjs が docs/ から返す。
   if (isDevelopment() || isTest()) {
-    // 開発時は Vite の開発サーバーがインデックスを配信する (plugins/builtin_engines.ts)。
-    return "http://localhost:5173/engines/index.json";
+    return `http://localhost:6173/${ENGINE_INDEX_FILE_NAME}`;
   }
-  return `https://${ghioDomain}/${ghRepository}/webapp/engines/index.json`;
+  return `https://${ghioDomain}/${ghRepository}/${ENGINE_INDEX_FILE_NAME}`;
 }
 
 // パッケージの置き場所。ポータブル版では他の設定と同じく実行ファイルの隣に置く。
@@ -91,6 +93,10 @@ export async function fetchEngineIndex(): Promise<EngineIndex> {
     throw new Error(`${t.failedToFetchEngineList}: ${url}: ${response.status}`);
   }
   lastIndex = parseEngineIndex(await response.json(), url);
+  // 不正な項目は除外されている。一覧の他のエンジンは使えるので、ログに残すだけにする。
+  for (const error of lastIndex.errors) {
+    getAppLogger().warn("engine index: %s", error);
+  }
   return lastIndex;
 }
 

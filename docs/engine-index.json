@@ -1,0 +1,42 @@
+{
+  "format": "shogihome-engine-index/1",
+  "engines": [
+    {
+      "id": "sunfish4-lite",
+      "version": "a95e5e484444253b",
+      "name": "Sunfish4-Lite",
+      "author": "Kubo, Ryosuke",
+      "licenses": [
+        "MIT"
+      ],
+      "packageURL": "webapp/engines/sunfish4-lite/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "6d20bee0e8586fdce4bb62c7539eebf1c81b09bbf9bd5f124cf09310346db155",
+          "size": 1079
+        },
+        {
+          "path": "engine.json",
+          "sha256": "b19d601718cd0a9718b296b7ca07903b5ec42ffa670fcb08b3c7da68462cc145",
+          "size": 2439
+        },
+        {
+          "path": "eval-20260829.bin",
+          "sha256": "a489a81990729274d2f4977dcf4a385906ac32bd7eb97847f7a415ca15a11dd2",
+          "size": 3546199
+        },
+        {
+          "path": "sunfish4.js",
+          "sha256": "63bc2ddd8b1ade0e365fc40b77e38f34a181747228c18279d2f95d7440b7b81f",
+          "size": 78842
+        },
+        {
+          "path": "sunfish4.wasm",
+          "sha256": "627fbae21649a1b30b935eb09687ac2ee881fe3c31af3914752416bb9b8f3324",
+          "size": 367783
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import {
   parseEngineIndex,
 } from "@/common/wasm-engine/package.js";
 
-const INDEX_URL = "https://example.com/shogihome/webapp/engines/index.json";
+const INDEX_URL = "https://example.com/shogihome/engine-index.json";
 const HASH = "0".repeat(64);
 
 const validPackage = () => ({
@@ -37,11 +37,12 @@ describe("wasm-engine/package", () => {
     expect(pkg.files[0].url).toBe("https://engines.example.com/engine/2026-09-01/engine.json");
     expect(pkg.files[2].url).toBe("https://assets.example.com/nn.bin");
     expect(getEnginePackageSize(pkg.files)).toBe(600);
+    expect(index.errors).toEqual([]);
   });
 
   it("parseEngineIndex/relativePackageURL", () => {
     const json = validIndex();
-    json.engines[0].packageURL = "sunfish4-lite/";
+    json.engines[0].packageURL = "webapp/engines/sunfish4-lite/";
     const index = parseEngineIndex(json, INDEX_URL);
     expect(index.engines[0].packageURL).toBe(
       "https://example.com/shogihome/webapp/engines/sunfish4-lite/",
@@ -54,41 +55,65 @@ describe("wasm-engine/package", () => {
   it("parseEngineIndex/localhost", () => {
     const index = parseEngineIndex(
       { format: ENGINE_INDEX_FORMAT, engines: [{ ...validPackage(), packageURL: "e/" }] },
-      "http://localhost:5173/engines/index.json",
+      "http://localhost:6173/engine-index.json",
     );
-    expect(index.engines[0].packageURL).toBe("http://localhost:5173/engines/e/");
+    expect(index.engines[0].packageURL).toBe("http://localhost:6173/e/");
   });
 
-  const invalidCases: [string, (json: ReturnType<typeof validIndex>) => void][] = [
-    ["unknown format", (json) => (json.format = "unknown")],
-    ["http", (json) => (json.engines[0].packageURL = "http://engines.example.com/e/")],
+  it("parseEngineIndex/invalidFormat", () => {
+    expect(() => parseEngineIndex({ ...validIndex(), format: "unknown" }, INDEX_URL)).toThrow(
+      /unsupported format/,
+    );
+    expect(() => parseEngineIndex({ ...validIndex(), engines: {} }, INDEX_URL)).toThrow(
+      /engines must be an array/,
+    );
+    expect(() => parseEngineIndex(null, INDEX_URL)).toThrow(/invalid engine index/);
+  });
+
+  const invalidCases: [string, (pkg: ReturnType<typeof validPackage>) => void][] = [
+    ["http", (pkg) => (pkg.packageURL = "http://engines.example.com/e/")],
     [
       "file scheme",
-      (json) =>
-        (json.engines[0].files[1] = {
-          ...json.engines[0].files[1],
-          url: "file:///etc/passwd",
-        } as never),
+      (pkg) => (pkg.files[1] = { ...pkg.files[1], url: "file:///etc/passwd" } as never),
     ],
-    ["no trailing slash", (json) => (json.engines[0].packageURL = "https://example.com/e")],
-    ["query", (json) => (json.engines[0].packageURL = "https://example.com/e/?a=1")],
-    ["path traversal", (json) => (json.engines[0].files[1].path = "../evil.js")],
-    ["absolute path", (json) => (json.engines[0].files[1].path = "/evil.js")],
-    ["invalid hash", (json) => (json.engines[0].files[1].sha256 = "xyz")],
-    ["uppercase hash", (json) => (json.engines[0].files[1].sha256 = "A".repeat(64))],
-    ["negative size", (json) => (json.engines[0].files[1].size = -1)],
-    ["no manifest", (json) => json.engines[0].files.shift()],
-    ["duplicated path", (json) => (json.engines[0].files[1].path = "ENGINE.json")],
-    ["invalid id", (json) => (json.engines[0].id = "../x")],
-    ["invalid version", (json) => (json.engines[0].version = "1/2")],
-    ["no licenses", (json) => (json.engines[0].licenses = [])],
-    ["duplicated id", (json) => json.engines.push(validPackage())],
+    ["no trailing slash", (pkg) => (pkg.packageURL = "https://example.com/e")],
+    ["query", (pkg) => (pkg.packageURL = "https://example.com/e/?a=1")],
+    ["path traversal", (pkg) => (pkg.files[1].path = "../evil.js")],
+    ["absolute path", (pkg) => (pkg.files[1].path = "/evil.js")],
+    ["invalid hash", (pkg) => (pkg.files[1].sha256 = "xyz")],
+    ["uppercase hash", (pkg) => (pkg.files[1].sha256 = "A".repeat(64))],
+    ["negative size", (pkg) => (pkg.files[1].size = -1)],
+    ["no manifest", (pkg) => pkg.files.shift()],
+    ["duplicated path", (pkg) => (pkg.files[1].path = "ENGINE.json")],
+    ["invalid id", (pkg) => (pkg.id = "../x")],
+    ["invalid version", (pkg) => (pkg.version = "1/2")],
+    ["no licenses", (pkg) => (pkg.licenses = [])],
   ];
 
-  it.each(invalidCases)("parseEngineIndex/invalid: %s", (_, modify) => {
-    const json = validIndex();
-    modify(json);
-    expect(() => parseEngineIndex(json, INDEX_URL)).toThrow(/invalid engine index/);
+  // 不正な項目だけを除外し、他の項目は使えること。
+  it.each(invalidCases)("parseEngineIndex/invalidEntry: %s", (_, modify) => {
+    const invalid = validPackage();
+    modify(invalid);
+    const other = { ...validPackage(), id: "other.engine" };
+    const index = parseEngineIndex(
+      { format: ENGINE_INDEX_FORMAT, engines: [invalid, other] },
+      INDEX_URL,
+    );
+    expect(index.engines.map((e) => e.id)).toEqual(["other.engine"]);
+    expect(index.errors).toHaveLength(1);
+    expect(index.errors[0]).toMatch(/^invalid engine index: engines\[0\]/);
+  });
+
+  it("parseEngineIndex/duplicatedID", () => {
+    const second = { ...validPackage(), version: "2" };
+    const index = parseEngineIndex(
+      { format: ENGINE_INDEX_FORMAT, engines: [validPackage(), second] },
+      INDEX_URL,
+    );
+    // 先のものを採る。
+    expect(index.engines.map((e) => e.version)).toEqual(["2026-09-01"]);
+    expect(index.errors).toHaveLength(1);
+    expect(index.errors[0]).toMatch(/duplicated/);
   });
 
   it("identifier", () => {

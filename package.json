@@ -43,7 +43,7 @@
     "license": "node scripts/report-license.mjs",
     "license:commit": "npm run license && git add . && git commit -m \"license\" || git diff",
     "docs": "tsx scripts/build-docs-templates.ts",
-    "release": "npm run build && npm run build:dev && git add . && git commit -m \"release\"",
+    "release": "npm run build && npm run build:dev && npm run engine-index:sync && git add . && git commit -m \"release\"",
     "release:patch": "npm run license:commit && npm version patch && tsx scripts/publish-release.ts && npm run docs && npm run release",
     "release:minor": "npm run license:commit && npm version minor && tsx scripts/publish-release.ts && npm run docs && npm run release",
     "release:alpha": "npm run license:commit && npm version preminor --preid alpha",
@@ -52,7 +52,9 @@
     "release:stable": "tsx scripts/publish-release.ts stable && npm run docs && git add . && git commit -m \"update stable version\"",
     "usi-csa-bridge:build": "webpack --config-name command:usi-csa-bridge && node scripts/distribute-command.mjs usi-csa-bridge",
     "usi-csa-bridge:install": "npm run usi-csa-bridge:build && npm install -g ./dist/command/usi-csa-bridge",
-    "gen-proto": "node scripts/gen-proto.mjs"
+    "gen-proto": "node scripts/gen-proto.mjs",
+    "engine-index": "tsx scripts/engine-index.ts",
+    "engine-index:sync": "tsx scripts/engine-index.ts sync && vitest run src/tests/engines/index.spec.ts"
   },
   "main": "dist/src/background/index.js",
   "module": "dist/src/background/index.js",

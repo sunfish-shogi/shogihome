@@ -17,9 +17,10 @@
 ## 全体構成
 
 ```
-plugins/builtin_engines.ts          Web 版のビルドで engines/index.json (一覧) を出力する
-plugins/external_engines.json       外部で配信されているエンジンの一覧への登録
-scripts/engine-package-entry.ts     外部のエンジンの登録内容を作るスクリプト
+docs/engine-index.json              ダウンロードできるエンジンの一覧 (GitHub Pages で配信する)
+scripts/engine-index.ts             一覧を更新するスクリプト (sync / add)
+scripts/fake-release-api.mjs        開発時に一覧と本家のエンジンを返すサーバー
+src/tests/engines/index.spec.ts     一覧の検証
 
 src/common/wasm-engine/package.ts   一覧とパッケージの型と検証
 
@@ -65,20 +66,40 @@ utility プロセスを強制終了する。
 
 ## 一覧 (インデックス)
 
-ダウンロードできるエンジンの一覧は Web 版の配信物の `engines/index.json` である。
+ダウンロードできるエンジンの一覧は、リポジトリの **`docs/engine-index.json`** で管理する。
+`release.json` と同じく `docs/` の直下に置き、GitHub Pages からそのまま配信する。
+本家のエンジンも外部で配信されているエンジンも、同じ `engines` の配列に並ぶ。
 
-| 環境                    | 取得先                                                                |
-| ----------------------- | --------------------------------------------------------------------- |
-| 本番                    | `https://sunfish-shogi.github.io/shogihome/webapp/engines/index.json` |
-| 開発 (`electron:serve`) | `http://localhost:5173/engines/index.json` (Vite の開発サーバー)      |
-| 本番以外                | 環境変数 `SHOGIHOME_ENGINE_INDEX_URL` で差し替えられる                |
+| 環境                    | 取得先                                                             |
+| ----------------------- | ------------------------------------------------------------------ |
+| 本番                    | `https://sunfish-shogi.github.io/shogihome/engine-index.json`      |
+| 開発 (`electron:serve`) | `http://localhost:6173/engine-index.json` (`fake-release-api.mjs`) |
+| 本番以外                | 環境変数 `SHOGIHOME_ENGINE_INDEX_URL` で差し替えられる             |
 
 本番では環境変数による差し替えを受け付けない。
+
+- **`docs/webapp/` の中には置かない。** `npm run build` は出力先を空にしてから書き出すため、
+  手で管理するファイルは消える
+- **URL を Web 版の置き場所から切り離す。** 一覧の URL はデスクトップ版に埋め込まれるため、
+  Web 版の置き場所を変えても、配布済みのデスクトップ版が一覧を取得できるようにしておく
+- 一覧を変更して main に push した時点で公開される。`npm run release` を待たない
 
 ```json
 {
   "format": "shogihome-engine-index/1",
   "engines": [
+    {
+      "id": "sunfish4-lite",
+      "version": "a95e5e484444253b",
+      "name": "Sunfish4-Lite",
+      "author": "Kubo, Ryosuke",
+      "licenses": ["MIT"],
+      "packageURL": "webapp/engines/sunfish4-lite/",
+      "files": [
+        { "path": "engine.json", "sha256": "…", "size": 2439 },
+        { "path": "sunfish4.js", "sha256": "…", "size": 78842 }
+      ]
+    },
     {
       "id": "example.yaneuraou",
       "version": "2026-09-01",
@@ -90,14 +111,12 @@ utility プロセスを強制終了する。
       "packageURL": "https://engines.example.com/yaneuraou/2026-09-01/",
       "files": [
         { "path": "engine.json", "sha256": "…", "size": 2684 },
-        { "path": "yaneuraou.js", "sha256": "…", "size": 78842 },
         {
           "path": "yaneuraou.wasm",
           "url": "https://assets.example.com/yaneuraou.wasm",
           "sha256": "…",
           "size": 367783
-        },
-        { "path": "LICENSE.txt", "sha256": "…", "size": 35149 }
+        }
       ]
     }
   ]
@@ -119,30 +138,48 @@ utility プロセスを強制終了する。
 `files` の要素は、インストール先での位置 (`path`)、取得先 (`url`。省略時は `packageURL` からの
 `path`)、`sha256` と `size` を持つ。
 
-URL は https のみ受け付ける (開発用に localhost の http だけは認める)。不正な項目が 1 つでも
-あれば一覧ごと拒否する。配信側の誤りを黙って隠すと、エンジンが一覧から消えた理由が
-分からなくなるため。
+URL は https のみ受け付ける (開発用に localhost の http だけは認める)。
+
+**不正な項目は実行時に除外し、他の項目は使えるようにする。** 1 件の誤りで全員がどのエンジンも
+ダウンロードできなくなるのを避けるためで、除外した理由はログに残す。誤りそのものは
+公開前に検出する (「一覧の検証」を参照)。全体の形式 (`format` や `engines` の型) が
+違う場合だけは一覧ごと拒否する。
+
+一覧は手で書かず、`scripts/engine-index.ts` で更新する。書き込む前に、一覧全体が実行時と同じ
+検証を通ることを確かめる。
 
 ### 本家のエンジン
 
-`public/engines/` (とビルドプロファイルの `engines.dirs`) に置いたエンジンは、Web 版のビルドが
-一覧に載せる。`version` は全ファイルのパスと sha256 から作る (内容が変われば変わる)。
-**`assetBaseURL` を宣言したエンジンは載せない。** 外部にある wasm や評価パラメータの中身を
-ビルド時に確かめられないためで、外部のエンジンと同じ方法で登録する。
+`docs/webapp/engines/<dir>/` (Web 版の配信物) にあるエンジンの項目は、`sync` が作り直す。
+`packageURL` は一覧からの相対の `webapp/engines/<dir>/`、`version` は全ファイルのパスと sha256
+から作る (内容が変われば変わる)。
+
+```bash
+npm run engine-index:sync   # sync の後に一覧の検証 (Vitest) も行う
+```
+
+**`npm run release` は Web 版をビルドした直後にこれを実行し、同じコミットに含める。**
+
+- ハッシュは `public/engines/` ではなく配信物から求める。`public/engines/` を更新しても、
+  Web 版をリリースするまで配信物は古いままなので、一覧だけが先に新しいファイルを指すと
+  誰もインストールできなくなる
+- 配信物から消えたエンジンの項目は消える。新しく置いたエンジンの項目は加わる
+- 手で書き足した `description` は引き継ぐ
+- **`assetBaseURL` を宣言したエンジンは対象外。** 外部にある wasm や評価パラメータの中身を
+  手元で確かめられないためで、外部のエンジンと同じく `add` で登録する
 
 ### 外部のエンジン
 
 このリポジトリに置けないエンジン (GPL のエンジンや、Cloudflare などで配信している大きな
-エンジン) は、`plugins/external_engines.json` の `engines` に項目を加える。項目は
-スクリプトで作る。
+エンジン) は `add` で登録する。同じ `id` があれば置き換える (更新)。
 
 ```bash
-npx tsx scripts/engine-package-entry.ts https://engines.example.com/yaneuraou/2026-09-01/ \
-  --id example.yaneuraou --publisher example
+npm run engine-index -- add https://engines.example.com/yaneuraou/2026-09-01/ \
+  --id example.yaneuraou --publisher example [--description "…"] [--version 2026-09-01]
 ```
 
-スクリプトはパッケージの全てのファイルを実際に取得し、大きさと sha256 を求める。取得先は
-マニフェストの規則 (`wasm-engine-abi.md` の「6. (d)」) に従う。
+`add` はパッケージの全てのファイルを実際に取得し、大きさと sha256 を求めて一覧に書き込む。
+取得先はマニフェストの規則 (`wasm-engine-abi.md` の「6. (d)」) に従う。
 
 | ファイル                                | 取得先                                 | インストール先           |
 | --------------------------------------- | -------------------------------------- | ------------------------ |
@@ -151,7 +188,20 @@ npx tsx scripts/engine-package-entry.ts https://engines.example.com/yaneuraou/20
 | `.wasm`・`.data` (あれば)               | `assetBaseURL` (無ければ `packageURL`) | グルーコードの隣         |
 | `dataFiles[].url`                       | `assetBaseURL` (無ければ `packageURL`) | `engine.json` からの相対 |
 
-一覧に載るのは Web 版をビルドして配信したときである (`npm run release`)。
+書き込んだ一覧を commit して main に push すれば公開される。Web 版のリリースは要らない。
+
+### 一覧の検証
+
+`src/tests/engines/index.spec.ts` (Vitest) が次を確かめる。`npm test` と CI
+(`.github/workflows/test.yml`) で実行され、`npm run engine-index:sync` (= `npm run release`) も
+一覧を更新した直後に実行する。
+
+- 一覧の全ての項目が実行時の検証を通ること
+- 本家のエンジンの項目が `docs/webapp/engines/` のファイルと過不足なく一致すること
+- `docs/webapp/engines/` にある本家のエンジンが一覧に載っていること
+
+**外部のエンジンのファイルは取得しない。** 大きなファイルのダウンロードを伴い、配信側の障害で
+無関係な変更のテストまで落ちるため。登録のときに `add` が取得して確かめる。
 
 #### 配信側の要件
 
