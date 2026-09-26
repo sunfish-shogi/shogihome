@@ -307,6 +307,7 @@ export const vi: Texts = {
   promoteFirstVertical: "Dọc, ưu tiên phong cấp",
   promoteFirstHorizontal: "Ngang, ưu tiên phong cấp",
   enableDragAndDrop: "駒のドラッグ操作", // TODO: Translate
+  highlightMovableSquares: "移動可能なマスを表示", // TODO: Translate
   showFileAndRank: "Hiện hàng và cột",
   showLeftControls: "Hiện điều khiển bên trái",
   showRightControls: "Hiện điều khiển bên phải",

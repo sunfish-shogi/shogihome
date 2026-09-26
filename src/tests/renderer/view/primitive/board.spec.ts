@@ -102,4 +102,65 @@ describe("BoardView", () => {
       expect(changes).toEqual([{ move: { from: new Square(8, 8), to: new Square(5, 5) } }]);
     });
   });
+
+  describe("移動可能なマスの表示", () => {
+    const mountMovable = (position: ImmutablePosition, highlightMovableSquares: boolean) =>
+      shallowMount(BoardView, {
+        props: {
+          boardImageType: BoardImageType.LIGHT,
+          pieceStandImageType: PieceStandImageType.STANDARD,
+          pieceImageUrlTemplate: "./piece/hitomoji/${piece}.png",
+          kingPieceType: KingPieceType.GYOKU_AND_OSHO,
+          boardLabelType: BoardLabelType.STANDARD,
+          maxSize: new RectSize(800, 600),
+          position,
+          allowMove: true,
+          highlightMovableSquares,
+        },
+      });
+    const clickSquare = async (wrapper: ReturnType<typeof mountMovable>, square: Square) => {
+      const squares = wrapper.find(".board.operation").findAll("div");
+      await squares[square.index].trigger("click");
+    };
+
+    it("盤上の駒を選択すると移動可能なマスが表示される", async () => {
+      const wrapper = mountMovable(new Position(), true);
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(0);
+      await clickSquare(wrapper, new Square(5, 9));
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(3);
+      await clickSquare(wrapper, new Square(7, 7));
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(1);
+    });
+
+    it("相手の駒を選択しても表示されない", async () => {
+      const wrapper = mountMovable(new Position(), true);
+      await clickSquare(wrapper, new Square(5, 1));
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(0);
+    });
+
+    it("王手放置となるマスは除外される", async () => {
+      // 5八の金は5一の飛車に釘付けにされている。
+      const position = Position.newBySFEN("4r4/9/9/9/9/9/9/4G4/4K4 b - 1") as Position;
+      const wrapper = mountMovable(position, true);
+      await clickSquare(wrapper, new Square(5, 8));
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(1);
+    });
+
+    it("持ち駒を選択すると打てるマスが表示される（二歩と行き所のない駒を除外）", async () => {
+      const position = Position.newBySFEN("4k4/9/9/9/9/9/9/9/P3K4 b P 1") as Position;
+      const wrapper = mountMovable(position, true);
+      // 先手の駒台: タッチ領域 + 歩のポインター
+      const pointers = wrapper.findAll(".hand.operation")[0].findAll("div");
+      await pointers[1].trigger("click");
+      // 9筋は二歩、1段目は行き所なし、5九は玉がいるため除外。
+      // 8筋 × 8段 - 1 = 63
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(63);
+    });
+
+    it("設定がオフの場合は表示されない", async () => {
+      const wrapper = mountMovable(new Position(), false);
+      await clickSquare(wrapper, new Square(5, 9));
+      expect(wrapper.findAll(".movable-marker")).toHaveLength(0);
+    });
+  });
 });

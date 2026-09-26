@@ -8,6 +8,7 @@ import {
   BoardLabel,
   BoardPiece,
   BoardSquare,
+  MovableMarker,
   Promotion,
 } from "./layout.js";
 import { Point } from "@/common/assets/geometry.js";
@@ -222,6 +223,24 @@ export class BoardLayoutBuilder {
     return squares;
   }
 
+  private getMovableMarkers(movableSquares: Square[]): MovableMarker[] {
+    const size = this.params.movableMarker.size * this.ratio;
+    return movableSquares.map((square) => {
+      const center = this.centerOfSquare(square);
+      return {
+        id: square.index,
+        style: {
+          left: center.x - size / 2 + "px",
+          top: center.y - size / 2 + "px",
+          width: size + "px",
+          height: size + "px",
+          "pointer-events": "none",
+          ...this.params.movableMarker.style,
+        },
+      };
+    });
+  }
+
   private getPromotionControls(move?: Move | null): [Promotion | null, Promotion | null] {
     if (!move) {
       return [null, null];
@@ -280,6 +299,7 @@ export class BoardLayoutBuilder {
     pointer?: Square | Piece | null,
     reservedMoveForPromotion?: Move | null,
     dragSourceSquare?: Square,
+    movableSquares: Square[] = [],
   ): Board {
     const [promote, doNotPromote] = this.getPromotionControls(reservedMoveForPromotion);
     return {
@@ -287,6 +307,7 @@ export class BoardLayoutBuilder {
       labels: this.labels,
       pieces: this.getPieces(board, dragSourceSquare),
       squares: this.getSquares(lastMove, pointer),
+      movableMarkers: this.getMovableMarkers(movableSquares),
       promote,
       doNotPromote,
     };

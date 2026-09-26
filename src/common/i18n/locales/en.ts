@@ -297,6 +297,7 @@ export const en: Texts = {
   promoteFirstVertical: "Promote First Vertical",
   promoteFirstHorizontal: "Promote First Horizontal",
   enableDragAndDrop: "Drag & Drop",
+  highlightMovableSquares: "Highlight Movable Squares",
   showFileAndRank: "Show File & Rank",
   showLeftControls: "Show Left Controls",
   showRightControls: "Show Right Controls",

@@ -304,6 +304,7 @@ export const zh_tw: Texts = {
   promoteFirstVertical: "垂直（成變優先）",
   promoteFirstHorizontal: "水平（成變優先）",
   enableDragAndDrop: "駒のドラッグ操作", // TODO: Translate
+  highlightMovableSquares: "移動可能なマスを表示", // TODO: Translate
   showFileAndRank: "顯示段・筋",
   showLeftControls: "顯示左側操作按鈕",
   showRightControls: "顯示右側操作按鈕",

@@ -364,6 +364,11 @@
         <div class="form-item-label-wide">{{ t.enableDragAndDrop }}</div>
         <ToggleButton v-model:value="update.enableDragAndDrop" />
       </div>
+      <!-- 移動可能なマスの表示 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.highlightMovableSquares }}</div>
+        <ToggleButton v-model:value="update.highlightMovableSquares" />
+      </div>
       <!-- 成・不成の表示 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -919,6 +924,7 @@ const update = ref({
   recordOpacity: Math.round(org.recordOpacity * 100),
   promotionSelectorStyle: org.promotionSelectorStyle,
   enableDragAndDrop: org.enableDragAndDrop,
+  highlightMovableSquares: org.highlightMovableSquares,
   boardLabelType: org.boardLabelType,
   leftSideControlType: org.leftSideControlType,
   rightSideControlType: org.rightSideControlType,

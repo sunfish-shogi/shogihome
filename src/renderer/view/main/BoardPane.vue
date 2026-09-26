@@ -28,6 +28,7 @@
       :mobile="isMobileWebApp()"
       :allow-move="store.isMovableByUser"
       :enable-drag-and-drop="appSettings.enableDragAndDrop"
+      :highlight-movable-squares="appSettings.highlightMovableSquares"
       :black-player-name="blackPlayerName"
       :white-player-name="whitePlayerName"
       :black-player-time="clock?.black.time"

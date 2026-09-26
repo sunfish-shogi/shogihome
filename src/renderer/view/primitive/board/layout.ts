@@ -67,6 +67,11 @@ export type BoardSquare = {
   backgroundStyle: { [key: string]: string };
 };
 
+export type MovableMarker = {
+  id: number;
+  style: { [key: string]: string };
+};
+
 export type Promotion = {
   imagePath: string;
   style: { [key: string]: string };
@@ -77,6 +82,7 @@ export type Board = {
   labels: BoardLabel[];
   pieces: BoardPiece[];
   squares: BoardSquare[];
+  movableMarkers: MovableMarker[];
   promote: Promotion | null;
   doNotPromote: Promotion | null;
 };

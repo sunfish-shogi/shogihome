@@ -42,6 +42,12 @@
         <div v-for="label in board.labels" :key="label.id" :style="label.style">
           {{ label.character }}
         </div>
+        <div
+          v-for="marker in board.movableMarkers"
+          :key="marker.id"
+          class="movable-marker"
+          :style="marker.style"
+        ></div>
       </div>
 
       <!-- 先手の駒台 -->
@@ -372,6 +378,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: true,
+  },
+  highlightMovableSquares: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
   blackPlayerName: {
     type: String,
@@ -940,6 +951,41 @@ const boardLayoutBuilder = computed(() => {
   return new BoardLayoutBuilder(config.value, main.value.ratio, currentBoardParams.value);
 });
 
+// 選択中の駒が移動可能なマスを列挙する。ルール違反となる手は除外する。
+const movableSquares = computed(() => {
+  if (!props.highlightMovableSquares || !props.allowMove || state.reservedMove) {
+    return [];
+  }
+  const pointer = state.pointer;
+  if (!pointer) {
+    return [];
+  }
+  const position = props.position;
+  let from: Square | PieceType;
+  if (pointer instanceof Square) {
+    if (position.board.at(pointer)?.color !== position.color) {
+      return [];
+    }
+    from = pointer;
+  } else if (pointer instanceof Piece) {
+    if (
+      pointer.color !== position.color ||
+      position.hand(pointer.color).count(pointer.type) === 0
+    ) {
+      return [];
+    }
+    from = pointer.type;
+  } else {
+    return [];
+  }
+  return Square.all.filter((to) => {
+    const move = position.createMove(from, to);
+    return (
+      move !== null && (position.isValidMove(move) || position.isValidMove(move.withPromote()))
+    );
+  });
+});
+
 const board = computed(() => {
   const dragSourceSquare = drag.active && drag.source instanceof Square ? drag.source : undefined;
   return boardLayoutBuilder.value.build(
@@ -948,6 +994,7 @@ const board = computed(() => {
     state.pointer,
     state.reservedMove,
     dragSourceSquare,
+    movableSquares.value,
   );
 });
 
