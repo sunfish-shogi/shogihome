@@ -167,7 +167,10 @@ const api: Bridge = {
     ipcRenderer.send(Background.ADD_RECORD_FILE_HISTORY, path);
   },
   async clearRecordFileHistory(): Promise<void> {
-    ipcRenderer.invoke(Background.CLEAR_RECORD_FILE_HISTORY);
+    await ipcRenderer.invoke(Background.CLEAR_RECORD_FILE_HISTORY);
+  },
+  async loadRecordFileHistoryContents(): Promise<string> {
+    return await ipcRenderer.invoke(Background.LOAD_RECORD_FILE_HISTORY_CONTENTS);
   },
   async saveRecordFileBackup(kif: string): Promise<void> {
     await ipcRenderer.invoke(Background.SAVE_RECORD_FILE_BACKUP, kif);
@@ -451,6 +454,9 @@ const api: Bridge = {
   },
   openExplorer(path: string) {
     ipcRenderer.send(Background.OPEN_EXPLORER, path);
+  },
+  openParentDirectory(path: string) {
+    ipcRenderer.send(Background.OPEN_PARENT_DIRECTORY, path);
   },
   openWebBrowser(url: string) {
     ipcRenderer.send(Background.OPEN_WEB_BROWSER, url);

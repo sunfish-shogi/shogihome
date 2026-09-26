@@ -494,6 +494,8 @@ export const en: Texts = {
   userFile: "User File",
   automaticBackup: "Automatic Backup",
   restore: "Restore",
+  filterByFilePathOrContent: "Filter by File Path or Content",
+  loadingFileContents: "Loading files...",
   loadRecordFromWeb: "Load Record from Web",
   backToMainBranch: "Back to Main Branch",
   fetchLatestData: "Fetch Latest Data",

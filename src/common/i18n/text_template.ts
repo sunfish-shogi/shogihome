@@ -484,6 +484,8 @@ export type Texts = {
   userFile: string;
   automaticBackup: string;
   restore: string;
+  filterByFilePathOrContent: string;
+  loadingFileContents: string;
   loadRecordFromWeb: string;
   backToMainBranch: string;
   fetchLatestData: string;

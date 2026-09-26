@@ -51,6 +51,7 @@ export interface Bridge {
   loadRecordFileHistory(): Promise<string>;
   addRecordFileHistory(path: string): void;
   clearRecordFileHistory(): Promise<void>;
+  loadRecordFileHistoryContents(): Promise<string>;
   saveRecordFileBackup(kif: string): Promise<void>;
   loadRecordFileBackup(name: string): Promise<string>;
   loadRemoteTextFile(url: string): Promise<string>;
@@ -161,6 +162,7 @@ export interface Bridge {
   showSelectFileDialog(): Promise<string>;
   showSelectDirectoryDialog(defaultPath?: string): Promise<string>;
   openExplorer(path: string): void;
+  openParentDirectory(path: string): void;
   openWebBrowser(url: string): void;
   getMachineSpec(): Promise<string>;
   isEncryptionAvailable(): Promise<boolean>;
