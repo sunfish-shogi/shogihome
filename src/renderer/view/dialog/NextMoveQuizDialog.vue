@@ -40,6 +40,7 @@
           :last-move="lastMove"
           :flip="flip"
           :allow-move="!quiz.done && !quiz.playedMove"
+          :highlight-movable-squares="appSettings.highlightMovableSquares"
           :ghost-teleport-target="ghostTeleportTarget"
           :black-player-name="t.sente"
           :white-player-name="t.gote"
