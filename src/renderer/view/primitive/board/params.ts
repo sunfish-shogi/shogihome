@@ -22,8 +22,8 @@ export const boardParams = {
     lastMoveFrom: { "background-color": "#44cc44", opacity: "0.4" },
   },
   movableMarker: {
-    size: 24,
-    style: { "background-color": "#0088ff", opacity: "0.8", "border-radius": "50%" },
+    size: 22,
+    style: { "background-color": "#0088ff", "border-radius": "50%" },
   },
   label: {
     fontSize: 24,
