@@ -601,9 +601,9 @@
       </div>
     </div>
     <!-- USI プロトコル -->
-    <div v-if="!isMobileWebApp()" v-show="selectedTab === 'usi'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'usi'" class="form-group scroll settings">
       <!-- オプション名を翻訳 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">
           {{ t.translateOptionName }}
         </div>
@@ -619,7 +619,7 @@
         <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(1, 300) }})</div>
       </div>
       <!-- ノード数表記 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.nodeCountFormat }}</div>
         <HorizontalSelector
           v-model:value="update.nodeCountFormat"
@@ -634,11 +634,7 @@
       </div>
     </div>
     <!-- 評価値・期待勝率・読み筋 -->
-    <div
-      v-if="!isMobileWebApp()"
-      v-show="selectedTab === 'evaluation'"
-      class="form-group scroll settings"
-    >
+    <div v-show="selectedTab === 'evaluation'" class="form-group scroll settings">
       <!-- 評価値の符号 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -675,7 +671,7 @@
         <ToggleButton v-model:value="update.showArrowScore" />
       </div>
       <!-- 勝率換算係数 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">
           {{ t.winRateCoefficient }}
         </div>
@@ -683,25 +679,25 @@
         <div class="form-item-small-label">({{ t.recommended }}: {{ t.between(600, 1500) }})</div>
       </div>
       <!-- 緩手の閾値 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.inaccuracyThreshold }}</div>
         <input v-model.number="update.badMoveLevelThreshold1" type="number" max="100" min="0" />
         <div class="form-item-small-label">%</div>
       </div>
       <!-- 疑問手の閾値 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.dubiousThreshold }}</div>
         <input v-model.number="update.badMoveLevelThreshold2" type="number" max="100" min="0" />
         <div class="form-item-small-label">%</div>
       </div>
       <!-- 悪手の閾値 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.mistakeThreshold }}</div>
         <input v-model.number="update.badMoveLevelThreshold3" type="number" max="100" min="0" />
         <div class="form-item-small-label">%</div>
       </div>
       <!-- 大悪手の閾値 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.blunderThreshold }}</div>
         <input v-model.number="update.badMoveLevelThreshold4" type="number" max="100" min="0" />
         <div class="form-item-small-label">%</div>
@@ -716,7 +712,7 @@
         </button>
       </div>
       <!-- コメントの形式 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.commentFormat }}</div>
         <HorizontalSelector
           v-model:value="update.searchCommentFormat"
@@ -884,11 +880,11 @@ const tabItems = computed(() => [
   { label: t.sounds, value: "sounds" },
   { label: t.controls, value: "controls" },
   { label: t.record, value: "record" },
+  ...(!isMobileWebApp() ? [{ label: t.book, value: "book" }] : []),
+  { label: t.usiProtocol, value: "usi" },
+  { label: t.evaluationAndEstimatedWinRateAndPV, value: "evaluation" },
   ...(!isMobileWebApp()
     ? [
-        { label: t.book, value: "book" },
-        { label: t.usiProtocol, value: "usi" },
-        { label: t.evaluationAndEstimatedWinRateAndPV, value: "evaluation" },
         { label: t.appVersion, value: "version" },
         { label: t.forDevelopers, value: "developer" },
       ]
