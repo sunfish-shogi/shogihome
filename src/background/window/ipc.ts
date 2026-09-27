@@ -91,7 +91,7 @@ import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.
 import { cropPieceImage } from "@/background/image/cropper.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
 import { fileURLToPath } from "@/background/helpers/url.js";
-import { AppSettingsUpdate } from "@/common/settings/app.js";
+import { AppSettingsUpdate, TextDecodingRule } from "@/common/settings/app.js";
 import { convertRecordFiles } from "@/background/file/conversion.js";
 import { listRecordFiles } from "@/background/file/list.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
@@ -100,6 +100,7 @@ import {
   clearHistory,
   getHistory,
   loadBackup,
+  loadUserFileContents,
   saveBackup,
 } from "@/background/file/history.js";
 import { getAppPath } from "@/background/proc/path-electron.js";
@@ -208,6 +209,17 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
     }
   } catch {
     sendError(new Error(t.failedToOpenDirectory(targetPath)));
+  }
+});
+
+ipcMain.on(Background.OPEN_PARENT_DIRECTORY, async (event, filePath: string) => {
+  validateIPCSender(event.senderFrame);
+  // ファイル自体が存在しなくても親ディレクトリが存在すれば開く。
+  const dirPath = path.dirname(filePath);
+  try {
+    await openPath(dirPath);
+  } catch {
+    sendError(new Error(t.failedToOpenDirectory(dirPath)));
   }
 });
 
@@ -660,7 +672,18 @@ ipcMain.on(Background.ADD_RECORD_FILE_HISTORY, (event, path: string): void => {
 ipcMain.handle(Background.CLEAR_RECORD_FILE_HISTORY, async (event): Promise<void> => {
   validateIPCSender(event.senderFrame);
   getAppLogger().debug("clear record file history");
-  clearHistory();
+  await clearHistory();
+});
+
+ipcMain.handle(Background.LOAD_RECORD_FILE_HISTORY_CONTENTS, async (event): Promise<string> => {
+  validateIPCSender(event.senderFrame);
+  getAppLogger().debug("load record file history contents");
+  const appSettings = await loadAppSettings();
+  return JSON.stringify(
+    await loadUserFileContents({
+      autoDetect: appSettings.textDecodingRule === TextDecodingRule.AUTO_DETECT,
+    }),
+  );
 });
 
 ipcMain.handle(Background.SAVE_RECORD_FILE_BACKUP, async (event, kif: string): Promise<void> => {

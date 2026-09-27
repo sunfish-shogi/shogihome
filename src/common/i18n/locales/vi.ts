@@ -504,6 +504,8 @@ export const vi: Texts = {
   userFile: "Tệp người dùng",
   automaticBackup: "Sao lưu tự động",
   restore: "Khôi phục",
+  filterByFilePathOrContent: "ファイルパスまたは内容で検索", // TODO: Translate
+  loadingFileContents: "ファイルを読み込み中...", // TODO: Translate
   loadRecordFromWeb: "Tải kỳ phổ từ mạng",
   backToMainBranch: "Trở về biến chính",
   fetchLatestData: "Lấy dữ liệu mới nhất",

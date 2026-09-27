@@ -494,6 +494,8 @@ export const ja: Texts = {
   userFile: "ユーザーのファイル",
   automaticBackup: "自動バックアップ",
   restore: "復元",
+  filterByFilePathOrContent: "ファイルパスまたは内容で検索",
+  loadingFileContents: "ファイルを読み込み中...",
   loadRecordFromWeb: "Webの棋譜を取得",
   backToMainBranch: "本譜に戻る",
   fetchLatestData: "最新データを取得",

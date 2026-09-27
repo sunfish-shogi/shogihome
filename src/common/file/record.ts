@@ -58,15 +58,23 @@ function getRecommendedEncodingByFileFormat(format: RecordFileFormat): "UTF8" | 
   }
 }
 
+export function decodeRecordFileContent(
+  data: Uint8Array,
+  format: RecordFileFormat,
+  option?: { autoDetect?: boolean },
+): string {
+  return decodeText(data, {
+    encoding: getRecommendedEncodingByFileFormat(format),
+    autoDetect: option?.autoDetect,
+  });
+}
+
 export function importRecordFromBuffer(
   data: Uint8Array,
   format: RecordFileFormat,
   option?: { autoDetect?: boolean },
 ): Record | Error {
-  const text = decodeText(data, {
-    encoding: getRecommendedEncodingByFileFormat(format),
-    autoDetect: option?.autoDetect,
-  });
+  const text = decodeRecordFileContent(data, format, option);
   switch (format) {
     case RecordFileFormat.KIF:
     case RecordFileFormat.KIFU:
