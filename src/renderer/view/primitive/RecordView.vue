@@ -507,6 +507,9 @@ onUpdated(() => {
   padding: 2px;
 }
 .branch-side-control {
+  /* アイコンを position: absolute で配置しているため、ボタンの中身が幅を持たない。
+     縮めないようにしないと、分岐の一覧が長い時に幅が潰れる。 */
+  flex: none;
   width: 40px;
   height: 100%;
 }
