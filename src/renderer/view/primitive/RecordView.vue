@@ -98,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div v-if="showBackToMainBranch">
+        <div v-if="showBackToMainBranch" class="branch-bottom-control-wrapper">
           <button
             class="branch-bottom-control"
             :disabled="!operational"
@@ -483,12 +483,17 @@ onUpdated(() => {
 .branch-list-main {
   width: auto;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .branch-list {
+  /* 「本譜に戻る」ボタンを除いた領域だけでスクロールさせる。 */
   min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   color: var(--text-color);
+}
+.branch-bottom-control-wrapper {
+  flex: none;
 }
 .branch-bottom-control {
   width: 100%;
