@@ -128,6 +128,9 @@ describe("BoardView", () => {
       expect(wrapper.findAll(".movable-marker")).toHaveLength(0);
       await clickSquare(wrapper, new Square(5, 9));
       expect(wrapper.findAll(".movable-marker")).toHaveLength(3);
+      expect(wrapper.find(".movable-marker").attributes("style")).toContain(
+        "background-color: rgb(0, 136, 255)",
+      );
       await clickSquare(wrapper, new Square(7, 7));
       expect(wrapper.findAll(".movable-marker")).toHaveLength(1);
     });
@@ -155,6 +158,9 @@ describe("BoardView", () => {
       // 9筋は二歩、1段目は行き所なし、5九は玉がいるため除外。
       // 8筋 × 8段 - 1 = 63
       expect(wrapper.findAll(".movable-marker")).toHaveLength(63);
+      expect(wrapper.find(".movable-marker").attributes("style")).toContain(
+        "background-color: rgb(255, 72, 0)",
+      );
     });
 
     it("設定がオフの場合は表示されない", async () => {

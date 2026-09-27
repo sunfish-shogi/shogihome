@@ -223,8 +223,15 @@ export class BoardLayoutBuilder {
     return squares;
   }
 
-  private getMovableMarkers(movableSquares: Square[]): MovableMarker[] {
+  private getMovableMarkers(
+    movableSquares: Square[],
+    pointer?: Square | Piece | null,
+  ): MovableMarker[] {
     const size = this.params.movableMarker.size * this.ratio;
+    const colorStyle =
+      pointer instanceof Piece
+        ? this.params.movableMarker.fromHand
+        : this.params.movableMarker.fromBoard;
     return movableSquares.map((square) => {
       const center = this.centerOfSquare(square);
       return {
@@ -236,6 +243,7 @@ export class BoardLayoutBuilder {
           height: size + "px",
           "pointer-events": "none",
           ...this.params.movableMarker.style,
+          ...colorStyle,
         },
       };
     });
@@ -307,7 +315,7 @@ export class BoardLayoutBuilder {
       labels: this.labels,
       pieces: this.getPieces(board, dragSourceSquare),
       squares: this.getSquares(lastMove, pointer),
-      movableMarkers: this.getMovableMarkers(movableSquares),
+      movableMarkers: this.getMovableMarkers(movableSquares, pointer),
       promote,
       doNotPromote,
     };
