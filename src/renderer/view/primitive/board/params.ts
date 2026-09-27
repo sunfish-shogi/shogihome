@@ -23,7 +23,7 @@ export const boardParams = {
   },
   movableMarker: {
     size: 24,
-    style: { "background-color": "#ff0000", opacity: "0.6", "border-radius": "50%" },
+    style: { "background-color": "#0088ff", opacity: "0.8", "border-radius": "50%" },
   },
   label: {
     fontSize: 24,
