@@ -289,6 +289,7 @@ export type Texts = {
   promoteFirstVertical: string;
   promoteFirstHorizontal: string;
   enableDragAndDrop: string;
+  highlightMovableSquares: string;
   showFileAndRank: string;
   showLeftControls: string;
   showRightControls: string;

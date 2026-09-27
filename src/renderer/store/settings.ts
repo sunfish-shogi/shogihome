@@ -140,6 +140,9 @@ class AppSettingsStore {
   get enableDragAndDrop(): boolean {
     return this.merged.enableDragAndDrop;
   }
+  get highlightMovableSquares(): boolean {
+    return this.merged.highlightMovableSquares;
+  }
   get tabPaneType(): TabPaneType {
     return this.merged.tabPaneType;
   }

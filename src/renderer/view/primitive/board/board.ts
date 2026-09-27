@@ -8,6 +8,7 @@ import {
   BoardLabel,
   BoardPiece,
   BoardSquare,
+  MovableMarker,
   Promotion,
 } from "./layout.js";
 import { Point } from "@/common/assets/geometry.js";
@@ -222,6 +223,35 @@ export class BoardLayoutBuilder {
     return squares;
   }
 
+  private getMovableMarkers(
+    movableSquares: Square[],
+    pointer?: Square | Piece | null,
+  ): MovableMarker[] {
+    const size = this.params.movableMarker.size * this.ratio;
+    const glow = this.params.movableMarker.glow;
+    const boxShadow = `0 0 ${glow.blur * this.ratio}px ${glow.spread * this.ratio}px ${glow.color}`;
+    const colorStyle =
+      pointer instanceof Piece
+        ? this.params.movableMarker.fromHand
+        : this.params.movableMarker.fromBoard;
+    return movableSquares.map((square) => {
+      const center = this.centerOfSquare(square);
+      return {
+        id: square.index,
+        style: {
+          left: center.x - size / 2 + "px",
+          top: center.y - size / 2 + "px",
+          width: size + "px",
+          height: size + "px",
+          "pointer-events": "none",
+          "box-shadow": boxShadow,
+          ...this.params.movableMarker.style,
+          ...colorStyle,
+        },
+      };
+    });
+  }
+
   private getPromotionControls(move?: Move | null): [Promotion | null, Promotion | null] {
     if (!move) {
       return [null, null];
@@ -280,6 +310,7 @@ export class BoardLayoutBuilder {
     pointer?: Square | Piece | null,
     reservedMoveForPromotion?: Move | null,
     dragSourceSquare?: Square,
+    movableSquares: Square[] = [],
   ): Board {
     const [promote, doNotPromote] = this.getPromotionControls(reservedMoveForPromotion);
     return {
@@ -287,6 +318,7 @@ export class BoardLayoutBuilder {
       labels: this.labels,
       pieces: this.getPieces(board, dragSourceSquare),
       squares: this.getSquares(lastMove, pointer),
+      movableMarkers: this.getMovableMarkers(movableSquares, pointer),
       promote,
       doNotPromote,
     };
