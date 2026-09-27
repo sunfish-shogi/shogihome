@@ -22,8 +22,10 @@ export const boardParams = {
     lastMoveFrom: { "background-color": "#44cc44", opacity: "0.4" },
   },
   movableMarker: {
-    size: 22,
+    size: 20,
     style: { "border-radius": "50%" },
+    // 周囲の白いぼかし
+    glow: { blur: 6, spread: 1, color: "rgba(255, 255, 255, 0.6)" },
     // 盤上の駒を選択した場合と持ち駒を選択した場合で、それぞれの選択ハイライトの色に合わせる。
     fromBoard: { "background-color": "#0088ff" },
     fromHand: { "background-color": "#ff4800" },

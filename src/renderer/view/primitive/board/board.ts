@@ -228,6 +228,8 @@ export class BoardLayoutBuilder {
     pointer?: Square | Piece | null,
   ): MovableMarker[] {
     const size = this.params.movableMarker.size * this.ratio;
+    const glow = this.params.movableMarker.glow;
+    const boxShadow = `0 0 ${glow.blur * this.ratio}px ${glow.spread * this.ratio}px ${glow.color}`;
     const colorStyle =
       pointer instanceof Piece
         ? this.params.movableMarker.fromHand
@@ -242,6 +244,7 @@ export class BoardLayoutBuilder {
           width: size + "px",
           height: size + "px",
           "pointer-events": "none",
+          "box-shadow": boxShadow,
           ...this.params.movableMarker.style,
           ...colorStyle,
         },
