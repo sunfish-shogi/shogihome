@@ -152,6 +152,7 @@ export const webAPI: Bridge = {
       ...defaultAppSettings(),
       promotionSelectorStyle: PromotionSelectorStyle.VERTICAL_PREFER_BOTTOM,
       enableDragAndDrop: false,
+      engineTimeoutSeconds: 30,
     };
     const json = localStorage.getItem(STORAGE_KEY.APP_SETTINGS);
     if (!json) {

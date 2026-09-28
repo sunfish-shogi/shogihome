@@ -908,7 +908,7 @@ export const ja: Texts = {
     return `予期せぬURLへのリクエストです。このエラーメッセージを開発者に報告してください。 [${url}]`;
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
-    return `${seconds}秒以内にエンジンから応答がありませんでした。エンジンの起動が重い場合はアプリ設定で待ち時間を延長してください。`;
+    return `${seconds}秒以内にエンジンから応答がありませんでした。エンジンの起動が重い場合はアプリ設定の「USIプロトコル」タブで待ち時間を延長してください。`;
   },
   stableVersionReleased(version: string) {
     return `安定版 ${version} がリリースされました！`;

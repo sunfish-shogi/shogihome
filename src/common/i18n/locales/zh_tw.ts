@@ -904,7 +904,7 @@ export const zh_tw: Texts = {
     return `無法從 URL 獲取資訊。請將該錯誤訊息告知開發者，謝謝。 [${url}]`;
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
-    return `引擎在${seconds}秒内沒有回應。若引擎的啟動時間稍長，請在設定中調整引擎最長等待時間。`;
+    return `引擎在${seconds}秒内沒有回應。若引擎的啟動時間稍長，請在設定的「USI協定」分頁中調整引擎最長等待時間。`;
   },
   stableVersionReleased(version: string) {
     return `安定版 ${version} 已經發布！`;
