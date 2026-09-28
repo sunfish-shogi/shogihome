@@ -917,7 +917,7 @@ export const vi: Texts = {
     return `URL yêu cầu ngoài dự tính. Vui lòng báo cáo lỗi này cho nhà phát triển. [${url}]`;
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
-    return `Không có phản hồi từ phần mềm sau ${seconds} giây. Vui lòng kéo dài thời gian hết giờ nếu phần mềm của bạn chậm.`;
+    return `Không có phản hồi từ phần mềm sau ${seconds} giây. Vui lòng kéo dài thời gian hết giờ trong thẻ "Định dạng USI" của cài đặt ứng dụng nếu phần mềm của bạn chậm.`;
   },
   stableVersionReleased(version: string) {
     return `Phiên bản ổn định ${version} đã ra mắt!`;

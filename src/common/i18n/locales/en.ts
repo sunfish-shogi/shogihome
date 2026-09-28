@@ -908,7 +908,7 @@ export const en: Texts = {
     return `Unexpected request URL. Please report this error message to developer. [${url}]`;
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
-    return `No response from the engine for ${seconds} seconds. Please extend the timeout in the app settings if your engine is slow.`;
+    return `No response from the engine for ${seconds} seconds. Please extend the timeout in the "USI Protocol" tab of the app settings if your engine is slow.`;
   },
   stableVersionReleased(version: string) {
     return `Stable version ${version} released!`;
