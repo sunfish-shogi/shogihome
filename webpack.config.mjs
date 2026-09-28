@@ -78,6 +78,35 @@ export default (env = {}) => {
       cache,
     },
     {
+      // WebAssembly エンジンを動かす utility プロセスのエントリ (src/background/usi/wasm/host.ts)。
+      // background と同じく tsc の出力をまとめる。
+      name: "wasm-engine-host",
+      mode: "production",
+      entry: "./dist/src/background/usi/wasm/host.js",
+      target: "electron-main",
+      output: {
+        filename: "wasm-engine-host.js",
+        path: import.meta.dirname + "/dist/packed",
+      },
+      externals: ["electron"],
+      module: {
+        parser: {
+          javascript: {
+            // UMD のグルーコードに渡す require は、実行時に決まるパスを基準に createRequire で作る。
+            // webpack は createRequire の呼び出しを解析して置き換え、引数が定数でないと undefined に
+            // してしまうため、解析させずに Node の実装をそのまま呼ぶ。
+            createRequire: false,
+          },
+        },
+      },
+      experiments: {
+        outputModule: true,
+        typescript: false,
+      },
+      optimization,
+      cache,
+    },
+    {
       name: "preload",
       mode: "production",
       entry: "./src/renderer/ipc/preload.ts",

@@ -1,3 +1,4 @@
+import { useEnginePackageStore } from "@/renderer/store/engine_package.js";
 import { watch } from "vue";
 import { SpecialMoveType } from "tsshogi";
 import { useStore } from "@/renderer/store/index.js";
@@ -359,6 +360,9 @@ export function setup(): void {
   bridge.onUSIInfo((sessionID: number, usi: string, json: string) => {
     const info = JSON.parse(json) as USIInfoCommand;
     onUSIInfo(sessionID, usi, info);
+  });
+  bridge.onEnginePackageInstallProgress((json: string) => {
+    useEnginePackageStore().updateProgress(JSON.parse(json));
   });
 
   // CSA

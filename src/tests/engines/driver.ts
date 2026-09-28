@@ -12,8 +12,8 @@ import {
   EngineInstance,
   makeParentDirs,
   validateEngineInstance,
-} from "@/renderer/wasm-engine/loader.js";
-import { EngineManifest, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
+} from "@/common/wasm-engine/loader.js";
+import { EngineManifest, parseEngineManifest } from "@/common/wasm-engine/manifest.js";
 import { builtinEngineRoots } from "@plugins/builtin_engines.js";
 
 // 検証の対象はビルドと同じ置き場所に置かれたディレクトリ全て

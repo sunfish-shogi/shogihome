@@ -66,4 +66,14 @@ describe("usi/metadata", () => {
       });
     }
   });
+
+  // ダウンロードした WebAssembly エンジンは engine.json を指す。中身はテキストだが
+  // シェルスクリプトとして扱わない。
+  it("wasm engine manifest", async () => {
+    const dir = path.join(tmpdir, "wasm-engine@v1");
+    fs.mkdirSync(dir, { recursive: true });
+    const manifestPath = path.join(dir, "engine.json");
+    fs.copyFileSync(path.resolve("public/engines/sunfish4-lite/engine.json"), manifestPath);
+    await expect(loadUSIEngineMeta(manifestPath)).resolves.toEqual({ isShellScript: false });
+  });
 });
