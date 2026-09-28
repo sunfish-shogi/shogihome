@@ -23,6 +23,8 @@ export type Config = {
   handPieceOrder: HandPieceOrder;
   kingPieceType: KingPieceType;
   pieceImages: PieceImages;
+  boardColor: string;
+  pieceStandColor: string;
   boardGridColor: string;
   boardTextureImage: string | null;
   pieceStandImage: string | null;
@@ -38,8 +40,10 @@ export type Config = {
 export function newConfig(params: {
   boardImageType: BoardImageType;
   customBoardImageURL?: string;
+  customBoardColor?: string;
   pieceStandImageType: PieceStandImageType;
   customPieceStandImageURL?: string;
+  customPieceStandColor?: string;
   handPieceOrder?: HandPieceOrder;
   pieceImageURLTemplate: string;
   kingPieceType: KingPieceType;
@@ -57,6 +61,8 @@ export function newConfig(params: {
     handPieceOrder: params.handPieceOrder ?? HandPieceOrder.STRONGER_TO_LEFT,
     kingPieceType: params.kingPieceType,
     pieceImages: getPieceTextureMap(params.pieceImageURLTemplate, params.kingPieceType),
+    boardColor: params.customBoardColor || "rgba(0, 0, 0, 0)",
+    pieceStandColor: params.customPieceStandColor || "rgba(0, 0, 0, 0)",
     boardGridColor: getBoardGridColor(params.boardImageType),
     boardTextureImage: getBoardTextureURL(params.boardImageType, params.customBoardImageURL),
     pieceStandImage: getPieceStandTextureURL(

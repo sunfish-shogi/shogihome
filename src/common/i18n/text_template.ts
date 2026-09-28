@@ -251,6 +251,7 @@ export type Texts = {
   standard: string;
   green: string;
   cherryBlossom: string;
+  selectColor: string;
   customImage: string;
   autumn: string;
   snow: string;

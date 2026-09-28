@@ -31,6 +31,12 @@ const pieceStandBackgroundColorMap = {
   [PieceStandImageType.CUSTOM_IMAGE]: "rgba(0, 0, 0, 0)",
 };
 
+function getPieceStandBackgroundColor(config: Config): string {
+  return config.pieceStandImageType === PieceStandImageType.CUSTOM_COLOR
+    ? config.pieceStandColor
+    : pieceStandBackgroundColorMap[config.pieceStandImageType];
+}
+
 export class HandLayoutBuilder {
   constructor(
     private config: Config,
@@ -62,7 +68,7 @@ export class HandLayoutBuilder {
     dragSourceType?: PieceType,
   ): Hand {
     const displayColor = this.config.flip ? reverseColor(color) : color;
-    const bgColor = pieceStandBackgroundColorMap[this.config.pieceStandImageType];
+    const bgColor = getPieceStandBackgroundColor(this.config);
     const standWidth = handParams.width * this.ratio;
     const standHeight = handParams.height * this.ratio;
     const touchAreaStyle = {
@@ -171,7 +177,7 @@ export class CompactHandLayoutBuilder {
     dragSourceType?: PieceType,
   ): Hand {
     const displayColor = this.config.flip ? reverseColor(color) : color;
-    const bgColor = pieceStandBackgroundColorMap[this.config.pieceStandImageType];
+    const bgColor = getPieceStandBackgroundColor(this.config);
     const standWidth = compactHandParams.width * this.ratio;
     const standHeight = compactHandParams.height * this.ratio;
     const touchAreaStyle = {
@@ -292,7 +298,7 @@ export class PortraitHandLayoutBuilder {
     dragSourceType?: PieceType,
   ): Hand {
     const displayColor = this.config.flip ? reverseColor(color) : color;
-    const bgColor = pieceStandBackgroundColorMap[this.config.pieceStandImageType];
+    const bgColor = getPieceStandBackgroundColor(this.config);
     const standWidth = this.params.width * this.ratio;
     const standHeight = this.params.height * this.ratio;
     const touchAreaStyle = {

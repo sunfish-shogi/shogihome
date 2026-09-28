@@ -55,6 +55,7 @@ export enum BoardImageType {
   SNOW = "snow",
   DARK_GREEN = "dark-green",
   DARK = "dark",
+  CUSTOM_COLOR = "custom-color",
   CUSTOM_IMAGE = "custom-image",
 }
 
@@ -67,6 +68,7 @@ export enum PieceStandImageType {
   SNOW = "snow",
   DARK_GREEN = "dark-green",
   DARK = "dark",
+  CUSTOM_COLOR = "custom-color",
   CUSTOM_IMAGE = "custom-image",
 }
 
@@ -200,8 +202,10 @@ export type AppSettings = {
   deletePieceImageMargin: boolean;
   boardImage: BoardImageType;
   boardImageFileURL?: string;
+  boardColor: string;
   boardGridColor: string | null;
   pieceStandImage: PieceStandImageType;
+  pieceStandColor: string;
   handPieceOrder: HandPieceOrder;
   promotionSelectorStyle: PromotionSelectorStyle;
   pieceStandImageFileURL?: string;
@@ -386,8 +390,10 @@ export function defaultAppSettings(opt?: {
     kingPieceType: KingPieceType.GYOKU_AND_OSHO,
     deletePieceImageMargin: false,
     boardImage: BoardImageType.LIGHT2,
+    boardColor: "#e0b060",
     boardGridColor: null,
     pieceStandImage: PieceStandImageType.DARK_WOOD,
+    pieceStandColor: "#8b4513",
     handPieceOrder: HandPieceOrder.STRONGER_TO_LEFT,
     promotionSelectorStyle: PromotionSelectorStyle.HORIZONTAL,
     enableTransparent: false,

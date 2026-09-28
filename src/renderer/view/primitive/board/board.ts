@@ -63,7 +63,10 @@ export class BoardLayoutBuilder {
   }
 
   private get background(): BoardBackground {
-    const bgColor = boardBackgroundColorMap[this.config.boardImageType];
+    const bgColor =
+      this.config.boardImageType === BoardImageType.CUSTOM_COLOR
+        ? this.config.boardColor
+        : boardBackgroundColorMap[this.config.boardImageType];
     const style = {
       "background-color": bgColor,
       left: "0px",

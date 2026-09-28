@@ -151,10 +151,15 @@
               { label: t.snow, value: BoardImageType.SNOW },
               { label: t.darkGreen, value: BoardImageType.DARK_GREEN },
               { label: t.dark, value: BoardImageType.DARK },
+              { label: t.selectColor, value: BoardImageType.CUSTOM_COLOR },
               { label: t.customImage, value: BoardImageType.CUSTOM_IMAGE },
             ].filter((item) => !isMobileWebApp() || item.value !== BoardImageType.CUSTOM_IMAGE)
           "
         />
+      </div>
+      <div v-show="update.boardImage === BoardImageType.CUSTOM_COLOR" class="form-item">
+        <div class="form-item-label-wide"></div>
+        <input v-model="update.boardColor" class="color-selector" type="color" />
       </div>
       <div v-show="update.boardImage === BoardImageType.CUSTOM_IMAGE" class="form-item">
         <div class="form-item-label-wide"></div>
@@ -170,7 +175,7 @@
         <ToggleButton
           v-once
           :value="!!update.boardGridColor"
-          label="色を選択"
+          :label="t.selectColor"
           @update:value="(value) => (update.boardGridColor = value ? 'black' : null)"
         />
         <input
@@ -196,10 +201,15 @@
               { label: t.snow, value: PieceStandImageType.SNOW },
               { label: t.darkGreen, value: PieceStandImageType.DARK_GREEN },
               { label: t.dark, value: PieceStandImageType.DARK },
+              { label: t.selectColor, value: PieceStandImageType.CUSTOM_COLOR },
               { label: t.customImage, value: PieceStandImageType.CUSTOM_IMAGE },
             ].filter((item) => !isMobileWebApp() || item.value !== PieceStandImageType.CUSTOM_IMAGE)
           "
         />
+      </div>
+      <div v-show="update.pieceStandImage === PieceStandImageType.CUSTOM_COLOR" class="form-item">
+        <div class="form-item-label-wide"></div>
+        <input v-model="update.pieceStandColor" class="color-selector" type="color" />
       </div>
       <div v-show="update.pieceStandImage === PieceStandImageType.CUSTOM_IMAGE" class="form-item">
         <div class="form-item-label-wide"></div>
@@ -910,9 +920,11 @@ const update = ref({
   deletePieceImageMargin: org.deletePieceImageMargin,
   boardImage: org.boardImage,
   boardImageFileURL: org.boardImageFileURL,
+  boardColor: org.boardColor,
   boardGridColor: org.boardGridColor,
   pieceStandImage: org.pieceStandImage,
   pieceStandImageFileURL: org.pieceStandImageFileURL,
+  pieceStandColor: org.pieceStandColor,
   handPieceOrder: org.handPieceOrder,
   enableTransparent: org.enableTransparent,
   boardOpacity: Math.round(org.boardOpacity * 100),

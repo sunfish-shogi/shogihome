@@ -259,6 +259,7 @@ export const ja: Texts = {
   standard: "標準",
   green: "緑",
   cherryBlossom: "桜",
+  selectColor: "色を選択",
   customImage: "カスタム画像",
   autumn: "紅葉",
   snow: "雪",
