@@ -175,7 +175,7 @@
         <ToggleButton
           v-once
           :value="!!update.boardGridColor"
-          label="色を選択"
+          :label="t.selectColor"
           @update:value="(value) => (update.boardGridColor = value ? 'black' : null)"
         />
         <input
