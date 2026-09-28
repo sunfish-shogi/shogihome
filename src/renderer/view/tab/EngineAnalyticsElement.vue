@@ -155,6 +155,8 @@
             <Icon :icon="IconType.ARROW_UP" /><span>-1</span>
           </button>
         </div>
+        <!-- 右下のボタンと重ならない位置までスクロールできるように余白を置く -->
+        <div v-if="isResearchSession && !showHeader" class="overlay-spacer"></div>
       </div>
     </div>
   </div>
@@ -477,6 +479,9 @@ button span {
 }
 .multi-pv-control > * {
   margin: 0px 0px 0px 5px;
+}
+.overlay-spacer {
+  height: 24px;
 }
 .multi-pv-control input {
   width: 40px;
