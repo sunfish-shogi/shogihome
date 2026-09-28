@@ -27,6 +27,7 @@ import { spawn } from "child_process";
 import { invoke as invokeHeadless } from "./headless/invoke.js";
 import { setProcessArgs } from "./window/ipc.js";
 import { prefetchWindowsLogicalProcessorCount } from "./proc/state.js";
+import { cleanupEnginePackagesDir } from "./usi/wasm/install.js";
 
 const args = parseProcessArgs(process.argv);
 if (args instanceof Error) {
@@ -213,6 +214,11 @@ app.whenReady().then(() => {
     return;
   }
   createWindow(onMainWindowClosed);
+
+  // 中断したエンジンのダウンロードの残骸を消す。
+  cleanupEnginePackagesDir().catch((e) => {
+    getAppLogger().error(`failed to clean up engine packages: ${e}`);
+  });
 });
 
 // Exit cleanly on request from parent process in development mode.

@@ -12,14 +12,14 @@ import {
   EngineManifest,
   MANIFEST_FILE_NAME,
   parseEngineManifest,
-} from "./manifest.js";
+} from "@/common/wasm-engine/manifest.js";
 import {
   EngineFactory,
   EngineInstance,
   makeParentDirs,
   validateEngineInstance,
   wrapUMDSource,
-} from "./loader.js";
+} from "@/common/wasm-engine/loader.js";
 
 let engine: EngineInstance | undefined;
 // モジュールの読み込みが終わるまでに届いたコマンドを保持する。

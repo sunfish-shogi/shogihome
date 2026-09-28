@@ -115,7 +115,8 @@ export type USIEngineLabels = {
   [USIEngineLabel.MATE]?: boolean;
 };
 
-export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate"): string {
+// 定義済みのタグ。タグは登録した時点の言語の文字列で保存されるため、訳語は後から変えられない。
+export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate" | "download"): string {
   switch (type) {
     case "game":
       return t.game;
@@ -123,6 +124,9 @@ export function getPredefinedUSIEngineTag(type: "game" | "research" | "mate"): s
       return t.research;
     case "mate":
       return t.mateSearch;
+    case "download":
+      // デスクトップ版でダウンロードしたエンジン (background/usi/wasm/install.ts)。
+      return t.downloadedEngineTag;
   }
 }
 

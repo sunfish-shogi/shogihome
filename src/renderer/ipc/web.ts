@@ -493,6 +493,25 @@ export const webAPI: Bridge = {
   async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string> {
     return JSON.stringify(await usiSessions.getEngineInfo(path, timeoutSeconds));
   },
+  // Web 版は組み込みのエンジンだけを使う。ダウンロードはデスクトップ版の機能。
+  async fetchEngineIndex(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async listInstalledEnginePackages(): Promise<string> {
+    return "[]";
+  },
+  async fetchEnginePackageLicenses(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async installEnginePackage(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async cancelEnginePackageInstall(): Promise<void> {
+    // 何もしない
+  },
+  async uninstallEnginePackage(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   async getUSIEngineMetadata(): Promise<string> {
     return JSON.stringify({ isShellScript: false } as USIEngineMetadata);
   },
@@ -564,6 +583,9 @@ export const webAPI: Bridge = {
   },
   onUSINoMate(callback: (sessionID: number, usi: string) => void): void {
     usiHandlers.onUSINoMate = callback;
+  },
+  onEnginePackageInstallProgress(): void {
+    // 何もしない
   },
   onUSIInfo(callback: (sessionID: number, usi: string, json: string) => void): void {
     usiHandlers.onUSIInfo = callback;

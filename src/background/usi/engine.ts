@@ -8,7 +8,8 @@ import {
 } from "@/common/settings/usi.js";
 import { Logger } from "@/background/log.js";
 import { SCORE_MATE_INFINITE, USIInfoCommand } from "@/common/game/usi.js";
-import { ChildProcess } from "./process.js";
+import { ChildProcess, EngineProcessHandle } from "./process.js";
+import { isWasmEnginePath, WasmEngineProcess } from "./wasm/process-electron.js";
 import {
   addCommand,
   Command,
@@ -190,7 +191,7 @@ const USIPonderOptionOrder = 2;
 const UserDefinedOptionOrderStart = 100;
 
 export class EngineProcess {
-  private process: ChildProcess | null = null;
+  private process: EngineProcessHandle | null = null;
   private _name = "NO NAME";
   private _author = "";
   private _engineOptions = {} as USIEngineOptions;
@@ -336,7 +337,9 @@ export class EngineProcess {
   launch(): void {
     this.logger.info("sid=%d: launch: %s", this.sessionID, this.path);
     this.setLaunchTimeout();
-    this.process = new ChildProcess(this.path);
+    this.process = isWasmEnginePath(this.path)
+      ? new WasmEngineProcess(this.path)
+      : new ChildProcess(this.path);
     this.process.on("error", this.onError.bind(this));
     this.process.on("close", this.onClose.bind(this));
     this.process.on("receive", this.onReceive.bind(this));

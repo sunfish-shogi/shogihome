@@ -2,6 +2,7 @@ docs/webapp*
 docs/third-party-licenses*
 docs/release.json
 docs/release-*.json
+docs/engine-index.json
 dist
 dev-dist
 dist_electron

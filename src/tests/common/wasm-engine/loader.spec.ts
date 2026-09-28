@@ -3,7 +3,7 @@ import {
   makeParentDirs,
   validateEngineInstance,
   wrapUMDSource,
-} from "@/renderer/wasm-engine/loader.js";
+} from "@/common/wasm-engine/loader.js";
 
 // Emscripten の FS のうち、makeParentDirs が使う部分だけを模したもの。
 function fakeFS(): EngineFS & { dirs: string[] } {
