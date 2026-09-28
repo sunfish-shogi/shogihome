@@ -7,8 +7,10 @@
         appSettings.boardImageFileURL && fileURLToCustomSchemeURL(appSettings.boardImageFileURL)
       "
       :board-image-opacity="appSettings.enableTransparent ? appSettings.boardOpacity : 1"
+      :custom-board-color="appSettings.boardColor"
       :board-grid-color="appSettings.boardGridColor || undefined"
       :piece-stand-image-type="appSettings.pieceStandImage"
+      :custom-piece-stand-color="appSettings.pieceStandColor"
       :custom-piece-stand-image-url="
         appSettings.pieceStandImageFileURL &&
         fileURLToCustomSchemeURL(appSettings.pieceStandImageFileURL)

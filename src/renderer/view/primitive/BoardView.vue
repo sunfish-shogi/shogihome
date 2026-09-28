@@ -288,6 +288,11 @@ const props = defineProps({
     required: false,
     default: undefined,
   },
+  customBoardColor: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
   boardImageOpacity: {
     type: Number,
     required: false,
@@ -311,6 +316,11 @@ const props = defineProps({
     required: true,
   },
   customPieceStandImageUrl: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
+  customPieceStandColor: {
     type: String,
     required: false,
     default: undefined,
@@ -904,8 +914,10 @@ const config = computed(() => {
   return newConfig({
     boardImageType: props.boardImageType,
     customBoardImageURL: props.customBoardImageUrl,
+    customBoardColor: props.customBoardColor,
     pieceStandImageType: props.pieceStandImageType,
     customPieceStandImageURL: props.customPieceStandImageUrl,
+    customPieceStandColor: props.customPieceStandColor,
     pieceImageURLTemplate: props.pieceImageUrlTemplate,
     kingPieceType: props.kingPieceType,
     boardImageOpacity: props.boardImageOpacity,

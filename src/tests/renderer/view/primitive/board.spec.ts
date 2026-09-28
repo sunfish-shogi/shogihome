@@ -169,4 +169,28 @@ describe("BoardView", () => {
       expect(wrapper.findAll(".movable-marker")).toHaveLength(0);
     });
   });
+
+  it("customColor", () => {
+    const wrapper = shallowMount(BoardView, {
+      props: {
+        boardImageType: BoardImageType.CUSTOM_COLOR,
+        customBoardColor: "#123456",
+        pieceStandImageType: PieceStandImageType.CUSTOM_COLOR,
+        customPieceStandColor: "#abcdef",
+        pieceImageUrlTemplate: "./piece/hitomoji/${piece}.png",
+        kingPieceType: KingPieceType.GYOKU_AND_OSHO,
+        boardLabelType: BoardLabelType.STANDARD,
+        maxSize: new RectSize(800, 600),
+        position: new Position(),
+      },
+    });
+    expect(wrapper.find(".board-background").attributes("style")).toContain(
+      "background-color: rgb(18, 52, 86)",
+    );
+    const hands = wrapper.findAll(".hand-background");
+    expect(hands).toHaveLength(2);
+    for (const hand of hands) {
+      expect(hand.attributes("style")).toContain("background-color: rgb(171, 205, 239)");
+    }
+  });
 });

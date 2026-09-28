@@ -269,6 +269,7 @@ export const vi: Texts = {
   standard: "Tiêu chuẩn",
   green: "Xanh lá",
   cherryBlossom: "Hoa anh đào",
+  selectColor: "色を選択", // TODO: Translate
   customImage: "Ảnh tùy chọn",
   autumn: "Mùa thu",
   snow: "Tuyết rơi",

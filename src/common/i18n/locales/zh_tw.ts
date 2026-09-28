@@ -266,6 +266,7 @@ export const zh_tw: Texts = {
   standard: "標準",
   green: "綠色",
   cherryBlossom: "櫻花",
+  selectColor: "色を選択", // TODO: Translate
   customImage: "自定義圖片",
   autumn: "紅葉",
   snow: "雪",

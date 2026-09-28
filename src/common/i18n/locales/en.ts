@@ -259,6 +259,7 @@ export const en: Texts = {
   standard: "Standard",
   green: "Green",
   cherryBlossom: "Cherry Blossom",
+  selectColor: "Select Color",
   customImage: "Custom Image",
   autumn: "Autumn",
   snow: "Snow",
