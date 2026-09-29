@@ -247,4 +247,24 @@ describe("wasm-engine/manifest", () => {
       parseEngineManifest({ ...validManifest(), requiresCrossOriginIsolation: "yes" }),
     ).toThrow(/must be a boolean/);
   });
+
+  // 一覧で省略せずに表示するため、長さを制限する。
+  it("badge", () => {
+    expect(parseEngineManifest(validManifest()).badge).toBeUndefined();
+    expect(parseEngineManifest({ ...validManifest(), badge: "65MB" }).badge).toBe("65MB");
+    expect(parseEngineManifest({ ...validManifest(), badge: "12345678" }).badge).toBe("12345678");
+    // サロゲートペアは 1 文字と数える。
+    expect(parseEngineManifest({ ...validManifest(), badge: "🐟🐟🐟🐟🐟🐟🐟🐟" }).badge).toBe(
+      "🐟🐟🐟🐟🐟🐟🐟🐟",
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), badge: "123456789" })).toThrow(
+      /manifest.badge must be at most 8 characters/,
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), badge: "" })).toThrow(
+      /manifest.badge must be a non-empty string/,
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), badge: 65 })).toThrow(
+      /manifest.badge must be a non-empty string/,
+    );
+  });
 });

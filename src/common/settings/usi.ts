@@ -159,6 +159,9 @@ export type USIEngine = {
   name: string;
   defaultName: string;
   author: string;
+  // エンジン選択の一覧で名前の横に小さく添える目印。組み込みの WebAssembly エンジンのみ。
+  // マニフェストから毎回作り直すため、保存された値は使わない。
+  badge?: string;
   path: string;
   options: { [name: string]: USIEngineOption };
   labels?: USIEngineLabels; // deprecated: use tags instead

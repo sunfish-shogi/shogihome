@@ -1,7 +1,10 @@
 <template>
   <div ref="root" class="root">
     <div class="main row" @click="show = !show">
-      <div class="current item">{{ items.find((item) => item.value === value)?.label }}</div>
+      <div class="current item">
+        <span class="label">{{ current?.label }}</span>
+        <span v-if="current?.badge" class="badge">{{ current.badge }}</span>
+      </div>
       <Icon :icon="IconType.ARROW_DROP" />
     </div>
     <div v-show="show" class="dropdown">
@@ -26,7 +29,8 @@
           class="item"
           @click="onSelect(item.value)"
         >
-          {{ item.label }}
+          <span class="label">{{ item.label }}</span>
+          <span v-if="item.badge" class="badge">{{ item.badge }}</span>
         </li>
       </ul>
       <div v-if="!filteredItems.length" class="not-found">Not Found</div>
@@ -54,6 +58,8 @@ const props = defineProps({
         label: string;
         value: string;
         tags?: string[];
+        // 名前の横に小さく添える目印。短い文字列を想定し、省略せず常に全文を表示する。
+        badge?: string;
       }[]
     >,
     required: true,
@@ -70,6 +76,8 @@ const emit = defineEmits<{
 const root = ref<HTMLElement | null>();
 const show = ref(false);
 const tagStates = reactive(new Set<string>());
+
+const current = computed(() => props.items.find((item) => item.value === props.value));
 
 const tags = computed(() => {
   return props.tags.map((tag) => {
@@ -145,6 +153,7 @@ onBeforeUnmount(() => {
 }
 .main > .current {
   width: 100%;
+  min-width: 0;
 }
 .main > .icon {
   width: auto;
@@ -171,6 +180,22 @@ onBeforeUnmount(() => {
   white-space: nowrap;
   overflow: hidden;
   user-select: none;
+}
+.item {
+  display: flex;
+  align-items: baseline;
+}
+.item > .label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* 幅が足りない場合は名前の側を省略し、badge は常に全文を表示する。 */
+.item > .badge {
+  flex-shrink: 0;
+  margin-left: 0.5em;
+  font-size: 0.8em;
+  opacity: 0.7;
 }
 ul {
   list-style: none;

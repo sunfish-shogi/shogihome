@@ -141,6 +141,7 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     // 同じ名前になり、一覧で見分けが付かなくなる。
     defaultName: preset.displayName,
     author: manifest.author,
+    badge: manifest.badge,
     path: enginePathOf(dir),
     options: buildOptions(manifest, preset.id),
     tags: preset.tags?.map(getPredefinedUSIEngineTag),
