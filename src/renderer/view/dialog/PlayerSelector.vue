@@ -110,7 +110,12 @@ const listItems = computed(() => {
     items.push({ label: t.human, value: uri.ES_HUMAN, tags: [getPredefinedUSIEngineTag("game")] });
   }
   for (const engine of props.engines.engineList) {
-    items.push({ label: engine.name, value: engine.uri, tags: engine.tags });
+    items.push({
+      label: engine.name,
+      value: engine.uri,
+      tags: engine.tags,
+      badge: engine.badge,
+    });
   }
   if (props.containsBasicEngines) {
     for (const playerURI of uri.ES_BASIC_ENGINE_LIST) {

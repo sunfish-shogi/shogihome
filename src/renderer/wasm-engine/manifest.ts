@@ -15,6 +15,11 @@ export const CROSS_ORIGIN_ISOLATION_REQUIRED = "cross-origin isolation is requir
 
 export const MANIFEST_FILE_NAME = "engine.json";
 
+// badge の最大文字数。スマホの縦画面でもエンジン名の横に収まる長さにする。
+// 省略して全文を後から見せる手段 (マウスオーバーなど) はタッチ端末に無いため、
+// 常に全文を表示できる長さに制限する。
+export const MAX_BADGE_LENGTH = 8;
+
 // グルーコードの出力形式。
 // esm は -sEXPORT_ES6=1 の出力で、そのまま動的 import() できる。
 // umd は -sEXPORT_ES6 無しの出力 (YaneuraOu の配布物がこれ) で、
@@ -81,6 +86,8 @@ export type EngineManifest = {
   assetBaseURL?: string;
   name: string;
   author: string;
+  // エンジン選択の一覧で名前の横に小さく添える目印 (例: "65MB")。全プリセットで共有する。
+  badge?: string;
   // スレッドを使うエンジン (-pthread) は SharedArrayBuffer を要求するため、
   // ページが cross-origin isolated でないと起動できない。
   // 宣言しておくと、モジュールを生成する前に確認して即座に失敗できる。
@@ -285,6 +292,14 @@ export function parseEngineManifest(json: unknown): EngineManifest {
       fail(`manifest.assetBaseURL must not have a query or fragment: ${text}`);
     }
     manifest.assetBaseURL = text;
+  }
+  if (record.badge !== undefined) {
+    const badge = asString(record.badge, "manifest.badge");
+    // サロゲートペアを 1 文字と数えるため、コードポイント単位で数える。
+    if ([...badge].length > MAX_BADGE_LENGTH) {
+      fail(`manifest.badge must be at most ${MAX_BADGE_LENGTH} characters: ${badge}`);
+    }
+    manifest.badge = badge;
   }
   if (record.requiresCrossOriginIsolation !== undefined) {
     if (typeof record.requiresCrossOriginIsolation !== "boolean") {
