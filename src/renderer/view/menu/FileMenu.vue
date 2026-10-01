@@ -31,6 +31,14 @@
             <Icon :icon="IconType.STOP" />
             <div class="label">{{ t.endResearch }}</div>
           </button>
+          <button v-if="states.mateSearch" @click="onMateSearch">
+            <Icon :icon="IconType.MATE_SEARCH" />
+            <div class="label">{{ t.mateSearch }}</div>
+          </button>
+          <button v-if="states.stopMateSearch" class="close" @click="onStopMateSearch">
+            <Icon :icon="IconType.END" />
+            <div class="label">{{ t.stopMateSearch }}</div>
+          </button>
         </span>
       </div>
       <div class="group">
@@ -209,6 +217,14 @@ const onStopResearch = () => {
   store.stopResearch();
   emit("close");
 };
+const onMateSearch = () => {
+  store.showMateSearchDialog();
+  emit("close");
+};
+const onStopMateSearch = () => {
+  store.stopMateSearch();
+  emit("close");
+};
 const onNewFile = () => {
   if (isMobileWebApp()) {
     isInitialPositionMenuVisible.value = true;
@@ -311,6 +327,8 @@ const states = computed(() => {
     game: store.appState === AppState.NORMAL,
     stopGame: store.appState === AppState.GAME,
     research: store.researchState === ResearchState.IDLE,
+    mateSearch: store.appState === AppState.NORMAL,
+    stopMateSearch: store.appState === AppState.MATE_SEARCH,
     newFile: store.appState === AppState.NORMAL,
     open: store.appState === AppState.NORMAL,
     save: store.appState === AppState.NORMAL,

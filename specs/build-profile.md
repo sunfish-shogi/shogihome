@@ -63,6 +63,9 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 | `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須         |
 | `license.thirdPartyURL`          | 本家    | npm の依存のライセンス一覧の URL                                 |
 
+`features.mobileSearchTab` を有効にすると、モバイルウェブのメニューに「検討」と「詰み探索」の
+ボタンも出る。どちらもエンジンの読み筋を「思考」タブで見せる機能のため、同じ項目で切り替える。
+
 ### 検証
 
 **知らないキーがあればビルドを失敗させる。** 書き間違いを黙って無視すると、設定したつもりの
