@@ -75,7 +75,7 @@
 // モバイル向けの局面編集ダイアログ。
 //
 // スマートフォンの縦画面でも盤を大きく表示できるよう、PC 版のダイアログから操作を厳選している。
-// 置くのは「初期化・手番変更」「元に戻す・やり直す」「コピー・貼り付け」の 1 行分だけで、
+// 置くのは「初期化・手番変更」「元に戻す・やり直す」「コピー・貼り付け」の 6 つだけで、
 // 駒の枚数変更は使用頻度の割に場所を取るため置かない。
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { t } from "@/common/i18n";
@@ -95,7 +95,8 @@ import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
 import { usePositionEditor } from "./position_editing";
 
 const headerHeight = 40;
-const toolsHeight = 52;
+// 3 列 2 段 (42px × 2 + 隙間・余白)
+const toolsHeight = 93;
 const sideWidth = 180;
 
 // iOS の多くのバージョンでは safe-area-inset-bottom が 21px になる。
@@ -216,7 +217,6 @@ dialog:not(.landscape) .header {
 }
 dialog:not(.landscape) .tools {
   order: 2;
-  height: 52px;
 }
 .landscape .board-area {
   align-items: flex-start;
@@ -279,36 +279,65 @@ dialog:not(.landscape) .tools {
   height: 20px;
   width: 20px;
 }
+/* 縦画面では横幅を確保するため 3 列 2 段に並べる。
+   ボタンは対になるもの (初期化/手番変更, 元に戻す/やり直す, コピー/貼り付け) を縦に揃える。 */
 .tools {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 42px);
+  grid-auto-flow: column;
   gap: 3px;
   padding: 3px 4px;
   box-sizing: border-box;
 }
-.landscape .tools {
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 52px;
-}
 .tool-button {
   min-width: 0;
   margin: 0;
-  padding: 2px;
+  padding: 2px 4px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 4px;
 }
 .tool-button .icon {
+  flex-shrink: 0;
+  height: 22px;
+  width: 22px;
+}
+.tool-button .label {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.15;
+  text-align: left;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+/* 横画面では盤の右側に 2 列で並べる。 */
+.landscape .tools {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: none;
+  grid-auto-rows: 52px;
+  grid-auto-flow: row;
+}
+.landscape .tool-button {
+  padding: 2px;
+  flex-direction: column;
+  gap: 2px;
+}
+.landscape .tool-button .icon {
   height: 24px;
   width: 24px;
 }
-.tool-button .label {
+.landscape .tool-button .label {
   max-width: 100%;
   font-size: 10px;
-  margin-top: 2px;
+  text-align: center;
+  display: block;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 </style>
