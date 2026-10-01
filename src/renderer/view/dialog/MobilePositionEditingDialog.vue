@@ -40,11 +40,11 @@
     </div>
     <div class="side">
       <div class="header">
-        <button class="tool-button close" @click="onCancel">
+        <button class="tool-button close cancel" :aria-label="t.cancel" @click="onCancel">
           <Icon :icon="IconType.CLOSE" />
           <span class="label">{{ t.cancel }}</span>
         </button>
-        <button class="tool-button" @click="onOk">
+        <button class="tool-button ok" @click="onOk">
           <Icon :icon="IconType.CHECK" />
           <span class="label">{{ t.ok }}</span>
         </button>
@@ -227,17 +227,29 @@ dialog:not(.landscape) .tools {
   display: flex;
   flex-direction: column;
 }
-/* キャンセル / OK はツールと同じ見た目のボタンを等幅で並べる。 */
+/* キャンセル / OK はツールと同じ見た目のボタンにする。
+   縦画面ではすぐ下に後手の駒台が横に広がるため、誤操作を避けるようにキャンセルはアイコンだけの
+   小さなボタンにして左端 (駒台ではなく対局者名の上) に置き、OK はツールの右の列に揃える。 */
 .header {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 48px 1fr calc((100% - 6px) / 3);
   grid-template-rows: 42px;
   gap: 3px;
   padding: 3px 4px 0 4px;
   box-sizing: border-box;
 }
+.header .ok {
+  grid-column: 3;
+}
+dialog:not(.landscape) .header .cancel .label {
+  display: none;
+}
 .landscape .header {
+  grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 52px;
+}
+.landscape .header .ok {
+  grid-column: auto;
 }
 /* 縦画面では横幅を確保するため 3 列 2 段に並べる。
    ボタンは対になるもの (初期化/手番変更, 元に戻す/やり直す, コピー/貼り付け) を縦に揃える。 */
