@@ -93,10 +93,13 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
 import { usePositionEditor } from "./position_editing";
 
-// 1 段 (42px + 余白)
-const headerHeight = 45;
-// 3 列 2 段 (42px × 2 + 隙間・余白)
-const toolsHeight = 93;
+// 画面の外周の余白と、ヘッダー・盤・ツールの間の余白。(CSS と同じ値)
+const pagePadding = 8;
+const sectionGap = 8;
+// 1 段 (42px)
+const headerHeight = 42;
+// 2 段 (42px × 2 + 隙間)
+const toolsHeight = 87;
 const sideWidth = 180;
 
 // iOS の多くのバージョンでは safe-area-inset-bottom が 21px になる。
@@ -125,11 +128,12 @@ const updateSize = () => {
 const landscape = computed(() => windowSize.width > windowSize.height);
 
 const boardMaxSize = computed(() => {
-  const height = windowSize.height - safeAreaMarginY;
+  const width = windowSize.width - pagePadding * 2;
+  const height = windowSize.height - safeAreaMarginY - pagePadding * 2;
   if (landscape.value) {
-    return new RectSize(windowSize.width - sideWidth, height);
+    return new RectSize(width - sideWidth - sectionGap, height);
   }
-  return new RectSize(windowSize.width, height - headerHeight - toolsHeight);
+  return new RectSize(width, height - headerHeight - toolsHeight - sectionGap * 2);
 });
 
 const layoutType = computed(() => {
@@ -188,7 +192,7 @@ dialog.mobile-position-editing {
   max-width: 100vw;
   max-height: 100vh;
   margin: 0;
-  padding: 0;
+  padding: 8px;
   border: none;
   box-sizing: border-box;
   display: flex;
@@ -214,15 +218,18 @@ dialog:not(.landscape) .side {
 }
 dialog:not(.landscape) .header {
   order: 0;
+  margin-bottom: 8px;
 }
 dialog:not(.landscape) .tools {
   order: 2;
+  margin-top: 8px;
 }
 .landscape .board-area {
   align-items: flex-start;
 }
 .landscape .side {
   width: 180px;
+  margin-left: 8px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -235,8 +242,6 @@ dialog:not(.landscape) .tools {
   grid-template-columns: 48px 1fr calc((100% - 6px) / 3);
   grid-template-rows: 42px;
   gap: 3px;
-  padding: 3px 4px 0 4px;
-  box-sizing: border-box;
 }
 .header .ok {
   grid-column: 3;
@@ -247,6 +252,7 @@ dialog:not(.landscape) .header .cancel .label {
 .landscape .header {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 52px;
+  margin-bottom: 3px;
 }
 .landscape .header .ok {
   grid-column: auto;
@@ -259,8 +265,6 @@ dialog:not(.landscape) .header .cancel .label {
   grid-template-rows: repeat(2, 42px);
   grid-auto-flow: column;
   gap: 3px;
-  padding: 3px 4px;
-  box-sizing: border-box;
 }
 .tool-button {
   min-width: 0;
