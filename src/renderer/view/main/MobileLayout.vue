@@ -174,7 +174,7 @@ import { isIOS } from "@/renderer/helpers/env";
 import { IconType } from "@/renderer/assets/icons";
 import { buildProfile } from "virtual:shogihome/build-profile";
 import { useStore } from "@/renderer/store/index.js";
-import { ResearchState } from "@/common/control/state.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;
@@ -219,13 +219,25 @@ const bottomUIType = ref(BottomUIType.RECORD);
 const sideUIType = ref(SideUIType.RECORD);
 
 if (showSearchTab) {
+  const showSearchView = () => {
+    bottomUIType.value = BottomUIType.SEARCH;
+    sideUIType.value = SideUIType.SEARCH;
+  };
   watch(
     () => store.researchState,
     (researchState) => {
       // 検討を開始した時に思考タブへ切り替える。
       if (researchState === ResearchState.RUNNING) {
-        bottomUIType.value = BottomUIType.SEARCH;
-        sideUIType.value = SideUIType.SEARCH;
+        showSearchView();
+      }
+    },
+  );
+  watch(
+    () => store.appState,
+    (appState) => {
+      // 詰み探索を開始した時も思考タブへ切り替える。
+      if (appState === AppState.MATE_SEARCH) {
+        showSearchView();
       }
     },
   );
