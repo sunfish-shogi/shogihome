@@ -38,10 +38,6 @@
           <Icon :icon="IconType.FILE" />
           <div class="label">{{ t.clear }}</div>
         </button>
-        <button v-if="isMobileWebApp()" :disabled="!states.setupPosition" @click="onSetupPosition">
-          <Icon :icon="IconType.EDIT" />
-          <div class="label">{{ t.setupPosition }}</div>
-        </button>
         <button :disabled="!states.open" @click="onOpen">
           <Icon :icon="IconType.OPEN" />
           <div class="label">{{ t.open }}</div>
@@ -77,6 +73,10 @@
         <button v-if="isNative()" :disabled="!states.loadRemoteFile" @click="onLoadRemoteFile">
           <Icon :icon="IconType.INTERNET" />
           <div class="label">{{ t.loadRecordFromWeb }}</div>
+        </button>
+        <button v-if="isMobileWebApp()" :disabled="!states.setupPosition" @click="onSetupPosition">
+          <Icon :icon="IconType.EDIT" />
+          <div class="label">{{ t.setupPosition }}</div>
         </button>
         <button :disabled="!states.share" @click="onShare">
           <Icon :icon="IconType.SHARE" />
