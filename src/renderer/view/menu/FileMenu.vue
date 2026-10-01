@@ -22,7 +22,7 @@
           <Icon :icon="IconType.STOP" />
           <div class="label">{{ t.stopGame }}</div>
         </button>
-        <span v-if="buildProfile.features.mobileSearchTab">
+        <template v-if="buildProfile.features.mobileSearchTab">
           <button v-if="states.research" @click="onResearch">
             <Icon :icon="IconType.RESEARCH" />
             <div class="label">{{ t.research }}</div>
@@ -39,7 +39,7 @@
             <Icon :icon="IconType.END" />
             <div class="label">{{ t.stopMateSearch }}</div>
           </button>
-        </span>
+        </template>
       </div>
       <div class="group">
         <button :disabled="!states.newFile" @click="onNewFile">
