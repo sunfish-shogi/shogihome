@@ -40,12 +40,11 @@
     </div>
     <div class="side">
       <div class="header">
-        <button class="header-button close" @click="onCancel">
+        <button class="tool-button close" @click="onCancel">
           <Icon :icon="IconType.CLOSE" />
           <span class="label">{{ t.cancel }}</span>
         </button>
-        <span class="title">{{ t.setupPosition }}</span>
-        <button class="header-button" @click="onOk">
+        <button class="tool-button" @click="onOk">
           <Icon :icon="IconType.CHECK" />
           <span class="label">{{ t.ok }}</span>
         </button>
@@ -94,7 +93,8 @@ import Icon from "@/renderer/view/primitive/Icon.vue";
 import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
 import { usePositionEditor } from "./position_editing";
 
-const headerHeight = 40;
+// 1 段 (42px + 余白)
+const headerHeight = 45;
 // 3 列 2 段 (42px × 2 + 隙間・余白)
 const toolsHeight = 93;
 const sideWidth = 180;
@@ -227,57 +227,17 @@ dialog:not(.landscape) .tools {
   display: flex;
   flex-direction: column;
 }
+/* キャンセル / OK はツールと同じ見た目のボタンを等幅で並べる。 */
 .header {
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-  padding: 0 4px;
-}
-.header .title {
-  flex: 1;
-  min-width: 0;
-  font-size: 14px;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.landscape .header .title {
-  display: none;
-}
-.landscape .header {
-  height: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 42px;
   gap: 3px;
   padding: 3px 4px 0 4px;
+  box-sizing: border-box;
 }
-.landscape .header .header-button {
-  flex: 1;
-  min-width: 0;
-  height: 52px;
-  padding: 2px;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 10px;
-}
-.header-button {
-  height: 32px;
-  margin: 0;
-  padding: 0 8px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.header-button .icon {
-  flex-shrink: 0;
-  height: 20px;
-  width: 20px;
+.landscape .header {
+  grid-template-rows: 52px;
 }
 /* 縦画面では横幅を確保するため 3 列 2 段に並べる。
    ボタンは対になるもの (初期化/手番変更, 元に戻す/やり直す, コピー/貼り付け) を縦に揃える。 */
