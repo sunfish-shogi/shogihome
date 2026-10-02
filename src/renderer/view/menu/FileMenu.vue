@@ -74,6 +74,10 @@
           <Icon :icon="IconType.INTERNET" />
           <div class="label">{{ t.loadRecordFromWeb }}</div>
         </button>
+        <button v-if="isMobileWebApp()" :disabled="!states.setupPosition" @click="onSetupPosition">
+          <Icon :icon="IconType.EDIT" />
+          <div class="label">{{ t.setupPosition }}</div>
+        </button>
         <button :disabled="!states.share" @click="onShare">
           <Icon :icon="IconType.SHARE" />
           <div class="label">{{ t.share }}</div>
@@ -221,6 +225,10 @@ const onSelectInitialPosition = (sfen: string) => {
   store.initializePositionBySFEN(sfen);
   emit("close");
 };
+const onSetupPosition = () => {
+  store.showPositionEditingDialog();
+  emit("close");
+};
 const onOpen = () => {
   store.openRecord();
   emit("close");
@@ -312,6 +320,7 @@ const states = computed(() => {
     stopGame: store.appState === AppState.GAME,
     research: store.researchState === ResearchState.IDLE,
     newFile: store.appState === AppState.NORMAL,
+    setupPosition: store.appState === AppState.NORMAL,
     open: store.appState === AppState.NORMAL,
     save: store.appState === AppState.NORMAL,
     saveAs: store.appState === AppState.NORMAL,

@@ -31,7 +31,10 @@
     <AddBookMovesDialog v-if="store.appState === AppState.ADD_BOOK_MOVES_DIALOG" />
     <ResetBookDialog v-if="store.appState === AppState.RESET_BOOK_DIALOG" />
     <BookPropertiesDialog v-if="store.appState === AppState.BOOK_PROPERTIES_DIALOG" />
-    <PositionEditingDialog v-if="store.appState === AppState.POSITION_EDITING_DIALOG" />
+    <MobilePositionEditingDialog
+      v-if="store.appState === AppState.POSITION_EDITING_DIALOG && isMobileWebApp()"
+    />
+    <PositionEditingDialog v-else-if="store.appState === AppState.POSITION_EDITING_DIALOG" />
     <ResearchDialog v-if="store.researchState === ResearchState.STARTUP_DIALOG" />
     <SearchDuplicatePositionsDialog
       v-if="store.appState === AppState.SEARCH_DUPLICATE_POSITIONS_DIALOG"
@@ -129,6 +132,7 @@ import BatchConversionDialog from "./dialog/BatchConversionDialog.vue";
 import LaunchUSIEngineDialog from "./dialog/LaunchUSIEngineDialog.vue";
 import ConnectToCSAServerDialog from "./dialog/ConnectToCSAServerDialog.vue";
 import PositionEditingDialog from "./dialog/PositionEditingDialog.vue";
+import MobilePositionEditingDialog from "./dialog/MobilePositionEditingDialog.vue";
 import LoadRemoteFileDialog from "./dialog/LoadRemoteFileDialog.vue";
 import ShareDialog from "./dialog/ShareDialog.vue";
 import AddBookMovesDialog from "./dialog/AddBookMovesDialog.vue";

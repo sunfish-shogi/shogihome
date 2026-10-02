@@ -130,20 +130,13 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { t } from "@/common/i18n";
 import { useStore } from "@/renderer/store";
-import { useErrorStore } from "@/renderer/store/error";
 import { useAppSettings } from "@/renderer/store/settings";
 import { RectSize } from "@/common/assets/geometry";
 import {
   countExistingPieces,
-  exportBOD,
-  importKIF,
   isPromotable,
-  Position,
-  PositionChange,
   PieceType,
   promotedPieceType,
-  Record,
-  reverseColor,
   standardPieceName,
 } from "tsshogi";
 import { BoardLayoutType } from "@/common/settings/layout";
@@ -157,6 +150,7 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
+import { usePositionEditor } from "./position_editing";
 
 const store = useStore();
 const appSettings = useAppSettings();
@@ -166,11 +160,20 @@ const dialogFrame = ref<InstanceType<typeof DialogFrame>>();
 // body ではなくこのダイアログの中へテレポートしないとダイアログの背面に隠れてしまう。
 const ghostTeleportTarget = computed(() => dialogFrame.value?.dialog ?? "body");
 
-const position = ref(store.record.position.clone());
-const history = ref([position.value.sfen]);
-const historyIndex = ref(0);
-const canUndo = computed(() => historyIndex.value > 0);
-const canRedo = computed(() => historyIndex.value < history.value.length - 1);
+const {
+  position,
+  canUndo,
+  canRedo,
+  commitPosition,
+  undo,
+  redo,
+  edit: onEdit,
+  changeTurn: onChangeTurn,
+  setSFEN: onSelectPreset,
+  copySFEN: onCopySFEN,
+  copyBOD: onCopyBOD,
+  paste: onPaste,
+} = usePositionEditor(store.record.position);
 const isInitialPositionMenuVisible = ref(false);
 const destination = ref<PieceAdditionDestination>(appSettings.pieceAdditionDestination);
 
@@ -227,28 +230,6 @@ const currentCounts = computed(() => {
   );
 });
 
-const commitPosition = (newPosition: Position) => {
-  history.value = [...history.value.slice(0, historyIndex.value + 1), newPosition.sfen];
-  historyIndex.value = history.value.length - 1;
-  position.value = newPosition;
-};
-
-const undo = () => {
-  if (!canUndo.value) {
-    return;
-  }
-  historyIndex.value--;
-  position.value = Position.newBySFEN(history.value[historyIndex.value]) as Position;
-};
-
-const redo = () => {
-  if (!canRedo.value) {
-    return;
-  }
-  historyIndex.value++;
-  position.value = Position.newBySFEN(history.value[historyIndex.value]) as Position;
-};
-
 const applyCounts = (pieceSet: PieceSet) => {
   const cloned = position.value.clone();
   applyPieceSet(cloned, pieceSet, destination.value);
@@ -266,52 +247,6 @@ const setStandardCounts = () => applyCounts(standardCounts);
 
 const setAllZero = () => {
   applyCounts(Object.fromEntries(pieceTypes.map((pieceType) => [pieceType, 0])) as PieceSet);
-};
-
-const onEdit = (changes: PositionChange[]) => {
-  const cloned = position.value.clone();
-  for (const change of changes) {
-    cloned.edit(change);
-  }
-  commitPosition(cloned);
-};
-
-const onChangeTurn = () => {
-  const cloned = position.value.clone();
-  cloned.setColor(reverseColor(cloned.color));
-  commitPosition(cloned);
-};
-
-const onSelectPreset = (sfen: string) => {
-  const newPosition = Position.newBySFEN(sfen);
-  if (newPosition) {
-    commitPosition(newPosition);
-  }
-};
-
-const onCopySFEN = () => {
-  navigator.clipboard.writeText(position.value.sfen);
-};
-
-const onCopyBOD = () => {
-  navigator.clipboard.writeText(exportBOD(new Record(position.value)));
-};
-
-const onPaste = async () => {
-  const text = (await navigator.clipboard.readText()).trim();
-  if (!text) {
-    return;
-  }
-  if (Position.isValidSFEN(text)) {
-    commitPosition(Position.newBySFEN(text) as Position);
-    return;
-  }
-  const record = importKIF(text);
-  if (!(record instanceof Error)) {
-    commitPosition(record.position.clone());
-    return;
-  }
-  useErrorStore().add(new Error(t.failedToDetectRecordFormat));
 };
 
 const saveDialogSettings = () => {
