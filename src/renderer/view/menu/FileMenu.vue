@@ -22,7 +22,7 @@
           <Icon :icon="IconType.STOP" />
           <div class="label">{{ t.stopGame }}</div>
         </button>
-        <template v-if="buildProfile.features.mobileSearchTab">
+        <template v-if="buildProfile.features.mobileResearch">
           <button v-if="states.research" @click="onResearch">
             <Icon :icon="IconType.RESEARCH" />
             <div class="label">{{ t.research }}</div>
@@ -31,6 +31,8 @@
             <Icon :icon="IconType.STOP" />
             <div class="label">{{ t.endResearch }}</div>
           </button>
+        </template>
+        <template v-if="buildProfile.features.mobileMateSearch">
           <button v-if="states.mateSearch" @click="onMateSearch">
             <Icon :icon="IconType.MATE_SEARCH" />
             <div class="label">{{ t.mateSearch }}</div>

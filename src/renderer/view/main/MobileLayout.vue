@@ -190,7 +190,8 @@ const safeAreaMarginY = isIOS() ? 21 : 10;
 //
 // モバイルの UI は画面が狭く、既定では出さない。WebAssembly エンジンを足した版を
 // 作る場合に、ビルドプロファイルで有効にする (specs/build-profile.md)。
-const showSearchTab = buildProfile.features.mobileSearchTab;
+const showSearchTab =
+  buildProfile.features.mobileResearch || buildProfile.features.mobileMateSearch;
 
 // 狭い画面に収めるため、列は読み筋の判断に要るものだけに絞る。
 // 読み筋の再生ボタンは横幅を抑えるためアイコンだけにする。

@@ -25,7 +25,8 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 ```json
 {
   "features": {
-    "mobileSearchTab": true
+    "mobileResearch": true,
+    "mobileMateSearch": true
   },
   "pwa": {
     "id": "/shogihome-plus/",
@@ -46,25 +47,26 @@ SHOGIHOME_BUILD_PROFILE=../shogihome-plus.json npm run build
 }
 ```
 
-| 項目                             | 既定    | 内容                                                             |
-| -------------------------------- | ------- | ---------------------------------------------------------------- |
-| `engines.dirs`                   | (無し)  | エンジンの置き場所。プロファイルからの相対で書く                 |
-| `features.mobileSearchTab`       | `false` | モバイルウェブの UI に「思考」タブ (読み筋と評価値グラフ) を出す |
-| `pwa.id`                         | (無し)  | インストール済み PWA の識別子。「PWA の設定」を参照              |
-| `pwa.name`                       | 本家    | ホーム画面などに出る名前                                         |
-| `pwa.shortName`                  | 本家    | 表示幅が狭い場合に使われる名前                                   |
-| `pwa.description`                | 本家    | ストアや情報表示に出る説明                                       |
-| `pwa.themeColor`                 | 本家    | ツールバーなどの配色                                             |
-| `pwa.backgroundColor`            | 本家    | 起動時のスプラッシュの配色                                       |
-| `pwa.lang`                       | `ja`    | マニフェストの言語                                               |
-| `pwa.icons`                      | 本家    | アイコンの差し替え。「PWA の設定」を参照                         |
-| `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                             |
-| `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                            |
-| `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須         |
-| `license.thirdPartyURL`          | 本家    | npm の依存のライセンス一覧の URL                                 |
+| 項目                             | 既定    | 内容                                                     |
+| -------------------------------- | ------- | -------------------------------------------------------- |
+| `engines.dirs`                   | (無し)  | エンジンの置き場所。プロファイルからの相対で書く         |
+| `features.mobileResearch`        | `false` | モバイルウェブのメニューに「検討」を出す                 |
+| `features.mobileMateSearch`      | `false` | モバイルウェブのメニューに「詰み探索」を出す             |
+| `pwa.id`                         | (無し)  | インストール済み PWA の識別子。「PWA の設定」を参照      |
+| `pwa.name`                       | 本家    | ホーム画面などに出る名前                                 |
+| `pwa.shortName`                  | 本家    | 表示幅が狭い場合に使われる名前                           |
+| `pwa.description`                | 本家    | ストアや情報表示に出る説明                               |
+| `pwa.themeColor`                 | 本家    | ツールバーなどの配色                                     |
+| `pwa.backgroundColor`            | 本家    | 起動時のスプラッシュの配色                               |
+| `pwa.lang`                       | `ja`    | マニフェストの言語                                       |
+| `pwa.icons`                      | 本家    | アイコンの差し替え。「PWA の設定」を参照                 |
+| `license.distribution.text`      | (無し)  | ライセンス表示に足す配布物自身の表記                     |
+| `license.distribution.url`       | (無し)  | その全文の URL。`text` と対で指定する                    |
+| `license.distribution.sourceURL` | (無し)  | 配布物のソースの入手先。コピーレフトのライセンスでは必須 |
+| `license.thirdPartyURL`          | 本家    | npm の依存のライセンス一覧の URL                         |
 
-`features.mobileSearchTab` を有効にすると、モバイルウェブのメニューに「検討」と「詰み探索」の
-ボタンも出る。どちらもエンジンの読み筋を「思考」タブで見せる機能のため、同じ項目で切り替える。
+`features.mobileResearch` と `features.mobileMateSearch` のどちらかを有効にすると、モバイルウェブの
+UI に「思考」タブ (読み筋と評価値グラフ) も出る。どちらもエンジンの読み筋を見せる機能のため。
 
 ### 検証
 

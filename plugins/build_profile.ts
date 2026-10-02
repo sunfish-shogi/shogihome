@@ -64,8 +64,10 @@ export type BuildProfile = {
   // PWA のマニフェストに差す値。**ビルド時にだけ使う。**
   pwa: BuildProfilePWA;
   features: {
-    // モバイルウェブの UI に「思考」タブを出す。
-    mobileSearchTab: boolean;
+    // モバイルウェブのメニューに「検討」を出す。
+    mobileResearch: boolean;
+    // モバイルウェブのメニューに「詰み探索」を出す。
+    mobileMateSearch: boolean;
   };
   license: {
     // 配布物 (結合物) 自身のライセンス。
@@ -81,7 +83,8 @@ export function defaultBuildProfile(): BuildProfile {
     engineDirs: [],
     pwa: {},
     features: {
-      mobileSearchTab: false,
+      mobileResearch: false,
+      mobileMateSearch: false,
     },
     license: {},
   };
@@ -206,12 +209,12 @@ export function parseBuildProfile(json: unknown, baseDir: string): BuildProfile 
     }
   }
   if (record.features !== undefined) {
-    const features = asRecord(record.features, "profile.features", ["mobileSearchTab"]);
-    if (features.mobileSearchTab !== undefined) {
-      profile.features.mobileSearchTab = asBoolean(
-        features.mobileSearchTab,
-        "profile.features.mobileSearchTab",
-      );
+    const fields = ["mobileResearch", "mobileMateSearch"] as const;
+    const features = asRecord(record.features, "profile.features", [...fields]);
+    for (const field of fields) {
+      if (features[field] !== undefined) {
+        profile.features[field] = asBoolean(features[field], `profile.features.${field}`);
+      }
     }
   }
   if (record.license !== undefined) {
