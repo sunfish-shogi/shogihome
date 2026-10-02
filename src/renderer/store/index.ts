@@ -1030,6 +1030,10 @@ class Store {
     return this.researchManager.isSessionExists(sessionID);
   }
 
+  isMateSearchEngineSessionID(sessionID: number): boolean {
+    return this.mateSearchManager.isSessionExists(sessionID);
+  }
+
   private onUpdateSearchInfo(type: SearchInfoSenderType, info: SearchInfo): void {
     this.recordManager.updateSearchInfo(type, info);
   }

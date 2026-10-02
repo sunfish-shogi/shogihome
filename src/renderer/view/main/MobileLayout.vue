@@ -193,13 +193,13 @@ const safeAreaMarginY = isIOS() ? 21 : 10;
 const showSearchTab = buildProfile.features.mobileSearchTab;
 
 // 狭い画面に収めるため、列は読み筋の判断に要るものだけに絞る。
-// 検討中に開くものなので、指し手を送るボタンも出さない。
+// 読み筋の再生ボタンは横幅を抑えるためアイコンだけにする。
 const searchTabProps = {
   historyMode: false,
   showHeader: false,
   showTimeColumn: false,
   showNodesColumn: false,
-  showPlayButton: false,
+  showPlayButtonLabel: false,
 };
 
 const store = useStore();

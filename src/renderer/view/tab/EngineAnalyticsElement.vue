@@ -1,26 +1,33 @@
 <template>
   <div>
     <div class="full column root" :class="{ paused }">
-      <div v-if="isResearchSession" class="overlay-control row" :class="{ bottom: !showHeader }">
+      <div v-if="showOverlayControl" class="overlay-control row" :class="{ bottom: !showHeader }">
         <button
-          v-if="isMobileWebApp() && !isOnMainBranch"
+          v-if="isResearchSession && isMobileWebApp() && !isOnMainBranch"
           :disabled="store.appState !== AppState.NORMAL"
           @click="store.backToMainBranch()"
         >
           <Icon :icon="IconType.UNDO" />
           <span>{{ t.backToMainBranch }}</span>
         </button>
-        <button v-if="paused" @click="onUnpause">
-          <Icon :icon="IconType.RESUME" />
-          <span>{{ t.resume }}</span>
-        </button>
-        <button v-else @click="onPause">
-          <Icon :icon="IconType.PAUSE" />
-          <span>{{ t.stop }}</span>
-        </button>
-        <button v-if="isMobileWebApp()" class="close" @click="onStopResearch">
-          <Icon :icon="IconType.STOP" />
-          <span>{{ t.endResearch }}</span>
+        <template v-if="isResearchSession">
+          <button v-if="paused" @click="onUnpause">
+            <Icon :icon="IconType.RESUME" />
+            <span>{{ t.resume }}</span>
+          </button>
+          <button v-else @click="onPause">
+            <Icon :icon="IconType.PAUSE" />
+            <span>{{ t.stop }}</span>
+          </button>
+          <button v-if="isMobileWebApp()" class="close" @click="onStopResearch">
+            <Icon :icon="IconType.STOP" />
+            <span>{{ t.endResearch }}</span>
+          </button>
+        </template>
+        <!-- 詰み探索はモバイルウェブのみ終了ボタンを出す。中断は不要なので出さない。 -->
+        <button v-else-if="isMateSearchSession" class="close" @click="onStopMateSearch">
+          <Icon :icon="IconType.END" />
+          <span>{{ t.stopMateSearch }}</span>
         </button>
       </div>
       <div v-if="showHeader" class="row headers">
@@ -129,7 +136,7 @@
                   @click="showPreview(info)"
                 >
                   <Icon :icon="IconType.PLAY" />
-                  <span>{{ t.displayPVShort }}</span>
+                  <span v-if="showPlayButtonLabel">{{ t.displayPVShort }}</span>
                 </button>
                 {{ info.text }}
               </td>
@@ -156,7 +163,7 @@
           </button>
         </div>
         <!-- 右下のボタンと重ならない位置までスクロールできるように余白を置く -->
-        <div v-if="isResearchSession && !showHeader" class="overlay-spacer"></div>
+        <div v-if="showOverlayControl && !showHeader" class="overlay-spacer"></div>
       </div>
     </div>
   </div>
@@ -193,6 +200,7 @@ const props = defineProps({
   showNodesColumn: { type: Boolean, default: true },
   showScoreColumn: { type: Boolean, default: true },
   showPlayButton: { type: Boolean, default: true },
+  showPlayButtonLabel: { type: Boolean, default: true },
   showSuggestionsCount: { type: Boolean, default: true },
 });
 
@@ -228,6 +236,12 @@ onBeforeUpdate(() => {
 const isResearchSession = computed(() => {
   return store.isResearchEngineSessionID(props.monitor.sessionID);
 });
+
+const isMateSearchSession = computed(() => {
+  return isMobileWebApp() && store.isMateSearchEngineSessionID(props.monitor.sessionID);
+});
+
+const showOverlayControl = computed(() => isResearchSession.value || isMateSearchSession.value);
 
 const paused = computed(() => {
   return store.isPausedResearchEngine(props.monitor.sessionID);
@@ -314,6 +328,10 @@ const onUnpause = () => {
 
 const onStopResearch = () => {
   store.stopResearch();
+};
+
+const onStopMateSearch = () => {
+  store.stopMateSearch();
 };
 
 const updateMultiPV = (add: number) => {
