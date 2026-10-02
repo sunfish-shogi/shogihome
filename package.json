@@ -63,7 +63,7 @@
     "chart.js": "^4.5.1",
     "dayjs": "^1.11.21",
     "electron-context-menu": "^4.1.2",
-    "encoding-japanese": "^2.0.0",
+    "encoding-japanese": "^2.4.0",
     "jimp": "^1.6.1",
     "log4js": "^6.7.0",
     "proper-lockfile": "^4.1.2",
