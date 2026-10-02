@@ -86,7 +86,7 @@ import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/dev
 import { isIOS } from "@/renderer/helpers/env";
 
 const headerHeight = 32;
-const controlsHeight = 40;
+const controlsHeight = 36;
 const minInformationHeight = 60;
 
 // iOS の多くのバージョンでは safe-area-inset-bottom が 21px になる。
@@ -325,10 +325,12 @@ dialog.mobile-pv-preview {
   justify-content: center;
 }
 .controls {
-  height: 40px;
+  height: 36px;
+  padding-top: 4px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 4px;
 }
@@ -345,7 +347,6 @@ dialog.mobile-pv-preview {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  margin: 0 5px;
   color: var(--text-color);
   background-color: var(--text-bg-color);
 }
