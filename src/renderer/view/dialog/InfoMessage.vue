@@ -38,7 +38,7 @@
 import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import { useDraggableDialog } from "@/renderer/helpers/draggable";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
@@ -54,11 +54,25 @@ const { dragStyle, onDragMouseDown } = useDraggableDialog(dialog);
 onMounted(() => {
   showModalDialog(dialog.value!, onClose);
   installHotKeyForDialog(dialog.value!);
+  // autofocus されたボタンへのスクロールを打ち消して先頭を表示する。
+  scrollToTop();
 });
+
+// キューに積まれた次のメッセージに切り替わった場合も先頭を表示する。
+watch(
+  () => store.message,
+  () => nextTick(scrollToTop),
+);
 
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value!);
 });
+
+const scrollToTop = () => {
+  if (dialog.value) {
+    dialog.value.scrollTop = 0;
+  }
+};
 
 const copyMessage = () => {
   navigator.clipboard.writeText(toMarkdown(store.message));
