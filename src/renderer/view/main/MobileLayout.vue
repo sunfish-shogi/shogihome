@@ -174,7 +174,7 @@ import { isIOS } from "@/renderer/helpers/env";
 import { IconType } from "@/renderer/assets/icons";
 import { buildProfile } from "virtual:shogihome/build-profile";
 import { useStore } from "@/renderer/store/index.js";
-import { ResearchState } from "@/common/control/state.js";
+import { AppState, ResearchState } from "@/common/control/state.js";
 
 const lazyUpdateDelay = 80;
 const selectorHeight = 30;
@@ -190,16 +190,17 @@ const safeAreaMarginY = isIOS() ? 21 : 10;
 //
 // モバイルの UI は画面が狭く、既定では出さない。WebAssembly エンジンを足した版を
 // 作る場合に、ビルドプロファイルで有効にする (specs/build-profile.md)。
-const showSearchTab = buildProfile.features.mobileSearchTab;
+const showSearchTab =
+  buildProfile.features.mobileResearch || buildProfile.features.mobileMateSearch;
 
 // 狭い画面に収めるため、列は読み筋の判断に要るものだけに絞る。
-// 検討中に開くものなので、指し手を送るボタンも出さない。
+// 読み筋の再生ボタンは横幅を抑えるためアイコンだけにする。
 const searchTabProps = {
   historyMode: false,
   showHeader: false,
   showTimeColumn: false,
   showNodesColumn: false,
-  showPlayButton: false,
+  showPlayButtonLabel: false,
 };
 
 const store = useStore();
@@ -219,13 +220,25 @@ const bottomUIType = ref(BottomUIType.RECORD);
 const sideUIType = ref(SideUIType.RECORD);
 
 if (showSearchTab) {
+  const showSearchView = () => {
+    bottomUIType.value = BottomUIType.SEARCH;
+    sideUIType.value = SideUIType.SEARCH;
+  };
   watch(
     () => store.researchState,
     (researchState) => {
       // 検討を開始した時に思考タブへ切り替える。
       if (researchState === ResearchState.RUNNING) {
-        bottomUIType.value = BottomUIType.SEARCH;
-        sideUIType.value = SideUIType.SEARCH;
+        showSearchView();
+      }
+    },
+  );
+  watch(
+    () => store.appState,
+    (appState) => {
+      // 詰み探索を開始した時も思考タブへ切り替える。
+      if (appState === AppState.MATE_SEARCH) {
+        showSearchView();
       }
     },
   );

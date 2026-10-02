@@ -93,6 +93,10 @@ export class MateSearchManager {
     }
   }
 
+  isSessionExists(sessionID: number): boolean {
+    return !!this.engine && this.engine.sessionID === sessionID;
+  }
+
   close() {
     this.engine
       ?.close()

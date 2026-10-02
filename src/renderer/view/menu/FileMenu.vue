@@ -22,7 +22,7 @@
           <Icon :icon="IconType.STOP" />
           <div class="label">{{ t.stopGame }}</div>
         </button>
-        <span v-if="buildProfile.features.mobileSearchTab">
+        <template v-if="buildProfile.features.mobileResearch">
           <button v-if="states.research" @click="onResearch">
             <Icon :icon="IconType.RESEARCH" />
             <div class="label">{{ t.research }}</div>
@@ -31,7 +31,17 @@
             <Icon :icon="IconType.STOP" />
             <div class="label">{{ t.endResearch }}</div>
           </button>
-        </span>
+        </template>
+        <template v-if="buildProfile.features.mobileMateSearch">
+          <button v-if="states.mateSearch" @click="onMateSearch">
+            <Icon :icon="IconType.MATE_SEARCH" />
+            <div class="label">{{ t.mateSearch }}</div>
+          </button>
+          <button v-if="states.stopMateSearch" class="close" @click="onStopMateSearch">
+            <Icon :icon="IconType.END" />
+            <div class="label">{{ t.stopMateSearch }}</div>
+          </button>
+        </template>
       </div>
       <div class="group">
         <button :disabled="!states.newFile" @click="onNewFile">
@@ -213,6 +223,14 @@ const onStopResearch = () => {
   store.stopResearch();
   emit("close");
 };
+const onMateSearch = () => {
+  store.showMateSearchDialog();
+  emit("close");
+};
+const onStopMateSearch = () => {
+  store.stopMateSearch();
+  emit("close");
+};
 const onNewFile = () => {
   if (isMobileWebApp()) {
     isInitialPositionMenuVisible.value = true;
@@ -319,6 +337,8 @@ const states = computed(() => {
     game: store.appState === AppState.NORMAL,
     stopGame: store.appState === AppState.GAME,
     research: store.researchState === ResearchState.IDLE,
+    mateSearch: store.appState === AppState.NORMAL,
+    stopMateSearch: store.appState === AppState.MATE_SEARCH,
     newFile: store.appState === AppState.NORMAL,
     setupPosition: store.appState === AppState.NORMAL,
     open: store.appState === AppState.NORMAL,

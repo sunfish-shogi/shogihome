@@ -10,7 +10,8 @@ declare module "virtual:shogihome/builtin-engines" {
 declare module "virtual:shogihome/build-profile" {
   export const buildProfile: {
     features: {
-      mobileSearchTab: boolean;
+      mobileResearch: boolean;
+      mobileMateSearch: boolean;
     };
     license: {
       distribution?: { text: string; url: string; sourceURL?: string };

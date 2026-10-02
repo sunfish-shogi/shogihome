@@ -14,6 +14,7 @@
         :show-nodes-column="showNodesColumn"
         :show-score-column="showScoreColumn"
         :show-play-button="showPlayButton"
+        :show-play-button-label="showPlayButtonLabel"
         :show-suggestions-count="showSuggestionsCount"
       />
     </div>
@@ -42,6 +43,7 @@ const props = defineProps({
   showNodesColumn: { type: Boolean, default: true },
   showScoreColumn: { type: Boolean, default: true },
   showPlayButton: { type: Boolean, default: true },
+  showPlayButtonLabel: { type: Boolean, default: true },
   showSuggestionsCount: { type: Boolean, default: true },
 });
 

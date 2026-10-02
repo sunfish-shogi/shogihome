@@ -12,7 +12,7 @@ import {
 const parseBuildProfile = (json: unknown, baseDir = os.tmpdir()) => parse(json, baseDir);
 
 const validProfile = () => ({
-  features: { mobileSearchTab: true },
+  features: { mobileResearch: true, mobileMateSearch: true },
   license: {
     distribution: {
       text: "ShogiHome+Example (GPLv3)",
@@ -26,7 +26,8 @@ const validProfile = () => ({
 describe("plugins/build_profile", () => {
   it("valid", () => {
     const profile = parseBuildProfile(validProfile());
-    expect(profile.features.mobileSearchTab).toBe(true);
+    expect(profile.features.mobileResearch).toBe(true);
+    expect(profile.features.mobileMateSearch).toBe(true);
     expect(profile.license.distribution).toEqual({
       text: "ShogiHome+Example (GPLv3)",
       url: "https://example.com/LICENSE",
@@ -39,15 +40,16 @@ describe("plugins/build_profile", () => {
   it("empty", () => {
     expect(parseBuildProfile({})).toEqual(defaultBuildProfile());
     expect(loadBuildProfile(undefined)).toEqual(defaultBuildProfile());
-    expect(defaultBuildProfile().features.mobileSearchTab).toBe(false);
+    expect(defaultBuildProfile().features.mobileResearch).toBe(false);
+    expect(defaultBuildProfile().features.mobileMateSearch).toBe(false);
     expect(defaultBuildProfile().license).toEqual({});
   });
 
   // 書き間違いを黙って無視すると、設定したつもりの項目が効かないまま配布物ができる。
   it("rejectsUnknownKeys", () => {
     expect(() => parseBuildProfile({ feature: {} })).toThrow(/profile.feature is not a known/);
-    expect(() => parseBuildProfile({ features: { mobileSearchTabs: true } })).toThrow(
-      /profile.features.mobileSearchTabs is not a known/,
+    expect(() => parseBuildProfile({ features: { mobileResearchs: true } })).toThrow(
+      /profile.features.mobileResearchs is not a known/,
     );
     expect(() =>
       parseBuildProfile({
@@ -58,7 +60,7 @@ describe("plugins/build_profile", () => {
 
   it("rejectsInvalidTypes", () => {
     expect(() => parseBuildProfile([])).toThrow(/profile must be an object/);
-    expect(() => parseBuildProfile({ features: { mobileSearchTab: "true" } })).toThrow(
+    expect(() => parseBuildProfile({ features: { mobileMateSearch: "true" } })).toThrow(
       /must be a boolean/,
     );
     expect(() =>
@@ -169,7 +171,7 @@ describe("plugins/build_profile", () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-profile-"));
     const file = path.join(dir, "profile.json");
     fs.writeFileSync(file, JSON.stringify(validProfile()));
-    expect(loadBuildProfile(file).features.mobileSearchTab).toBe(true);
+    expect(loadBuildProfile(file).features.mobileResearch).toBe(true);
 
     // 指定したファイルが無い・壊れている場合は黙って既定値にせず、ビルドを止める。
     expect(() => loadBuildProfile(path.join(dir, "missing.json"))).toThrow(
@@ -189,7 +191,8 @@ describe("plugins/build_profile", () => {
     const file = "specs/build-profile.sample.json";
     const profile = loadBuildProfile(file);
     expect(profile.engineDirs).toEqual([]);
-    expect(profile.features.mobileSearchTab).toBe(true);
+    expect(profile.features.mobileResearch).toBe(true);
+    expect(profile.features.mobileMateSearch).toBe(true);
     expect(profile.license.distribution?.text).toBeTruthy();
     expect(profile.license.distribution?.url).toBeTruthy();
     expect(profile.license.distribution?.sourceURL).toBeTruthy();

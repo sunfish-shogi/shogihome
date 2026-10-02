@@ -9,6 +9,7 @@
           :default-tag="getPredefinedUSIEngineTag('mate')"
           :display-thread-state="true"
           :display-multi-pv-state="false"
+          :enable-edit-button="!isMobileWebApp()"
           @update-engines="
             (val: USIEngines) => {
               engines = val;
@@ -42,7 +43,7 @@
 import { t } from "@/common/i18n";
 import { defaultMateSearchSettings, MateSearchSettings } from "@/common/settings/mate";
 import { getPredefinedUSIEngineTag, USIEngines } from "@/common/settings/usi";
-import api from "@/renderer/ipc/api";
+import api, { isMobileWebApp } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";
 import PlayerSelector from "./PlayerSelector.vue";
@@ -92,7 +93,7 @@ const onCancel = () => {
 
 <style scoped>
 .root {
-  width: 420px;
+  width: min(420px, calc(100vw - 80px));
 }
 input.number {
   text-align: right;
