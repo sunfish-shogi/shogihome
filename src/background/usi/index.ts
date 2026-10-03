@@ -4,6 +4,7 @@ import * as uri from "@/common/uri.js";
 import { GameResult } from "@/common/game/result.js";
 import { t } from "@/common/i18n/index.js";
 import { resolveEnginePath } from "@/background/usi/path.js";
+import { isSameFileSync } from "@/background/helpers/file.js";
 import { getUSILogger } from "@/background/log.js";
 import { USISessionState } from "@/common/advanced/monitor.js";
 import { CommandHistory, CommandType, Command } from "@/common/advanced/command.js";
@@ -483,6 +484,21 @@ export function quitAll(): void {
   sessions.forEach((session) => {
     session.process.quit();
   });
+}
+
+// 指定したパスのエンジンが動いているかどうか。
+// ダウンロードしたエンジンのファイルを、使用中に削除しないために使う。
+export function isEnginePathInUse(enginePath: string): boolean {
+  const target = resolveEnginePath(enginePath);
+  for (const session of sessions.values()) {
+    if (
+      session.process.state !== State.QuitCompleted &&
+      isSameFileSync(resolveEnginePath(session.engine.path), target)
+    ) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export function isActiveSessionExists(): boolean {

@@ -12,7 +12,7 @@
 // 書き換えるのは options の配列だけで、他の部分の整形には触れない。
 import fs from "node:fs";
 import path from "node:path";
-import { EngineManifestOption, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
+import { EngineManifestOption, parseEngineManifest } from "@/common/wasm-engine/manifest.js";
 import { USIEngineOption } from "@/common/settings/usi.js";
 import { readEngineOptions } from "./lib/wasm-engine.js";
 

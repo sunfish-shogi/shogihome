@@ -1,4 +1,4 @@
-import { ENGINE_ABI, parseEngineManifest } from "@/renderer/wasm-engine/manifest.js";
+import { ENGINE_ABI, parseEngineManifest } from "@/common/wasm-engine/manifest.js";
 
 function validManifest(): Record<string, unknown> {
   return {

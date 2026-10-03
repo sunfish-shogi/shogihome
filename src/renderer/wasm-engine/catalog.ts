@@ -19,7 +19,7 @@ import {
   isSafeRelativePath,
   MANIFEST_FILE_NAME,
   parseEngineManifest,
-} from "./manifest.js";
+} from "@/common/wasm-engine/manifest.js";
 
 // 読み込む組み込みエンジンのディレクトリ名。
 // engine.json を持つディレクトリをビルド時に列挙したもの (plugins/builtin_engines.ts)。

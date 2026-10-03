@@ -80,7 +80,7 @@ public/engines/<dir>/
 | `module`                       | ○    | グルーコードのファイル名。マニフェストからの相対パス             |
 | `moduleFormat`                 |      | `esm` (既定) または `umd`。「4. グルーコードの形式」を参照       |
 | `exportName`                   | △    | `moduleFormat` が `umd` のとき必須。`-sEXPORT_NAME` に渡した名前 |
-| `name`                         | ○    | エンジンが `id name` で返す名前                                  |
+| `name`                         | ○    | エンジンの名前。デスクトップ版はこれを表示名にする               |
 | `author`                       | ○    | エンジンが `id author` で返す名前                                |
 | `badge`                        |      | 一覧で名前の横に添える短い目印。下記を参照                       |
 | `assetBaseURL`                 |      | wasm とデータファイルの取得先。「6. (d)」を参照                  |
@@ -347,7 +347,7 @@ Emscripten の環境判別が働かず、スレッドを使うエンジンでは
 -sMODULARIZE=1                  既定エクスポートがモジュール生成関数になる
 -sEXPORT_ES6=1                  ES モジュールとして出力する (moduleFormat: "esm")
 -sEXPORT_NAME=<任意>
--sENVIRONMENT=worker,node       worker は必須。node は適合性テストで使う
+-sENVIRONMENT=worker,node       worker は Web 版、node はデスクトップ版と適合性テストで使う
 -sINVOKE_RUN=0                  main() を自動実行しない
 -sALLOW_MEMORY_GROWTH=1
 --no-entry                      main() を持たない場合
