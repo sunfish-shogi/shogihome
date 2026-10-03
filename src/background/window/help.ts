@@ -1,5 +1,6 @@
 import { shell } from "electron";
 import { readStatus } from "@/background/version.js";
+import { validateWebURL } from "@/background/helpers/url.js";
 import { howToUseWikiPageURL, websiteURL } from "@/common/links/github.js";
 
 export function openWebsite(): void {
@@ -15,7 +16,9 @@ export async function openLatestReleasePage() {
   if (!status.knownReleases) {
     throw new Error("No known releases");
   }
-  shell.openExternal(status.knownReleases.latest.link);
+  const link = status.knownReleases.latest.link;
+  validateWebURL(link);
+  shell.openExternal(link);
 }
 
 export async function openStableReleasePage() {
@@ -23,5 +26,7 @@ export async function openStableReleasePage() {
   if (!status.knownReleases) {
     throw new Error("No known releases");
   }
-  shell.openExternal(status.knownReleases.stable.link);
+  const link = status.knownReleases.stable.link;
+  validateWebURL(link);
+  shell.openExternal(link);
 }
