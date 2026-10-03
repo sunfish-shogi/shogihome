@@ -86,7 +86,7 @@ import { Rect } from "@/common/assets/geometry.js";
 import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.js";
 import { cropPieceImage } from "@/background/image/cropper.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
-import { fileURLToPath } from "@/background/helpers/url.js";
+import { fileURLToPath, validateWebURL } from "@/background/helpers/url.js";
 import { AppSettingsUpdate } from "@/common/settings/app.js";
 import { convertRecordFiles } from "@/background/file/conversion.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
@@ -206,12 +206,9 @@ ipcMain.on(Background.OPEN_EXPLORER, async (event, targetPath: string) => {
 ipcMain.on(Background.OPEN_WEB_BROWSER, (event, url: string) => {
   validateIPCSender(event.senderFrame);
   try {
-    const parsed = new URL(url);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      throw new Error();
-    }
-  } catch {
-    sendError(new Error("Invalid URL: External links must start with http:// or https://"));
+    validateWebURL(url);
+  } catch (e) {
+    sendError(e as Error);
     return;
   }
   getAppLogger().debug(`open web browser: ${url}`);
