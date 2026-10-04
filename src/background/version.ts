@@ -9,7 +9,7 @@ import * as semver from "semver";
 import { t } from "@/common/i18n/index.js";
 import { getAppLogger } from "@/background/log.js";
 import { getAppVersion } from "@/background/helpers/electron.js";
-import { ghRepository, ghioDomain } from "@/common/links/github.js";
+import { ghRepository, ghioDomain, releasePageURL } from "@/common/links/github.js";
 import { writeFileAtomic } from "./file/atomic.js";
 import { getAppPath } from "./proc/path-electron.js";
 
@@ -85,7 +85,7 @@ function suggestUpdate(
   const stableNotInstalled = semver.gt(stable, current);
   if (stablePreferred && stableUpdated && stableNotInstalled) {
     getAppLogger().info(`new stable version released: ${stable}`);
-    notify(t.stableVersionReleased("v" + stable), releases.stable.link);
+    notify(t.stableVersionReleased("v" + stable), releasePageURL("v" + stable));
     return;
   }
 
@@ -94,7 +94,7 @@ function suggestUpdate(
   const latestNotInstalled = semver.gt(latest, current);
   if (latestPreferred && latestUpdated && latestNotInstalled) {
     getAppLogger().info(`new latest version released: ${latest}`);
-    notify(t.latestVersionReleased("v" + latest), releases.latest.link);
+    notify(t.latestVersionReleased("v" + latest), releasePageURL("v" + latest));
     return;
   }
 }
@@ -119,4 +119,21 @@ export async function checkUpdates(notify: (message: string, url?: string) => vo
 
   last.updatedMs = Date.now();
   await writeStatus(last);
+}
+
+/**
+ * 既知のリリースのページの URL を返す。
+ * 保存されているリンクは使わず、バージョン番号から生成する。
+ */
+export async function getKnownReleasePageURL(name: "stable" | "latest"): Promise<string> {
+  const status = await readStatus();
+  const release = status.knownReleases?.[name];
+  if (!release) {
+    throw new Error("No known releases");
+  }
+  const version = typeof release.version === "string" ? semver.clean(release.version) : null;
+  if (!version) {
+    throw new Error(`failed to get ${name} app version`);
+  }
+  return releasePageURL("v" + version);
 }
