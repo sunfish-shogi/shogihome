@@ -138,30 +138,31 @@ async function isReleaseMatured(version: string): Promise<boolean> {
 }
 
 /**
- * 取得したリリース情報のうち、受け入れ可能なものを返す。
- * 既知のバージョンから変化したものは、GitHub API で公開から一定期間が経過していることを確認できた場合のみ受け入れる。
- * 確認できなかったものは既知の情報を維持する。既知の情報が無い場合は undefined を返す。
+ * 取得したリリース情報を受け入れ可能か判定し、受け入れ可能であれば正規化したリリース情報を返す。
+ * 既知のバージョンに含まれないものは、GitHub API で公開から一定期間が経過していることを確認する。
+ * 安定版と最新版のどちらか一方でも確認できなかった場合は undefined を返す。
+ * 一方だけを受け入れると、安定版/最新版の系列の判定が狂って通知が漏れる可能性があるため、
+ * 両方が確認できるまで既知の情報を維持する。
  */
 async function acceptReleases(
   fetched: Releases,
   known: Releases | undefined,
 ): Promise<Releases | undefined> {
-  const accept = async (name: "stable" | "latest"): Promise<Release | undefined> => {
-    const version = cleanVersion(fetched[name]?.version, name);
-    const knownRelease = known?.[name];
-    const knownVersion =
-      typeof knownRelease?.version === "string" ? semver.clean(knownRelease.version) : null;
-    if (version === knownVersion || (await isReleaseMatured(version))) {
-      return buildRelease(version);
+  const stable = cleanVersion(fetched.stable?.version, "stable");
+  const latest = cleanVersion(fetched.latest?.version, "latest");
+  const knownVersions = new Set<string>();
+  for (const release of [known?.stable, known?.latest]) {
+    const version = typeof release?.version === "string" ? semver.clean(release.version) : null;
+    if (version) {
+      knownVersions.add(version);
     }
-    return knownVersion ? buildRelease(knownVersion) : undefined;
-  };
-  const stable = await accept("stable");
-  const latest = await accept("latest");
-  if (!stable || !latest) {
-    return;
   }
-  return { stable, latest };
+  for (const version of new Set([stable, latest])) {
+    if (!knownVersions.has(version) && !(await isReleaseMatured(version))) {
+      return;
+    }
+  }
+  return { stable: buildRelease(stable), latest: buildRelease(latest) };
 }
 
 async function fetchReleases(last: VersionStatus): Promise<Releases | undefined> {
@@ -218,6 +219,17 @@ function suggestUpdate(
   return false;
 }
 
+function updateKnownReleases(last: VersionStatus, releases: Releases | undefined) {
+  // 受け入れられなかった場合は既知の情報を維持し、ダウンロード日時だけを更新する。
+  const base = releases ?? last.knownReleases;
+  if (base) {
+    last.knownReleases = {
+      ...base,
+      downloadedMs: Date.now(),
+    };
+  }
+}
+
 export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
@@ -230,11 +242,8 @@ export async function checkUpdates(notify: (message: string, url?: string) => vo
     const releases = await fetchReleases(last);
     if (releases) {
       suggestUpdate(releases, last, notify);
-      last.knownReleases = {
-        ...releases,
-        downloadedMs: Date.now(),
-      };
     }
+    updateKnownReleases(last, releases);
   }
 
   last.updatedMs = Date.now();
@@ -254,12 +263,7 @@ export async function checkUpdatesManually(notify: (message: string, url?: strin
     notify(t.youAreUsingTheLatestVersion);
   }
 
-  if (releases) {
-    last.knownReleases = {
-      ...releases,
-      downloadedMs: Date.now(),
-    };
-  }
+  updateKnownReleases(last, releases);
   last.updatedMs = Date.now();
   await writeStatus(last);
 }

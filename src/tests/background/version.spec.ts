@@ -36,6 +36,8 @@ type MockParam = {
   remoteFileName: string;
   // バージョンごとの GitHub リリースの公開日時 (指定しない場合は十分に古い日時)
   publishedAt?: Record<string, string | null>;
+  // バージョンごとの GitHub API のレスポンスの上書き
+  apiOverride?: Record<string, Record<string, unknown>>;
 };
 
 const server = {
@@ -108,6 +110,7 @@ function setupServer() {
           tag_name: `v${version}`,
           draft: false,
           published_at: publishedAt ?? "1970-01-01T00:00:00Z",
+          ...server.param.apiOverride?.[version],
         }),
       );
       return;
@@ -637,7 +640,7 @@ describe("version", () => {
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(0);
     expect(server.accessCount).toBe(1);
-    expect(server.apiAccessCount).toBe(2);
+    expect(server.apiAccessCount).toBe(1);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
@@ -685,6 +688,85 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.latest.version).toBe("1.1.0");
   });
+
+  it("cooldown/minor_update", async () => {
+    // マイナーアップデートでは旧最新版が安定版に昇格し、新しい最新版が追加される。
+    // 新しい最新版がクールダウン中の間は安定版の昇格も受け入れず、系列の判定を維持する。
+    reset({
+      knownStable: "1.0.4",
+      knownLatest: "1.1.1",
+      stable: "1.1.1",
+      latest: "1.2.0",
+      remoteFileName: "release-win.json",
+      publishedAt: { "1.2.0": new Date(time25HoursAfter - oneDayMs).toISOString() },
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.1.1");
+    const notify = vi.fn();
+    await checkUpdates(notify);
+    expect(notify.mock.calls).toHaveLength(0);
+    expect(server.apiAccessCount).toBe(1); // 1.1.1 は既知なので確認しない
+    let status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.0.4");
+    expect(status.knownReleases?.latest.version).toBe("1.1.1");
+    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+
+    // クールダウンが明けたら最新版を通知する。
+    vi.setSystemTime(time25HoursAfter + 3 * oneDayMs);
+    await checkUpdates(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("最新版 v1.2.0 がリリースされました！");
+    expect(notify.mock.calls[0][1]).toBe(releaseLink("1.2.0"));
+    status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+    expect(status.knownReleases?.stable.version).toBe("1.1.1");
+    expect(status.knownReleases?.latest.version).toBe("1.2.0");
+  });
+
+  it("cooldown/same_version", async () => {
+    // 安定版と最新版が同じバージョンの場合は 1 回だけ確認する。
+    reset({
+      stable: "1.0.4",
+      latest: "1.0.4",
+      remoteFileName: "release-win.json",
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.1");
+    const notify = vi.fn();
+    await checkUpdates(notify);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("安定版 v1.0.4 がリリースされました！");
+    expect(server.apiAccessCount).toBe(1);
+  });
+
+  for (const [name, override] of [
+    ["tag_mismatch", { tag_name: "v9.9.9" }],
+    ["draft", { draft: true }],
+    ["unpublished", { published_at: null }],
+    ["invalid_published_at", { published_at: "invalid" }],
+  ] as const) {
+    it(`cooldown/rejected/${name}`, async () => {
+      reset({
+        knownStable: "1.0.3",
+        knownLatest: "1.1.0",
+        stable: "1.0.4",
+        latest: "1.1.0",
+        remoteFileName: "release-win.json",
+        apiOverride: { "1.0.4": override },
+      });
+      vi.stubGlobal("process", { platform: "win32" });
+      vi.setSystemTime(time25HoursAfter);
+      vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.3");
+      const notify = vi.fn();
+      await checkUpdates(notify);
+      expect(notify.mock.calls).toHaveLength(0);
+      expect(server.apiAccessCount).toBe(1);
+      const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+      expect(status.knownReleases?.stable.version).toBe("1.0.3");
+      expect(status.knownReleases?.latest.version).toBe("1.1.0");
+    });
+  }
 
   it("known_release_page_url", async () => {
     // 保存されているリンクは使わず、バージョン番号から URL を生成する。
