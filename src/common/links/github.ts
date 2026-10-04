@@ -30,6 +30,11 @@ export const licenseURL = `https://${ghDomain}/${ghAccount}/${ghRepository}/blob
 export const wcscGameListsURL = `https://${ghioDomain}/${ghRepository}/wcsc/game-lists.json`;
 export const floodgateResourcesURL = `https://${ghioDomain}/${ghRepository}/floodgate/resources.json`;
 
+/** GitHub のリリースページの URL */
+export function releasePageURL(tag: string): string {
+  return `https://${ghDomain}/${ghAccount}/${ghRepository}/releases/tag/${encodeURIComponent(tag)}`;
+}
+
 const webAppBaseURL = `https://${ghioDomain}/${ghRepository}/webapp/index.html`;
 
 export function webAppURL(record?: ImmutableRecord) {
