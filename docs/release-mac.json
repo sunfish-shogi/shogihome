@@ -1,12 +1,12 @@
 {
  "stable": {
-  "version": "1.28.1",
-  "tag": "v1.28.1",
-  "link": "https://github.com/sunfish-shogi/shogihome/releases/tag/v1.28.1"
+  "version": "1.28.2",
+  "tag": "v1.28.2",
+  "link": "https://github.com/sunfish-shogi/shogihome/releases/tag/v1.28.2"
  },
  "latest": {
-  "version": "1.29.0",
-  "tag": "v1.29.0",
-  "link": "https://github.com/sunfish-shogi/shogihome/releases/tag/v1.29.0"
+  "version": "1.29.1",
+  "tag": "v1.29.1",
+  "link": "https://github.com/sunfish-shogi/shogihome/releases/tag/v1.29.1"
  }
 }
