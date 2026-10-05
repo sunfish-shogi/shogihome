@@ -101,6 +101,36 @@ describe("BoardView", () => {
       const changes = await editSquares(position, new Square(8, 8), new Square(5, 5));
       expect(changes).toEqual([{ move: { from: new Square(8, 8), to: new Square(5, 5) } }]);
     });
+
+    it("同じマスをダブルクリックすると駒を反転する", async () => {
+      const wrapper = mountEditable(new Position());
+      const squares = wrapper.find(".board.operation").findAll("div");
+      const square = new Square(8, 8);
+      await squares[square.index].trigger("click");
+      await squares[square.index].trigger("click");
+      await squares[square.index].trigger("dblclick");
+      expect(wrapper.emitted("edit")).toEqual([[[{ rotate: square }]]]);
+    });
+
+    it("異なるマスを素早くタップして発生した dblclick では反転しない", async () => {
+      const wrapper = mountEditable(new Position());
+      const squares = wrapper.find(".board.operation").findAll("div");
+      const from = new Square(8, 8);
+      // 移動先に駒があるマスを選ぶ（emit 後も props の局面は変化しないため）。
+      const to = new Square(5, 1);
+      await squares[from.index].trigger("click");
+      await squares[to.index].trigger("click");
+      await squares[to.index].trigger("dblclick");
+      expect(wrapper.emitted("edit")).toEqual([[[{ move: { from, to } }]]]);
+    });
+
+    it("右クリックでは直前のクリックに関係なく駒を反転する", async () => {
+      const wrapper = mountEditable(new Position());
+      const squares = wrapper.find(".board.operation").findAll("div");
+      const square = new Square(8, 8);
+      await squares[square.index].trigger("contextmenu");
+      expect(wrapper.emitted("edit")).toEqual([[[{ rotate: square }]]]);
+    });
   });
 
   describe("移動可能なマスの表示", () => {
