@@ -220,7 +220,7 @@
         />
       </div>
       <!-- 持ち駒の並び順 -->
-      <div class="form-item">
+      <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">{{ t.handPieceOrder }}</div>
         <HorizontalSelector
           v-model:value="update.handPieceOrder"
