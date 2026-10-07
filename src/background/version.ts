@@ -219,17 +219,6 @@ function suggestUpdate(
   return false;
 }
 
-function updateKnownReleases(last: VersionStatus, releases: Releases | undefined) {
-  // 受け入れられなかった場合は既知の情報を維持し、ダウンロード日時だけを更新する。
-  const base = releases ?? last.knownReleases;
-  if (base) {
-    last.knownReleases = {
-      ...base,
-      downloadedMs: Date.now(),
-    };
-  }
-}
-
 export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
@@ -247,8 +236,8 @@ export async function checkUpdates(notify: (message: string, url?: string) => vo
     const releases = await fetchReleases(last);
     if (releases) {
       suggestUpdate(releases, last, notify);
+      last.knownReleases = releases;
     }
-    updateKnownReleases(last, releases);
   } finally {
     await writeStatus(last);
   }
@@ -267,7 +256,9 @@ export async function checkUpdatesManually(notify: (message: string, url?: strin
     notify(t.youAreUsingTheLatestVersion);
   }
 
-  updateKnownReleases(last, releases);
+  if (releases) {
+    last.knownReleases = releases;
+  }
   last.updatedMs = Date.now();
   await writeStatus(last);
 }

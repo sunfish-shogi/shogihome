@@ -12,7 +12,10 @@ export type Releases = {
   stable: Release;
   /** latest version */
   latest: Release;
-  /** UnixTime(ms) of last download */
+  /**
+   * UnixTime(ms) of last download
+   * @deprecated 現在は使用していない。旧バージョンが書き込んだ値が残っている場合がある。
+   */
   downloadedMs?: number;
 };
 

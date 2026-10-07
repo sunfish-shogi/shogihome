@@ -165,7 +165,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -190,7 +190,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -214,7 +214,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -237,7 +237,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -283,7 +283,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -307,7 +307,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.3");
     expect(status.knownReleases?.latest.version).toBe("1.1.2");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -332,7 +332,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.1.1");
     expect(status.knownReleases?.latest.version).toBe("1.2.0");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -357,7 +357,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.1.1");
     expect(status.knownReleases?.latest.version).toBe("1.2.0");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -382,7 +382,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.1.1");
     expect(status.knownReleases?.latest.version).toBe("1.2.0");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -447,7 +447,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -493,7 +493,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time23HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time23HoursAfter);
   });
 
@@ -520,7 +520,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.1.1");
     expect(status.knownReleases?.latest.version).toBe("1.2.0");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -563,7 +563,7 @@ describe("version", () => {
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBeUndefined();
     expect(status.updatedMs).toBe(time25HoursAfter);
   });
 
@@ -609,7 +609,7 @@ describe("version", () => {
     let status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.3");
     expect(status.knownReleases?.latest.version).toBe("1.1.0"); // not accepted yet
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
 
     // 公開から 4 日経過したら通知する。
     vi.setSystemTime(time25HoursAfter + 1 * oneDayMs);
@@ -764,7 +764,7 @@ describe("version", () => {
     let status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.4");
     expect(status.knownReleases?.latest.version).toBe("1.1.1");
-    expect(status.knownReleases?.downloadedMs).toBe(time25HoursAfter);
+    expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
 
     // クールダウンが明けたら最新版を通知する。
     vi.setSystemTime(time25HoursAfter + 3 * oneDayMs);
