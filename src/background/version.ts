@@ -233,18 +233,22 @@ function updateKnownReleases(last: VersionStatus, releases: Releases | undefined
 export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
-  // check new release
+  // 前回のダウンロードから一定時間が経過していなければ何もしない。
   if (
-    !last.knownReleases?.downloadedMs ||
-    Date.now() - last.knownReleases.downloadedMs >= minimumCheckIntervalMs
+    last.knownReleases?.downloadedMs &&
+    Date.now() - last.knownReleases.downloadedMs < minimumCheckIntervalMs
   ) {
-    getAppLogger().debug(`check new release`);
-    const releases = await fetchReleases(last);
-    if (releases) {
-      suggestUpdate(releases, last, notify);
-    }
-    updateKnownReleases(last, releases);
+    getAppLogger().debug(`skip checking new release`);
+    return;
   }
+
+  // check new release
+  getAppLogger().debug(`check new release`);
+  const releases = await fetchReleases(last);
+  if (releases) {
+    suggestUpdate(releases, last, notify);
+  }
+  updateKnownReleases(last, releases);
 
   last.updatedMs = Date.now();
   await writeStatus(last);

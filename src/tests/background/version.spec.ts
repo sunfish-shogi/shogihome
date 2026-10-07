@@ -260,7 +260,7 @@ describe("version", () => {
     expect(status.knownReleases?.stable.version).toBe("1.0.3"); // not updated
     expect(status.knownReleases?.latest.version).toBe("1.1.0"); // not updated
     expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
-    expect(status.updatedMs).toBe(time23HoursAfter);
+    expect(status.updatedMs).toBe(lastUpdatedMs); // not updated
   });
 
   it("status_file_exists/patch_update/only_stable", async () => {
