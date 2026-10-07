@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import url from "node:url";
 import path from "node:path";
 import { Release, Releases, VersionStatus } from "@/common/version.js";
 import { isDevelopment, isTest } from "@/background/proc/env.js";
@@ -34,13 +33,13 @@ const apiBaseURL =
 function getReleaseURL() {
   switch (process.platform) {
     case "win32":
-      return url.resolve(baseURL, "release-win.json");
+      return new URL("release-win.json", baseURL).href;
     case "darwin":
-      return url.resolve(baseURL, "release-mac.json");
+      return new URL("release-mac.json", baseURL).href;
     case "linux":
-      return url.resolve(baseURL, "release-linux.json");
+      return new URL("release-linux.json", baseURL).href;
     default:
-      return url.resolve(baseURL, "release.json");
+      return new URL("release.json", baseURL).href;
   }
 }
 
@@ -104,10 +103,10 @@ type GitHubRelease = {
  */
 async function isReleaseMatured(version: string): Promise<boolean> {
   const tag = versionToTag(version);
-  const apiURL = url.resolve(
-    apiBaseURL,
+  const apiURL = new URL(
     `repos/${ghAccount}/${ghRepository}/releases/tags/${encodeURIComponent(tag)}`,
-  );
+    apiBaseURL,
+  ).href;
   try {
     const release = JSON.parse(await fetch(apiURL)) as GitHubRelease;
     if (!release || typeof release !== "object") {
