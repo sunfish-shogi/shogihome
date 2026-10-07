@@ -647,7 +647,8 @@ describe("version", () => {
   });
 
   it("cooldown/release_not_found", async () => {
-    // GitHub にリリースが存在しない場合は通知しない。
+    // GitHub にリリースが存在しない場合はエラーとし、通知しない。
+    // 次回のチェックまでは一定時間を空ける。
     reset({
       knownStable: "1.0.3",
       knownLatest: "1.1.0",
@@ -660,12 +661,65 @@ describe("version", () => {
     vi.setSystemTime(time25HoursAfter);
     vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.3");
     const notify = vi.fn();
-    await checkUpdates(notify);
+    await expect(checkUpdates(notify)).rejects.toThrow("404");
     expect(notify.mock.calls).toHaveLength(0);
     expect(server.apiAccessCount).toBe(1);
     const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
     expect(status.knownReleases?.stable.version).toBe("1.0.3");
     expect(status.knownReleases?.latest.version).toBe("1.1.0");
+    expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
+    expect(status.updatedMs).toBe(time25HoursAfter);
+
+    vi.setSystemTime(time25HoursAfter + 23 * 60 * 60 * 1000);
+    await checkUpdates(notify);
+    expect(server.accessCount).toBe(1); // skipped
+    expect(server.apiAccessCount).toBe(1); // skipped
+  });
+
+  it("cooldown/throttle_without_known_releases", async () => {
+    // 既知のリリース情報が無い状態でも、次回のチェックまでは一定時間を空ける。
+    reset({
+      stable: "1.0.4",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+      publishedAt: { "1.0.4": new Date(time25HoursAfter - oneDayMs).toISOString() },
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.1");
+    const notify = vi.fn();
+    await checkUpdates(notify);
+    expect(server.accessCount).toBe(1);
+    expect(server.apiAccessCount).toBe(1);
+
+    vi.setSystemTime(time25HoursAfter + 60 * 60 * 1000);
+    await checkUpdates(notify);
+    expect(server.accessCount).toBe(1); // skipped
+    expect(server.apiAccessCount).toBe(1); // skipped
+
+    vi.setSystemTime(time25HoursAfter + 3 * oneDayMs);
+    await checkUpdates(notify);
+    expect(server.accessCount).toBe(2);
+    expect(notify.mock.calls).toHaveLength(1);
+    expect(notify.mock.calls[0][0]).toBe("安定版 v1.0.4 がリリースされました！");
+  });
+
+  it("cooldown/manual/verification_error", async () => {
+    // 手動チェックで確認に失敗した場合は「最新のバージョンを使用しています」とせずにエラーとする。
+    reset({
+      knownStable: "1.0.3",
+      knownLatest: "1.1.0",
+      stable: "1.0.3",
+      latest: "1.1.1",
+      remoteFileName: "release-win.json",
+      publishedAt: { "1.1.1": null },
+    });
+    vi.stubGlobal("process", { platform: "win32" });
+    vi.setSystemTime(time25HoursAfter);
+    vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.1.0");
+    const notify = vi.fn();
+    await expect(checkUpdatesManually(notify)).rejects.toThrow("404");
+    expect(notify.mock.calls).toHaveLength(0);
   });
 
   it("cooldown/manual", async () => {
@@ -741,12 +795,10 @@ describe("version", () => {
   });
 
   for (const [name, override] of [
-    ["tag_mismatch", { tag_name: "v9.9.9" }],
     ["draft", { draft: true }],
     ["unpublished", { published_at: null }],
-    ["invalid_published_at", { published_at: "invalid" }],
   ] as const) {
-    it(`cooldown/rejected/${name}`, async () => {
+    it(`cooldown/not_published/${name}`, async () => {
       reset({
         knownStable: "1.0.3",
         knownLatest: "1.1.0",
@@ -760,6 +812,32 @@ describe("version", () => {
       vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.3");
       const notify = vi.fn();
       await checkUpdates(notify);
+      expect(notify.mock.calls).toHaveLength(0);
+      expect(server.apiAccessCount).toBe(1);
+      const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;
+      expect(status.knownReleases?.stable.version).toBe("1.0.3");
+      expect(status.knownReleases?.latest.version).toBe("1.1.0");
+    });
+  }
+
+  for (const [name, override, message] of [
+    ["tag_mismatch", { tag_name: "v9.9.9" }, "tag mismatch"],
+    ["invalid_published_at", { published_at: "invalid" }, "invalid published_at"],
+  ] as const) {
+    it(`cooldown/verification_error/${name}`, async () => {
+      reset({
+        knownStable: "1.0.3",
+        knownLatest: "1.1.0",
+        stable: "1.0.4",
+        latest: "1.1.0",
+        remoteFileName: "release-win.json",
+        apiOverride: { "1.0.4": override },
+      });
+      vi.stubGlobal("process", { platform: "win32" });
+      vi.setSystemTime(time25HoursAfter);
+      vi.spyOn(electron, "getAppVersion").mockReturnValue("v1.0.3");
+      const notify = vi.fn();
+      await expect(checkUpdates(notify)).rejects.toThrow(message);
       expect(notify.mock.calls).toHaveLength(0);
       expect(server.apiAccessCount).toBe(1);
       const status = JSON.parse(fs.readFileSync(statusFilePath, "utf8")) as VersionStatus;

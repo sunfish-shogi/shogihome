@@ -100,6 +100,8 @@ type GitHubRelease = {
 
 /**
  * GitHub API で指定したバージョンのリリースが公開から一定期間を経過しているかを調べる。
+ * 未公開またはクールダウン中の場合は false を返す。
+ * リリースが存在しない場合や API の呼び出しに失敗した場合は例外を投げる。
  */
 async function isReleaseMatured(version: string): Promise<boolean> {
   const tag = versionToTag(version);
@@ -107,39 +109,38 @@ async function isReleaseMatured(version: string): Promise<boolean> {
     `repos/${ghAccount}/${ghRepository}/releases/tags/${encodeURIComponent(tag)}`,
     apiBaseURL,
   ).href;
-  try {
-    const release = JSON.parse(await fetch(apiURL)) as GitHubRelease;
-    if (!release || typeof release !== "object") {
-      throw new Error("unexpected data format");
-    }
-    if (release.tag_name !== tag) {
-      throw new Error(`tag mismatch: ${release.tag_name}`);
-    }
-    if (release.draft !== false || typeof release.published_at !== "string") {
-      getAppLogger().info(`release ${tag} is not published yet`);
-      return false;
-    }
-    const publishedMs = Date.parse(release.published_at);
-    if (isNaN(publishedMs)) {
-      throw new Error(`invalid published_at: ${release.published_at}`);
-    }
-    if (Date.now() - publishedMs < releaseCooldownMs) {
-      getAppLogger().info(
-        `release ${tag} is in cooldown period: published_at=${release.published_at}`,
-      );
-      return false;
-    }
-    return true;
-  } catch (e) {
-    getAppLogger().warn(`failed to verify release ${tag}: ${e}`);
+  const release = JSON.parse(await fetch(apiURL)) as GitHubRelease;
+  if (!release || typeof release !== "object") {
+    throw new Error(`failed to verify release ${tag}: unexpected data format`);
+  }
+  if (release.tag_name !== tag) {
+    throw new Error(`failed to verify release ${tag}: tag mismatch: ${release.tag_name}`);
+  }
+  if (release.draft !== false || release.published_at === null) {
+    getAppLogger().info(`release ${tag} is not published yet`);
     return false;
   }
+  const publishedMs =
+    typeof release.published_at === "string" ? Date.parse(release.published_at) : NaN;
+  if (isNaN(publishedMs)) {
+    throw new Error(
+      `failed to verify release ${tag}: invalid published_at: ${release.published_at}`,
+    );
+  }
+  if (Date.now() - publishedMs < releaseCooldownMs) {
+    getAppLogger().info(
+      `release ${tag} is in cooldown period: published_at=${release.published_at}`,
+    );
+    return false;
+  }
+  return true;
 }
 
 /**
  * 取得したリリース情報を受け入れ可能か判定し、受け入れ可能であれば正規化したリリース情報を返す。
  * 既知のバージョンに含まれないものは、GitHub API で公開から一定期間が経過していることを確認する。
- * 安定版と最新版のどちらか一方でも確認できなかった場合は undefined を返す。
+ * 安定版と最新版のどちらか一方でも未公開またはクールダウン中の場合は undefined を返す。
+ * 確認自体に失敗した場合は例外を投げる。
  * 一方だけを受け入れると、安定版/最新版の系列の判定が狂って通知が漏れる可能性があるため、
  * 両方が確認できるまで既知の情報を維持する。
  */
@@ -232,25 +233,25 @@ function updateKnownReleases(last: VersionStatus, releases: Releases | undefined
 export async function checkUpdates(notify: (message: string, url?: string) => void) {
   const last = await readStatus();
 
-  // 前回のダウンロードから一定時間が経過していなければ何もしない。
-  if (
-    last.knownReleases?.downloadedMs &&
-    Date.now() - last.knownReleases.downloadedMs < minimumCheckIntervalMs
-  ) {
+  // 前回のチェックから一定時間が経過していなければ何もしない。
+  // リリース情報を受け入れられなかった場合や失敗した場合も含めて、チェックの間隔を空ける。
+  if (Date.now() - last.updatedMs < minimumCheckIntervalMs) {
     getAppLogger().debug(`skip checking new release`);
     return;
   }
 
   // check new release
   getAppLogger().debug(`check new release`);
-  const releases = await fetchReleases(last);
-  if (releases) {
-    suggestUpdate(releases, last, notify);
-  }
-  updateKnownReleases(last, releases);
-
   last.updatedMs = Date.now();
-  await writeStatus(last);
+  try {
+    const releases = await fetchReleases(last);
+    if (releases) {
+      suggestUpdate(releases, last, notify);
+    }
+    updateKnownReleases(last, releases);
+  } finally {
+    await writeStatus(last);
+  }
 }
 
 export async function checkUpdatesManually(notify: (message: string, url?: string) => void) {

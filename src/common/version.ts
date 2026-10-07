@@ -18,5 +18,6 @@ export type Releases = {
 
 export type VersionStatus = {
   knownReleases?: Releases;
+  /** UnixTime(ms) of last update check */
   updatedMs: number;
 };
