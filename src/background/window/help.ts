@@ -1,5 +1,5 @@
 import { shell } from "electron";
-import { readStatus } from "@/background/version.js";
+import { getKnownReleasePageURL } from "@/background/version.js";
 import { validateWebURL } from "@/background/helpers/url.js";
 import { howToUseWikiPageURL, websiteURL } from "@/common/links/github.js";
 
@@ -12,21 +12,13 @@ export function openHowToUse(): void {
 }
 
 export async function openLatestReleasePage() {
-  const status = await readStatus();
-  if (!status.knownReleases) {
-    throw new Error("No known releases");
-  }
-  const link = status.knownReleases.latest.link;
+  const link = await getKnownReleasePageURL("latest");
   validateWebURL(link);
   shell.openExternal(link);
 }
 
 export async function openStableReleasePage() {
-  const status = await readStatus();
-  if (!status.knownReleases) {
-    throw new Error("No known releases");
-  }
-  const link = status.knownReleases.stable.link;
+  const link = await getKnownReleasePageURL("stable");
   validateWebURL(link);
   shell.openExternal(link);
 }

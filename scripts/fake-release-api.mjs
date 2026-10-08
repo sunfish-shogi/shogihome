@@ -12,6 +12,19 @@ const server = http.createServer((req, res) => {
       return;
     }
   }
+  // GitHub API (GET /repos/{owner}/{repo}/releases/tags/{tag}) の代替
+  const match = req.url.match(/^\/api\/repos\/[^/]+\/[^/]+\/releases\/tags\/([^/]+)$/);
+  if (match) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify({
+        tag_name: decodeURIComponent(match[1]),
+        draft: false,
+        published_at: "2000-01-01T00:00:00Z",
+      }),
+    );
+    return;
+  }
   res.writeHead(404);
   res.end("not found");
 });
