@@ -588,7 +588,7 @@ describe("version", () => {
   });
 
   it("cooldown/latest", async () => {
-    // 公開から 4 日経過していないリリースは通知しない。
+    // 公開から 7 日経過していないリリースは通知しない。
     reset({
       knownStable: "1.0.3",
       knownLatest: "1.1.0",
@@ -611,8 +611,8 @@ describe("version", () => {
     expect(status.knownReleases?.latest.version).toBe("1.1.0"); // not accepted yet
     expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
 
-    // 公開から 4 日経過したら通知する。
-    vi.setSystemTime(time25HoursAfter + 1 * oneDayMs);
+    // 公開から 7 日経過したら通知する。
+    vi.setSystemTime(time25HoursAfter + 4 * oneDayMs);
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.1.1 がリリースされました！");
@@ -697,7 +697,7 @@ describe("version", () => {
     expect(server.accessCount).toBe(1); // skipped
     expect(server.apiAccessCount).toBe(1); // skipped
 
-    vi.setSystemTime(time25HoursAfter + 3 * oneDayMs);
+    vi.setSystemTime(time25HoursAfter + 6 * oneDayMs);
     await checkUpdates(notify);
     expect(server.accessCount).toBe(2);
     expect(notify.mock.calls).toHaveLength(1);
@@ -767,7 +767,7 @@ describe("version", () => {
     expect(status.knownReleases?.downloadedMs).toBe(lastUpdatedMs); // not updated
 
     // クールダウンが明けたら最新版を通知する。
-    vi.setSystemTime(time25HoursAfter + 3 * oneDayMs);
+    vi.setSystemTime(time25HoursAfter + 6 * oneDayMs);
     await checkUpdates(notify);
     expect(notify.mock.calls).toHaveLength(1);
     expect(notify.mock.calls[0][0]).toBe("最新版 v1.2.0 がリリースされました！");

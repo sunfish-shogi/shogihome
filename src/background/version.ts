@@ -22,7 +22,7 @@ const statusFilePath = path.join(userDir, "version.json");
 // GitHub リリースの公開からアプリ内で通知するまでの待機期間。
 // リポジトリが乗っ取られて不正なリリースが作られた場合に、利用者へ通知される前に
 // 発見・削除できる猶予を設けるためのもの。
-const releaseCooldownMs = 4 * 24 * 60 * 60 * 1000; // 4 days
+const releaseCooldownMs = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const baseURL =
   isDevelopment() || isTest() ? "http://localhost:6173" : `https://${ghioDomain}/${ghRepository}/`;
