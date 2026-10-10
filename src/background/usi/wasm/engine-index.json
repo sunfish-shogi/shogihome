@@ -1,4 +1,228 @@
 {
   "format": "shogihome-engine-index/1",
-  "engines": []
+  "engines": [
+    {
+      "id": "aobannue",
+      "version": "c26beee260dcf870",
+      "name": "AobaNNUE WASM",
+      "author": "Yaneurao, Hiroshi Yamashita",
+      "licenses": [
+        "GPL-3.0"
+      ],
+      "packageURL": "https://assets.shogihome.com/aobannue/20260927.354f027/",
+      "files": [
+        {
+          "path": "Copying.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "115db7f43fac8417ef160d5b7c4a58e38d5ffa3388e1371867a2b1c579f107e8",
+          "size": 4412
+        },
+        {
+          "path": "nn.bin",
+          "sha256": "f8ee839ae8c08537036f23345dd5ed0416958b22425476fc60177942903219b5",
+          "size": 192624720
+        },
+        {
+          "path": "yaneuraou.halfkp768.noeval.js",
+          "sha256": "269d76eafbae2af8c91a2107cbec2086b459335a37ca515849ea4c55dfc8b59d",
+          "size": 47922
+        },
+        {
+          "path": "yaneuraou.halfkp768.noeval.wasm",
+          "sha256": "170790fa4961874400807ae7669fc8ac2c946f3beae8d8ebf947e54c7285ed78",
+          "size": 699895
+        },
+        {
+          "path": "yaneuraou.halfkp768.noeval.worker.js",
+          "sha256": "df5ad6e66a1c54c23f6e50cc97a7a376083c49a6412e2ac6baa369b1bd5c44da",
+          "size": 2938
+        }
+      ]
+    },
+    {
+      "id": "yaneuraou-hao",
+      "version": "aa16cec03cd7efe6",
+      "name": "やねうら王 tanuki-Hao WASM",
+      "author": "Yaneurao, nodchip",
+      "licenses": [
+        "GPL-3.0",
+        "GPL-3.0"
+      ],
+      "packageURL": "https://assets.shogihome.com/yaneuraou/20260904.c1b80eaa/halfkp.noeval/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "30e10151b9a8df789b377f2ff9299973e25de3583b08baf3f05cb6d838fdd56d",
+          "size": 4687
+        },
+        {
+          "path": "gpl-3.0.txt",
+          "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+          "size": 35823
+        },
+        {
+          "path": "tanuki-hao-nn.bin",
+          "sha256": "1141d275bceec911156801f27303dc9ff5beb24f4f59144cc069306c59e80782",
+          "size": 64217066
+        },
+        {
+          "path": "yaneuraou.halfkp.noeval.js",
+          "sha256": "7705bdf2582be4651685b57e54839ed5216a70fc669aa3be509f19b947f78b06",
+          "size": 48366
+        },
+        {
+          "path": "yaneuraou.halfkp.noeval.wasm",
+          "sha256": "bb9d257d792b0a1072890f0a27a7c7bd127e5358aa7af949649fea095e5ea56e",
+          "size": 702429
+        },
+        {
+          "path": "yaneuraou.halfkp.noeval.worker.js",
+          "sha256": "8013ce6c3d243a32be9da70771e5395f52031f9a259c39fc684533a05e86ff07",
+          "size": 2935
+        }
+      ]
+    },
+    {
+      "id": "yaneuraou-suisho5",
+      "version": "ffabe6392d1ff456",
+      "name": "やねうら王 水匠5 WASM",
+      "author": "Yaneurao, Tayayan",
+      "licenses": [
+        "GPL-3.0"
+      ],
+      "packageURL": "https://assets.shogihome.com/yaneuraou/20260904.c1b80eaa/halfkp/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "6b469f36c1c4953e7740ae90b99a9aa7f67aa3a3622a148f9d57401269a0f83c",
+          "size": 4389
+        },
+        {
+          "path": "yaneuraou.halfkp.js",
+          "sha256": "45face4fa6ce761c7b41c8a782d1dd39bb7a6f8720d459c7fc704679df237834",
+          "size": 48331
+        },
+        {
+          "path": "yaneuraou.halfkp.wasm",
+          "sha256": "9f479493866c238fbb36037ec57cfeec4a854722377c6db3161c92886682da31",
+          "size": 61866741
+        },
+        {
+          "path": "yaneuraou.halfkp.worker.js",
+          "sha256": "9c6d41b90902ec1eaa20c5feb63e73f2692f499e083026f5eb75d1cd6d854598",
+          "size": 2928
+        }
+      ]
+    },
+    {
+      "id": "komoring-heights",
+      "version": "6cc1f5ea80b7bca2",
+      "name": "KomoringHeights 1.1.0 WASM (詰将棋)",
+      "author": "yaneurao, komori-n",
+      "licenses": [
+        "GPL-3.0-only"
+      ],
+      "packageURL": "https://assets.shogihome.com/komoringheights/20261002.21b5b6d5/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "b76e91a8ac04cf0120e7b7d7f2418d4bc82c3edf2332b9690755f95f5fa4226f",
+          "size": 1964
+        },
+        {
+          "path": "komoring-heights.js",
+          "sha256": "ab8ee4a39fdf63c5a1307fbc86f6a0680760b5388ede4cec7c811a1be5593231",
+          "size": 79941
+        },
+        {
+          "path": "komoring-heights.wasm",
+          "sha256": "72c875eb7ef42635f8e66ee188a8d153a13b178c2e9c5c33f71a6eca54cb302c",
+          "size": 631300
+        }
+      ]
+    },
+    {
+      "id": "shtsume",
+      "version": "8f8925bd90680f30",
+      "name": "shtsume v1.2.7e WASM (詰将棋)",
+      "author": "hkijin",
+      "licenses": [
+        "MIT"
+      ],
+      "packageURL": "https://assets.shogihome.com/shtsume/20261002.0b99e3b/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "9e4fc1783cb2df8a431a077acfdb0ed538e82b1c1391589c8dd1873c602e593c",
+          "size": 1076
+        },
+        {
+          "path": "engine.json",
+          "sha256": "1729b29cda72b581ba3ca6f809041730e11c5fcd678ada6743d63785e5515730",
+          "size": 987
+        },
+        {
+          "path": "shtsume.js",
+          "sha256": "37d45330353c276c3ae19ce69d0f3ce336b8e2071cb72de7ae9aaa4c190a1180",
+          "size": 80805
+        },
+        {
+          "path": "shtsume.wasm",
+          "sha256": "a2e089f2b98607ea166b9afe0d398ef101b7669090e4e38e416de064d8b5b477",
+          "size": 207212
+        }
+      ]
+    },
+    {
+      "id": "suisho-bm",
+      "version": "f2e5009a50f0aa39",
+      "name": "水匠BM 1.0.0 WASM (必至問題)",
+      "author": "yaneurao, tayayan",
+      "licenses": [
+        "GPL-3.0-only"
+      ],
+      "packageURL": "https://assets.shogihome.com/suisho-bm/20261003.1689b4b/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "9d8a83eb9e8b87dffbb56b1056f292968accf9e0f769968d10cfe8be01351e58",
+          "size": 1055
+        },
+        {
+          "path": "suisho-bm.js",
+          "sha256": "6530fb0dfeaa41b7a610e8e3132504364d75ccaa27c9df308af11e3c24b7288a",
+          "size": 79207
+        },
+        {
+          "path": "suisho-bm.wasm",
+          "sha256": "309166cde907692d1fc36cb2c387a3363248db7ab688bfd10eeecc6bb38e61d5",
+          "size": 572397
+        }
+      ]
+    }
+  ]
 }
