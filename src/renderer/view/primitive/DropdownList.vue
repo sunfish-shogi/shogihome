@@ -27,7 +27,6 @@
           {{ tag.name }}
         </div>
       </div>
-      <hr v-if="tags.length" />
       <ul>
         <li
           v-for="item of filteredItems"
@@ -287,7 +286,7 @@ onBeforeUnmount(() => {
 }
 ul {
   list-style: none;
-  padding: 0;
+  padding: 0 0.4em;
   margin: 0;
 }
 li:hover {
@@ -309,9 +308,6 @@ li:hover {
   border-radius: 0.5em;
   box-shadow: 1px 1px 3px 0 var(--control-shadow-color);
   user-select: none;
-}
-hr {
-  margin: 0.2em;
 }
 .not-found {
   padding: 0.2em;
