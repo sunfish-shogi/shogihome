@@ -27,6 +27,7 @@ import { spawn } from "child_process";
 import { invoke as invokeHeadless } from "./headless/invoke.js";
 import { setProcessArgs } from "./window/ipc.js";
 import { prefetchWindowsLogicalProcessorCount } from "./proc/state.js";
+import { cleanupEnginePackagesDir } from "./usi/wasm/install.js";
 
 const args = parseProcessArgs(process.argv);
 if (args instanceof Error) {
@@ -38,9 +39,14 @@ switch (args.type) {
   case "gui":
     setProcessArgs(args);
     break;
-  case "headless":
+  case "headless": {
     getAppLogger().info("headless mode enabled");
-    invokeHeadless(args)
+    const headlessArgs = args;
+    // ready の後に実行する。WebAssembly エンジン (engine.json) の追加で使う
+    // utilityProcess.fork() は、app の ready イベントの後でなければ呼べないため。
+    app
+      .whenReady()
+      .then(() => invokeHeadless(headlessArgs))
       .then(() => {
         getAppLogger().info("headless operation completed");
         process.exit(0);
@@ -50,6 +56,7 @@ switch (args.type) {
         process.exit(1);
       });
     break;
+  }
 }
 
 prefetchWindowsLogicalProcessorCount();
@@ -213,6 +220,11 @@ app.whenReady().then(() => {
     return;
   }
   createWindow(onMainWindowClosed);
+
+  // 中断したエンジンのダウンロードの残骸を消す。
+  cleanupEnginePackagesDir().catch((e) => {
+    getAppLogger().error(`failed to clean up engine packages: ${e}`);
+  });
 });
 
 // Exit cleanly on request from parent process in development mode.

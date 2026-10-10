@@ -19,6 +19,9 @@
       <div ref="list" class="column engine-list">
         <div v-if="usiEngines.engineList.length === 0" class="engine">
           {{ t.noEngineRegistered }}
+          <button v-if="isNative()" class="download-link" @click="openDownload()">
+            {{ t.downloadAnEngine }}
+          </button>
         </div>
         <div
           v-for="engine in engines"
@@ -54,7 +57,10 @@
       </div>
     </div>
     <div class="menu row">
-      <button class="wide" @click="add()">{{ t.add }}</button>
+      <button class="wide" @click="add()">{{ t.addFromFile }}</button>
+      <button v-if="isNative()" class="wide" @click="openDownload()">
+        {{ t.downloadEngines }}
+      </button>
       <button class="wide" @click="openMerge()">{{ t.compareAndMerge }}</button>
     </div>
     <div class="main-buttons">
@@ -78,6 +84,13 @@
     @ok="mergeOk"
     @cancel="mergeCancel"
   />
+  <EngineDownloadDialog
+    v-if="downloadDialog"
+    :engines="usiEngines"
+    @installed="downloadInstalled"
+    @updated="downloadUpdated"
+    @close="downloadDialog = false"
+  />
   <AddEngineTagDialog
     v-if="addTagDialog"
     :tags="tagCandidates"
@@ -89,7 +102,7 @@
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { filter as filterString } from "@/common/helpers/string";
-import api from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api";
 import { duplicateEngine, USIEngine, USIEngines, ImmutableUSIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
 import { ref, onMounted, computed, onBeforeUnmount, reactive } from "vue";
@@ -100,12 +113,15 @@ import { useBusyState } from "@/renderer/store/busy";
 import USIEngineMergeDialog from "./USIEngineMergeDialog.vue";
 import DialogFrame from "./DialogFrame.vue";
 import AddEngineTagDialog from "./AddEngineTagDialog.vue";
+import EngineDownloadDialog from "./EngineDownloadDialog.vue";
+import { mergeUpdatedEngine } from "@/renderer/helpers/enginePackage";
 
 const store = useStore();
 const busyState = useBusyState();
 const list = ref();
 const optionDialog = ref(null as USIEngine | null);
 const mergeDialog = ref(false);
+const downloadDialog = ref(false);
 const usiEngines = ref(new USIEngines());
 const filter = ref("");
 const lastAdded = ref("");
@@ -292,6 +308,26 @@ const mergeOk = (engines: ImmutableUSIEngines) => {
 const mergeCancel = () => {
   mergeDialog.value = false;
 };
+const openDownload = () => {
+  downloadDialog.value = true;
+};
+const downloadInstalled = (engines: USIEngine[]) => {
+  for (const engine of engines) {
+    usiEngines.value.addEngine(engine);
+  }
+  if (engines.length) {
+    lastAdded.value = scrollTo = engines[0].uri;
+  }
+};
+// 更新したパッケージを参照している項目を新しい版へ向ける。
+// オプションの定義などは新しい版のものにし、URI や利用者の設定は引き継ぐ (mergeUpdatedEngine)。
+const downloadUpdated = (oldEnginePaths: string[], newEngine: USIEngine) => {
+  for (const engine of usiEngines.value.engineList) {
+    if (oldEnginePaths.includes(engine.path)) {
+      usiEngines.value.updateEngine(mergeUpdatedEngine(engine, newEngine));
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -324,6 +360,9 @@ const mergeCancel = () => {
   border-radius: 0.5em;
   box-shadow: 1px 1px 3px 0 var(--control-shadow-color);
   user-select: none;
+}
+.download-link {
+  margin-left: 10px;
 }
 .menu > *:not(:first-child) {
   margin-left: 5px;

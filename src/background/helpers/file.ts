@@ -1,5 +1,23 @@
-import { promises as fs } from "node:fs";
+import { promises as fs, statSync } from "node:fs";
 import path from "node:path";
+
+/**
+ * 2 つのパスが同じファイルを指しているかどうか。
+ * シンボリックリンクを経由したパスや、大文字と小文字を区別しないファイルシステムで
+ * 表記だけが違うパスも同じとみなす。どちらかが存在しない場合はパスの文字列で比べる。
+ */
+export function isSameFileSync(a: string, b: string): boolean {
+  if (path.resolve(a) === path.resolve(b)) {
+    return true;
+  }
+  try {
+    const sa = statSync(a, { bigint: true });
+    const sb = statSync(b, { bigint: true });
+    return sa.dev === sb.dev && sa.ino === sb.ino;
+  } catch {
+    return false;
+  }
+}
 
 export async function exists(path: string): Promise<boolean> {
   try {
