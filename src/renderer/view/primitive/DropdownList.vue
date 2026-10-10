@@ -292,6 +292,9 @@ ul {
 li:hover {
   background-color: var(--text-bg-color-selected);
 }
+li:hover > .banner {
+  filter: brightness(1.15);
+}
 .tags {
   width: 100%;
   padding-left: 2px;
