@@ -407,6 +407,9 @@ export const zh_tw: Texts = {
   baseEngine: "基準引擎",
   swapSenteGote: "先後交換",
   pieceToss: "振駒",
+  opponent: "対局相手", // TODO: Translate
+  level: "レベル", // TODO: Translate
+  turn: "手番", // TODO: Translate
   currentPosition: "現在局面",
   positionList: "局面列表",
   enableEngineTimeout: "開啟引擎時間限制",

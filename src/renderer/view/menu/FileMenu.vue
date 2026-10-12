@@ -165,7 +165,7 @@
       @select="onSelectInitialPosition"
       @close="emit('close')"
     />
-    <MobileGameMenu v-if="isGameMenuVisible" @close="emit('close')" />
+    <MobileGameDialog v-if="isGameMenuVisible" @close="emit('close')" />
   </div>
 </template>
 
@@ -183,7 +183,7 @@ import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/dev
 import { openCopyright } from "@/renderer/helpers/copyright";
 import { RecordFileFormat } from "@/common/file/record";
 import InitialPositionMenu from "@/renderer/view/menu/InitialPositionMenu.vue";
-import MobileGameMenu from "@/renderer/view/menu/MobileGameMenu.vue";
+import MobileGameDialog from "@/renderer/view/dialog/MobileGameDialog.vue";
 import { buildProfile } from "virtual:shogihome/build-profile";
 
 const emit = defineEmits<{

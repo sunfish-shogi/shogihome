@@ -35,11 +35,19 @@ export type EngineManifestOption = {
   vars?: string[];
 };
 
-// モバイルウェブの対局メニュー (MobileGameMenu) に並べるための宣言。
-// 宣言のあるプリセットだけがメニューに載る。
-export type EngineManifestMobileGame = {
-  // ボタンに出す名前。displayName (一覧や棋譜に使う正式な名前) より短いものを書く。
+// モバイルウェブの対局ダイアログ (MobileGameDialog) で選べるレベル。
+export type EngineManifestMobileGameLevel = {
+  // レベルの選択肢に出す名前 (例: "Lv.1")。棋譜にはプリセットの displayName に添えて残る。
   label: string;
+  // このレベルで対局するときに上書きするオプションの値。プリセットの values より優先する。
+  values?: { [name: string]: string | number };
+};
+
+// モバイルウェブの対局ダイアログ (MobileGameDialog) に並べるための宣言。
+// 宣言のあるプリセットだけがエンジンの選択肢に載る。
+export type EngineManifestMobileGame = {
+  // 弱い順に並べる。1 つ以上。
+  levels: EngineManifestMobileGameLevel[];
 };
 
 // 1 つの wasm から複数のエンジンを見せるための定義。
@@ -211,6 +219,37 @@ function parseLicense(value: unknown, path: string): EngineManifestLicense {
   return license;
 }
 
+function parseValues(value: unknown, path: string): { [name: string]: string | number } {
+  const record = asRecord(value, path);
+  const values: { [name: string]: string | number } = {};
+  for (const [name, v] of Object.entries(record)) {
+    if (typeof v !== "string" && typeof v !== "number") {
+      fail(`${path}.${name} must be a string or a number`);
+    }
+    values[name] = v;
+  }
+  return values;
+}
+
+function parseMobileGame(value: unknown, path: string): EngineManifestMobileGame {
+  const record = asRecord(value, path);
+  if (!Array.isArray(record.levels) || record.levels.length === 0) {
+    fail(`${path}.levels must be a non-empty array`);
+  }
+  const levels = record.levels.map((v, i) => {
+    const levelPath = `${path}.levels[${i}]`;
+    const level = asRecord(v, levelPath);
+    const result: EngineManifestMobileGameLevel = {
+      label: asString(level.label, `${levelPath}.label`),
+    };
+    if (level.values !== undefined) {
+      result.values = parseValues(level.values, `${levelPath}.values`);
+    }
+    return result;
+  });
+  return { levels };
+}
+
 function parsePreset(value: unknown, path: string): EngineManifestPreset {
   const record = asRecord(value, path);
   const preset: EngineManifestPreset = {
@@ -218,14 +257,7 @@ function parsePreset(value: unknown, path: string): EngineManifestPreset {
     displayName: asString(record.displayName, `${path}.displayName`),
   };
   if (record.values !== undefined) {
-    const values = asRecord(record.values, `${path}.values`);
-    preset.values = {};
-    for (const [name, v] of Object.entries(values)) {
-      if (typeof v !== "string" && typeof v !== "number") {
-        fail(`${path}.values.${name} must be a string or a number`);
-      }
-      preset.values[name] = v;
-    }
+    preset.values = parseValues(record.values, `${path}.values`);
   }
   if (record.tags !== undefined) {
     if (!Array.isArray(record.tags)) {
@@ -240,8 +272,7 @@ function parsePreset(value: unknown, path: string): EngineManifestPreset {
     }
   }
   if (record.mobileGame !== undefined) {
-    const mobileGame = asRecord(record.mobileGame, `${path}.mobileGame`);
-    preset.mobileGame = { label: asString(mobileGame.label, `${path}.mobileGame.label`) };
+    preset.mobileGame = parseMobileGame(record.mobileGame, `${path}.mobileGame`);
   }
   return preset;
 }

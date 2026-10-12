@@ -189,22 +189,32 @@ Worker はエンジンの思考の進行には関与しない。コマンドを�
 TypeScript 実装の簡易エンジン (`es://basic-engine/*`、「初心者」) も従来通り一覧に並ぶ。
 URI 体系が異なるため、組み込みの WebAssembly エンジンとは区別できる。
 
-## モバイルの対局メニュー
+## モバイルの対局ダイアログ
 
-モバイルウェブの対局メニュー (`MobileGameMenu.vue`) に並ぶ対局相手も、マニフェストが
-決める。`catalog.ts` の `loadMobileGamePlayers()` が `BUILTIN_ENGINE_DIRS` の
-マニフェストから `mobileGame` を宣言したプリセットを集め、その `label` をボタンに出す
-([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「`mobileGame`」)。**プリセットの追加・
-削除・レベル名の変更は `engine.json` の編集だけで反映され、ShogiHome 側にプリセットの
-一覧を持たない。**
+モバイルウェブの対局ダイアログ (`MobileGameDialog.vue`、メニュー → 対局) に並ぶ
+対局相手とレベルも、マニフェストが決める。`catalog.ts` の `loadMobileGameEngines()` が
+`BUILTIN_ENGINE_DIRS` のマニフェストから `mobileGame` を宣言したプリセットと
+そのレベルの一覧を集める ([`wasm-engine-abi.md`](./wasm-engine-abi.md) の「`mobileGame`」)。
+**エンジン・レベルの追加・削除・名前の変更は `engine.json` の編集だけで反映され、
+ShogiHome 側に一覧を持たない。**
 
-- 並び順はエンジンのディレクトリの順と、その中では `presets` の配列の順
-- 棋譜に残す名前は `mobileGame.label` ではなくエンジンの正式な名前 (`displayName`)。
-  メニューのラベルはボタンの幅に合わせた短い表記でしかない
-- 簡易エンジン (`es://basic-engine/*`) はマニフェストを持たないため、従来通り
-  `MobileGameMenu.vue` が持ち、一覧の先頭に並ぶ
-- マニフェストの読み込みは非同期なので、終わるまでは簡易エンジンだけが並ぶ。
-  読み込めなかったエンジンはメニューから除外し、理由を画面に出す
+ダイアログは次の 3 つを選んで対局を始める。
+
+| 項目     | 部品                 | 内容                                                         |
+| -------- | -------------------- | ------------------------------------------------------------ |
+| 対局相手 | `PlayerSelector`     | `mobileGame` を宣言したエンジンと簡易エンジン                |
+| レベル   | `HorizontalSelector` | 選んだエンジンの `mobileGame.levels`。簡易エンジンでは出ない |
+| 手番     | `HorizontalSelector` | 先手・後手・振り駒 (人間の手番)                              |
+
+- エンジンの並び順はエンジンのディレクトリの順と、その中では `presets` の配列の順
+- エンジンを切り替えたとき、選択中のレベルが存在しなければ最初 (最も弱い) レベルに戻す
+- 対局には、利用者のエンジン設定を複製してレベルの `values` を `value` に上書きしたもの
+  (`applyMobileGameLevel()`) を使う。保存されたエンジン設定は変更しない
+- 棋譜に残す名前はエンジンの名前にレベルの `label` を添えたもの
+- 簡易エンジン (`es://basic-engine/*`) はマニフェストを持たないため、
+  `PlayerSelector` の `containsBasicEngines` で並べる
+- マニフェストの読み込みは非同期なので、終わるまでは操作を受け付けない (busy 表示)。
+  読み込めなかったエンジンは選択肢から除外し、理由を画面に出す
   (組み込みエンジンの一覧と同じ扱い)
 
 ## キャッシュ

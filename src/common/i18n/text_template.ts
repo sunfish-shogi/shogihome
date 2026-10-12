@@ -392,6 +392,9 @@ export type Texts = {
   baseEngine: string;
   swapSenteGote: string;
   pieceToss: string;
+  opponent: string;
+  level: string;
+  turn: string;
   currentPosition: string;
   positionList: string;
   enableEngineTimeout: string;

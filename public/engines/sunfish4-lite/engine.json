@@ -31,72 +31,31 @@
       "values": {
         "UseBook": "false"
       },
-      "tags": ["game", "research"]
-    },
-    {
-      "id": "sunfish4-lite-wasm-v1-d3",
-      "displayName": "Sunfish4-Lite Depth-03",
-      "values": {
-        "UseBook": "false",
-        "Threads": 1,
-        "USI_Hash": 8,
-        "USI_Ponder": "false",
-        "MaxDepth": 3
-      },
-      "tags": [],
-      "mobileGame": { "label": "Sunfish Lv.1" }
-    },
-    {
-      "id": "sunfish4-lite-wasm-v1-d5",
-      "displayName": "Sunfish4-Lite Depth-05",
-      "values": {
-        "UseBook": "false",
-        "Threads": 1,
-        "USI_Hash": 16,
-        "USI_Ponder": "false",
-        "MaxDepth": 5
-      },
-      "tags": [],
-      "mobileGame": { "label": "Sunfish Lv.2" }
-    },
-    {
-      "id": "sunfish4-lite-wasm-v1-d7",
-      "displayName": "Sunfish4-Lite Depth-07",
-      "values": {
-        "UseBook": "false",
-        "Threads": 1,
-        "USI_Hash": 32,
-        "USI_Ponder": "false",
-        "MaxDepth": 7
-      },
-      "tags": [],
-      "mobileGame": { "label": "Sunfish Lv.3" }
-    },
-    {
-      "id": "sunfish4-lite-wasm-v1-d9",
-      "displayName": "Sunfish4-Lite Depth-09",
-      "values": {
-        "UseBook": "false",
-        "Threads": 1,
-        "USI_Hash": 32,
-        "USI_Ponder": "false",
-        "MaxDepth": 9
-      },
-      "tags": [],
-      "mobileGame": { "label": "Sunfish Lv.4" }
-    },
-    {
-      "id": "sunfish4-lite-wasm-v1-d11",
-      "displayName": "Sunfish4-Lite Depth-11",
-      "values": {
-        "UseBook": "false",
-        "Threads": 1,
-        "USI_Hash": 32,
-        "USI_Ponder": "false",
-        "MaxDepth": 11
-      },
-      "tags": [],
-      "mobileGame": { "label": "Sunfish Lv.5" }
+      "tags": ["game", "research"],
+      "mobileGame": {
+        "levels": [
+          {
+            "label": "Lv.1",
+            "values": { "Threads": 1, "USI_Hash": 8, "USI_Ponder": "false", "MaxDepth": 3 }
+          },
+          {
+            "label": "Lv.2",
+            "values": { "Threads": 1, "USI_Hash": 16, "USI_Ponder": "false", "MaxDepth": 5 }
+          },
+          {
+            "label": "Lv.3",
+            "values": { "Threads": 1, "USI_Hash": 32, "USI_Ponder": "false", "MaxDepth": 7 }
+          },
+          {
+            "label": "Lv.4",
+            "values": { "Threads": 1, "USI_Hash": 32, "USI_Ponder": "false", "MaxDepth": 9 }
+          },
+          {
+            "label": "Lv.5",
+            "values": { "Threads": 1, "USI_Hash": 32, "USI_Ponder": "false", "MaxDepth": 11 }
+          }
+        ]
+      }
     }
   ]
 }
