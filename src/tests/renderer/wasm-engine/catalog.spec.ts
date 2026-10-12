@@ -16,7 +16,8 @@ import {
   isNetworkError,
   loadBuiltinEngineLicenses,
   loadBuiltinUSIEngines,
-  loadMobileGamePlayers,
+  loadMobileGameEngines,
+  applyMobileGameLevel,
   resolveEngineDirURL,
   resolveEngineFileURL,
 } from "@/renderer/wasm-engine/catalog.js";
@@ -55,7 +56,9 @@ const manifest: EngineManifest = {
       id: "sunfish4-lite-wasm-v1-d5",
       displayName: "Sunfish Lv. 2",
       values: { MaxDepth: 5 },
-      mobileGame: { label: "Sunfish Lv.2" },
+      mobileGame: {
+        levels: [{ label: "Lv.1", values: { MaxDepth: 3, USI_Hash: 8 } }, { label: "Lv.2" }],
+      },
     },
   ],
 };
@@ -186,22 +189,43 @@ describe("wasm-engine/catalog", () => {
     expect(fetch).toHaveBeenCalledTimes(BUILTIN_ENGINE_DIRS.length);
   });
 
-  // モバイルの対局メニューに並べるプリセットはマニフェストが宣言する。
+  // モバイルの対局ダイアログに並べるエンジンとレベルはマニフェストが宣言する。
   // 何を出すかを engine.json だけで決められることを、この経路で担保している。
   // (マニフェストは上のテストでキャッシュ済みのため、ここでの fetch は呼ばれない。)
-  it("loadMobileGamePlayers", async () => {
+  it("loadMobileGameEngines", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => ({ ok: true, json: async () => manifest }) as Response),
     );
     // 宣言の無いプリセット (d1) は並ばない。
-    expect(await loadMobileGamePlayers()).toEqual(
-      BUILTIN_ENGINE_DIRS.map((dir) => ({
+    expect(await loadMobileGameEngines()).toEqual(
+      BUILTIN_ENGINE_DIRS.map(() => ({
         uri: builtinEngineURI("sunfish4-lite-wasm-v1-d5"),
-        dir,
-        label: "Sunfish Lv.2",
+        levels: [
+          { label: "Lv.1", values: { MaxDepth: 3, USI_Hash: 8 } },
+          { label: "Lv.2", values: {} },
+        ],
       })),
     );
+  });
+
+  // レベルの値は利用者が編集した値より優先し、元の設定は変更しない。
+  it("applyMobileGameLevel", () => {
+    const engine = buildUSIEngines("sunfish4-lite", manifest)[1];
+    Object.assign(engine.options["MaxDepth"], { value: 20 });
+    const applied = applyMobileGameLevel(engine, {
+      label: "Lv.1",
+      values: { MaxDepth: 3, USI_Hash: 8, Unknown: 1 },
+    });
+    expect(applied.name).toBe("Sunfish Lv. 2 Lv.1");
+    expect(getUSIEngineOptionCurrentValue(applied.options["MaxDepth"])).toBe(3);
+    expect(getUSIEngineOptionCurrentValue(applied.options["USI_Hash"])).toBe(8);
+    // マニフェストに無いオプションは追加しない。
+    expect(applied.options["Unknown"]).toBeUndefined();
+    // 元の設定は変わらない。
+    expect(engine.name).toBe("Sunfish Lv. 2");
+    expect(getUSIEngineOptionCurrentValue(engine.options["MaxDepth"])).toBe(20);
+    expect(engine.options["USI_Hash"]).not.toHaveProperty("value");
   });
 
   // 配布物に含まれるエンジンのライセンスは、同梱した全文へのリンクとして表示する。

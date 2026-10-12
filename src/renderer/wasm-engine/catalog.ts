@@ -148,39 +148,66 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
   }));
 }
 
-// モバイルウェブの対局メニュー (MobileGameMenu) に並べる対局相手。
-export type MobileGamePlayer = {
-  uri: string;
-  // ボタンに出す名前。マニフェストの mobileGame.label をそのまま使う。
+// モバイルウェブの対局ダイアログ (MobileGameDialog) で選べるレベル。
+export type MobileGameLevel = {
+  // レベルの選択肢に出す名前。マニフェストの mobileGame.levels[].label をそのまま使う。
   label: string;
-  dir?: string;
+  values: { [name: string]: string | number };
 };
 
-// モバイルの対局メニューに並べるプリセットを集める。
+// モバイルウェブの対局ダイアログ (MobileGameDialog) に並べるエンジン。
+export type MobileGameEngine = {
+  uri: string;
+  levels: MobileGameLevel[];
+};
+
+// モバイルの対局ダイアログに並べるエンジンとレベルを集める。
 // マニフェストで mobileGame を宣言したプリセットだけが対象になる。
 //
 // 並び順はエンジンのディレクトリの順 (BUILTIN_ENGINE_DIRS) と、その中では
 // presets の配列の順。マニフェストをまたぐ順序の指定は持たない。
 // 独立に管理されるマニフェストの間で順序の尺度を合わせる手段が無いため。
 //
-// マニフェストを読めなかったエンジンは除外する。メニューそのものは妨げない。
-export async function loadMobileGamePlayers(
+// マニフェストを読めなかったエンジンは除外する。ダイアログそのものは妨げない。
+export async function loadMobileGameEngines(
   onError?: (error: Error) => void,
-): Promise<MobileGamePlayer[]> {
-  const players: MobileGamePlayer[] = [];
+): Promise<MobileGameEngine[]> {
+  const engines: MobileGameEngine[] = [];
   for (const dir of BUILTIN_ENGINE_DIRS) {
     try {
       const manifest = await loadEngineManifest(dir);
       for (const preset of manifest.presets) {
         if (preset.mobileGame) {
-          players.push({ uri: builtinEngineURI(preset.id), dir, label: preset.mobileGame.label });
+          engines.push({
+            uri: builtinEngineURI(preset.id),
+            levels: preset.mobileGame.levels.map((level) => ({
+              label: level.label,
+              values: level.values || {},
+            })),
+          });
         }
       }
     } catch (e) {
       onError?.(e instanceof Error ? e : new Error(String(e)));
     }
   }
-  return players;
+  return engines;
+}
+
+// レベルの値を反映したエンジンの設定を返す。元の設定は変更しない。
+// レベルの値は利用者が編集した値 (value) よりも優先する。レベルの選択は対局ごとの
+// 明示的な指定であり、オプション画面での編集によって強さが変わってはならないため。
+// 棋譜に残す名前にはレベルの名前を添え、どのレベルと対局したかを分かるようにする。
+export function applyMobileGameLevel(engine: USIEngine, level: MobileGameLevel): USIEngine {
+  const result: USIEngine = JSON.parse(JSON.stringify(engine));
+  result.name = `${engine.name} ${level.label}`;
+  for (const [name, value] of Object.entries(level.values)) {
+    const option = result.options[name];
+    if (option && option.type !== "button") {
+      option.value = value as never;
+    }
+  }
+  return result;
 }
 
 // ライセンス表示に出す組み込みエンジンのライセンス。

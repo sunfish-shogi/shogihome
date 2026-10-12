@@ -200,18 +200,29 @@ describe("wasm-engine/manifest", () => {
     );
   });
 
-  // モバイルの対局メニューに並べるかどうかはプリセットが宣言する。
-  // 宣言の無いプリセットはメニューに出ない (既定はメニューに出さない)。
+  // モバイルの対局ダイアログに並べるかどうかはプリセットが宣言する。
+  // 宣言の無いプリセットはダイアログに出ない (既定はダイアログに出さない)。
   it("mobileGame", () => {
     expect(parseEngineManifest(validManifest()).presets[0].mobileGame).toBeUndefined();
     const manifest = parseEngineManifest({
       ...validManifest(),
       presets: [
-        { id: "test-v1", displayName: "Test Engine Level 1", mobileGame: { label: "Test Lv.1" } },
-        { id: "test-v2", displayName: "Test Engine Level 2" },
+        {
+          id: "test-v1",
+          displayName: "Test Engine",
+          mobileGame: {
+            levels: [
+              { label: "Lv.1", values: { MaxDepth: 3, USI_Ponder: "false" } },
+              { label: "Lv.2" },
+            ],
+          },
+        },
+        { id: "test-v2", displayName: "Test Engine 2" },
       ],
     });
-    expect(manifest.presets[0].mobileGame).toEqual({ label: "Test Lv.1" });
+    expect(manifest.presets[0].mobileGame).toEqual({
+      levels: [{ label: "Lv.1", values: { MaxDepth: 3, USI_Ponder: "false" } }, { label: "Lv.2" }],
+    });
     expect(manifest.presets[1].mobileGame).toBeUndefined();
   });
 
@@ -220,12 +231,24 @@ describe("wasm-engine/manifest", () => {
       ...validManifest(),
       presets: [{ id: "test-v1", displayName: "Test", mobileGame }],
     });
-    // ボタンに出す名前は省略できない。
-    expect(() => parseEngineManifest(withMobileGame({}))).toThrow(/presets\[0\].mobileGame.label/);
-    expect(() => parseEngineManifest(withMobileGame({ label: "" }))).toThrow(
-      /presets\[0\].mobileGame.label/,
+    // レベルは 1 つ以上必要。
+    expect(() => parseEngineManifest(withMobileGame({}))).toThrow(
+      /presets\[0\].mobileGame.levels must be a non-empty array/,
     );
-    // 真偽値で宣言する形は受け付けない (名前が無いとボタンを描けない)。
+    expect(() => parseEngineManifest(withMobileGame({ levels: [] }))).toThrow(
+      /presets\[0\].mobileGame.levels must be a non-empty array/,
+    );
+    // レベルの名前は省略できない。
+    expect(() => parseEngineManifest(withMobileGame({ levels: [{}] }))).toThrow(
+      /presets\[0\].mobileGame.levels\[0\].label/,
+    );
+    expect(() => parseEngineManifest(withMobileGame({ levels: [{ label: "" }] }))).toThrow(
+      /presets\[0\].mobileGame.levels\[0\].label/,
+    );
+    expect(() =>
+      parseEngineManifest(withMobileGame({ levels: [{ label: "Lv.1", values: { A: true } }] })),
+    ).toThrow(/presets\[0\].mobileGame.levels\[0\].values.A must be a string or a number/);
+    // 真偽値で宣言する形は受け付けない。
     expect(() => parseEngineManifest(withMobileGame(true))).toThrow(
       /presets\[0\].mobileGame must be an object/,
     );
