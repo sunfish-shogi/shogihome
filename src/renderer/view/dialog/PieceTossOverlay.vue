@@ -42,17 +42,17 @@ import { computed, onBeforeUnmount, onMounted, PropType, ref } from "vue";
 // 規則的に見えないように位置と傾きをずらしているが、毎回同じ配置で構わないので固定値にする。
 // x, y は円の中での歩の中心 (%)、tilt は傾き (度)。
 // turns は回転数、duration は回転にかける時間 (ミリ秒) で、歩ごとに少しずつ変えて揃わないようにする。
+// 回転数を増やすと最高速度が上がり、表裏が見分けられなくなるため少なめにする。
 const pieces = [
-  { x: 50, y: 52, tilt: 8, turns: 6, duration: 2000 },
-  { x: 27, y: 31, tilt: -27, turns: 5, duration: 1800 },
-  { x: 71, y: 26, tilt: 41, turns: 7, duration: 2200 },
-  { x: 76, y: 66, tilt: 163, turns: 6, duration: 1900 },
-  { x: 31, y: 75, tilt: -118, turns: 5, duration: 2100 },
+  { x: 50, y: 52, tilt: 8, turns: 3, duration: 2000 },
+  { x: 27, y: 31, tilt: -27, turns: 3, duration: 1800 },
+  { x: 71, y: 26, tilt: 41, turns: 4, duration: 2200 },
+  { x: 76, y: 66, tilt: 163, turns: 3, duration: 1900 },
+  { x: 31, y: 75, tilt: -118, turns: 4, duration: 2100 },
 ];
 
-// 回転が止まってから結果を表示するまでの時間と、結果を表示してから終了するまでの時間。
-const stillDuration = 1000;
-const resultDuration = 1000;
+// 結果を表示してから終了するまでの時間。結果は全ての歩が止まると同時に表示する。
+const resultDuration = 2000;
 
 const props = defineProps({
   // 各歩が表 (歩の面) を向くかどうか。
@@ -98,8 +98,8 @@ onMounted(() => {
       timers.push(
         setTimeout(() => {
           resultVisible.value = true;
-        }, spinDuration + stillDuration),
-        setTimeout(() => emit("done"), spinDuration + stillDuration + resultDuration),
+        }, spinDuration),
+        setTimeout(() => emit("done"), spinDuration + resultDuration),
       );
     });
   });
@@ -152,7 +152,8 @@ dialog.piece-toss::backdrop {
   height: 100%;
   transform-style: preserve-3d;
   transition-property: transform;
-  transition-timing-function: cubic-bezier(0.2, 0.6, 0.3, 1);
+  /* 立ち上がりの傾きを緩くして、最高速度 (開始直後の速度) を抑える。 */
+  transition-timing-function: cubic-bezier(0.3, 0.5, 0.5, 1);
 }
 .face {
   position: absolute;
