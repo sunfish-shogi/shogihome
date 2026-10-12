@@ -24,6 +24,7 @@
       </div>
     </div>
   </DialogFrame>
+  <PieceTossOverlay v-if="pieceToss" :faces="pieceToss.faces" @done="onPieceTossDone" />
 </template>
 
 <script setup lang="ts">
@@ -45,6 +46,8 @@ import { useBusyState } from "@/renderer/store/busy";
 import DialogFrame from "@/renderer/view/dialog/DialogFrame.vue";
 import PlayerSelector from "@/renderer/view/dialog/PlayerSelector.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
+import PieceTossOverlay from "@/renderer/view/dialog/PieceTossOverlay.vue";
+import { pieceTossResult, tossPieces } from "@/renderer/helpers/pieceToss";
 import { Color, InitialPositionType } from "tsshogi";
 import { computed, onMounted, ref, watch } from "vue";
 
@@ -67,6 +70,8 @@ const mobileGameEngines = ref<MobileGameEngine[]>([]);
 const playerURI = ref<string>(uri.ES_BASIC_ENGINE_LIST[0]);
 const levelIndex = ref("0");
 const turn = ref(TURN_BLACK);
+// 振り駒の演出中に、対局相手と振り駒の結果 (各歩が表かどうか) を保持する。
+const pieceToss = ref<{ opponent: PlayerSettings; faces: boolean[] }>();
 
 const emit = defineEmits<{
   close: [];
@@ -176,14 +181,20 @@ const onStart = () => {
     return;
   }
   saveLastSelection();
-  const humanColor =
-    turn.value === TURN_RANDOM
-      ? Math.random() * 2 >= 1
-        ? Color.BLACK
-        : Color.WHITE
-      : turn.value === TURN_WHITE
-        ? Color.WHITE
-        : Color.BLACK;
+  // 振り駒は人が振る。演出を見せてから、その結果の手番で対局を始める。
+  if (turn.value === TURN_RANDOM) {
+    pieceToss.value = { opponent, faces: tossPieces() };
+    return;
+  }
+  startGame(opponent, turn.value === TURN_WHITE ? Color.WHITE : Color.BLACK);
+};
+
+const onPieceTossDone = () => {
+  const { opponent, faces } = pieceToss.value!;
+  startGame(opponent, pieceTossResult(faces));
+};
+
+const startGame = (opponent: PlayerSettings, humanColor: Color) => {
   let black: PlayerSettings = { name: t.human, uri: uri.ES_HUMAN };
   let white = opponent;
   let blackTimeLimit = { timeSeconds: 900, byoyomi: 30, increment: 0 };
