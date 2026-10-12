@@ -9,6 +9,7 @@
           :contains-basic-engines="true"
           :engines="engines"
           :enable-edit-button="false"
+          :display-tag-filter="false"
         />
         <template v-if="levels.length">
           <div class="label">{{ t.level }}</div>

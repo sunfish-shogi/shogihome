@@ -2,7 +2,7 @@
   <DropdownList
     v-model:value="selectedPlayerURI"
     class="player-select"
-    :tags="engines.tagList"
+    :tags="displayTagFilter ? engines.tagList : []"
     :items="listItems"
     :default-tags="defaultTags"
   />
@@ -91,6 +91,11 @@ const props = defineProps({
     default: false,
   },
   enableEditButton: {
+    type: Boolean,
+    default: true,
+  },
+  // タグによる絞り込みを表示するかどうか。非表示の場合は全ての項目が並ぶ。
+  displayTagFilter: {
     type: Boolean,
     default: true,
   },
