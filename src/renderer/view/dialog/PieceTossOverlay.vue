@@ -5,6 +5,7 @@
         v-for="(piece, index) of pieces"
         :key="index"
         class="piece"
+        :class="{ minority: resultVisible && isMinority(index) }"
         :style="{
           left: `${piece.x}%`,
           top: `${piece.y}%`,
@@ -82,6 +83,9 @@ const frontImage = computed(() => pieceImage(PieceType.PAWN));
 const backImage = computed(() => pieceImage(PieceType.PROM_PAWN));
 const result = computed(() => pieceTossResult(props.faces));
 
+// 結果を決めなかった側 (少ない側) の歩かどうか。回転を終えたら薄くして、多い側を目立たせる。
+const isMinority = (index: number) => props.faces[index] !== (result.value === Color.BLACK);
+
 // 回転を終えたときの角度。裏 (と) の場合は半回転を加える。
 const finalAngle = (index: number) => pieces[index].turns * 360 + (props.faces[index] ? 0 : 180);
 
@@ -145,6 +149,10 @@ dialog.piece-toss::backdrop {
   width: 22%;
   height: 22%;
   perspective: 600px;
+  transition: opacity 0.6s;
+}
+.piece.minority {
+  opacity: 0.2;
 }
 .flipper {
   position: relative;
