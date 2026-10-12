@@ -50,6 +50,12 @@ import { computed, onMounted, ref, watch } from "vue";
 const TURN_BLACK = "black";
 const TURN_WHITE = "white";
 const TURN_RANDOM = "random";
+const TURNS = [TURN_BLACK, TURN_WHITE, TURN_RANDOM];
+
+// 前回の選択。ブラウザ版だけの設定なので、ダイアログの中で localStorage に保存する。
+const localStorageLastPlayerURIKey = "MobileGameDialog.lastPlayerURI";
+const localStorageLastLevelKey = "MobileGameDialog.lastLevel";
+const localStorageLastTurnKey = "MobileGameDialog.lastTurn";
 
 const store = useStore();
 const busyState = useBusyState();
@@ -108,15 +114,42 @@ onMounted(async () => {
     }
     engines.value = filtered;
     mobileGameEngines.value = available;
-    if (available.length) {
-      playerURI.value = available[0].uri;
-    }
+    restoreLastSelection(available);
   } catch (e) {
     useErrorStore().add(e);
   } finally {
     busyState.release();
   }
 });
+
+// 前回の選択を復元する。前回のエンジンが選択肢から消えていれば先頭のエンジンを選ぶ。
+// レベルが範囲外の場合は、levels の watch が最も弱いレベルに戻す。
+const restoreLastSelection = (available: MobileGameEngine[]) => {
+  const lastPlayerURI = localStorage.getItem(localStorageLastPlayerURIKey);
+  if (
+    lastPlayerURI &&
+    (available.some((engine) => engine.uri === lastPlayerURI) ||
+      uri.ES_BASIC_ENGINE_LIST.some((basic) => basic === lastPlayerURI))
+  ) {
+    playerURI.value = lastPlayerURI;
+  } else if (available.length) {
+    playerURI.value = available[0].uri;
+  }
+  const lastLevel = localStorage.getItem(localStorageLastLevelKey);
+  if (lastLevel && /^\d+$/.test(lastLevel)) {
+    levelIndex.value = lastLevel;
+  }
+  const lastTurn = localStorage.getItem(localStorageLastTurnKey);
+  if (lastTurn && TURNS.includes(lastTurn)) {
+    turn.value = lastTurn;
+  }
+};
+
+const saveLastSelection = () => {
+  localStorage.setItem(localStorageLastPlayerURIKey, playerURI.value);
+  localStorage.setItem(localStorageLastLevelKey, levelIndex.value);
+  localStorage.setItem(localStorageLastTurnKey, turn.value);
+};
 
 // 対局相手の設定を組み立てる。取得できない場合は undefined を返す。
 const buildOpponentSettings = (): PlayerSettings | undefined => {
@@ -141,6 +174,7 @@ const onStart = () => {
     useErrorStore().add(new Error(`${t.failedToStartNewGame}: ${playerURI.value}`));
     return;
   }
+  saveLastSelection();
   const humanColor =
     turn.value === TURN_RANDOM
       ? Math.random() * 2 >= 1
