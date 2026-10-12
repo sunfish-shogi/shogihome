@@ -36,6 +36,7 @@ import { getPieceImageAssetName } from "@/common/assets/pieces";
 import { getPieceImageURLTemplate } from "@/common/settings/app";
 import { pieceTossResult } from "@/renderer/helpers/pieceToss";
 import { useAppSettings } from "@/renderer/store/settings";
+import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { Color, PieceType } from "tsshogi";
 import { computed, onBeforeUnmount, onMounted, PropType, ref } from "vue";
 
@@ -94,6 +95,9 @@ onMounted(() => {
   // 演出の途中で閉じることはできない。結果が決まっているので、そのまま対局を始める。
   element.addEventListener("cancel", (event) => event.preventDefault());
   element.showModal();
+  // 下のダイアログ (MobileGameDialog) のホットキーを無効にする。
+  // そのままだと Escape で対局ダイアログが閉じたり、Enter で振り駒をやり直したりできてしまう。
+  installHotKeyForDialog(element);
   // 初期状態を描画してから回転させないとトランジションが効かないため、2 フレーム待つ。
   frame = requestAnimationFrame(() => {
     frame = requestAnimationFrame(() => {
@@ -110,6 +114,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  uninstallHotKeyForDialog(dialog.value!);
   cancelAnimationFrame(frame);
   timers.forEach(clearTimeout);
 });
