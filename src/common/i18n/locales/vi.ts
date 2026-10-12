@@ -412,9 +412,9 @@ export const vi: Texts = {
   baseEngine: "Phần mềm so sánh",
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "Furigoma",
-  opponent: "対局相手", // TODO: Translate
-  level: "レベル", // TODO: Translate
-  turn: "手番", // TODO: Translate
+  opponent: "Đối thủ",
+  level: "Cấp độ",
+  turn: "Lượt đi",
   currentPosition: "Thế cờ hiện tại",
   positionList: "Danh sách thế cờ",
   enableEngineTimeout: "Bật hết giờ phần mềm",
