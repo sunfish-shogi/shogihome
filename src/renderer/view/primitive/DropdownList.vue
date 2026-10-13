@@ -3,8 +3,8 @@
     <div class="main row" @click="show = !show">
       <div class="current item" :class="{ 'with-banner': current?.banner }">
         <div v-if="current?.banner" class="banner">
+          <span class="banner-backdrop" :style="bannerBackdropStyle(current.banner)" />
           <img :src="current.banner" alt="" />
-          <span class="banner-fill" :style="bannerFillStyle(current.banner)" />
         </div>
         <span class="label">{{ current?.label }}</span>
         <span v-if="current?.badge" class="badge">{{ current.badge }}</span>
@@ -36,8 +36,8 @@
           @click="onSelect(item.value)"
         >
           <div v-if="item.banner" class="banner">
+            <span class="banner-backdrop" :style="bannerBackdropStyle(item.banner)" />
             <img :src="item.banner" alt="" />
-            <span class="banner-fill" :style="bannerFillStyle(item.banner)" />
           </div>
           <span class="label">{{ item.label }}</span>
           <span v-if="item.badge" class="badge">{{ item.badge }}</span>
@@ -128,8 +128,8 @@ const handleClickOutside = (event: Event) => {
   }
 };
 
-const bannerFillStyle = (banner: string) => ({
-  borderImageSource: `url(${JSON.stringify(banner)})`,
+const bannerBackdropStyle = (banner: string) => ({
+  backgroundImage: `url(${JSON.stringify(banner)})`,
 });
 
 const onSelect = (value: string) => {
@@ -239,27 +239,27 @@ onBeforeUnmount(() => {
 .item > .banner {
   position: absolute;
   inset: 0;
-  display: flex;
+  overflow: hidden;
   background-color: var(--dialog-bg-color);
 }
 .item > .banner > img {
-  flex-shrink: 0;
+  position: relative;
   height: 100%;
   width: auto;
+  /* 右端を背景へ溶け込ませる。 */
+  mask-image: linear-gradient(to right, black 75%, transparent);
 }
 /*
- * バナー画像の右側の空間を、画像の右端を横に引き伸ばして塗りつぶす。
- * border-image で右端の細い領域だけを切り出し、要素の幅いっぱいの右ボーダーとして描画する。
- * border-width は 0 にしてレイアウトに影響させず、描画幅は border-image-width で指定する。
+ * 画像の右側の空間は、画像の右寄りの部分を項目いっぱいに引き伸ばし、強くぼかしたもので塗る。
+ * 画像の幅を項目の 3 倍にして右端に寄せることで、右側の 3 分の 1 だけが見えるようにする。
+ * ぼかすと縁が透けるため、項目より大きく描いてはみ出した部分を切り落とす。
  */
-.item > .banner > .banner-fill {
-  flex-grow: 1;
-  min-width: 0;
-  border-style: solid;
-  border-width: 0;
-  border-image-slice: 0 2 0 0;
-  border-image-width: 0 100% 0 0;
-  border-image-repeat: stretch;
+.item > .banner > .banner-backdrop {
+  position: absolute;
+  inset: -30px;
+  background-size: 300% 100%;
+  background-position: right;
+  filter: blur(20px);
 }
 /* バナー画像がある場合は余白なしで項目いっぱいに表示し、名前をカラーテーマによらず白文字・黒縁取りで画像の左下に重ねる。 */
 .item.with-banner {
