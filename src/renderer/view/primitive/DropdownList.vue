@@ -3,8 +3,10 @@
     <div class="main row" @click="show = !show">
       <div class="current item" :class="{ 'with-banner': current?.banner }">
         <div v-if="current?.banner" class="banner">
-          <span class="banner-backdrop" :style="bannerBackdropStyle(current.banner)" />
           <img :src="current.banner" alt="" />
+          <span class="banner-fill">
+            <span :style="bannerFillStyle(current.banner)" />
+          </span>
         </div>
         <span class="label">{{ current?.label }}</span>
         <span v-if="current?.badge" class="badge">{{ current.badge }}</span>
@@ -36,8 +38,10 @@
           @click="onSelect(item.value)"
         >
           <div v-if="item.banner" class="banner">
-            <span class="banner-backdrop" :style="bannerBackdropStyle(item.banner)" />
             <img :src="item.banner" alt="" />
+            <span class="banner-fill">
+              <span :style="bannerFillStyle(item.banner)" />
+            </span>
           </div>
           <span class="label">{{ item.label }}</span>
           <span v-if="item.badge" class="badge">{{ item.badge }}</span>
@@ -128,8 +132,8 @@ const handleClickOutside = (event: Event) => {
   }
 };
 
-const bannerBackdropStyle = (banner: string) => ({
-  backgroundImage: `url(${JSON.stringify(banner)})`,
+const bannerFillStyle = (banner: string) => ({
+  borderImageSource: `url(${JSON.stringify(banner)})`,
 });
 
 const onSelect = (value: string) => {
@@ -240,24 +244,37 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  display: flex;
   background-color: var(--dialog-bg-color);
 }
 .item > .banner > img {
-  position: relative;
+  flex-shrink: 0;
   height: 100%;
   width: auto;
 }
 /*
- * 画像の右側の空間は、画像の右寄りの部分を項目いっぱいに引き伸ばし、強くぼかしたもので塗る。
- * 画像の幅を項目の 3 倍にして右端に寄せることで、右側の 3 分の 1 だけが見えるようにする。
- * ぼかすと縁が透けるため、項目より大きく描いてはみ出した部分を切り落とす。
+ * 画像の右側の空間は、画像の右端から一定の幅の帯を左右反転して引き伸ばし、ぼかしたもので塗る。
+ * 反転することで画像と接する位置には右端の色が来るため、境目が目立たない。
+ * border-image で帯だけを切り出し、要素の幅いっぱいの右ボーダーとして描画する。
+ * ぼかすと縁から 3 倍程度の幅が透けるため、内側の要素を上下左右にはみ出させて、
+ * 外側の要素で切り落とす。画像の下には重ねない (半透明の画像の色が変わるため)。
  */
-.item > .banner > .banner-backdrop {
+.item > .banner > .banner-fill {
+  position: relative;
+  flex-grow: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.item > .banner > .banner-fill > span {
   position: absolute;
-  inset: -30px;
-  background-size: 300% 100%;
-  background-position: right;
-  filter: blur(20px);
+  inset: -45px;
+  border-style: solid;
+  border-width: 0;
+  border-image-slice: 0 10% 0 0;
+  border-image-width: 0 100% 0 0;
+  border-image-repeat: stretch;
+  transform: scaleX(-1);
+  filter: blur(14px);
 }
 /* バナー画像がある場合は余白なしで項目いっぱいに表示し、名前をカラーテーマによらず白文字・黒縁取りで画像の左下に重ねる。 */
 .item.with-banner {
