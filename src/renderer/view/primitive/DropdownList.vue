@@ -288,11 +288,14 @@ onBeforeUnmount(() => {
   -webkit-text-stroke: 0.24em dimgray;
   paint-order: stroke fill;
 }
+/*
+ * 名前は絶対配置にせず、項目の中で通常どおり並べて下端に寄せる。
+ * badge の手前までの幅に収まらない場合は名前の側を省略する。
+ */
 .item.with-banner > .label {
-  position: absolute;
-  left: 0.6em;
-  bottom: 0.15em;
-  max-width: calc(100% - 1.2em);
+  position: relative;
+  align-self: flex-end;
+  margin: 0 0 0.15em 0.6em;
   font-size: 0.9em;
   line-height: 1.2;
   color: white;
