@@ -20,6 +20,10 @@ export const MANIFEST_FILE_NAME = "engine.json";
 // 常に全文を表示できる長さに制限する。
 export const MAX_BADGE_LENGTH = 8;
 
+// banner に使える画像の拡張子。
+// デスクトップ版は画像をカスタムスキーム (user-file:) で読み込むため、その許可と揃える。
+export const BANNER_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
+
 // グルーコードの出力形式。
 // esm は -sEXPORT_ES6=1 の出力で、そのまま動的 import() できる。
 // umd は -sEXPORT_ES6 無しの出力 (YaneuraOu の配布物がこれ) で、
@@ -96,6 +100,10 @@ export type EngineManifest = {
   author: string;
   // エンジン選択の一覧で名前の横に小さく添える目印 (例: "65MB")。全プリセットで共有する。
   badge?: string;
+  // エンジン選択の一覧で背景に表示するバナー画像。マニフェストからの相対パス。
+  // 全プリセットで共有する。ライセンス全文と同じく、assetBaseURL ではなくエンジンの
+  // ディレクトリに置く。
+  banner?: string;
   // スレッドを使うエンジン (-pthread) は SharedArrayBuffer を要求するため、
   // ページが cross-origin isolated でないと起動できない。
   // 宣言しておくと、モジュールを生成する前に確認して即座に失敗できる。
@@ -331,6 +339,14 @@ export function parseEngineManifest(json: unknown): EngineManifest {
       fail(`manifest.badge must be at most ${MAX_BADGE_LENGTH} characters: ${badge}`);
     }
     manifest.badge = badge;
+  }
+  if (record.banner !== undefined) {
+    const banner = asSafePath(record.banner, "manifest.banner");
+    const lower = banner.toLowerCase();
+    if (!BANNER_EXTENSIONS.some((ext) => lower.endsWith(ext))) {
+      fail(`manifest.banner must be one of ${BANNER_EXTENSIONS.join(", ")}: ${banner}`);
+    }
+    manifest.banner = banner;
   }
   if (record.requiresCrossOriginIsolation !== undefined) {
     if (typeof record.requiresCrossOriginIsolation !== "boolean") {

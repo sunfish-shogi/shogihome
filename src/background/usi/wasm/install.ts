@@ -414,6 +414,7 @@ async function installFiles(
       manifest.module,
       ...(manifest.dataFiles || []).map((file) => file.url),
       ...(manifest.licenses || []).map((license) => license.file),
+      ...(manifest.banner ? [manifest.banner] : []),
     ];
     for (const file of required) {
       if (!listed.has(file)) {

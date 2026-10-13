@@ -166,6 +166,9 @@ export type USIEngine = {
   // エンジン選択の一覧で名前の横に小さく添える目印。組み込みの WebAssembly エンジンのみ。
   // マニフェストから毎回作り直すため、保存された値は使わない。
   badge?: string;
+  // エンジン選択の一覧で背景に表示するバナー画像の URL。マニフェスト (engine.json) で
+  // 指定されたものだけを使う。badge と同じく読み込みのたびに作り直し、保存された値は使わない。
+  banner?: string;
   path: string;
   options: { [name: string]: USIEngineOption };
   labels?: USIEngineLabels; // deprecated: use tags instead

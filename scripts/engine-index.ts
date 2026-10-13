@@ -9,13 +9,14 @@
 // add: エンジンの項目を追加または更新する。
 //   <packageURL> は engine.json を置いたディレクトリの URL (末尾は "/")。実際に全ての
 //   ファイルを取得して大きさと sha256 を求める。取得先はマニフェストの規則に従う
-//   (specs/wasm-engine-abi.md の「6. (d)」)。engine.json・グルーコード・ライセンス全文は
-//   パッケージの URL から、.wasm・.data・dataFiles は assetBaseURL (無ければパッケージの URL)
-//   から取得する。インストール先ではいずれも engine.json からの相対位置に置かれる。
+//   (specs/wasm-engine-abi.md の「6. (d)」)。engine.json・グルーコード・ライセンス全文・
+//   バナー画像はパッケージの URL から、.wasm・.data・dataFiles は assetBaseURL
+//   (無ければパッケージの URL) から取得する。インストール先ではいずれも engine.json からの
+//   相対位置に置かれる。
 //
 // verify: 一覧が指す全てのファイルを実際の配信先から取得し、存在すること・大きさと sha256 が
 //   一致することを確かめる。engine.json が参照するファイル (グルーコード・dataFiles・
-//   ライセンス全文) が一覧に載っていることも確かめる。一覧は書き換えない。
+//   ライセンス全文・バナー画像) が一覧に載っていることも確かめる。一覧は書き換えない。
 //   問題が 1 つでもあれば終了コード 1 で終わる。
 //
 // add は書き込む前に、一覧全体が実行時と同じ検証を通ることを確かめる。
@@ -214,6 +215,7 @@ function listRemoteFiles(manifest: EngineManifest, packageURL: string) {
       required: true,
     })),
     ...(manifest.licenses || []).map((license) => ({ ...inPackage(license.file), required: true })),
+    ...(manifest.banner ? [{ ...inPackage(manifest.banner), required: true }] : []),
   ];
 }
 
@@ -362,6 +364,7 @@ async function verify(argv: string[]): Promise<void> {
         manifest.module,
         ...(manifest.dataFiles || []).map((file) => file.url),
         ...(manifest.licenses || []).map((license) => license.file),
+        ...(manifest.banner ? [manifest.banner] : []),
       ];
       for (const file of required) {
         if (!listed.has(file)) {
