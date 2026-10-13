@@ -15,7 +15,7 @@
         <div
           class="flipper"
           :style="{
-            transform: `rotateY(${spinning ? finalAngle(index) : 0}deg)`,
+            transform: `rotateY(${spinning ? finalAngle(index) : startAngles[index]}deg)`,
             transitionDuration: `${piece.duration}ms`,
           }"
         >
@@ -87,8 +87,18 @@ const result = computed(() => pieceTossResult(props.faces));
 // 結果を決めなかった側 (少ない側) の歩かどうか。回転を終えたら薄くして、多い側を目立たせる。
 const isMinority = (index: number) => props.faces[index] !== (result.value === Color.BLACK);
 
-// 回転を終えたときの角度。裏 (と) の場合は半回転を加える。
-const finalAngle = (index: number) => pieces[index].turns * 360 + (props.faces[index] ? 0 : 180);
+// 回転開始時の角度 (度)。全ての歩が同じ面から回り始めると、回転中も表裏が揃って見えるため、
+// 表 (0 度) 3 枚、裏 (180 度) 2 枚から回し始める。結果には影響しない。
+const startAngles = [0, 180, 0, 0, 180];
+
+// 回転を終えたときの角度。開始角度から turns 回転した後、表 (0 度) または裏 (180 度) に
+// 止まるまで回す。
+const finalAngle = (index: number) => {
+  const start = startAngles[index];
+  const target = props.faces[index] ? 0 : 180;
+  const rest = (((target - start) % 360) + 360) % 360;
+  return start + pieces[index].turns * 360 + rest;
+};
 
 onMounted(() => {
   const element = dialog.value!;
