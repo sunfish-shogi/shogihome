@@ -246,8 +246,6 @@ onBeforeUnmount(() => {
   position: relative;
   height: 100%;
   width: auto;
-  /* 右端を背景へ溶け込ませる。 */
-  mask-image: linear-gradient(to right, black 75%, transparent);
 }
 /*
  * 画像の右側の空間は、画像の右寄りの部分を項目いっぱいに引き伸ばし、強くぼかしたもので塗る。
