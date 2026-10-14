@@ -69,6 +69,7 @@ export const vi: Texts = {
   increaseFontSize: "Cỡ chữ lớn",
   decreaseFontSize: "Cỡ chữ nhỏ",
   settings: "Cài đặt",
+  information: "情報", // TODO: Translate
   config: "Thiết lập",
   debug: "Gỡ lỗi",
   toggleDevTools: "Bật/tắt công cụ nhà phát triển",

@@ -59,6 +59,7 @@ export const ja: Texts = {
   increaseFontSize: "文字を拡大",
   decreaseFontSize: "文字を縮小",
   settings: "設定",
+  information: "情報",
   config: "設定",
   debug: "デバッグ",
   toggleDevTools: "開発者ツール表示切り替え",

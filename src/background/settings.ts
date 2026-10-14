@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { USIEngines } from "@/common/settings/usi.js";
-import { updateEngineBanners } from "@/background/usi/wasm/banner.js";
+import { updateEngineDisplayInfo } from "@/background/usi/wasm/display.js";
 import { AppSettings, defaultAppSettings, normalizeAppSettings } from "@/common/settings/app.js";
 import {
   defaultWindowSettings,
@@ -185,7 +185,7 @@ export async function loadUSIEngines(): Promise<USIEngines> {
     return new USIEngines();
   }
   const engines = new USIEngines(text);
-  await updateEngineBanners(engines);
+  await updateEngineDisplayInfo(engines);
   return engines;
 }
 

@@ -18,15 +18,21 @@
     <span class="player-info-key">{{ t.suggestionsCount }}:</span>
     <span class="player-info-value">{{ multiPVState || "---" }}</span>
   </div>
-  <button
-    v-if="enableEditButton"
-    class="player-settings"
-    :disabled="!isPlayerSettingsEnabled"
-    @click="openPlayerSettings"
-  >
-    <Icon :icon="IconType.SETTINGS" />
-    <span>{{ t.settings }}</span>
-  </button>
+  <div v-if="enableEditButton || hasEngineInfo" class="row player-buttons">
+    <button
+      v-if="enableEditButton"
+      class="player-settings"
+      :disabled="!isPlayerSettingsEnabled"
+      @click="openPlayerSettings"
+    >
+      <Icon :icon="IconType.SETTINGS" />
+      <span>{{ t.settings }}</span>
+    </button>
+    <button v-if="hasEngineInfo" class="player-info-button" @click="showEngineInfo">
+      <Icon :icon="IconType.INFO" />
+      <span>{{ t.information }}</span>
+    </button>
+  </div>
   <USIEngineOptionsDialog
     v-if="engineOptionsDialog"
     :latest="engineOptionsDialog"
@@ -55,6 +61,7 @@ import {
 } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
+import { useMessageStore } from "@/renderer/store/message";
 import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
 import { fileURLToCustomSchemeURL } from "@/common/url";
@@ -161,6 +168,34 @@ const listItems = computed(() => {
   return items;
 });
 
+// エンジンのマニフェスト (engine.json) で指定された説明文とリンクがあれば、
+// 情報ボタンからメッセージダイアログで表示する。
+const selectedEngine = computed(() => {
+  if (!uri.isUSIEngine(selectedPlayerURI.value)) {
+    return null;
+  }
+  return props.engines.getEngine(selectedPlayerURI.value) || null;
+});
+
+const hasEngineInfo = computed(
+  () => !!(selectedEngine.value?.description || selectedEngine.value?.links?.length),
+);
+
+const showEngineInfo = () => {
+  const engine = selectedEngine.value;
+  if (!engine) {
+    return;
+  }
+  useMessageStore().enqueue({
+    text: engine.description || engine.name,
+    attachments: (engine.links || []).map((link) => ({
+      type: "link",
+      text: link.label,
+      url: link.url,
+    })),
+  });
+};
+
 const ponderState = computed(() => {
   if (!uri.isUSIEngine(selectedPlayerURI.value)) {
     return null;
@@ -250,7 +285,9 @@ const closePlayerSettings = () => {
   text-align: left;
   vertical-align: baseline;
 }
-.player-settings {
-  margin: 5px auto 0px auto;
+.player-buttons {
+  justify-content: center;
+  gap: 5px;
+  margin-top: 5px;
 }
 </style>

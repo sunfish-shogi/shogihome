@@ -313,4 +313,45 @@ describe("wasm-engine/manifest", () => {
       /manifest.banner must be a non-empty string/,
     );
   });
+  it("description", () => {
+    expect(parseEngineManifest(validManifest()).description).toBeUndefined();
+    expect(parseEngineManifest({ ...validManifest(), description: "説明" }).description).toBe(
+      "説明",
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), description: "a".repeat(401) })).toThrow(
+      /manifest.description must be at most 400 characters/,
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), description: 1 })).toThrow(
+      /manifest.description must be a non-empty string/,
+    );
+  });
+  it("links", () => {
+    expect(parseEngineManifest(validManifest()).links).toBeUndefined();
+    const links = [
+      { label: "公式サイト", url: "https://example.com/engine/" },
+      { label: "ソースコード", url: "https://example.com/engine/source/" },
+    ];
+    expect(parseEngineManifest({ ...validManifest(), links }).links).toEqual(links);
+    expect(parseEngineManifest({ ...validManifest(), links: [] }).links).toEqual([]);
+    const withLink = (link: unknown) => ({ ...validManifest(), links: [link] });
+    expect(() => parseEngineManifest({ ...validManifest(), links: "x" })).toThrow(
+      /manifest.links must be an array/,
+    );
+    expect(() =>
+      parseEngineManifest(withLink({ label: "a".repeat(41), url: "https://example.com/" })),
+    ).toThrow(/manifest.links\[0\].label must be at most 40 characters/);
+    expect(() => parseEngineManifest(withLink({ url: "https://example.com/" }))).toThrow(
+      /manifest.links\[0\].label must be a non-empty string/,
+    );
+    // ブラウザで開く URL なので https に限る。
+    expect(() => parseEngineManifest(withLink({ label: "a", url: "http://example.com/" }))).toThrow(
+      /manifest.links\[0\].url must be an https URL/,
+    );
+    expect(() => parseEngineManifest(withLink({ label: "a", url: "javascript:alert(1)" }))).toThrow(
+      /manifest.links\[0\].url must be an https URL/,
+    );
+    expect(() => parseEngineManifest(withLink({ label: "a", url: "example.com" }))).toThrow(
+      /manifest.links\[0\].url must be a valid URL/,
+    );
+  });
 });

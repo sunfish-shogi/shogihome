@@ -60,6 +60,7 @@ export const en: Texts = {
   increaseFontSize: "Increase Font Size",
   decreaseFontSize: "Decrease Font Size",
   settings: "Settings",
+  information: "Info",
   config: "Config",
   debug: "Debug",
   toggleDevTools: "Toggle DevTools",

@@ -36,6 +36,11 @@ const manifest: EngineManifest = {
   author: "Kubo, Ryosuke",
   badge: "65MB",
   banner: "banner.png",
+  description: "Description",
+  links: [
+    { label: "Website", url: "https://example.com/sunfish4/" },
+    { label: "Source", url: "https://example.com/sunfish4/source/" },
+  ],
   licenses: [
     {
       spdx: "MIT",
@@ -84,6 +89,12 @@ describe("wasm-engine/catalog", () => {
       expect(engine.badge).toBe("65MB");
       // banner はエンジンのディレクトリに置かれたファイルの URL にする。
       expect(engine.banner).toBe(resolveEngineFileURL("sunfish4-lite", "banner.png"));
+      // 説明文とリンクはマニフェストの値をそのまま使う。
+      expect(engine.description).toBe("Description");
+      expect(engine.links).toEqual([
+        { label: "Website", url: "https://example.com/sunfish4/" },
+        { label: "Source", url: "https://example.com/sunfish4/source/" },
+      ]);
       // エンジンが宣言していない予約オプションは補完される。
       expect(engine.options["USI_Hash"]?.type).toBe("spin");
       expect(engine.options["USI_Ponder"]?.type).toBe("check");
