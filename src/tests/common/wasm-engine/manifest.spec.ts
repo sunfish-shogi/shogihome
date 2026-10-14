@@ -290,4 +290,27 @@ describe("wasm-engine/manifest", () => {
       /manifest.badge must be a non-empty string/,
     );
   });
+  it("banner", () => {
+    expect(parseEngineManifest(validManifest()).banner).toBeUndefined();
+    expect(parseEngineManifest({ ...validManifest(), banner: "banner.png" }).banner).toBe(
+      "banner.png",
+    );
+    expect(parseEngineManifest({ ...validManifest(), banner: "images/Banner.JPG" }).banner).toBe(
+      "images/Banner.JPG",
+    );
+    // 上位ディレクトリや絶対パスは参照させない。
+    expect(() => parseEngineManifest({ ...validManifest(), banner: "../banner.png" })).toThrow(
+      /manifest.banner must be a relative path/,
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), banner: "/banner.png" })).toThrow(
+      /manifest.banner must be a relative path/,
+    );
+    // デスクトップ版で読み込めない形式は受け付けない。
+    expect(() => parseEngineManifest({ ...validManifest(), banner: "banner.svg" })).toThrow(
+      /manifest.banner must be one of/,
+    );
+    expect(() => parseEngineManifest({ ...validManifest(), banner: "" })).toThrow(
+      /manifest.banner must be a non-empty string/,
+    );
+  });
 });

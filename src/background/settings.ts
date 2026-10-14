@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { USIEngines } from "@/common/settings/usi.js";
+import { updateEngineBanners } from "@/background/usi/wasm/banner.js";
 import { AppSettings, defaultAppSettings, normalizeAppSettings } from "@/common/settings/app.js";
 import {
   defaultWindowSettings,
@@ -183,7 +184,9 @@ export async function loadUSIEngines(): Promise<USIEngines> {
   if (parseSettingsJSON(usiEnginesPath, text) === undefined) {
     return new USIEngines();
   }
-  return new USIEngines(text);
+  const engines = new USIEngines(text);
+  await updateEngineBanners(engines);
+  return engines;
 }
 
 const appSettingsPath = path.join(userDir, "app_setting.json");

@@ -1,11 +1,19 @@
 <template>
   <div ref="root" class="root">
     <div class="main row" @click="show = !show">
-      <div class="current item">
+      <div class="current item" :class="{ 'with-banner': current?.banner }">
+        <div v-if="current?.banner" class="banner">
+          <img :src="current.banner" alt="" />
+          <span class="banner-fill">
+            <span :style="bannerFillStyle(current.banner)" />
+          </span>
+        </div>
         <span class="label">{{ current?.label }}</span>
         <span v-if="current?.badge" class="badge">{{ current.badge }}</span>
       </div>
-      <Icon :icon="IconType.ARROW_DROP" />
+      <div class="arrow">
+        <Icon :icon="IconType.ARROW_DROP" />
+      </div>
     </div>
     <div v-show="show" class="dropdown">
       <div class="row tags">
@@ -21,14 +29,20 @@
           {{ tag.name }}
         </div>
       </div>
-      <hr v-if="tags.length" />
       <ul>
         <li
           v-for="item of filteredItems"
           :key="item.value"
           class="item"
+          :class="{ 'with-banner': item.banner }"
           @click="onSelect(item.value)"
         >
+          <div v-if="item.banner" class="banner">
+            <img :src="item.banner" alt="" />
+            <span class="banner-fill">
+              <span :style="bannerFillStyle(item.banner)" />
+            </span>
+          </div>
           <span class="label">{{ item.label }}</span>
           <span v-if="item.badge" class="badge">{{ item.badge }}</span>
         </li>
@@ -60,6 +74,8 @@ const props = defineProps({
         tags?: string[];
         // 名前の横に小さく添える目印。短い文字列を想定し、省略せず常に全文を表示する。
         badge?: string;
+        // 項目の背景に表示するバナー画像の URL。
+        banner?: string;
       }[]
     >,
     required: true,
@@ -116,6 +132,10 @@ const handleClickOutside = (event: Event) => {
   }
 };
 
+const bannerFillStyle = (banner: string) => ({
+  borderImageSource: `url(${JSON.stringify(banner)})`,
+});
+
 const onSelect = (value: string) => {
   emit("update:value", value);
   show.value = false;
@@ -145,9 +165,13 @@ onBeforeUnmount(() => {
   position: relative;
   font-size: 0.9em;
 }
+.root {
+  /* バナー画像の有無に関わらず項目の縦幅を揃える。 */
+  --item-height: 3.2em;
+}
 .main {
   width: 100%;
-  height: 1.6em;
+  height: calc(var(--item-height) + 2px);
   box-sizing: border-box;
   border: 1px solid var(--input-border-color);
 }
@@ -155,10 +179,17 @@ onBeforeUnmount(() => {
   width: 100%;
   min-width: 0;
 }
-.main > .icon {
-  width: auto;
+/* アイコンの大きさは項目の縦幅に関わらず一定にし、背景の領域だけを縦に伸ばす。 */
+.main > .arrow {
+  flex-shrink: 0;
   height: 100%;
+  display: flex;
+  align-items: center;
   background-color: gray;
+}
+.main > .arrow > .icon {
+  width: auto;
+  height: calc(1.6em - 2px);
 }
 .dropdown {
   position: absolute;
@@ -190,12 +221,87 @@ onBeforeUnmount(() => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* 幅が足りない場合は名前の側を省略し、badge は常に全文を表示する。 */
+/* 幅が足りない場合は名前の側を省略し、badge は常に全文を右寄せで表示する。 */
 .item > .badge {
   flex-shrink: 0;
-  margin-left: 0.5em;
+  margin-left: auto;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   font-size: 0.8em;
   opacity: 0.7;
+}
+.item {
+  height: var(--item-height);
+  box-sizing: border-box;
+  align-items: center;
+}
+/*
+ * バナー画像は項目の背景として余白なしで表示する。
+ * 画像は縦幅に合わせて拡大・縮小し、横幅はアスペクト比に従う。
+ * 透過のある画像の背後にはメイン画面の背景色を敷く。
+ */
+.item > .banner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  background-color: var(--dialog-bg-color);
+}
+.item > .banner > img {
+  flex-shrink: 0;
+  height: 100%;
+  width: auto;
+}
+/*
+ * 画像の右側の空間は、画像の右端から一定の幅の帯を左右反転して引き伸ばし、ぼかしたもので塗る。
+ * 反転することで画像と接する位置には右端の色が来るため、境目が目立たない。
+ * border-image で帯だけを切り出し、要素の幅いっぱいの右ボーダーとして描画する。
+ * ぼかすと縁から 3 倍程度の幅が透けるため、内側の要素を上下左右にはみ出させて、
+ * 外側の要素で切り落とす。画像の下には重ねない (半透明の画像の色が変わるため)。
+ */
+.item > .banner > .banner-fill {
+  position: relative;
+  flex-grow: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.item > .banner > .banner-fill > span {
+  position: absolute;
+  inset: -45px;
+  border-style: solid;
+  border-width: 0;
+  border-image-slice: 0 10% 0 0;
+  border-image-width: 0 100% 0 0;
+  border-image-repeat: stretch;
+  transform: scaleX(-1);
+  filter: blur(14px);
+}
+/* バナー画像がある場合は余白なしで項目いっぱいに表示し、名前をカラーテーマによらず白文字・黒縁取りで画像の左下に重ねる。 */
+.item.with-banner {
+  position: relative;
+  padding-left: 0;
+}
+.item.with-banner > .badge {
+  position: relative;
+  color: white;
+  font-weight: bold;
+  -webkit-text-stroke: 0.24em dimgray;
+  paint-order: stroke fill;
+}
+/*
+ * 名前は絶対配置にせず、項目の中で通常どおり並べて下端に寄せる。
+ * badge の手前までの幅に収まらない場合は名前の側を省略する。
+ */
+.item.with-banner > .label {
+  position: relative;
+  align-self: flex-end;
+  margin: 0 0 0.15em 0.6em;
+  font-size: 0.9em;
+  line-height: 1.2;
+  color: white;
+  font-weight: bold;
+  -webkit-text-stroke: 0.14em dimgray;
+  paint-order: stroke fill;
 }
 ul {
   list-style: none;
@@ -204,6 +310,9 @@ ul {
 }
 li:hover {
   background-color: var(--text-bg-color-selected);
+}
+li:hover > .banner {
+  filter: brightness(1.05);
 }
 .tags {
   width: 100%;
@@ -221,9 +330,6 @@ li:hover {
   border-radius: 0.5em;
   box-shadow: 1px 1px 3px 0 var(--control-shadow-color);
   user-select: none;
-}
-hr {
-  margin: 0.2em;
 }
 .not-found {
   padding: 0.2em;

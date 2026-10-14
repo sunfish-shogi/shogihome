@@ -57,6 +57,15 @@ import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
+import { fileURLToCustomSchemeURL } from "@/common/url";
+
+// プレイヤーの種類ごとのバナー画像 (public/banner/)。
+// エンジンのマニフェスト (engine.json) でバナー画像が指定されている場合はそちらを優先する。
+const BANNER = {
+  HUMAN: "banner/human.png",
+  DOWNLOADED: "banner/downloaded.png",
+  ENGINE: "banner/engine.png",
+};
 
 const selectedPlayerURI = defineModel<string>("playerUri", { required: true });
 const defaultTags = computed(() => (props.defaultTag ? [props.defaultTag] : []));
@@ -110,16 +119,33 @@ const busyState = useBusyState();
 const engineOptionsDialog = ref(null as USIEngine | null);
 
 const listItems = computed(() => {
-  const items = [];
+  const items: {
+    label: string;
+    value: string;
+    tags?: string[];
+    badge?: string;
+    banner?: string;
+  }[] = [];
   if (props.containsHuman) {
-    items.push({ label: t.human, value: uri.ES_HUMAN, tags: [getPredefinedUSIEngineTag("game")] });
+    items.push({
+      label: t.human,
+      value: uri.ES_HUMAN,
+      tags: [getPredefinedUSIEngineTag("game")],
+      banner: BANNER.HUMAN,
+    });
   }
+  const downloadTag = getPredefinedUSIEngineTag("download");
   for (const engine of props.engines.engineList) {
     items.push({
       label: engine.name,
       value: engine.uri,
       tags: engine.tags,
       badge: engine.badge,
+      banner: engine.banner
+        ? fileURLToCustomSchemeURL(engine.banner)
+        : engine.tags?.includes(downloadTag)
+          ? BANNER.DOWNLOADED
+          : BANNER.ENGINE,
     });
   }
   if (props.containsBasicEngines) {
@@ -128,6 +154,7 @@ const listItems = computed(() => {
         label: uri.basicEngineName(playerURI),
         value: playerURI,
         tags: [getPredefinedUSIEngineTag("game")],
+        banner: BANNER.ENGINE,
       });
     }
   }

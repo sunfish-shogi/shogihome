@@ -35,6 +35,7 @@ const manifest: EngineManifest = {
   name: "Sunfish4 Lite",
   author: "Kubo, Ryosuke",
   badge: "65MB",
+  banner: "banner.png",
   licenses: [
     {
       spdx: "MIT",
@@ -81,6 +82,8 @@ describe("wasm-engine/catalog", () => {
       expect(engine.author).toBe("Kubo, Ryosuke");
       // badge はマニフェストの値を全てのプリセットで共有する。
       expect(engine.badge).toBe("65MB");
+      // banner はエンジンのディレクトリに置かれたファイルの URL にする。
+      expect(engine.banner).toBe(resolveEngineFileURL("sunfish4-lite", "banner.png"));
       // エンジンが宣言していない予約オプションは補完される。
       expect(engine.options["USI_Hash"]?.type).toBe("spin");
       expect(engine.options["USI_Ponder"]?.type).toBe("check");
