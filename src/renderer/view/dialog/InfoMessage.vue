@@ -1,5 +1,8 @@
 <template>
   <dialog ref="dialog" class="message-box" :style="dragStyle" @mousedown="onDragMouseDown">
+    <div v-if="store.message.banner" class="banner">
+      <img :src="store.message.banner" alt="" />
+    </div>
     <div class="message-area">
       <Icon :icon="IconType.INFO" />
       <div class="message">
@@ -84,6 +87,19 @@ const onClose = () => {
 </script>
 
 <style scoped>
+/* 透過のある画像の背後にはメイン画面の背景色を敷く。 */
+.banner {
+  align-self: center;
+  max-width: 100%;
+  margin-bottom: 10px;
+  line-height: 0;
+  background-color: var(--dialog-bg-color);
+}
+.banner > img {
+  height: 8em;
+  max-width: 100%;
+  object-fit: contain;
+}
 .attachment {
   text-align: center;
 }

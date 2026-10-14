@@ -17,6 +17,8 @@ export type Link = {
 export type Attachment = List | Link;
 
 export type Message = {
+  // メッセージの先頭に表示するバナー画像の URL。
+  banner?: string;
   text: string;
   attachments?: Attachment[];
   withCopyButton?: boolean;
