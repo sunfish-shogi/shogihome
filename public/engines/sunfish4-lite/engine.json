@@ -3,6 +3,11 @@
   "module": "sunfish4.js",
   "moduleFormat": "esm",
   "name": "Sunfish4-Lite",
+  "description": "Sunfish4 の軽量版です。アマチュア有段者レベルの強さがあります。",
+  "links": [
+    { "label": "ソースコード", "url": "https://github.com/sunfish-shogi/sunfish4" },
+    { "label": "PC版ダウンロード", "url": "https://github.com/sunfish-shogi/sunfish4/releases/tag/v0.1.0-light" }
+  ],
   "author": "Kubo, Ryosuke",
   "badge": "4MB",
   "requiresCrossOriginIsolation": true,
