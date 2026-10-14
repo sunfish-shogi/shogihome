@@ -295,12 +295,13 @@ onBeforeUnmount(() => {
 .item.with-banner > .label {
   position: relative;
   align-self: flex-end;
-  margin: 0 0 0.15em 0.6em;
+  margin-left: 0.5em;
+  padding: 0.1em;
   font-size: 0.9em;
   line-height: 1.2;
   color: white;
   font-weight: bold;
-  -webkit-text-stroke: 0.14em dimgray;
+  -webkit-text-stroke: 0.2em dimgray;
   paint-order: stroke fill;
 }
 ul {
