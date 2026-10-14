@@ -158,6 +158,12 @@ export function emptyUSIEngineExtraBookConfig(): USIEngineExtraBookConfig {
   };
 }
 
+// エンジンの Web ページへのリンク。label を見出しとして表示する。
+export type USIEngineLink = {
+  label: string;
+  url: string;
+};
+
 export type USIEngine = {
   uri: string;
   name: string;
@@ -169,6 +175,11 @@ export type USIEngine = {
   // エンジン選択の一覧で背景に表示するバナー画像の URL。マニフェスト (engine.json) で
   // 指定されたものだけを使う。badge と同じく読み込みのたびに作り直し、保存された値は使わない。
   banner?: string;
+  // エンジンの情報ボタンからメッセージダイアログで表示する説明文とリンク。
+  // マニフェスト (engine.json) で指定されたものだけを使い、banner と同じく読み込みのたびに
+  // 作り直す。保存された値は使わない。
+  description?: string;
+  links?: USIEngineLink[];
   path: string;
   options: { [name: string]: USIEngineOption };
   labels?: USIEngineLabels; // deprecated: use tags instead

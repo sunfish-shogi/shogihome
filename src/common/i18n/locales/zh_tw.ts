@@ -69,6 +69,7 @@ export const zh_tw: Texts = {
   increaseFontSize: "增加字體尺寸",
   decreaseFontSize: "縮小字體尺寸",
   settings: "設定",
+  information: "情報", // TODO: Translate
   config: "設定",
   debug: "偵錯",
   toggleDevTools: "打開/關閉開發者工具顯示",

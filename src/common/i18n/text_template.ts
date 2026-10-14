@@ -57,6 +57,7 @@ export type Texts = {
   increaseFontSize: string;
   decreaseFontSize: string;
   settings: string;
+  information: string;
   config: string;
   debug: string;
   toggleDevTools: string;

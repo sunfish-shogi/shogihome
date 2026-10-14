@@ -24,6 +24,13 @@ export const MAX_BADGE_LENGTH = 8;
 // デスクトップ版は画像をカスタムスキーム (user-file:) で読み込むため、その許可と揃える。
 export const BANNER_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
 
+// links[].label の最大文字数。エンジン選択の下に 1 行で並べるリンクの見出しなので短く制限する。
+export const MAX_LINK_LABEL_LENGTH = 40;
+
+// description の最大文字数。エンジン選択の下に小さく表示する説明文で、
+// ダイアログを埋め尽くさない長さに制限する。
+export const MAX_DESCRIPTION_LENGTH = 400;
+
 // グルーコードの出力形式。
 // esm は -sEXPORT_ES6=1 の出力で、そのまま動的 import() できる。
 // umd は -sEXPORT_ES6 無しの出力 (YaneuraOu の配布物がこれ) で、
@@ -86,6 +93,12 @@ export type EngineManifestDataFile = {
   path: string;
 };
 
+// エンジンを選択したときに表示する Web ページへのリンク。label を見出しとして表示する。
+export type EngineManifestLink = {
+  label: string;
+  url: string;
+};
+
 export type EngineManifest = {
   abi: string;
   module: string;
@@ -104,6 +117,10 @@ export type EngineManifest = {
   // 全プリセットで共有する。ライセンス全文と同じく、assetBaseURL ではなくエンジンの
   // ディレクトリに置く。
   banner?: string;
+  // エンジンの情報ボタンからメッセージダイアログで表示する説明文とリンク。
+  // 全プリセットで共有する。
+  description?: string;
+  links?: EngineManifestLink[];
   // スレッドを使うエンジン (-pthread) は SharedArrayBuffer を要求するため、
   // ページが cross-origin isolated でないと起動できない。
   // 宣言しておくと、モジュールを生成する前に確認して即座に失敗できる。
@@ -151,6 +168,15 @@ function asString(value: unknown, path: string): string {
     fail(`${path} must be a non-empty string`);
   }
   return value;
+}
+
+// 最大文字数を超えないことを確かめる。サロゲートペアを 1 文字と数えるため、コードポイント単位で数える。
+function asLimitedString(value: unknown, path: string, max: number): string {
+  const text = asString(value, path);
+  if ([...text].length > max) {
+    fail(`${path} must be at most ${max} characters: ${text}`);
+  }
+  return text;
 }
 
 function asSafePath(value: unknown, path: string): string {
@@ -225,6 +251,15 @@ function parseLicense(value: unknown, path: string): EngineManifestLicense {
     license.source = asHttpsURL(record.source, `${path}.source`).text;
   }
   return license;
+}
+
+function parseLink(value: unknown, path: string): EngineManifestLink {
+  const record = asRecord(value, path);
+  return {
+    label: asLimitedString(record.label, `${path}.label`, MAX_LINK_LABEL_LENGTH),
+    // ブラウザで開く URL なので https に限る。
+    url: asHttpsURL(record.url, `${path}.url`).text,
+  };
 }
 
 function parseValues(value: unknown, path: string): { [name: string]: string | number } {
@@ -333,12 +368,7 @@ export function parseEngineManifest(json: unknown): EngineManifest {
     manifest.assetBaseURL = text;
   }
   if (record.badge !== undefined) {
-    const badge = asString(record.badge, "manifest.badge");
-    // サロゲートペアを 1 文字と数えるため、コードポイント単位で数える。
-    if ([...badge].length > MAX_BADGE_LENGTH) {
-      fail(`manifest.badge must be at most ${MAX_BADGE_LENGTH} characters: ${badge}`);
-    }
-    manifest.badge = badge;
+    manifest.badge = asLimitedString(record.badge, "manifest.badge", MAX_BADGE_LENGTH);
   }
   if (record.banner !== undefined) {
     const banner = asSafePath(record.banner, "manifest.banner");
@@ -347,6 +377,20 @@ export function parseEngineManifest(json: unknown): EngineManifest {
       fail(`manifest.banner must be one of ${BANNER_EXTENSIONS.join(", ")}: ${banner}`);
     }
     manifest.banner = banner;
+  }
+  if (record.description !== undefined) {
+    manifest.description = asLimitedString(
+      record.description,
+      "manifest.description",
+      MAX_DESCRIPTION_LENGTH,
+    );
+  }
+  if (record.links !== undefined) {
+    // 空の配列は「情報」ボタンを出すかどうかの判定と食い違うため受け付けない。
+    if (!Array.isArray(record.links) || record.links.length === 0) {
+      fail("manifest.links must be a non-empty array");
+    }
+    manifest.links = record.links.map((v, i) => parseLink(v, `manifest.links[${i}]`));
   }
   if (record.requiresCrossOriginIsolation !== undefined) {
     if (typeof record.requiresCrossOriginIsolation !== "boolean") {
