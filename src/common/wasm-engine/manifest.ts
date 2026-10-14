@@ -386,8 +386,9 @@ export function parseEngineManifest(json: unknown): EngineManifest {
     );
   }
   if (record.links !== undefined) {
-    if (!Array.isArray(record.links)) {
-      fail("manifest.links must be an array");
+    // 空の配列は「情報」ボタンを出すかどうかの判定と食い違うため受け付けない。
+    if (!Array.isArray(record.links) || record.links.length === 0) {
+      fail("manifest.links must be a non-empty array");
     }
     manifest.links = record.links.map((v, i) => parseLink(v, `manifest.links[${i}]`));
   }

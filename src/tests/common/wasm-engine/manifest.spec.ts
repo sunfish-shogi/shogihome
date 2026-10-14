@@ -332,10 +332,12 @@ describe("wasm-engine/manifest", () => {
       { label: "ソースコード", url: "https://example.com/engine/source/" },
     ];
     expect(parseEngineManifest({ ...validManifest(), links }).links).toEqual(links);
-    expect(parseEngineManifest({ ...validManifest(), links: [] }).links).toEqual([]);
+    expect(() => parseEngineManifest({ ...validManifest(), links: [] })).toThrow(
+      /manifest.links must be a non-empty array/,
+    );
     const withLink = (link: unknown) => ({ ...validManifest(), links: [link] });
     expect(() => parseEngineManifest({ ...validManifest(), links: "x" })).toThrow(
-      /manifest.links must be an array/,
+      /manifest.links must be a non-empty array/,
     );
     expect(() =>
       parseEngineManifest(withLink({ label: "a".repeat(41), url: "https://example.com/" })),
