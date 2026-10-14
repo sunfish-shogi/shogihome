@@ -186,7 +186,9 @@ const showEngineInfo = () => {
   if (!engine) {
     return;
   }
+  // バナー画像はマニフェストで指定されたものだけを表示し、既定の画像は使わない。
   useMessageStore().enqueue({
+    banner: engine.banner && fileURLToCustomSchemeURL(engine.banner),
     text: engine.description || engine.name,
     attachments: (engine.links || []).map((link) => ({
       type: "link",
