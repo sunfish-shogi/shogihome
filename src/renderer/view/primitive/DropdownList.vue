@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
 }
 .root {
   /* バナー画像の有無に関わらず項目の縦幅を揃える。 */
-  --item-height: 3.2em;
+  --item-height: 4em;
 }
 .main {
   width: 100%;
