@@ -3,7 +3,7 @@
     <div class="main row" @click="show = !show">
       <div class="current item" :class="{ 'with-banner': current?.banner }">
         <div v-if="current?.banner" class="banner">
-          <img :src="current.banner" alt="" />
+          <img :src="current.banner" alt="" draggable="false" />
           <span class="banner-fill">
             <span :style="bannerFillStyle(current.banner)" />
           </span>
@@ -38,7 +38,7 @@
           @click="onSelect(item.value)"
         >
           <div v-if="item.banner" class="banner">
-            <img :src="item.banner" alt="" />
+            <img :src="item.banner" alt="" draggable="false" />
             <span class="banner-fill">
               <span :style="bannerFillStyle(item.banner)" />
             </span>
