@@ -806,6 +806,7 @@ export const vi: Texts = {
   yamlFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng YAML.",
   jsonFormatSettingsCopiedToClipboard: "Cài đặt đã được sao chép dưới dạng JSON.",
   usiCsaBridgeCommandCopiedToClipboard: "Lệnh usi-csa-bridge đã được sao chép.",
+  positionImageCopiedToClipboard: "Ảnh thế cờ đã được sao chép.",
   copiedToClipboard: "Đã sao chép vào bảng tạm.",
   pastedFromClipboard: "Đã dán từ bảng tạm.",
   youCanNotCloseAppWhileCSAOnlineGame: "Bạn không thể đóng ứng dụng trong khi đang có ván CSA.",

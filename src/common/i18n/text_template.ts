@@ -773,6 +773,7 @@ export type Texts = {
   yamlFormatSettingsCopiedToClipboard: string;
   jsonFormatSettingsCopiedToClipboard: string;
   usiCsaBridgeCommandCopiedToClipboard: string;
+  positionImageCopiedToClipboard: string;
   copiedToClipboard: string;
   pastedFromClipboard: string;
   youCanNotCloseAppWhileCSAOnlineGame: string;
