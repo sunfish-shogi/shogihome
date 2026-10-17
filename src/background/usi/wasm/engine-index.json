@@ -45,8 +45,8 @@
     },
     {
       "id": "yaneuraou-hao",
-      "version": "aa16cec03cd7efe6",
-      "name": "やねうら王 tanuki-Hao WASM",
+      "version": "276b39f504c2ea12",
+      "name": "YaneuraOu tanuki-Hao",
       "author": "Yaneurao, nodchip",
       "licenses": [
         "GPL-3.0",
@@ -61,8 +61,8 @@
         },
         {
           "path": "engine.json",
-          "sha256": "30e10151b9a8df789b377f2ff9299973e25de3583b08baf3f05cb6d838fdd56d",
-          "size": 4687
+          "sha256": "2faa37d484c04f16ac04d12c4685511ff605173792a7e79edad115ac6a5d6b18",
+          "size": 5326
         },
         {
           "path": "gpl-3.0.txt",
@@ -93,8 +93,8 @@
     },
     {
       "id": "yaneuraou-suisho5",
-      "version": "ffabe6392d1ff456",
-      "name": "やねうら王 水匠5 WASM",
+      "version": "cf6126be9e1e8745",
+      "name": "YaneuraOu Suisho5",
       "author": "Yaneurao, Tayayan",
       "licenses": [
         "GPL-3.0"
@@ -108,8 +108,8 @@
         },
         {
           "path": "engine.json",
-          "sha256": "6b469f36c1c4953e7740ae90b99a9aa7f67aa3a3622a148f9d57401269a0f83c",
-          "size": 4389
+          "sha256": "2de60d10465ac396743b3006d86cd53ddbbe91966a24b2c3dfc5178401688a81",
+          "size": 5047
         },
         {
           "path": "yaneuraou.halfkp.js",
@@ -221,6 +221,206 @@
           "path": "suisho-bm.wasm",
           "sha256": "309166cde907692d1fc36cb2c387a3363248db7ab688bfd10eeecc6bb38e61d5",
           "size": 572397
+        }
+      ]
+    },
+    {
+      "id": "sunfish4",
+      "version": "7bd0997b88643ee6",
+      "name": "Sunfish4",
+      "author": "Kubo, Ryosuke",
+      "licenses": [
+        "MIT"
+      ],
+      "packageURL": "https://assets.shogihome.com/sunfish4/20260830.a88bdc9/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "6d20bee0e8586fdce4bb62c7539eebf1c81b09bbf9bd5f124cf09310346db155",
+          "size": 1079
+        },
+        {
+          "path": "banner.png",
+          "sha256": "a838ff03d6fd286aab6c6a1f4c94797d4d1f1d2029d4bed80892dfac19f88394",
+          "size": 22452
+        },
+        {
+          "path": "engine.json",
+          "sha256": "524930481e60ccc1f57f4fe633e4f13c30071096ef271ce61c60ac08ec4a770a",
+          "size": 2596
+        },
+        {
+          "path": "eval-3d547b7.bin",
+          "sha256": "3d547b73a0bee8a1b49dc76d1c278ee1fd7ac56ce33c233bfdc21f2d71ec1bea",
+          "size": 47124355
+        },
+        {
+          "path": "sunfish4.js",
+          "sha256": "63bc2ddd8b1ade0e365fc40b77e38f34a181747228c18279d2f95d7440b7b81f",
+          "size": 78842
+        },
+        {
+          "path": "sunfish4.wasm",
+          "sha256": "ee3a3c53e583834f9f5355d73a41558a5da5e1eb0f3096f23ccdc4eb6d570d66",
+          "size": 377809
+        }
+      ]
+    },
+    {
+      "id": "yaneuraou-kp256-1sec",
+      "version": "9bcf58f666011d92",
+      "name": "YaneuraOu KP256 1sec",
+      "author": "Yaneurao",
+      "licenses": [
+        "GPL-3.0"
+      ],
+      "packageURL": "https://assets.shogihome.com/yaneuraou/20260904.c1b80eaa/kp256-1sec/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "engine.json",
+          "sha256": "9c8086b602e779019876eb70939a65d009a9950d06096e1d3062b26fb42b0256",
+          "size": 5354
+        },
+        {
+          "path": "nn.bin",
+          "sha256": "f75254cdc2742a8e843d5abc22a0cbb4fcd6061eac5e9a63570142688fa808e8",
+          "size": 893936
+        },
+        {
+          "path": "yaneuraou.js",
+          "sha256": "04f2c00f1e4aca1d22192c4eec2eb9b40a718fe6bc1673ba3f4e7e080061741d",
+          "size": 48490
+        },
+        {
+          "path": "yaneuraou.wasm",
+          "sha256": "10d8c3b0bddb3cffd9cfaf2c0dd2df4bdc9e01b6555afa4320d98e682db9f7fc",
+          "size": 814994
+        },
+        {
+          "path": "yaneuraou.worker.js",
+          "sha256": "c5788263b2762850fcac731bcb8f66a8caf984f3e683c0979d4f732a71b0ed0b",
+          "size": 2927
+        }
+      ]
+    },
+    {
+      "id": "tsuyouraou-11micro",
+      "version": "eec617e25ef80a51",
+      "name": "TsuyouraOu 11 micro",
+      "author": "Yaneurao",
+      "licenses": [
+        "GPL-3.0",
+        "MIT"
+      ],
+      "packageURL": "https://assets.shogihome.com/yaneuraou/20260904.c1b80eaa/tsuyouraou-11micro/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "MIT.txt",
+          "sha256": "6794c5e9fc292c8100e98806f99a1bbebb48801b51add07a3ac933ac5970120e",
+          "size": 1075
+        },
+        {
+          "path": "banner.png",
+          "sha256": "410825c3e2f77785d36b9610cd90ed7d20a6fe573f2d8d4372524d202bf01fcf",
+          "size": 434975
+        },
+        {
+          "path": "engine.json",
+          "sha256": "2ffed6d0a7e89d0af3d903fd43052d6d69217a89882fff65a1706ac49e124d88",
+          "size": 5584
+        },
+        {
+          "path": "nn.bin",
+          "sha256": "7f9545dbf73b87acf312146daabf59c4f17d0845c87d587fa19caed51707dddb",
+          "size": 3864610
+        },
+        {
+          "path": "progress.bin",
+          "sha256": "a2d18f0564639c945b5d6469e9b437cd64a526ad4fbcef02ab1d8f547d08e5f1",
+          "size": 1003104
+        },
+        {
+          "path": "yaneuraou.js",
+          "sha256": "98b1f1888752eea6981e9ffa9189587e5ece90f808eee01b8cde499470926c01",
+          "size": 48560
+        },
+        {
+          "path": "yaneuraou.wasm",
+          "sha256": "af384f8fbbc16aef7ac840d244c19c0d13d6bd9adf4a9bca515595c8f8fb1594",
+          "size": 817304
+        },
+        {
+          "path": "yaneuraou.worker.js",
+          "sha256": "ad9766e06c0815f2127aa6e9bf00506c55cadb0b7083824b5cb735cb9072f213",
+          "size": 2950
+        }
+      ]
+    },
+    {
+      "id": "tsuyouraou-11mini",
+      "version": "1f7516717a1c224b",
+      "name": "TsuyouraOu 11 mini",
+      "author": "Yaneurao",
+      "licenses": [
+        "GPL-3.0",
+        "MIT"
+      ],
+      "packageURL": "https://assets.shogihome.com/yaneuraou/20260904.c1b80eaa/tsuyouraou-11mini/",
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+          "size": 35147
+        },
+        {
+          "path": "MIT.txt",
+          "sha256": "6794c5e9fc292c8100e98806f99a1bbebb48801b51add07a3ac933ac5970120e",
+          "size": 1075
+        },
+        {
+          "path": "banner.png",
+          "sha256": "d5ee73f5f15dc153de6f864fc587ed5444b647a8241daed8b5042b172299083a",
+          "size": 426125
+        },
+        {
+          "path": "engine.json",
+          "sha256": "d56b23fb076240ad846c72bc58810d9141c4f285287e838b856022393e84a627",
+          "size": 5573
+        },
+        {
+          "path": "nn.bin",
+          "sha256": "45323c65135da65d6c2c364eea93a5af6a285c27ebfb07eab4afbe737ef74508",
+          "size": 7711372
+        },
+        {
+          "path": "progress.bin",
+          "sha256": "a2d18f0564639c945b5d6469e9b437cd64a526ad4fbcef02ab1d8f547d08e5f1",
+          "size": 1003104
+        },
+        {
+          "path": "yaneuraou.js",
+          "sha256": "e9e47b595d9cf93b1ddcfd755129b7ce95aeb9f3082d0c2e4672101b3061e71e",
+          "size": 48560
+        },
+        {
+          "path": "yaneuraou.wasm",
+          "sha256": "d2dbcccaecb75ca47c6cb2df04e7731906e4b1cab598395229131509b06ab968",
+          "size": 818037
+        },
+        {
+          "path": "yaneuraou.worker.js",
+          "sha256": "56d5f5902e2b906f70e414a233302a96945237565cffd5019eda029786137c35",
+          "size": 2950
         }
       ]
     }
