@@ -134,6 +134,7 @@ export const zh_tw: Texts = {
   app: "軟體",
   log: "紀錄檔",
   cache: "快取",
+  downloadedEngines: "已下載的引擎",
   help: "協助",
   openWebsite: "官方網站",
   openUserGuide: "使用教學",

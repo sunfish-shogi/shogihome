@@ -128,6 +128,7 @@ export const ja: Texts = {
   app: "アプリ",
   log: "ログ",
   cache: "キャッシュ",
+  downloadedEngines: "ダウンロードしたエンジン",
   help: "ヘルプ",
   openWebsite: "Webサイトを開く",
   openUserGuide: "使い方を開く",

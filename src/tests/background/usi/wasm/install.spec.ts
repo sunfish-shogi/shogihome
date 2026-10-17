@@ -10,6 +10,7 @@ import {
   getEnginePackagesDir,
   installEnginePackage,
   listInstalledEnginePackages,
+  openEnginePackagesDirectory,
   setEngineIndexForTesting,
   setFetchForTesting,
   setLicenseFetchTimeoutForTesting,
@@ -26,12 +27,16 @@ import {
 } from "@/common/wasm-engine/package.js";
 import { PUBLIC_ENGINES_DIR } from "@plugins/builtin_engines.js";
 import * as log from "@/background/log.js";
+import * as electronHelpers from "@/background/helpers/electron.js";
 import { getNopLogger } from "@/tests/mock/log.js";
 import { Mocked } from "vitest";
 
 vi.mock("electron", () => ({ net: { fetch: vi.fn() } }));
 vi.mock("@/background/log.js");
-vi.mock("@/background/helpers/electron.js", () => ({ getAppVersion: () => "0.0.0-test" }));
+vi.mock("@/background/helpers/electron.js", () => ({
+  getAppVersion: () => "0.0.0-test",
+  openPath: vi.fn(),
+}));
 vi.mock("@/background/usi/index.js");
 vi.mock("@/background/settings.js");
 
@@ -167,6 +172,13 @@ describe("background/usi/wasm/install", () => {
 
   it("getEngineIndex/forTesting", () => {
     expect(getEngineIndex().engines.map((e) => e.packageURL)).toEqual([PACKAGE_URL]);
+  });
+
+  it("openEnginePackagesDirectory/createsDirectory", async () => {
+    expect(fs.existsSync(getEnginePackagesDir())).toBe(false);
+    await openEnginePackagesDirectory();
+    expect(fs.statSync(getEnginePackagesDir()).isDirectory()).toBe(true);
+    expect(electronHelpers.openPath).toHaveBeenCalledWith(getEnginePackagesDir());
   });
 
   it("install", async () => {
