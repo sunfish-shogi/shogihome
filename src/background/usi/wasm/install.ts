@@ -68,6 +68,10 @@ export function setFetchForTesting(fetch: Fetch): void {
 function request(url: string, signal?: AbortSignal): Promise<Response> {
   return fetchImpl(url, {
     signal,
+    // Chromium の HTTP キャッシュを使わない。キャッシュに古い内容が残っていると、一覧の sha256 と
+    // 合わずにインストールできなくなる (取得したものは全て照合するので、キャッシュは必要ない)。
+    // 大きな評価パラメータでキャッシュの領域を埋めないためでもある。
+    cache: "no-store",
     // 配信側 (Cloudflare など) の設定でアプリからの取得を許可できるよう、名乗っておく。
     headers: { "User-Agent": `ShogiHome/${getAppVersion()}` },
   });

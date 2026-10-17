@@ -49,6 +49,7 @@ const PACKAGE_URL = `https://engines.example.com/${ENGINE_ID}/v1/`;
 type Server = {
   index: unknown;
   requested: string[];
+  cacheModes: (RequestCache | undefined)[];
   // 差し替える応答の内容 (URL の末尾で照合する)。
   overrides: Map<string, Buffer | (() => Response)>;
 };
@@ -92,10 +93,12 @@ function setupServer(): Server {
   const server: Server = {
     index: buildIndex(),
     requested: [],
+    cacheModes: [],
     overrides: new Map(),
   };
-  setFetchForTesting(async (url) => {
+  setFetchForTesting(async (url, init) => {
     server.requested.push(url);
+    server.cacheModes.push(init?.cache);
     for (const [suffix, data] of server.overrides) {
       if (url.endsWith(suffix)) {
         return typeof data === "function" ? data() : new Response(new Uint8Array(data));
@@ -208,6 +211,10 @@ describe("background/usi/wasm/install", () => {
 
     const list = await listInstalledEnginePackages();
     expect(list.map((p) => p.id)).toEqual([ENGINE_ID]);
+
+    // 古い内容がキャッシュから返らないよう、全ての取得で HTTP キャッシュを使わない。
+    expect(server.cacheModes.length).toBeGreaterThan(0);
+    expect(server.cacheModes.every((mode) => mode === "no-store")).toBeTruthy();
   });
 
   it("reinstall/reuseLocalFiles", async () => {
