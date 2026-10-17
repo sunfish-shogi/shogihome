@@ -666,6 +666,9 @@ export const webAPI: Bridge = {
   async exportCaptureAsJPEG(): Promise<void> {
     throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
+  async copyCaptureToClipboard(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
 
   // Layout
   async loadLayoutProfileList(): Promise<[string, string]> {

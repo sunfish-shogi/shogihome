@@ -794,6 +794,7 @@ export const zh_tw: Texts = {
   yamlFormatSettingsCopiedToClipboard: "已將 YAML 格式之設定複製到剪貼板。",
   jsonFormatSettingsCopiedToClipboard: "已將 JSON 格式之設定複製到剪貼板。",
   usiCsaBridgeCommandCopiedToClipboard: "已將 usi-csa-bridge 指令複製到剪貼板。",
+  positionImageCopiedToClipboard: "已將局面圖複製到剪貼板。",
   copiedToClipboard: "已複製到剪貼板。",
   pastedFromClipboard: "已從剪貼板貼上。",
   youCanNotCloseAppWhileCSAOnlineGame: "由於CSA協定正在使用中，本程式無法被關閉。",

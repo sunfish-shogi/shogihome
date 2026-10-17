@@ -3,7 +3,7 @@ import path from "node:path";
 import { Rect } from "@/common/assets/geometry.js";
 import { getAppLogger } from "@/background/log.js";
 import { loadAppSettings } from "@/background/settings.js";
-import { BrowserWindow, dialog, WebContents } from "electron";
+import { BrowserWindow, clipboard, dialog, NativeImage, WebContents } from "electron";
 
 const jpegQuality = 85;
 
@@ -15,19 +15,28 @@ export function exportCaptureJPEG(webContents: WebContents, rect: Rect): Promise
   return exportCaptureImage(webContents, rect, "jpeg");
 }
 
-async function exportCaptureImage(
-  webContents: WebContents,
-  rect: Rect,
-  ext: string,
-): Promise<string | null> {
+export async function copyCaptureToClipboard(webContents: WebContents, rect: Rect): Promise<void> {
+  const image = await capture(webContents, rect);
+  clipboard.writeImage(image);
+}
+
+function capture(webContents: WebContents, rect: Rect): Promise<NativeImage> {
   const zoomLevel = webContents.getZoomFactor();
-  getAppLogger().info(`exportCaptureImage rect=${rect} zoom=${zoomLevel}`);
-  const image = await webContents.capturePage({
+  getAppLogger().info(`capture rect=${rect} zoom=${zoomLevel}`);
+  return webContents.capturePage({
     x: Math.floor(rect.x * zoomLevel),
     y: Math.floor(rect.y * zoomLevel),
     width: Math.floor(rect.width * zoomLevel),
     height: Math.floor(rect.height * zoomLevel),
   });
+}
+
+async function exportCaptureImage(
+  webContents: WebContents,
+  rect: Rect,
+  ext: string,
+): Promise<string | null> {
+  const image = await capture(webContents, rect);
   const win = BrowserWindow.getFocusedWindow();
   if (!win) {
     throw new Error("Failed to open dialog by unexpected error.");
@@ -44,10 +53,10 @@ async function exportCaptureImage(
   const filePath = ret.filePath;
   switch (ext) {
     case "png":
-      fs.promises.writeFile(filePath, image.toPNG());
+      await fs.promises.writeFile(filePath, image.toPNG());
       break;
     case "jpeg":
-      fs.promises.writeFile(filePath, image.toJPEG(jpegQuality));
+      await fs.promises.writeFile(filePath, image.toJPEG(jpegQuality));
       break;
   }
   return filePath;

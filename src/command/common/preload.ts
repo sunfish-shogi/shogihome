@@ -410,6 +410,9 @@ const bridge: Bridge = {
   async exportCaptureAsJPEG(): Promise<void> {
     throw new Error("This feature is not available on command line tool");
   },
+  async copyCaptureToClipboard(): Promise<void> {
+    throw new Error("This feature is not available on command line tool");
+  },
 
   // Layout
   async loadLayoutProfileList(): Promise<[string, string]> {

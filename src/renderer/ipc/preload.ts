@@ -443,6 +443,9 @@ const api: Bridge = {
   async exportCaptureAsJPEG(json: string): Promise<void> {
     await ipcRenderer.invoke(Background.EXPORT_CAPTURE_AS_JPEG, json);
   },
+  async copyCaptureToClipboard(json: string): Promise<void> {
+    await ipcRenderer.invoke(Background.COPY_CAPTURE_TO_CLIPBOARD, json);
+  },
 
   // Layout
   async loadLayoutProfileList(): Promise<[string, string]> {

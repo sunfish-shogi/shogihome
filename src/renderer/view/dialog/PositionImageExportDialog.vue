@@ -197,6 +197,10 @@
         <Icon :icon="IconType.SAVE" />
         <span>JPEG</span>
       </button>
+      <button @click="copyToClipboard">
+        <Icon :icon="IconType.COPY" />
+        <span>{{ t.copy }}</span>
+      </button>
       <button data-hotkey="Escape" @click="onClose">
         <Icon :icon="IconType.CLOSE" />
         <span>{{ t.close }}</span>
@@ -235,6 +239,7 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { readInputAsNumber } from "@/renderer/helpers/form";
 import { useErrorStore } from "@/renderer/store/error";
+import { useMessageStore } from "@/renderer/store/message";
 import DialogFrame from "./DialogFrame.vue";
 import { PositionImageFontWeight } from "@/common/settings/layout";
 import { fileURLToCustomSchemeURL } from "@/common/url";
@@ -494,6 +499,17 @@ const saveAsJPEG = () => {
   api.exportCaptureAsJPEG(getRect()).catch((e) => {
     useErrorStore().add(e);
   });
+};
+
+const copyToClipboard = () => {
+  api
+    .copyCaptureToClipboard(getRect())
+    .then(() => {
+      useMessageStore().enqueue({ text: t.positionImageCopiedToClipboard });
+    })
+    .catch((e) => {
+      useErrorStore().add(e);
+    });
 };
 
 const onClose = () => {

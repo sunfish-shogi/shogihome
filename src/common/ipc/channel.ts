@@ -16,6 +16,7 @@ export enum Background {
   CROP_PIECE_IMAGE = "cropPieceImage",
   EXPORT_CAPTURE_AS_PNG = "exportCaptureAsPNG",
   EXPORT_CAPTURE_AS_JPEG = "exportCaptureAsJPEG",
+  COPY_CAPTURE_TO_CLIPBOARD = "copyCaptureToClipboard",
   CONVERT_RECORD_FILES = "convertRecordFiles",
   SHOW_SELECT_SFEN_DIALOG = "showSelectSFENDialog",
   LOAD_SFEN_FILE = "loadSFENFile",
