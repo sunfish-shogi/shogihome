@@ -213,7 +213,7 @@ npm run engine-index:verify -- --id yaneuraou     # 1 つのエンジンだけ
 
 Web 版の要件 (`wasm-engine-abi.md` の「配信側の要件」) に加えて次を満たすこと。
 デスクトップ版は Chromium のネットワークスタック (`net.fetch`) で取得し、
-`User-Agent` に `ShogiHome/<版>` を名乗る。
+`User-Agent` に `ShogiHome/<版>` を名乗る。Chromium の HTTP キャッシュは使わない (`cache: "no-store"`)。
 
 - **ボット対策のチャレンジを返さない。** Cloudflare の Bot Fight Mode・Browser Integrity
   Check・JS チャレンジはアプリからの取得を 403 や HTML で拒否する。該当するパスでは無効にする
