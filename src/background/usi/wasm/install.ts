@@ -35,7 +35,7 @@ import { getPredefinedUSIEngineTag, USIEngine } from "@/common/settings/usi.js";
 import { t } from "@/common/i18n/index.js";
 import { getAppPath } from "@/background/proc/path-electron.js";
 import { getPortableExeDir } from "@/background/proc/env.js";
-import { getAppVersion } from "@/background/helpers/electron.js";
+import { getAppVersion, openPath } from "@/background/helpers/electron.js";
 import { getAppLogger } from "@/background/log.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
 import { getUSIEngineInfo, isEnginePathInUse } from "@/background/usi/index.js";
@@ -53,6 +53,13 @@ const PROGRESS_INTERVAL_MS = 200;
 // パッケージの置き場所。ポータブル版では他の設定と同じく実行ファイルの隣に置く。
 export function getEnginePackagesDir(): string {
   return path.join(getPortableExeDir() || getAppPath("userData"), "engines");
+}
+
+// 1つもダウンロードしていない場合はフォルダがまだ無いので作成してから開く。
+export async function openEnginePackagesDirectory(): Promise<void> {
+  const dir = getEnginePackagesDir();
+  await fs.promises.mkdir(dir, { recursive: true });
+  await openPath(dir);
 }
 
 type Fetch = (url: string, init?: RequestInit) => Promise<Response>;

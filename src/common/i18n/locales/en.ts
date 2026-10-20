@@ -128,6 +128,7 @@ export const en: Texts = {
   app: "App",
   log: "Log",
   cache: "Cache",
+  downloadedEngines: "Downloaded Engines",
   help: "Help",
   openWebsite: "Open Website",
   openUserGuide: "Open User Guide",

@@ -138,6 +138,7 @@ export const vi: Texts = {
   app: "Ứng dụng",
   log: "Log",
   cache: "Bộ nhớ đệm",
+  downloadedEngines: "Engine đã tải xuống",
   help: "Trợ giúp",
   openWebsite: "Mở trang web",
   openUserGuide: "Mở hướng dẫn sử dụng",

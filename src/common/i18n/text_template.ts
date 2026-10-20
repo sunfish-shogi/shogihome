@@ -121,6 +121,7 @@ export type Texts = {
   app: string;
   log: string;
   cache: string;
+  downloadedEngines: string;
   help: string;
   openWebsite: string;
   openUserGuide: string;
