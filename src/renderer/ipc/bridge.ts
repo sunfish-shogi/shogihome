@@ -154,6 +154,7 @@ export interface Bridge {
   cropPieceImage(srcURL: string, deleteMargin: boolean): Promise<string>;
   exportCaptureAsPNG(json: string): Promise<void>;
   exportCaptureAsJPEG(json: string): Promise<void>;
+  copyCaptureToClipboard(json: string): Promise<void>;
 
   // Layout
   loadLayoutProfileList(): Promise<[string, string]>;

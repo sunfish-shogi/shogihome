@@ -798,6 +798,7 @@ export const ja: Texts = {
   yamlFormatSettingsCopiedToClipboard: "YAML形式の設定をクリップボードにコピーしました。",
   jsonFormatSettingsCopiedToClipboard: "JSON形式の設定をクリップボードにコピーしました。",
   usiCsaBridgeCommandCopiedToClipboard: "usi-csa-bridge コマンドをクリップボードにコピーしました。",
+  positionImageCopiedToClipboard: "局面図をクリップボードにコピーしました。",
   copiedToClipboard: "クリップボードにコピーしました。",
   pastedFromClipboard: "クリップボードから貼り付けました。",
   youCanNotCloseAppWhileCSAOnlineGame: "CSAプロトコル使用中はアプリを終了できません。",

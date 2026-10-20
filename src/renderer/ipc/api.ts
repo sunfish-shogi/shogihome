@@ -176,6 +176,7 @@ export interface API {
   cropPieceImage(srcURL: string, deleteMargin: boolean): Promise<string>;
   exportCaptureAsPNG(rect: Rect): Promise<void>;
   exportCaptureAsJPEG(rect: Rect): Promise<void>;
+  copyCaptureToClipboard(rect: Rect): Promise<void>;
 
   // Layout
   loadLayoutProfileList(): Promise<[string, LayoutProfileList]>;
@@ -396,6 +397,9 @@ const api: API = {
   },
   exportCaptureAsJPEG(rect: Rect): Promise<void> {
     return bridge.exportCaptureAsJPEG(rect.json);
+  },
+  copyCaptureToClipboard(rect: Rect): Promise<void> {
+    return bridge.copyCaptureToClipboard(rect.json);
   },
 
   // Layout

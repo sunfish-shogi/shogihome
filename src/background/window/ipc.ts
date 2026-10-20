@@ -95,7 +95,11 @@ import { isEncryptionAvailable } from "@/background/helpers/encrypt.js";
 import { validateIPCSender } from "@/background/security/ipc.js";
 import { t } from "@/common/i18n/index.js";
 import { Rect } from "@/common/assets/geometry.js";
-import { exportCaptureJPEG, exportCapturePNG } from "@/background/image/capture.js";
+import {
+  copyCaptureToClipboard,
+  exportCaptureJPEG,
+  exportCapturePNG,
+} from "@/background/image/capture.js";
 import { cropPieceImage } from "@/background/image/cropper.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
 import { fileURLToPath, validateWebURL } from "@/background/helpers/url.js";
@@ -448,6 +452,11 @@ ipcMain.handle(Background.EXPORT_CAPTURE_AS_JPEG, async (event, json: string): P
   if (filePath) {
     updateAppSettings({ lastImageExportFilePath: filePath });
   }
+});
+
+ipcMain.handle(Background.COPY_CAPTURE_TO_CLIPBOARD, async (event, json: string): Promise<void> => {
+  validateIPCSender(event.senderFrame);
+  await copyCaptureToClipboard(mainWindow.webContents, new Rect(json));
 });
 
 ipcMain.handle(Background.CONVERT_RECORD_FILES, async (event, json: string): Promise<string> => {
