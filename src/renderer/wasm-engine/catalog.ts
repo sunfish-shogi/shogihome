@@ -142,7 +142,9 @@ export function buildUSIEngines(dir: string, manifest: EngineManifest): USIEngin
     defaultName: preset.displayName,
     author: manifest.author,
     badge: manifest.badge,
-    banner: manifest.banner && resolveEngineFileURL(dir, manifest.banner),
+    banners: manifest.banner
+      ? [{ url: resolveEngineFileURL(dir, manifest.banner), source: "manifest" }]
+      : undefined,
     description: manifest.description,
     // プリセットの間で配列を共有しないように複製する。
     links: manifest.links?.map((link) => ({ ...link })),

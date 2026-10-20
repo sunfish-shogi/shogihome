@@ -67,7 +67,8 @@ import DropdownList from "@/renderer/view/primitive/DropdownList.vue";
 import { fileURLToCustomSchemeURL } from "@/common/url";
 
 // プレイヤーの種類ごとのバナー画像 (public/banner/)。
-// エンジンのマニフェスト (engine.json) でバナー画像が指定されている場合はそちらを優先する。
+// エンジンのバナー画像 (マニフェストで指定されたものや、エンジンのディレクトリなどに置かれたもの)
+// がある場合はそちらを優先する。
 const BANNER = {
   HUMAN: "banner/human.png",
   DOWNLOADED: "banner/downloaded.png",
@@ -131,14 +132,14 @@ const listItems = computed(() => {
     value: string;
     tags?: string[];
     badge?: string;
-    banner?: string;
+    banners?: string[];
   }[] = [];
   if (props.containsHuman) {
     items.push({
       label: t.human,
       value: uri.ES_HUMAN,
       tags: [getPredefinedUSIEngineTag("game")],
-      banner: BANNER.HUMAN,
+      banners: [BANNER.HUMAN],
     });
   }
   const downloadTag = getPredefinedUSIEngineTag("download");
@@ -148,11 +149,9 @@ const listItems = computed(() => {
       value: engine.uri,
       tags: engine.tags,
       badge: engine.badge,
-      banner: engine.banner
-        ? fileURLToCustomSchemeURL(engine.banner)
-        : engine.tags?.includes(downloadTag)
-          ? BANNER.DOWNLOADED
-          : BANNER.ENGINE,
+      banners: engine.banners?.length
+        ? engine.banners.map((banner) => fileURLToCustomSchemeURL(banner.url))
+        : [engine.tags?.includes(downloadTag) ? BANNER.DOWNLOADED : BANNER.ENGINE],
     });
   }
   if (props.containsBasicEngines) {
@@ -161,7 +160,7 @@ const listItems = computed(() => {
         label: uri.basicEngineName(playerURI),
         value: playerURI,
         tags: [getPredefinedUSIEngineTag("game")],
-        banner: BANNER.ENGINE,
+        banners: [BANNER.ENGINE],
       });
     }
   }
@@ -187,8 +186,9 @@ const showEngineInfo = () => {
     return;
   }
   // バナー画像はマニフェストで指定されたものだけを表示し、既定の画像は使わない。
+  const banner = engine.banners?.find((banner) => banner.source === "manifest");
   useMessageStore().enqueue({
-    banner: engine.banner && fileURLToCustomSchemeURL(engine.banner),
+    banner: banner && fileURLToCustomSchemeURL(banner.url),
     text: engine.description || engine.name,
     attachments: (engine.links || []).map((link) => ({
       type: "link",

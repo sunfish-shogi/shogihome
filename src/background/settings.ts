@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { USIEngines } from "@/common/settings/usi.js";
-import { updateEngineDisplayInfo } from "@/background/usi/wasm/display.js";
+import { updateEngineDisplayInfo } from "@/background/usi/display.js";
 import { AppSettings, defaultAppSettings, normalizeAppSettings } from "@/common/settings/app.js";
 import {
   defaultWindowSettings,

@@ -1,11 +1,17 @@
 <template>
   <div ref="root" class="root">
     <div class="main row" @click="show = !show">
-      <div class="current item" :class="{ 'with-banner': current?.banner }">
-        <div v-if="current?.banner" class="banner">
-          <img :src="current.banner" alt="" draggable="false" />
+      <div class="current item" :class="{ 'with-banner': current?.banners?.length }">
+        <div v-if="current?.banners?.length" class="banner">
+          <img
+            v-for="banner of current.banners"
+            :key="banner"
+            :src="banner"
+            alt=""
+            draggable="false"
+          />
           <span class="banner-fill">
-            <span :style="bannerFillStyle(current.banner)" />
+            <span :style="bannerFillStyle(current.banners)" />
           </span>
         </div>
         <span class="label">{{ current?.label }}</span>
@@ -34,13 +40,19 @@
           v-for="item of filteredItems"
           :key="item.value"
           class="item"
-          :class="{ 'with-banner': item.banner }"
+          :class="{ 'with-banner': item.banners?.length }"
           @click="onSelect(item.value)"
         >
-          <div v-if="item.banner" class="banner">
-            <img :src="item.banner" alt="" draggable="false" />
+          <div v-if="item.banners?.length" class="banner">
+            <img
+              v-for="banner of item.banners"
+              :key="banner"
+              :src="banner"
+              alt=""
+              draggable="false"
+            />
             <span class="banner-fill">
-              <span :style="bannerFillStyle(item.banner)" />
+              <span :style="bannerFillStyle(item.banners)" />
             </span>
           </div>
           <span class="label">{{ item.label }}</span>
@@ -74,8 +86,8 @@ const props = defineProps({
         tags?: string[];
         // 名前の横に小さく添える目印。短い文字列を想定し、省略せず常に全文を表示する。
         badge?: string;
-        // 項目の背景に表示するバナー画像の URL。
-        banner?: string;
+        // 項目の背景に表示するバナー画像の URL。複数ある場合は左から順に横に並べる。
+        banners?: string[];
       }[]
     >,
     required: true,
@@ -132,8 +144,9 @@ const handleClickOutside = (event: Event) => {
   }
 };
 
-const bannerFillStyle = (banner: string) => ({
-  borderImageSource: `url(${JSON.stringify(banner)})`,
+// 右側の空間は最後 (右端) の画像から塗る。
+const bannerFillStyle = (banners: string[]) => ({
+  borderImageSource: `url(${JSON.stringify(banners[banners.length - 1])})`,
 });
 
 const onSelect = (value: string) => {
@@ -238,6 +251,7 @@ onBeforeUnmount(() => {
 /*
  * バナー画像は項目の背景として余白なしで表示する。
  * 画像は縦幅に合わせて拡大・縮小し、横幅はアスペクト比に従う。
+ * 複数の画像は左から順に隙間なく並べ、項目の幅に収まらない部分は切り落とす。
  * 透過のある画像の背後にはメイン画面の背景色を敷く。
  */
 .item > .banner {
