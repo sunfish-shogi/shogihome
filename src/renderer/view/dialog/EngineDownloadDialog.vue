@@ -191,7 +191,11 @@ const isUsed = (pkg: InstalledEnginePackageInfo) => {
 };
 
 const availableRows = computed(() => {
-  return (index.value?.engines || []).map((pkg) => {
+  // インストール中のものを上に表示する。それ以外は一覧の順序を保つ。
+  const engines = [...(index.value?.engines || [])].sort(
+    (a, b) => Number(!!installing[b.id]) - Number(!!installing[a.id]),
+  );
+  return engines.map((pkg) => {
     const same = installed.value.find((p) => p.id === pkg.id && p.version === pkg.version);
     const others = installed.value.filter((p) => p.id === pkg.id && p.version !== pkg.version);
     if (same) {
