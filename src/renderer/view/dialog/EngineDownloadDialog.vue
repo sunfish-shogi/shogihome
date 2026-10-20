@@ -2,117 +2,99 @@
   <DialogFrame @cancel="close">
     <div class="title">{{ t.engineDownload }}</div>
 
-    <!-- ダウンロード前のライセンスの確認 -->
-    <div v-if="confirmation" class="form-group">
-      <div class="package-name">{{ confirmation.pkg.name }} ({{ confirmation.pkg.version }})</div>
-      <div class="notice-line">
-        {{ t.downloadSize }}: {{ formatBytes(getEnginePackageSize(confirmation.pkg.files)) }}
-      </div>
-      <div class="column licenses">
-        <div v-for="(license, i) of confirmation.licenses" :key="i" class="license">
-          <div class="row license-header">
-            <span>{{ license.subject }} ({{ license.spdx }})</span>
-            <a v-if="license.source" class="source" @click="api.openWebBrowser(license.source)">
-              {{ t.sourceCodeURL }}
-            </a>
-          </div>
-          <pre class="license-text">{{ license.text }}</pre>
-        </div>
-      </div>
-      <div class="main-buttons">
-        <button @click="startInstall(confirmation.pkg)">{{ t.agreeAndDownload }}</button>
-        <button data-hotkey="Escape" @click="confirmation = null">{{ t.cancel }}</button>
-      </div>
+    <div>
+      <HorizontalSelector
+        v-model:value="activeTab"
+        :items="[
+          { value: 'available', label: t.availableEngines },
+          { value: 'installed', label: t.installedEngines },
+        ]"
+      />
     </div>
+    <div class="form-group package-list">
+      <!-- 入手可能 -->
+      <template v-if="activeTab === 'available'">
+        <div v-if="index && index.engines.length === 0" class="package">
+          {{ t.noDownloadableEngine }}
+        </div>
+        <div v-for="row of availableRows" :key="row.pkg.id" class="row package">
+          <div class="column package-info">
+            <div class="package-name">{{ row.pkg.name }}</div>
+            <div class="package-detail">
+              {{ row.pkg.author }}
+              / {{ row.pkg.licenses.join(", ") }} /
+              {{ formatBytes(getEnginePackageSize(row.pkg.files)) }}
+            </div>
+            <div v-if="row.pkg.description" class="package-detail">
+              {{ row.pkg.description }}
+            </div>
+            <div class="package-status">
+              <template v-if="installing[row.pkg.id]">
+                <progress :value="progressRatio(row.pkg.id)" max="1" />
+                {{ progressText(row.pkg.id) }}
+              </template>
+              <template v-else>{{ row.status }}</template>
+            </div>
+          </div>
+          <div class="column space-evenly">
+            <button
+              v-if="installing[row.pkg.id]"
+              class="package-action"
+              @click="cancelInstall(row.pkg.id)"
+            >
+              {{ t.cancel }}
+            </button>
+            <button
+              v-else
+              class="package-action"
+              :disabled="isInstalling"
+              @click="confirmInstall(row.pkg)"
+            >
+              {{ row.action }}
+            </button>
+          </div>
+        </div>
+      </template>
 
-    <div v-else>
-      <div>
-        <HorizontalSelector
-          v-model:value="activeTab"
-          :items="[
-            { value: 'available', label: t.availableEngines },
-            { value: 'installed', label: t.installedEngines },
-          ]"
-        />
-      </div>
-      <div class="form-group package-list">
-        <!-- 入手可能 -->
-        <template v-if="activeTab === 'available'">
-          <div v-if="index && index.engines.length === 0" class="package">
-            {{ t.noDownloadableEngine }}
-          </div>
-          <div v-for="row of availableRows" :key="row.pkg.id" class="row package">
-            <div class="column package-info">
-              <div class="package-name">{{ row.pkg.name }}</div>
-              <div class="package-detail">
-                {{ row.pkg.author }}
-                / {{ row.pkg.licenses.join(", ") }} /
-                {{ formatBytes(getEnginePackageSize(row.pkg.files)) }}
-              </div>
-              <div v-if="row.pkg.description" class="package-detail">
-                {{ row.pkg.description }}
-              </div>
-              <div class="package-status">
-                <template v-if="installing[row.pkg.id]">
-                  <progress :value="progressRatio(row.pkg.id)" max="1" />
-                  {{ progressText(row.pkg.id) }}
-                </template>
-                <template v-else>{{ row.status }}</template>
-              </div>
+      <!-- インストール済み -->
+      <template v-else>
+        <div v-if="installed.length === 0" class="package">{{ t.noInstalledEngine }}</div>
+        <div v-for="pkg of installed" :key="pkg.enginePath" class="row package">
+          <div class="column package-info">
+            <div class="package-name">{{ pkg.name }} ({{ pkg.version }})</div>
+            <div class="package-detail">
+              {{ pkg.author }}
+              / {{ formatBytes(getEnginePackageSize(pkg.files)) }}
             </div>
-            <div class="column space-evenly">
-              <button
-                v-if="installing[row.pkg.id]"
-                class="package-action"
-                @click="cancelInstall(row.pkg.id)"
-              >
-                {{ t.cancel }}
-              </button>
-              <button
-                v-else
-                class="package-action"
-                :disabled="isInstalling"
-                @click="confirmInstall(row.pkg)"
-              >
-                {{ row.action }}
-              </button>
+            <div class="package-status">
+              {{ pkg.broken ? t.needsRepair : isUsed(pkg) ? t.inUse : t.unused }}
             </div>
           </div>
-        </template>
-
-        <!-- インストール済み -->
-        <template v-else>
-          <div v-if="installed.length === 0" class="package">{{ t.noInstalledEngine }}</div>
-          <div v-for="pkg of installed" :key="pkg.enginePath" class="row package">
-            <div class="column package-info">
-              <div class="package-name">{{ pkg.name }} ({{ pkg.version }})</div>
-              <div class="package-detail">
-                {{ pkg.author }}
-                / {{ formatBytes(getEnginePackageSize(pkg.files)) }}
-              </div>
-              <div class="package-status">
-                {{ pkg.broken ? t.needsRepair : isUsed(pkg) ? t.inUse : t.unused }}
-              </div>
-            </div>
-            <div class="column space-evenly">
-              <button
-                class="package-action"
-                :disabled="isInstalling || isUsed(pkg)"
-                @click="confirmUninstall(pkg)"
-              >
-                {{ t.uninstall }}
-              </button>
-            </div>
+          <div class="column space-evenly">
+            <button
+              class="package-action"
+              :disabled="isInstalling || isUsed(pkg)"
+              @click="confirmUninstall(pkg)"
+            >
+              {{ t.uninstall }}
+            </button>
           </div>
-        </template>
-      </div>
-      <div class="main-buttons">
-        <button data-hotkey="Escape" :disabled="isInstalling" @click="close">
-          {{ t.close }}
-        </button>
-      </div>
+        </div>
+      </template>
+    </div>
+    <div class="main-buttons">
+      <button data-hotkey="Escape" :disabled="isInstalling" @click="close">
+        {{ t.close }}
+      </button>
     </div>
   </DialogFrame>
+  <EngineLicenseDialog
+    v-if="confirmation"
+    :pkg="confirmation.pkg"
+    :licenses="confirmation.licenses"
+    @agree="startInstall(confirmation.pkg)"
+    @cancel="confirmation = null"
+  />
 </template>
 
 <script setup lang="ts">
@@ -133,9 +115,10 @@ import { useBusyState } from "@/renderer/store/busy";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import { useMessageStore } from "@/renderer/store/message";
 import { useEnginePackageStore } from "@/renderer/store/engine_package";
-import { planEngineListChange } from "@/renderer/helpers/enginePackage";
+import { formatBytes, planEngineListChange } from "@/renderer/helpers/enginePackage";
 import { computed, onMounted, reactive, ref } from "vue";
 import DialogFrame from "./DialogFrame.vue";
+import EngineLicenseDialog from "./EngineLicenseDialog.vue";
 import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue";
 
 const props = defineProps<{
@@ -207,13 +190,6 @@ const availableRows = computed(() => {
     return { pkg, status: t.notInstalled, action: t.install };
   });
 });
-
-const formatBytes = (bytes: number) => {
-  if (bytes < 1024 * 1024) {
-    return `${Math.ceil(bytes / 1024)} KB`;
-  }
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-};
 
 const progressRatio = (id: string) => {
   const progress = packageStore.getProgress(id);
@@ -344,32 +320,8 @@ const close = () => {
   min-width: 110px;
   white-space: nowrap;
 }
-.notice-line {
-  text-align: left;
-}
 .package-status progress {
   width: 200px;
   vertical-align: middle;
-}
-.licenses {
-  width: 640px;
-  height: calc(100vh - 360px);
-  max-height: 400px;
-  overflow: auto;
-  margin-top: 5px;
-}
-.license-header {
-  justify-content: space-between;
-  margin-top: 5px;
-}
-.source {
-  cursor: pointer;
-  text-decoration: underline;
-}
-.license-text {
-  text-align: left;
-  font-size: 0.8em;
-  white-space: pre-wrap;
-  user-select: text;
 }
 </style>
