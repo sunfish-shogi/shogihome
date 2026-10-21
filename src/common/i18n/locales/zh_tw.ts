@@ -73,7 +73,7 @@ export const zh_tw: Texts = {
   increaseFontSize: "增加字體尺寸",
   decreaseFontSize: "縮小字體尺寸",
   settings: "設定",
-  information: "情報", // TODO: Translate
+  information: "資訊",
   config: "設定",
   debug: "偵錯",
   toggleDevTools: "打開/關閉開發者工具顯示",
@@ -472,9 +472,9 @@ export const zh_tw: Texts = {
   hoursSuffix: "小時",
   minutesSuffix: "分",
   secondsSuffix: "秒",
-  eg: "e.g.", // TODO: translate
-  totalMoves: "総手数", // TODO: translate
-  detailSettings: "詳細設定", // TODO: translate
+  eg: "例如",
+  totalMoves: "總手數",
+  detailSettings: "詳細設定",
   engineManagement: "引擎管理",
   engineName: "引擎名稱",
   author: "作者",
