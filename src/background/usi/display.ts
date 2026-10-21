@@ -64,21 +64,28 @@ async function getNativeEngineBanners(
   options: USIEngine["options"],
 ): Promise<USIEngineBanner[]> {
   const engineDir = path.dirname(resolveEnginePath(enginePath));
-  const dirs: { dir: string; source: USIEngineBannerSource }[] = [
+  const candidates: { dir: string; source: USIEngineBannerSource }[] = [
     { dir: engineDir, source: "engine" },
   ];
   for (const name of BANNER_DIR_OPTIONS) {
     const value = getUSIEngineOptionCurrentValue(options[name]);
-    if (typeof value !== "string" || !value.trim()) {
-      continue;
+    if (typeof value === "string" && value.trim()) {
+      candidates.push({ dir: path.resolve(engineDir, value), source: name });
     }
-    const dir = path.resolve(engineDir, value);
-    // 同じディレクトリを指している場合は同じ画像を何度も並べない。
-    if (dirs.some((entry) => entry.dir === dir)) {
-      continue;
-    }
-    dirs.push({ dir, source: name });
   }
+  // 同じディレクトリを指している場合は同じ画像を何度も並べない。
+  // 大文字・小文字の違い (Windows) やシンボリックリンクを経由した場合も同じとみなせるよう、
+  // 実体のパスで比べる。存在しないディレクトリはここで取り除く。
+  const realDirs = await Promise.all(
+    candidates.map(({ dir }) => fs.promises.realpath(dir).catch(() => undefined)),
+  );
+  const dirs: { dir: string; source: USIEngineBannerSource }[] = [];
+  candidates.forEach(({ source }, i) => {
+    const dir = realDirs[i];
+    if (dir && !dirs.some((entry) => entry.dir === dir)) {
+      dirs.push({ dir, source });
+    }
+  });
   const banners = await Promise.all(
     dirs.map(async ({ dir, source }) => {
       const filePath = await findBannerFile(dir);

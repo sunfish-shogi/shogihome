@@ -43,7 +43,8 @@ describe("background/usi/display", () => {
   let tempDir: string;
 
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-display-"));
+    // バナー画像のパスは実体のパスになるため、一時ディレクトリも実体のパスにしておく。
+    tempDir = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), "shogihome-display-")));
   });
 
   afterEach(() => {
@@ -124,6 +125,21 @@ describe("background/usi/display", () => {
     });
     expect(info).toStrictEqual({
       banners: [{ url: bannerURL(banner), source: "engine" }],
+    });
+  });
+
+  it("getEngineDisplayInfo/nativeEngine/symlink", async () => {
+    const bookDir = path.join(tempDir, "book");
+    fs.mkdirSync(bookDir);
+    const banner = writeBanner(bookDir, "banner.png");
+    fs.symlinkSync(bookDir, path.join(tempDir, "link"), "junction");
+    const info = await getEngineDisplayInfo(path.join(tempDir, "engine.exe"), {
+      // リンクを経由して同じディレクトリを指している場合も重複して並べない。
+      EvalDir: stringOption("EvalDir", "book"),
+      BookDir: stringOption("BookDir", "link"),
+    });
+    expect(info).toStrictEqual({
+      banners: [{ url: bannerURL(banner), source: "EvalDir" }],
     });
   });
 
