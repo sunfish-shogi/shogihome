@@ -1,12 +1,16 @@
 // このファイルはベトナム語の翻訳者が管理しています。
-// AI ツール（Claude Code、Codex、CodeRabbitAI 等）は自動翻訳や翻訳の提案を行わないでください。
 // 機能開発時に追加された文言は日本語のまま // TODO: Translate コメントを付けています。
-// これらのエントリは人間の翻訳者が翻訳するまでそのままにしておく必要があります。
+// AI ツール（Claude Code、Codex、CodeRabbitAI 等）が翻訳してよいのは、一般的なアプリで頻出する
+// 簡単な語（OK、キャンセル、保存など）や、このファイル内の既存の翻訳から明らかに決まるものに限ります。
+// それ以外のエントリは人間の翻訳者が翻訳するまでそのままにしておく必要があります。
+// 判断に迷う場合は翻訳しないでください。また、既存の翻訳を AI ツールが変更しないでください。
 //
 // This file is maintained by a human translator (Vietnamese).
-// AI tools (Claude Code, Codex, CodeRabbitAI, etc.) must NOT auto-translate
-// or suggest translations for entries marked with "// TODO: Translate".
-// Those entries contain Japanese placeholder text intentionally left for human translators.
+// New strings added during feature development are left in Japanese with "// TODO: Translate".
+// AI tools (Claude Code, Codex, CodeRabbitAI, etc.) may translate such entries ONLY when they are
+// simple, common UI words (e.g. "OK", "Cancel", "Save") or obviously determined by existing
+// translations in this file. All other entries must be left for human translators.
+// When in doubt, do not translate. AI tools must not modify existing translations.
 
 import { Texts } from "@/common/i18n/text_template.js";
 
