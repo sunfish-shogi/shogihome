@@ -170,6 +170,10 @@ export type USIEngineLink = {
 // - EvalDir / BookDir: 同名のエンジンオプションが示すディレクトリ
 export type USIEngineBannerSource = "manifest" | "engine" | "EvalDir" | "BookDir";
 
+// バナー画像に使える拡張子。優先順に並べる。
+// デスクトップ版は画像をカスタムスキーム (user-file:) で読み込むため、その許可と揃える。
+export const BANNER_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
+
 export type USIEngineBanner = {
   url: string;
   source: USIEngineBannerSource;

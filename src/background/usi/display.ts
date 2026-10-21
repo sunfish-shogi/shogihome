@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import {
+  BANNER_EXTENSIONS,
   getUSIEngineOptionCurrentValue,
   USIEngine,
   USIEngineBanner,
@@ -9,7 +10,7 @@ import {
   USIEngines,
 } from "@/common/settings/usi.js";
 import { isEngineManifestPath } from "@/common/wasm-engine/package.js";
-import { BANNER_EXTENSIONS, parseEngineManifest } from "@/common/wasm-engine/manifest.js";
+import { parseEngineManifest } from "@/common/wasm-engine/manifest.js";
 import { getAppLogger } from "@/background/log.js";
 import { resolveEnginePath } from "@/background/usi/path.js";
 

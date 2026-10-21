@@ -3,7 +3,7 @@
 // エンジンは自身のリポジトリでビルドし、成果物と一緒にこのファイルを出力する。
 // ShogiHome 側はディレクトリ名を登録するだけでよく、オプション定義を写す必要は無い。
 // 仕様は specs/wasm-engine-abi.md を参照。
-import { USIEngineOptionType } from "@/common/settings/usi.js";
+import { BANNER_EXTENSIONS, USIEngineOptionType } from "@/common/settings/usi.js";
 import { EXPORT_NAME_PATTERN } from "./loader.js";
 
 // マニフェストの abi フィールドが取り得る値。非互換な変更を入れる際に更新する。
@@ -19,10 +19,6 @@ export const MANIFEST_FILE_NAME = "engine.json";
 // 省略して全文を後から見せる手段 (マウスオーバーなど) はタッチ端末に無いため、
 // 常に全文を表示できる長さに制限する。
 export const MAX_BADGE_LENGTH = 8;
-
-// banner に使える画像の拡張子。
-// デスクトップ版は画像をカスタムスキーム (user-file:) で読み込むため、その許可と揃える。
-export const BANNER_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
 
 // links[].label の最大文字数。エンジン選択の下に 1 行で並べるリンクの見出しなので短く制限する。
 export const MAX_LINK_LABEL_LENGTH = 40;
