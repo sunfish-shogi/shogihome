@@ -15,6 +15,7 @@ const config = {
   extends: null,
   files: [
     "dist/assets",
+    "dist/banner",
     "dist/board",
     "dist/character",
     "dist/icon",
