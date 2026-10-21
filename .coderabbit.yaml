@@ -4,16 +4,23 @@
 reviews:
   path_instructions:
     # zh_tw.ts and vi.ts are maintained by human translators.
-    # Do not suggest machine translations or flag "// TODO: Translate" entries.
+    # AI may translate only trivial entries (common UI words or ones obvious from existing translations).
+    # Do not flag "// TODO: Translate" entries.
     - path: "src/common/i18n/locales/zh_tw.ts"
       instructions: |
         このファイルは繁体字中国語の人間の翻訳者が管理しています。
-        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、機械翻訳の提案や翻訳に関する指摘を行わないでください。
-        Do not suggest machine translations or flag missing translations.
-        Entries with "// TODO: Translate" are intentional placeholders for human translators.
+        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、翻訳漏れとして指摘しないでください。
+        一般的なアプリで頻出する簡単な語や、同ファイル内の既存の翻訳から明らかに決まる語に限り、AI による翻訳が許可されています。
+        そのような翻訳が既存の訳語や表記と食い違っている場合のみ指摘してください。それ以外の機械翻訳の提案は行わないでください。
+        Do not flag missing translations or "// TODO: Translate" entries; they are intentional placeholders for human translators.
+        AI translation is allowed only for simple, common UI words or entries obviously determined by existing translations in this file.
+        Only point out such translations when they are inconsistent with existing terminology. Do not suggest other machine translations.
     - path: "src/common/i18n/locales/vi.ts"
       instructions: |
         このファイルはベトナム語の人間の翻訳者が管理しています。
-        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、機械翻訳の提案や翻訳に関する指摘を行わないでください。
-        Do not suggest machine translations or flag missing translations.
-        Entries with "// TODO: Translate" are intentional placeholders for human translators.
+        "// TODO: Translate" コメントが付いたエントリは日本語のプレースホルダーであり、翻訳漏れとして指摘しないでください。
+        一般的なアプリで頻出する簡単な語や、同ファイル内の既存の翻訳から明らかに決まる語に限り、AI による翻訳が許可されています。
+        そのような翻訳が既存の訳語や表記と食い違っている場合のみ指摘してください。それ以外の機械翻訳の提案は行わないでください。
+        Do not flag missing translations or "// TODO: Translate" entries; they are intentional placeholders for human translators.
+        AI translation is allowed only for simple, common UI words or entries obviously determined by existing translations in this file.
+        Only point out such translations when they are inconsistent with existing terminology. Do not suggest other machine translations.

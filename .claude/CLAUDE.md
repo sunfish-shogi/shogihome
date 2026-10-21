@@ -76,21 +76,28 @@ All non-relative imports use the `@/` alias, which maps to `src/`.
 
 ### Translation Policy (IMPORTANT for AI tools)
 
-**Do NOT automatically translate or suggest translations for non-Japanese/non-English locale files.**
+**AI tools may translate only trivial entries in non-Japanese/non-English locale files. Everything else is left to human translators.**
 
 - `src/common/i18n/locales/ja.ts` — Maintained by the developer (Japanese)
 - `src/common/i18n/locales/en.ts` — Maintained by the developer (English)
 - `src/common/i18n/locales/zh_tw.ts` — Maintained by a **human translator** (Traditional Chinese)
 - `src/common/i18n/locales/vi.ts` — Maintained by a **human translator** (Vietnamese)
 
-When new UI strings are added during feature development, they are written in Japanese and tagged with `// TODO: Translate` in the non-Japanese locale files. This is intentional. These `// TODO: Translate` entries must **not** be auto-translated by AI tools — they are left for human translators.
+When new UI strings are added during feature development, they are written in Japanese and tagged with `// TODO: Translate` in the non-Japanese locale files. This is intentional. Entries that are not trivial to translate stay as `// TODO: Translate` until a human translator handles them.
+
+**AI tools MAY translate an entry in `zh_tw.ts` or `vi.ts` (and drop its `// TODO: Translate` comment) only when it is either:**
+
+- A simple, common word or phrase that appears in almost any app (e.g. "OK", "Cancel", "Save", "Delete", "Close", "Information", "Settings"), or
+- Obviously determined by existing translations in the same file (e.g. the same term or a phrase built from terms the human translator has already translated, following their established wording and style)
 
 **Rules for AI tools (Claude Code, Codex, CodeRabbitAI, etc.):**
 
-- Do not auto-translate `// TODO: Translate` entries in `zh_tw.ts` or `vi.ts`
-- Do not suggest machine translations for those entries
+- Do not translate entries that do not clearly meet the conditions above (Shogi-specific terms, sentences, nuanced or context-dependent wording, etc.); leave them as `// TODO: Translate`
+- When in doubt, do not translate
+- Do not modify or "improve" existing translations made by human translators
+- Do not suggest machine translations for entries left as `// TODO: Translate`
 - Do not flag `// TODO: Translate` comments as issues or warnings
-- Only touch `zh_tw.ts` and `vi.ts` when explicitly instructed by the maintainer
+- Apart from the translations allowed above, only touch `zh_tw.ts` and `vi.ts` when explicitly instructed by the maintainer
 
 ### Key Dependencies
 
