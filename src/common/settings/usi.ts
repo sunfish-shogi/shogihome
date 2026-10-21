@@ -164,6 +164,21 @@ export type USIEngineLink = {
   url: string;
 };
 
+// バナー画像をどこから見つけたか。
+// - manifest: WebAssembly エンジンのマニフェスト (engine.json) の banner
+// - engine: エンジンの実行ファイルと同じディレクトリ
+// - EvalDir / BookDir: 同名のエンジンオプションが示すディレクトリ
+export type USIEngineBannerSource = "manifest" | "engine" | "EvalDir" | "BookDir";
+
+// バナー画像に使える拡張子。優先順に並べる。
+// デスクトップ版は画像をカスタムスキーム (user-file:) で読み込むため、その許可と揃える。
+export const BANNER_EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
+
+export type USIEngineBanner = {
+  url: string;
+  source: USIEngineBannerSource;
+};
+
 export type USIEngine = {
   uri: string;
   name: string;
@@ -172,11 +187,13 @@ export type USIEngine = {
   // エンジン選択の一覧で名前の横に小さく添える目印。組み込みの WebAssembly エンジンのみ。
   // マニフェストから毎回作り直すため、保存された値は使わない。
   badge?: string;
-  // エンジン選択の一覧で背景に表示するバナー画像の URL。マニフェスト (engine.json) で
-  // 指定されたものだけを使う。badge と同じく読み込みのたびに作り直し、保存された値は使わない。
-  banner?: string;
+  // エンジン選択の一覧で背景に表示するバナー画像。複数ある場合は配列の順に横に並べる。
+  // WebAssembly エンジンはマニフェスト (engine.json) で指定されたもの、それ以外のエンジンは
+  // 実行ファイル・EvalDir・BookDir のディレクトリに置かれた banner.* を使う。
+  // badge と同じく読み込みのたびに作り直し、保存された値は使わない。
+  banners?: USIEngineBanner[];
   // エンジンの情報ボタンからメッセージダイアログで表示する説明文とリンク。
-  // マニフェスト (engine.json) で指定されたものだけを使い、banner と同じく読み込みのたびに
+  // マニフェスト (engine.json) で指定されたものだけを使い、banners と同じく読み込みのたびに
   // 作り直す。保存された値は使わない。
   description?: string;
   links?: USIEngineLink[];

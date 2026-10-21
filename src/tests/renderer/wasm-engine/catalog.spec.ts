@@ -88,7 +88,9 @@ describe("wasm-engine/catalog", () => {
       // badge はマニフェストの値を全てのプリセットで共有する。
       expect(engine.badge).toBe("65MB");
       // banner はエンジンのディレクトリに置かれたファイルの URL にする。
-      expect(engine.banner).toBe(resolveEngineFileURL("sunfish4-lite", "banner.png"));
+      expect(engine.banners).toStrictEqual([
+        { url: resolveEngineFileURL("sunfish4-lite", "banner.png"), source: "manifest" },
+      ]);
       // 説明文とリンクはマニフェストの値をそのまま使う。
       expect(engine.description).toBe("Description");
       expect(engine.links).toEqual([

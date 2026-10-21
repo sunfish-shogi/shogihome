@@ -439,6 +439,9 @@ onMounted(async () => {
       const timeoutSeconds = appSettings.engineTimeoutSeconds;
       engine.value = await api.getUSIEngineInfo(props.latest.path, timeoutSeconds);
       mergeUSIEngine(engine.value, props.latest);
+      // getUSIEngineInfo のバナー画像はオプションの既定値をもとに探したものなので、
+      // 保存されたオプションの値で読み込み済みのものを引き継ぐ。
+      engine.value.banners = props.latest.banners;
     }
     metadata.value = await api.getUSIEngineMetadata(props.latest.path);
     options.value = Object.values(engine.value.options)

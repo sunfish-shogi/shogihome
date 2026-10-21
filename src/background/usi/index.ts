@@ -4,7 +4,7 @@ import * as uri from "@/common/uri.js";
 import { GameResult } from "@/common/game/result.js";
 import { t } from "@/common/i18n/index.js";
 import { resolveEnginePath } from "@/background/usi/path.js";
-import { getEngineDisplayInfo } from "@/background/usi/wasm/display.js";
+import { getEngineDisplayInfo } from "@/background/usi/display.js";
 import { isSameFileSync } from "@/background/helpers/file.js";
 import { getUSILogger } from "@/background/log.js";
 import { USISessionState } from "@/common/advanced/monitor.js";
@@ -52,7 +52,7 @@ function newUnexpectedError(message: string, lastReceived?: string): Error {
 
 export async function getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine> {
   const engine = await getUSIEngineInfoFromProcess(path, timeoutSeconds);
-  const info = await getEngineDisplayInfo(path);
+  const info = await getEngineDisplayInfo(path, engine.options);
   return { ...engine, ...info };
 }
 
