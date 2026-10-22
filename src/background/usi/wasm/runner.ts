@@ -84,6 +84,12 @@ export async function launchWasmEngine(
       // Node の Worker は file:// の文字列を受け付けないため、URL ではなくパスを返す。
       locateFile: (file: string) => path.join(path.dirname(modulePath), file),
       mainScriptUrlOrBlob: modulePath,
+      // Emscripten は Node では argv[0] を process.argv[1] (ホスト側の実パス) にし、
+      // process.argv の残りを main() の引数にする。argv[0] から実行ファイルの場所を求める
+      // エンジンは、仮想ファイルシステム上に無いホスト側のディレクトリを探してしまう
+      // (YaneuraOu の progress.bin など)。ブラウザでの既定値と同じにする。
+      thisProgram: "./this.program",
+      arguments: [],
     }),
   );
   instance.addMessageListener((line) => handlers.onReceive(line));
