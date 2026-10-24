@@ -62,6 +62,11 @@ export type EngineModuleOptions = {
   // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
   // 与えないと pthread の Worker が undefined を読み込もうとして落ちる。
   mainScriptUrlOrBlob?: string;
+  // main() に渡る argv[0] と、それ以降の引数。
+  // Node では Emscripten が process.argv から取るため、ホスト側の実パスや
+  // utility プロセスの引数がエンジンに渡ってしまう。ブラウザと同じ値に揃えるために使う。
+  thisProgram?: string;
+  arguments?: string[];
 };
 
 export type EngineFactory = (options?: EngineModuleOptions) => Promise<EngineInstance>;

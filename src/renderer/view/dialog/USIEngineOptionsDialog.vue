@@ -27,7 +27,7 @@
           <div class="option-name">{{ t.enginePath }}</div>
           <div class="option-unchangeable">
             <div>{{ engine.path }}</div>
-            <button class="thin" @click="replaceEnginePath">
+            <button v-if="!isWasmEngine" class="thin" @click="replaceEnginePath">
               {{ t.replaceEnginePath }}
             </button>
             <button class="thin" @click="openEngineDir">
@@ -385,6 +385,7 @@ const busyState = useBusyState();
 const appSettings = useAppSettings();
 const detailed = ref(appSettings.showEngineOptionDetails);
 const filter = ref("");
+const isWasmEngine = computed(() => !isNative() && isBuiltinEnginePath(props.latest.path));
 const filterWords = computed(() => filter.value.split(/ +/).filter((s) => s));
 const engine = ref(emptyUSIEngine());
 const options = ref<Option[]>([]);

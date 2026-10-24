@@ -60,6 +60,11 @@ V8 の続行できないエラーで終了するときに発生する `error` �
   `module.parser.javascript.createRequire` を無効にしている
 - `locateFile` はグルーコードの隣のパスを返す。`.wasm` と `.data` はそこに置かれている
 - `dataFiles` はファイルから読み、Emscripten の仮想ファイルシステムへ書き込む
+- `thisProgram` に `"./this.program"`、`arguments` に `[]` を渡し、`main()` の `argv` を
+  ブラウザでの既定値に揃える。Node では Emscripten が `argv[0]` を `process.argv[1]`
+  (ホスト側の実パス) にし、`process.argv` の残りを引数にするため。`argv[0]` から実行ファイルの
+  場所を求めるエンジンは、仮想ファイルシステム上に無いホスト側のディレクトリを探してしまう
+  (例: YaneuraOu は `progress.bin` を `<argv[0] のディレクトリ>/<EvalDir>/` から読む)
 - `assetBaseURL` は参照しない。ダウンロード時に全てのファイルを手元へ集めてあるため
 - `requiresCrossOriginIsolation` は参照しない。Node では cross-origin isolation の制約が無く、
   `SharedArrayBuffer` を使える。**スレッドを使うエンジンもそのまま動く**

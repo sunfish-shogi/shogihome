@@ -3,7 +3,14 @@ import path from "node:path";
 import { Rect } from "@/common/assets/geometry.js";
 import { getAppLogger } from "@/background/log.js";
 import { loadAppSettings } from "@/background/settings.js";
-import { BrowserWindow, clipboard, dialog, NativeImage, WebContents } from "electron";
+import {
+  BrowserWindow,
+  clipboard,
+  ClipboardItem,
+  dialog,
+  NativeImage,
+  WebContents,
+} from "electron";
 
 const jpegQuality = 85;
 
@@ -17,7 +24,8 @@ export function exportCaptureJPEG(webContents: WebContents, rect: Rect): Promise
 
 export async function copyCaptureToClipboard(webContents: WebContents, rect: Rect): Promise<void> {
   const image = await capture(webContents, rect);
-  clipboard.writeImage(image);
+  const png = new Blob([new Uint8Array(image.toPNG())], { type: "image/png" });
+  await clipboard.write([new ClipboardItem({ "image/png": png })]);
 }
 
 function capture(webContents: WebContents, rect: Rect): Promise<NativeImage> {
