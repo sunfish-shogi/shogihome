@@ -61,6 +61,9 @@ export default (env = {}) => {
       output: {
         filename: "background.js",
         path: import.meta.dirname + "/dist/packed",
+        // webpack 5.110.0 以降は experiments.outputModule だけでは ESM で出力されず、
+        // externals の electron がグローバル変数の参照になって起動時に落ちるため明示する。
+        module: true,
       },
       externals: ["electron"],
       experiments: {
@@ -87,6 +90,7 @@ export default (env = {}) => {
       output: {
         filename: "wasm-engine-host.js",
         path: import.meta.dirname + "/dist/packed",
+        module: true,
       },
       externals: ["electron"],
       module: {
