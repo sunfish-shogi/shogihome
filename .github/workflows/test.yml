@@ -18,9 +18,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          # Do not use Node.js v24.16.0 or later
-          # See: https://github.com/electron/electron/issues/51619
-          node-version: v24.15.0
+          node-version: "24.22.1"
           cache: "npm"
       - run: npm install -g npm@latest
       - run: npm version
