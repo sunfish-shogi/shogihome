@@ -1,6 +1,5 @@
 import { USIInfoCommand } from "@/common/game/usi.js";
 import { USIPlayerMonitor } from "@/renderer/store/usi.js";
-import { bench } from "vitest";
 
 function pv(s: string): string[] {
   return s.split(" ");
@@ -66,13 +65,11 @@ describe("store/usi", () => {
   }
   const monitor = new USIPlayerMonitor(1, "name");
 
-  bench(
-    "USIPlayerMonitor",
-    () => {
+  test("USIPlayerMonitor", async ({ bench }) => {
+    await bench("USIPlayerMonitor", () => {
       for (const testCase of monitorUpdateTestCases) {
         monitor.update(testCase.sfen, testCase.update, 100, undefined);
       }
-    },
-    { time: 1000, throws: true },
-  );
+    }).run({ time: 1000, throws: true });
+  });
 });

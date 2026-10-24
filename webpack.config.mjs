@@ -145,7 +145,11 @@ export default (env = {}) => {
       // なお externals の判定は元の request で行われるため、この除外なしでは
       // NormalModuleReplacementPlugin も resolve.alias も効かない。
       externals: /^(?!virtual:)[^.@].*$/,
-      optimization,
+      // webpack 5.110.0 以降はモジュールを連結 (concatenate) すると、連結されたスコープの外にある
+      // モジュールの初期化が import の順序より前に実行されることがある。preload.ts が
+      // global.window を用意する前に @/renderer/ipc/api.ts が評価され、起動時に
+      // "window is not defined" で落ちるため、連結を無効にする。
+      optimization: { ...optimization, concatenateModules: false },
       cache,
       plugins: [
         // Vite のプラグインが作る仮想モジュール (plugins/builtin_engines.ts) は
