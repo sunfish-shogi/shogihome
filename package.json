@@ -94,7 +94,7 @@
     "archiver": "^8.0.0",
     "concurrently": "^10.0.6",
     "depcheck": "^1.4.7",
-    "electron": "^44.8.0",
+    "electron": "^44.9.1",
     "electron-builder": "^26.15.3",
     "electron-devtools-installer": "^4.0.0",
     "eslint": "^9.39.5",
