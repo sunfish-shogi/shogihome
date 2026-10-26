@@ -516,6 +516,8 @@ export const vi: Texts = {
   unused: "Không sử dụng",
   inUse: "Đang sử dụng",
   downloadSize: "Dung lượng tải xuống",
+  wasmEnginePerformanceNotice:
+    "アプリ内ダウンロード機能では、ShogiHomeブラウザ版に搭載しているエンジンデータをダウンロードします。エンジン開発者のサイトで公開しているネイティブ版よりも探索速度が劣ります。", // TODO: Translate
   agreeAndDownload: "Đồng ý và tải xuống",
   sourceCodeURL: "Mã nguồn",
   noDownloadableEngine: "Không có phần mềm nào để tải xuống.",
