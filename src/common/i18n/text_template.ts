@@ -492,6 +492,7 @@ export type Texts = {
   unused: string;
   inUse: string;
   downloadSize: string;
+  wasmEnginePerformanceNotice: string;
   agreeAndDownload: string;
   sourceCodeURL: string;
   noDownloadableEngine: string;

@@ -1,6 +1,9 @@
 <template>
   <DialogFrame @cancel="emit('cancel')">
     <div class="title">{{ t.engineDownload }}</div>
+    <div class="form-group warning">
+      <div class="note performance-notice">{{ t.wasmEnginePerformanceNotice }}</div>
+    </div>
     <div class="form-group">
       <div class="package-name">{{ pkg.name }} ({{ pkg.version }})</div>
       <div class="notice-line">{{ t.downloadSize }}: {{ formatBytes(packageSize) }}</div>
@@ -55,6 +58,9 @@ const packageSize = computed(() => getEnginePackageSize(props.pkg.files));
 }
 .notice-line {
   text-align: left;
+}
+.performance-notice {
+  width: 640px;
 }
 .licenses {
   width: 640px;

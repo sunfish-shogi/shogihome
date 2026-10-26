@@ -502,6 +502,8 @@ export const ja: Texts = {
   unused: "未使用",
   inUse: "使用中",
   downloadSize: "ダウンロードサイズ",
+  wasmEnginePerformanceNotice:
+    "アプリ内ダウンロード機能では、ShogiHomeブラウザ版に搭載しているエンジンデータをダウンロードします。エンジン開発者のサイトで公開しているネイティブ版よりも探索速度が劣ります。",
   agreeAndDownload: "同意してダウンロード",
   sourceCodeURL: "ソースコード",
   noDownloadableEngine: "ダウンロードできるエンジンがありません。",
