@@ -3,7 +3,7 @@ import { Record, RecordMetadataKey } from "tsshogi";
 
 describe("github", () => {
   it("webAppURL/noRecord", () => {
-    expect(webAppURL()).toBe("https://sunfish-shogi.github.io/shogihome/webapp/index.html");
+    expect(webAppURL()).toBe("https://analysis.shogihome.com/");
   });
 
   it("webAppURL/withRecord", () => {
@@ -13,14 +13,12 @@ describe("github", () => {
     record.metadata.setStandardMetadata(RecordMetadataKey.BLACK_NAME, "bbb");
     record.metadata.setStandardMetadata(RecordMetadataKey.WHITE_NAME, "www");
     expect(webAppURL(record)).toBe(
-      "https://sunfish-shogi.github.io/shogihome/webapp/index.html?usen=~0.6y22jm7ku2sq9co20q9ls3xq8lu1a49us09o.&branch=0&ply=12&bname=bbb&wname=www",
+      "https://analysis.shogihome.com/?usen=~0.6y22jm7ku2sq9co20q9ls3xq8lu1a49us09o.&branch=0&ply=12&bname=bbb&wname=www",
     );
   });
 
   it("mobileWebAppURL/noRecord", () => {
-    expect(mobileWebAppURL()).toBe(
-      "https://sunfish-shogi.github.io/shogihome/webapp/index.html?mobile",
-    );
+    expect(mobileWebAppURL()).toBe("https://analysis.shogihome.com/?mobile");
   });
 
   it("mobileWebAppURL/withRecord", () => {
@@ -30,7 +28,7 @@ describe("github", () => {
     record.metadata.setStandardMetadata(RecordMetadataKey.BLACK_NAME, "bbb");
     record.metadata.setStandardMetadata(RecordMetadataKey.WHITE_NAME, "www");
     expect(mobileWebAppURL(record)).toBe(
-      "https://sunfish-shogi.github.io/shogihome/webapp/index.html?usen=~0.6y22jm7ku2sq9co20q9ls3xq8lu1a49us09o.&branch=0&ply=12&bname=bbb&wname=www&mobile",
+      "https://analysis.shogihome.com/?usen=~0.6y22jm7ku2sq9co20q9ls3xq8lu1a49us09o.&branch=0&ply=12&bname=bbb&wname=www&mobile",
     );
   });
 });
