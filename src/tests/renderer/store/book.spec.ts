@@ -16,6 +16,30 @@ describe("store/book", () => {
     await useAppSettings().updateAppSettings(defaultAppSettings());
   });
 
+  describe("openBookFile", () => {
+    it("show book view after opening", async () => {
+      mockAPI.showOpenBookDialog.mockResolvedValue("/path/to/book.db");
+      mockAPI.openBook.mockResolvedValue();
+      mockAPI.getBookFormat.mockResolvedValue("yane2016");
+      mockAPI.searchBookEntry.mockResolvedValue(null);
+      const store = new BookStore(new Record()).reactive;
+      expect(store.visible).toBeFalsy();
+      store.openBookFile();
+      await vi.waitFor(() => expect(store.visible).toBeTruthy());
+      expect(mockAPI.openBook).toHaveBeenCalledTimes(1);
+    });
+
+    it("canceled", async () => {
+      mockAPI.showOpenBookDialog.mockResolvedValue("");
+      const store = new BookStore(new Record()).reactive;
+      store.openBookFile();
+      await vi.waitFor(() => expect(mockAPI.showOpenBookDialog).toHaveBeenCalledTimes(1));
+      await new Promise((resolve) => setTimeout(resolve));
+      expect(mockAPI.openBook).not.toHaveBeenCalled();
+      expect(store.visible).toBeFalsy();
+    });
+  });
+
   describe("searchMoves", () => {
     const sfen = "lr5nl/3g1kg2/2n1p1sp1/p1ppspp1p/1p3P1P1/P1PPS1P1P/1PS1P1N2/2GK1G3/LN5RL w Bb 1";
     const sfen_r = "lr5nl/3g1kg2/2n1p1sp1/p1p1spp1p/1p1p3P1/P1PPSPP1P/1PS1P1N2/2GK1G3/LN5RL b Bb 1";

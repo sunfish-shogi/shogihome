@@ -2,6 +2,7 @@
   <div ref="root" class="column record-pane">
     <div class="auto record">
       <RecordView
+        v-model:show-sub-area="bookStore.visible"
         :record="store.record"
         :position-counts="positionCounts"
         :operational="isRecordOperational"
@@ -66,6 +67,7 @@ import {
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import BookPanel from "./BookPanel.vue";
+import { useBookStore } from "@/renderer/store/book";
 import { getRecordShortcutKeys } from "@/renderer/view/primitive/board/shortcut";
 import DuplicatePositionsDialog from "@/renderer/view/dialog/DuplicatePositionsDialog.vue";
 import { ImmutableNode } from "tsshogi";
@@ -101,6 +103,7 @@ defineProps({
 });
 
 const store = useStore();
+const bookStore = useBookStore();
 const appSettings = useAppSettings();
 const omitTotalElapsedTime = isMobileWebApp();
 const root = ref();

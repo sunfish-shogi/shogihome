@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div v-if="showSubArea" class="row sub-area">
+    <div v-if="showBottomControl && showSubArea" class="row sub-area">
       <slot name="sub-area"></slot>
     </div>
     <div v-else-if="showBranches" ref="branchListArea" class="row branch-list-area">
@@ -246,7 +246,7 @@ const treeScroll = ref(null as HTMLDivElement | null);
 const branchList = ref(null as HTMLDivElement | null);
 const branchListArea = ref(null as HTMLDivElement | null);
 const branchListAreaHeight = ref(0);
-const showSubArea = ref(false);
+const showSubArea = defineModel<boolean>("showSubArea", { default: false });
 
 let branchListAreaResizeObserver: ResizeObserver | null = null;
 onMounted(() => {
