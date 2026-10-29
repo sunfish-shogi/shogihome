@@ -1,5 +1,5 @@
 <template>
-  <div ref="root" class="root">
+  <div ref="root" class="root" data-no-dialog-drag>
     <div class="main row" @click="show = !show">
       <div class="current item" :class="{ 'with-banner': current?.banners?.length }">
         <div v-if="current?.banners?.length" class="banner">
