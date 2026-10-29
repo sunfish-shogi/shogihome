@@ -5,7 +5,7 @@
       <HorizontalSelector v-model:value="selectedTab" :items="tabItems" tab />
     </div>
     <!-- 表示 -->
-    <div v-show="selectedTab === 'view'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'view'" class="scroll settings">
       <!-- 言語 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.language }}</div>
@@ -333,7 +333,7 @@
       </div>
     </div>
     <!-- 音 -->
-    <div v-show="selectedTab === 'sounds'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'sounds'" class="scroll settings">
       <!-- 駒音の大きさ -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.pieceSoundVolume }}</div>
@@ -368,7 +368,7 @@
       </div>
     </div>
     <!-- 操作 -->
-    <div v-show="selectedTab === 'controls'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'controls'" class="scroll settings">
       <!-- ドラッグ＆ドロップ -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.enableDragAndDrop }}</div>
@@ -417,7 +417,7 @@
       </div>
     </div>
     <!-- 棋譜 -->
-    <div v-show="selectedTab === 'record'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'record'" class="scroll settings">
       <!-- デフォルトの保存形式 -->
       <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">
@@ -553,11 +553,7 @@
       </div>
     </div>
     <!-- 定跡 -->
-    <div
-      v-if="!isMobileWebApp()"
-      v-show="selectedTab === 'book'"
-      class="form-group scroll settings"
-    >
+    <div v-if="!isMobileWebApp()" v-show="selectedTab === 'book'" class="scroll settings">
       <!-- On-the-fly 閾値 -->
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.onTheFlyThreshold }}</div>
@@ -616,7 +612,7 @@
       </div>
     </div>
     <!-- USI プロトコル -->
-    <div v-show="selectedTab === 'usi'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'usi'" class="scroll settings">
       <!-- オプション名を翻訳 -->
       <div v-if="!isMobileWebApp()" class="form-item">
         <div class="form-item-label-wide">
@@ -649,7 +645,7 @@
       </div>
     </div>
     <!-- 評価値・期待勝率・読み筋 -->
-    <div v-show="selectedTab === 'evaluation'" class="form-group scroll settings">
+    <div v-show="selectedTab === 'evaluation'" class="scroll settings">
       <!-- 評価値の符号 -->
       <div class="form-item">
         <div class="form-item-label-wide">
@@ -742,11 +738,7 @@
       </div>
     </div>
     <!-- アプリバージョン -->
-    <div
-      v-if="!isMobileWebApp()"
-      v-show="selectedTab === 'version'"
-      class="form-group scroll settings"
-    >
+    <div v-if="!isMobileWebApp()" v-show="selectedTab === 'version'" class="scroll settings">
       <div class="form-item">
         <div class="form-item-label-wide">{{ t.installed }}</div>
         {{ appInfo.appVersion }} ({{ appInfo.buildVersion }})
@@ -764,11 +756,7 @@
       </div>
     </div>
     <!-- 開発者向け -->
-    <div
-      v-if="!isMobileWebApp()"
-      v-show="selectedTab === 'developer'"
-      class="form-group scroll settings"
-    >
+    <div v-if="!isMobileWebApp()" v-show="selectedTab === 'developer'" class="scroll settings">
       <div class="form-group warning">
         <div v-if="!isNative()" class="note">
           {{ t.inBrowserLogsOutputToConsoleAndIgnoreThisSetting }}
@@ -827,7 +815,7 @@
       </div>
     </div>
     <!-- ライセンス -->
-    <div v-if="!isNative()" v-show="selectedTab === 'license'" class="form-group scroll settings">
+    <div v-if="!isNative()" v-show="selectedTab === 'license'" class="scroll settings">
       <button @click="openCopyright">Confirm copyright and license</button>
     </div>
     <div class="main-buttons">
@@ -1060,6 +1048,9 @@ const cancel = () => {
   max-width: 590px;
 }
 .settings {
+  border: 1px solid var(--dialog-border-color);
+  padding: 10px;
+  margin: 10px 0px 10px 0px;
   max-width: 590px;
   height: 800px;
   margin-top: 0;
