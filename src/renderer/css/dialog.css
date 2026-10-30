@@ -50,6 +50,10 @@ dialog .row > .form-group + * {
   margin-left: 10px;
 }
 
+dialog .form-group.scroll {
+  border-style: solid;
+}
+
 dialog .form-item {
   text-align: left;
   margin: 10px 0px 10px 0px;
