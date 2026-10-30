@@ -115,3 +115,54 @@ body::-webkit-scrollbar {
 .scroll {
   overflow: auto;
 }
+
+/* スクロール可能な方向の端をフェードさせて、隠れたコンテンツがあることを示す */
+@property --scroll-fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --scroll-fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes scroll-fade {
+  from {
+    --scroll-fade-top: 0px;
+    --scroll-fade-bottom: 40px;
+  }
+  5%,
+  95% {
+    --scroll-fade-top: 40px;
+    --scroll-fade-bottom: 40px;
+  }
+  to {
+    --scroll-fade-top: 40px;
+    --scroll-fade-bottom: 0px;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll {
+    /* 枠線とスクロールバーはフェードさせず、パディングボックス内だけをフェードさせる */
+    mask-image:
+      linear-gradient(
+        to bottom,
+        transparent,
+        rgb(0 0 0 / 30%) calc(var(--scroll-fade-top) * 0.6),
+        #000 var(--scroll-fade-top),
+        #000 calc(100% - var(--scroll-fade-bottom)),
+        rgb(0 0 0 / 30%) calc(100% - var(--scroll-fade-bottom) * 0.6),
+        transparent
+      ),
+      linear-gradient(#000, #000), linear-gradient(#000, #000);
+    mask-origin: padding-box, padding-box, border-box;
+    mask-clip: padding-box, padding-box, border-box;
+    mask-composite: add, exclude, add;
+    animation: scroll-fade linear both;
+    animation-timeline: scroll(self block);
+  }
+}
