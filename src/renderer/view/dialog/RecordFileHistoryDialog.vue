@@ -10,59 +10,61 @@
       />
       <span v-if="filter && loadingContents" class="loading">{{ t.loadingFileContents }}</span>
     </div>
-    <div class="form-group scroll list-area">
-      <div v-if="filteredEntries.length === 0">
-        {{ t.noHistory }}
-      </div>
-      <div v-for="(entry, index) of filteredEntries" :key="entry.id" class="entry">
-        <hr v-if="index !== 0" />
-        <div class="header">
-          <span class="left">
-            <span class="class">{{
-              entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
-            }}</span>
-            <span class="time">{{
-              dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
-            }}</span>
-            <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
-          </span>
-          <span class="right">
-            <button
-              v-if="entry.class === HistoryClass.USER"
-              class="open-directory"
-              :title="t.openDirectory"
-              @click="openDirectory(entry.userFilePath)"
-            >
-              <Icon :icon="IconType.OPEN_FOLDER" />
-            </button>
-            <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
-              {{ t.open }}
-            </button>
-            <button
-              v-if="entry.class === HistoryClass.BACKUP"
-              @click="restoreV1(entry.backupFileName)"
-            >
-              {{ t.restore }}
-            </button>
-            <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
-              {{ t.restore }}
-            </button>
-          </span>
+    <div class="form-group list-area">
+      <div class="scroll list-scroll">
+        <div v-if="filteredEntries.length === 0">
+          {{ t.noHistory }}
         </div>
-        <div v-if="entry.class === HistoryClass.USER" class="file-path">
-          {{ entry.userFilePath }}
-        </div>
-        <div
-          v-if="
-            entry.class === HistoryClass.BACKUP_V2 &&
-            (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
-          "
-          class="file-path"
-        >
-          <span v-if="entry.title">{{ entry.title }} / </span>
-          <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
-          <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
-          <span>{{ entry.ply || 0 }}手</span>
+        <div v-for="(entry, index) of filteredEntries" :key="entry.id" class="entry">
+          <hr v-if="index !== 0" />
+          <div class="header">
+            <span class="left">
+              <span class="class">{{
+                entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
+              }}</span>
+              <span class="time">{{
+                dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
+              }}</span>
+              <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
+            </span>
+            <span class="right">
+              <button
+                v-if="entry.class === HistoryClass.USER"
+                class="open-directory"
+                :title="t.openDirectory"
+                @click="openDirectory(entry.userFilePath)"
+              >
+                <Icon :icon="IconType.OPEN_FOLDER" />
+              </button>
+              <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
+                {{ t.open }}
+              </button>
+              <button
+                v-if="entry.class === HistoryClass.BACKUP"
+                @click="restoreV1(entry.backupFileName)"
+              >
+                {{ t.restore }}
+              </button>
+              <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
+                {{ t.restore }}
+              </button>
+            </span>
+          </div>
+          <div v-if="entry.class === HistoryClass.USER" class="file-path">
+            {{ entry.userFilePath }}
+          </div>
+          <div
+            v-if="
+              entry.class === HistoryClass.BACKUP_V2 &&
+              (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
+            "
+            class="file-path"
+          >
+            <span v-if="entry.title">{{ entry.title }} / </span>
+            <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
+            <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
+            <span>{{ entry.ply || 0 }}手</span>
+          </div>
         </div>
       </div>
     </div>
@@ -208,10 +210,19 @@ const onClose = () => {
   font-size: 0.8em;
 }
 .list-area {
+  display: flex;
+  flex-direction: column;
   max-width: 800px;
   width: 80vw;
   height: 70vh;
+  padding: 0;
+  border-style: solid;
   background-color: var(--text-bg-color);
+}
+.list-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
 }
 .entry {
   width: 100%;
