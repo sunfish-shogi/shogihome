@@ -11,7 +11,7 @@
           :placeholder="t.filterByOptionName"
         />
       </div>
-      <div class="column option-list">
+      <div class="column option-list scroll">
         <!-- 名前 -->
         <div v-show="detailed" class="row option">
           <div class="option-name">{{ t.engineName }}</div>
@@ -635,7 +635,6 @@ const cancel = () => {
   height: calc(100vh - 250px);
   padding-bottom: 25px;
   max-height: 800px;
-  overflow: auto;
 }
 .option {
   margin: 5px 5px 0px 5px;
