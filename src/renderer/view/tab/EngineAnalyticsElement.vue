@@ -32,12 +32,12 @@
       </div>
       <div v-if="showHeader" class="row headers">
         <div class="header">
-          <span>{{ monitor.name }}</span>
+          <span>{{ monitor.name || "-----" }}</span>
         </div>
         <div class="header">
           <span>{{ t.prediction }}: </span>
           <span>
-            {{ monitor.ponderMove ? monitor.ponderMove : "---" }}
+            {{ monitor.ponderMove || "---" }}
           </span>
         </div>
         <div class="header">
