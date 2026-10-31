@@ -12,7 +12,7 @@
       >
         {{ footer }}
       </div>
-      <svg style="top: 0; left: 0" :width="layout.svgSize" :height="layout.svgSize">
+      <svg style="top: 0; left: 0" :width="layout.svgWidth" :height="layout.svgHeight">
         <rect
           v-if="layout.lastMoveRect"
           :x="layout.lastMoveRect.x"
@@ -121,7 +121,12 @@ function buildHandText(name: string, hand: ImmutableHand) {
 <script setup lang="ts">
 function buildParams(
   size: number,
-  options: { headerVisible: boolean; footerVisible: boolean; fontScale: number },
+  options: {
+    headerVisible: boolean;
+    footerVisible: boolean;
+    trimVerticalMargin: boolean;
+    fontScale: number;
+  },
 ) {
   const headerTop = size * 0.017;
   const labelSize = size * 0.05;
@@ -133,10 +138,17 @@ function buildParams(
   const contentTop = options.headerVisible
     ? headerTop
     : boardTop - labelSize / 2 - (labelFontSize * options.fontScale) / 2;
+  const contentHeight = boardBottom - contentTop;
+  // 上下の余白を削る場合は、内容の上下に最小限の余白だけを残して高さを詰める。
+  // フッターの高さはテキストに依存して計算できないため、フッターがある場合は対象外とする。
+  const trim = options.trimVerticalMargin && !options.footerVisible;
+  const trimmedMargin = size * 0.017;
+  const height = trim ? contentHeight + trimmedMargin * 2 : size;
   // フッターが無い場合は上下の余白が均等になるように全体をずらす。
-  const offsetY = options.footerVisible ? 0 : (size - (boardBottom - contentTop)) / 2 - contentTop;
+  const offsetY = options.footerVisible ? 0 : (height - contentHeight) / 2 - contentTop;
   return {
     size: size,
+    height: height,
     headerX: size * 0.5,
     headerY: headerTop + offsetY,
     footerX: size * 0.01,
@@ -201,6 +213,11 @@ const props = defineProps({
     required: false,
     default: false,
   },
+  trimVerticalMargin: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
   lastMove: {
     type: Object as PropType<Move | null>,
     required: false,
@@ -234,17 +251,22 @@ const props = defineProps({
 });
 
 const layout = computed(() => {
-  const size = Math.min(props.maxSize.width, props.maxSize.height);
-  const param = buildParams(size, {
+  const options = {
     headerVisible: !!props.header,
     footerVisible: !props.hideFooter,
+    trimVerticalMargin: props.trimVerticalMargin,
     fontScale: props.fontScale,
-  });
+  };
+  // 高さは幅に比例するので、幅 1 のときの縦横比から maxSize に内接するサイズを求める。
+  const aspectRatio = buildParams(1, options).height;
+  const size = Math.min(props.maxSize.width, props.maxSize.height / aspectRatio);
+  const param = buildParams(size, options);
   const isWindows = /Windows/i.test(navigator.userAgent);
   const needsCharacterYOffset = isWindows && props.typeface === "mincho";
   const characterYOffsetRatio = needsCharacterYOffset ? windowsCharacterYOffsetRatio : 0;
   return {
-    svgSize: size,
+    svgWidth: param.size,
+    svgHeight: param.height,
     typefaceClass: [
       props.typeface,
       `weight-${props.fontWeight}`,
@@ -252,7 +274,7 @@ const layout = computed(() => {
     ],
     frameStyle: {
       width: `${param.size}px`,
-      height: `${param.size}px`,
+      height: `${param.height}px`,
     },
     headerStyle: {
       transform: "translate(-50%, 0%)",

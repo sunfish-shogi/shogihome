@@ -151,6 +151,53 @@ describe("SimpleBoardView", () => {
     }
   });
 
+  it("trims the vertical margins and fits the board into maxSize", () => {
+    for (const header of ["", "見出し"]) {
+      const wrapper = shallowMount(SimpleBoardView, {
+        props: {
+          maxSize: new RectSize(800, 500),
+          position: new Position(),
+          header,
+          hideFooter: true,
+          trimVerticalMargin: true,
+        },
+      });
+      const frame = wrapper.find(".frame").element as HTMLElement;
+      const width = Number.parseFloat(frame.style.width);
+      const height = Number.parseFloat(frame.style.height);
+      // 高さが maxSize に一致し、幅は高さより大きくなる。
+      expect(height).toBeCloseTo(500);
+      expect(width).toBeGreaterThan(500);
+      expect(width).toBeLessThan(800);
+      expect(wrapper.find("svg").attributes("width")).toBe(String(width));
+      expect(wrapper.find("svg").attributes("height")).toBe(String(height));
+      // 上下の余白は均等かつ最小限になる。
+      const image = wrapper.find("image");
+      const bottomMargin =
+        height - (Number(image.attributes("y")) + Number(image.attributes("height")));
+      const fileLabel = wrapper.findAll("text")[0];
+      const topMargin = header
+        ? Number.parseFloat((wrapper.find(".header").element as HTMLElement).style.top)
+        : Number(fileLabel.attributes("y")) - Number(fileLabel.attributes("font-size")) / 2;
+      expect(topMargin).toBeCloseTo(bottomMargin);
+      expect(bottomMargin).toBeCloseTo(width * 0.017);
+    }
+  });
+
+  it("does not trim the vertical margins when the footer is visible", () => {
+    const wrapper = shallowMount(SimpleBoardView, {
+      props: {
+        maxSize: new RectSize(500, 500),
+        position: new Position(),
+        footer: "コメント",
+        trimVerticalMargin: true,
+      },
+    });
+    const frame = wrapper.find(".frame").element as HTMLElement;
+    expect(frame.style.width).toBe("500px");
+    expect(frame.style.height).toBe("500px");
+  });
+
   it("fills the last move square with the specified color", () => {
     expect(mountSimpleBoardWithLastMove().find("rect").attributes("fill")).toBe("#ffd700");
     expect(mountSimpleBoardWithLastMove("#88ccff").find("rect").attributes("fill")).toBe("#88ccff");
