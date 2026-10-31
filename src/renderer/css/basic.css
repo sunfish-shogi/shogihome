@@ -166,3 +166,7 @@ body::-webkit-scrollbar {
     animation-timeline: scroll(self block);
   }
 }
+
+button {
+  user-select: none;
+}
