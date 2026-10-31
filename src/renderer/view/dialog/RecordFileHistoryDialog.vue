@@ -61,7 +61,6 @@
                 :max-size="previewMaxSize"
                 :position="previews[entry.id].position"
                 :last-move="previews[entry.id].lastMove"
-                hide-footer
                 trim-vertical-margin
               />
               <div

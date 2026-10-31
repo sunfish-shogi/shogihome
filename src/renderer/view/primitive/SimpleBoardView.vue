@@ -140,12 +140,11 @@ function buildParams(
     : boardTop - labelSize / 2 - (labelFontSize * options.fontScale) / 2;
   const contentHeight = boardBottom - contentTop;
   // 上下の余白を削る場合は、内容の上下に最小限の余白だけを残して高さを詰める。
-  // フッターの高さはテキストに依存して計算できないため、フッターがある場合は対象外とする。
-  const trim = options.trimVerticalMargin && !options.footerVisible;
+  const trim = options.trimVerticalMargin;
   const trimmedMargin = size * 0.017;
   const height = trim ? contentHeight + trimmedMargin * 2 : size;
   // フッターが無い場合は上下の余白が均等になるように全体をずらす。
-  const offsetY = options.footerVisible ? 0 : (height - contentHeight) / 2 - contentTop;
+  const offsetY = options.footerVisible && !trim ? 0 : (height - contentHeight) / 2 - contentTop;
   return {
     size: size,
     height: height,
@@ -254,7 +253,8 @@ const layout = computed(() => {
   const options = {
     headerVisible: !!props.header,
     footerVisible: !props.hideFooter,
-    trimVerticalMargin: props.trimVerticalMargin,
+    // フッターの高さはテキストに依存して計算できないため、フッターを描画する場合は余白を削らない。
+    trimVerticalMargin: props.trimVerticalMargin && (props.hideFooter || !props.footer),
     fontScale: props.fontScale,
   };
   // 高さは幅に比例するので、幅 1 のときの縦横比から maxSize に内接するサイズを求める。

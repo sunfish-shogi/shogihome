@@ -184,6 +184,24 @@ describe("SimpleBoardView", () => {
     }
   });
 
+  it("trims the vertical margins when the footer is empty even if hideFooter is not set", () => {
+    const wrapper = shallowMount(SimpleBoardView, {
+      props: {
+        maxSize: new RectSize(500, 500),
+        position: new Position(),
+        trimVerticalMargin: true,
+      },
+    });
+    const frame = wrapper.find(".frame").element as HTMLElement;
+    expect(frame.style.width).toBe("500px");
+    expect(Number.parseFloat(frame.style.height)).toBeLessThan(500);
+    const image = wrapper.find("image");
+    const bottomMargin =
+      Number.parseFloat(frame.style.height) -
+      (Number(image.attributes("y")) + Number(image.attributes("height")));
+    expect(bottomMargin).toBeCloseTo(500 * 0.017);
+  });
+
   it("does not trim the vertical margins when the footer is visible", () => {
     const wrapper = shallowMount(SimpleBoardView, {
       props: {
