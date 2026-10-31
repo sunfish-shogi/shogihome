@@ -392,7 +392,7 @@ const updateMultiPV = (add: number) => {
   margin: 2px 2px 0 2px;
   padding: 0 5px 0 5px;
   background-color: var(--text-bg-color);
-  border-bottom: 1px solid var(--text-separator-color);
+  border-right: 1px solid var(--text-separator-color);
   border-radius: 5px 5px 0 0;
 }
 .paused .header {
