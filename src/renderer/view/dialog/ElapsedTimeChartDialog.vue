@@ -7,6 +7,7 @@
           :max-size="boardMaxSize"
           :position="selectedPosition"
           :last-move="selectedLastMove"
+          :trim-vertical-margin="true"
         />
         <div class="board-info">
           {{ selectedMoveText }}
