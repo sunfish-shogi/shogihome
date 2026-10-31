@@ -27,6 +27,9 @@ export class BookStore {
   private _format: BookFormat = "yane2016";
   private _reactive: UnwrapNestedRefs<BookStore>;
 
+  // 定跡ビューの表示状態
+  visible = false;
+
   constructor(private record: ImmutableRecord) {
     this._reactive = reactive(this);
   }
@@ -125,6 +128,8 @@ export class BookStore {
         });
         this._format = await api.getBookFormat(defaultBookSession);
         await this.reloadBookMoves();
+        // 定跡ファイルを開いたら定跡ビューを表示する。
+        this.visible = true;
       })
       .catch((e) => {
         useErrorStore().add(e);

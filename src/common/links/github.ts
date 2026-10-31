@@ -35,7 +35,7 @@ export function releasePageURL(tag: string): string {
   return `https://${ghDomain}/${ghAccount}/${ghRepository}/releases/tag/${encodeURIComponent(tag)}`;
 }
 
-const webAppBaseURL = `https://${ghioDomain}/${ghRepository}/webapp/index.html`;
+const webAppBaseURL = `https://analysis.shogihome.com/`;
 
 export function webAppURL(record?: ImmutableRecord) {
   if (!record) {

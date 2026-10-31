@@ -511,6 +511,8 @@ export const zh_tw: Texts = {
   unused: "未使用",
   inUse: "使用中",
   downloadSize: "下載大小",
+  wasmEnginePerformanceNotice:
+    "アプリ内ダウンロード機能では、ShogiHomeブラウザ版に搭載しているエンジンデータをダウンロードします。エンジン開発者のサイトで公開しているネイティブ版よりも探索速度が劣ります。", // TODO: Translate
   agreeAndDownload: "同意並下載",
   sourceCodeURL: "原始碼",
   noDownloadableEngine: "沒有可下載的引擎。",

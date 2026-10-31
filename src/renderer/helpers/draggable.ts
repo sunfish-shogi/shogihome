@@ -43,7 +43,11 @@ export function useDraggableDialog(containerRef: Ref<HTMLElement | undefined>) {
     }
     let el = target as Element | null;
     while (el && el !== container) {
-      if (el instanceof Element && el.matches("button, input, select, textarea, a")) {
+      // data-no-dialog-drag 属性を持つ要素の中ではダイアログのドラッグを開始しない。
+      if (
+        el instanceof Element &&
+        el.matches("button, input, select, textarea, a, [data-no-dialog-drag]")
+      ) {
         return true;
       }
       el = el.parentElement;

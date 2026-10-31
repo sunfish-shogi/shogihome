@@ -32,13 +32,12 @@
       </div>
       <div v-if="showHeader" class="row headers">
         <div class="header">
-          <span>{{ t.name }}: </span>
-          <span>{{ monitor.name }}</span>
+          <span>{{ monitor.name || "-----" }}</span>
         </div>
         <div class="header">
           <span>{{ t.prediction }}: </span>
           <span>
-            {{ monitor.ponderMove ? monitor.ponderMove : "---" }}
+            {{ monitor.ponderMove || "---" }}
           </span>
         </div>
         <div class="header">
@@ -390,9 +389,11 @@ const updateMultiPV = (add: number) => {
   text-align: left;
 }
 .header {
-  margin: 0px 5px 0px 0px;
-  padding: 0px 5px 0px 5px;
+  margin: 2px 2px 0 2px;
+  padding: 0 5px 0 5px;
   background-color: var(--text-bg-color);
+  border-right: 1px solid var(--text-separator-color);
+  border-radius: 5px 5px 0 0;
 }
 .paused .header {
   background-color: var(--text-bg-color-disabled);
@@ -447,7 +448,7 @@ table.list td {
   height: 100%;
   white-space: nowrap;
   overflow: hidden;
-  padding-left: 4px;
+  padding-left: 8px;
 }
 table.list td.time {
   width: 0;
@@ -479,10 +480,17 @@ table.list td.text {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+table.list td button {
+  height: 20px;
+}
+table.list td button .icon {
+  height: 16px;
+}
 button {
   margin: 0px 0px 1px 0px;
   padding: 1px 5px 1px 2px;
   height: 22px;
+  border-radius: 7px;
   vertical-align: middle;
 }
 .icon {

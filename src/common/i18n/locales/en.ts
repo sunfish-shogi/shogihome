@@ -502,6 +502,8 @@ export const en: Texts = {
   unused: "Unused",
   inUse: "In use",
   downloadSize: "Download size",
+  wasmEnginePerformanceNotice:
+    "The in-app download feature downloads the engine data built into the browser version of ShogiHome. Its search speed is slower than the native version published on the engine developer's website.",
   agreeAndDownload: "Agree and Download",
   sourceCodeURL: "Source code",
   noDownloadableEngine: "No engines available for download.",

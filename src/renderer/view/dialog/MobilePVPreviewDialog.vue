@@ -1,11 +1,5 @@
 <template>
   <dialog ref="dialog" class="mobile-pv-preview">
-    <div class="header">
-      <span class="info">{{ info }}</span>
-      <button class="close-button" @click="onClose">
-        <Icon :icon="IconType.CLOSE" />
-      </button>
-    </div>
     <div class="board-view">
       <BoardView
         :layout-type="layoutType"
@@ -65,6 +59,12 @@
           >
         </span>
       </div>
+    </div>
+    <div class="footer">
+      <span class="info">{{ info }}</span>
+      <button class="close close-button" @click="onClose">
+        <Icon :icon="IconType.CLOSE" />
+      </button>
     </div>
   </dialog>
 </template>
@@ -293,7 +293,7 @@ dialog.mobile-pv-preview {
   color: var(--main-color);
   background-color: var(--main-bg-color);
 }
-.header {
+.footer {
   height: 32px;
   display: flex;
   flex-direction: row;
@@ -302,7 +302,7 @@ dialog.mobile-pv-preview {
   gap: 10px;
   padding: 0 5px;
 }
-.header .info {
+.footer .info {
   flex: 1;
   min-width: 0;
   font-size: 12px;
