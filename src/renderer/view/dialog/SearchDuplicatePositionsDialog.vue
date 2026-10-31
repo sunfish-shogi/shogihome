@@ -10,6 +10,7 @@
             :max-size="new RectSize(280, 280)"
             :position="entry.position"
             :header="entry.turn"
+            :trim-vertical-margin="true"
           />
           <div class="column">
             <div>{{ entry.turn }}</div>
