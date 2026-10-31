@@ -15,55 +15,64 @@
         <div v-if="filteredEntries.length === 0">
           {{ t.noHistory }}
         </div>
-        <div v-for="(entry, index) of filteredEntries" :key="entry.id" class="entry">
+        <div v-for="(entry, index) of filteredEntries" :key="entry.id">
           <hr v-if="index !== 0" />
-          <div class="header">
-            <span class="left">
-              <span class="class">{{
-                entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
-              }}</span>
-              <span class="time">{{
-                dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
-              }}</span>
-              <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
-            </span>
-            <span class="right">
-              <button
-                v-if="entry.class === HistoryClass.USER"
-                class="open-directory"
-                :title="t.openDirectory"
-                @click="openDirectory(entry.userFilePath)"
+          <div class="entry">
+            <div class="header">
+              <span class="left">
+                <span class="class">{{
+                  entry.class === HistoryClass.USER ? t.userFile : t.automaticBackup
+                }}</span>
+                <span class="time">{{
+                  dayjs(entry.time).locale(appSettings.language.replace("_", "-")).fromNow()
+                }}</span>
+                <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
+              </span>
+              <span class="right">
+                <button
+                  v-if="entry.class === HistoryClass.USER"
+                  class="open-directory"
+                  :title="t.openDirectory"
+                  @click="openDirectory(entry.userFilePath)"
+                >
+                  <Icon :icon="IconType.OPEN_FOLDER" />
+                </button>
+                <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
+                  {{ t.open }}
+                </button>
+                <button
+                  v-if="entry.class === HistoryClass.BACKUP"
+                  @click="restoreV1(entry.backupFileName)"
+                >
+                  {{ t.restore }}
+                </button>
+                <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
+                  {{ t.restore }}
+                </button>
+              </span>
+            </div>
+            <div v-if="entry.class === HistoryClass.USER" class="file-path">
+              {{ entry.userFilePath }}
+            </div>
+            <div v-if="entry.class === HistoryClass.BACKUP_V2" class="backup-detail">
+              <SimpleBoardView
+                v-if="previews[entry.id]"
+                class="preview"
+                :max-size="previewMaxSize"
+                :position="previews[entry.id].position"
+                :last-move="previews[entry.id].lastMove"
+                trim-vertical-margin
+              />
+              <div
+                v-if="entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply"
+                class="file-path"
               >
-                <Icon :icon="IconType.OPEN_FOLDER" />
-              </button>
-              <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
-                {{ t.open }}
-              </button>
-              <button
-                v-if="entry.class === HistoryClass.BACKUP"
-                @click="restoreV1(entry.backupFileName)"
-              >
-                {{ t.restore }}
-              </button>
-              <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
-                {{ t.restore }}
-              </button>
-            </span>
-          </div>
-          <div v-if="entry.class === HistoryClass.USER" class="file-path">
-            {{ entry.userFilePath }}
-          </div>
-          <div
-            v-if="
-              entry.class === HistoryClass.BACKUP_V2 &&
-              (entry.title || entry.blackPlayerName || entry.whitePlayerName || entry.ply)
-            "
-            class="file-path"
-          >
-            <span v-if="entry.title">{{ entry.title }} / </span>
-            <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
-            <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
-            <span>{{ entry.ply || 0 }}手</span>
+                <span v-if="entry.title">{{ entry.title }} / </span>
+                <span v-if="entry.blackPlayerName">{{ entry.blackPlayerName }} / </span>
+                <span v-if="entry.whitePlayerName">{{ entry.whitePlayerName }} / </span>
+                <span>{{ entry.ply || 0 }}手</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -91,7 +100,13 @@ import { filter as filterString } from "@/common/helpers/string";
 import { LogLevel } from "@/common/log";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { IconType } from "@/renderer/assets/icons";
+import SimpleBoardView from "@/renderer/view/primitive/SimpleBoardView.vue";
+import { RectSize } from "@/common/assets/geometry";
+import { ImmutablePosition, importKIF, Move } from "tsshogi";
 import DialogFrame from "./DialogFrame.vue";
+
+const previewMaxSize = new RectSize(200, 150);
+const previewPly = 30;
 
 const entries = ref([] as RecordFileHistoryEntry[]);
 const filter = ref("");
@@ -161,6 +176,32 @@ const filteredEntries = computed(() => {
   });
 });
 
+type Preview = {
+  position: ImmutablePosition;
+  lastMove: Move | null;
+};
+
+// 自動バックアップのプレビューとして 30 手目 (本譜がそれより短い場合は最終局面) を表示する。
+const previews = computed(() => {
+  const result: { [id: string]: Preview } = {};
+  for (const entry of entries.value) {
+    if (entry.class !== HistoryClass.BACKUP_V2) {
+      continue;
+    }
+    const record = importKIF(entry.kif);
+    if (record instanceof Error) {
+      continue;
+    }
+    record.goto(previewPly);
+    const move = record.current.move;
+    result[entry.id] = {
+      position: record.position,
+      lastMove: move instanceof Move ? move : null,
+    };
+  }
+  return result;
+});
+
 const openDirectory = (path: string) => {
   api.openParentDirectory(path);
 };
@@ -226,6 +267,17 @@ const onClose = () => {
 }
 .entry {
   width: 100%;
+}
+.backup-detail {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.preview {
+  flex-shrink: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 10px;
 }
 .header {
   display: flex;
