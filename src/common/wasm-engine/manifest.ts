@@ -3,7 +3,8 @@
 // エンジンは自身のリポジトリでビルドし、成果物と一緒にこのファイルを出力する。
 // ShogiHome 側はディレクトリ名を登録するだけでよく、オプション定義を写す必要は無い。
 // 仕様は specs/wasm-engine-abi.md を参照。
-import { BANNER_EXTENSIONS, USIEngineOptionType } from "@/common/settings/usi.js";
+import { BANNER_EXTENSIONS } from "@/common/settings/banner.js";
+import type { USIEngineOptionType } from "@/common/settings/usi.js";
 import { EXPORT_NAME_PATTERN } from "./loader.js";
 
 // マニフェストの abi フィールドが取り得る値。非互換な変更を入れる際に更新する。
