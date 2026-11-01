@@ -1226,7 +1226,7 @@ ipcMain.on(
   },
 );
 
-ipcMain.handle(Background.IS_ENCRYPTION_AVAILABLE, (event): boolean => {
+ipcMain.handle(Background.IS_ENCRYPTION_AVAILABLE, async (event): Promise<boolean> => {
   validateIPCSender(event.senderFrame);
   return isEncryptionAvailable();
 });

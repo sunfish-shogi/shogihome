@@ -37,7 +37,12 @@ import {
   normalizeSecureCSAGameSettingsHistory,
   SecureCSAGameSettingsHistory,
 } from "@/common/settings/csa.js";
-import { DecryptString, EncryptString, isEncryptionAvailable } from "./helpers/encrypt.js";
+import {
+  decryptString,
+  encryptString,
+  isEncryptionAvailable,
+  prepareConverter,
+} from "./helpers/encrypt.js";
 import { getPortableExeDir, isPortable } from "./proc/env.js";
 import {
   MateSearchSettings as MateSearchSettings,
@@ -279,10 +284,13 @@ export async function loadGameSettings(): Promise<GameSettings> {
 const csaGameSettingsHistoryPath = path.join(rootDir, "csa_game_setting_history.json");
 
 export async function saveCSAGameSettingsHistory(settings: CSAGameSettingsHistory): Promise<void> {
-  const encrypted = encryptCSAGameSettingsHistory(
-    settings,
-    isEncryptionAvailable() ? EncryptString : undefined,
-  );
+  const encryptor = (await isEncryptionAvailable())
+    ? await prepareConverter(
+        settings.serverHistory.map((server) => server.password),
+        encryptString,
+      )
+    : undefined;
+  const encrypted = encryptCSAGameSettingsHistory(settings, encryptor);
   await writeFileAtomic(
     csaGameSettingsHistoryPath,
     JSON.stringify(encrypted, undefined, 2),
@@ -304,10 +312,16 @@ export async function loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHisto
   if (encrypted === undefined) {
     return defaultCSAGameSettingsHistory(opts);
   }
-  return decryptCSAGameSettingsHistory(
-    normalizeSecureCSAGameSettingsHistory(encrypted, opts),
-    isEncryptionAvailable() ? DecryptString : undefined,
-  );
+  const normalized = normalizeSecureCSAGameSettingsHistory(encrypted, opts);
+  const decryptor = (await isEncryptionAvailable())
+    ? await prepareConverter(
+        normalized.serverHistory
+          .map((server) => server.encryptedPassword)
+          .filter((encryptedPassword) => !!encryptedPassword) as string[],
+        decryptString,
+      )
+    : undefined;
+  return decryptCSAGameSettingsHistory(normalized, decryptor);
 }
 
 const researchSettingsPath = path.join(rootDir, "research_setting.json");
