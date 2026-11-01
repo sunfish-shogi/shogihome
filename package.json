@@ -78,7 +78,7 @@
   "devDependencies": {
     "@types/archiver": "^8.0.0",
     "@types/async-lock": "^1.4.0",
-    "@types/encoding-japanese": "^2.0.1",
+    "@types/encoding-japanese": "^2.4.0",
     "@types/license-checker": "^25.0.6",
     "@types/proper-lockfile": "^4.1.4",
     "@types/semver": "^7.5.8",
