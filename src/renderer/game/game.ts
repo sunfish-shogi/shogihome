@@ -217,7 +217,7 @@ export class GameManager {
       } finally {
         this.state = GameState.IDLE;
       }
-      throw new Error(`GameManager#start: ${t.failedToStartNewGame}: ${e}`);
+      throw new Error(`GameManager#start: ${t.failedToStartNewGame}: ${e}`, { cause: e });
     }
   }
 
@@ -640,7 +640,9 @@ export class GameManager {
     try {
       await Promise.all(tasks);
     } catch (e) {
-      throw new Error(`GameManager#closePlayers: ${t.failedToShutdownEngines}: ${e}`);
+      throw new Error(`GameManager#closePlayers: ${t.failedToShutdownEngines}: ${e}`, {
+        cause: e,
+      });
     }
   }
 

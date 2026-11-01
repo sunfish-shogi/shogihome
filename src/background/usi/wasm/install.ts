@@ -184,7 +184,7 @@ export async function fetchEnginePackageLicenses(id: string): Promise<EnginePack
     return await fetchLicenses(pkg, signal);
   } catch (e) {
     if (signal.aborted) {
-      throw new Error(`timed out while downloading the licenses: ${id}`);
+      throw new Error(`timed out while downloading the licenses: ${id}`, { cause: e });
     }
     throw e;
   }
@@ -529,7 +529,7 @@ export async function installEnginePackage(
     // キャンセルによる中断だけを識別できる文言に置き換える。キャンセルと同時に別の理由で
     // 失敗した場合は、その失敗をそのまま伝える (画面はキャンセルによる中断だけを表示しない)。
     if (controller.signal.aborted && e instanceof Error && e.name === "AbortError") {
-      throw new Error(ENGINE_PACKAGE_INSTALL_CANCELED);
+      throw new Error(ENGINE_PACKAGE_INSTALL_CANCELED, { cause: e });
     }
     throw e;
   } finally {

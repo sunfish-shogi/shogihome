@@ -614,7 +614,7 @@ export class EngineProcess {
 
     // go command
     let mainOption = "";
-    let timeOptions = "";
+    let timeOptions: string;
     if (this.reservedGoCommand.ponder) {
       mainOption = "ponder";
       timeOptions = buildPonderTimeOptions(this.reservedGoCommand.timeState);

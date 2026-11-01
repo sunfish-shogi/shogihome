@@ -184,6 +184,8 @@ watch(activeTab, (tab) => localStorage.setItem(STORAGE_KEY, tab));
 
 const settings = ref(defaultBookImportSettings());
 const inMemoryList = ref<(InMemoryMove | Branch)[]>([]);
+// テンプレートの ref コールバックで代入される。
+// eslint-disable-next-line no-unassigned-vars
 let currentMoveRow: HTMLElement | undefined;
 
 const setupInMemoryList = async () => {

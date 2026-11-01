@@ -1696,7 +1696,7 @@ class Store {
         this.garbledNotified = true;
       }
     } catch (e) {
-      throw new Error(`${t.failedToSaveRecord}: ${e}`);
+      throw new Error(`${t.failedToSaveRecord}: ${e}`, { cause: e });
     }
   }
 

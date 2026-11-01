@@ -234,7 +234,7 @@ export class CSAGameManager {
     } catch (e) {
       this._state = CSAGameState.LOGIN_FAILED;
       this.close(ReloginBehavior.RELOGIN_WITH_INTERVAL);
-      throw new Error(`CSAGameManager#login: ${t.failedToStartNewGame}: ${e}`);
+      throw new Error(`CSAGameManager#login: ${t.failedToStartNewGame}: ${e}`, { cause: e });
     }
   }
 
