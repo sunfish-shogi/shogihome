@@ -78,11 +78,9 @@
   "devDependencies": {
     "@types/archiver": "^8.0.0",
     "@types/async-lock": "^1.4.0",
-    "@types/encoding-japanese": "^2.0.1",
     "@types/license-checker": "^25.0.6",
     "@types/proper-lockfile": "^4.1.4",
     "@types/semver": "^7.5.8",
-    "@types/splitpanes": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
     "@typescript-eslint/parser": "^8.71.2",
     "@vitejs/plugin-vue": "^6.0.10",
