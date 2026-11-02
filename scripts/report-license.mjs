@@ -61,7 +61,7 @@ function isAllowed(expr) {
   // Accept only if every license token in the SPDX expression is allowed (OR is treated strictly).
   const ids = expr
     .replace(/[()]/g, " ")
-    .split(/\s+(?:AND|OR)\s+|\s+/)
+    .split(/\s+(?:AND|OR)\s+|[\s,]+/)
     .filter(Boolean);
   return ids.length > 0 && ids.every((id) => allowed.includes(id.replace(/\*$/, "")));
 }
