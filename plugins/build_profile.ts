@@ -255,7 +255,7 @@ export function loadBuildProfile(file?: string): BuildProfile {
   try {
     json = JSON.parse(fs.readFileSync(fullPath, "utf8"));
   } catch (e) {
-    throw new Error(`failed to parse build profile: ${fullPath}: ${e}`);
+    throw new Error(`failed to parse build profile: ${fullPath}: ${e}`, { cause: e });
   }
   return parseBuildProfile(json, path.dirname(fullPath));
 }

@@ -531,7 +531,7 @@ export const webAPI: Bridge = {
     } catch (e) {
       // 成果物は事前キャッシュされないので、オフラインでは起動に失敗する。
       // 内部エラーのままでは対処が分からないため言い換える。
-      throw new Error(describeEngineLoadError(e));
+      throw new Error(describeEngineLoadError(e), { cause: e });
     }
   },
   async usiReady(sessionID: number): Promise<void> {

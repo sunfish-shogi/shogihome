@@ -37,7 +37,7 @@ export async function addEngine(
       engine.options = data.options;
       engine.enableEarlyPonder = data.enableEarlyPonder;
     } catch (e) {
-      throw new Error(`Failed to decode engine options: ${e}`);
+      throw new Error(`Failed to decode engine options: ${e}`, { cause: e });
     }
   }
 

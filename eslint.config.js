@@ -7,7 +7,8 @@ import prettierConfig from "eslint-config-prettier";
 import pluginVue from "eslint-plugin-vue";
 import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
 import vuePrettierConfig from "@vue/eslint-config-prettier";
-import importPlugin from "eslint-plugin-import";
+import { importX } from "eslint-plugin-import-x";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 
 export default defineConfigWithVueTs([
   {
@@ -25,15 +26,15 @@ export default defineConfigWithVueTs([
   ...tseslint.configs.recommended,
   ...pluginVue.configs["flat/recommended"],
   vueTsConfigs.recommended,
-  importPlugin.flatConfigs.recommended,
+  importX.flatConfigs.recommended,
   {
     files: ["**/*.{ts,mts,cts,tsx,vue}"],
-    ...importPlugin.flatConfigs.typescript,
+    ...importX.flatConfigs.typescript,
   },
   {
     files: ["eslint.config.*"],
     rules: {
-      "import/no-unresolved": "off",
+      "import-x/no-unresolved": "off",
     },
   },
   {
@@ -78,8 +79,8 @@ export default defineConfigWithVueTs([
       "no-restricted-imports": ["error", { patterns: ["../"] }],
       "no-irregular-whitespace": "off",
       "vue/multi-word-component-names": "off",
-      "import/no-cycle": "error",
-      "import/no-restricted-paths": [
+      "import-x/no-cycle": "error",
+      "import-x/no-restricted-paths": [
         "error",
         {
           zones: [
@@ -104,12 +105,10 @@ export default defineConfigWithVueTs([
       ],
     },
     settings: {
-      "import/resolver": {
-        typescript: true, // require eslint-import-resolver-typescript
-      },
-      "import/ignore": ["node_modules"],
+      "import-x/resolver-next": [createTypeScriptImportResolver()],
+      "import-x/ignore": ["node_modules"],
       // ビルド時に生成される仮想モジュール (plugins/builtin_engines.ts)。
-      "import/core-modules": [
+      "import-x/core-modules": [
         "typescript-eslint",
         "virtual:shogihome/builtin-engines",
         "virtual:shogihome/build-profile",

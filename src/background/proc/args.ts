@@ -66,7 +66,7 @@ export function parseProcessArgs(args: string[]): ProcessArgs | Error {
       if (isNaN(timeout) || timeout < 0) {
         return new Error("Invalid timeout value");
       }
-      const engineOptionsBase64 = args[++i] as string | undefined;
+      const engineOptionsBase64 = args[i + 1] as string | undefined;
       return {
         type: "headless",
         operation: "addEngine",
