@@ -95,10 +95,12 @@ const onClose = () => {
   line-height: 0;
   background-color: var(--dialog-bg-color);
 }
+/* 高さを固定すると、横幅が制限されたときに画像の上下に余白ができるため、上限のみを指定する。 */
 .banner > img {
-  height: 8em;
+  width: auto;
+  height: auto;
   max-width: 100%;
-  object-fit: contain;
+  max-height: 8em;
 }
 .attachment {
   text-align: center;
