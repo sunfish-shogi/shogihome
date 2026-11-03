@@ -1,0 +1,441 @@
+<html>
+  <head>
+    <title>ShogiHome</title>
+    <link href="css/style.css?202611032000" rel="stylesheet" />
+    <link rel="icon" href="webapp/favicon.png" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://sunfish-shogi.github.io/shogihome/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ShogiHome" />
+    <meta property="og:description" content="Ứng dụng shogi trên máy tính hỗ trợ giao thức USI" />
+    <meta
+      property="og:image"
+      content="https://sunfish-shogi.github.io/shogihome/screenshots/screenshot001.png"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="link-buttons">
+        <div>
+          <a href="https://github.com/sunfish-shogi/shogihome">
+            <img class="large-icon" src="./icons/github.png" alt="GitHub" />
+            GitHub
+          </a>
+        </div>
+        <div>
+          <a href="https://github.com/sunfish-shogi/shogihome/wiki">
+            <img class="large-icon" src="./icons/github.png" alt="GitHub" />
+            Wiki
+          </a>
+        </div>
+        <div>
+          <a href="./index.html">
+            <img class="large-icon" src="./icons/language_white.svg" alt="Language" />
+            日本語
+          </a>
+          <a href="./index.en.html">
+            <img class="large-icon" src="./icons/language_white.svg" alt="Language" />
+            English
+          </a>
+          <a href="./index.zh_tw.html">
+            <img class="large-icon" src="./icons/language_white.svg" alt="Language" />
+            繁體中文
+          </a>
+        </div>
+      </div>
+      <div class="title">
+        <img class="icon" src="icon.svg" alt="" />
+        <div>ShogiHome</div>
+      </div>
+    </header>
+    <nav class="sticky">
+      <ul>
+        <li><a href="#whatis">ShogiHome là gì?</a></li>
+        <li><a href="#license">Giấy phép</a></li>
+        <li><a href="#pcapp">Ứng dụng máy tính</a></li>
+        <li><a href="#webapp">Ứng dụng web</a></li>
+        <li><a href="#howtouse">Hướng dẫn sử dụng</a></li>
+        <li><a href="#milestones">Kế hoạch phát triển</a></li>
+        <li><a href="#faq">Câu hỏi thường gặp</a></li>
+        <li><a href="#contact">Liên hệ</a></li>
+        <li><a href="#relatedprojects">Dự án liên quan</a></li>
+      </ul>
+    </nav>
+    <article>
+      <section id="whatis">
+        <h2>ShogiHome là gì?</h2>
+        <div class="images">
+          <a href="./screenshots/screenshot001.png"
+            ><img src="./screenshots/screenshot001.png?202606182200" alt="Ảnh chụp màn hình 001"
+          /></a>
+          <a href="./screenshots/screenshot002.png"
+            ><img src="./screenshots/screenshot002.png?202606182200" alt="Ảnh chụp màn hình 002"
+          /></a>
+        </div>
+        <div class="long-text">
+          ShogiHome là một ứng dụng shogi chạy trên Windows, macOS và Linux. Bất kỳ ai cũng có thể
+          dùng mã nguồn công khai để tạo và phân phối phiên bản của riêng mình.
+        </div>
+        <div class="images">
+          <a href="./screenshots/screenshot004.png"
+            ><img
+              class="wide"
+              src="./screenshots/screenshot004.png?202606182200"
+              alt="Ảnh chụp màn hình 004"
+          /></a>
+        </div>
+        <div class="long-text">
+          Phần lớn các AI shogi hàng đầu sử dụng
+          <a href="http://shogidokoro2.stars.ne.jp/usi.html" target="_blank"
+            >giao thức USI<img class="small-icon" src="./icons/open_in_new_black_24dp.svg"
+          /></a>
+          để kết nối với ứng dụng giao diện. ShogiHome là ứng dụng giao diện cho phép đăng ký các AI
+          hỗ trợ giao thức USI để chơi và phân tích.
+        </div>
+        <div class="images">
+          <a href="./screenshots/screenshot003.png"
+            ><img
+              class="wide"
+              src="./screenshots/screenshot003.png?202606182200"
+              alt="Ảnh chụp màn hình 003"
+          /></a>
+        </div>
+        <div class="long-text">
+          Ngày nay, với sự phổ biến của máy tính bảng 2-trong-1 và máy tính xách tay có thể gập, ta
+          có thể chơi shogi bằng màn hình cảm ứng ngay cả trên hệ điều hành dành cho máy tính.
+          ShogiHome cho phép thao tác nhiều chức năng bằng các nút lớn, dễ sử dụng trong nhiều môi
+          trường khác nhau. Ngoài ra, nhờ sử dụng Electron, ứng dụng giảm thiểu sự phụ thuộc vào hệ
+          điều hành và mang lại giao diện cũng như thao tác giống nhau trên mọi hệ điều hành.
+        </div>
+        <div class="slides">
+          <div>
+            <iframe
+              loading="lazy"
+              src="https://www.slideshare.net/slideshow/embed_code/key/aVRCVlFMmol7iG?startSlide=3"
+              width="680"
+              height="420"
+              frameborder="0"
+              marginwidth="0"
+              marginheight="0"
+              scrolling="no"
+              style="border: 1px solid #ccc; border-width: 1px; margin-bottom: 5px; max-width: 100%"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div>
+            <strong
+              ><a
+                href="https://www.slideshare.net/slideshow/5-ai-shogihome/273744458"
+                title="第5回世界将棋AI電竜戦 講演資料「ShogiHome - 新しい将棋の基盤を作る」"
+                target="_blank"
+                >Bài thuyết trình tại Giải vô địch AI Shogi thế giới Denryusen lần thứ 5: "ShogiHome
+                - Xây dựng nền tảng mới cho shogi"</a
+              ></strong
+            >
+          </div>
+        </div>
+      </section>
+      <section id="license" class="bg2">
+        <h2>Giấy phép</h2>
+        <div class="long-text">
+          Bạn có thể sử dụng ứng dụng này mà không bị giới hạn, dù với mục đích thương mại hay
+          không. Tuy nhiên, tác giả không đưa ra bất kỳ bảo đảm nào và không chịu trách nhiệm cho
+          bất kỳ thiệt hại hay mất mát nào; bạn tự chịu trách nhiệm khi sử dụng. Nếu bạn sửa đổi
+          hoặc phân phối lại phần mềm, vui lòng tuân thủ nghĩa vụ ghi giấy phép và các điều khoản
+          khác.
+        </div>
+        <div class="long-text">
+          Ứng dụng ShogiHome và mã nguồn được phát hành theo
+          <a href="https://github.com/sunfish-shogi/shogihome/blob/main/LICENSE">MIT License</a>.
+          Tuy nhiên,
+          <a href="https://developers.google.com/fonts/docs/material_icons">Material Icons</a>
+          được sử dụng trong ứng dụng tuân theo
+          <a href="https://www.apache.org/licenses/LICENSE-2.0.txt" target="_blank"
+            >Apache License 2.0<img
+              class="small-icon"
+              src="./icons/open_in_new_black_24dp.svg" /></a
+          >.
+        </div>
+        <div class="long-text">
+          Về giấy phép của các thư viện web được sử dụng, vui lòng xem
+          <a href="./third-party-licenses.html">THIRD PARTY LICENSES</a>. Danh sách này không bao
+          gồm Electron, Electron Builder và Chromium; giấy phép của chúng được cài đặt cùng với ứng
+          dụng máy tính.
+        </div>
+        <div class="long-text">
+          Giấy phép của các engine đi kèm ứng dụng web có thể được xem từ menu trong ứng dụng.
+        </div>
+      </section>
+      <section id="pcapp">
+        <h2>Ứng dụng máy tính</h2>
+        <div class="images">
+          <a href="./screenshots/screenshot001.png"
+            ><img class="wide" src="./screenshots/screenshot001.png?202606182200" alt="PC"
+          /></a>
+        </div>
+        <ul class="row">
+          <li class="link-box">
+            <a href="https://github.com/sunfish-shogi/shogihome/releases/tag/v$LATEST_VERSION$"
+              >Bản mới nhất (Version $LATEST_VERSION$)</a
+            >
+          </li>
+          <li class="link-box">
+            <a href="https://github.com/sunfish-shogi/shogihome/releases/tag/v$STABLE_VERSION$"
+              >Bản ổn định (Version $STABLE_VERSION$)</a
+            >
+          </li>
+        </ul>
+        <ul class="row">
+          <li class="link-box">
+            <a href="https://github.com/sunfish-shogi/shogihome/releases">Tất cả phiên bản</a>
+          </li>
+        </ul>
+        <div class="long-text">
+          Vui lòng tải tệp có đuôi <b>-win.zip</b> cho Windows, <b>-mac.zip</b> cho macOS, hoặc
+          <b>-linux.zip</b> cho Linux. Khi chọn phiên bản, vui lòng tham khảo
+          <a
+            href="https://github.com/sunfish-shogi/shogihome/wiki/%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E9%81%B8%E3%81%B3%E6%96%B9"
+            >"Cách chọn phiên bản"</a
+          >.
+        </div>
+      </section>
+      <section id="webapp" class="bg2">
+        <h2>Ứng dụng web</h2>
+        <div class="images">
+          <a href="./screenshots/mobile001.png"
+            ><img class="wide" src="./screenshots/mobile001.png?202606182200" alt="Mobile"
+          /></a>
+        </div>
+        <h3>Bản beta tăng cường chức năng engine</h3>
+        <ul class="row">
+          <li class="link-box">
+            <a href="https://analysis.shogihome.com?mobile&amp;lang=vi" target="_blank"
+              >Điện thoại / Máy tính bảng</a
+            >
+          </li>
+          <li class="link-box">
+            <a href="https://analysis.shogihome.com?lang=vi" target="_blank">Trình duyệt PC</a>
+          </li>
+        </ul>
+        <div>
+          Bản beta đang được công bố thử nghiệm cho phép phân tích thế cờ bằng engine.
+          <a href="https://note.com/ryosuke_kubo/n/n38b6c90da525" target="_blank">
+            (note<img class="small-icon" src="./icons/open_in_new_black_24dp.svg" />)
+          </a>
+        </div>
+        <h3>Bản thông thường</h3>
+        <ul class="row">
+          <li class="link-box">
+            <a href="webapp/index.html?mobile&amp;lang=vi" target="_blank"
+              >Điện thoại / Máy tính bảng</a
+            >
+          </li>
+          <li class="link-box">
+            <a href="webapp/index.html?lang=vi" target="_blank">Trình duyệt PC</a>
+          </li>
+        </ul>
+        <div>Bản thông thường không hỗ trợ phân tích bằng engine.</div>
+      </section>
+      <section id="howtouse">
+        <h2>Hướng dẫn sử dụng</h2>
+        <ul class="row">
+          <li class="link-box">
+            <a href="https://github.com/sunfish-shogi/shogihome/wiki/%E4%BD%BF%E3%81%84%E6%96%B9"
+              >Xem hướng dẫn sử dụng</a
+            >
+          </li>
+        </ul>
+      </section>
+      <section id="milestones" class="bg2">
+        <h2>Kế hoạch phát triển</h2>
+        <ul class="row">
+          <li class="link-box">
+            <a href="https://github.com/sunfish-shogi/shogihome/milestones">Milestones</a>
+          </li>
+          <li class="link-box">
+            <a href="https://github.com/users/sunfish-shogi/projects/1/views/1">Bảng dự án</a>
+          </li>
+        </ul>
+      </section>
+      <section id="faq">
+        <h2>Câu hỏi thường gặp</h2>
+        <ul class="faq">
+          <li>
+            Q. Làm thế nào để thay đổi ngôn ngữ?
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/How-to-change-your-language-settings"
+                  >"How to change your language settings"</a
+                >.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Tôi có thể tìm AI shogi hỗ trợ giao thức USI ở đâu?
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a href="https://github.com/sunfish-shogi/shogihome/wiki/Links"
+                  >danh sách liên kết</a
+                >.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Tôi có thể tìm hình ảnh để tùy chỉnh giao diện ở đâu?
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a href="https://github.com/sunfish-shogi/shogihome/wiki/Links"
+                  >danh sách liên kết</a
+                >.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Tôi muốn đóng góp bản dịch.
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E7%BF%BB%E8%A8%B3%E3%81%AB%E5%8D%94%E5%8A%9B%E3%81%99%E3%82%8B"
+                  >Wiki</a
+                >.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Giao thức CSA là gì?
+            <ul>
+              <li>
+                A. Giao thức CSA là chuẩn giao tiếp dành cho AI shogi do Hiệp hội Shogi Máy tính
+                (CSA) xây dựng, chủ yếu được các nhà phát triển engine shogi sử dụng. Để chơi bằng
+                giao thức CSA, bạn cần có máy chủ CSA ngoài ShogiHome.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Log giao tiếp của giao thức CSA và USI được lưu ở đâu?
+            <ul>
+              <li>
+                A. Theo mặc định, việc ghi log bị tắt. Vui lòng tham khảo
+                <a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E9%96%8B%E7%99%BA%E8%80%85%E5%90%91%E3%81%91%E6%A9%9F%E8%83%BD%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9#%E3%83%AD%E3%82%B0"
+                  >tài liệu này</a
+                >
+                để bật ghi log và kiểm tra vị trí lưu.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Tôi không thể khởi động ứng dụng. / Cửa sổ ứng dụng không hiển thị.
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0"
+                  >Khắc phục sự cố</a
+                >.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Q. Tôi không thể đăng ký engine là shell script hoặc viết bằng ngôn ngữ thông dịch.
+            <ul>
+              <li>
+                A. Vui lòng xem
+                <a
+                  href="https://github.com/sunfish-shogi/shogihome/wiki/%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%82%84%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%97%E3%83%AA%E3%82%BF%E5%9E%8B%E8%A8%80%E8%AA%9E%E3%81%A7%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%92%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%96%B9%E3%81%B8"
+                  >trang này</a
+                >.
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
+      <section id="contact" class="bg2">
+        <h2>Liên hệ</h2>
+        <div class="row">
+          <div>
+            <h3>Nếu bạn có tài khoản GitHub</h3>
+            <div class="link-box">
+              <a href="https://github.com/sunfish-shogi/shogihome/issues">
+                <img class="large-icon" src="./icons/github.png" alt="GitHub" />
+                Issues
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3>Nếu bạn không có tài khoản GitHub</h3>
+            <div class="link-box">
+              <a href="https://form.run/@sunfish-shogi-1650819491">Biểu mẫu liên hệ</a>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="relatedprojects">
+        <h2>Dự án liên quan</h2>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://www.npmjs.com/package/tsshogi" target="_blank">tsshogi</a>
+            </div>
+            <div>Thư viện về luật shogi và định dạng dữ liệu</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://www.npmjs.com/package/usi-csa-bridge" target="_blank"
+                >usi-csa-bridge</a
+              >
+            </div>
+            <div>Công cụ CLI làm cầu nối từ USI sang giao thức CSA</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://sunfish-shogi.github.io/shogi-validator/" target="_blank"
+                >shogi-validator</a
+              >
+            </div>
+            <div>Công cụ kiểm tra dữ liệu kỳ phổ</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://github.com/sunfish-shogi/usi-engine-delayer" target="_blank"
+                >usi-engine-delayer</a
+              >
+            </div>
+            <div>Công cụ kiểm thử làm chậm phản hồi của engine USI</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://sunfish-shogi.github.io/shogi-images/" target="_blank"
+                >Shogi Images</a
+              >
+            </div>
+            <div>Hình ảnh quân cờ và bàn cờ với rất ít hạn chế sử dụng</div>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="link-box">
+              <a href="https://github.com/sunfish-shogi/sunfish4" target="_blank">Sunfish4</a>
+            </div>
+            <div>Engine shogi theo MIT License</div>
+          </div>
+        </div>
+      </section>
+    </article>
+  </body>
+</html>
