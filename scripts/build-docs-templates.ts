@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { Releases } from "../src/common/version";
 
 const releases = JSON.parse(fs.readFileSync("docs/release.json", "utf-8")) as Releases;
-const fileNames = ["index.html", "index.en.html", "index.zh_tw.html"];
+const fileNames = ["index.html", "index.en.html", "index.zh_tw.html", "index.vi.html"];
 for (const fileName of fileNames) {
   const template = fs.readFileSync(`docs-templates/${fileName}`, "utf-8");
   const out = template
