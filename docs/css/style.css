@@ -183,6 +183,7 @@ ul.faq li li {
 
 img {
   width: min(max(min(40vw, 50vh), min(80vw, 50vh)), 500px);
+  height: auto;
   margin: min(1vw, 1vh);
 }
 
