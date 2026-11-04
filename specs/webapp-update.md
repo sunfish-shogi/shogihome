@@ -61,6 +61,12 @@ cross-origin isolation のヘッダーを足すためである (「cross-origin 
 外すことで事前キャッシュの完了を待たせなくなる。効果音のように使うまで取得されない
 ものは、一度も再生していなければオフラインで鳴らない。
 
+効果音は `<audio>` 要素ではなく `fetch()` で取得して Web Audio API で鳴らす
+(`src/renderer/devices/audio.ts`)。メディア要素の要求には `Range` が付いて 206 が返るため、
+`CacheableResponsePlugin` (200 のみ) に弾かれてキャッシュされない。また、再生のたびに
+要求が発生し、`StaleWhileRevalidate` の再検証も毎回走る。`fetch()` なら 200 が返り、
+要求もページを開いてから初回の 1 回だけで済む。
+
 #### 盤・駒の画像
 
 盤・駒の画像 (`board/`, `piece/`) は種類が多く合計 4MB 近くあり、
