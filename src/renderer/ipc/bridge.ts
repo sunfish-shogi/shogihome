@@ -1,3 +1,4 @@
+import { CustomImageType } from "@/common/settings/image.js";
 import { CommandType } from "@/common/advanced/command.js";
 import { PromptTarget } from "@/common/advanced/prompt.js";
 import { BookFormat } from "@/common/book";
@@ -150,7 +151,7 @@ export interface Bridge {
   onPromptCommand(callback: (command: string) => void): void;
 
   // Images
-  showSelectImageDialog(defaultURL?: string): Promise<string>;
+  showSelectImageDialog(type: CustomImageType, defaultURL?: string): Promise<string>;
   cropPieceImage(srcURL: string, deleteMargin: boolean): Promise<string>;
   exportCaptureAsPNG(json: string): Promise<void>;
   exportCaptureAsJPEG(json: string): Promise<void>;

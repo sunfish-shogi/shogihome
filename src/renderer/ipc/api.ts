@@ -1,3 +1,4 @@
+import { CustomImageType } from "@/common/settings/image.js";
 import {
   USIEngine,
   USIEngineLaunchOptions,
@@ -172,7 +173,7 @@ export interface API {
   ): void;
 
   // Images
-  showSelectImageDialog(defaultURL?: string): Promise<string>;
+  showSelectImageDialog(type: CustomImageType, defaultURL?: string): Promise<string>;
   cropPieceImage(srcURL: string, deleteMargin: boolean): Promise<string>;
   exportCaptureAsPNG(rect: Rect): Promise<void>;
   exportCaptureAsJPEG(rect: Rect): Promise<void>;

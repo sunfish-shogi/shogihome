@@ -8,14 +8,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, toRef } from "vue";
+import { onMounted, PropType, ref, toRef } from "vue";
 import { t } from "@/common/i18n";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
 import { fileURLToCustomSchemeURL } from "@/common/url";
+import { CustomImageType } from "@/common/settings/image";
 
 const props = defineProps({
+  type: {
+    type: String as PropType<CustomImageType>,
+    default: CustomImageType.GENERAL,
+  },
   defaultUrl: {
     type: String,
     default: "",
@@ -36,7 +41,7 @@ onMounted(() => {
 const select = async () => {
   busyState.retain();
   try {
-    const newURL = await api.showSelectImageDialog(url.value);
+    const newURL = await api.showSelectImageDialog(props.type, url.value);
     if (newURL) {
       url.value = newURL;
       emit("select", newURL);

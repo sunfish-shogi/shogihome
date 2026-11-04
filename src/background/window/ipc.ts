@@ -104,6 +104,7 @@ import { cropPieceImage } from "@/background/image/cropper.js";
 import { getRelativeEnginePath, resolveEnginePath } from "@/background/usi/path.js";
 import { fileURLToPath, validateWebURL } from "@/background/helpers/url.js";
 import { AppSettingsUpdate, TextDecodingRule } from "@/common/settings/app.js";
+import { CustomImageType, getCustomImageExtensions } from "@/common/settings/image.js";
 import { convertRecordFiles } from "@/background/file/conversion.js";
 import { listRecordFiles } from "@/background/file/list.js";
 import { BatchConversionSettings } from "@/common/settings/conversion.js";
@@ -396,17 +397,17 @@ ipcMain.handle(
 
 ipcMain.handle(
   Background.SHOW_SELECT_IMAGE_DIALOG,
-  async (event, defaultURL?: string): Promise<string> => {
+  async (event, type: CustomImageType, defaultURL?: string): Promise<string> => {
     validateIPCSender(event.senderFrame);
     const win = BrowserWindow.getFocusedWindow();
     if (!win) {
       throw new Error("failed to open dialog by unexpected error.");
     }
-    getAppLogger().debug("show select-image dialog");
+    getAppLogger().debug(`show select-image dialog: type=${type}`);
     const ret = await showOpenDialog(
       ["openFile"],
       defaultURL && fileURLToPath(defaultURL, getAppPath("pictures")),
-      [{ name: t.imageFile, extensions: ["png", "jpg", "jpeg"] }],
+      [{ name: t.imageFile, extensions: getCustomImageExtensions(type) }],
     );
     return ret !== "" ? url.pathToFileURL(ret).toString() : "";
   },
