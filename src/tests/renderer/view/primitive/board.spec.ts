@@ -38,7 +38,7 @@ describe("BoardView", () => {
       },
     });
     const imgs = wrapper.findAll("img");
-    expect(imgs.filter((img) => img.attributes()["src"] === "./board/wood_light.png")).toHaveLength(
+    expect(imgs.filter((img) => img.attributes()["src"] === "./board/wood_light.webp")).toHaveLength(
       1,
     );
     expect(
