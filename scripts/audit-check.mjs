@@ -63,12 +63,14 @@ function readJSON(path, label) {
   try {
     text = fs.readFileSync(path, "utf8");
   } catch (e) {
-    throw new Error(`failed to read the ${label} (${path}): ${e.message}`);
+    throw new Error(`failed to read the ${label} (${path}): ${e.message}`, { cause: e });
   }
   try {
     return JSON.parse(text);
   } catch (e) {
-    throw new Error(`the ${label} (${path}) is not valid JSON: ${e.message}`);
+    throw new Error(`the ${label} (${path}) is not valid JSON: ${e.message}`, {
+      cause: e,
+    });
   }
 }
 
