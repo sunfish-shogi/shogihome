@@ -267,8 +267,8 @@ const engine = await createEngine({
 ShogiHome が必ず渡す (`moduleFormat: "umd"` のときはグルーコード自身が自分の位置を
 知り得ないため必須になる)。
 
-`mainScriptUrlOrBlob` は pthread の Worker がグルーコードを読み直すための URL で、
-やはり ShogiHome が必ず渡す。詳細は「8. 制約」の
+`mainScriptUrlOrBlob` は pthread の Worker がグルーコードを読み直すためのもので、
+やはり ShogiHome が必ず渡す。`umd` では取得済みのソースの `Blob`、`esm` では URL を渡す。詳細は「8. 制約」の
 「モジュール Worker と UMD の組み合わせ」を参照。
 
 標準エラー出力は**診断情報として記録するだけで、起動の失敗とは扱わない。**
@@ -691,9 +691,20 @@ failed to start engine worker`**)。マニフェストにも起動処理にも�
 この文言が出たらここを疑うこと。
 
 そのため ShogiHome はモジュール生成時に `mainScriptUrlOrBlob` を渡す。
-**値は Blob URL ではなく元のグルーコードの URL である。**
+**値は Worker が取得済みの元のソースの `Blob` である。**
 `importScripts` される側はクラシックスクリプトとして評価されるため、
 `umd` の読み込みのために末尾へ `export default` を足したソースは読めない。
+
+URL ではなく `Blob` を渡すのは、スレッドの数だけリクエストが出るのを避けるためである。
+Emscripten は起動時に `-sPTHREAD_POOL_SIZE` の本数だけ Worker を作り、それぞれが
+グルーコードを読み直す。URL を渡すと、その本数だけ同じ URL へのリクエストが出る
+(YaneuraOu の配布物は 32 本で、起動のたびに 32 回)。`Blob` なら Worker ごとに
+Blob URL を作って読むため、ネットワークへは行かない。
+
+なお古い Emscripten が出力するスレッド用のスクリプト (`<module>.worker.js`) は
+`locateFile` で解決した URL から読まれるため、こちらは本数だけ要求が残る。
+Web 版では Service Worker が同じ URL への取り直しをまとめる
+([`wasm-engine.md`](./wasm-engine.md) の「キャッシュ」)。
 
 `ENVIRONMENT_IS_WORKER` が偽のままである影響は他にも残る。
 

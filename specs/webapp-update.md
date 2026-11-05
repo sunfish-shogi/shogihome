@@ -85,7 +85,7 @@ cross-origin isolation のヘッダーを足すためである (「cross-origin 
 マニフェスト・グルーコード・wasm (`engines/**` の `.json` / `.js` / `.wasm`)。
 
 - キャッシュ名: `shogihome-engine-modules`
-- 方式: `StaleWhileRevalidate`
+- 方式: `StaleWhileRevalidate` (同じ URL の取り直しは 30 秒に 1 回にまとめる)
 - 最大エントリー数: 60
 - 有効期限: 90 日
 

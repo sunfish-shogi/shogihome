@@ -214,13 +214,53 @@ registerRoute(
 // 事前キャッシュと違って revision を持たないため StaleWhileRevalidate にして、
 // 返した後に取り直す。ファイル名が変わらないまま中身が差し替わっても、
 // 次回の起動には新しいものが使われる。
+const engineModuleCacheName = "shogihome-engine-modules";
+// 2 つの戦略で同じキャッシュを扱うので、プラグインも共有する。
+const engineModulePlugins = [
+  new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
+  new CacheableResponsePlugin({ statuses: [0, 200] }),
+];
 const engineModuleStrategy = new StaleWhileRevalidate({
-  cacheName: "shogihome-engine-modules",
-  plugins: [
-    new ExpirationPlugin({ maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 }), // 90 日
-    new CacheableResponsePlugin({ statuses: [0, 200] }),
-  ],
+  cacheName: engineModuleCacheName,
+  plugins: engineModulePlugins,
 });
+const engineModuleCacheFirstStrategy = new CacheFirst({
+  cacheName: engineModuleCacheName,
+  plugins: engineModulePlugins,
+});
+
+// 同じ URL への取り直しは、一定時間に 1 回にまとめる。
+//
+// -pthread でビルドしたエンジンは、起動時にスレッドの数 (PTHREAD_POOL_SIZE) だけ
+// Worker を作り、それぞれが同じスクリプトを読む (YaneuraOu の配布物では 32 本)。
+// StaleWhileRevalidate は要求のたびに取り直し、Workbox は同時の取り直しを
+// まとめないため、そのまま通すと起動ごとに数十回の条件付きリクエスト (304) が出る。
+// 2 回目以降はキャッシュから返し、キャッシュが空なら先行する取得を待つ。
+const ENGINE_MODULE_REVALIDATION_INTERVAL_MS = 30 * 1000;
+const engineModuleRevalidations = new Map(); // URL -> { at, done }
+
+async function handleEngineModule(options) {
+  const url = options.request.url;
+  const now = Date.now();
+  const last = engineModuleRevalidations.get(url);
+  if (last && now - last.at < ENGINE_MODULE_REVALIDATION_INTERVAL_MS) {
+    const cache = await caches.open(engineModuleCacheName);
+    if (!(await cache.match(options.request))) {
+      // 初めて使うエンジンでは、先行する要求がキャッシュへ書き込むまで待つ。
+      // それでも無ければ (取得の失敗など) CacheFirst がネットワークから取る。
+      await last.done;
+    }
+    return engineModuleCacheFirstStrategy.handle(options);
+  }
+  for (const [key, value] of engineModuleRevalidations) {
+    if (now - value.at >= ENGINE_MODULE_REVALIDATION_INTERVAL_MS) {
+      engineModuleRevalidations.delete(key);
+    }
+  }
+  const [response, done] = engineModuleStrategy.handleAll(options);
+  engineModuleRevalidations.set(url, { at: now, done: done.catch(() => undefined) });
+  return response;
+}
 
 // -pthread でビルドしたエンジンは、グルーコード自身を Worker として読み直す
 // (Emscripten が new Worker(new URL("<module>.js", import.meta.url)) を出力する)。
@@ -234,7 +274,7 @@ registerRoute(
     if (!(await isEngineAssetURL(options.url))) {
       return fetch(options.request);
     }
-    const response = await engineModuleStrategy.handle(options);
+    const response = await handleEngineModule(options);
     return isWorkerRequest(options) ? withCrossOriginIsolation(response) : response;
   },
 );

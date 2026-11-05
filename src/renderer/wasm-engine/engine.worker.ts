@@ -64,8 +64,14 @@ function terminate(): void {
   self.close();
 }
 
+type LoadedModule = {
+  factory: EngineFactory;
+  // pthread の Worker がグルーコードを読み直すときに使うもの (mainScriptUrlOrBlob)。
+  mainScript: string | Blob;
+};
+
 // グルーコードを読み込み、モジュールを生成する関数を取り出す。
-async function importFactory(manifest: EngineManifest, moduleURL: string): Promise<EngineFactory> {
+async function importFactory(manifest: EngineManifest, moduleURL: string): Promise<LoadedModule> {
   if (manifest.moduleFormat === "umd") {
     // UMD の出力は ES モジュールとして評価しても値をエクスポートしないので、
     // 末尾に export 文を足したものを Blob URL 経由で読み込む。
@@ -73,15 +79,27 @@ async function importFactory(manifest: EngineManifest, moduleURL: string): Promi
     if (!response.ok) {
       throw new Error(`failed to load ${moduleURL}: ${response.status}`);
     }
-    const source = wrapUMDSource(await response.text(), manifest.exportName as string);
+    const original = await response.text();
+    const source = wrapUMDSource(original, manifest.exportName as string);
     const blobURL = URL.createObjectURL(new Blob([source], { type: "text/javascript" }));
     try {
-      return (await import(/* @vite-ignore */ blobURL)).default as EngineFactory;
+      return {
+        factory: (await import(/* @vite-ignore */ blobURL)).default as EngineFactory,
+        // pthread の Worker には、取得済みの**元の**ソースを Blob で渡す。
+        // URL を渡すと、スレッドの数 (PTHREAD_POOL_SIZE) だけ同じ URL が
+        // importScripts され、そのたびにリクエストが出る (YaneuraOu の配布物では
+        // 起動ごとに 32 回)。importScripts される側はクラシックスクリプトとして
+        // 評価されるため、export 文を足したものではなく元のソースでなければならない。
+        mainScript: new Blob([original], { type: "text/javascript" }),
+      };
     } finally {
       URL.revokeObjectURL(blobURL);
     }
   }
-  return (await import(/* @vite-ignore */ moduleURL)).default as EngineFactory;
+  return {
+    factory: (await import(/* @vite-ignore */ moduleURL)).default as EngineFactory,
+    mainScript: moduleURL,
+  };
 }
 
 // 評価パラメータや定跡を取得し、Emscripten の仮想ファイルシステムへ書き込む。
@@ -134,7 +152,7 @@ async function launch(baseURL: string): Promise<void> {
     // wasm と評価パラメータの取得先。宣言が無ければ従来通りの基準で解決する。
     // (.wasm / .data はグルーコードの隣、dataFiles はマニフェストからの相対)
     const assetBaseURL = manifest.assetBaseURL;
-    const factory = await importFactory(manifest, moduleURL);
+    const { factory, mainScript } = await importFactory(manifest, moduleURL);
     const instance = validateEngineInstance(
       await factory({
         // 標準エラー出力は診断情報として扱い、致命的なエラーとは区別する。
@@ -155,12 +173,11 @@ async function launch(baseURL: string): Promise<void> {
         // 同一オリジンでなければ構築できない** (specs/wasm-engine-abi.md の「6. (d)」)。
         locateFile: (path: string) =>
           new URL(path, assetBaseURL && !/\.m?js$/.test(path) ? assetBaseURL : moduleURL).href,
-        // pthread の Worker はグルーコードを importScripts で読み直す。その URL は
+        // pthread の Worker はグルーコードを読み直す。その URL は
         // Emscripten が document.currentScript や import.meta.url から求めるが、
         // モジュール Worker から UMD の成果物を読む場合はどちらも得られない。
-        // Blob URL ではなく元のファイルの URL を渡すこと (importScripts される側は
-        // クラシックスクリプトとして評価されるため、export 文を足したものは読めない)。
-        mainScriptUrlOrBlob: moduleURL,
+        // UMD では取得済みの元のソースを Blob で渡す (importFactory を参照)。
+        mainScriptUrlOrBlob: mainScript,
       }),
     );
     instance.addMessageListener(onEngineOutput);
