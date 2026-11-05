@@ -10,6 +10,9 @@ export const APP_SCHEME: CustomScheme = {
   privileges: {
     standard: true,
     secure: true,
+    // renderer から同梱のファイルを fetch() で読むために必要 (効果音の読み込みなど)。
+    // 無いと app:// への fetch() は "Failed to fetch" で失敗する。
+    supportFetchAPI: true,
   },
 } as const;
 
