@@ -178,7 +178,7 @@ function engineAssetMatcher(pathPattern, assetPattern) {
 // これらの URL にはハッシュが含まれないため、キャッシュを返した後に
 // 再取得して次回以降に反映する。
 registerRoute(
-  /\/(?:board|piece)\/[^?]+\.png$/,
+  /\/(?:board|piece)\/[^?]+\.(?:png|webp)$/,
   new StaleWhileRevalidate({
     cacheName: "shogihome-board-images",
     plugins: [
@@ -197,7 +197,7 @@ registerRoute(
 // 事前キャッシュと違って revision を持たないため StaleWhileRevalidate にする。
 // URL にハッシュを含まないので、返した後に取り直して次回以降へ反映する。
 registerRoute(
-  /\/(?:icon|board)\/[^?]+\.svg$|\/stand\/[^?]+\.png$|\/sound\/[^?]+\.mp3$/,
+  /\/(?:icon|board)\/[^?]+\.svg$|\/stand\/[^?]+\.(?:png|webp)$|\/sound\/[^?]+\.mp3$/,
   new StaleWhileRevalidate({
     cacheName: "shogihome-ui-assets",
     plugins: [

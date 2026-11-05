@@ -91,7 +91,7 @@ export function newConfig(params: {
 function getPieceStandTextureURL(type: PieceStandImageType, customURL?: string): string | null {
   switch (type) {
     case PieceStandImageType.DARK_WOOD:
-      return "./stand/wood_dark.png";
+      return "./stand/wood_dark.webp";
     case PieceStandImageType.CUSTOM_IMAGE:
       return customURL || null;
   }
@@ -128,15 +128,15 @@ function getBoardGridColor(type: BoardImageType): string {
 function getBoardTextureURL(type: BoardImageType, customURL?: string): string | null {
   switch (type) {
     case BoardImageType.LIGHT:
-      return "./board/wood_light.png";
+      return "./board/wood_light.webp";
     case BoardImageType.LIGHT2:
-      return "./board/wood_light2.png";
+      return "./board/wood_light2.webp";
     case BoardImageType.LIGHT3:
-      return "./board/wood_light3.png";
+      return "./board/wood_light3.webp";
     case BoardImageType.WARM:
-      return "./board/wood_warm.png";
+      return "./board/wood_warm.webp";
     case BoardImageType.WARM2:
-      return "./board/wood_warm2.png";
+      return "./board/wood_warm2.webp";
     case BoardImageType.CUSTOM_IMAGE:
       return customURL || null;
   }
