@@ -53,6 +53,7 @@
             min="1"
             :disabled="!researchSettings.enableMaxSeconds"
           />
+          <div class="form-item-small-label">{{ t.secondsSuffix }}</div>
         </div>
         <div class="form-item">
           <div class="form-item-label">{{ t.suggestionsCount }}</div>
