@@ -146,14 +146,38 @@ export function collectAdvisories(report) {
     throw new Error(`unsupported audit report version: ${report.auditReportVersion}`);
   }
   const vulnerabilities = report.vulnerabilities;
-  if (vulnerabilities === null || typeof vulnerabilities !== "object") {
+  if (
+    vulnerabilities === null ||
+    typeof vulnerabilities !== "object" ||
+    Array.isArray(vulnerabilities)
+  ) {
     throw new Error('the audit report has no "vulnerabilities" object');
   }
 
+  // A malformed entry is an error rather than something to skip: skipping it would let a broken
+  // report pass as a clean audit.
   const advisories = new Map();
-  for (const vulnerability of Object.values(vulnerabilities)) {
-    for (const via of vulnerability?.via ?? []) {
+  for (const [name, vulnerability] of Object.entries(vulnerabilities)) {
+    if (
+      vulnerability === null ||
+      typeof vulnerability !== "object" ||
+      Array.isArray(vulnerability)
+    ) {
+      throw new Error(`unexpected vulnerability "${name}" in the audit report`);
+    }
+    if (!Array.isArray(vulnerability.via) || vulnerability.via.length === 0) {
+      throw new Error(`vulnerability "${name}" in the audit report has no "via" array`);
+    }
+    if (vulnerability.nodes !== undefined && !Array.isArray(vulnerability.nodes)) {
+      throw new Error(`vulnerability "${name}" in the audit report has a non-array "nodes"`);
+    }
+    for (const via of vulnerability.via) {
       if (typeof via === "string") {
+        // The advisories of the referenced package are collected from its own entry, so make
+        // sure that entry exists.
+        if (!Object.hasOwn(vulnerabilities, via)) {
+          throw new Error(`vulnerability "${name}" refers to "${via}", which is not in the report`);
+        }
         continue;
       }
       if (via === null || typeof via !== "object" || typeof via.name !== "string") {
