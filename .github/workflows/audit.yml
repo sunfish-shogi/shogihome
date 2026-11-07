@@ -28,17 +28,34 @@ jobs:
           LATEST_TAG=$(cat docs/release.json | jq -r .latest.tag)
           echo "STABLE_TAG=$STABLE_TAG" >> $GITHUB_ENV
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+      # The released tags do not contain the current allowlist and script, so copy them out of the
+      # checked-out branch before checking out a tag. See specs/npm-audit-allowlist.md.
+      - name: Prepare Audit Check
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/audit"
+          cp scripts/audit-check.mjs .github/audit-allowlist.json "$RUNNER_TEMP/audit/"
       - name: Latest Version
         run: |
           set -euo pipefail
           echo "Latest Version is $LATEST_TAG"
           git checkout $LATEST_TAG
           npm ci --dry-run --prefer-online
-          npm audit --audit-level critical
+          # npm audit exits non-zero whenever it finds anything; the check script judges the report.
+          npm audit --json > "$RUNNER_TEMP/audit/report-latest.json" || true
+          node "$RUNNER_TEMP/audit/audit-check.mjs" \
+            --allowlist "$RUNNER_TEMP/audit/audit-allowlist.json" \
+            --level critical \
+            "$RUNNER_TEMP/audit/report-latest.json"
       - name: Stable Version
         run: |
           set -euo pipefail
           echo "Stable Version is $STABLE_TAG"
           git checkout $STABLE_TAG
           npm ci --dry-run --prefer-online
-          npm audit --audit-level critical
+          # npm audit exits non-zero whenever it finds anything; the check script judges the report.
+          npm audit --json > "$RUNNER_TEMP/audit/report-stable.json" || true
+          node "$RUNNER_TEMP/audit/audit-check.mjs" \
+            --allowlist "$RUNNER_TEMP/audit/audit-allowlist.json" \
+            --level critical \
+            "$RUNNER_TEMP/audit/report-stable.json"
