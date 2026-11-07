@@ -753,8 +753,6 @@ export const en: Texts = {
   pleasePasteRecordIntoTextArea: "*Please paste record data into the text area.",
   pleaseSpecifyPlainTextURL: "*Please specify plain text URL.",
   redirectNotSupported: "*Redirect is not supported.",
-  desktopVersionPastesAutomatically:
-    "*In desktop version, it will paste automatically from clipboard.",
   asNewFile: "as New File",
   mergeToRootPosition: "Merge to Root Position",
   mergeToCurrentPosition: "Merge to Current Position",

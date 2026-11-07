@@ -754,7 +754,6 @@ export const ja: Texts = {
   pleasePasteRecordIntoTextArea: "※テキストエリアに棋譜を貼り付けてください。",
   pleaseSpecifyPlainTextURL: "※プレーンテキストのURLを指定してください。",
   redirectNotSupported: "※リダイレクトはサポートされていません。",
-  desktopVersionPastesAutomatically: "※インストールアプリ版では自動的に貼り付けられます。",
   asNewFile: "新規ファイル",
   mergeToRootPosition: "棋譜の先頭へマージ",
   mergeToCurrentPosition: "現在の位置へマージ",
