@@ -117,6 +117,7 @@
           <div class="form-item-label-wide"></div>
           <ImageSelector
             class="image-selector"
+            :type="CustomImageType.PIECE"
             :default-url="update.pieceImageFileURL"
             @select="(url: string) => (update.pieceImageFileURL = url)"
           />
@@ -853,6 +854,7 @@ import {
   RecordShortcutKeys,
 } from "@/common/settings/app";
 import ImageSelector from "@/renderer/view/dialog/ImageSelector.vue";
+import { CustomImageType } from "@/common/settings/image";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useStore } from "@/renderer/store";
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";

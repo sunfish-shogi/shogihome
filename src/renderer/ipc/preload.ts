@@ -9,6 +9,7 @@ import { CSAGameResult, CSASpecialMove } from "@/common/game/csa";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandType } from "@/common/advanced/command";
 import { BookFormat } from "@/common/book";
+import { CustomImageType } from "@/common/settings/image";
 
 const api: Bridge = {
   // Core
@@ -431,8 +432,8 @@ const api: Bridge = {
   },
 
   // Images
-  async showSelectImageDialog(defaultURL?: string): Promise<string> {
-    return await ipcRenderer.invoke(Background.SHOW_SELECT_IMAGE_DIALOG, defaultURL);
+  async showSelectImageDialog(type: CustomImageType, defaultURL?: string): Promise<string> {
+    return await ipcRenderer.invoke(Background.SHOW_SELECT_IMAGE_DIALOG, type, defaultURL);
   },
   async cropPieceImage(srcURL: string, deleteMargin: boolean): Promise<string> {
     return await ipcRenderer.invoke(Background.CROP_PIECE_IMAGE, srcURL, deleteMargin);
