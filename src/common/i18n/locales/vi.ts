@@ -769,7 +769,6 @@ export const vi: Texts = {
   pleasePasteRecordIntoTextArea: "*Dán dữ liệu kỳ phổ vào vùng nhập chữ.",
   pleaseSpecifyPlainTextURL: "*Vui lòng nhập URL thô.",
   redirectNotSupported: "*Không hỗ trợ chuyển hướng.",
-  desktopVersionPastesAutomatically: "*Bản máy tính sẽ tự động dán.",
   asNewFile: "Tệp mới",
   mergeToRootPosition: "Sáp nhập vào thế cờ ban đầu",
   mergeToCurrentPosition: "Sáp nhập vào thế cờ hiện tại",

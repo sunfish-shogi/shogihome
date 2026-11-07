@@ -6,9 +6,6 @@
       <div v-if="!isNative()" class="message">
         {{ t.pleasePasteRecordIntoTextArea }}
       </div>
-      <div v-if="!isNative()" class="message">
-        {{ t.desktopVersionPastesAutomatically }}
-      </div>
       <textarea ref="textarea"></textarea>
       <HorizontalSelector
         v-model:value="mode"
@@ -41,7 +38,6 @@ import { isNative } from "@/renderer/ipc/api";
 import { useStore } from "@/renderer/store";
 import { onMounted, ref } from "vue";
 import { useErrorStore } from "@/renderer/store/error";
-import { useBusyState } from "@/renderer/store/busy";
 import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import DialogFrame from "./DialogFrame.vue";
@@ -49,19 +45,21 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 
 const store = useStore();
 const appSettings = useAppSettings();
-const busyState = useBusyState();
 const textarea = ref();
 const doNotShowAgain = ref(false);
 const mode = ref<"standard" | "mergeIntoRoot" | "mergeIntoCurrent">("standard");
 
-busyState.retain();
 onMounted(async () => {
+  // ブラウザ版では初回にクリップボードの読み取り許可を求められる場合がある。
+  // 許可待ちの間も手動での貼り付けやキャンセルができるように busyState は使わない。
   try {
-    if (isNative()) {
-      textarea.value.value = await navigator.clipboard.readText();
+    const text = await navigator.clipboard.readText();
+    // 待っている間にダイアログが閉じられたり、手動で入力されたりした場合は上書きしない。
+    if (textarea.value && !textarea.value.value) {
+      textarea.value.value = text;
     }
-  } finally {
-    busyState.release();
+  } catch {
+    // 読み取りが許可されなかった場合などは手動で貼り付けてもらう。
   }
 });
 

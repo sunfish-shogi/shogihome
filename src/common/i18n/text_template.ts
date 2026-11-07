@@ -738,7 +738,6 @@ export type Texts = {
   pleasePasteRecordIntoTextArea: string;
   pleaseSpecifyPlainTextURL: string;
   redirectNotSupported: string;
-  desktopVersionPastesAutomatically: string;
   asNewFile: string;
   mergeToRootPosition: string;
   mergeToCurrentPosition: string;

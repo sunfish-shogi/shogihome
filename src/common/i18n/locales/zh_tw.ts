@@ -759,7 +759,6 @@ export const zh_tw: Texts = {
   pleasePasteRecordIntoTextArea: "※請在文字輸入區域貼上您的棋譜。",
   pleaseSpecifyPlainTextURL: "※請輸入您要使用的URL。",
   redirectNotSupported: "※無法使用重新導向連結。",
-  desktopVersionPastesAutomatically: "※安裝程式版將會自動貼上棋譜。",
   asNewFile: "視為新檔案",
   mergeToRootPosition: "自棋譜開頭合併",
   mergeToCurrentPosition: "自目前局面合併",
