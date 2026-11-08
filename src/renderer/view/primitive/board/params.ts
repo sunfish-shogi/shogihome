@@ -16,19 +16,10 @@ export const boardParams = {
   topPiecePadding: 18.5,
   // 段・筋の番号の配置に使用する余白。(マス目と駒の縦横比が異なるレイアウトでは駒の余白と一致しない。)
   leftLabelPadding: 16.0,
-  highlight: {
-    selected: { "background-color": "#0088ff", opacity: "0.8" },
-    lastMoveTo: { "background-color": "#44cc44", opacity: "0.8" },
-    lastMoveFrom: { "background-color": "#44cc44", opacity: "0.4" },
-  },
   movableMarker: {
     size: 20,
-    style: { "border-radius": "50%" },
     // 周囲の白いぼかし
     glow: { blur: 6, spread: 1, color: "rgba(255, 255, 255, 0.6)" },
-    // 盤上の駒を選択した場合と持ち駒を選択した場合で、それぞれの選択ハイライトの色に合わせる。
-    fromBoard: { "background-color": "#0088ff" },
-    fromHand: { "background-color": "#ff4800" },
   },
   label: {
     fontSize: 24,
@@ -38,9 +29,6 @@ export const boardParams = {
 export const handParams = {
   width: 288,
   height: 360,
-  highlight: {
-    selected: { "background-color": "#ff4800", opacity: "0.7" },
-  },
   // 飛角・金銀・桂香のペアは HandPieceOrder.STRONGER_TO_LEFT の配置で定義し、
   // STRONGER_TO_RIGHT の場合は HandLayoutBuilder 側で列を反転する。
   black: {
@@ -160,9 +148,6 @@ export const standardViewParams = {
 export const compactHandParams = {
   width: 95,
   height: 728,
-  highlight: {
-    selected: { "background-color": "#ff4800", opacity: "0.7" },
-  },
   squareWidth: 95,
   squareHeight: 104,
   leftPiecePadding: 3.4,
@@ -232,9 +217,6 @@ export const compactViewParams = {
 export const portraitHandParams = {
   width: 664,
   height: 104,
-  highlight: {
-    selected: { "background-color": "#ff4800", opacity: "0.7" },
-  },
   squareWidth: 94.85,
   squareHeight: 104,
   leftPiecePadding: 3.4,

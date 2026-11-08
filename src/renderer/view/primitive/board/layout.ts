@@ -64,7 +64,9 @@ export type BoardSquare = {
   file: number;
   rank: number;
   style: { [key: string]: string };
-  backgroundStyle: { [key: string]: string };
+  selected: boolean;
+  lastMoveTo: boolean;
+  lastMoveFrom: boolean;
 };
 
 export type MovableMarker = {
@@ -103,7 +105,7 @@ export type HandPointer = {
   id: string;
   type: PieceType;
   style: { [key: string]: string };
-  backgroundStyle: { [key: string]: string };
+  selected: boolean;
 };
 
 export type Hand = {

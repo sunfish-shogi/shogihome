@@ -122,18 +122,12 @@ export class HandLayoutBuilder {
         width: areaWidth + "px",
         height: areaHeight + "px",
       };
-      let backgroundStyle = style;
-      if (pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...handParams.highlight.selected,
-        };
-      }
       pointers.push({
         id,
         type,
         style,
-        backgroundStyle,
+        selected:
+          !!pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type,
       });
     });
     return {
@@ -241,18 +235,12 @@ export class CompactHandLayoutBuilder {
         width: compactHandParams.squareWidth * this.ratio + "px",
         height: compactHandParams.squareHeight * this.ratio + "px",
       };
-      let backgroundStyle = squareStyle;
-      if (pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...portraitHandParams.highlight.selected,
-        };
-      }
       pointers.push({
         id,
         type,
         style: squareStyle,
-        backgroundStyle,
+        selected:
+          !!pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type,
       });
     }
     return {
@@ -361,18 +349,12 @@ export class PortraitHandLayoutBuilder {
         width: this.params.squareWidth * this.ratio + "px",
         height: this.params.squareHeight * this.ratio + "px",
       };
-      let backgroundStyle = squareStyle;
-      if (pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...this.params.highlight.selected,
-        };
-      }
       pointers.push({
         id,
         type,
         style: squareStyle,
-        backgroundStyle,
+        selected:
+          !!pointer && pointer instanceof Piece && pointer.color === color && pointer.type === type,
       });
     });
     return {
