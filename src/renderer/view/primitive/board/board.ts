@@ -196,47 +196,23 @@ export class BoardLayoutBuilder {
         width: width + "px",
         height: height + "px",
       };
-      let backgroundStyle = style;
-      if (lastMove && square.equals(lastMove.to)) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...this.params.highlight.lastMoveTo,
-        };
-      }
-      if (lastMove && lastMove.from instanceof Square && square.equals(lastMove.from)) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...this.params.highlight.lastMoveFrom,
-        };
-      }
-      if (pointer instanceof Square && pointer.equals(square)) {
-        backgroundStyle = {
-          ...backgroundStyle,
-          ...this.params.highlight.selected,
-        };
-      }
       squares.push({
         id,
         file,
         rank,
         style,
-        backgroundStyle,
+        selected: pointer instanceof Square && pointer.equals(square),
+        lastMoveTo: !!lastMove && square.equals(lastMove.to),
+        lastMoveFrom: !!lastMove && lastMove.from instanceof Square && square.equals(lastMove.from),
       });
     });
     return squares;
   }
 
-  private getMovableMarkers(
-    movableSquares: Square[],
-    pointer?: Square | Piece | null,
-  ): MovableMarker[] {
+  private getMovableMarkers(movableSquares: Square[]): MovableMarker[] {
     const size = this.params.movableMarker.size * this.ratio;
     const glow = this.params.movableMarker.glow;
     const boxShadow = `0 0 ${glow.blur * this.ratio}px ${glow.spread * this.ratio}px ${glow.color}`;
-    const colorStyle =
-      pointer instanceof Piece
-        ? this.params.movableMarker.fromHand
-        : this.params.movableMarker.fromBoard;
     return movableSquares.map((square) => {
       const center = this.centerOfSquare(square);
       return {
@@ -248,8 +224,6 @@ export class BoardLayoutBuilder {
           height: size + "px",
           "pointer-events": "none",
           "box-shadow": boxShadow,
-          ...this.params.movableMarker.style,
-          ...colorStyle,
         },
       };
     });
@@ -321,7 +295,7 @@ export class BoardLayoutBuilder {
       labels: this.labels,
       pieces: this.getPieces(board, dragSourceSquare),
       squares: this.getSquares(lastMove, pointer),
-      movableMarkers: this.getMovableMarkers(movableSquares, pointer),
+      movableMarkers: this.getMovableMarkers(movableSquares),
       promote,
       doNotPromote,
     };

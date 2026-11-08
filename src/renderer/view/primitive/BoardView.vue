@@ -13,7 +13,9 @@
         <div
           v-for="pointer in whiteHand.pointers"
           :key="pointer.id"
-          :style="pointer.backgroundStyle"
+          class="highlight"
+          :class="{ selected: pointer.selected }"
+          :style="pointer.style"
         ></div>
         <div v-for="piece in whiteHand.pieces" :key="piece.id" :style="piece.style">
           <img class="piece-image" :src="piece.imagePath" />
@@ -35,7 +37,17 @@
         >
           <BoardGrid class="full" :color="boardGridColor || board.background.gridColor" />
         </div>
-        <div v-for="square in board.squares" :key="square.id" :style="square.backgroundStyle"></div>
+        <div
+          v-for="square in board.squares"
+          :key="square.id"
+          class="highlight"
+          :class="{
+            selected: square.selected,
+            'last-move-to': square.lastMoveTo,
+            'last-move-from': square.lastMoveFrom,
+          }"
+          :style="square.style"
+        ></div>
         <div v-for="piece in board.pieces" :key="piece.id" :style="piece.style">
           <img class="piece-image" :src="piece.imagePath" />
         </div>
@@ -62,7 +74,9 @@
         <div
           v-for="pointer in blackHand.pointers"
           :key="pointer.id"
-          :style="pointer.backgroundStyle"
+          class="highlight"
+          :class="{ selected: pointer.selected }"
+          :style="pointer.style"
         ></div>
         <div v-for="piece in blackHand.pieces" :key="piece.id" :style="piece.style">
           <img class="piece-image" :src="piece.imagePath" />
@@ -1275,6 +1289,24 @@ const whitePlayerTimeSeverity = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.highlight.last-move-to {
+  background-color: #44cc44;
+  opacity: 0.8;
+}
+.highlight.last-move-from {
+  background-color: #44cc44;
+  opacity: 0.4;
+}
+.highlight.selected {
+  background-color: #0088ff;
+  opacity: 0.7;
+}
+/* 移動可能なマスのマーカーは選択中のハイライトと同じ色にする。 */
+.movable-marker {
+  background-color: #0088ff;
+  border-radius: 50%;
+  opacity: 0.7;
 }
 .piece-image {
   max-width: 100%;
