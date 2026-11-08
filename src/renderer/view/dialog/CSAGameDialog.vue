@@ -34,6 +34,12 @@
           <div class="form-item-label-wide">{{ t.restartItEveryGame }}</div>
           <ToggleButton v-model:value="csaGameSettings.restartPlayerEveryGame" />
         </div>
+        <div v-if="earlyPonderEnabled" class="form-group danger">
+          <div class="note">
+            {{ t.earlyPonderIsEnabled }}
+            {{ t.yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026 }}
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <div>{{ t.server }}</div>
@@ -314,6 +320,10 @@ onMounted(async () => {
   }
 });
 
+const earlyPonderEnabled = computed(() => {
+  return !!engines.value.getEngine(playerURI.value)?.enableEarlyPonder;
+});
+
 const isFloodgate = computed(() => csaGameSettings.value.server.host === floodgateDomain);
 
 const validFloodgatePassword = computed(() =>
@@ -470,7 +480,7 @@ const aboutQualityOfCsaProtocol = () => {
 </script>
 
 <style scoped>
-.form-group:not(.warning) {
+.form-group:not(.warning):not(.danger) {
   min-width: 510px;
 }
 input.number {
