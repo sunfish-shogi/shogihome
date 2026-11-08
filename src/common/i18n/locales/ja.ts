@@ -721,8 +721,9 @@ export const ja: Texts = {
   failedToMergeRecordWithDifferentTurn: "手番が異なるため棋譜をマージできませんでした。",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期Ponder機能は、やねうら王の独自オプションでponderhitコマンドを送信します。",
-  ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
-    "エンジンがこのオプションに対応していない場合、予期しない動作を引き起こす可能性があります。",
+  yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026:
+    "早期Ponderに必要なやねうら王の独自仕様は2026年に削除されました。サポートされないバージョンを使用すると予期しない動作をする可能性があります。",
+  earlyPonderIsEnabled: "早期Ponderが有効です。",
   someLogsDisabled: "一部のログが無効になっています。",
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
   blankLinePingRecommendedToPreventTimeout:

@@ -224,10 +224,10 @@
             <!-- 早期 ponder -->
             <div v-if="option.name === 'USI_Ponder' && option.type === 'check'" class="additional">
               <ToggleButton v-model:value="engine.enableEarlyPonder" :label="t.earlyPonder" />
-              <div v-show="engine.enableEarlyPonder" class="form-group warning">
+              <div v-show="engine.enableEarlyPonder" class="form-group danger">
                 <div class="note">
                   {{ t.earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions }}
-                  {{ t.ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior }}
+                  {{ t.yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026 }}
                 </div>
               </div>
             </div>

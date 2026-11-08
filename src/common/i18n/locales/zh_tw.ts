@@ -725,8 +725,9 @@ export const zh_tw: Texts = {
   failedToMergeRecordWithDifferentTurn: "無法合併手番不同之棋譜。",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     "早期 Ponder 機能將會發送やねうら王自行定義之 ponderhit 指令。",
-  ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
-    "若您的引擎不支援該指令，可能會有預期外之行為發生。",
+  yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026:
+    "早期Ponderに必要なやねうら王の独自仕様は2026年に削除されました。サポートされないバージョンを使用すると予期しない動作をする可能性があります。", // TODO: Translate
+  earlyPonderIsEnabled: "早期Ponderが有効です。", // TODO: Translate
   someLogsDisabled: "部份 log 已被無效化。",
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
   blankLinePingRecommendedToPreventTimeout:
