@@ -721,8 +721,9 @@ export const en: Texts = {
   failedToMergeRecordWithDifferentTurn: "Failed to merge record with different turn.",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Early ponder feature sends "ponderhit" command with YaneuraOu\'s non-standard options.',
-  ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
-    "If your engine does not support the options, it may cause unexpected behavior.",
+  yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026:
+    "YaneuraOu's non-standard specification required for early pondering was removed in 2026. Using an unsupported version may cause unexpected behavior.",
+  earlyPonderIsEnabled: "Early pondering is enabled.",
   someLogsDisabled: "Some log settings are disabled.",
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
   blankLinePingRecommendedToPreventTimeout:

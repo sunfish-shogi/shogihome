@@ -730,8 +730,9 @@ export const vi: Texts = {
   failedToMergeRecordWithDifferentTurn: "Sáp nhập thất bại do lượt đi khác nhau.",
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions:
     'Tính năng tính nhanh gửi lệnh "ponderhit" với các tùy chọn riêng củaYaneuraOu.',
-  ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior:
-    "Phần mềm của bạn có thể báo lỗi nếu không hỗ trợ cài đặt này.",
+  yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026:
+    "早期Ponderに必要なやねうら王の独自仕様は2026年に削除されました。サポートされないバージョンを使用すると予期しない動作をする可能性があります。", // TODO: Translate
+  earlyPonderIsEnabled: "早期Ponderが有効です。", // TODO: Translate
   someLogsDisabled: "Một số tùy chọn log đã bị tắt.",
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
   blankLinePingRecommendedToPreventTimeout:

@@ -706,7 +706,8 @@ export type Texts = {
   failedToMergeRecordWithDifferentInitialPosition: string;
   failedToMergeRecordWithDifferentTurn: string;
   earlyPonderFeatureSendsPonderhitCommandWithYaneuraOusNonStandardOptions: string;
-  ifYourEngineNotSupportTheOptionsItMayCauseUnexpectedBehavior: string;
+  yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026: string;
+  earlyPonderIsEnabled: string;
   someLogsDisabled: string;
   logsRecommendedForCSAProtocol: string;
   blankLinePingRecommendedToPreventTimeout: string;
