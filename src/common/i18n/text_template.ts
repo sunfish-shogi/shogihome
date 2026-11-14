@@ -762,6 +762,7 @@ export type Texts = {
   translationHelpNeeded: string;
   restartRequiredAfterLocaleChange: string;
   confirmSwitchLanguage: (languageName: string) => string;
+  confirmSwitchToMobileMode: string;
   createDesktopShortcut: string;
   desktopShortcutCreated: string;
   areYouSureWantToResign: string;

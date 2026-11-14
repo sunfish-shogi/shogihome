@@ -799,6 +799,7 @@ export const vi: Texts = {
   restartRequiredAfterLocaleChange: "Khởi động lại ứng dụng để áp dụng ngôn ngữ.",
   confirmSwitchLanguage: (languageName: string) =>
     `Bạn có muốn chuyển ngôn ngữ hiển thị sang "${languageName}" không?`,
+  confirmSwitchToMobileMode: "スマートフォンやタブレット向けの画面に切り替えますか？", // TODO: Translate
   createDesktopShortcut: "Tạo lối tắt trên desktop",
   desktopShortcutCreated: "Đã tạo lối tắt trên desktop.",
   areYouSureWantToResign: "Bạn có thật sự muốn đầu hàng không?",

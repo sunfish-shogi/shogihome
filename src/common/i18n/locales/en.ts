@@ -784,6 +784,7 @@ export const en: Texts = {
   restartRequiredAfterLocaleChange: "You should restart this app to change the language.",
   confirmSwitchLanguage: (languageName: string) =>
     `Do you want to switch the display language to "${languageName}"?`,
+  confirmSwitchToMobileMode: "Do you want to switch to the screen for smartphones and tablets?",
   createDesktopShortcut: "Create desktop shortcut",
   desktopShortcutCreated: "Desktop shortcut created.",
   areYouSureWantToResign: "Are you sure you want to resign?",

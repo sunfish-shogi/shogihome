@@ -787,6 +787,7 @@ export const zh_tw: Texts = {
   translationHelpNeeded: "我們正在招募翻譯人員。",
   restartRequiredAfterLocaleChange: "更改語言後，請重新啟動本程式。",
   confirmSwitchLanguage: (languageName: string) => `要將顯示語言切換為「${languageName}」嗎？`,
+  confirmSwitchToMobileMode: "スマートフォンやタブレット向けの画面に切り替えますか？", // TODO: Translate
   createDesktopShortcut: "在桌面建立捷徑",
   desktopShortcutCreated: "已在桌面建立捷徑。",
   areYouSureWantToResign: "確定要投了嗎？",
