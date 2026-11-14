@@ -340,6 +340,12 @@
         </div>
       </div>
     </div>
+    <div v-if="earlyPonderEnabled" class="form-group danger">
+      <div class="note">
+        {{ t.earlyPonderIsEnabled }}
+        {{ t.yaneuraOuNonStandardSpecForEarlyPonderWasRemovedIn2026 }}
+      </div>
+    </div>
     <div v-if="cpuUsage > 1.0" class="form-group danger">
       <div class="note">{{ t.totalNumberOfThreadsExceedsNPercentOfCpuCores(100) }}</div>
     </div>
@@ -463,6 +469,12 @@ function loadMetadataIfNeeded(uri: string) {
     });
   }
 }
+
+const earlyPonderEnabled = computed(() => {
+  return [blackPlayerURI.value, whitePlayerURI.value].some(
+    (playerURI) => !!engines.value.getEngine(playerURI)?.enableEarlyPonder,
+  );
+});
 
 const cpuUsage = computed(() => {
   if (machineSpec.value.cpuCores === 0) {
@@ -638,6 +650,10 @@ const selectAutoSaveDirectory = async () => {
 </script>
 
 <style scoped>
+.form-group.warning,
+.form-group.danger {
+  contain: inline-size;
+}
 .header {
   position: relative;
 }
