@@ -32,6 +32,7 @@ header .link-buttons {
 
 header .link-buttons > * {
   margin: 5px 0.5em 0px 0.5em;
+  text-align: right;
 }
 
 header .link-buttons a {
