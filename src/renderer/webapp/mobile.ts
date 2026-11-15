@@ -4,9 +4,9 @@ import api, { isMobileWebApp, isNative } from "@/renderer/ipc/api.js";
 import { isIOS } from "@/renderer/helpers/env.js";
 import { useConfirmationStore } from "@/renderer/store/confirm.js";
 
-// モバイル向け画面への切り替えを確認済みかどうかを保存する localStorage のキー
+// モバイル向け画面への切り替えを拒否したかどうかを保存する localStorage のキー
 export const mobileModeRecommendationStorageKey = "webapp.mobileModeRecommendation";
-const mobileModeRecommendationConfirmed = "confirmed";
+const mobileModeRecommendationDeclined = "declined";
 
 /**
  * スマートフォンやタブレットである可能性が高いかどうかを判定します。
@@ -38,7 +38,7 @@ export function isLikelyMobileDevice(): boolean {
   return false;
 }
 
-function isConfirmed(): boolean {
+function isDeclined(): boolean {
   try {
     return localStorage.getItem(mobileModeRecommendationStorageKey) !== null;
   } catch {
@@ -46,9 +46,9 @@ function isConfirmed(): boolean {
   }
 }
 
-function markConfirmed(): void {
+function markDeclined(): void {
   try {
-    localStorage.setItem(mobileModeRecommendationStorageKey, mobileModeRecommendationConfirmed);
+    localStorage.setItem(mobileModeRecommendationStorageKey, mobileModeRecommendationDeclined);
   } catch (e) {
     api.log(LogLevel.WARN, `failed to save mobile mode recommendation state: ${e}`);
   }
@@ -58,13 +58,13 @@ function markConfirmed(): void {
  * モバイル向け画面への切り替えを勧めるべきかどうかを判定します。
  */
 export function shouldRecommendMobileMode(): boolean {
-  return !isNative() && !isMobileWebApp() && !isConfirmed() && isLikelyMobileDevice();
+  return !isNative() && !isMobileWebApp() && !isDeclined() && isLikelyMobileDevice();
 }
 
 /**
  * PC 向けの画面をスマートフォンやタブレットで開いている可能性が高い場合に、
  * モバイル向けの画面へ切り替えるかを確認します。
- * 一度確認したら、結果に関わらず再度確認しません。
+ * 切り替えを拒否した場合は、そのことを記録して再度確認しません。
  * 画面のマウント後に呼び出します。
  */
 export function recommendMobileMode(): void {
@@ -81,13 +81,12 @@ export function recommendMobileMode(): void {
     message: t.confirmSwitchToMobileMode,
     buttonType: "yesNo",
     onOk: () => {
-      markConfirmed();
       const url = new URL(window.location.href);
       url.searchParams.set("mobile", "");
       window.location.assign(url.href);
     },
     onCancel: () => {
-      markConfirmed();
+      markDeclined();
     },
   });
 }
