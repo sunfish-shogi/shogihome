@@ -79,7 +79,7 @@ describe("webapp/mobile", () => {
     stubDevice({ userAgent: desktopUA });
     expect(shouldRecommendMobileMode()).toBeFalsy();
     stubDevice({ userAgent: iPhoneUA });
-    localStorage.setItem(mobileModeRecommendationStorageKey, "confirmed");
+    localStorage.setItem(mobileModeRecommendationStorageKey, "declined");
     expect(shouldRecommendMobileMode()).toBeFalsy();
   });
 
@@ -91,7 +91,7 @@ describe("webapp/mobile", () => {
     expect(confirmation.buttonType).toBe("yesNo");
     confirmation.ok();
     expect(assign).toBeCalledWith("http://localhost/?usen=abc&mobile=");
-    expect(localStorage.getItem(mobileModeRecommendationStorageKey)).toBe("confirmed");
+    expect(localStorage.getItem(mobileModeRecommendationStorageKey)).toBeNull();
   });
 
   it("recommendMobileMode/no", () => {
@@ -101,7 +101,7 @@ describe("webapp/mobile", () => {
     expect(confirmation.message).toBeTruthy();
     confirmation.cancel();
     expect(assign).not.toBeCalled();
-    expect(localStorage.getItem(mobileModeRecommendationStorageKey)).toBe("confirmed");
+    expect(localStorage.getItem(mobileModeRecommendationStorageKey)).toBe("declined");
     recommendMobileMode();
     expect(confirmation.message).toBeUndefined();
   });
