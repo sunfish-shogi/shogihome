@@ -37,6 +37,7 @@ import {
   confirmLanguageQueryParam,
   takeLanguageQueryParam,
 } from "@/renderer/webapp/language.js";
+import { recommendMobileMode } from "@/renderer/webapp/mobile.js";
 
 api.log(LogLevel.INFO, `start renderer process: APP_VERSION=${appInfo.appVersion}`);
 
@@ -152,6 +153,9 @@ Promise.allSettled([
   if (languageQueryParam) {
     confirmLanguageQueryParam(languageQueryParam);
   }
+
+  // スマートフォンやタブレットで PC 向けの画面を開いている場合はモバイル向けの画面を勧める。
+  recommendMobileMode();
 
   // Web アプリの更新を検知して通知する。
   setupUpdateNotification().catch((e) => {

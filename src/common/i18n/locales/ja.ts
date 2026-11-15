@@ -787,6 +787,7 @@ export const ja: Texts = {
   restartRequiredAfterLocaleChange: "言語の変更には再起動が必要です。",
   confirmSwitchLanguage: (languageName: string) =>
     `表示言語を「${languageName}」に切り替えますか？`,
+  confirmSwitchToMobileMode: "スマートフォンやタブレット向けの画面に切り替えますか？",
   createDesktopShortcut: "デスクトップにショートカットを作成",
   desktopShortcutCreated: "デスクトップにショートカットを作成しました。",
   areYouSureWantToResign: "投了しますか？",
