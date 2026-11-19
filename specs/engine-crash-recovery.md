@@ -27,9 +27,9 @@
 
 ## 設定
 
-| 対象 | 型 | 項目 | 既定値 |
-| --- | --- | --- | --- |
-| ローカル対局 | `GameSettings` (`src/common/settings/game.ts`) | `restartEngineOnCrash: boolean` | `false` |
+| 対象         | 型                                               | 項目                            | 既定値  |
+| ------------ | ------------------------------------------------ | ------------------------------- | ------- |
+| ローカル対局 | `GameSettings` (`src/common/settings/game.ts`)   | `restartEngineOnCrash: boolean` | `false` |
 | CSA 通信対局 | `CSAGameSettings` (`src/common/settings/csa.ts`) | `restartEngineOnCrash: boolean` | `false` |
 
 - `CSAGameSettings` は `CSAGameSettingsHistory`・`CSAGameSettingsForCLI` と、その変換・正規化関数にも同じ項目を追加する。
@@ -124,16 +124,16 @@ onEngineCrashed(): void; // usiPlayers[sessionID] から呼ばれる
 `Player` インターフェースを実装する。`USIPlayer` の全メソッドを内部の `USIPlayer` に委譲しつつ、
 次の状態を持つ。
 
-| フィールド | 内容 |
-| --- | --- |
-| `inner: USIPlayer` | 現在のプロセスに対応する `USIPlayer` |
-| `generation: number` | `inner` を作り直すたびに加算。古い世代からの通知・コールバックを無視するために使う |
-| `restarting?: Promise<void>` | 再起動中の処理 |
-| `inGame: boolean` | `readyNewGame` 後 `gameover` 前なら `true` |
-| `pendingSearch?: PendingSearch` | 未完了の探索要求 (下記) |
-| `stopRequested: boolean` | 未完了の探索要求に対して `stop()` が呼ばれたか |
-| `restartCount: number` | 現在の対局での再起動回数。`readyNewGame` でリセット |
-| `closed: boolean` | `close()` 済み |
+| フィールド                      | 内容                                                                               |
+| ------------------------------- | ---------------------------------------------------------------------------------- |
+| `inner: USIPlayer`              | 現在のプロセスに対応する `USIPlayer`                                               |
+| `generation: number`            | `inner` を作り直すたびに加算。古い世代からの通知・コールバックを無視するために使う |
+| `restarting?: Promise<void>`    | 再起動中の処理                                                                     |
+| `inGame: boolean`               | `readyNewGame` 後 `gameover` 前なら `true`                                         |
+| `pendingSearch?: PendingSearch` | 未完了の探索要求 (下記)                                                            |
+| `stopRequested: boolean`        | 未完了の探索要求に対して `stop()` が呼ばれたか                                     |
+| `restartCount: number`          | 現在の対局での再起動回数。`readyNewGame` でリセット                                |
+| `closed: boolean`               | `close()` 済み                                                                     |
 
 ```ts
 type PendingSearch = {
@@ -248,11 +248,11 @@ elapsed = performance.now() - pendingSearch.requestedAt
 手番側 (`position.color`) の `TimeState` を次のように補正する。
 `timeMs` は加算時間を加算済みの値であることに注意する (`buildTimeState` の NOTE を参照)。
 
-| 方式 | 補正 |
-| --- | --- |
-| 秒読み (`byoyomi > 0`) | `rest = timeMs - elapsed`。`rest >= 0` なら `timeMs = rest`。<br>`rest < 0` なら `timeMs = 0`, `byoyomi = max(0, byoyomi * 1000 + rest) / 1000` |
+| 方式                           | 補正                                                                                                                                                               |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 秒読み (`byoyomi > 0`)         | `rest = timeMs - elapsed`。`rest >= 0` なら `timeMs = rest`。<br>`rest < 0` なら `timeMs = 0`, `byoyomi = max(0, byoyomi * 1000 + rest) / 1000`                    |
 | フィッシャー (`increment > 0`) | `rest = max(0, timeMs - elapsed)`。`timeMs = rest`。<br>`rest < increment * 1000` なら `increment = rest / 1000` (`btime` が 0 になり、残りがすべて `binc` で渡る) |
-| 切れ負け | `timeMs = max(0, timeMs - elapsed)` |
+| 切れ負け                       | `timeMs = max(0, timeMs - elapsed)`                                                                                                                                |
 
 補正後の時間が 0 でも探索は発行する。時間切れの判定はゲーム管理クラス (ローカルの時計) と CSA サーバーに任せる。
 エンジン側の通信遅延マージン (`NetworkDelay` など) はそのまま働くので、ShogiHome 側では追加のマージンを設けない。
