@@ -86,6 +86,7 @@ export const csaGameSettings: CSAGameSettings = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  restartEngineOnCrash: false,
   searchCommentFormat: SearchCommentFormat.SHOGIHOME,
 };
 
@@ -99,6 +100,7 @@ export const emptyCSAGameSettingsHistory: CSAGameSettingsHistory = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  restartEngineOnCrash: false,
 };
 
 export const singleCSAGameSettingsHistory: CSAGameSettingsHistory = {
@@ -120,6 +122,7 @@ export const singleCSAGameSettingsHistory: CSAGameSettingsHistory = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  restartEngineOnCrash: false,
 };
 
 const initialPosition = `\
@@ -240,5 +243,6 @@ export const csaGameSettingsForCLI: CSAGameSettingsForCLI = {
   repeat: 1,
   autoRelogin: true,
   restartPlayerEveryGame: false,
+  restartEngineOnCrash: false,
   searchCommentFormat: SearchCommentFormat.SHOGIHOME,
 };

@@ -451,6 +451,7 @@ describe("game/csa", () => {
         ...csaGameSettings,
         repeat: 2,
         restartPlayerEveryGame: true,
+        restartEngineOnCrash: false,
       },
       mockPlayerBuilder,
     );

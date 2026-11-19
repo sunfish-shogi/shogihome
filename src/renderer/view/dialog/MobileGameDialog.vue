@@ -213,6 +213,7 @@ const startGame = (opponent: PlayerSettings, humanColor: Color) => {
     startPositionListFile: "",
     startPositionListOrder: "sequential",
     enableEngineTimeout: false,
+    restartEngineOnCrash: false,
     humanIsFront: true,
     enableComment: true,
     enableAutoSave: false,

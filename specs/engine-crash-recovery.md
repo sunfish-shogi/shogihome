@@ -208,13 +208,13 @@ type PendingRequest =
 
 #### プロパティ
 
-| プロパティ                 | 値                                                                          |
-| -------------------------- | --------------------------------------------------------------------------- |
-| `state`                    | 再起動中は `State.Restarting` (新設)。それ以外は `inner.state`              |
-| `currentPosition`          | 最後に要求された局面 (`pending.position`)。無ければ `inner.currentPosition` |
-| `pid`                      | `inner?.pid`                                                                |
-| `lastReceived`・`lastSent` | `inner` の値                                                                |
-| `commandHistory`           | `history` (プロセスをまたいで連続した履歴)                                  |
+| プロパティ                 | 値                                                                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `state`                    | 再起動中は `State.Restarting` (新設)。再起動に失敗してプロセスが無い場合は `State.QuitCompleted`。それ以外は `inner.state` |
+| `currentPosition`          | 最後に要求された局面 (`pending.position`)。無ければ `inner.currentPosition`                                                |
+| `pid`                      | `inner?.pid`                                                                                                               |
+| `lastReceived`・`lastSent` | `inner` の値                                                                                                               |
+| `commandHistory`           | `history` (プロセスをまたいで連続した履歴)                                                                                 |
 
 `State.Restarting` は監視画面 (`MonitorView`) に状態として表示される。
 `isEnginePathInUse`・`isActiveSessionExists` では `QuitCompleted` 以外なので使用中として扱われる。
@@ -230,7 +230,9 @@ type PendingRequest =
    - 保存されたオプションは `EngineProcessOption.engineOptions` により `EngineProcess` が自動で送る。
      続けて `options` に記録した値を `inner.setOption` で再送する
 5. `inGame` なら `inner.ready()` を呼び、`readyok` を待つ (`EngineProcess` が `usinewgame` を送る)。
-   `readyPending` なら外側の `ready` コールバックへ転送して `readyPending = false`
+   `readyPending` なら外側の `ready` コールバックへ転送して `readyPending = false`。
+   `EngineProcess` は `ready` コールバックを呼んだ後で `usinewgame` を送るので、
+   手順 6 はマイクロタスク (`queueMicrotask`) で実行し、`usinewgame` より後に `go` を送る
 6. `restarting = false` とし、`pending` に応じて要求を発行する
    - `search`: 残り時間を補正して (後述) `inner.go(position, timeState)`。`stopRequested` なら続けて `inner.stop()`
    - `ponder`: 何もしない (Ponder は再開しない)。`pending` は残し、後で `ponderhit` が来たら `search` として扱う
@@ -292,14 +294,15 @@ elapsed = performance.now() - pending.requestedAt
 `src/background/usi/index.ts` の `Handlers` に次を追加する。
 
 ```ts
-onUSIEngineRestart(
-  sessionID: number,
-  event: "crashed" | "restarted" | "failed",
-  detail?: { elapsedMs?: number; error?: Error },
-): void;
+type USIEngineRestartEvent =
+  | { type: "crashed" }
+  | { type: "restarted"; elapsedMs: number }
+  | { type: "failed"; error: Error };
+
+onUSIEngineRestart(sessionID: number, engineName: string, event: USIEngineRestartEvent): void;
 ```
 
-- GUI (`src/background/window/ipc.ts`): `crashed`・`restarted` は既存の `sendMessage` で対局を止めない通知を表示する。
+- GUI (`src/background/window/ipc.ts`): `crashed`・`restarted` は既存の `sendNotification` で対局を止めない通知を表示する。
   `failed` は `sendError` でエラーとして表示する。
 - usi-csa-bridge (`src/command/common/preload.ts`): アプリケーションログに出力する。
 - いずれの場合も USI ログには必ず記録する。

@@ -410,6 +410,7 @@ export const ja: Texts = {
   currentPosition: "現在の局面",
   positionList: "局面集",
   enableEngineTimeout: "エンジンの時間切れあり",
+  restartEngineOnCrash: "エンジンが異常終了したら自動で再起動",
   setDifferentTimeForGote: "後手に異なる時間を設定",
   nextTurn: "次の手番",
   elapsedTime: "消費時間",
@@ -946,6 +947,15 @@ export const ja: Texts = {
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
     return `${seconds}秒以内にエンジンから応答がありませんでした。エンジンの起動が重い場合はアプリ設定の「USIプロトコル」タブで待ち時間を延長してください。`;
+  },
+  engineCrashedAndRestarting(name) {
+    return `${name} が異常終了しました。再起動しています。`;
+  },
+  engineRestarted(name, seconds) {
+    return `${name} を再起動しました。 (${seconds}秒)`;
+  },
+  failedToRestartEngine(name) {
+    return `${name} の再起動に失敗しました。`;
   },
   stableVersionReleased(version: string) {
     return `安定版 ${version} がリリースされました！`;

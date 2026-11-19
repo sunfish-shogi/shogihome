@@ -245,6 +245,12 @@
           <div class="form-item">
             <ToggleButton v-model:value="gameSettings.enableComment" :label="t.outputComments" />
           </div>
+          <div class="form-item">
+            <ToggleButton
+              v-model:value="gameSettings.restartEngineOnCrash"
+              :label="t.restartEngineOnCrash"
+            />
+          </div>
           <div v-show="!gameSettings.sprtEnabled" class="form-item">
             <ToggleButton
               v-model:value="gameSettings.humanIsFront"

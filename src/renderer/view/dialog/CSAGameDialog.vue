@@ -34,6 +34,10 @@
           <div class="form-item-label-wide">{{ t.restartItEveryGame }}</div>
           <ToggleButton v-model:value="csaGameSettings.restartPlayerEveryGame" />
         </div>
+        <div v-if="uri.isUSIEngine(playerURI)" class="form-item">
+          <div class="form-item-label-wide">{{ t.restartEngineOnCrash }}</div>
+          <ToggleButton v-model:value="csaGameSettings.restartEngineOnCrash" />
+        </div>
         <div v-if="earlyPonderEnabled" class="form-group danger">
           <div class="note">
             {{ t.earlyPonderIsEnabled }}

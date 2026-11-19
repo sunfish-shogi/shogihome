@@ -40,6 +40,8 @@ export type SingleGameSettings = {
   startPosition: SingleGameStartPositionType; // v1.21.0 から undefined を廃止
   startPositionSFEN: string;
   enableEngineTimeout: boolean;
+  // エンジンが異常終了した場合に自動で再起動する。 (specs/engine-crash-recovery.md)
+  restartEngineOnCrash: boolean;
   humanIsFront: boolean;
   enableComment: boolean;
   enableAutoSave: boolean;
@@ -92,6 +94,7 @@ export function defaultGameSettings(opts?: { autoSaveDirectory?: string }): Game
     startPositionListFile: "",
     startPositionListOrder: "sequential",
     enableEngineTimeout: false,
+    restartEngineOnCrash: false,
     humanIsFront: true,
     enableComment: true,
     enableAutoSave: !!opts?.autoSaveDirectory,

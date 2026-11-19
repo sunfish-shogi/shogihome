@@ -1,5 +1,13 @@
 import { USIEngine, USIEngineLaunchOptions, emptyUSIEngine } from "@/common/settings/usi.js";
-import { EngineProcess, GameResult as USIGameResult, TimeState, State } from "./engine.js";
+import {
+  EngineProcess,
+  EngineProcessOption,
+  GameResult as USIGameResult,
+  TimeState,
+  State,
+  USIEngineProcess,
+} from "./engine.js";
+import { RestartableEngineProcess, USIEngineRestartEvent } from "./restartable.js";
 import * as uri from "@/common/uri.js";
 import { GameResult } from "@/common/game/result.js";
 import { t } from "@/common/i18n/index.js";
@@ -28,6 +36,7 @@ interface Handlers {
     launchTimeMs: number,
   ): void;
   sendPromptCommand(sessionID: number, command: Command): void;
+  onUSIEngineRestart(sessionID: number, engineName: string, event: USIEngineRestartEvent): void;
 }
 
 let h: Handlers | undefined;
@@ -131,7 +140,7 @@ type StatsTemporaryData = {
 };
 
 type Session = {
-  process: EngineProcess;
+  process: USIEngineProcess;
   engine: USIEngine;
   createdMs: number;
   stats: USIEngineStatsEntry;
@@ -152,7 +161,7 @@ export function setSessionRemoveDelay(delay: number): void {
   sessionRemoveDelay = delay;
 }
 
-function newSession(process: EngineProcess, engine: USIEngine): Session {
+function newSession(process: USIEngineProcess, engine: USIEngine): Session {
   return {
     process,
     engine: engine,
@@ -316,12 +325,18 @@ function updateStatsOnClose(sessionID: number): void {
 export function setupPlayer(engine: USIEngine, options?: USIEngineLaunchOptions): Promise<number> {
   const sessionID = issueSessionID();
   const timeoutSeconds = options?.timeoutSeconds || 10;
-  const process = new EngineProcess(resolveEnginePath(engine.path), sessionID, getUSILogger(), {
+  const enginePath = resolveEnginePath(engine.path);
+  const processOption: EngineProcessOption = {
     timeout: timeoutSeconds * 1e3,
     engineOptions: Object.values(engine.options),
     enableEarlyPonder: engine.enableEarlyPonder,
     discardUSIInfo: options?.discardUSIInfo,
-  });
+  };
+  const process: USIEngineProcess = options?.restartOnCrash
+    ? new RestartableEngineProcess(enginePath, sessionID, getUSILogger(), processOption, {
+        onRestartEvent: (event) => h?.onUSIEngineRestart(sessionID, engine.name, event),
+      })
+    : new EngineProcess(enginePath, sessionID, getUSILogger(), processOption);
   const session = newSession(process, engine);
   sessions.set(sessionID, session);
   return new Promise<number>((resolve, reject) => {

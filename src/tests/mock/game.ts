@@ -50,6 +50,7 @@ export const gameSettings10m30s: GameSettings = {
   startPositionListFile: "",
   startPositionListOrder: "sequential",
   enableEngineTimeout: false,
+  restartEngineOnCrash: false,
   humanIsFront: false,
   enableComment: true,
   enableAutoSave: true,
