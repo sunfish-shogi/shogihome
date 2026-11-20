@@ -488,7 +488,7 @@ ipcMain.handle(
 
 ipcMain.handle(Background.LOAD_SFEN_FILE, async (event, path: string): Promise<string[]> => {
   validateIPCSender(event.senderFrame);
-  if (!path.endsWith(".sfen")) {
+  if (!path.toLowerCase().endsWith(".sfen")) {
     throw new Error(`${t.fileExtensionNotSupported}: ${path}`);
   }
   const data = await fs.readFile(path, "utf-8");
