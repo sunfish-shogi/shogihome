@@ -1689,6 +1689,7 @@ class Store {
     }
     try {
       await api.saveRecord(path, result.data);
+      recordManager.markAsSaved(path);
       if (result.garbled && !this.garbledNotified) {
         useMessageStore().enqueue({
           text: `${t.recordSavedWithGarbledCharacters}\n${t.pleaseConsiderToUseKIFU}\n${t.youCanChangeDefaultRecordFileFormatFromAppSettings}`,

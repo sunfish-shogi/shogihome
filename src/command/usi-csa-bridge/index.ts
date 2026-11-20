@@ -216,6 +216,7 @@ async function main() {
         return fs.promises.writeFile(filePath, result.data);
       })
       .then(() => {
+        recordManager.markAsSaved(filePath);
         getAppLogger().info("record saved: %s", filePath);
       })
       .catch((e) => {

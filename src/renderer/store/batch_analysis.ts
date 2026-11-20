@@ -232,6 +232,7 @@ export class BatchAnalysisManager {
       throw result;
     }
     await api.saveRecord(path, result.data);
+    this.recordManager.markAsSaved(path, { skipHistory: true });
   }
 
   private goNextFile(): void {

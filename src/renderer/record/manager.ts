@@ -318,9 +318,11 @@ export class RecordManager {
     if (!format) {
       return new Error(`${t.unknownFileExtension}: ${path}`);
     }
-    const result = exportRecordAsBuffer(this._record, format, opt);
-    this.updateRecordFilePath(path, opt.skipHistory);
-    return result;
+    return exportRecordAsBuffer(this._record, format, opt);
+  }
+
+  markAsSaved(path: string, opt?: { skipHistory?: boolean }): void {
+    this.updateRecordFilePath(path, opt?.skipHistory);
   }
 
   private applyPosition(position: ImmutablePosition): void {
