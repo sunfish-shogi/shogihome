@@ -22,7 +22,9 @@ export class StartPositionList {
     ply?: number;
   }): Promise<void> {
     // load SFEN file
-    const usiList = await api.loadSFENFile(params.filePath);
+    const usiList = (await api.loadSFENFile(params.filePath))
+      .map((line) => line.trim())
+      .filter((line) => line !== "");
     if (params.order === "shuffle") {
       for (let i = usiList.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
