@@ -141,6 +141,56 @@ describe("game/start_position", () => {
     );
   });
 
+  it("StartPositionList/padded-entries", async () => {
+    mockAPI.loadSFENFile.mockImplementation(async () => [
+      "  position startpos moves 2g2f 3c3d 7g7f  ",
+      "\tposition startpos moves 2g2f 8c8d 2f2e\t",
+    ]);
+    const list = new StartPositionList();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+    expect(list.next()).toBe("position startpos moves 2g2f 8c8d 2f2e");
+  });
+
+  it("StartPositionList/whitespace-before-valid-with-small-max-games", async () => {
+    mockAPI.loadSFENFile.mockImplementation(async () => [
+      "   ",
+      "\t",
+      "position startpos moves 2g2f 3c3d 7g7f",
+      "position startpos moves 2g2f 8c8d 2f2e",
+    ]);
+    const list = new StartPositionList();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 1,
+      }),
+    ).resolves.toBeUndefined();
+    expect(list.next()).toBe("position startpos moves 2g2f 3c3d 7g7f");
+  });
+
+  it("StartPositionList/whitespace-only", async () => {
+    mockAPI.loadSFENFile.mockResolvedValueOnce(["   ", "\t", ""]);
+    const list = new StartPositionList();
+    await expect(
+      list.reset({
+        filePath: "path/to/file.sfen",
+        swapPlayers: false,
+        order: "sequential",
+        maxGames: 2,
+      }),
+    ).rejects.toThrow("No available positions in the list.");
+  });
+
   it("StartPositionList/empty", async () => {
     mockAPI.loadSFENFile.mockResolvedValueOnce([]);
     const list = new StartPositionList();
