@@ -78,7 +78,7 @@ export function validateBatchConversionSettings(
       }
       break;
     case SourceType.SINGLE_FILE:
-      if (!settings.singleFileSource.endsWith(".sfen")) {
+      if (!settings.singleFileSource.toLowerCase().endsWith(".sfen")) {
         return new Error(t.sourceFileMustBeSFEN);
       }
       break;
