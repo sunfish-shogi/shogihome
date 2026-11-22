@@ -56,14 +56,26 @@ src/background/book/wasm/
 npm run build:book-wasm
 ```
 
-`wasm/book/` のソースを変更した場合は、このコマンドで `src/background/book/wasm/binary.ts` を
-更新して一緒に commit する。通常のビルド (`npm run build` や `npm run electron:build`) では
+`wasm/book/` のソースやツールチェーンを変更した場合は、このコマンドで
+`src/background/book/wasm/binary.ts` とライセンス表示を更新して一緒に commit する。通常のビルド (`npm run build` や `npm run electron:build`) では
 Rust のツールチェーンは不要。
 
-`npm run build:book-wasm:verify` は、ビルド結果が commit 済みの `binary.ts` と
+`npm run build:book-wasm:verify` は、ビルド結果が commit 済みの `binary.ts` とライセンス表示に
 バイト単位で一致するかを検証する。ツールチェーンは `rust-toolchain.toml` で固定している。
 CI では `wasm/book` で `rustup toolchain install` と `cargo test --locked` を実行した後に
 このコマンドを実行する。
+
+## ライセンス表示
+
+WebAssembly モジュールには Rust 標準ライブラリ (`core`・`alloc`・`std` と、その依存の
+`compiler_builtins`・`dlmalloc`・`hashbrown`・`libm`・`memchr`・`rustc-demangle` など) のコードが含まれる。
+そのライセンス表示として、ツールチェーンに同梱されている `share/doc/rust/COPYRIGHT-library.html` を
+`npm run build:book-wasm` が `wasm/book/licenses/rust-standard-library.html` に複製する。
+この複製も commit し、`npm run build:book-wasm:verify` で固定したツールチェーンのものと一致するか検証する。
+
+npm の依存から生成するライセンス一覧 (`docs/third-party-licenses`) とは統合しない (Web 版では使わないため)。
+配布物には electron-builder の `extraResources` で `resources/licenses/rust-standard-library.html` として入れる
+(インストール後のアプリのディレクトリに展開される)。
 
 ## JavaScript 版との互換性
 

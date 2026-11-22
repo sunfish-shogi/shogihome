@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
-// 定跡の WebAssembly モジュール (wasm/book) をビルドし、
-// base64 で埋め込んだ TypeScript ファイル (src/background/book/wasm/binary.ts) を生成する。
+// 定跡の WebAssembly モジュール (wasm/book) をビルドし、次のファイルを生成する。
+// - src/background/book/wasm/binary.ts: WebAssembly モジュールを base64 で埋め込んだ TypeScript ファイル
+// - wasm/book/licenses/rust-standard-library.html: モジュールに含まれる Rust 標準ライブラリの
+//   ライセンス表示 (ツールチェーンに同梱されている COPYRIGHT-library.html の複製)
 //
 // 使い方:
-//   node scripts/build-book-wasm.mjs           ビルドして binary.ts を更新する
-//   node scripts/build-book-wasm.mjs --verify  ビルド結果が commit 済みの binary.ts と一致するか検証する
+//   node scripts/build-book-wasm.mjs           ビルドして生成物を更新する
+//   node scripts/build-book-wasm.mjs --verify  ビルド結果が commit 済みの生成物と一致するか検証する
 //
 // Rust のツールチェーンは wasm/book/rust-toolchain.toml で固定している。
 
@@ -23,6 +25,7 @@ const wasmPath = path.resolve(
   "target/wasm32-unknown-unknown/release/shogihome_book.wasm",
 );
 const outPath = path.resolve(root, "src/background/book/wasm/binary.ts");
+const licensePath = path.resolve(crateDir, "licenses/rust-standard-library.html");
 const verify = process.argv.includes("--verify");
 
 execFileSync("cargo", ["build", "--release", "--locked", "--target", "wasm32-unknown-unknown"], {
@@ -31,6 +34,8 @@ execFileSync("cargo", ["build", "--release", "--locked", "--target", "wasm32-unk
 });
 
 const rustcVersion = execFileSync("rustc", ["--version"], { cwd: crateDir }).toString().trim();
+const sysroot = execFileSync("rustc", ["--print", "sysroot"], { cwd: crateDir }).toString().trim();
+const license = fs.readFileSync(path.join(sysroot, "share/doc/rust/COPYRIGHT-library.html"));
 const wasm = fs.readFileSync(wasmPath);
 const sha256 = crypto.createHash("sha256").update(wasm).digest("hex");
 
@@ -44,17 +49,32 @@ export const bookWasmBase64 =
   "${wasm.toString("base64")}";
 `;
 
+const outputs = [
+  { path: outPath, content: Buffer.from(content), label: `sha256: ${sha256}` },
+  { path: licensePath, content: license, label: rustcVersion },
+];
+
 if (verify) {
-  const current = fs.existsSync(outPath) ? fs.readFileSync(outPath, "utf-8") : "";
-  if (current !== content) {
-    process.stderr.write(
-      `${path.relative(root, outPath)} is out of date. Run "npm run build:book-wasm" and commit the result.\n`,
-    );
+  let ok = true;
+  for (const output of outputs) {
+    const current = fs.existsSync(output.path) ? fs.readFileSync(output.path) : Buffer.alloc(0);
+    const relativePath = path.relative(root, output.path);
+    if (!current.equals(output.content)) {
+      process.stderr.write(
+        `${relativePath} is out of date. Run "npm run build:book-wasm" and commit the result.\n`,
+      );
+      ok = false;
+    } else {
+      process.stdout.write(`Verified: ${relativePath} (${output.label})\n`);
+    }
+  }
+  if (!ok) {
     process.exit(1);
   }
-  process.stdout.write(`Verified: ${path.relative(root, outPath)} (sha256: ${sha256})\n`);
 } else {
-  fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.writeFileSync(outPath, content);
-  process.stdout.write(`Generated: ${path.relative(root, outPath)} (sha256: ${sha256})\n`);
+  for (const output of outputs) {
+    fs.mkdirSync(path.dirname(output.path), { recursive: true });
+    fs.writeFileSync(output.path, output.content);
+    process.stdout.write(`Generated: ${path.relative(root, output.path)} (${output.label})\n`);
+  }
 }

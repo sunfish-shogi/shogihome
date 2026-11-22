@@ -12,3 +12,4 @@ public/engines
 .gitignore
 LICENSE.md
 src/tests/testdata
+wasm/book/licenses
