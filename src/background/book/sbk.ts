@@ -13,7 +13,8 @@ import {
 import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyLUT } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
 import { BookMove } from "@/common/book.js";
-import { positionToPackedSfen, sfenToPackedSfen, packedSfenToSfen } from "./packed_sfen.js";
+import { positionToPackedSfen, sfenToPackedSfen } from "./packed_sfen.js";
+import { copySbkStateWithoutHashKeys } from "./sbk_state_copy.js";
 
 const SBK_ON_THE_FLY_ROW_SIZE = 9; // 8 words packed-sfen + 1 word offset
 
@@ -110,14 +111,19 @@ function writeRowMetadata(table: Uint32Array, rowOffset: number, fileOffset: num
   table[rowOffset + 8] = fileOffset >>> 0;
 }
 
-function readSfenAtRow(table: Uint32Array, row: number): string {
-  const rowOffset = row * SBK_ON_THE_FLY_ROW_SIZE;
-  const packedSfen = table.subarray(rowOffset, rowOffset + 8);
-  return packedSfenToSfen(packedSfen);
-}
-
 function readRowOffset(table: Uint32Array, row: number): number {
   return table[row * SBK_ON_THE_FLY_ROW_SIZE + 8];
+}
+
+function isSamePackedRow(table: Uint32Array, rowA: number, rowB: number): boolean {
+  const offsetA = rowA * SBK_ON_THE_FLY_ROW_SIZE;
+  const offsetB = rowB * SBK_ON_THE_FLY_ROW_SIZE;
+  for (let i = 0; i < 8; i++) {
+    if (table[offsetA + i] !== table[offsetB + i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function compareRowPacked(table: Uint32Array, row: number, packedSfen: Uint32Array): number {
@@ -687,6 +693,12 @@ function entryToSbkState(
   };
 }
 
+async function writeChunk(output: Writable, chunk: Uint8Array): Promise<void> {
+  if (!output.write(chunk)) {
+    await events.once(output, "drain");
+  }
+}
+
 async function storeSbkBookOnTheFly(
   book: Required<Pick<SbkBook, "rawData" | "sbkIndex">> & SbkBook,
   output: Writable,
@@ -706,7 +718,23 @@ async function storeSbkBookOnTheFly(
     // 新たにルートになる局面
     const rootSfens = new Set<string>();
 
+    // 元の SBK の State の位置 (ファイル内オフセット) → in-memory のエントリーの SFEN
+    // 書き出し時に全ての State を SFEN に変換せずに済むよう、変更のある局面だけを登録しておく
+    const offsetToSfen = new Map<number, string>();
+
     for (const [sfen, entry] of book.entries) {
+      // 同一局面の State が複数存在する場合は全てに同じエントリーを適用する
+      const firstRow = searchOnTheFlyRow(sfen, book.sbkIndex);
+      if (firstRow !== undefined) {
+        for (
+          let row = firstRow;
+          row < book.sbkIndex.rowCount && isSamePackedRow(book.sbkIndex.table, row, firstRow);
+          row++
+        ) {
+          offsetToSfen.set(readRowOffset(book.sbkIndex.table, row), sfen);
+        }
+      }
+
       const pos = Position.newBySFEN(sfen);
       if (!pos) {
         continue; // ShogiHome で生成した SFEN がパースできないのはおかしいので例外を投げた方が良いかもしれない
@@ -831,9 +859,7 @@ async function storeSbkBookOnTheFly(
     if (book.sbkDescription) {
       headerWriter.uint32(18).string(book.sbkDescription);
     }
-    if (!output.write(headerWriter.finish())) {
-      await events.once(output, "drain");
-    }
+    await writeChunk(output, headerWriter.finish());
 
     const totalCount = book.sbkIndex.rowCount + newSfens.size;
     let processed = 0;
@@ -851,16 +877,23 @@ async function storeSbkBookOnTheFly(
 
     // 元の SBK に存在する局面を書き出す
     for (let id = 0; id < book.sbkIndex.rowCount; id++) {
-      const sfen = readSfenAtRow(book.sbkIndex.table, id);
-      const patch = book.entries.get(sfen);
+      const offset = readRowOffset(book.sbkIndex.table, id);
+      const sfen = offsetToSfen.get(offset);
+      const patch = sfen !== undefined ? book.entries.get(sfen) : undefined;
       let state: SBookState;
 
-      if (!patch) {
-        // 元の SBK を変更無しでバイナリコピーする
-        const start = readRowOffset(book.sbkIndex.table, id);
-        state = decodeStateAt(book.rawData, start);
+      if (sfen === undefined || !patch) {
         // ShogiGUI のハッシュ関数が非公開のためハッシュ値を含めることができない
         // 中途半端にハッシュ値が残っていると ShogiGUI がハッシュ値が無い State を認識しないため一律で削除する
+        // 元の SBK を変更無しでバイナリコピーする (BoardKey と HandKey のみ取り除く)
+        const copied = copySbkStateWithoutHashKeys(book.rawData, offset);
+        if (copied) {
+          await writeChunk(output, copied);
+          updateProgress();
+          continue;
+        }
+        // バイナリコピーで再エンコードと同じ結果を得られない場合はデコードして再エンコードする
+        state = decodeStateAt(book.rawData, offset);
         state.BoardKey = 0n;
         state.HandKey = 0;
       } else if (patch.type === "normal") {
@@ -870,7 +903,6 @@ async function storeSbkBookOnTheFly(
         state = entryToSbkState(id, patch, sfen, usiToNextId, withPosition);
       } else {
         // 元の SBK にパッチを当てて書き出す
-        const offset = readRowOffset(book.sbkIndex.table, id);
         state = await decodeStateAtFile(book.rawData, offset);
         const baseEntry = buildBookEntryFromState(state, sfen);
         const entry = mergeBookEntries(baseEntry, patch);
@@ -883,9 +915,7 @@ async function storeSbkBookOnTheFly(
 
       const stateWriter = new BinaryWriter();
       SBookState.encode(state, stateWriter.uint32(26).fork()).join();
-      if (!output.write(stateWriter.finish())) {
-        await events.once(output, "drain");
-      }
+      await writeChunk(output, stateWriter.finish());
 
       updateProgress();
     }
@@ -901,9 +931,7 @@ async function storeSbkBookOnTheFly(
 
       const stateWriter = new BinaryWriter();
       SBookState.encode(state, stateWriter.uint32(26).fork()).join();
-      if (!output.write(stateWriter.finish())) {
-        await events.once(output, "drain");
-      }
+      await writeChunk(output, stateWriter.finish());
 
       updateProgress();
     }
