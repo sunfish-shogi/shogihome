@@ -619,8 +619,8 @@
           v-model:value="update.bookBackend"
           class="selector"
           :items="[
-            { label: 'WebAssembly', value: 'wasm' },
-            { label: 'JavaScript', value: 'js' },
+            { label: t.bookBackendNew, value: 'wasm' },
+            { label: t.bookBackendLegacy, value: 'js' },
           ]"
         />
       </div>

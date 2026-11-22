@@ -695,7 +695,9 @@ export const vi: Texts = {
   flippedBook: "Sử dụng book lật ngược",
   bookBackend: "Phương thức xử lý định thức",
   bookBackendDescription:
-    "Phiên bản WebAssembly nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phiên bản JavaScript. Hiện tại, phiên bản WebAssembly chỉ xử lý định dạng SBK và luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
+    "Phương thức mới đọc và lưu tệp định thức nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phương thức cũ. Hiện tại, phương thức mới chỉ xử lý định dạng SBK và luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
+  bookBackendNew: "Phương thức mới (nhanh)",
+  bookBackendLegacy: "Phương thức cũ",
   addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
   fromFile: "Từ tệp",
@@ -916,13 +918,14 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
+  cannotConvertBookOpenedWithNewMethod:
+    "新方式で開いた定跡は、現在のところ他の形式に変換できません。設定で定跡の処理方式を従来方式に切り替えて、定跡を開き直してください。", // TODO: Translate
   bookFileTooLargeForWasm: (limit: string) =>
-    `定跡ファイルが大きすぎるため開けません。WebAssembly 版で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+    `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
   wasmBookCrashedOnOpen:
-    "定跡ファイルを開く処理で WebAssembly モジュールが異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を JavaScript 版に切り替えると開ける場合があります。", // TODO: Translate
-  wasmBookCrashedAndClosed: "WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
-  wasmBookCrashedWhileSavingAndClosed:
-    "定跡の保存中に WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+    "定跡ファイルを開く途中で処理が異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を従来方式に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "定跡の処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed: "定跡の保存中に処理が異常終了したため、定跡を閉じました。", // TODO: Translate
   unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
   openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
   savedBookFileMayBeIncomplete: (path: string) =>

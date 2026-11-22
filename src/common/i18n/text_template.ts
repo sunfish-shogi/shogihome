@@ -667,6 +667,8 @@ export type Texts = {
   flippedBook: string;
   bookBackend: string;
   bookBackendDescription: string;
+  bookBackendNew: string;
+  bookBackendLegacy: string;
   addBookMoves: string;
   fromCurrentRecord: string;
   fromFile: string;
@@ -867,6 +869,7 @@ export type Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   cannotOverwriteOnTheFlyBook: string;
   bookFileTooLargeForWasm: (limit: string) => string;
+  cannotConvertBookOpenedWithNewMethod: string;
   wasmBookCrashedOnOpen: string;
   wasmBookCrashedAndClosed: string;
   wasmBookCrashedWhileSavingAndClosed: string;

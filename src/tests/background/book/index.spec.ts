@@ -23,6 +23,7 @@ import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book.js";
 import { createTestAperyBookFile } from "@/tests/mock/book.js";
 import { defaultBookSession, SbkMoveEvaluation } from "@/common/book";
+import { t } from "@/common/i18n/index.js";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
 
@@ -1014,7 +1015,7 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       });
       const outPath = path.join(tmpdir, "export-sbk-wasm-to-yane.db");
       await expect(exportBook(defaultBookSession, outPath, "yane2016")).rejects.toThrow(
-        "not supported yet",
+        t.cannotConvertBookOpenedWithNewMethod,
       );
     });
 

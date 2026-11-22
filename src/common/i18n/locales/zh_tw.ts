@@ -687,7 +687,9 @@ export const zh_tw: Texts = {
   flippedBook: "亦檢索先後逆局面",
   bookBackend: "定跡處理方式",
   bookBackendDescription:
-    "WebAssembly 版速度較快。若發生問題，請切換為 JavaScript 版。目前僅 SBK 格式由 WebAssembly 版處理，且不論 On-the-fly 門檻為何，一律以 On-the-fly 模式讀取。",
+    "新方式讀取及保存定跡檔案的速度較快。若發生問題，請切換為舊方式。目前僅 SBK 格式以新方式處理，且不論 On-the-fly 門檻為何，一律以 On-the-fly 模式讀取。",
+  bookBackendNew: "新方式（快速）",
+  bookBackendLegacy: "舊方式",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
   fromFile: "從檔案",
@@ -896,13 +898,14 @@ export const zh_tw: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "以 On-the-fly 模式讀取中的定跡無法覆寫保存。",
+  cannotConvertBookOpenedWithNewMethod:
+    "新方式で開いた定跡は、現在のところ他の形式に変換できません。設定で定跡の処理方式を従来方式に切り替えて、定跡を開き直してください。", // TODO: Translate
   bookFileTooLargeForWasm: (limit: string) =>
-    `定跡ファイルが大きすぎるため開けません。WebAssembly 版で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+    `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
   wasmBookCrashedOnOpen:
-    "定跡ファイルを開く処理で WebAssembly モジュールが異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を JavaScript 版に切り替えると開ける場合があります。", // TODO: Translate
-  wasmBookCrashedAndClosed: "WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
-  wasmBookCrashedWhileSavingAndClosed:
-    "定跡の保存中に WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+    "定跡ファイルを開く途中で処理が異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を従来方式に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "定跡の処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed: "定跡の保存中に処理が異常終了したため、定跡を閉じました。", // TODO: Translate
   unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
   openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
   savedBookFileMayBeIncomplete: (path: string) =>

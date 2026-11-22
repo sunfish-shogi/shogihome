@@ -680,7 +680,9 @@ export const en: Texts = {
   flippedBook: "Flipped Book",
   bookBackend: "Book Processing",
   bookBackendDescription:
-    "The WebAssembly version runs faster. If you encounter a problem, switch to the JavaScript version. Currently, only SBK books are processed by the WebAssembly version, and they are always loaded in on-the-fly mode regardless of the threshold.",
+    "The new method loads and saves book files faster. If you encounter a problem, switch to the previous method. Currently, only SBK books are processed by the new method, and they are always loaded in on-the-fly mode regardless of the threshold.",
+  bookBackendNew: "New (Faster)",
+  bookBackendLegacy: "Previous",
   addBookMoves: "Add Book Moves",
   fromCurrentRecord: "From Current Record",
   fromFile: "From File",
@@ -902,13 +904,15 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
+  cannotConvertBookOpenedWithNewMethod:
+    "A book opened with the new method cannot be converted to other formats yet. Switch the book processing to the previous method in the settings and open the book again.",
   bookFileTooLargeForWasm: (limit: string) =>
-    `The book file is too large to open. The WebAssembly version can open SBK files up to ${limit}.`,
+    `The book file is too large to open. The new method can open SBK files up to ${limit}.`,
   wasmBookCrashedOnOpen:
-    "The WebAssembly module crashed while opening the book file. Memory may be insufficient. The previously opened book remains open. Switching the book processing to the JavaScript version in the settings may allow you to open it.",
-  wasmBookCrashedAndClosed: "The book was closed because the WebAssembly module crashed.",
+    "The process stopped unexpectedly while opening the book file. Memory may be insufficient. The previously opened book remains open. Switching the book processing to the previous method in the settings may allow you to open it.",
+  wasmBookCrashedAndClosed: "The book was closed because the book processing stopped unexpectedly.",
   wasmBookCrashedWhileSavingAndClosed:
-    "The book was closed because the WebAssembly module crashed while saving.",
+    "The book was closed because the process stopped unexpectedly while saving.",
   unsavedBookChangesWereLost: "Unsaved changes have been lost.",
   openedBookFileWasNotModified: "The book file that was opened has not been modified.",
   savedBookFileMayBeIncomplete: (path: string) =>

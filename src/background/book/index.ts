@@ -632,9 +632,7 @@ export async function exportBook(
 
   // WebAssembly 版は実装済みの形式の間でのみ変換できる (移行期間中の制限)
   if (isWasmBook(book)) {
-    throw new Error(
-      `Converting a book opened with the WebAssembly implementation to ${targetFormat} is not supported yet. Switch to the JavaScript implementation in the app settings.`,
-    );
+    throw new Error(t.cannotConvertBookOpenedWithNewMethod);
   }
 
   // Apery 形式は独自のハッシュ値がキーになっており局面を復元できない場合があるため
