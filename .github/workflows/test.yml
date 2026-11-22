@@ -34,3 +34,24 @@ jobs:
         with:
           files: ./coverage/clover.xml
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  # 定跡の WebAssembly モジュール (wasm/book) のテストと、
+  # commit 済みのビルド成果物 (src/background/book/wasm/binary.ts) が再現できるかの検証
+  book-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24.22.1"
+      # wasm/book/rust-toolchain.toml で指定したツールチェーンをインストールする
+      - name: Install Rust toolchain
+        working-directory: wasm/book
+        run: rustup toolchain install
+      - name: Test
+        working-directory: wasm/book
+        run: cargo test --locked
+      - name: Verify build artifact
+        run: npm run build:book-wasm:verify
