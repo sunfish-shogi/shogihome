@@ -678,6 +678,9 @@ export const en: Texts = {
   addMoves: "Add Moves",
   export: "Export",
   flippedBook: "Flipped Book",
+  bookBackend: "Book Processing",
+  bookBackendDescription:
+    "The WebAssembly version runs faster. If you encounter a problem, switch to the JavaScript version. Currently, only SBK books are processed by the WebAssembly version, and they are always loaded in on-the-fly mode regardless of the threshold.",
   addBookMoves: "Add Book Moves",
   fromCurrentRecord: "From Current Record",
   fromFile: "From File",

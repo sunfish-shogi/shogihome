@@ -678,6 +678,9 @@ export const ja: Texts = {
   addMoves: "指し手追加",
   export: "エクスポート",
   flippedBook: "反転も検索",
+  bookBackend: "定跡の処理方式",
+  bookBackendDescription:
+    "WebAssembly 版は高速に動作します。問題が起きた場合は JavaScript 版に切り替えてください。現在 WebAssembly 版で処理するのは SBK 形式のみで、On-the-fly 閾値によらず常に On-the-fly モードで読み込みます。",
   addBookMoves: "定跡手追加",
   fromCurrentRecord: "現在の棋譜から",
   fromFile: "ファイルから",

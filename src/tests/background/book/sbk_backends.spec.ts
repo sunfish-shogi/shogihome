@@ -1,0 +1,120 @@
+// [共通] SBK 形式の定跡の振る舞いを、JavaScript 版と WebAssembly 版の両方で確かめる。
+// JavaScript 版を削除する際には backends から "js" を取り除けばよい。
+
+import fs from "node:fs";
+import path from "node:path";
+import {
+  clearBook,
+  closeBookSession,
+  exportBook,
+  getBookInfo,
+  openBook,
+  openBookAsNewSession,
+  saveBook,
+  searchBookEntry,
+  updateBookMove,
+} from "@/background/book/index.js";
+import { getTempPathForTesting } from "@/background/proc/env.js";
+import { BookBackend, defaultBookSession } from "@/common/book.js";
+import { editBook, initialSfen, sbkFields, snapshotBook } from "@/tests/mock/book_ops.js";
+
+const tmpdir = path.join(getTempPathForTesting(), "book/sbk-backends");
+
+const backends: BookBackend[] = ["wasm", "js"];
+
+describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
+  beforeAll(() => {
+    fs.mkdirSync(path.join(tmpdir, backend), { recursive: true });
+  });
+
+  afterEach(() => {
+    clearBook(defaultBookSession);
+  });
+
+  const out = (name: string) => path.join(tmpdir, backend, name);
+
+  it("open and search", async () => {
+    await openBook(defaultBookSession, "src/tests/testdata/book/shogigui02.sbk", { backend });
+    expect(await searchBookEntry(defaultBookSession, initialSfen)).toEqual({
+      moves: [
+        { usi: "7g7f", sbkId: 1, count: 68 },
+        { usi: "2g2f", sbkId: 2, count: 175 },
+        { usi: "2h7h", sbkId: 3, count: 5 },
+        { usi: "5g5f", sbkId: 4, count: 27 },
+      ],
+      games: 278,
+      wonBlack: 16,
+      wonWhite: 9,
+    });
+    const info = getBookInfo(defaultBookSession);
+    expect(info.format).toBe("sbk");
+    expect(info.path).toBe("src/tests/testdata/book/shogigui02.sbk");
+    // 存在しない局面
+    expect(
+      await searchBookEntry(defaultBookSession, initialSfen.replace(" b - 1", " w - 1")),
+    ).toBeNull();
+  });
+
+  for (const input of ["shogigui01.sbk", "shogigui02.sbk"]) {
+    it(`edit, save and reopen: ${input}`, async () => {
+      await openBook(defaultBookSession, `src/tests/testdata/book/${input}`, { backend });
+      await editBook(defaultBookSession, path.join(tmpdir, backend));
+      const edited = await snapshotBook(defaultBookSession);
+      expect(edited.length).toBeGreaterThan(10);
+      expect(getBookInfo(defaultBookSession).unsaved).toBe(true);
+
+      await saveBook(defaultBookSession, out(`edited-${input}`));
+      expect(getBookInfo(defaultBookSession).unsaved).toBe(false);
+      // 保存しても内容は変わらない
+      expect(await snapshotBook(defaultBookSession)).toEqual(edited);
+
+      // 保存したファイルを開き直しても内容は変わらない (SBK 形式で保存できる項目のみ)
+      const { session } = await openBookAsNewSession(out(`edited-${input}`), { backend });
+      try {
+        expect(sbkFields(await snapshotBook(session))).toEqual(sbkFields(edited));
+      } finally {
+        closeBookSession(session);
+      }
+    });
+  }
+
+  it("new book", async () => {
+    clearBook(defaultBookSession, "sbk", backend);
+    expect(await searchBookEntry(defaultBookSession, initialSfen)).toBeNull();
+    await editBook(defaultBookSession, path.join(tmpdir, backend));
+    const edited = await snapshotBook(defaultBookSession);
+    expect(edited.length).toBeGreaterThan(5);
+
+    await saveBook(defaultBookSession, out("new.sbk"));
+    const { session } = await openBookAsNewSession(out("new.sbk"), { backend });
+    try {
+      expect(sbkFields(await snapshotBook(session))).toEqual(sbkFields(edited));
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  it("export to sbk", async () => {
+    await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk", { backend });
+    await updateBookMove(defaultBookSession, initialSfen, { usi: "5g5f", count: 3 });
+    const edited = await snapshotBook(defaultBookSession);
+    await exportBook(defaultBookSession, out("exported.sbk"), "sbk");
+    const { session } = await openBookAsNewSession(out("exported.sbk"), { backend });
+    try {
+      expect(sbkFields(await snapshotBook(session))).toEqual(sbkFields(edited));
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  it("cannot overwrite the opened file", async () => {
+    fs.copyFileSync("src/tests/testdata/book/shogigui01.sbk", out("overwrite.sbk"));
+    await openBook(defaultBookSession, out("overwrite.sbk"), { backend, forceOnTheFly: true });
+    await updateBookMove(defaultBookSession, initialSfen, { usi: "5g5f", count: 3 });
+    await expect(saveBook(defaultBookSession, out("overwrite.sbk"))).rejects.toThrow();
+    // ファイルは変更されていない
+    expect(fs.readFileSync(out("overwrite.sbk"))).toEqual(
+      fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"),
+    );
+  });
+});

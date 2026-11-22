@@ -26,3 +26,6 @@ pnpm-debug.log*
 *.sw?
 
 settings.local.json
+
+# Rust build output (wasm/book)
+/wasm/book/target

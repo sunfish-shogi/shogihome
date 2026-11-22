@@ -602,6 +602,7 @@
                 <input
                   v-model.number="update.sbkOnTheFlyThresholdMB"
                   type="number"
+                  :disabled="update.bookBackend === 'wasm'"
                   max="128"
                   min="0"
                 />
@@ -610,6 +611,21 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <!-- 定跡の処理方式 -->
+      <div class="form-item">
+        <div class="form-item-label-wide">{{ t.bookBackend }}</div>
+        <HorizontalSelector
+          v-model:value="update.bookBackend"
+          class="selector"
+          :items="[
+            { label: 'WebAssembly', value: 'wasm' },
+            { label: 'JavaScript', value: 'js' },
+          ]"
+        />
+      </div>
+      <div class="form-group">
+        <div class="note">{{ t.bookBackendDescription }}</div>
       </div>
     </div>
     <!-- USI プロトコル -->
@@ -947,6 +963,7 @@ const update = ref({
   aperyBookOnTheFlyThresholdMB: org.aperyBookOnTheFlyThresholdMB,
   sbkOnTheFlyThresholdMB: org.sbkOnTheFlyThresholdMB,
   ybbOnTheFlyThresholdMB: org.ybbOnTheFlyThresholdMB,
+  bookBackend: org.bookBackend,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
   nodeCountFormat: org.nodeCountFormat,

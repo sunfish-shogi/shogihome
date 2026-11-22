@@ -665,6 +665,8 @@ export type Texts = {
   addMoves: string;
   export: string;
   flippedBook: string;
+  bookBackend: string;
+  bookBackendDescription: string;
   addBookMoves: string;
   fromCurrentRecord: string;
   fromFile: string;

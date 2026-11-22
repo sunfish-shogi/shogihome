@@ -693,6 +693,9 @@ export const vi: Texts = {
   addMoves: "Thêm nước đi",
   export: "Xuất",
   flippedBook: "Sử dụng book lật ngược",
+  bookBackend: "Phương thức xử lý định thức",
+  bookBackendDescription:
+    "Phiên bản WebAssembly nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phiên bản JavaScript. Hiện tại, phiên bản WebAssembly chỉ xử lý định dạng SBK và luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
   addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
   fromFile: "Từ tệp",

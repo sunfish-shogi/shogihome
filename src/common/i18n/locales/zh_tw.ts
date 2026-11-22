@@ -685,6 +685,9 @@ export const zh_tw: Texts = {
   addMoves: "新增該手",
   export: "匯出",
   flippedBook: "亦檢索先後逆局面",
+  bookBackend: "定跡處理方式",
+  bookBackendDescription:
+    "WebAssembly 版速度較快。若發生問題，請切換為 JavaScript 版。目前僅 SBK 格式由 WebAssembly 版處理，且不論 On-the-fly 門檻為何，一律以 On-the-fly 模式讀取。",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
   fromFile: "從檔案",
