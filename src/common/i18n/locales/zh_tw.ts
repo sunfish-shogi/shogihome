@@ -685,9 +685,9 @@ export const zh_tw: Texts = {
   addMoves: "新增該手",
   export: "匯出",
   flippedBook: "亦檢索先後逆局面",
-  bookBackend: "定跡の処理方式", // TODO: Translate
+  bookBackend: "定跡處理方式",
   bookBackendDescription:
-    "WebAssembly 版は高速でメモリの使用量も少なくなります。問題が起きた場合は JavaScript 版に切り替えてください。現在 WebAssembly 版で処理するのは SBK 形式 (On-the-fly ではない場合) のみです。", // TODO: Translate
+    "WebAssembly 版速度較快，記憶體使用量也較少。若發生問題，請切換為 JavaScript 版。目前僅 SBK 格式（非 On-the-fly 模式時）由 WebAssembly 版處理。",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
   fromFile: "從檔案",
