@@ -1,5 +1,6 @@
 import fs, { ReadStream } from "node:fs";
 import {
+  BookBackend,
   BookFormat,
   BookImportSummary,
   BookInfo,
@@ -9,7 +10,15 @@ import {
   defaultBookSession,
 } from "@/common/book.js";
 import { getAppLogger } from "@/background/log.js";
-import { AperyBook, Book, BookEntry, mergeBookEntries, SbkBook, YaneBook } from "./types.js";
+import {
+  AperyBook,
+  Book,
+  BookEntry,
+  mergeBookEntries,
+  SbkBook,
+  toEntryMap,
+  YaneBook,
+} from "./types.js";
 import {
   loadYaneuraOuBook,
   mergeYaneuraOuBook,
@@ -48,9 +57,11 @@ import {
 import {
   loadSbkBook,
   loadSbkBookOnTheFly,
+  loadSbkBookWasm,
   searchSbkBookEntryOnTheFly,
   storeSbkBook,
 } from "./sbk.js";
+import { tryCreateSbkWasmStore } from "./wasm/sbk_store.js";
 import {
   loadYbbBook,
   loadYbbBookFull,
@@ -157,7 +168,7 @@ function putEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   }
 }
 
-function emptyBook(format: BookFormat = "yane2016"): BookHandle {
+function emptyBook(format: BookFormat = "yane2016", backend?: BookBackend): BookHandle {
   switch (format) {
     case "apery":
       return {
@@ -170,7 +181,8 @@ function emptyBook(format: BookFormat = "yane2016"): BookHandle {
       return {
         type: "in-memory",
         format: "sbk",
-        entries: new Map<string, BookEntry>(),
+        entries:
+          (backend !== "js" ? tryCreateSbkWasmStore() : undefined) ?? new Map<string, BookEntry>(),
         saved: true,
       };
     case "ybb":
@@ -297,8 +309,18 @@ async function openBookOnTheFly(
   }
 }
 
-async function openBookInMemory(session: number, path: string, size: number): Promise<void> {
-  getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
+async function openBookInMemory(
+  session: number,
+  path: string,
+  size: number,
+  backend?: BookBackend,
+): Promise<void> {
+  getAppLogger().info(
+    "Loading book in-memory: path=%s size=%d backend=%s",
+    path,
+    size,
+    backend ?? "default",
+  );
   let file: ReadStream | undefined;
   try {
     clearBook(session); // メモリ節約のため先にクリアする
@@ -309,7 +331,8 @@ async function openBookInMemory(session: number, path: string, size: number): Pr
         book = await loadYaneuraOuBook(file);
         break;
       case "sbk":
-        book = await loadSbkBook(path);
+        book =
+          (backend !== "js" ? await loadSbkBookWasm(path) : undefined) ?? (await loadSbkBook(path));
         break;
       case "ybb":
         book = await loadYbbBook(path);
@@ -367,7 +390,7 @@ export async function openBook(
     await openBookOnTheFly(session, path, size, onProgress);
     return "on-the-fly";
   } else {
-    await openBookInMemory(session, path, size);
+    await openBookInMemory(session, path, size, options?.backend);
     return "in-memory";
   }
 }
@@ -394,8 +417,13 @@ function replaceBook(session: number, newBook: BookHandle) {
   bookFiles.set(session, newBook);
 }
 
-async function loadMergedSbkBook(book: OnTheFlyBook & { format: "sbk" }): Promise<SbkBook> {
-  const fullBook = await loadSbkBook(book.rawData || book.path);
+async function loadMergedSbkBook(
+  book: OnTheFlyBook & { format: "sbk" },
+  backend?: BookBackend,
+): Promise<SbkBook> {
+  const source = book.rawData || book.path;
+  const fullBook =
+    (backend !== "js" ? await loadSbkBookWasm(source) : undefined) ?? (await loadSbkBook(source));
   for (const [sfen, patch] of book.entries) {
     const merged = mergeBookEntries(fullBook.entries.get(sfen), patch);
     if (merged) {
@@ -491,6 +519,7 @@ export async function exportBook(
   path: string,
   targetFormat: BookFormat,
   onProgress?: (progress: number) => void,
+  backend?: BookBackend,
 ): Promise<void> {
   const extMap: { [K in BookFormat]: string } = {
     yane2016: ".db",
@@ -533,7 +562,7 @@ export async function exportBook(
       }
     }
   } else if (book.format === "sbk") {
-    fullBook = await loadMergedSbkBook(book);
+    fullBook = await loadMergedSbkBook(book, backend);
   } else if (book.format === "ybb") {
     const base = await loadYbbBookFull(book.file, book.recordCount, book.flags);
     for (const [sfen, patch] of book.entries) {
@@ -548,14 +577,17 @@ export async function exportBook(
   }
 
   if (targetFormat === "ybb") {
-    await storeYbbBook(fullBook.entries as Map<string, BookEntry>, path, onProgress);
+    await storeYbbBook(toEntryMap(fullBook.entries as Map<string, BookEntry>), path, onProgress);
     return;
   }
 
   let targetBook: YaneBook | AperyBook | SbkBook;
   switch (targetFormat) {
     case "yane2016":
-      targetBook = { format: "yane2016", entries: fullBook.entries as Map<string, BookEntry> };
+      targetBook = {
+        format: "yane2016",
+        entries: toEntryMap(fullBook.entries as Map<string, BookEntry>),
+      };
       break;
     case "apery": {
       const aperyEntries = new Map<bigint, BookEntry>();
@@ -585,7 +617,7 @@ export async function exportBook(
         await storeAperyBook(targetBook, file);
         break;
       case "sbk":
-        await storeSbkBook(targetBook, file, onProgress);
+        await storeSbkBook(targetBook, file, onProgress, { backend: backend ?? "wasm" });
         break;
     }
   } finally {
@@ -593,7 +625,7 @@ export async function exportBook(
   }
 }
 
-export function clearBook(session: number, format?: BookFormat): void {
+export function clearBook(session: number, format?: BookFormat, backend?: BookBackend): void {
   const book = bookFiles.get(session);
   if (!book) {
     return;
@@ -603,7 +635,7 @@ export function clearBook(session: number, format?: BookFormat): void {
       book.file.close();
     }
   }
-  bookFiles.set(session, emptyBook(format));
+  bookFiles.set(session, emptyBook(format, backend));
 }
 
 export async function searchBookMoves(session: number, sfen: string): Promise<BookMove[]> {

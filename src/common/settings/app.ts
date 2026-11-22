@@ -6,6 +6,7 @@ import { BoardLayoutType, PositionImageFontWeight } from "./layout.js";
 import { SearchCommentFormat } from "./comment.js";
 import { fileURLToCustomSchemeURL } from "@/common/url.js";
 import { removeLastSlash } from "@/common/helpers/path.js";
+import { BookBackend } from "@/common/book.js";
 
 export enum Thema {
   STANDARD = "standard",
@@ -260,6 +261,7 @@ export type AppSettings = {
   sbkOnTheFlyThresholdMB: number;
   ybbOnTheFlyThresholdMB: number;
   flippedBook: boolean;
+  bookBackend: BookBackend;
 
   // Engine
   translateEngineOptionName: boolean;
@@ -435,6 +437,7 @@ export function defaultAppSettings(opt?: {
     sbkOnTheFlyThresholdMB: 16,
     ybbOnTheFlyThresholdMB: 64,
     flippedBook: true,
+    bookBackend: "wasm",
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
     nodeCountFormat: NodeCountFormat.COMMA_SEPARATED,
@@ -509,6 +512,10 @@ export function normalizeAppSettings(
     ...defaultAppSettings(opt),
     ...settings,
   };
+  // 定跡の処理方式が不正な場合は既定値に戻す。
+  if (result.bookBackend !== "wasm" && result.bookBackend !== "js") {
+    result.bookBackend = "wasm";
+  }
   // 自動保存先ディレクトリの末尾のスラッシュを削除する。
   result.autoSaveDirectory = removeLastSlash(result.autoSaveDirectory);
   // 旧バージョンでは盤画像に合わせて自動で駒台の色が選ばれていた。

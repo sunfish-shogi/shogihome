@@ -232,6 +232,7 @@ describe("background/book", () => {
     describe("shogigui01-copy.sbk", () => {
       const patterns = [
         { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
+        { options: { sbkOnTheFlyThresholdMB: 0.01, backend: "js" as const }, mode: "in-memory" },
         { options: { sbkOnTheFlyThresholdMB: 0.001 }, mode: "on-the-fly" },
         { options: { forceOnTheFly: true }, mode: "on-the-fly" },
       ];

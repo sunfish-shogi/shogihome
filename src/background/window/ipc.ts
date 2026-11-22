@@ -750,9 +750,10 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle(Background.CLEAR_BOOK, (event, session: number, format?: BookFormat) => {
+ipcMain.handle(Background.CLEAR_BOOK, async (event, session: number, format?: BookFormat) => {
   validateIPCSender(event.senderFrame);
-  clearBook(session, format);
+  const appSettings = await loadAppSettings();
+  clearBook(session, format, appSettings.bookBackend);
 });
 
 ipcMain.handle(
@@ -761,6 +762,7 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`open book: ${path}`);
     const options = JSON.parse(json) as BookLoadingOptions;
+    options.backend ??= (await loadAppSettings()).bookBackend;
     await openBook(session, path, options, sendProgress);
   },
 );
@@ -771,6 +773,7 @@ ipcMain.handle(
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`open book as new session: ${path}`);
     const options = JSON.parse(json) as BookLoadingOptions;
+    options.backend ??= (await loadAppSettings()).bookBackend;
     const { session } = await openBookAsNewSession(path, options);
     getAppLogger().debug(`new book session: ${session}`);
     return session;
@@ -797,7 +800,8 @@ ipcMain.handle(
   async (event, session: number, path: string, targetFormat: BookFormat): Promise<void> => {
     validateIPCSender(event.senderFrame);
     getAppLogger().debug(`export book: ${path} as ${targetFormat}`);
-    await exportBook(session, path, targetFormat, sendProgress);
+    const appSettings = await loadAppSettings();
+    await exportBook(session, path, targetFormat, sendProgress, appSettings.bookBackend);
   },
 );
 

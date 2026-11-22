@@ -24,12 +24,18 @@ export type BookMove = {
   sbkId?: number; // SBK State ID
 };
 
+// 定跡データを処理する実装
+// - wasm: WebAssembly 版 (現在は SBK 形式の in-memory モードのみ。それ以外は JavaScript 版を使う)
+// - js: JavaScript 版 (WebAssembly 版への移行期間中の代替手段として残している)
+export type BookBackend = "wasm" | "js";
+
 export type BookLoadingOptions = {
   yaneOnTheFlyThresholdMB?: number; // やねうら王形式を on-the-fly に切り替える閾値(MebiBytes)
   aperyOnTheFlyThresholdMB?: number; // Apery 形式を on-the-fly に切り替える閾値(MebiBytes)
   sbkOnTheFlyThresholdMB?: number; // SBK 形式を on-the-fly に切り替える閾値(MebiBytes)
   ybbOnTheFlyThresholdMB?: number; // YBB 形式を on-the-fly に切り替える閾値(MebiBytes)
   forceOnTheFly?: boolean; // 強制的に On-the-fly モードにする
+  backend?: BookBackend; // 定跡データを処理する実装 (省略時は WebAssembly 版)
 };
 
 export type BookImportSummary = {

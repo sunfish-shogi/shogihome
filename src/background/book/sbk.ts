@@ -12,9 +12,10 @@ import {
 } from "./proto/sbk.js";
 import { BookEntry, mergeBookEntries, SbkBook, SbkEval, SbkOnTheFlyLUT } from "./types.js";
 import { fromSbkMove, toSbkMove } from "./sbk_move.js";
-import { BookMove } from "@/common/book.js";
+import { BookBackend, BookMove } from "@/common/book.js";
 import { positionToPackedSfen, sfenToPackedSfen } from "./packed_sfen.js";
 import { copySbkStateWithoutHashKeys } from "./sbk_state_copy.js";
+import { SbkWasmStore, tryCreateSbkWasmStore } from "./wasm/sbk_store.js";
 
 const SBK_ON_THE_FLY_ROW_SIZE = 9; // 8 words packed-sfen + 1 word offset
 
@@ -527,7 +528,9 @@ export async function searchSbkBookEntryOnTheFly(
   return buildBookEntryFromState(state, sfen);
 }
 
-export async function loadSbkBook(data: Buffer | Uint8Array | string): Promise<SbkBook> {
+export async function loadSbkBook(
+  data: Buffer | Uint8Array | string,
+): Promise<SbkBook & { entries: Map<string, BookEntry> }> {
   if (typeof data === "string") {
     data = await fs.promises.readFile(data);
   }
@@ -1132,11 +1135,25 @@ async function storeSbkBookFromInMemoryMap(
   await events.once(output, "finish");
 }
 
+/**
+ * SBK 形式で書き出す。
+ * entries が WebAssembly 版のストアの場合は WebAssembly 版で書き出す。
+ * それ以外の場合でも、options.backend が "wasm" であれば一時的にストアを作って WebAssembly 版で書き出す。
+ */
 export async function storeSbkBook(
   book: SbkBook,
   output: Writable,
   onProgress?: (progress: number) => void,
+  options?: { backend?: BookBackend },
 ): Promise<void> {
+  if (book.entries instanceof SbkWasmStore) {
+    book.entries.sbkMeta = {
+      author: book.sbkAuthor ?? "",
+      description: book.sbkDescription ?? "",
+    };
+    await book.entries.storeSbk(output, onProgress);
+    return;
+  }
   if (book.sbkIndex && book.rawData) {
     const onTheFlyBook = {
       ...book,
@@ -1144,7 +1161,39 @@ export async function storeSbkBook(
       rawData: book.rawData,
     };
     await storeSbkBookOnTheFly(onTheFlyBook, output, onProgress);
-  } else {
-    await storeSbkBookFromInMemoryMap(book, output, onProgress);
+    return;
   }
+  const store = options?.backend === "wasm" ? tryCreateSbkWasmStore() : undefined;
+  if (store) {
+    for (const [sfen, entry] of book.entries) {
+      store.set(sfen, entry);
+    }
+    await storeSbkBook({ ...book, entries: store }, output, onProgress);
+    return;
+  }
+  await storeSbkBookFromInMemoryMap(book, output, onProgress);
+}
+
+/**
+ * SBK ファイルを WebAssembly 版のストアに読み込む。
+ * WebAssembly モジュールを初期化できない場合は undefined を返す。
+ */
+export async function loadSbkBookWasm(
+  data: Uint8Array | string,
+): Promise<(SbkBook & { entries: SbkWasmStore }) | undefined> {
+  const store = tryCreateSbkWasmStore();
+  if (!store) {
+    return;
+  }
+  if (typeof data === "string") {
+    data = await fs.promises.readFile(data);
+  }
+  store.loadSbk(data);
+  const meta = store.sbkMeta;
+  return {
+    format: "sbk",
+    entries: store,
+    sbkAuthor: meta.author,
+    sbkDescription: meta.description,
+  };
 }

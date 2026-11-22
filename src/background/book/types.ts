@@ -16,9 +16,25 @@ export type AperyBook = {
   entries: Map<bigint, BookEntry>;
 };
 
+/**
+ * SFEN をキーとするエントリーの集合。Map<string, BookEntry> と同じように振る舞う。
+ * WebAssembly 版の実装 (SbkWasmStore) では get が返すエントリーはコピーなので、
+ * 変更した場合は set で書き戻す必要がある。
+ */
+export interface BookEntryMap extends Iterable<[string, BookEntry]> {
+  get(sfen: string): BookEntry | undefined;
+  set(sfen: string, entry: BookEntry): unknown;
+  readonly size: number;
+}
+
+/** Map が必要な処理のために BookEntryMap を Map に変換する */
+export function toEntryMap(entries: BookEntryMap): Map<string, BookEntry> {
+  return entries instanceof Map ? entries : new Map(entries);
+}
+
 export type SbkBook = {
   format: BookFormatSbk;
-  entries: Map<string, BookEntry>;
+  entries: BookEntryMap;
   sbkAuthor?: string;
   sbkDescription?: string;
   sbkIndex?: SbkOnTheFlyLUT;
