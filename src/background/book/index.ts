@@ -125,7 +125,9 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
   }
 }
 
-// メモリ上のエントリーを取得する。返されたエントリーを更新した場合に book に反映されることを保証する。
+// メモリ上のエントリーを取得する。
+// 返されたエントリーを更新した場合は storeEntry で書き戻すこと。
+// (WebAssembly 版の実装ではコピーが返されるため、書き戻さないと反映されない)
 function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
   switch (book.format) {
     case "yane2016":
@@ -138,6 +140,11 @@ function retrieveEntry(book: BookHandle, sfen: string): BookEntry | undefined {
 }
 
 function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
+  putEntry(book, sfen, entry);
+  book.saved = false;
+}
+
+function putEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
   switch (book.format) {
     case "yane2016":
     case "sbk":
@@ -148,7 +155,6 @@ function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
       book.entries.set(aperyHash(sfen), entry);
       break;
   }
-  book.saved = false;
 }
 
 function emptyBook(format: BookFormat = "yane2016"): BookHandle {
@@ -749,7 +755,6 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
         type: book.type === "in-memory" ? "normal" : "patch",
         moves: [move],
       };
-      book.entries.set(sfen, entry);
     }
   } else {
     const sanitizedMove: BookMove = {
@@ -761,7 +766,6 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
     if (move.count !== undefined) {
       sanitizedMove.count = move.count;
     }
-    const hash = aperyHash(sfen);
     if (entry) {
       updateBookEntry(entry, sanitizedMove);
     } else {
@@ -769,11 +773,10 @@ function updateBookMovePatch(book: BookHandle, sfen: string, move: BookMove) {
         type: book.type === "in-memory" ? "normal" : "patch",
         moves: [sanitizedMove],
       };
-      book.entries.set(hash, entry);
     }
   }
   entry.moves.sort((a, b) => (b.count || 0) - (a.count || 0));
-  book.saved = false;
+  storeEntry(book, sfen, entry);
 }
 
 // 棋譜の終端ノードから勝者を判定する。
@@ -908,6 +911,7 @@ export async function importBookMoves(
           entry.wonWhite = (entry.wonWhite ?? 0) + 1;
         }
       }
+      putEntry(book, sfen, entry);
     }
   }
 
