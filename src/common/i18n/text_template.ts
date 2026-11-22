@@ -866,6 +866,13 @@ export type Texts = {
   bookMovesWereImported: string;
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   cannotOverwriteOnTheFlyBook: string;
+  bookFileTooLargeForWasm: (limit: string) => string;
+  wasmBookCrashedOnOpen: string;
+  wasmBookCrashedAndClosed: string;
+  wasmBookCrashedWhileSavingAndClosed: string;
+  unsavedBookChangesWereLost: string;
+  openedBookFileWasNotModified: string;
+  savedBookFileMayBeIncomplete: (path: string) => string;
   pleaseSpecifyOtherFileName: string;
   memoryShortageOnBookConversionMayLoseUnsavedData: string;
   cannotConvertAperyBookToOtherFormat: string;

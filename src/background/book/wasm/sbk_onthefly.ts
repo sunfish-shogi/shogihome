@@ -7,6 +7,7 @@ import fs from "node:fs";
 import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
 import { getAppLogger } from "@/background/log.js";
+import { t } from "@/common/i18n/index.js";
 import { bookWasmBase64 } from "./binary.js";
 import { decodeEntry, Decoder, encodeEntry, Encoder } from "./codec.js";
 
@@ -37,15 +38,31 @@ function getModule(): WebAssembly.Module {
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
-// WebAssembly (wasm32) のメモリの上限は 4 GiB
-const MAX_FILE_SIZE = 0xffff0000;
+// 開ける SBK ファイルの大きさの上限。
+// WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に加えて局面ごとに索引 (開く処理の途中では
+// 1 局面あたり 70 バイト強) が必要になる。現実的なファイル (1 局面あたり 50〜90 バイト程度) であれば
+// 余裕を持って開ける大きさとする。それでもメモリが不足した場合は BookWasmCrashError になる。
+export const MAX_SBK_FILE_SIZE = 1024 * 1024 * 1024;
 // ファイルを読み込む単位
 const READ_CHUNK_SIZE = 16 * 1024 * 1024;
 // 1 回の呼び出しで書き出す State の数
 const SAVE_CHUNK_STATES = 4096;
 
+/**
+ * WebAssembly モジュールが異常終了した (メモリ不足や不具合によるトラップ) ことを表す。
+ * 異常終了したインスタンスは以後使えない。
+ */
+export class BookWasmCrashError extends Error {
+  constructor(cause: unknown) {
+    super(`WebAssembly book module crashed: ${cause}`, { cause });
+    this.name = "BookWasmCrashError";
+  }
+}
+
 export class SbkWasmOnTheFly {
+  private raw: BookWasmExports;
   private exports: BookWasmExports;
+  private crashed?: BookWasmCrashError;
   private _author?: string;
   private _description?: string;
   private _stateCount = 0;
@@ -57,7 +74,41 @@ export class SbkWasmOnTheFly {
    */
   private constructor() {
     const instance = new WebAssembly.Instance(getModule(), {});
-    this.exports = instance.exports as unknown as BookWasmExports;
+    // exports は変更できないため、テストで差し替えられるように複製して保持する
+    this.raw = { ...instance.exports } as unknown as BookWasmExports;
+    this.exports = this.guard();
+  }
+
+  /**
+   * 関数の呼び出しを監視するラッパーを作る。
+   * トラップが発生した場合は BookWasmCrashError を投げ、以後の呼び出しも同じエラーにする。
+   * (異常終了した時点の状態が残っているため、続けて呼び出すと誤動作する可能性がある)
+   */
+  private guard(): BookWasmExports {
+    const guarded = {} as Record<string, unknown>;
+    for (const name of Object.keys(this.raw)) {
+      if (name === "memory") {
+        continue;
+      }
+      guarded[name] = (...args: number[]) => {
+        if (this.crashed) {
+          throw this.crashed;
+        }
+        try {
+          const fn = this.raw[name as keyof BookWasmExports] as (...a: number[]) => number;
+          return fn(...args);
+        } catch (e) {
+          if (e instanceof WebAssembly.RuntimeError) {
+            this.crashed = new BookWasmCrashError(e);
+            getAppLogger().error("WebAssembly book module crashed: %s", e);
+            throw this.crashed;
+          }
+          throw e;
+        }
+      };
+    }
+    Object.defineProperty(guarded, "memory", { get: () => this.raw.memory });
+    return guarded as unknown as BookWasmExports;
   }
 
   /** 元のファイルが無い空の定跡を作る */
@@ -73,8 +124,8 @@ export class SbkWasmOnTheFly {
     const file = await fs.promises.open(path, "r");
     try {
       const { size } = await file.stat();
-      if (size > MAX_FILE_SIZE) {
-        throw new Error(`The file is too large: ${path} (${size} bytes)`);
+      if (size > MAX_SBK_FILE_SIZE) {
+        throw new Error(t.bookFileTooLargeForWasm("1 GiB"));
       }
       // ファイルの内容を WebAssembly のメモリに直接読み込む。
       // 所有権は sbk_open で WebAssembly 側に移る。

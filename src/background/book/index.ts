@@ -61,7 +61,7 @@ import {
   storeYbbBook,
   YbbOnTheFly,
 } from "./ybb.js";
-import { isBookWasmAvailable, SbkWasmOnTheFly } from "./wasm/sbk_onthefly.js";
+import { BookWasmCrashError, isBookWasmAvailable, SbkWasmOnTheFly } from "./wasm/sbk_onthefly.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook | WasmSbkBook;
 
@@ -107,6 +107,37 @@ function useWasm(format: BookFormat, backend?: BookBackend): boolean {
   return format === "sbk" && backend !== "js" && isBookWasmAvailable();
 }
 
+/**
+ * WebAssembly モジュールが異常終了した場合の処理。
+ * 異常終了したインスタンスは使えないため定跡を閉じ、何が失われたかを伝えるエラーを投げる。
+ * それ以外のエラーはそのまま投げ直す。
+ */
+function handleWasmCrash(book: WasmSbkBook, e: unknown, savePath?: string): never {
+  if (!(e instanceof BookWasmCrashError)) {
+    throw e;
+  }
+  for (const [session, b] of bookFiles) {
+    if (b === book) {
+      bookFiles.set(session, emptyBook("sbk", "wasm"));
+    }
+  }
+  const sentences = [
+    savePath !== undefined ? t.wasmBookCrashedWhileSavingAndClosed : t.wasmBookCrashedAndClosed,
+  ];
+  if (!book.saved) {
+    sentences.push(t.unsavedBookChangesWereLost);
+  }
+  if (savePath !== undefined) {
+    sentences.push(t.savedBookFileMayBeIncomplete(savePath));
+  }
+  if (book.path) {
+    sentences.push(t.openedBookFileWasNotModified);
+  }
+  // 日本語の文は空白を挟まずに連結する
+  const message = sentences.reduce((a, b) => (/[。．]$/.test(a) ? a + b : `${a} ${b}`));
+  throw new Error(message, { cause: e });
+}
+
 // マージ済みのエントリーを取得する。
 async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
   if (isWasmBook(book)) {
@@ -114,7 +145,13 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
     if (entry?.type === "normal") {
       return entry;
     }
-    return mergeBookEntries(book.sbkWasm.search(sfen), entry);
+    let base: BookEntry | undefined;
+    try {
+      base = book.sbkWasm.search(sfen);
+    } catch (e) {
+      handleWasmCrash(book, e);
+    }
+    return mergeBookEntries(base, entry);
   }
   switch (book.format) {
     case "yane2016": {
@@ -335,7 +372,16 @@ async function openBookOnTheFly(
 
 async function openSbkBookWasm(session: number, path: string): Promise<void> {
   getAppLogger().info("Loading book with WebAssembly: path=%s", path);
-  const sbkWasm = await SbkWasmOnTheFly.open(path);
+  let sbkWasm: SbkWasmOnTheFly;
+  try {
+    sbkWasm = await SbkWasmOnTheFly.open(path);
+  } catch (e) {
+    if (e instanceof BookWasmCrashError) {
+      // 開いていた定跡はそのまま残る
+      throw new Error(t.wasmBookCrashedOnOpen, { cause: e });
+    }
+    throw e;
+  }
   replaceBook(session, {
     type: "on-the-fly",
     backend: "wasm",
@@ -486,6 +532,8 @@ export async function saveBook(
     const file = fs.createWriteStream(path);
     try {
       await book.sbkWasm.store(book.entries, file, onProgress);
+    } catch (e) {
+      handleWasmCrash(book, e, path);
     } finally {
       file.close();
     }

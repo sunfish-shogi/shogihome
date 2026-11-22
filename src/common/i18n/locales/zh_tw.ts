@@ -896,6 +896,17 @@ export const zh_tw: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "以 On-the-fly 模式讀取中的定跡無法覆寫保存。",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。WebAssembly 版で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く処理で WebAssembly モジュールが異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を JavaScript 版に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed:
+    "定跡の保存中に WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+  unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
   pleaseSpecifyOtherFileName: "請指定其他檔案名稱。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "轉換定跡資料時若記憶體不足，未保存的資料可能會遺失。",

@@ -916,6 +916,17 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。WebAssembly 版で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く処理で WebAssembly モジュールが異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を JavaScript 版に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed:
+    "定跡の保存中に WebAssembly モジュールが異常終了したため、定跡を閉じました。", // TODO: Translate
+  unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Nếu thiếu bộ nhớ trong khi chuyển đổi dữ liệu định thức, dữ liệu chưa lưu có thể bị mất.",

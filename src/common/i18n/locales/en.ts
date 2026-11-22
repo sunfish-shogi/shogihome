@@ -902,6 +902,17 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `The book file is too large to open. The WebAssembly version can open SBK files up to ${limit}.`,
+  wasmBookCrashedOnOpen:
+    "The WebAssembly module crashed while opening the book file. Memory may be insufficient. The previously opened book remains open. Switching the book processing to the JavaScript version in the settings may allow you to open it.",
+  wasmBookCrashedAndClosed: "The book was closed because the WebAssembly module crashed.",
+  wasmBookCrashedWhileSavingAndClosed:
+    "The book was closed because the WebAssembly module crashed while saving.",
+  unsavedBookChangesWereLost: "Unsaved changes have been lost.",
+  openedBookFileWasNotModified: "The book file that was opened has not been modified.",
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `The destination file (${path}) may have been written only partially.`,
   pleaseSpecifyOtherFileName: "Please specify another file name.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Memory shortage during book data conversion may cause loss of unsaved data.",

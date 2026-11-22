@@ -905,6 +905,17 @@ export const ja: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。WebAssembly 版で開ける SBK ファイルは ${limit} までです。`,
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く処理で WebAssembly モジュールが異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を JavaScript 版に切り替えると開ける場合があります。",
+  wasmBookCrashedAndClosed: "WebAssembly モジュールが異常終了したため、定跡を閉じました。",
+  wasmBookCrashedWhileSavingAndClosed:
+    "定跡の保存中に WebAssembly モジュールが異常終了したため、定跡を閉じました。",
+  unsavedBookChangesWereLost: "保存していない変更は失われました。",
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。",
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`,
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。",
