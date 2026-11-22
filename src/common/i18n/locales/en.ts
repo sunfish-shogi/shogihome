@@ -904,8 +904,6 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
-  cannotConvertBookOpenedWithNewMethod:
-    "A book opened with the new method cannot be converted to other formats yet. Switch the book processing to the previous method in the settings and open the book again.",
   bookFileTooLargeForWasm: (limit: string) =>
     `The book file is too large to open. The new method can open SBK files up to ${limit}.`,
   wasmBookCrashedOnOpen:

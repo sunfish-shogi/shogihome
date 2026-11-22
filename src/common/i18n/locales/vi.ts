@@ -918,8 +918,6 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
-  cannotConvertBookOpenedWithNewMethod:
-    "新方式で開いた定跡は、現在のところ他の形式に変換できません。設定で定跡の処理方式を従来方式に切り替えて、定跡を開き直してください。", // TODO: Translate
   bookFileTooLargeForWasm: (limit: string) =>
     `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
   wasmBookCrashedOnOpen:

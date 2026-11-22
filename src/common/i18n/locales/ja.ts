@@ -907,8 +907,6 @@ export const ja: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
-  cannotConvertBookOpenedWithNewMethod:
-    "新方式で開いた定跡は、現在のところ他の形式に変換できません。設定で定跡の処理方式を従来方式に切り替えて、定跡を開き直してください。",
   bookFileTooLargeForWasm: (limit: string) =>
     `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`,
   wasmBookCrashedOnOpen:
