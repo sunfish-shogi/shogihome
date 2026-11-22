@@ -73,19 +73,26 @@ function yaneIndexToTsIndex(yaneIndex: number): number {
   return (rank - 1) * 9 + (9 - file);
 }
 
-const BOARD_DECODE_TABLE = new Map<string, NonKingPieceType | "E">(
-  Object.entries(BOARD_HUFFMAN).map(([piece, h]) => [
-    `${h.bits}:${h.code}`,
-    piece as NonKingPieceType | "E",
-  ]),
-);
+// 復号表は (ビット数 << 6) | 符号 をインデックスとする配列で表す (ビット数は最大 6)
+function decodeTableIndex(bits: number, code: number): number {
+  return (bits << 6) | code;
+}
 
-const HAND_DECODE_TABLE = new Map<string, NonKingPieceType>(
-  PIECE_ORDER.map((piece) => {
-    const h = BOARD_HUFFMAN[piece];
-    return [`${h.bits - 1}:${h.code >> 1}`, piece];
-  }),
+const BOARD_DECODE_TABLE: (NonKingPieceType | "E" | undefined)[] = new Array(7 << 6).fill(
+  undefined,
 );
+for (const [piece, h] of Object.entries(BOARD_HUFFMAN)) {
+  BOARD_DECODE_TABLE[decodeTableIndex(h.bits, h.code)] = piece as NonKingPieceType | "E";
+}
+
+const HAND_DECODE_TABLE: (NonKingPieceType | undefined)[] = new Array(7 << 6).fill(undefined);
+for (const piece of PIECE_ORDER) {
+  const h = BOARD_HUFFMAN[piece];
+  HAND_DECODE_TABLE[decodeTableIndex(h.bits - 1, h.code >> 1)] = piece;
+}
+
+const YANE_TO_TS_INDEX = Array.from({ length: 81 }, (_, yane) => yaneIndexToTsIndex(yane));
+const TS_TO_YANE_INDEX = Array.from({ length: 81 }, (_, ts) => tsIndexToYaneIndex(ts));
 
 class BitWriter {
   private cursor = 0;
@@ -110,7 +117,14 @@ class BitWriter {
   }
 
   writeBit(value: number): void {
-    this.writeBits(value & 1, 1);
+    if (this.cursor >= 256) {
+      throw new Error("Packed SFEN overflow: too many bits");
+    }
+    if (value & 1) {
+      const wordIndex = this.cursor >>> 5;
+      this.words[wordIndex] = (this.words[wordIndex] | (1 << (this.cursor & 31))) >>> 0;
+    }
+    this.cursor++;
   }
 
   get bitLength(): number {
@@ -149,7 +163,12 @@ class BitReader {
   }
 
   readBit(): number {
-    return this.readBits(1);
+    if (this.cursor >= this.bitLimit) {
+      throw new Error("Packed SFEN underflow: no more bits");
+    }
+    const bit = (this.words[this.cursor >>> 5] >>> (this.cursor & 31)) & 1;
+    this.cursor++;
+    return bit;
   }
 
   get bitLength(): number {
@@ -294,20 +313,32 @@ function computePieceBoxCounts(
 
 function writeBoardPiece(writer: BitWriter, piece: ParsedPiece | undefined): void {
   if (!piece) {
-    const emptyCode = BOARD_HUFFMAN.E;
-    writer.writeBits(emptyCode.code, emptyCode.bits);
+    writeEmptySquare(writer);
     return;
   }
   if (piece.type === "K") {
     return;
   }
+  writeNonKingBoardPiece(writer, piece.type, piece.promoted, piece.color === "b" ? 0 : 1);
+}
 
-  const code = BOARD_HUFFMAN[piece.type];
+function writeEmptySquare(writer: BitWriter): void {
+  const emptyCode = BOARD_HUFFMAN.E;
+  writer.writeBits(emptyCode.code, emptyCode.bits);
+}
+
+function writeNonKingBoardPiece(
+  writer: BitWriter,
+  type: NonKingPieceType,
+  promoted: boolean,
+  colorBit: number,
+): void {
+  const code = BOARD_HUFFMAN[type];
   writer.writeBits(code.code, code.bits);
-  if (piece.type !== "G") {
-    writer.writeBit(piece.promoted ? 1 : 0);
+  if (type !== "G") {
+    writer.writeBit(promoted ? 1 : 0);
   }
-  writer.writeBit(piece.color === "b" ? 0 : 1);
+  writer.writeBit(colorBit);
 }
 
 function writeHandPiece(writer: BitWriter, type: NonKingPieceType, color: Color): void {
@@ -327,42 +358,22 @@ function writePieceBoxPiece(writer: BitWriter, type: NonKingPieceType): void {
   }
 }
 
-function convertTsColor(color: TsColor): Color {
-  return color === TsColor.BLACK ? "b" : "w";
-}
-
-function convertTsPieceType(type: TsPieceType): { type: PieceType; promoted: boolean } {
-  switch (type) {
-    case TsPieceType.PAWN:
-      return { type: "P", promoted: false };
-    case TsPieceType.PROM_PAWN:
-      return { type: "P", promoted: true };
-    case TsPieceType.LANCE:
-      return { type: "L", promoted: false };
-    case TsPieceType.PROM_LANCE:
-      return { type: "L", promoted: true };
-    case TsPieceType.KNIGHT:
-      return { type: "N", promoted: false };
-    case TsPieceType.PROM_KNIGHT:
-      return { type: "N", promoted: true };
-    case TsPieceType.SILVER:
-      return { type: "S", promoted: false };
-    case TsPieceType.PROM_SILVER:
-      return { type: "S", promoted: true };
-    case TsPieceType.GOLD:
-      return { type: "G", promoted: false };
-    case TsPieceType.BISHOP:
-      return { type: "B", promoted: false };
-    case TsPieceType.HORSE:
-      return { type: "B", promoted: true };
-    case TsPieceType.ROOK:
-      return { type: "R", promoted: false };
-    case TsPieceType.DRAGON:
-      return { type: "R", promoted: true };
-    case TsPieceType.KING:
-      return { type: "K", promoted: false };
-  }
-}
+const TS_PIECE_TYPE_TO_PACKED: Record<TsPieceType, { type: PieceType; promoted: boolean }> = {
+  [TsPieceType.PAWN]: { type: "P", promoted: false },
+  [TsPieceType.PROM_PAWN]: { type: "P", promoted: true },
+  [TsPieceType.LANCE]: { type: "L", promoted: false },
+  [TsPieceType.PROM_LANCE]: { type: "L", promoted: true },
+  [TsPieceType.KNIGHT]: { type: "N", promoted: false },
+  [TsPieceType.PROM_KNIGHT]: { type: "N", promoted: true },
+  [TsPieceType.SILVER]: { type: "S", promoted: false },
+  [TsPieceType.PROM_SILVER]: { type: "S", promoted: true },
+  [TsPieceType.GOLD]: { type: "G", promoted: false },
+  [TsPieceType.BISHOP]: { type: "B", promoted: false },
+  [TsPieceType.HORSE]: { type: "B", promoted: true },
+  [TsPieceType.ROOK]: { type: "R", promoted: false },
+  [TsPieceType.DRAGON]: { type: "R", promoted: true },
+  [TsPieceType.KING]: { type: "K", promoted: false },
+};
 
 function getHandsFromPosition(
   position: ImmutablePosition,
@@ -393,7 +404,7 @@ function readBoardPiece(reader: BitReader): ParsedPiece | undefined {
   let code = 0;
   for (let bits = 1; bits <= 6; bits++) {
     code |= reader.readBit() << (bits - 1);
-    const type = BOARD_DECODE_TABLE.get(`${bits}:${code}`);
+    const type = BOARD_DECODE_TABLE[decodeTableIndex(bits, code)];
     if (!type) {
       continue;
     }
@@ -412,7 +423,7 @@ function readHandPiece(reader: BitReader): ParsedPiece {
   let code = 0;
   for (let bits = 1; bits <= 6; bits++) {
     code |= reader.readBit() << (bits - 1);
-    const type = HAND_DECODE_TABLE.get(`${bits}:${code}`);
+    const type = HAND_DECODE_TABLE[decodeTableIndex(bits, code)];
     if (!type) {
       continue;
     }
@@ -494,7 +505,7 @@ export function sfenToPackedSfen(sfen: string): Uint32Array {
   writer.writeBits(kings.w, 7);
 
   for (let yane = 0; yane < 81; yane++) {
-    const piece = board[yaneIndexToTsIndex(yane)];
+    const piece = board[YANE_TO_TS_INDEX[yane]];
     if (piece?.type === "K") {
       continue;
     }
@@ -529,25 +540,26 @@ export function positionToPackedSfen(position: ImmutablePosition): Uint32Array {
   writer.writeBit(position.color === TsColor.BLACK ? 0 : 1);
   const blackKing = position.board.findKing(TsColor.BLACK);
   const whiteKing = position.board.findKing(TsColor.WHITE);
-  writer.writeBits(blackKing ? tsIndexToYaneIndex(blackKing.index) : 81, 7);
-  writer.writeBits(whiteKing ? tsIndexToYaneIndex(whiteKing.index) : 81, 7);
+  writer.writeBits(blackKing ? TS_TO_YANE_INDEX[blackKing.index] : 81, 7);
+  writer.writeBits(whiteKing ? TS_TO_YANE_INDEX[whiteKing.index] : 81, 7);
 
   for (let yane = 0; yane < 81; yane++) {
-    const piece = position.board.at(Square.all[yaneIndexToTsIndex(yane)]);
+    const piece = position.board.at(Square.all[YANE_TO_TS_INDEX[yane]]);
     if (!piece) {
-      writeBoardPiece(writer, undefined);
+      writeEmptySquare(writer);
       continue;
     }
-    const converted = convertTsPieceType(piece.type);
+    const converted = TS_PIECE_TYPE_TO_PACKED[piece.type];
     if (converted.type === "K") {
       continue;
     }
     boardCounts[converted.type]++;
-    writeBoardPiece(writer, {
-      type: converted.type,
-      color: convertTsColor(piece.color),
-      promoted: converted.promoted,
-    });
+    writeNonKingBoardPiece(
+      writer,
+      converted.type,
+      converted.promoted,
+      piece.color === TsColor.BLACK ? 0 : 1,
+    );
   }
 
   for (const color of ["b", "w"] as const) {
@@ -588,7 +600,7 @@ export function packedSfenToSfen(packedSfen: Uint32Array, ply: number = 1): stri
     if (yaneSq < 0 || yaneSq >= 81) {
       throw new Error(`Invalid packed sfen: king square out of range (${yaneSq})`);
     }
-    const tsSq = yaneIndexToTsIndex(yaneSq);
+    const tsSq = YANE_TO_TS_INDEX[yaneSq];
     if (board[tsSq]) {
       throw new Error(`Invalid packed sfen: duplicated king square (${yaneSq})`);
     }
@@ -596,7 +608,7 @@ export function packedSfenToSfen(packedSfen: Uint32Array, ply: number = 1): stri
   }
 
   for (let yane = 0; yane < 81; yane++) {
-    const tsSq = yaneIndexToTsIndex(yane);
+    const tsSq = YANE_TO_TS_INDEX[yane];
     if (board[tsSq]?.type === "K") {
       continue;
     }
