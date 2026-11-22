@@ -8,7 +8,7 @@ import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
 import { getAppLogger } from "@/background/log.js";
 import { t } from "@/common/i18n/index.js";
-import { bookWasmBase64 } from "./binary.js";
+import { getBookWasmPath } from "@/background/proc/env.js";
 import { decodeEntry, Decoder, encodeEntry, Encoder } from "./codec.js";
 
 type BookWasmExports = {
@@ -30,7 +30,7 @@ let compiledModule: WebAssembly.Module | undefined;
 
 function getModule(): WebAssembly.Module {
   if (!compiledModule) {
-    compiledModule = new WebAssembly.Module(Buffer.from(bookWasmBase64, "base64"));
+    compiledModule = new WebAssembly.Module(fs.readFileSync(getBookWasmPath()));
   }
   return compiledModule;
 }

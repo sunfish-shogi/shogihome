@@ -48,9 +48,10 @@ wasm/book/                         Rust のソース (依存クレート無し)
   src/codec.rs                       JavaScript との受け渡し形式
   src/lib.rs                         エクスポートする関数
 
-scripts/build-book-wasm.mjs        ビルドして binary.ts とライセンス表示を生成する
+scripts/build-book-wasm.mjs        ビルドして book.wasm とライセンス表示を生成する
+scripts/copy-book-wasm.mjs         book.wasm を Electron 版の出力先にコピーする (electron:compile の中で実行)
 src/background/book/wasm/
-  binary.ts                          ビルド成果物 (base64)。生成物だが commit する
+  book.wasm                          ビルド成果物。生成物だが commit する
   codec.ts                           JavaScript との受け渡し形式
   sbk_onthefly.ts                    SBK 形式の On-the-fly モード
 ```
@@ -62,12 +63,26 @@ npm run build:book-wasm
 ```
 
 `wasm/book/` のソースやツールチェーンを変更した場合は、このコマンドで
-`src/background/book/wasm/binary.ts` とライセンス表示を更新して一緒に commit する。
+`src/background/book/wasm/book.wasm` とライセンス表示を更新して一緒に commit する。
 通常のビルド (`npm run build` や `npm run electron:build`) では Rust のツールチェーンは不要。
 
-`npm run build:book-wasm:verify` は、ビルド結果が commit 済みの `binary.ts` とライセンス表示に
+`npm run build:book-wasm:verify` は、ビルド結果が commit 済みの `book.wasm` とライセンス表示に
 バイト単位で一致するかを検証する。CI (`.github/workflows/test.yml` の `book-wasm`) では、
 `wasm/book` で `rustup toolchain install` と `cargo test --locked` を実行した後にこのコマンドを実行する。
+
+## 実行時の読み込み
+
+`book.wasm` は実行時にファイルから読み込む。パスは `src/background/proc/env.ts` の `getBookWasmPath` で解決する。
+
+| 環境                                                     | 実行するコード                                           | `book.wasm` の場所                        |
+| -------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------- |
+| 本番 (`electron:build`)                                  | webpack でまとめた `dist/packed/background.js` (asar 内) | `app.asar/dist/packed/book.wasm`          |
+| 開発 (`electron:serve`)・プレビュー (`electron:preview`) | tsc の出力 (`dist/src`)                                  | `dist/src/background/book/wasm/book.wasm` |
+| 単体テスト                                               | ソース (`src`)                                           | `src/background/book/wasm/book.wasm`      |
+
+tsc は `.wasm` を出力先にコピーしないため、`electron:compile`・`electron:compile:serve` の中で
+`scripts/copy-book-wasm.mjs` が `dist/src` と `dist/packed` にコピーする。
+本番では asar に含めるため、asar の整合性検証の対象になる。
 
 ## ライセンス表示
 

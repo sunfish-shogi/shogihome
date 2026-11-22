@@ -49,6 +49,18 @@ export function getWasmEngineHostPath(): string {
     : path.join(import.meta.dirname, "../usi/wasm/host.js");
 }
 
+// 定跡の WebAssembly モジュール (src/background/book/wasm/book.wasm)。
+// - 本番: webpack でまとめた background.js と同じ dist/packed に置き、asar に含める。
+// - 開発 (electron:serve)・プレビュー (electron:preview): tsc の出力 (dist/src) をそのまま実行するため、
+//   その中の book/wasm/ に置く。
+// - 単体テスト: ソース (src) をそのまま実行するため、ソースの book/wasm/ にあるものを使う。
+// 開発・プレビュー用の配置は scripts/copy-book-wasm.mjs が electron:compile の中で行う。
+export function getBookWasmPath(): string {
+  return isProduction()
+    ? path.join(process.resourcesPath, "app.asar/dist/packed/book.wasm")
+    : path.join(import.meta.dirname, "../book/wasm/book.wasm");
+}
+
 export function getBundlePath(): string {
   return isProduction()
     ? path.join(process.resourcesPath, "app.asar/dist")
