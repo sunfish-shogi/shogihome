@@ -2,6 +2,7 @@ import api, { API } from "@/renderer/ipc/api.js";
 import { defaultAppSettings } from "@/common/settings/app.js";
 import { BookStore } from "@/renderer/store/book.js";
 import { useAppSettings } from "@/renderer/store/settings.js";
+import { useErrorStore } from "@/renderer/store/error.js";
 import { Record } from "tsshogi";
 import { Mocked } from "vitest";
 import { defaultBookSession } from "@/common/book";
@@ -37,6 +38,43 @@ describe("store/book", () => {
       await new Promise((resolve) => setTimeout(resolve));
       expect(mockAPI.openBook).not.toHaveBeenCalled();
       expect(store.visible).toBeFalsy();
+    });
+  });
+
+  describe("errors", () => {
+    it("clear moves when search fails", async () => {
+      mockAPI.searchBookEntry.mockResolvedValue({
+        moves: [{ usi: "7g7f", count: 1 }],
+        comment: "comment",
+      });
+      const store = new BookStore(new Record());
+      await store.reloadBookMoves();
+      expect(store.moves).toHaveLength(1);
+      expect(store.positionProperties.comment).toBe("comment");
+
+      // 定跡が閉じられた場合など
+      mockAPI.searchBookEntry.mockRejectedValue(new Error("closed"));
+      await store.reloadBookMoves();
+      expect(store.moves).toHaveLength(0);
+      expect(store.positionProperties).toEqual({});
+      expect(useErrorStore().hasError).toBeTruthy();
+      useErrorStore().clear();
+    });
+
+    it("reload moves when save fails", async () => {
+      mockAPI.searchBookEntry.mockResolvedValue({ moves: [{ usi: "7g7f", count: 1 }] });
+      const store = new BookStore(new Record());
+      await store.reloadBookMoves();
+      expect(store.moves).toHaveLength(1);
+
+      mockAPI.showSaveBookDialog.mockResolvedValue("/path/to/book.sbk");
+      mockAPI.saveBook.mockRejectedValue(new Error("crashed"));
+      mockAPI.searchBookEntry.mockResolvedValue(null);
+      store.saveBookFile();
+      await vi.waitFor(() => expect(store.moves).toHaveLength(0));
+      expect(mockAPI.saveBook).toHaveBeenCalledTimes(1);
+      expect(useErrorStore().hasError).toBeTruthy();
+      useErrorStore().clear();
     });
   });
 

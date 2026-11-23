@@ -79,6 +79,10 @@ export class BookStore {
         } as BookMoveEx;
       });
     } catch (e) {
+      // 検索に失敗した場合 (処理の異常終了で定跡が閉じられた場合など) に古い内容が残らないよう表示を空にする
+      this._resolvedSfen = undefined;
+      this._positionProperties = {};
+      this._moves = [];
       useErrorStore().add(e);
     }
   }
@@ -153,6 +157,8 @@ export class BookStore {
       })
       .catch((e) => {
         useErrorStore().add(e);
+        // 保存中に処理が異常終了した場合は定跡が閉じられているため、表示を読み込み直す
+        this.reloadBookMoves();
       })
       .finally(() => {
         useBusyState().release();
