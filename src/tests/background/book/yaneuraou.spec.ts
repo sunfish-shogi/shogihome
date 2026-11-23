@@ -140,7 +140,7 @@ describe("background/book/yaneuraou", () => {
       expect(entry?.moves[0].usi).toBe("7g7f");
     });
 
-    // In-memory モードと同じ指し手が得られる
+    // In-memory モードと同じエントリーが得られる
     const positions = [
       {
         sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
@@ -178,21 +178,15 @@ describe("background/book/yaneuraou", () => {
           ].join(newline) + (lastNewline ? newline : "");
         const sfens = positions.map((p) => p.sfen);
 
-        it(`same moves as in-memory: ${label}`, async () => {
+        it(`same entries as in-memory: ${label}`, async () => {
           const inMemory = await loadYaneuraOuBook(Readable.from([content]));
           const results = await searchOnTheFly("entry.db", content, sfens);
-          const withoutComment = (entry?: BookEntry) =>
-            entry?.moves.map((m) => ({ ...m, comment: undefined }));
           for (let i = 0; i < sfens.length; i++) {
-            expect(withoutComment(results[i]), sfens[i]).toEqual(
-              withoutComment(inMemory.entries.get(sfens[i])),
-            );
+            expect(results[i], sfens[i]).toEqual(inMemory.entries.get(sfens[i]));
           }
-        });
-
-        it(`comments: ${label}`, async () => {
-          const [entry] = await searchOnTheFly("entry.db", content, sfens);
-          expect(entry?.comment).toBe("position comment\nmove comment\n");
+          // コメント行は、指し手より前なら局面のコメント、後ろなら直前の指し手のコメントになる
+          expect(results[0]?.comment).toBe("position comment");
+          expect(results[0]?.moves.map((m) => m.comment)).toEqual(["move comment\n", "c"]);
         });
       }
     }
