@@ -232,6 +232,54 @@ describe("background/book/yaneuraou", () => {
       }
     }
 
+    // 次の局面の行が、読み込みの単位 (8 KB) の境界をまたぐ場合も、
+    // 次の局面の行の手前で読み込みを止める
+    it("position line across the read boundary", async () => {
+      const sfen1 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+      const sfen2 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
+      fs.mkdirSync(tmpdir, { recursive: true });
+      const filePath = path.join(tmpdir, "boundary.db");
+      for (const newline of ["\n", "\r\n"]) {
+        for (let padding = 8150; padding <= 8200; padding++) {
+          const content = [
+            "#YANEURAOU-DB2016 1.00",
+            `sfen ${sfen1}`,
+            "#" + "x".repeat(padding),
+            "7g7f none 1 1 1",
+            `sfen ${sfen2}`,
+            "3c3d none 2 2 2",
+            // 読み込みが止まらなかった場合に分かるように、後ろに大きなコメントを置く
+            "#" + "y".repeat(256 * 1024),
+            "",
+          ].join(newline);
+          fs.writeFileSync(filePath, content);
+          const label = `${JSON.stringify(newline)} padding=${padding}`;
+          const file = await fs.promises.open(filePath, "r");
+          try {
+            let bytesRead = 0;
+            const read = file.read.bind(file);
+            file.read = (async (...args: Parameters<typeof read>) => {
+              const result = await read(...args);
+              // 二分探索の読み込み (1 KB 単位) は除く
+              if (result.buffer.byteLength !== 1024) {
+                bytesRead += result.bytesRead;
+              }
+              return result;
+            }) as typeof file.read;
+            const entry = await searchYaneuraOuBookMovesOnTheFly(sfen1, file, content.length);
+            expect(entry?.comment, label).toBe("x".repeat(padding));
+            expect(
+              entry?.moves.map((m) => m.usi),
+              label,
+            ).toEqual(["7g7f"]);
+            expect(bytesRead, label).toBeLessThan(64 * 1024);
+          } finally {
+            await file.close();
+          }
+        }
+      }
+    });
+
     // 局面ごとの大きさを大きく変えて、二分探索の範囲の後半に局面の行が無い場合や、
     // 範囲の中央がちょうど局面の行頭になる場合を作る
     for (let seed = 1; seed <= 20; seed++) {
