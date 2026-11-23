@@ -695,7 +695,7 @@ export const vi: Texts = {
   flippedBook: "Sử dụng book lật ngược",
   bookBackend: "Phương thức xử lý định thức",
   bookBackendDescription:
-    "Phương thức mới đọc và lưu tệp định thức nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phương thức cũ. Hiện tại, phương thức mới chỉ xử lý định dạng SBK và luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
+    "Phương thức mới đọc và lưu tệp định thức nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phương thức cũ. Phương thức mới luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
   bookBackendNew: "Phương thức mới (nhanh)",
   bookBackendLegacy: "Phương thức cũ",
   addBookMoves: "Thêm định thức",
