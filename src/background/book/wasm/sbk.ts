@@ -1,4 +1,4 @@
-// SBK 形式の On-the-fly モードの WebAssembly 版 (wasm/book)。
+// SBK 形式の WebAssembly 版 (wasm/book)。常に JavaScript 版の On-the-fly モードと同じ方式で動作する。
 // 元のファイルの内容と索引を WebAssembly のメモリ上に保持し、検索と書き出しを行う。
 // 編集内容 (in-memory のエントリー) は JavaScript 側で保持し、書き出す時に渡す。
 
@@ -63,7 +63,7 @@ export class BookWasmCrashError extends Error {
   }
 }
 
-export class SbkWasmOnTheFly {
+export class SbkWasmBook {
   private raw: BookWasmExports;
   private exports: BookWasmExports;
   private crashed?: BookWasmCrashError;
@@ -117,15 +117,15 @@ export class SbkWasmOnTheFly {
   }
 
   /** 元のファイルが無い空の定跡を作る */
-  static create(): SbkWasmOnTheFly {
-    const book = new SbkWasmOnTheFly();
+  static create(): SbkWasmBook {
+    const book = new SbkWasmBook();
     book.exports.sbk_create();
     return book;
   }
 
   /** SBK ファイルを開く */
-  static async open(path: string): Promise<SbkWasmOnTheFly> {
-    const book = new SbkWasmOnTheFly();
+  static async open(path: string): Promise<SbkWasmBook> {
+    const book = new SbkWasmBook();
     const file = await fs.promises.open(path, "r");
     try {
       const { size } = await file.stat();

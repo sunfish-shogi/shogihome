@@ -1,4 +1,4 @@
-//! SBK 形式の On-the-fly 処理。
+//! SBK 形式の処理 (JavaScript 版の On-the-fly モードと同じ方式)。
 //! src/background/book/sbk.ts の loadSbkBookOnTheFly・searchSbkBookEntryOnTheFly・
 //! storeSbkBookOnTheFly の移植。同じ入力に対して同じ結果 (検索結果・書き出したバイト列) を得る。
 
@@ -72,7 +72,7 @@ struct Row {
     offset: u32,
 }
 
-pub struct SbkOnTheFly {
+pub struct SbkBook {
     data: Vec<u8>,
     /// Packed SFEN 順に整列した行
     rows: Vec<Row>,
@@ -225,10 +225,10 @@ struct Frame {
     last_move: Option<crate::moves::Move>,
 }
 
-impl SbkOnTheFly {
+impl SbkBook {
     /// 空の定跡 (元のファイルが無い場合)
-    pub fn empty() -> SbkOnTheFly {
-        SbkOnTheFly {
+    pub fn empty() -> SbkBook {
+        SbkBook {
             data: Vec::new(),
             rows: Vec::new(),
             offsets: Vec::new(),
@@ -239,7 +239,7 @@ impl SbkOnTheFly {
     }
 
     /// loadSbkBookOnTheFly に相当する
-    pub fn open(data: Vec<u8>) -> Result<SbkOnTheFly> {
+    pub fn open(data: Vec<u8>) -> Result<SbkBook> {
         // scanSBookTopLevel と buildStateOffsetTable
         let mut author = None;
         let mut description = None;
@@ -357,7 +357,7 @@ impl SbkOnTheFly {
             .collect();
         sort_rows(&mut rows);
         let first_non_zero_row = rows.iter().take_while(|r| r.packed == [0; 8]).count();
-        Ok(SbkOnTheFly {
+        Ok(SbkBook {
             data,
             rows,
             offsets,
@@ -520,7 +520,7 @@ pub struct SbkWriter {
 }
 
 impl SbkWriter {
-    fn new(book: &SbkOnTheFly, patches: Vec<(String, Entry)>) -> Result<SbkWriter> {
+    fn new(book: &SbkBook, patches: Vec<(String, Entry)>) -> Result<SbkWriter> {
         let mut patch_index = HashMap::new();
         for (i, (sfen, _)) in patches.iter().enumerate() {
             patch_index.insert(sfen.clone(), i);
@@ -676,11 +676,11 @@ impl SbkWriter {
         })
     }
 
-    pub fn total(&self, book: &SbkOnTheFly) -> usize {
+    pub fn total(&self, book: &SbkBook) -> usize {
         book.state_count() + self.new_sfens.len()
     }
 
-    fn base_state(&self, book: &SbkOnTheFly, id: usize) -> Result<SBookState> {
+    fn base_state(&self, book: &SbkBook, id: usize) -> Result<SBookState> {
         let offset = book.offsets[id];
         let Some(&p) = self.offset_to_patch.get(&offset) else {
             // 元の SBK を変更無しで書き出す (BoardKey と HandKey は取り除く)
@@ -719,7 +719,7 @@ impl SbkWriter {
     /// 最大 max_states 件の State を out に書き出し、書き出した件数を返す
     pub fn write_next(
         &mut self,
-        book: &SbkOnTheFly,
+        book: &SbkBook,
         max_states: usize,
         out: &mut Vec<u8>,
     ) -> Result<usize> {

@@ -53,7 +53,7 @@ scripts/copy-book-wasm.mjs         book.wasm を Electron 版の出力先にコ�
 src/background/book/wasm/
   book.wasm                          ビルド成果物。生成物だが commit する
   codec.ts                           JavaScript との受け渡し形式
-  sbk_onthefly.ts                    SBK 形式の On-the-fly モード
+  sbk.ts                             SBK 形式
 ```
 
 ## ビルド
@@ -142,7 +142,7 @@ JavaScript 版の廃止に備えて、テストを次の 4 種類に分けてい
 | ① 共通の振る舞い           | `sbk_backends.spec.ts`                                     | `backends` から `"js"` を外す |
 | ② 期待出力の固定           | `sbk_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`) | そのまま残す                  |
 | ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)          | そのまま残す                  |
-| ③ 新旧の一致               | `sbk_onthefly_wasm.spec.ts`                                | 削除する                      |
+| ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`                             | 削除する                      |
 | ④ JavaScript 版のみ        | `index.spec.ts` の `[js]` のテスト、`sbk.spec.ts` など     | 削除する                      |
 
 ②の期待値ファイルは、③で JavaScript 版 (On-the-fly モード) の出力と一致することを確かめた入力と操作で作っている。
@@ -159,7 +159,7 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 
 ## 関数
 
-インスタンスごとに 1 冊の定跡を保持する。`sbk_onthefly.ts` は定跡ごとにインスタンスを作り、
+インスタンスごとに 1 冊の定跡を保持する。`sbk.ts` は定跡ごとにインスタンスを作り、
 参照されなくなると GC によってメモリが解放される。
 
 | 関数                                      | 説明                                                                           |

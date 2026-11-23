@@ -61,7 +61,7 @@ import {
   storeYbbBook,
   YbbOnTheFly,
 } from "./ybb.js";
-import { BookWasmCrashError, isBookWasmAvailable, SbkWasmOnTheFly } from "./wasm/sbk_onthefly.js";
+import { BookWasmCrashError, isBookWasmAvailable, SbkWasmBook } from "./wasm/sbk.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook | WasmSbkBook;
 
@@ -93,7 +93,7 @@ type WasmSbkBook = {
   path?: string; // 元のファイル (新規作成した定跡の場合は undefined)
   saved: boolean;
   entries: Map<string, BookEntry>;
-  sbkWasm: SbkWasmOnTheFly;
+  sbkWasm: SbkWasmBook;
   sbkAuthor?: string;
   sbkDescription?: string;
 };
@@ -228,7 +228,7 @@ function emptyBook(format: BookFormat = "yane2016", backend?: BookBackend): Book
       format: "sbk",
       saved: true,
       entries: new Map<string, BookEntry>(),
-      sbkWasm: SbkWasmOnTheFly.create(),
+      sbkWasm: SbkWasmBook.create(),
     };
   }
   switch (format) {
@@ -372,9 +372,9 @@ async function openBookOnTheFly(
 
 async function openSbkBookWasm(session: number, path: string): Promise<void> {
   getAppLogger().info("Loading book with WebAssembly: path=%s", path);
-  let sbkWasm: SbkWasmOnTheFly;
+  let sbkWasm: SbkWasmBook;
   try {
-    sbkWasm = await SbkWasmOnTheFly.open(path);
+    sbkWasm = await SbkWasmBook.open(path);
   } catch (e) {
     if (e instanceof BookWasmCrashError) {
       // 開いていた定跡はそのまま残る
