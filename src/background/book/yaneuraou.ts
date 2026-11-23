@@ -5,6 +5,7 @@ import { Readable, Writable } from "node:stream";
 import { YaneBook, BookEntry, mergeBookEntries } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
 import { BookMove } from "@/common/book.js";
+import { t } from "@/common/i18n/index.js";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
 
@@ -103,6 +104,19 @@ function appendCommentLine(base: string, next: string): string {
   return base ? base + "\n" + next : next;
 }
 
+// 局面の行に続くコメント行・指し手の行をエントリーに追加する。
+// コメント行は、指し手より前であれば局面のコメント、後ろであれば直前の指し手のコメントとする。
+function appendLineToEntry(entry: BookEntry, line: CommentLine | MoveLine): void {
+  if (line.type === "move") {
+    entry.moves.push(line.move);
+  } else if (entry.moves.length === 0) {
+    entry.comment = appendCommentLine(entry.comment || "", line.comment);
+  } else {
+    const move = entry.moves[entry.moves.length - 1];
+    move.comment = appendCommentLine(move.comment || "", line.comment);
+  }
+}
+
 async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry) => Promise<void>) {
   const reader = readline.createInterface({ input, crlfDelay: Infinity });
   try {
@@ -119,14 +133,7 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
             throw new Error("Unsupported book header: " + line);
           }
           if (current) {
-            if (current[1].moves.length === 0) {
-              const bookEntry = current[1];
-              bookEntry.comment = appendCommentLine(bookEntry.comment || "", parsed.comment);
-            } else {
-              const moves = current[1].moves;
-              const move = moves[moves.length - 1];
-              move.comment = appendCommentLine(move.comment || "", parsed.comment);
-            }
+            appendLineToEntry(current[1], parsed);
           }
           break;
         case "position":
@@ -137,7 +144,7 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
           break;
         case "move":
           if (current) {
-            current[1].moves.push(parsed.move);
+            appendLineToEntry(current[1], parsed);
           } else {
             getAppLogger().warn("Move line without position line: line=%d", lineNo);
           }
@@ -224,6 +231,9 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
   await end;
 }
 
+// 元の定跡ファイルが局面順に整列されていない場合のエラー
+export class UnorderedBookError extends Error {}
+
 export async function mergeYaneuraOuBook(
   input: Readable,
   bookPatch: YaneBook,
@@ -242,8 +252,15 @@ export async function mergeYaneuraOuBook(
   const patchKeys = Array.from(bookPatch.entries.keys()).sort();
   let patchIndex = 0;
   let lastPatchKey = "";
+  let prevSFEN: string | undefined;
   try {
     await load(input, async (sfen, entry) => {
+      // 整列されていないと正しくマージできない (開く時には先頭しか検査していない)
+      // 同じ局面が続く (重複している) 場合は許容する
+      if (prevSFEN !== undefined && sfen < prevSFEN) {
+        throw new UnorderedBookError(t.cannotSaveUnorderedOnTheFlyBook);
+      }
+      prevSFEN = sfen;
       for (; patchIndex < patchKeys.length; patchIndex++) {
         const patchKey = patchKeys[patchIndex];
         if (patchKey > sfen) {
@@ -266,7 +283,11 @@ export async function mergeYaneuraOuBook(
     }
     output.end();
   } catch (error) {
-    output.destroy(new Error(`Failed to merge YaneuraOu book: ${error}`));
+    output.destroy(
+      error instanceof UnorderedBookError
+        ? error
+        : new Error(`Failed to merge YaneuraOu book: ${error}`),
+    );
   }
   await end;
 }
@@ -347,9 +368,11 @@ async function binarySearch(
     // 範囲の中央を読み込む
     const mid = Math.floor((begin + end) / 2);
 
-    // SFEN の開始位置を探す
-    let head = mid;
+    // mid 以降で最初の SFEN の開始位置を探す
+    // (mid がちょうど行頭の場合も見つけられるように、直前の改行から探す)
+    let head = Math.max(mid - 1, 0);
     let sfenOffset = -1;
+    let lineStart = -1;
     while (head < end) {
       const read = await file.read(buffer, 0, bufferSize, head);
       if (read.bytesRead === 0) {
@@ -358,29 +381,100 @@ async function binarySearch(
       const offset = findSFENMarker(buffer, read.bytesRead, head === 0);
       if (offset >= 0) {
         sfenOffset = head + offset;
+        // ファイル先頭の BOM の後ろにある場合は、行の先頭はファイルの先頭とみなす
+        lineStart = head === 0 && offset === 3 && buffer[0] === 0xef ? 0 : sfenOffset;
         break;
       }
       head += bufferSize - (SFENMarker.length + 1);
     }
-    if (sfenOffset < 0) {
-      return [-1, 0];
+    if (sfenOffset < 0 || lineStart >= end) {
+      // [mid, end) に SFEN が無いので、探している局面があるとすれば [begin, mid) にある
+      end = mid;
+      continue;
     }
 
     // SFEN を読み込む
     const read = await file.read(buffer, 0, bufferSize, sfenOffset);
     const sfenLine = readLineFromBuffer(buffer, read.bytesRead);
     const [currentSFEN, ply] = normalizeSFEN(sfenLine);
+    // 次の行の開始位置 (改行が CRLF の場合は 2 バイト進める)
+    let nextLine = sfenOffset + sfenLine.length + 1;
+    if (buffer[sfenLine.length] === CR && buffer[sfenLine.length + 1] === LF) {
+      nextLine++;
+    }
     if (sfen === currentSFEN) {
-      return [sfenOffset + sfenLine.length + 1, ply];
+      return [nextLine, ply];
     }
 
     if (sfen < currentSFEN) {
       end = mid;
     } else {
-      begin = sfenOffset + sfenLine.length + 1;
+      begin = nextLine;
     }
   }
   return [-1, 0];
+}
+
+// data の中で局面の行 ("sfen " で始まる行) の開始位置を探す
+// isLineHead は data の先頭が行頭であるかどうか
+function findPositionLine(data: Buffer, isLineHead: boolean): number {
+  for (let i = 0; i + SFENMarker.length <= data.length; i++) {
+    const lineHead = i === 0 ? isLineHead : data[i - 1] === LF || data[i - 1] === CR;
+    if (lineHead && checkSFENMarker(i, data)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+// offset から次の局面の行の手前 (またはファイルの末尾) までを行単位で読み込む
+async function readEntryLines(
+  file: fs.promises.FileHandle,
+  size: number,
+  offset: number,
+): Promise<string[]> {
+  const chunkSize = 8 * 1024;
+  const chunks: Buffer[] = [];
+  let length = 0; // 読み込んだバイト数
+  let entryEnd = -1;
+  // チャンクの境界をまたぐ局面の行も見つけられるように、前のチャンクの末尾を含めて探す
+  let tail = Buffer.alloc(0);
+  let position = offset;
+  while (position < size) {
+    const buffer = Buffer.alloc(Math.min(chunkSize, size - position));
+    const read = await file.read(buffer, 0, buffer.length, position);
+    if (read.bytesRead === 0) {
+      break;
+    }
+    const chunk = buffer.subarray(0, read.bytesRead);
+    position += chunk.length;
+    const scan = Buffer.concat([tail, chunk]);
+    // 前のチャンクの末尾から始まる局面の行は前回見つかっているので、先頭が行頭になるのは最初だけ
+    const found = findPositionLine(scan, length === 0);
+    chunks.push(chunk);
+    if (found >= 0) {
+      entryEnd = length - tail.length + found;
+      length += chunk.length;
+      break;
+    }
+    length += chunk.length;
+    tail = scan.subarray(Math.max(scan.length - SFENMarker.length, 0));
+  }
+  // 連結は最後に 1 回だけ行う
+  const text = Buffer.concat(chunks, length).toString(
+    "utf-8",
+    0,
+    entryEnd >= 0 ? entryEnd : length,
+  );
+  if (!text) {
+    return [];
+  }
+  // readline と同じく LF・CRLF・CR を改行とみなす
+  const lines = text.split(/\r\n|\n|\r/);
+  if (lines[lines.length - 1] === "") {
+    lines.pop(); // 最後の改行の後ろは行ではない
+  }
+  return lines;
 }
 
 export async function searchYaneuraOuBookMovesOnTheFly(
@@ -393,30 +487,13 @@ export async function searchYaneuraOuBookMovesOnTheFly(
     return;
   }
 
-  const bufferSize = 8 * 1024;
-  const buffer = Buffer.alloc(bufferSize);
-  const read = await file.read(buffer, 0, bufferSize, offset);
-  if (read.bytesRead === 0) {
-    return;
-  }
-  let comment = "";
-  const moves: BookMove[] = [];
-  let i = 0;
-  while (true) {
-    const moveLine = readLineFromBuffer(buffer, read.bytesRead, i);
-    i += moveLine.length + 1;
-    if (i >= read.bytesRead) {
+  const entry: BookEntry = { type: "normal", comment: "", moves: [], minPly: ply };
+  for (const line of await readEntryLines(file, size, offset)) {
+    const parsed = parseLine(line);
+    if (parsed.type === "position") {
       break;
     }
-    const parsed = parseLine(moveLine);
-    if (parsed.type === "comment") {
-      comment = appendCommentLine(comment, parsed.comment);
-      continue;
-    } else if (parsed.type === "move") {
-      moves.push(parsed.move);
-    } else {
-      break;
-    }
+    appendLineToEntry(entry, parsed);
   }
-  return { type: "normal", comment, moves, minPly: ply };
+  return entry;
 }
