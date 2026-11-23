@@ -347,9 +347,11 @@ async function binarySearch(
     // 範囲の中央を読み込む
     const mid = Math.floor((begin + end) / 2);
 
-    // SFEN の開始位置を探す
-    let head = mid;
+    // mid 以降で最初の SFEN の開始位置を探す
+    // (mid がちょうど行頭の場合も見つけられるように、直前の改行から探す)
+    let head = Math.max(mid - 1, 0);
     let sfenOffset = -1;
+    let lineStart = -1;
     while (head < end) {
       const read = await file.read(buffer, 0, bufferSize, head);
       if (read.bytesRead === 0) {
@@ -358,12 +360,16 @@ async function binarySearch(
       const offset = findSFENMarker(buffer, read.bytesRead, head === 0);
       if (offset >= 0) {
         sfenOffset = head + offset;
+        // ファイル先頭の BOM の後ろにある場合は、行の先頭はファイルの先頭とみなす
+        lineStart = head === 0 && offset === 3 && buffer[0] === 0xef ? 0 : sfenOffset;
         break;
       }
       head += bufferSize - (SFENMarker.length + 1);
     }
-    if (sfenOffset < 0) {
-      return [-1, 0];
+    if (sfenOffset < 0 || lineStart >= end) {
+      // [mid, end) に SFEN が無いので、探している局面があるとすれば [begin, mid) にある
+      end = mid;
+      continue;
     }
 
     // SFEN を読み込む
