@@ -1,5 +1,37 @@
+import fs from "node:fs";
+import path from "node:path";
 import { Readable } from "node:stream";
-import { loadYaneuraOuBook, validateBookPositionOrdering } from "@/background/book/yaneuraou.js";
+import {
+  loadYaneuraOuBook,
+  searchYaneuraOuBookMovesOnTheFly,
+  validateBookPositionOrdering,
+} from "@/background/book/yaneuraou.js";
+import { BookEntry } from "@/background/book/types.js";
+import { getTempPathForTesting } from "@/background/proc/env.js";
+
+const tmpdir = path.join(getTempPathForTesting(), "book/yaneuraou");
+
+// 内容を一時ファイルに書き出して On-the-fly モードで検索する
+async function searchOnTheFly(
+  name: string,
+  content: string,
+  sfens: string[],
+): Promise<(BookEntry | undefined)[]> {
+  fs.mkdirSync(tmpdir, { recursive: true });
+  const filePath = path.join(tmpdir, name);
+  fs.writeFileSync(filePath, content);
+  const file = await fs.promises.open(filePath, "r");
+  try {
+    const size = (await file.stat()).size;
+    const results: (BookEntry | undefined)[] = [];
+    for (const sfen of sfens) {
+      results.push(await searchYaneuraOuBookMovesOnTheFly(sfen, file, size));
+    }
+    return results;
+  } finally {
+    await file.close();
+  }
+}
 
 describe("background/book/yaneuraou", () => {
   describe("loadYaneuraOuBook", () => {
@@ -92,5 +124,55 @@ describe("background/book/yaneuraou", () => {
       ]);
       expect(await validateBookPositionOrdering(input)).toBeFalsy();
     });
+  });
+
+  describe("searchYaneuraOuBookMovesOnTheFly", () => {
+    it("single position", async () => {
+      const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
+      const content = [
+        "#YANEURAOU-DB2016 1.00",
+        `sfen ${sfen}`,
+        "7g7f none 10 5 3",
+        "2g2f none 20 5 1",
+        "",
+      ].join("\n");
+      const [entry] = await searchOnTheFly("single.db", content, [sfen]);
+      expect(entry?.moves[0].usi).toBe("7g7f");
+    });
+
+    // 局面ごとの大きさを大きく変えて、二分探索の範囲の後半に局面の行が無い場合や、
+    // 範囲の中央がちょうど局面の行頭になる場合を作る
+    for (let seed = 1; seed <= 20; seed++) {
+      it(`find every position: seed=${seed}`, async () => {
+        let x = seed;
+        const rnd = (m: number) => {
+          x = (Math.imul(x, 1103515245) + 12345) & 0x7fffffff;
+          return x % m;
+        };
+        const sfens: string[] = [];
+        // ファイルの先頭は、ヘッダーの有無と BOM の有無の組み合わせを試す
+        const bom = seed % 2 === 0 ? "\uFEFF" : "";
+        const lines = seed % 4 < 2 ? [bom + "#YANEURAOU-DB2016 1.00"] : [];
+        const n = 1 + rnd(40);
+        for (let i = 0; i < n; i++) {
+          const sfen = `9/9/9/9/9/9/9/9/9 b ${String(1000 + i)}P 1`;
+          sfens.push(sfen);
+          lines.push((lines.length === 0 ? bom : "") + `sfen ${sfen}`);
+          const moves = rnd(4) === 0 ? 1 + rnd(200) : 1 + rnd(3);
+          for (let j = 0; j < moves; j++) {
+            lines.push(`7g7f none ${i} ${j} 1`);
+          }
+        }
+        // 末尾の局面 (検索しない)
+        lines.push("sfen 9/9/9/9/9/9/9/9/9 b 9999P 1", "7g7f none 0 0 1");
+        const content = lines.join("\n") + "\n";
+        const notExists = "9/9/9/9/9/9/9/9/9 b 0999P 1";
+        const results = await searchOnTheFly(`seed${seed}.db`, content, [...sfens, notExists]);
+        for (let i = 0; i < n; i++) {
+          expect(results[i]?.moves[0].score, sfens[i]).toBe(i);
+        }
+        expect(results[n]).toBeUndefined();
+      });
+    }
   });
 });
