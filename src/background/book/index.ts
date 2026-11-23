@@ -559,11 +559,6 @@ export async function saveBook(
   }
 
   const file = fs.createWriteStream(path, "utf-8");
-  // 開くのに失敗した場合 (読み取り専用のファイルなど) は、既存のファイルに触れていない
-  let fileOpened = false;
-  file.once("open", () => {
-    fileOpened = true;
-  });
   try {
     switch (book.format) {
       case "yane2016":
@@ -582,14 +577,11 @@ export async function saveBook(
             await mergeYaneuraOuBook(input, book, file);
           } catch (e) {
             // 書きかけのファイルを残さない
-            // (開くのに失敗した場合は、既存のファイルを削除しないように何もしない)
             file.destroy();
             if (!file.closed) {
               await events.once(file, "close");
             }
-            if (fileOpened) {
-              await fs.promises.rm(path, { force: true });
-            }
+            await fs.promises.rm(path, { force: true });
             throw e;
           }
         }

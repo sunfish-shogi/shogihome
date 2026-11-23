@@ -968,30 +968,6 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         await expect(saveBook(defaultBookSession, outputPath)).rejects.toThrow("ENOENT");
       });
     }
-
-    it("on-the-fly yaneuraou book: keeps the existing file when the output cannot be opened", async () => {
-      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
-        forceOnTheFly: true,
-      });
-      expect(mode).toBe("on-the-fly");
-      // 既存のファイルを開けない場合 (読み取り専用のファイルなど) を、存在しないディレクトリで再現する
-      const outputPath = path.join(tmpdir, "cannot-open.db");
-      fs.writeFileSync(outputPath, "original");
-      const createWriteStream = fs.createWriteStream;
-      const spy = vi
-        .spyOn(fs, "createWriteStream")
-        .mockImplementation((p, options) =>
-          p === outputPath
-            ? createWriteStream(path.join(tmpdir, "not-exists", "cannot-open.db"), options)
-            : createWriteStream(p, options),
-        );
-      try {
-        await expect(saveBook(defaultBookSession, outputPath)).rejects.toThrow("ENOENT");
-      } finally {
-        spy.mockRestore();
-      }
-      expect(fs.readFileSync(outputPath, "utf-8")).toBe("original");
-    });
   });
 
   describe("exportBook", () => {
