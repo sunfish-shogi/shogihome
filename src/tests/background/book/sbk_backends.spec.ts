@@ -8,6 +8,7 @@ import {
   closeBookSession,
   exportBook,
   getBookInfo,
+  importBookMoves,
   openBook,
   openBookAsNewSession,
   removeBookMove,
@@ -16,8 +17,10 @@ import {
   updateBookMove,
   updateBookPositionComment,
 } from "@/background/book/index.js";
+import { SBook } from "@/background/book/proto/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { BookBackend, defaultBookSession } from "@/common/book.js";
+import { defaultBookImportSettings, SourceType } from "@/common/settings/book.js";
 import { editBook, initialSfen, sbkFields, snapshotBook } from "@/tests/mock/book_ops.js";
 
 const tmpdir = path.join(getTempPathForTesting(), "book/sbk-backends");
@@ -148,6 +151,41 @@ describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
       const reloaded = await searchBookEntry(session, after76);
       expect(reloaded?.moves.map((m) => m.usi)).toEqual(child?.moves.map((m) => m.usi));
       expect(reloaded?.games).toBe(child?.games);
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  // 棋譜の取り込みで作られるパッチは元の指し手を含まないが、指し手を削除したことにはならない
+  it("import records and save", async () => {
+    const after76 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+    const sourcePath = "src/tests/testdata/book/shogigui02.sbk";
+    await openBook(defaultBookSession, sourcePath, { backend, forceOnTheFly: true });
+    const child = await searchBookEntry(defaultBookSession, after76);
+    const recordPath = out("import-records.sfen");
+    fs.writeFileSync(recordPath, "position startpos moves 1g1f resign\n");
+    await importBookMoves(defaultBookSession, {
+      ...defaultBookImportSettings(),
+      sourceType: SourceType.FILE,
+      sourceRecordFile: recordPath,
+      maxPly: 1,
+    });
+    await saveBook(defaultBookSession, out("imported.sbk"));
+
+    // 編集していない局面に Position を書き出さない (追加された遷移先の State は Position を持たない)
+    const positions = (sbk: Buffer) =>
+      SBook.decode(sbk)
+        .BookStates.map((s) => s.Position)
+        .filter((p) => p);
+    expect(positions(fs.readFileSync(out("imported.sbk")))).toEqual(
+      positions(fs.readFileSync(sourcePath)),
+    );
+    const { session } = await openBookAsNewSession(out("imported.sbk"), { backend });
+    try {
+      const initial = await searchBookEntry(session, initialSfen);
+      expect(initial?.moves.map((m) => m.usi)).toEqual(["7g7f", "2g2f", "2h7h", "5g5f", "1g1f"]);
+      const reloaded = await searchBookEntry(session, after76);
+      expect(reloaded?.moves.map((m) => m.usi)).toEqual(child?.moves.map((m) => m.usi));
     } finally {
       closeBookSession(session);
     }
