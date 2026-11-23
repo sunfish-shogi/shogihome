@@ -898,7 +898,9 @@ async function storeSbkBookOnTheFly(
         state.HandKey = 0;
       } else if (patch.type === "normal") {
         // in-memory のデータを書き出す
-        const withPosition = rootSfens.has(sfen);
+        // 元の State が Position を持つ場合 (ルート局面) はそれを維持する
+        const original = await decodeStateAtFile(book.rawData, offset);
+        const withPosition = !!original.Position || rootSfens.has(sfen);
         const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
         state = entryToSbkState(id, patch, sfen, usiToNextId, withPosition);
       } else {
