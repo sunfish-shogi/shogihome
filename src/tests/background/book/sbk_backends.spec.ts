@@ -13,6 +13,7 @@ import {
   saveBook,
   searchBookEntry,
   updateBookMove,
+  updateBookPositionComment,
 } from "@/background/book/index.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { BookBackend, defaultBookSession } from "@/common/book.js";
@@ -102,6 +103,29 @@ describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
     const { session } = await openBookAsNewSession(out("exported.sbk"), { backend });
     try {
       expect(sbkFields(await snapshotBook(session))).toEqual(sbkFields(edited));
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  // 先頭が平手以外のルート局面と、先頭以外にあるルート局面を編集して保存しても、
+  // それぞれの局面 (Position) が維持される
+  it("edit root states and save", async () => {
+    const handicapRoot = "lnsgkgsnl/7b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1";
+    await openBook(defaultBookSession, "src/tests/testdata/book/two-roots.sbk", { backend });
+    await updateBookPositionComment(defaultBookSession, handicapRoot, "飛車落ち");
+    await updateBookMove(defaultBookSession, handicapRoot, { usi: "3c3d", count: 2 });
+    await updateBookPositionComment(defaultBookSession, initialSfen, "平手");
+    await saveBook(defaultBookSession, out("two-roots.sbk"));
+
+    const { session } = await openBookAsNewSession(out("two-roots.sbk"), { backend });
+    try {
+      const handicap = await searchBookEntry(session, handicapRoot);
+      expect(handicap?.comment).toBe("飛車落ち");
+      expect(handicap?.moves.map((m) => m.usi)).toEqual(["4a3b", "3c3d"]);
+      const standard = await searchBookEntry(session, initialSfen);
+      expect(standard?.comment).toBe("平手");
+      expect(standard?.moves.map((m) => m.usi)).toEqual(["7g7f"]);
     } finally {
       closeBookSession(session);
     }

@@ -670,7 +670,11 @@ impl SbkWriter {
         let usi_to_next_id = Some(&self.usi_to_next_id[p]);
         if !patch.patch {
             // in-memory のデータを書き出す
-            return entry_to_state(id as i32, patch, sfen, usi_to_next_id, self.root_sfens.contains(sfen));
+            // 元の State が Position を持つ場合 (ルート局面) はそれを維持する
+            let original = decode_state_at_file(&book.data, offset as usize)?;
+            let with_position = !original.position.as_deref().unwrap_or("").is_empty()
+                || self.root_sfens.contains(sfen);
+            return entry_to_state(id as i32, patch, sfen, usi_to_next_id, with_position);
         }
         // 元の SBK にパッチを当てて書き出す
         let state = decode_state_at_file(&book.data, offset as usize)?;
