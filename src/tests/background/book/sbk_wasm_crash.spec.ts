@@ -11,7 +11,8 @@ import {
   searchBookEntry,
   updateBookMove,
 } from "@/background/book/index.js";
-import { BookWasmCrashError, MAX_SBK_FILE_SIZE, SbkWasmBook } from "@/background/book/wasm/sbk.js";
+import { BookWasmCrashError } from "@/background/book/wasm/instance.js";
+import { MAX_SBK_FILE_SIZE, SbkWasmBook } from "@/background/book/wasm/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookSession } from "@/common/book.js";
 import { t } from "@/common/i18n/index.js";

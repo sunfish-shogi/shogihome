@@ -983,9 +983,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(fs.readFileSync(outPath, "utf-8")).toBe(expected);
     });
 
-    it("yane2016 (on-the-fly) → sbk: moves preserved", async () => {
+    // [JavaScript 版のみ] WebAssembly 版はやねうら王形式から他の形式への変換に未対応
+    it("[js] yane2016 (on-the-fly) → sbk: moves preserved", async () => {
       const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
         yaneOnTheFlyThresholdMB: 0.0001,
+        backend: "js",
       });
       expect(mode).toBe("on-the-fly");
 
@@ -1023,6 +1025,18 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       });
       const outPath = path.join(tmpdir, "export-sbk-wasm-to-yane.db");
       await expect(exportBook(defaultBookSession, outPath, "yane2016")).rejects.toThrow(
+        "Not supported yet",
+      );
+    });
+
+    // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
+    it("[wasm] yane2016 (on-the-fly) → sbk: not supported yet", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+        forceOnTheFly: true,
+        backend: "wasm",
+      });
+      const outPath = path.join(tmpdir, "export-yane-wasm-to-sbk.sbk");
+      await expect(exportBook(defaultBookSession, outPath, "sbk")).rejects.toThrow(
         "Not supported yet",
       );
     });

@@ -124,6 +124,7 @@ describe("background/book on-the-fly", async () => {
   // WebAssembly 版が実装済みの形式は両方の実装で測る
   const targets: { format: BookFormat; backend: BookBackend }[] = [
     { format: "yane2016", backend: "js" },
+    { format: "yane2016", backend: "wasm" },
     { format: "apery", backend: "js" },
     { format: "sbk", backend: "js" },
     { format: "sbk", backend: "wasm" },
