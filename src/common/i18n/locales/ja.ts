@@ -678,6 +678,11 @@ export const ja: Texts = {
   addMoves: "指し手追加",
   export: "エクスポート",
   flippedBook: "反転も検索",
+  bookBackend: "定跡の処理方式",
+  bookBackendDescription:
+    "新方式は定跡ファイルの読み込みや保存が高速です。問題が起きた場合は従来方式に切り替えてください。新方式では On-the-fly 閾値によらず常に On-the-fly モードで読み込みます。",
+  bookBackendNew: "新方式 (高速)",
+  bookBackendLegacy: "従来方式",
   addBookMoves: "定跡手追加",
   fromCurrentRecord: "現在の棋譜から",
   fromFile: "ファイルから",
@@ -902,6 +907,16 @@ export const ja: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`,
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く途中で処理が異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を従来方式に切り替えると開ける場合があります。",
+  wasmBookCrashedAndClosed: "定跡の処理が異常終了したため、定跡を閉じました。",
+  wasmBookCrashedWhileSavingAndClosed: "定跡の保存中に処理が異常終了したため、定跡を閉じました。",
+  unsavedBookChangesWereLost: "保存していない変更は失われました。",
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。",
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`,
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。",

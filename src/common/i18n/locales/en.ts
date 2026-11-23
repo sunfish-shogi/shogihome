@@ -678,6 +678,11 @@ export const en: Texts = {
   addMoves: "Add Moves",
   export: "Export",
   flippedBook: "Flipped Book",
+  bookBackend: "Book Processing",
+  bookBackendDescription:
+    "The new method loads and saves book files faster. If you encounter a problem, switch to the previous method. The new method always loads books in on-the-fly mode regardless of the threshold.",
+  bookBackendNew: "New (Faster)",
+  bookBackendLegacy: "Previous",
   addBookMoves: "Add Book Moves",
   fromCurrentRecord: "From Current Record",
   fromFile: "From File",
@@ -899,6 +904,17 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `The book file is too large to open. The new method can open SBK files up to ${limit}.`,
+  wasmBookCrashedOnOpen:
+    "The process stopped unexpectedly while opening the book file. Memory may be insufficient. The previously opened book remains open. Switching the book processing to the previous method in the settings may allow you to open it.",
+  wasmBookCrashedAndClosed: "The book was closed because the book processing stopped unexpectedly.",
+  wasmBookCrashedWhileSavingAndClosed:
+    "The book was closed because the process stopped unexpectedly while saving.",
+  unsavedBookChangesWereLost: "Unsaved changes have been lost.",
+  openedBookFileWasNotModified: "The book file that was opened has not been modified.",
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `The destination file (${path}) may have been written only partially.`,
   pleaseSpecifyOtherFileName: "Please specify another file name.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Memory shortage during book data conversion may cause loss of unsaved data.",

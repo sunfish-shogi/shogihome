@@ -35,6 +35,7 @@ import { Language } from "@/common/i18n/index.js";
 import { RecordFileFormat } from "@/common/file/record.js";
 import { BoardLayoutType, PositionImageFontWeight } from "@/common/settings/layout.js";
 import { SearchCommentFormat } from "@/common/settings/comment.js";
+import { BookBackend } from "@/common/book.js";
 
 class AppSettingsStore {
   private settings = defaultAppSettings();
@@ -223,6 +224,9 @@ class AppSettingsStore {
   }
   get flippedBook(): boolean {
     return this.merged.flippedBook;
+  }
+  get bookBackend(): BookBackend {
+    return this.merged.bookBackend;
   }
   get translateEngineOptionName(): boolean {
     return this.merged.translateEngineOptionName;

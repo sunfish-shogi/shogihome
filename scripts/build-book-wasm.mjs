@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+// 定跡の WebAssembly モジュール (wasm/book) をビルドし、次のファイルを生成する。
+// - src/background/book/wasm/book.wasm: WebAssembly モジュール
+//   (Electron 版の出力先への配置は scripts/copy-book-wasm.mjs が行う)
+// - wasm/book/licenses/rust-standard-library.html: モジュールに含まれる Rust 標準ライブラリの
+//   ライセンス表示 (ツールチェーンに同梱されている COPYRIGHT-library.html の複製)
+//
+// 使い方:
+//   node scripts/build-book-wasm.mjs           ビルドして生成物を更新する
+//   node scripts/build-book-wasm.mjs --verify  ビルド結果が commit 済みの生成物と一致するか検証する
+//
+// Rust のツールチェーンは wasm/book/rust-toolchain.toml で固定している。
+
+import { execFileSync } from "node:child_process";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(__dirname, "..");
+const crateDir = path.resolve(root, "wasm/book");
+const wasmPath = path.resolve(
+  crateDir,
+  "target/wasm32-unknown-unknown/release/shogihome_book.wasm",
+);
+const outPath = path.resolve(root, "src/background/book/wasm/book.wasm");
+const licensePath = path.resolve(crateDir, "licenses/rust-standard-library.html");
+const verify = process.argv.includes("--verify");
+
+execFileSync("cargo", ["build", "--release", "--locked", "--target", "wasm32-unknown-unknown"], {
+  cwd: crateDir,
+  stdio: "inherit",
+});
+
+const rustcVersion = execFileSync("rustc", ["--version"], { cwd: crateDir }).toString().trim();
+const sysroot = execFileSync("rustc", ["--print", "sysroot"], { cwd: crateDir }).toString().trim();
+const license = fs.readFileSync(path.join(sysroot, "share/doc/rust/COPYRIGHT-library.html"));
+const wasm = fs.readFileSync(wasmPath);
+const sha256 = crypto.createHash("sha256").update(wasm).digest("hex");
+
+const outputs = [
+  { path: outPath, content: wasm, label: `${rustcVersion}, sha256: ${sha256}` },
+  { path: licensePath, content: license, label: rustcVersion },
+];
+
+if (verify) {
+  let ok = true;
+  for (const output of outputs) {
+    const current = fs.existsSync(output.path) ? fs.readFileSync(output.path) : Buffer.alloc(0);
+    const relativePath = path.relative(root, output.path);
+    if (!current.equals(output.content)) {
+      process.stderr.write(
+        `${relativePath} is out of date. Run "npm run build:book-wasm" and commit the result.\n`,
+      );
+      ok = false;
+    } else {
+      process.stdout.write(`Verified: ${relativePath} (${output.label})\n`);
+    }
+  }
+  if (!ok) {
+    process.exit(1);
+  }
+} else {
+  for (const output of outputs) {
+    fs.mkdirSync(path.dirname(output.path), { recursive: true });
+    fs.writeFileSync(output.path, output.content);
+    process.stdout.write(`Generated: ${path.relative(root, output.path)} (${output.label})\n`);
+  }
+}

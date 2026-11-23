@@ -29,6 +29,13 @@ const config = {
     "dist/packed",
     "!node_modules/**/*",
   ],
+  extraResources: [
+    // 定跡の WebAssembly モジュールに含まれる Rust 標準ライブラリのライセンス表示
+    {
+      from: "wasm/book/licenses/rust-standard-library.html",
+      to: "licenses/rust-standard-library.html",
+    },
+  ],
   afterPack: async function (context) {
     if (context.electronPlatformName === "darwin") {
       const appPath = path.join(

@@ -763,9 +763,13 @@ async function storeSbkBookOnTheFly(
       }
 
       // 元の SBK にあったが in-memory では削除された指し手
-      const removedMoves = sbkEntry.moves.filter((m) => {
-        return !entry.moves.some((bm) => bm.usi === m.usi);
-      });
+      // パッチ (patch) は元の SBK の指し手に追加・上書きするだけで削除はしないため対象外とする
+      const removedMoves =
+        entry.type === "normal"
+          ? sbkEntry.moves.filter((m) => {
+              return !entry.moves.some((bm) => bm.usi === m.usi);
+            })
+          : [];
       for (const bookMove of removedMoves) {
         const move = pos.createMoveByUSI(bookMove.usi);
         if (!move) {
@@ -849,6 +853,24 @@ async function storeSbkBookOnTheFly(
       sfenAndUsiToNextId.set(sfen, usiToNextId);
     }
 
+    // 新たにルートになる局面のうち元の SBK に存在する State の位置 (ファイル内オフセット) → SFEN
+    // 削除された指し手の遷移先は編集されていなくても Position を書き出す必要がある
+    // (書き出さないと、他に遷移元が無い場合に到達できなくなる)
+    const rootOffsetToSfen = new Map<number, string>();
+    for (const sfen of rootSfens) {
+      const firstRow = searchOnTheFlyRow(sfen, book.sbkIndex);
+      if (firstRow === undefined) {
+        continue;
+      }
+      for (
+        let row = firstRow;
+        row < book.sbkIndex.rowCount && isSamePackedRow(book.sbkIndex.table, row, firstRow);
+        row++
+      ) {
+        rootOffsetToSfen.set(readRowOffset(book.sbkIndex.table, row), sfen);
+      }
+    }
+
     // 書き出し中のみオフセット順に整列する
     sortRowsByOffset(book.sbkIndex.table, book.sbkIndex.rowCount);
 
@@ -886,19 +908,28 @@ async function storeSbkBookOnTheFly(
         // ShogiGUI のハッシュ関数が非公開のためハッシュ値を含めることができない
         // 中途半端にハッシュ値が残っていると ShogiGUI がハッシュ値が無い State を認識しないため一律で削除する
         // 元の SBK を変更無しでバイナリコピーする (BoardKey と HandKey のみ取り除く)
-        const copied = copySbkStateWithoutHashKeys(book.rawData, offset);
-        if (copied) {
-          await writeChunk(output, copied);
-          updateProgress();
-          continue;
+        const rootSfen = rootOffsetToSfen.get(offset);
+        if (rootSfen === undefined) {
+          const copied = copySbkStateWithoutHashKeys(book.rawData, offset);
+          if (copied) {
+            await writeChunk(output, copied);
+            updateProgress();
+            continue;
+          }
         }
-        // バイナリコピーで再エンコードと同じ結果を得られない場合はデコードして再エンコードする
+        // バイナリコピーで再エンコードと同じ結果を得られない場合や、
+        // 新たにルートになり Position を付与する場合はデコードして再エンコードする
         state = decodeStateAt(book.rawData, offset);
         state.BoardKey = 0n;
         state.HandKey = 0;
+        if (rootSfen !== undefined && !state.Position) {
+          state.Position = rootSfen;
+        }
       } else if (patch.type === "normal") {
         // in-memory のデータを書き出す
-        const withPosition = rootSfens.has(sfen);
+        // 元の State が Position を持つ場合 (ルート局面) はそれを維持する
+        const original = await decodeStateAtFile(book.rawData, offset);
+        const withPosition = !!original.Position || rootSfens.has(sfen);
         const usiToNextId = sfenAndUsiToNextId.get(sfen) ?? new Map<string, number>();
         state = entryToSbkState(id, patch, sfen, usiToNextId, withPosition);
       } else {

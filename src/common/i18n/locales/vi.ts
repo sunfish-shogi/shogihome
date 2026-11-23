@@ -693,6 +693,11 @@ export const vi: Texts = {
   addMoves: "Thêm nước đi",
   export: "Xuất",
   flippedBook: "Sử dụng book lật ngược",
+  bookBackend: "Phương thức xử lý định thức",
+  bookBackendDescription:
+    "Phương thức mới đọc và lưu tệp định thức nhanh hơn. Nếu gặp sự cố, hãy chuyển sang phương thức cũ. Phương thức mới luôn tải ở chế độ On-the-fly bất kể Giá trị On-the-fly.",
+  bookBackendNew: "Phương thức mới (nhanh)",
+  bookBackendLegacy: "Phương thức cũ",
   addBookMoves: "Thêm định thức",
   fromCurrentRecord: "Từ kỳ phổ này",
   fromFile: "Từ tệp",
@@ -913,6 +918,16 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く途中で処理が異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を従来方式に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "定跡の処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed: "定跡の保存中に処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Nếu thiếu bộ nhớ trong khi chuyển đổi dữ liệu định thức, dữ liệu chưa lưu có thể bị mất.",

@@ -231,7 +231,9 @@ describe("background/book", () => {
 
     describe("shogigui01-copy.sbk", () => {
       const patterns = [
-        { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
+        // JavaScript 版のみ in-memory モードがある (WebAssembly 版は閾値によらず On-the-fly モード)
+        { options: { sbkOnTheFlyThresholdMB: 0.01, backend: "js" as const }, mode: "in-memory" },
+        { options: { sbkOnTheFlyThresholdMB: 0.01 }, mode: "on-the-fly" },
         { options: { sbkOnTheFlyThresholdMB: 0.001 }, mode: "on-the-fly" },
         { options: { forceOnTheFly: true }, mode: "on-the-fly" },
       ];
@@ -985,12 +987,14 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(sbk.entries.get(sfen1)?.moves.length).toBeGreaterThan(0);
     });
 
-    it("sbk (on-the-fly) → yane2016: moves preserved", async () => {
+    // [JavaScript 版のみ] WebAssembly 版は SBK から他の形式への変換に未対応
+    it("[js] sbk (on-the-fly) → yane2016: moves preserved", async () => {
       const mode = await openBook(
         defaultBookSession,
         "src/tests/testdata/book/shogigui01-copy.sbk",
         {
           sbkOnTheFlyThresholdMB: 0.001,
+          backend: "js",
         },
       );
       expect(mode).toBe("on-the-fly");
@@ -1001,6 +1005,17 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       const mode2 = await openBook(defaultBookSession, outPath);
       expect(mode2).toBe("in-memory");
       expect((await searchBookMoves(defaultBookSession, sfen1)).length).toBeGreaterThan(0);
+    });
+
+    // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
+    it("[wasm] sbk → yane2016: not supported yet", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk", {
+        backend: "wasm",
+      });
+      const outPath = path.join(tmpdir, "export-sbk-wasm-to-yane.db");
+      await expect(exportBook(defaultBookSession, outPath, "yane2016")).rejects.toThrow(
+        "Not supported yet",
+      );
     });
 
     it("apery → yane2016: throws", async () => {
@@ -1082,8 +1097,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(missing).toBeNull();
     });
 
-    it("shogigui01.sbk (in-memory)", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
+    // [JavaScript 版のみ] in-memory モード
+    it("[js] shogigui01.sbk (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk", {
+        backend: "js",
+      });
       const initialSfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";
       const baseline = (
         await loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"))
@@ -1163,8 +1181,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(info.sbkDescription).toBeUndefined();
     });
 
-    it("sbk (in-memory)", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk");
+    // [JavaScript 版のみ] in-memory モード
+    it("[js] sbk (in-memory)", async () => {
+      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk", {
+        backend: "js",
+      });
       const baseline = await loadSbkBook(fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"));
       const info = getBookInfo(defaultBookSession);
       expect(info.format).toBe("sbk");

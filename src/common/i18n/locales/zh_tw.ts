@@ -685,6 +685,11 @@ export const zh_tw: Texts = {
   addMoves: "新增該手",
   export: "匯出",
   flippedBook: "亦檢索先後逆局面",
+  bookBackend: "定跡處理方式",
+  bookBackendDescription:
+    "新方式讀取及保存定跡檔案的速度較快。若發生問題，請切換為舊方式。新方式不論 On-the-fly 門檻為何，一律以 On-the-fly 模式讀取。",
+  bookBackendNew: "新方式（快速）",
+  bookBackendLegacy: "舊方式",
   addBookMoves: "增加定跡手",
   fromCurrentRecord: "從現在棋譜",
   fromFile: "從檔案",
@@ -893,6 +898,16 @@ export const zh_tw: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "以 On-the-fly 模式讀取中的定跡無法覆寫保存。",
+  bookFileTooLargeForWasm: (limit: string) =>
+    `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
+  wasmBookCrashedOnOpen:
+    "定跡ファイルを開く途中で処理が異常終了しました。メモリが不足している可能性があります。開いていた定跡はそのまま残っています。設定で定跡の処理方式を従来方式に切り替えると開ける場合があります。", // TODO: Translate
+  wasmBookCrashedAndClosed: "定跡の処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  wasmBookCrashedWhileSavingAndClosed: "定跡の保存中に処理が異常終了したため、定跡を閉じました。", // TODO: Translate
+  unsavedBookChangesWereLost: "保存していない変更は失われました。", // TODO: Translate
+  openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
+  savedBookFileMayBeIncomplete: (path: string) =>
+    `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
   pleaseSpecifyOtherFileName: "請指定其他檔案名稱。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "轉換定跡資料時若記憶體不足，未保存的資料可能會遺失。",
