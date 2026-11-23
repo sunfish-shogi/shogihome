@@ -157,7 +157,9 @@ type PendingRequest =
 
 #### `ready()`
 
-1. `restartCount = 0`、`inGame = true`、`readyPending = true`
+1. `restartCount = 0`、`inGame = true`、`readyPending = true`。
+   CSA の再接続などで `gameover` を経ずに次の対局が始まる場合があるので、
+   前の対局の `pending`・`stopRequested` を破棄する
 2. 再起動中なら何もしない (再起動処理の中で `isready` を送る)
 3. それ以外は `inner.ready()` を呼ぶ
 

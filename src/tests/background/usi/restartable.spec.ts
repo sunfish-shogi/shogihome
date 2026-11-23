@@ -286,6 +286,35 @@ describe("background/usi/restartable", () => {
     expect(engine.state).toBe(State.NotReady);
   });
 
+  it("new_game_without_gameover_while_restarting", async () => {
+    const { engine, handlers } = setup();
+    startGame(engine);
+    engine.go("position startpos", byoyomiTimeState);
+    crash(0);
+    // CSA の再接続などで gameover を経ずに次の対局が始まる。
+    engine.ready();
+    receive(1, "usiok", "readyok");
+    await flush();
+    // 前の対局の探索は再開しない。
+    expect(sentCommands().slice(-1)).toEqual(["usinewgame"]);
+    expect(handlers.ready).toBeCalledTimes(2);
+    expect(engine.currentPosition).toBe("");
+  });
+
+  it("new_game_without_gameover_after_restart_failure", async () => {
+    const { engine } = setup();
+    startGame(engine);
+    engine.go("position startpos", byoyomiTimeState);
+    crash(0);
+    crash(1);
+    vi.advanceTimersByTime(launchRetryIntervalMs);
+    crash(2);
+    engine.ready();
+    receive(3, "usiok", "readyok");
+    await flush();
+    expect(sentCommands().slice(-1)).toEqual(["usinewgame"]);
+  });
+
   it("ready_while_restarting", async () => {
     const { engine, handlers } = setup();
     engine.launch();

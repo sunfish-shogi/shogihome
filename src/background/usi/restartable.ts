@@ -219,6 +219,9 @@ export class RestartableEngineProcess implements USIEngineProcess {
     this.inGame = true;
     this.readyPending = true;
     this.pendingGameover = undefined;
+    // CSA の再接続などで gameover を経ずに次の対局が始まる場合があるので、前の対局の探索要求を破棄する。
+    this.pending = undefined;
+    this.stopRequested = false;
     if (this.restartPhase) {
       // 再起動処理の中で isready を送る。
       return;
