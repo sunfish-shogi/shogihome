@@ -170,18 +170,29 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   return { format: "yane2016", entries };
 }
 
+// output に書き込み、バッファーが空くまで待つ必要があれば待つ。
+// 書き込み先がエラーになっている場合 (開けなかった場合など) は drain が発生しないので、待たずにエラーにする。
+async function write(output: Writable, data: string): Promise<void> {
+  if (output.write(data)) {
+    return;
+  }
+  if (output.errored) {
+    throw output.errored;
+  }
+  if (output.destroyed) {
+    throw new Error("The output stream has been destroyed");
+  }
+  await events.once(output, "drain");
+}
+
 async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
   if (entry.moves.length === 0) {
     return;
   }
-  if (!output.write(SFENMarker + sfen + "\n")) {
-    await events.once(output, "drain");
-  }
+  await write(output, SFENMarker + sfen + "\n");
   if (entry.comment) {
     for (const commentLine of entry.comment.split("\n")) {
-      if (!output.write(CommentMarker1 + commentLine + "\n")) {
-        await events.once(output, "drain");
-      }
+      await write(output, CommentMarker1 + commentLine + "\n");
     }
   }
   for (const move of entry.moves) {
@@ -200,14 +211,10 @@ async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
       " " +
       (move.count != undefined ? move.count.toFixed(0) : "") +
       "\n";
-    if (!output.write(line)) {
-      await events.once(output, "drain");
-    }
+    await write(output, line);
     if (move.comment) {
       for (const commentLine of move.comment.split("\n")) {
-        if (!output.write(CommentMarker1 + commentLine + "\n")) {
-          await events.once(output, "drain");
-        }
+        await write(output, CommentMarker1 + commentLine + "\n");
       }
     }
   }
@@ -221,12 +228,18 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
     output.on("finish", resolve);
     output.on("error", reject);
   });
-  output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-  for (const sfen of Array.from(book.entries.keys()).sort()) {
-    const entry = book.entries.get(sfen) as BookEntry;
-    await writeEntry(output, sfen, entry);
+  // 書き込みの途中でエラーになった場合も、最後に end を待ってエラーを返す
+  end.catch(() => {});
+  try {
+    output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
+    for (const sfen of Array.from(book.entries.keys()).sort()) {
+      const entry = book.entries.get(sfen) as BookEntry;
+      await writeEntry(output, sfen, entry);
+    }
+    output.end();
+  } catch (error) {
+    output.destroy(error as Error);
   }
-  output.end();
   await end;
 }
 
@@ -244,6 +257,8 @@ export async function mergeYaneuraOuBook(
     output.on("finish", resolve);
     output.on("error", reject);
   });
+  // 書き込みの途中でエラーになった場合も、最後に end を待ってエラーを返す
+  end.catch(() => {});
   output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
   const patchKeys = Array.from(bookPatch.entries.keys()).sort();
   let patchIndex = 0;
