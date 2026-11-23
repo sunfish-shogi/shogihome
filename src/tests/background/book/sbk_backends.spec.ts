@@ -10,6 +10,7 @@ import {
   getBookInfo,
   openBook,
   openBookAsNewSession,
+  removeBookMove,
   saveBook,
   searchBookEntry,
   updateBookMove,
@@ -126,6 +127,27 @@ describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
       const standard = await searchBookEntry(session, initialSfen);
       expect(standard?.comment).toBe("平手");
       expect(standard?.moves.map((m) => m.usi)).toEqual(["7g7f"]);
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  // 指し手を削除しても、その遷移先の局面 (編集していない) が失われない
+  it("remove a move and save", async () => {
+    const after76 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+    await openBook(defaultBookSession, "src/tests/testdata/book/shogigui02.sbk", { backend });
+    const child = await searchBookEntry(defaultBookSession, after76);
+    expect(child?.moves.length).toBeGreaterThan(0);
+    await removeBookMove(defaultBookSession, initialSfen, "7g7f");
+    await saveBook(defaultBookSession, out("removed.sbk"));
+
+    const { session } = await openBookAsNewSession(out("removed.sbk"), { backend });
+    try {
+      const initial = await searchBookEntry(session, initialSfen);
+      expect(initial?.moves.map((m) => m.usi)).toEqual(["2g2f", "2h7h", "5g5f"]);
+      const reloaded = await searchBookEntry(session, after76);
+      expect(reloaded?.moves.map((m) => m.usi)).toEqual(child?.moves.map((m) => m.usi));
+      expect(reloaded?.games).toBe(child?.games);
     } finally {
       closeBookSession(session);
     }

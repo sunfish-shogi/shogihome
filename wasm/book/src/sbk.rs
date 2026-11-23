@@ -510,7 +510,9 @@ pub struct SbkWriter {
     patch_index: HashMap<String, usize>,
     offset_to_patch: HashMap<u32, usize>,
     new_sfens: Vec<String>,
-    root_sfens: HashSet<String>,
+    root_sfens: OrderedSet,
+    /// 新たにルートになる局面のうち元の SBK に存在する State の位置 → SFEN
+    root_offsets: HashMap<u32, String>,
     usi_to_next_id: Vec<HashMap<String, i32>>,
     header: Option<Vec<u8>>,
     /// 次に書き出す State (0〜state_count-1 は元の SBK、それ以降は新しい局面)
@@ -529,7 +531,7 @@ impl SbkWriter {
         // 元の SBK に存在しない局面
         let mut new_sfens = OrderedSet::default();
         // 新たにルートになる局面
-        let mut root_sfens: HashSet<String> = HashSet::new();
+        let mut root_sfens = OrderedSet::default();
         // 元の SBK の State の位置 → in-memory のエントリー
         let mut offset_to_patch: HashMap<u32, usize> = HashMap::new();
 
@@ -563,13 +565,14 @@ impl SbkWriter {
             };
 
             // 元の SBK にあったが in-memory では削除された指し手
+            // パッチは元の SBK の指し手に追加・上書きするだけで削除はしないため対象外とする
             for m in &sbk_entry.moves {
-                if entry.moves.iter().any(|bm| bm.usi == m.usi) {
+                if entry.patch || entry.moves.iter().any(|bm| bm.usi == m.usi) {
                     continue;
                 }
                 // 遷移元の指し手が削除された場合はルート局面として扱う
                 if let Some(next) = next_sfen(&mut pos, &m.usi) {
-                    root_sfens.insert(next);
+                    root_sfens.add(next);
                 }
             }
         }
@@ -587,7 +590,23 @@ impl SbkWriter {
         // in-memory で遷移元が存在せず、かつ元の SBK にも存在しない局面はルート局面として扱う
         for (sfen, _) in &patches {
             if !in_memory_ref.has(sfen) && new_sfens.has(sfen) {
-                root_sfens.insert(sfen.clone());
+                root_sfens.add(sfen.clone());
+            }
+        }
+
+        // 新たにルートになる局面のうち元の SBK に存在する State の位置
+        // 削除された指し手の遷移先は編集されていなくても Position を書き出す必要がある
+        // (書き出さないと、他に遷移元が無い場合に到達できなくなる)
+        let mut root_offsets: HashMap<u32, String> = HashMap::new();
+        for sfen in &root_sfens.items {
+            if let Some(first) = book.search_row(sfen) {
+                let key = book.rows[first].packed;
+                for row in &book.rows[first..] {
+                    if row.packed != key {
+                        break;
+                    }
+                    root_offsets.insert(row.offset, sfen.clone());
+                }
             }
         }
 
@@ -650,6 +669,7 @@ impl SbkWriter {
             offset_to_patch,
             new_sfens: new_sfens.items,
             root_sfens,
+            root_offsets,
             usi_to_next_id,
             header: Some(header.buf),
             next: 0,
@@ -664,7 +684,14 @@ impl SbkWriter {
         let offset = book.offsets[id];
         let Some(&p) = self.offset_to_patch.get(&offset) else {
             // 元の SBK を変更無しで書き出す (BoardKey と HandKey は取り除く)
-            return decode_state_at(&book.data, offset as usize);
+            let mut state = decode_state_at(&book.data, offset as usize)?;
+            // 新たにルートになる場合は Position を付与する
+            if let Some(root) = self.root_offsets.get(&offset) {
+                if state.position.as_deref().unwrap_or("").is_empty() {
+                    state.position = Some(root.clone());
+                }
+            }
+            return Ok(state);
         };
         let (sfen, patch) = &self.patches[p];
         let usi_to_next_id = Some(&self.usi_to_next_id[p]);
@@ -673,7 +700,7 @@ impl SbkWriter {
             // 元の State が Position を持つ場合 (ルート局面) はそれを維持する
             let original = decode_state_at_file(&book.data, offset as usize)?;
             let with_position = !original.position.as_deref().unwrap_or("").is_empty()
-                || self.root_sfens.contains(sfen);
+                || self.root_sfens.has(sfen);
             return entry_to_state(id as i32, patch, sfen, usi_to_next_id, with_position);
         }
         // 元の SBK にパッチを当てて書き出す
@@ -682,7 +709,7 @@ impl SbkWriter {
         match merge_entries(base_entry, Some(patch)) {
             Some(entry) => {
                 let with_position = !state.position.as_deref().unwrap_or("").is_empty()
-                    || self.root_sfens.contains(sfen);
+                    || self.root_sfens.has(sfen);
                 entry_to_state(id as i32, &entry, sfen, usi_to_next_id, with_position)
             }
             None => Ok(state),
@@ -719,7 +746,7 @@ impl SbkWriter {
                     Some(&p) => (&self.patches[p].1, Some(&self.usi_to_next_id[p])),
                     None => (&empty, None),
                 };
-                entry_to_state(id, entry, sfen, map, self.root_sfens.contains(sfen))?
+                entry_to_state(id, entry, sfen, map, self.root_sfens.has(sfen))?
             };
             state_buf.buf.clear();
             encode_state(&mut state_buf, &state, &mut scratch);
