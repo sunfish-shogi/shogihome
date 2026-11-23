@@ -76,6 +76,39 @@ describe("background/book/sbk", () => {
     }
   });
 
+  describe("remove move via on-the-fly", () => {
+    it("keeps the destination of the removed move reachable", async () => {
+      const initial = InitialPositionSFEN.STANDARD;
+      const after76 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+      const source: SbkBook = {
+        format: "sbk",
+        entries: new Map([
+          [initial, { type: "normal", moves: [{ usi: "7g7f", count: 1 }] }],
+          [after76, { type: "normal", moves: [{ usi: "3c3d", count: 1 }], comment: "child" }],
+        ]),
+      };
+      const tempDir = path.join(getTempPathForTesting(), "sbk-remove-move");
+      fs.mkdirSync(tempDir, { recursive: true });
+      const sourcePath = path.join(tempDir, "source.sbk");
+      fs.writeFileSync(sourcePath, await storeToBuffer(source));
+
+      // 遷移先の局面は編集せずに、遷移元の局面から指し手を削除する
+      const book = await loadSbkBookOnTheFly(sourcePath);
+      const base = await searchSbkBookEntryOnTheFly(initial, book.rawData!, book.sbkIndex!);
+      const entry = mergeBookEntries(base, undefined)!;
+      entry.moves = [];
+      book.entries.set(initial, entry);
+      const output = await storeToBuffer(book);
+
+      expect(SBook.decode(output).BookStates.map((state) => state.Position)).toContain(after76);
+      const reloaded = await loadSbkBook(output);
+      // 指し手を全て削除した局面は情報を持たないため読み込まれない
+      expect(reloaded.entries.get(initial)).toBeUndefined();
+      expect(reloaded.entries.get(after76)?.comment).toBe("child");
+      expect(reloaded.entries.get(after76)?.moves.map((m) => m.usi)).toEqual(["3c3d"]);
+    });
+  });
+
   describe("edit root state via on-the-fly", () => {
     // 平手以外の局面から始まる定跡と、先頭以外に配置される平手のルート局面を含む定跡
     const handicapRoot = InitialPositionSFEN.HANDICAP_ROOK;
