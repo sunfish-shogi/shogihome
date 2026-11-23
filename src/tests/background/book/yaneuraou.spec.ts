@@ -140,6 +140,63 @@ describe("background/book/yaneuraou", () => {
       expect(entry?.moves[0].usi).toBe("7g7f");
     });
 
+    // In-memory モードと同じ指し手が得られる
+    const positions = [
+      {
+        sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+        lines: [
+          "#position comment",
+          "8c8d none 10 5 3",
+          "#move comment",
+          "",
+          "3c3d 2g2f 20 5 1 #c",
+        ],
+      },
+      {
+        // 8 KB を超える局面
+        sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+        lines: Array.from({ length: 600 }, (_, i) => `7g7f none ${i} 5 ${i}`),
+      },
+      {
+        // 指し手の無い局面
+        sfen: "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1",
+        lines: [],
+      },
+      {
+        // ファイル末尾の局面
+        sfen: "lnsgkgsnl/1r7/p1ppp1bpp/1p3pp2/7P1/2P6/PP1PPPP1P/1B3S1R1/LNSGKG1NL b - 1",
+        lines: ["2g2f none 30 5 1", "5g5f none 40 5 1"],
+      },
+    ];
+    for (const newline of ["\n", "\r\n", "\r"]) {
+      for (const lastNewline of [true, false]) {
+        const label = `${JSON.stringify(newline)} lastNewline=${lastNewline}`;
+        const content =
+          [
+            "#YANEURAOU-DB2016 1.00",
+            ...positions.flatMap((p) => [`sfen ${p.sfen}`, ...p.lines]),
+          ].join(newline) + (lastNewline ? newline : "");
+        const sfens = positions.map((p) => p.sfen);
+
+        it(`same moves as in-memory: ${label}`, async () => {
+          const inMemory = await loadYaneuraOuBook(Readable.from([content]));
+          const results = await searchOnTheFly("entry.db", content, sfens);
+          const withoutComment = (entry?: BookEntry) =>
+            entry?.moves.map((m) => ({ ...m, comment: undefined }));
+          for (let i = 0; i < sfens.length; i++) {
+            expect(withoutComment(results[i]), sfens[i]).toEqual(
+              withoutComment(inMemory.entries.get(sfens[i])),
+            );
+          }
+        });
+
+        it(`comments: ${label}`, async () => {
+          const [entry] = await searchOnTheFly("entry.db", content, sfens);
+          expect(entry?.comment).toBe("position comment\nmove comment\n");
+        });
+      }
+    }
+
     // 局面ごとの大きさを大きく変えて、二分探索の範囲の後半に局面の行が無い場合や、
     // 範囲の中央がちょうど局面の行頭になる場合を作る
     for (let seed = 1; seed <= 20; seed++) {

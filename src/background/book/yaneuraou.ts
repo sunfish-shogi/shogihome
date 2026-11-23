@@ -376,17 +376,70 @@ async function binarySearch(
     const read = await file.read(buffer, 0, bufferSize, sfenOffset);
     const sfenLine = readLineFromBuffer(buffer, read.bytesRead);
     const [currentSFEN, ply] = normalizeSFEN(sfenLine);
+    // 次の行の開始位置 (改行が CRLF の場合は 2 バイト進める)
+    let nextLine = sfenOffset + sfenLine.length + 1;
+    if (buffer[sfenLine.length] === CR && buffer[sfenLine.length + 1] === LF) {
+      nextLine++;
+    }
     if (sfen === currentSFEN) {
-      return [sfenOffset + sfenLine.length + 1, ply];
+      return [nextLine, ply];
     }
 
     if (sfen < currentSFEN) {
       end = mid;
     } else {
-      begin = sfenOffset + sfenLine.length + 1;
+      begin = nextLine;
     }
   }
   return [-1, 0];
+}
+
+// data の from 以降で、局面の行 ("sfen " で始まる行) の開始位置を探す
+function findPositionLine(data: Buffer, from: number): number {
+  for (let i = from; i + SFENMarker.length <= data.length; i++) {
+    if ((i === 0 || data[i - 1] === LF || data[i - 1] === CR) && checkSFENMarker(i, data)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+// offset から次の局面の行の手前 (またはファイルの末尾) までを行単位で読み込む
+async function readEntryLines(
+  file: fs.promises.FileHandle,
+  size: number,
+  offset: number,
+): Promise<string[]> {
+  const chunkSize = 8 * 1024;
+  let data = Buffer.alloc(0);
+  let position = offset;
+  let entryEnd: number;
+  let scanFrom = 0;
+  while (true) {
+    entryEnd = findPositionLine(data, scanFrom);
+    if (entryEnd >= 0 || position >= size) {
+      break;
+    }
+    const chunk = Buffer.alloc(Math.min(chunkSize, size - position));
+    const read = await file.read(chunk, 0, chunk.length, position);
+    if (read.bytesRead === 0) {
+      break;
+    }
+    position += read.bytesRead;
+    // チャンクの境界をまたぐ局面の行も見つけられるように、少し手前から探し直す
+    scanFrom = Math.max(data.length - SFENMarker.length, 0);
+    data = Buffer.concat([data, chunk.subarray(0, read.bytesRead)]);
+  }
+  const text = data.toString("utf-8", 0, entryEnd >= 0 ? entryEnd : data.length);
+  if (!text) {
+    return [];
+  }
+  // readline と同じく LF・CRLF・CR を改行とみなす
+  const lines = text.split(/\r\n|\n|\r/);
+  if (lines[lines.length - 1] === "") {
+    lines.pop(); // 最後の改行の後ろは行ではない
+  }
+  return lines;
 }
 
 export async function searchYaneuraOuBookMovesOnTheFly(
@@ -399,25 +452,12 @@ export async function searchYaneuraOuBookMovesOnTheFly(
     return;
   }
 
-  const bufferSize = 8 * 1024;
-  const buffer = Buffer.alloc(bufferSize);
-  const read = await file.read(buffer, 0, bufferSize, offset);
-  if (read.bytesRead === 0) {
-    return;
-  }
   let comment = "";
   const moves: BookMove[] = [];
-  let i = 0;
-  while (true) {
-    const moveLine = readLineFromBuffer(buffer, read.bytesRead, i);
-    i += moveLine.length + 1;
-    if (i >= read.bytesRead) {
-      break;
-    }
-    const parsed = parseLine(moveLine);
+  for (const line of await readEntryLines(file, size, offset)) {
+    const parsed = parseLine(line);
     if (parsed.type === "comment") {
       comment = appendCommentLine(comment, parsed.comment);
-      continue;
     } else if (parsed.type === "move") {
       moves.push(parsed.move);
     } else {
