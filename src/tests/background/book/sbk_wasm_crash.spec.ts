@@ -129,4 +129,18 @@ describe("background/book SBK (backend=wasm) crash", () => {
     expect(() => book.search(initialSfen)).toThrow(BookWasmCrashError);
     expect(calls).toBe(1);
   });
+
+  it("pointers in the upper half of memory are treated as unsigned", async () => {
+    const book = await SbkWasmOnTheFly.open(bookPath);
+    const internal = book as unknown as {
+      raw: Record<string, unknown>;
+      exports: Record<string, () => number>;
+    };
+    // 2 GiB より後ろのアドレスは i32 として負の値で返される
+    internal.raw.book_result_ptr = () => -2146369512;
+    internal.raw.sbk_save_next = () => -1;
+    expect(internal.exports.book_result_ptr()).toBe(2148597784);
+    // アドレス以外の戻り値 (負の値はエラーを表す) は変換しない
+    expect(internal.exports.sbk_save_next()).toBe(-1);
+  });
 });

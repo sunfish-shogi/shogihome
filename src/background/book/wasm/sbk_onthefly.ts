@@ -48,6 +48,10 @@ const READ_CHUNK_SIZE = 16 * 1024 * 1024;
 // 1 回の呼び出しで書き出す State の数
 const SAVE_CHUNK_STATES = 4096;
 
+// アドレスを返す関数。wasm32 のアドレスは符号なし 32 bit だが、JavaScript には符号付きの i32 として
+// 渡されるため、メモリの後半 2 GiB にある領域のアドレスは負の値になる。符号なしの値に変換して扱う。
+const POINTER_FUNCTIONS = new Set(["book_alloc", "book_result_ptr", "book_error_ptr"]);
+
 /**
  * WebAssembly モジュールが異常終了した (メモリ不足や不具合によるトラップ) ことを表す。
  * 異常終了したインスタンスは以後使えない。
@@ -80,7 +84,7 @@ export class SbkWasmOnTheFly {
   }
 
   /**
-   * 関数の呼び出しを監視するラッパーを作る。
+   * 関数の呼び出しを監視するラッパーを作る。アドレスを返す関数の戻り値は符号なしの値に変換する。
    * トラップが発生した場合は BookWasmCrashError を投げ、以後の呼び出しも同じエラーにする。
    * (異常終了した時点の状態が残っているため、続けて呼び出すと誤動作する可能性がある)
    */
@@ -96,7 +100,8 @@ export class SbkWasmOnTheFly {
         }
         try {
           const fn = this.raw[name as keyof BookWasmExports] as (...a: number[]) => number;
-          return fn(...args);
+          const result = fn(...args);
+          return POINTER_FUNCTIONS.has(name) ? result >>> 0 : result;
         } catch (e) {
           if (e instanceof WebAssembly.RuntimeError) {
             this.crashed = new BookWasmCrashError(e);
