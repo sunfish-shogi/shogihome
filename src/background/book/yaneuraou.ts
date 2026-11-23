@@ -5,7 +5,6 @@ import { Readable, Writable } from "node:stream";
 import { YaneBook, BookEntry, mergeBookEntries } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
 import { BookMove } from "@/common/book.js";
-import { t } from "@/common/i18n/index.js";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
 
@@ -171,18 +170,29 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   return { format: "yane2016", entries };
 }
 
+// output に書き込み、バッファーが空くまで待つ必要があれば待つ。
+// 書き込み先がエラーになっている場合 (開けなかった場合など) は drain が発生しないので、待たずにエラーにする。
+async function write(output: Writable, data: string): Promise<void> {
+  if (output.write(data)) {
+    return;
+  }
+  if (output.errored) {
+    throw output.errored;
+  }
+  if (output.destroyed) {
+    throw new Error("The output stream has been destroyed");
+  }
+  await events.once(output, "drain");
+}
+
 async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
   if (entry.moves.length === 0) {
     return;
   }
-  if (!output.write(SFENMarker + sfen + "\n")) {
-    await events.once(output, "drain");
-  }
+  await write(output, SFENMarker + sfen + "\n");
   if (entry.comment) {
     for (const commentLine of entry.comment.split("\n")) {
-      if (!output.write(CommentMarker1 + commentLine + "\n")) {
-        await events.once(output, "drain");
-      }
+      await write(output, CommentMarker1 + commentLine + "\n");
     }
   }
   for (const move of entry.moves) {
@@ -201,14 +211,10 @@ async function writeEntry(output: Writable, sfen: string, entry: BookEntry) {
       " " +
       (move.count != undefined ? move.count.toFixed(0) : "") +
       "\n";
-    if (!output.write(line)) {
-      await events.once(output, "drain");
-    }
+    await write(output, line);
     if (move.comment) {
       for (const commentLine of move.comment.split("\n")) {
-        if (!output.write(CommentMarker1 + commentLine + "\n")) {
-          await events.once(output, "drain");
-        }
+        await write(output, CommentMarker1 + commentLine + "\n");
       }
     }
   }
@@ -222,17 +228,20 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
     output.on("finish", resolve);
     output.on("error", reject);
   });
-  output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-  for (const sfen of Array.from(book.entries.keys()).sort()) {
-    const entry = book.entries.get(sfen) as BookEntry;
-    await writeEntry(output, sfen, entry);
+  // 書き込みの途中でエラーになった場合も、最後に end を待ってエラーを返す
+  end.catch(() => {});
+  try {
+    output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
+    for (const sfen of Array.from(book.entries.keys()).sort()) {
+      const entry = book.entries.get(sfen) as BookEntry;
+      await writeEntry(output, sfen, entry);
+    }
+    output.end();
+  } catch (error) {
+    output.destroy(error as Error);
   }
-  output.end();
   await end;
 }
-
-// 元の定跡ファイルが局面順に整列されていない場合のエラー
-export class UnorderedBookError extends Error {}
 
 export async function mergeYaneuraOuBook(
   input: Readable,
@@ -248,19 +257,14 @@ export async function mergeYaneuraOuBook(
     output.on("finish", resolve);
     output.on("error", reject);
   });
+  // 書き込みの途中でエラーになった場合も、最後に end を待ってエラーを返す
+  end.catch(() => {});
   output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
   const patchKeys = Array.from(bookPatch.entries.keys()).sort();
   let patchIndex = 0;
   let lastPatchKey = "";
-  let prevSFEN: string | undefined;
   try {
     await load(input, async (sfen, entry) => {
-      // 整列されていないと正しくマージできない (開く時には先頭しか検査していない)
-      // 同じ局面が続く (重複している) 場合は許容する
-      if (prevSFEN !== undefined && sfen < prevSFEN) {
-        throw new UnorderedBookError(t.cannotSaveUnorderedOnTheFlyBook);
-      }
-      prevSFEN = sfen;
       for (; patchIndex < patchKeys.length; patchIndex++) {
         const patchKey = patchKeys[patchIndex];
         if (patchKey > sfen) {
@@ -283,11 +287,7 @@ export async function mergeYaneuraOuBook(
     }
     output.end();
   } catch (error) {
-    output.destroy(
-      error instanceof UnorderedBookError
-        ? error
-        : new Error(`Failed to merge YaneuraOu book: ${error}`),
-    );
+    output.destroy(new Error(`Failed to merge YaneuraOu book: ${error}`));
   }
   await end;
 }
