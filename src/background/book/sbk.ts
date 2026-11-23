@@ -735,9 +735,13 @@ async function storeSbkBookOnTheFly(
       }
 
       // 元の SBK にあったが in-memory では削除された指し手
-      const removedMoves = sbkEntry.moves.filter((m) => {
-        return !entry.moves.some((bm) => bm.usi === m.usi);
-      });
+      // パッチ (patch) は元の SBK の指し手に追加・上書きするだけで削除はしないため対象外とする
+      const removedMoves =
+        entry.type === "normal"
+          ? sbkEntry.moves.filter((m) => {
+              return !entry.moves.some((bm) => bm.usi === m.usi);
+            })
+          : [];
       for (const bookMove of removedMoves) {
         const move = pos.createMoveByUSI(bookMove.usi);
         if (!move) {
@@ -863,6 +867,11 @@ async function storeSbkBookOnTheFly(
         // 中途半端にハッシュ値が残っていると ShogiGUI がハッシュ値が無い State を認識しないため一律で削除する
         state.BoardKey = 0n;
         state.HandKey = 0;
+        // 削除された指し手の遷移先は新たにルートになるため、編集されていなくても Position を書き出す
+        // (書き出さないと、他に遷移元が無い場合に到達できなくなる)
+        if (rootSfens.has(sfen) && !state.Position) {
+          state.Position = sfen;
+        }
       } else if (patch.type === "normal") {
         // in-memory のデータを書き出す
         // 元の State が Position を持つ場合 (ルート局面) はそれを維持する
