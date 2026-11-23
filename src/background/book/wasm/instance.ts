@@ -1,8 +1,12 @@
 // 定跡の WebAssembly モジュール (wasm/book) のインスタンス。形式ごとのラッパーの共通部分。
 
+import events from "node:events";
 import fs from "node:fs";
+import { Writable } from "node:stream";
+import { BookEntry } from "@/background/book/types.js";
 import { getAppLogger } from "@/background/log.js";
 import { getBookWasmPath } from "@/background/proc/env.js";
+import { encodeEntry, Encoder } from "./codec.js";
 
 export type BookWasmExports = {
   memory: WebAssembly.Memory;
@@ -18,10 +22,14 @@ export type BookWasmExports = {
   sbk_save_begin(ptr: number, len: number): number;
   sbk_save_next(maxStates: number): number;
   yane_open(size: number): number;
+  yane_load(ptr: number, len: number): number;
+  yane_create(): void;
   yane_search(ptr: number, len: number): number;
   yane_save_begin(ptr: number, len: number): number;
   yane_save_next(maxBytes: number): number;
-  yane_save_position(): number;
+  yane_save_progress(): number;
+  yane_export_sbk_begin(ptr: number, len: number): number;
+  sbk_export_yane_begin(ptr: number, len: number): number;
 };
 
 let compiledModule: WebAssembly.Module | undefined;
@@ -140,6 +148,133 @@ export abstract class BookWasmInstance {
     return new Error(message);
   }
 
+  private saving = false;
+
+  /**
+   * 書き出しを行う。書き出しの状態は WebAssembly 側に 1 つしか持てないため、同時に書き出すことはできない。
+   */
+  protected async exclusive(fn: () => Promise<void>): Promise<void> {
+    if (this.saving) {
+      throw new Error("The book is already being saved.");
+    }
+    this.saving = true;
+    try {
+      await fn();
+    } finally {
+      this.saving = false;
+    }
+  }
+
+  /** 編集内容を受け渡し形式にする ([エントリーの数, (キー, エントリー) × エントリーの数]) */
+  protected encodePatches(entries: Map<string, BookEntry>): Uint8Array {
+    const encoder = new Encoder();
+    encoder.u32(entries.size);
+    for (const [sfen, entry] of entries) {
+      encoder.str(sfen);
+      encodeEntry(encoder, entry);
+    }
+    return encoder.bytes;
+  }
+
+  /** begin で書き出しを開始し、sbk_save_next で SBK 形式の続きを書き出す。begin は State の総数を返す。 */
+  protected async writeSbk(
+    begin: (ptr: number, len: number) => number,
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    let total = 0;
+    let processed = 0;
+    await this.write(
+      output,
+      () => {
+        total = this.withInput(this.encodePatches(entries), begin);
+        if (total < 0) {
+          throw this.error();
+        }
+      },
+      () => {
+        const n = this.exports.sbk_save_next(SAVE_CHUNK_STATES);
+        if (n < 0) {
+          throw this.error();
+        }
+        processed += n;
+        return n === 0;
+      },
+      () => (total > 0 ? processed / total : 0),
+      onProgress,
+    );
+  }
+
+  /** begin で書き出しを開始し、yane_save_next でやねうら王形式の続きを書き出す */
+  protected async writeYane(
+    begin: (ptr: number, len: number) => number,
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.write(
+      output,
+      () => {
+        if (this.withInput(this.encodePatches(entries), begin) < 0) {
+          throw this.error();
+        }
+      },
+      () => {
+        const status = this.exports.yane_save_next(SAVE_CHUNK_BYTES);
+        if (status < 0) {
+          throw this.error();
+        }
+        return status === 0;
+      },
+      () => this.exports.yane_save_progress(),
+      onProgress,
+    );
+  }
+
+  /**
+   * next が true を返すまで呼び出し、結果を output に書き込む。output は書き出し後に閉じられる。
+   */
+  private async write(
+    output: Writable,
+    begin: () => void,
+    next: () => boolean,
+    progress: () => number,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.exclusive(async () => {
+      // 書き込み先がエラーになった場合 (開けなかった場合など) も、最後に finished を待ってエラーを返す
+      const finished = events.once(output, "finish");
+      finished.catch(() => {});
+      begin();
+      let lastProgress = 0;
+      for (;;) {
+        const done = next();
+        // メモリ上の結果は次の呼び出しで上書きされるためコピーして渡す
+        const chunk = Buffer.from(this.result());
+        if (chunk.length > 0 && !output.write(chunk)) {
+          // 書き込み先がエラーになっている場合は drain が発生しないので待たない
+          if (output.errored) {
+            throw output.errored;
+          }
+          await events.once(output, "drain");
+        }
+        if (done) {
+          break;
+        }
+        if (onProgress) {
+          const p = Math.floor(progress() * 1000) / 1000;
+          if (p !== lastProgress) {
+            lastProgress = p;
+            onProgress(p);
+          }
+        }
+      }
+      output.end();
+      await finished;
+    });
+  }
+
   /** data を WebAssembly のメモリにコピーして fn を呼び出す */
   protected withInput<T>(data: Uint8Array, fn: (ptr: number, len: number) => T): T {
     const ptr = this.exports.book_alloc(data.length);
@@ -151,6 +286,10 @@ export abstract class BookWasmInstance {
     }
   }
 }
+
+// 1 回の呼び出しで書き出す量 (SBK 形式は State の数、やねうら王形式はバイト数の目安)
+const SAVE_CHUNK_STATES = 4096;
+const SAVE_CHUNK_BYTES = 1024 * 1024;
 
 /**
  * WebAssembly モジュールを初期化できるか確認する。

@@ -373,6 +373,10 @@ impl SbkBook {
 
     /// searchOnTheFlyRow
     fn search_row(&self, sfen: &str) -> Option<usize> {
+        // 元のファイルが無い場合 (新規作成・他の形式からの変換) は SFEN を解析せずに済ませる
+        if self.rows.is_empty() {
+            return None;
+        }
         let packed = pack_sfen(sfen)?;
         let mut left = self.first_non_zero_row;
         let mut right = self.rows.len();
@@ -398,6 +402,89 @@ impl SbkBook {
         };
         let state = decode_state_at_file(&self.data, self.rows[row].offset as usize)?;
         Ok(build_entry(&state, sfen))
+    }
+
+    /// 全ての局面のエントリー (loadSbkBook に相当する)。
+    /// ルート局面から指し手をたどり、同じ局面は後にたどった State で上書きする。順序は最初に現れた順。
+    pub fn all_entries(&self) -> Result<Vec<(String, Entry)>> {
+        let count = self.offsets.len();
+        let mut entries: Vec<(String, Entry)> = Vec::new();
+        let mut index: HashMap<String, usize> = HashMap::new();
+        let mut add = |sfen: String, state: &SBookState| {
+            // 何も情報を持たないリーフノードを除外 (上書きもしない)
+            let Some(entry) = build_entry(state, &sfen) else {
+                return;
+            };
+            match index.get(&sfen) {
+                Some(&i) => entries[i].1 = entry,
+                None => {
+                    index.insert(sfen.clone(), entries.len());
+                    entries.push((sfen, entry));
+                }
+            }
+        };
+        // JavaScript 版と同じく、ルート局面は State の Id、遷移先は State の順序 (NextStateId) で記録する
+        let mut visited: HashSet<i64> = HashSet::new();
+        struct LoadFrame {
+            moves: Vec<SBookMove>,
+            index: usize,
+            last_move: Option<crate::moves::Move>,
+        }
+        for root in 0..count {
+            let mut root_state = decode_state_at(&self.data, self.offsets[root] as usize)?;
+            // BookConv の実装では先頭の State が Position を持たない場合に平手初期局面とみなしているのでそれに倣う
+            if root == 0 && root_state.position.as_deref().unwrap_or("").is_empty() {
+                root_state.position = Some(STANDARD_SFEN.to_string());
+            }
+            let position = root_state.position.clone().unwrap_or_default();
+            if position.is_empty() || visited.contains(&(root_state.id as i64)) {
+                continue;
+            }
+            let Some(mut pos) = Board::parse_sfen(&position) else {
+                continue;
+            };
+            add(position, &root_state);
+            visited.insert(root_state.id as i64);
+            let mut stack = vec![LoadFrame {
+                moves: std::mem::take(&mut root_state.moves),
+                index: 0,
+                last_move: None,
+            }];
+            while let Some(frame) = stack.last_mut() {
+                if frame.index >= frame.moves.len() {
+                    let frame = stack.pop().unwrap();
+                    if let Some(m) = frame.last_move {
+                        undo_move(&mut pos, &m);
+                    }
+                    continue;
+                }
+                let sbk_move = &frame.moves[frame.index];
+                frame.index += 1;
+                let next = sbk_move.next_state_id as i64;
+                if visited.contains(&next) {
+                    continue;
+                }
+                let Some(mv) = from_sbk_move(&pos, sbk_move.mv) else {
+                    continue;
+                };
+                if !do_move(&mut pos, &mv) {
+                    continue;
+                }
+                if next < 0 || next as usize >= count {
+                    undo_move(&mut pos, &mv);
+                    continue;
+                }
+                let next_state = decode_state_at(&self.data, self.offsets[next as usize] as usize)?;
+                add(pos.to_sfen(), &next_state);
+                stack.push(LoadFrame {
+                    moves: next_state.moves,
+                    index: 0,
+                    last_move: Some(mv),
+                });
+                visited.insert(next);
+            }
+        }
+        Ok(entries)
     }
 
     /// storeSbkBookOnTheFly の書き出しを開始する。patches は in-memory のエントリー (挿入順)。
@@ -534,6 +621,8 @@ impl SbkWriter {
         let mut root_sfens = OrderedSet::default();
         // 元の SBK の State の位置 → in-memory のエントリー
         let mut offset_to_patch: HashMap<u32, usize> = HashMap::new();
+        // 指し手の遷移先の局面 (局面の解析に失敗した場合は空)。後で再び使うため保持しておく
+        let mut next_sfens: Vec<Vec<Option<String>>> = Vec::with_capacity(patches.len());
 
         for (i, (sfen, entry)) in patches.iter().enumerate() {
             // 同一局面の State が複数存在する場合は全てに同じエントリーを適用する
@@ -548,14 +637,16 @@ impl SbkWriter {
             }
 
             let Some(mut pos) = Board::parse_sfen(sfen) else {
+                next_sfens.push(Vec::new());
                 continue;
             };
             // 遷移先の局面を列挙する
-            for bm in &entry.moves {
-                if let Some(next) = next_sfen(&mut pos, &bm.usi) {
-                    in_memory_ref.add(next);
-                }
+            let nexts: Vec<Option<String>> =
+                entry.moves.iter().map(|bm| next_sfen(&mut pos, &bm.usi)).collect();
+            for next in nexts.iter().flatten() {
+                in_memory_ref.add(next.clone());
             }
+            next_sfens.push(nexts);
 
             // 元の SBK を検索する
             let Some(sbk_entry) = book.search(sfen)? else {
@@ -619,7 +710,7 @@ impl SbkWriter {
 
         // 局面と USI に対して遷移先の ID を解決する
         let mut usi_to_next_id = Vec::with_capacity(patches.len());
-        for (sfen, entry) in &patches {
+        for ((sfen, entry), nexts) in patches.iter().zip(&next_sfens) {
             let mut map: HashMap<String, i32> = HashMap::new();
             if let Some(sbk_entry) = book.search(sfen)? {
                 for m in &sbk_entry.moves {
@@ -630,12 +721,13 @@ impl SbkWriter {
                     }
                 }
             }
-            if let Some(mut pos) = Board::parse_sfen(sfen) {
-                for bm in &entry.moves {
+            // 局面の解析に失敗した場合 (nexts が空) は遷移先を解決しない
+            if !nexts.is_empty() {
+                for (bm, next) in entry.moves.iter().zip(nexts) {
                     if map.contains_key(&bm.usi) {
                         continue;
                     }
-                    let Some(next) = next_sfen(&mut pos, &bm.usi) else {
+                    let Some(next) = next else {
                         continue;
                     };
                     let mut next_id = new_sfen_to_id.get(next.as_str()).copied();

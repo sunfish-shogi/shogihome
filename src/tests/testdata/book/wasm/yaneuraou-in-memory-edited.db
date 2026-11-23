@@ -1,0 +1,55 @@
+#YANEURAOU-DB2016 1.00
+sfen lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1
+8d8e none none none 1
+sfen lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 1
+2f2e none none none 2
+sfen lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL b - 1
+2h6h none none none 1
+sfen lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1
+3c3d none none none 1
+8d8e none none none 1
+sfen lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b - 1
+2g2f none none none 1
+sfen lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1
+7g7f none none none 1
+sfen lnsgkgsnl/1r5b1/p1ppppppp/9/1p7/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 1
+8h7g none none none 1
+sfen lnsgkgsnl/1r5b1/p1ppppppp/9/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL w - 1
+3c3d none none none 1
+sfen lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1
+2b8h+ none none none 103
+4c4d none none none 3
+4a3b none none none 2
+8c8d none none none 1
+sfen lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b - 1
+6g6f none none none 1
+sfen lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL w - 1
+8c8d none none none 1
+sfen lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/3P5/PPP1PPPPP/1BS4R1/LN1GKGSNL w - 1
+#position comment 1
+#position comment 2
+7a6b none none none 3
+8c8d none none none 1
+8b3b none none none 1
+3a4b none none none 1
+sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1
+#角道を開ける
+8c8d none 30 12 10
+3c3d none none none 165
+4a3b none none none 1
+sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 1
+8c8d none none none 1
+sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
+5g5f none none none 1
+#中飛車
+2g2f 3c3d 63 27 936
+#multi line comment 1
+#multi line comment 2
+7g7f none 20 25 9
+#single line comment
+2h7h none -55 22 1
+3g3f none -74 18 1
+sfen lnsgkgsnl/1r7/p1ppp1bpp/1p3pp2/7P1/2P6/PP1PPPP1P/1B3S1R1/LNSGKG1NL b - 1
+7i6h none none none 8
+3g3f none none none 1
+6i7h none none none 1

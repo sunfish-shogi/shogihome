@@ -1,4 +1,4 @@
-// [WebAssembly 版] やねうら王形式の On-the-fly モードに固有の振る舞い (ファイルの扱いと異常終了)。
+// [WebAssembly 版] やねうら王形式に固有の振る舞い (ファイルの扱いと異常終了)。
 
 import fs from "node:fs";
 import path from "node:path";
@@ -22,7 +22,7 @@ const tmpdir = path.join(getTempPathForTesting(), "book/yane-wasm");
 const bookPath = "src/tests/testdata/book/yaneuraou.db";
 const open = () => openBook(defaultBookSession, bookPath, { forceOnTheFly: true, backend: "wasm" });
 
-describe("background/book YaneuraOu on-the-fly (backend=wasm)", () => {
+describe("background/book YaneuraOu (backend=wasm)", () => {
   beforeAll(() => {
     fs.mkdirSync(tmpdir, { recursive: true });
   });
@@ -32,15 +32,27 @@ describe("background/book YaneuraOu on-the-fly (backend=wasm)", () => {
     clearBook(defaultBookSession);
   });
 
-  it("in-memory mode still uses the JavaScript version", async () => {
-    // in-memory モードの WebAssembly 版は未実装
-    const spy = vi.spyOn(YaneWasmBook, "open");
-    const mode = await openBook(defaultBookSession, bookPath, {
-      yaneOnTheFlyThresholdMB: 1,
-      backend: "wasm",
-    });
-    expect(mode).toBe("in-memory");
-    expect(spy).not.toHaveBeenCalled();
+  it("modes are switched by the threshold", async () => {
+    const open = vi.spyOn(YaneWasmBook, "open");
+    const load = vi.spyOn(YaneWasmBook, "load");
+    expect(
+      await openBook(defaultBookSession, bookPath, { yaneOnTheFlyThresholdMB: 1, backend: "wasm" }),
+    ).toBe("in-memory");
+    expect(load).toHaveBeenCalledTimes(1);
+    expect(
+      await openBook(defaultBookSession, bookPath, {
+        yaneOnTheFlyThresholdMB: 0.0001,
+        backend: "wasm",
+      }),
+    ).toBe("on-the-fly");
+    expect(open).toHaveBeenCalledTimes(1);
+  });
+
+  it("in-memory mode does not keep the file open", async () => {
+    const closeSync = vi.spyOn(fs, "closeSync");
+    await openBook(defaultBookSession, bookPath, { backend: "wasm" });
+    clearBook(defaultBookSession);
+    expect(closeSync).not.toHaveBeenCalled();
   });
 
   it("closes the file when the book is closed", async () => {

@@ -14,18 +14,30 @@ pub mod yane;
 
 use codec::{decode_entry, encode_entry, Decoder, Encoder};
 use sbk::{SbkBook, SbkWriter};
-use yane::{Source, YaneMerger};
+use yane::{Source, YaneInMemory, YaneMerger, YaneStore};
 use std::cell::RefCell;
 
 #[derive(Default)]
 struct State {
     sbk: Option<SbkBook>,
     writer: Option<SbkWriter>,
-    /// やねうら王形式の元のファイルの大きさ (開いている場合)
-    yane_size: Option<u64>,
-    yane_writer: Option<YaneMerger>,
+    yane: Option<YaneBook>,
+    yane_writer: Option<YaneWriter>,
     result: Vec<u8>,
     error: String,
+}
+
+/// やねうら王形式の定跡
+enum YaneBook {
+    /// On-the-fly モード (元のファイルの大きさ)
+    OnTheFly(u64),
+    /// in-memory モード
+    InMemory(YaneInMemory),
+}
+
+enum YaneWriter {
+    Merge(YaneMerger, u64),
+    Store(YaneStore),
 }
 
 /// JavaScript から読み込む元のファイル。
@@ -269,20 +281,57 @@ pub extern "C" fn sbk_save_next(max_states: u32) -> i32 {
     })
 }
 
-/// やねうら王形式のファイルを開く (ファイルの内容は読み込まず、必要な部分を env.book_read で読む)。
+/// やねうら王形式のファイルを On-the-fly モードで開く (ファイルの内容は読み込まず、必要な部分を env.book_read で読む)。
 /// 先頭の局面が整列されている場合は 1、整列されていない場合は 0、失敗した場合は -1 を返す。
 #[no_mangle]
 pub extern "C" fn yane_open(size: f64) -> i32 {
     with_state(|s| {
         s.yane_writer = None;
-        s.yane_size = None;
+        s.yane = None;
         match yane::validate_ordering(&mut HostFile) {
             Ok(ordered) => {
-                s.yane_size = Some(size as u64);
+                s.yane = Some(YaneBook::OnTheFly(size as u64));
                 ordered as i32
             }
             Err(err) => fail(s, err),
         }
+    })
+}
+
+/// やねうら王形式のファイルを in-memory モードで開く。
+/// ptr は book_alloc で確保した len バイトの領域で、所有権はこのモジュールに移る (解放しないこと)。
+/// 成功した場合は局面の数を返す。失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc(len) で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_load(ptr: *mut u8, len: u32) -> i32 {
+    let data = if len == 0 {
+        book_free(ptr, 0);
+        Vec::new()
+    } else {
+        Vec::from_raw_parts(ptr, len as usize, len as usize)
+    };
+    with_state(|s| {
+        s.yane_writer = None;
+        s.yane = None;
+        match YaneInMemory::load(data) {
+            Ok(book) => {
+                let count = book.len() as i32;
+                s.yane = Some(YaneBook::InMemory(book));
+                count
+            }
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルが無い空のやねうら王形式の定跡を作る (in-memory モード)
+#[no_mangle]
+pub extern "C" fn yane_create() {
+    with_state(|s| {
+        s.yane_writer = None;
+        s.yane = Some(YaneBook::InMemory(YaneInMemory::empty()));
     })
 }
 
@@ -295,13 +344,15 @@ pub extern "C" fn yane_open(size: f64) -> i32 {
 pub unsafe extern "C" fn yane_search(ptr: *const u8, len: u32) -> i32 {
     let sfen = input(ptr, len);
     with_state(|s| {
-        let Some(size) = s.yane_size else {
-            return fail(s, "book is not opened");
-        };
         let Ok(sfen) = core::str::from_utf8(sfen) else {
             return fail(s, "invalid UTF-8 key");
         };
-        match yane::search(&mut HostFile, size, sfen) {
+        let found = match &s.yane {
+            None => return fail(s, "book is not opened"),
+            Some(YaneBook::OnTheFly(size)) => yane::search(&mut HostFile, *size, sfen),
+            Some(YaneBook::InMemory(book)) => Ok(book.search(sfen)),
+        };
+        match found {
             Ok(Some(entry)) => {
                 let mut e = Encoder {
                     buf: std::mem::take(&mut s.result),
@@ -317,8 +368,9 @@ pub unsafe extern "C" fn yane_search(ptr: *const u8, len: u32) -> i32 {
     })
 }
 
-/// 元のファイルに in-memory のエントリーを統合して書き出す処理を開始する。
-/// 入力は sbk_save_begin と同じ形式。成功した場合は 0、失敗した場合は -1 を返す。
+/// 編集内容を統合して書き出す処理を開始する。On-the-fly モードでは元のファイルに統合し、
+/// in-memory モードでは全ての局面を書き出す。入力は sbk_save_begin と同じ形式。
+/// 成功した場合は 0、失敗した場合は -1 を返す。
 ///
 /// # Safety
 /// ptr と len は book_alloc で確保した領域を指していること
@@ -327,13 +379,14 @@ pub unsafe extern "C" fn yane_save_begin(ptr: *const u8, len: u32) -> i32 {
     let data = input(ptr, len);
     with_state(|s| {
         s.yane_writer = None;
-        if s.yane_size.is_none() {
-            return fail(s, "book is not opened");
-        }
         let Some(patches) = decode_patches(data) else {
             return fail(s, "invalid patch data");
         };
-        s.yane_writer = Some(YaneMerger::new(patches));
+        s.yane_writer = match &s.yane {
+            None => return fail(s, "book is not opened"),
+            Some(YaneBook::OnTheFly(size)) => Some(YaneWriter::Merge(YaneMerger::new(patches), *size)),
+            Some(YaneBook::InMemory(_)) => Some(YaneWriter::Store(YaneStore::new(patches))),
+        };
         0
     })
 }
@@ -343,26 +396,142 @@ pub unsafe extern "C" fn yane_save_begin(ptr: *const u8, len: u32) -> i32 {
 #[no_mangle]
 pub extern "C" fn yane_save_next(max_bytes: u32) -> i32 {
     with_state(|s| {
-        let Some(mut writer) = s.yane_writer.take() else {
-            return fail(s, "writer is not started");
-        };
         let mut out = std::mem::take(&mut s.result);
         out.clear();
-        let r = writer.write_next(&mut HostFile, max_bytes as usize, &mut out);
+        let r = match (&mut s.yane_writer, &s.yane) {
+            (Some(YaneWriter::Merge(writer, _)), Some(YaneBook::OnTheFly(_))) => {
+                writer.write_next(&mut HostFile, max_bytes as usize, &mut out)
+            }
+            (Some(YaneWriter::Store(writer)), Some(YaneBook::InMemory(book))) => {
+                Ok(writer.write_next(book, max_bytes as usize, &mut out))
+            }
+            _ => Err("writer is not started".to_string()),
+        };
         s.result = out;
         match r {
-            Ok(done) => {
-                // 完了した後も yane_save_position で読み終えた位置を返せるように残す
-                s.yane_writer = Some(writer);
-                (!done) as i32
+            // 完了した後も yane_save_progress で進捗を返せるように書き出しの状態は残す
+            Ok(done) => (!done) as i32,
+            Err(err) => {
+                s.yane_writer = None;
+                fail(s, err)
+            }
+        }
+    })
+}
+
+/// 書き出しの進捗 (0〜1)
+#[no_mangle]
+pub extern "C" fn yane_save_progress() -> f64 {
+    with_state(|s| match (&s.yane_writer, &s.yane) {
+        (Some(YaneWriter::Merge(writer, size)), _) if *size > 0 => {
+            writer.consumed() as f64 / *size as f64
+        }
+        (Some(YaneWriter::Store(writer)), Some(YaneBook::InMemory(book))) => writer.progress(book),
+        _ => 0.0,
+    })
+}
+
+/// 元のエントリーに編集内容を統合する。新たな局面は末尾に追加する (JavaScript の Map と同じ順序)。
+fn merge_patches(
+    mut entries: Vec<(String, entry::Entry)>,
+    patches: Vec<(String, entry::Entry)>,
+) -> Vec<(String, entry::Entry)> {
+    let mut index: std::collections::HashMap<String, usize> = entries
+        .iter()
+        .enumerate()
+        .map(|(i, (key, _))| (key.clone(), i))
+        .collect();
+    for (key, patch) in patches {
+        match index.get(&key) {
+            Some(&i) => {
+                if let Some(merged) = entry::merge_entries(Some(entries[i].1.clone()), Some(&patch)) {
+                    entries[i].1 = merged;
+                }
+            }
+            None => {
+                if let Some(merged) = entry::merge_entries(None, Some(&patch)) {
+                    index.insert(key.clone(), entries.len());
+                    entries.push((key, merged));
+                }
+            }
+        }
+    }
+    entries
+}
+
+/// やねうら王形式の定跡を SBK 形式に変換して書き出す処理を開始する。
+/// 全ての局面を読み込み (On-the-fly モードではファイル全体を読む)、編集内容を統合して、
+/// 空の SBK に追加した結果を書き出す。入力は sbk_save_begin と同じ形式。
+/// 書き出す State の総数を返す。続きは sbk_save_next で書き出す。失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_export_sbk_begin(ptr: *const u8, len: u32) -> i32 {
+    let data = input(ptr, len);
+    with_state(|s| {
+        s.writer = None;
+        let Some(patches) = decode_patches(data) else {
+            return fail(s, "invalid patch data");
+        };
+        let base = match &s.yane {
+            None => return fail(s, "book is not opened"),
+            Some(YaneBook::InMemory(book)) => book.entries(),
+            Some(YaneBook::OnTheFly(size)) => {
+                let mut data = vec![0u8; *size as usize];
+                let mut pos = 0;
+                while pos < data.len() {
+                    match HostFile.read_at(pos as u64, &mut data[pos..]) {
+                        Ok(0) => return fail(s, "unexpected end of the book file"),
+                        Ok(n) => pos += n,
+                        Err(err) => return fail(s, err),
+                    }
+                }
+                match YaneInMemory::load(data) {
+                    Ok(book) => book.entries(),
+                    Err(err) => return fail(s, err),
+                }
+            }
+        };
+        let entries = merge_patches(base, patches);
+        let sbk = SbkBook::empty();
+        match sbk.begin_save(entries) {
+            Ok(writer) => {
+                let total = writer.total(&sbk);
+                s.sbk = Some(sbk);
+                s.writer = Some(writer);
+                total as i32
             }
             Err(err) => fail(s, err),
         }
     })
 }
 
-/// 書き出し中に読み終えた元のファイルのバイト数 (進捗の表示に使う)
+/// SBK 形式の定跡をやねうら王形式に変換して書き出す処理を開始する。
+/// 全ての局面のエントリー (loadSbkBook と同じ) に編集内容を統合して、局面順に書き出す。
+/// 入力は sbk_save_begin と同じ形式。続きは yane_save_next で書き出す。
+/// 成功した場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
 #[no_mangle]
-pub extern "C" fn yane_save_position() -> f64 {
-    with_state(|s| s.yane_writer.as_ref().map_or(0.0, |w| w.consumed() as f64))
+pub unsafe extern "C" fn sbk_export_yane_begin(ptr: *const u8, len: u32) -> i32 {
+    let data = input(ptr, len);
+    with_state(|s| {
+        s.yane_writer = None;
+        let Some(patches) = decode_patches(data) else {
+            return fail(s, "invalid patch data");
+        };
+        let Some(book) = &s.sbk else {
+            return fail(s, "book is not opened");
+        };
+        let base = match book.all_entries() {
+            Ok(entries) => entries,
+            Err(err) => return fail(s, err),
+        };
+        let entries = merge_patches(base, patches);
+        s.yane = Some(YaneBook::InMemory(YaneInMemory::empty()));
+        s.yane_writer = Some(YaneWriter::Store(YaneStore::new(entries)));
+        0
+    })
 }

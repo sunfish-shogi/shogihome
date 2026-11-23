@@ -331,6 +331,27 @@ fn append_line_to_entry(entry: &mut Entry, line: Line) {
 // ---------------------------------------------------------------------------
 // 行単位の読み込み (readline と同じく LF・CRLF・CR を改行とみなす)
 
+/// メモリ上のデータを行に分ける。data は行頭から始まること。最後の改行の後ろの空の行は返さない。
+fn lines(data: &[u8]) -> impl Iterator<Item = &[u8]> {
+    let mut pos = 0;
+    std::iter::from_fn(move || {
+        if pos >= data.len() {
+            return None;
+        }
+        let end = data[pos..]
+            .iter()
+            .position(|&b| b == LF || b == CR)
+            .map_or(data.len(), |i| pos + i);
+        let line = &data[pos..end];
+        pos = if data.get(end) == Some(&CR) && data.get(end + 1) == Some(&LF) {
+            end + 2
+        } else {
+            end + 1
+        };
+        Some(line)
+    })
+}
+
 struct LineReader {
     pos: u64,
     buf: Vec<u8>,
@@ -746,6 +767,210 @@ impl YaneMerger {
     }
 }
 
+// ---------------------------------------------------------------------------
+// in-memory モード (loadYaneuraOuBook・storeYaneuraOuBook)
+
+/// 局面の索引
+struct Row {
+    /// 手数を 1 にした SFEN
+    key: String,
+    /// 局面の行の次の行から、次の局面の行の手前 (またはファイルの末尾) までの範囲
+    start: usize,
+    end: usize,
+    ply: f64,
+}
+
+/// ファイル全体を読み込んだ定跡。局面順に整列されていないファイルも扱える。
+pub struct YaneInMemory {
+    data: Vec<u8>,
+    /// キーの順に整列し、同じ局面は 1 つにまとめた索引
+    rows: Vec<Row>,
+}
+
+impl YaneInMemory {
+    /// 元のファイルが無い空の定跡
+    pub fn empty() -> YaneInMemory {
+        YaneInMemory {
+            data: Vec::new(),
+            rows: Vec::new(),
+        }
+    }
+
+    /// ファイルの内容を読み込む (loadYaneuraOuBook)
+    pub fn load(data: Vec<u8>) -> Result<YaneInMemory, String> {
+        let mut rows: Vec<Row> = Vec::new();
+        let mut current: Option<(String, f64, usize)> = None;
+        let mut pos = 0;
+        let mut line_no = 0;
+        while pos < data.len() {
+            // readline と同じく LF・CRLF・CR を改行とみなす
+            let line_end = data[pos..]
+                .iter()
+                .position(|&b| b == LF || b == CR)
+                .map_or(data.len(), |i| pos + i);
+            let next = if data.get(line_end) == Some(&CR) && data.get(line_end + 1) == Some(&LF) {
+                line_end + 2
+            } else {
+                (line_end + 1).min(data.len())
+            };
+            let bytes = &data[pos..line_end];
+            let position = if line_no == 0 {
+                let mut line = decode(bytes);
+                if let Some(rest) = line.strip_prefix('\u{feff}') {
+                    line = rest.to_string();
+                }
+                match parse_line(&line) {
+                    Line::Comment(_) if line != HEADER => {
+                        return Err(format!("Unsupported book header: {}", line));
+                    }
+                    Line::Position(sfen, ply) => Some((sfen, ply)),
+                    _ => None,
+                }
+            } else if bytes.starts_with(SFEN_MARKER) {
+                Some(normalize_sfen(&decode(bytes)))
+            } else {
+                None
+            };
+            if let Some((key, ply)) = position {
+                if let Some((key, ply, start)) = current.take() {
+                    rows.push(Row { key, start, end: pos, ply });
+                }
+                current = Some((key, ply, next));
+            }
+            line_no += 1;
+            pos = next;
+        }
+        if let Some((key, ply, start)) = current {
+            rows.push(Row {
+                key,
+                start,
+                end: data.len(),
+                ply,
+            });
+        }
+        // 同じ局面は手数の小さいもの (同じ場合は先に現れたもの) を使う
+        rows.sort_by(|a, b| js_cmp(&a.key, &b.key));
+        let mut unique: Vec<Row> = Vec::with_capacity(rows.len());
+        for row in rows {
+            match unique.last_mut() {
+                Some(last) if last.key == row.key => {
+                    if row.ply < last.ply {
+                        *last = row;
+                    }
+                }
+                _ => unique.push(row),
+            }
+        }
+        Ok(YaneInMemory { data, rows: unique })
+    }
+
+    /// 局面の数
+    pub fn len(&self) -> usize {
+        self.rows.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.rows.is_empty()
+    }
+
+    fn entry(&self, row: &Row) -> Entry {
+        let mut entry = new_entry(row.ply);
+        for bytes in lines(&self.data[row.start..row.end]) {
+            let parsed = parse_line(&String::from_utf8_lossy(bytes));
+            append_line_to_entry(&mut entry, parsed);
+        }
+        entry
+    }
+
+    /// 全ての局面のエントリー (局面順)
+    pub fn entries(&self) -> Vec<(String, Entry)> {
+        self.rows.iter().map(|row| (row.key.clone(), self.entry(row))).collect()
+    }
+
+    /// 局面を検索する
+    pub fn search(&self, sfen: &str) -> Option<Entry> {
+        let i = self
+            .rows
+            .binary_search_by(|row| js_cmp(&row.key, sfen))
+            .ok()?;
+        Some(self.entry(&self.rows[i]))
+    }
+}
+
+/// 全ての局面に in-memory のエントリーを統合して書き出す (storeYaneuraOuBook)
+pub struct YaneStore {
+    patches: Vec<(String, Entry)>,
+    row_index: usize,
+    patch_index: usize,
+    header_written: bool,
+    done: bool,
+}
+
+impl YaneStore {
+    pub fn new(mut patches: Vec<(String, Entry)>) -> YaneStore {
+        patches.sort_by(|a, b| js_cmp(&a.0, &b.0));
+        YaneStore {
+            patches,
+            row_index: 0,
+            patch_index: 0,
+            header_written: false,
+            done: false,
+        }
+    }
+
+    /// 書き出しの進捗 (0〜1)
+    pub fn progress(&self, book: &YaneInMemory) -> f64 {
+        let total = book.rows.len() + self.patches.len();
+        if total == 0 {
+            return 1.0;
+        }
+        (self.row_index + self.patch_index) as f64 / total as f64
+    }
+
+    /// 続きを書き出す。この呼び出しで max_out バイト以上を書き出すか、最後まで書き出すと戻る。
+    /// 最後まで書き出した場合は true を返す。
+    pub fn write_next(&mut self, book: &YaneInMemory, max_out: usize, out: &mut Vec<u8>) -> bool {
+        if self.done {
+            return true;
+        }
+        let start = out.len();
+        if !self.header_written {
+            out.extend_from_slice(HEADER.as_bytes());
+            out.push(LF);
+            self.header_written = true;
+        }
+        while out.len() - start < max_out {
+            let row = book.rows.get(self.row_index);
+            let patch = self.patches.get(self.patch_index);
+            match (row, patch) {
+                (None, None) => {
+                    self.done = true;
+                    return true;
+                }
+                (Some(row), Some((key, patch))) if js_cmp(&row.key, key) == Ordering::Equal => {
+                    let merged = merge_entries(Some(book.entry(row)), Some(patch)).unwrap_or_default();
+                    write_entry(out, key, &merged);
+                    self.row_index += 1;
+                    self.patch_index += 1;
+                }
+                (Some(row), Some((key, _))) if js_cmp(&row.key, key) == Ordering::Less => {
+                    write_entry(out, &row.key, &book.entry(row));
+                    self.row_index += 1;
+                }
+                (Some(row), None) => {
+                    write_entry(out, &row.key, &book.entry(row));
+                    self.row_index += 1;
+                }
+                (_, Some((key, patch))) => {
+                    write_entry(out, key, patch);
+                    self.patch_index += 1;
+                }
+            }
+        }
+        false
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -862,6 +1087,37 @@ mod tests {
             String::from_utf8(out).unwrap(),
             "#YANEURAOU-DB2016 1.00\nsfen A b - 1\n#pc\n7g7f none 1 2 3\n#mc\nsfen AA b - 1\n1g1f none none none \nsfen B b - 1\n2g2f none 4 5 6\n"
         );
+    }
+
+    #[test]
+    fn test_in_memory() {
+        // 整列されていない・重複している・BOM 付き・CRLF
+        let data = "\u{feff}#YANEURAOU-DB2016 1.00\r\nsfen B b - 5\r\n2g2f none 4 5 6\r\nsfen A b - 9\r\n#pc\r\n7g7f none 1 2 3\r\n#mc\r\nsfen A b - 3\r\n1g1f none none none 1";
+        let book = YaneInMemory::load(data.as_bytes().to_vec()).unwrap();
+        assert_eq!(book.len(), 2);
+        let a = book.search("A b - 1").unwrap();
+        // 手数の小さい方を使う
+        assert_eq!(a.min_ply, Some(3.0));
+        assert_eq!(a.moves[0].usi, "1g1f");
+        let b = book.search("B b - 1").unwrap();
+        assert_eq!(b.moves[0].usi, "2g2f");
+        assert!(book.search("C b - 1").is_none());
+
+        let mut patch = new_entry(0.0);
+        patch.moves.push(BookMove {
+            usi: "3g3f".into(),
+            ..Default::default()
+        });
+        let mut store = YaneStore::new(vec![("AA b - 1".into(), patch)]);
+        let mut out = Vec::new();
+        while !store.write_next(&book, 8, &mut out) {}
+        assert_eq!(
+            String::from_utf8(out).unwrap(),
+            "#YANEURAOU-DB2016 1.00\nsfen A b - 1\n1g1f none none none 1\nsfen AA b - 1\n3g3f none none none \nsfen B b - 1\n2g2f none 4 5 6\n"
+        );
+
+        assert!(YaneInMemory::load(b"#YANEURAOU-DB2016 2.00\n".to_vec()).is_err());
+        assert_eq!(YaneInMemory::load(Vec::new()).unwrap().len(), 0);
     }
 
     #[test]

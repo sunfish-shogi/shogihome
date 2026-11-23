@@ -4,15 +4,18 @@
 import fs from "node:fs";
 import path from "node:path";
 import { PassThrough, Writable } from "node:stream";
-import { BookEntry } from "@/background/book/types.js";
+import { BookEntry, mergeBookEntries } from "@/background/book/types.js";
 import {
+  loadYaneuraOuBook,
   mergeYaneuraOuBook,
   searchYaneuraOuBookMovesOnTheFly,
+  storeYaneuraOuBook,
   validateBookPositionOrdering,
 } from "@/background/book/yaneuraou.js";
+import { loadSbkBook } from "@/background/book/sbk.js";
 import { YaneWasmBook } from "@/background/book/wasm/yaneuraou.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
-import { clearBook, openBook, saveBook } from "@/background/book/index.js";
+import { clearBook, exportBook, openBook, saveBook } from "@/background/book/index.js";
 import { BookBackend, defaultBookSession } from "@/common/book.js";
 import { editBook } from "@/tests/mock/book_ops.js";
 
@@ -29,7 +32,7 @@ function random(seed: number) {
 }
 
 // 乱数でやねうら王形式のファイルを作る。局面は整列するが、改行・BOM・ヘッダー・重複・不正な行などを混ぜる。
-function generateBook(seed: number): { content: Buffer; keys: string[] } {
+function generateBook(seed: number, shuffle = false): { content: Buffer; keys: string[] } {
   const { rnd, pick } = random(seed);
   const newline = pick(["\n", "\r\n", "\r"]);
   const boards = new Set<string>();
@@ -46,20 +49,34 @@ function generateBook(seed: number): { content: Buffer; keys: string[] } {
   if (rnd(4) !== 0) {
     lines.push("#YANEURAOU-DB2016 1.00");
   }
+  const blocks: string[][] = [];
   for (const board of Array.from(boards).sort()) {
+    let block: string[] = [];
+    blocks.push(block);
     const turn = pick(["b", "w"]);
     const hand = pick(["-", "P", "2P", "Rb"]);
     keys.push(`${board} ${turn} ${hand} 1`);
     // 同じ局面が続く (重複) 場合を混ぜる。
     // 開く時の検査は行が同じ場合も整列されていないとみなすので、手数の部分を昇順に変える。
+    // 整列しない場合は、同じ手数の重複や離れた位置の重複も混ぜる。
     const plies = ["", "-3", "0", "1", "35", "x"];
     const firstPly = rnd(plies.length);
-    const count = rnd(10) === 0 ? Math.min(2, plies.length - firstPly) : 1;
+    const count = shuffle
+      ? rnd(5) === 0
+        ? 2 + rnd(2)
+        : 1
+      : rnd(10) === 0
+        ? Math.min(2, plies.length - firstPly)
+        : 1;
     for (let dup = 0; dup < count; dup++) {
-      const ply = plies[firstPly + dup];
-      lines.push(`sfen ${board} ${turn} ${hand}${ply ? " " + ply : ""}`);
+      const ply = shuffle ? pick(["", "1", "1", "5", "x"]) : plies[firstPly + dup];
+      if (shuffle && dup > 0) {
+        block = [];
+        blocks.push(block);
+      }
+      block.push(`sfen ${board} ${turn} ${hand}${ply ? " " + ply : ""}`);
       if (rnd(3) === 0) {
-        lines.push(
+        block.push(
           pick(["#position comment", "//slash comment", "#", "plain line", "", "#日本語"]),
         );
       }
@@ -77,16 +94,24 @@ function generateBook(seed: number): { content: Buffer; keys: string[] } {
         if (rnd(4) === 0) {
           line += pick([" #c", " //c", " text", " #コメント", "  ", " a b c"]);
         }
-        lines.push(line);
+        block.push(line);
         if (rnd(4) === 0) {
-          lines.push(pick(["#move comment", "", "free text", "#"]));
+          block.push(pick(["#move comment", "", "free text", "#"]));
         }
         if (rnd(30) === 0) {
-          lines.push("7g7fx not a move");
+          block.push("7g7fx not a move");
         }
       }
     }
   }
+  // 局面の順序を入れ替える (in-memory モードでは整列されていないファイルも開ける)
+  if (shuffle) {
+    for (let i = blocks.length - 1; i > 0; i--) {
+      const j = rnd(i + 1);
+      [blocks[i], blocks[j]] = [blocks[j], blocks[i]];
+    }
+  }
+  lines.push(...blocks.flat());
   let text = lines.join(newline) + (rnd(3) === 0 ? "" : newline);
   if (rnd(4) === 0) {
     text = "﻿" + text;
@@ -123,13 +148,13 @@ function collect(output: Writable & PassThrough): () => Buffer {
   return () => Buffer.concat(chunks);
 }
 
-describe("[transition] background/book YaneuraOu on-the-fly: WebAssembly equals JavaScript", () => {
+describe("[transition] background/book YaneuraOu: WebAssembly equals JavaScript", () => {
   beforeAll(() => {
     fs.mkdirSync(tmpdir, { recursive: true });
   });
 
   for (let seed = 1; seed <= 40; seed++) {
-    it(`seed=${seed}`, async () => {
+    it(`on-the-fly: seed=${seed}`, async () => {
       const { content, keys } = generateBook(seed);
       const filePath = path.join(tmpdir, `book${seed}.db`);
       fs.writeFileSync(filePath, content);
@@ -206,6 +231,132 @@ describe("[transition] background/book YaneuraOu on-the-fly: WebAssembly equals 
         }
       }
       expect(outputs.wasm).toBe(outputs.js);
+    });
+  }
+
+  for (let seed = 1; seed <= 40; seed++) {
+    it(`in-memory: seed=${seed}`, async () => {
+      const { content, keys } = generateBook(seed, seed % 2 === 0);
+      const filePath = path.join(tmpdir, `in-memory${seed}.db`);
+      fs.writeFileSync(filePath, content);
+
+      let js: Map<string, BookEntry>;
+      try {
+        js = (await loadYaneuraOuBook(fs.createReadStream(filePath, "utf-8"))).entries;
+      } catch (e) {
+        // ヘッダーが不正な場合はどちらも開けない
+        await expect(YaneWasmBook.load(filePath)).rejects.toThrow(String((e as Error).message));
+        return;
+      }
+      const wasm = await YaneWasmBook.load(filePath);
+      // 検索
+      expect(wasm.entryCount).toBe(js.size);
+      for (const key of [...keys, "0/9 b - 1", "zzz w - 1", ""]) {
+        expect(wasm.search(key), key).toEqual(js.get(key));
+      }
+      // 書き出し
+      const patches = generatePatches(seed, keys);
+      for (const [key, patch] of structuredClone(patches)) {
+        const merged = mergeBookEntries(js.get(key), patch);
+        if (merged) {
+          js.set(key, merged);
+        }
+      }
+      const jsOutput = new PassThrough();
+      const jsResult = collect(jsOutput);
+      await storeYaneuraOuBook({ format: "yane2016", entries: js }, jsOutput);
+      const wasmOutput = new PassThrough();
+      const wasmResult = collect(wasmOutput);
+      await wasm.store(structuredClone(patches), wasmOutput);
+      expect(wasmResult().toString("utf-8")).toBe(jsResult().toString("utf-8"));
+    });
+  }
+
+  // 公開 API を通して両方の実装で同じ操作をした結果を返す
+  async function runBoth(
+    open: (backend: BookBackend) => Promise<unknown>,
+    run: (dir: string) => Promise<string>,
+  ): Promise<Record<BookBackend, string>> {
+    const outputs = {} as Record<BookBackend, string>;
+    for (const backend of ["wasm", "js"] as BookBackend[]) {
+      const dir = path.join(tmpdir, `run-${backend}`);
+      fs.mkdirSync(dir, { recursive: true });
+      await open(backend);
+      try {
+        await editBook(defaultBookSession, dir);
+        outputs[backend] = await run(dir);
+      } finally {
+        clearBook(defaultBookSession);
+      }
+    }
+    return outputs;
+  }
+
+  // in-memory モードで編集して保存した結果 (棋譜の取り込みを含む) が一致する
+  for (const input of [
+    "src/tests/testdata/book/yaneuraou.db",
+    "src/tests/testdata/book/yaneuraou-crlf.db",
+  ]) {
+    it(`in-memory: edit and save: ${input}`, async () => {
+      const outputs = await runBoth(
+        (backend) => openBook(defaultBookSession, input, { backend }),
+        async (dir) => {
+          const outPath = path.join(dir, "edited-in-memory.db");
+          await saveBook(defaultBookSession, outPath);
+          return fs.readFileSync(outPath, "utf-8");
+        },
+      );
+      expect(outputs.wasm).toBe(outputs.js);
+    });
+  }
+
+  // SBK 形式からやねうら王形式への変換結果が一致する
+  for (const input of [
+    "src/tests/testdata/book/shogigui01.sbk",
+    "src/tests/testdata/book/shogigui02.sbk",
+    "src/tests/testdata/book/sbk-merge.sbk",
+    "src/tests/testdata/book/two-roots.sbk",
+  ]) {
+    it(`export sbk to yane2016: ${input}`, async () => {
+      const outputs = await runBoth(
+        (backend) => openBook(defaultBookSession, input, { forceOnTheFly: true, backend }),
+        async (dir) => {
+          const outPath = path.join(dir, "exported.db");
+          await exportBook(defaultBookSession, outPath, "yane2016");
+          return fs.readFileSync(outPath, "utf-8");
+        },
+      );
+      expect(outputs.wasm).toBe(outputs.js);
+    });
+  }
+
+  // やねうら王形式から SBK 形式への変換結果は、書き出し方が異なるためバイト列は一致しないが、
+  // 読み込んだ内容 (State の ID を除く) は一致する
+  for (const mode of ["in-memory", "on-the-fly"]) {
+    it(`export yane2016 to sbk (${mode})`, async () => {
+      const outputs = await runBoth(
+        (backend) =>
+          openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+            forceOnTheFly: mode === "on-the-fly",
+            backend,
+          }),
+        async (dir) => {
+          const outPath = path.join(dir, "exported.sbk");
+          await exportBook(defaultBookSession, outPath, "sbk");
+          return outPath;
+        },
+      );
+      const load = async (filePath: string) => {
+        const book = await loadSbkBook(filePath);
+        return Array.from(book.entries)
+          .map(([sfen, entry]) => ({
+            sfen,
+            ...entry,
+            moves: entry.moves.map((m) => ({ ...m, sbkId: undefined })),
+          }))
+          .sort((a, b) => (a.sfen < b.sfen ? -1 : a.sfen > b.sfen ? 1 : 0));
+      };
+      expect(await load(outputs.wasm)).toEqual(await load(outputs.js));
     });
   }
 });
