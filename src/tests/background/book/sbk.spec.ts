@@ -106,6 +106,36 @@ describe("background/book/sbk", () => {
       expect(reloaded.entries.get(after76)?.comment).toBe("child");
       expect(reloaded.entries.get(after76)?.moves.map((m) => m.usi)).toEqual(["3c3d"]);
     });
+
+    it("does not treat moves missing from a patch as removed", async () => {
+      const initial = InitialPositionSFEN.STANDARD;
+      const after76 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+      const source: SbkBook = {
+        format: "sbk",
+        entries: new Map([
+          [initial, { type: "normal", moves: [{ usi: "7g7f", count: 1 }] }],
+          [after76, { type: "normal", moves: [{ usi: "3c3d", count: 1 }], comment: "child" }],
+        ]),
+      };
+      const tempDir = path.join(getTempPathForTesting(), "sbk-remove-move");
+      fs.mkdirSync(tempDir, { recursive: true });
+      const sourcePath = path.join(tempDir, "source-patch.sbk");
+      fs.writeFileSync(sourcePath, await storeToBuffer(source));
+
+      // 棋譜の取り込みなどで作られるパッチは、元の SBK の指し手を含まない
+      const book = await loadSbkBookOnTheFly(sourcePath);
+      book.entries.set(initial, { type: "patch", moves: [{ usi: "2g2f", count: 1 }] });
+      const output = await storeToBuffer(book);
+
+      // 元の指し手は削除されていないため、編集していない遷移先に Position を書き出さない
+      expect(SBook.decode(output).BookStates.map((state) => state.Position)).not.toContain(after76);
+      const reloaded = await loadSbkBook(output);
+      // 元の指し手は残り、パッチの指し手が追加される
+      const moves = reloaded.entries.get(initial)?.moves.map((m) => m.usi);
+      expect(moves?.sort()).toEqual(["2g2f", "7g7f"]);
+      expect(reloaded.entries.get(after76)?.comment).toBe("child");
+      expect(reloaded.entries.get(after76)?.moves.map((m) => m.usi)).toEqual(["3c3d"]);
+    });
   });
 
   describe("edit root state via on-the-fly", () => {
