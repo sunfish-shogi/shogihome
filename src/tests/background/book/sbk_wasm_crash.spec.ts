@@ -11,11 +11,7 @@ import {
   searchBookEntry,
   updateBookMove,
 } from "@/background/book/index.js";
-import {
-  BookWasmCrashError,
-  MAX_SBK_FILE_SIZE,
-  SbkWasmOnTheFly,
-} from "@/background/book/wasm/sbk_onthefly.js";
+import { BookWasmCrashError, MAX_SBK_FILE_SIZE, SbkWasmBook } from "@/background/book/wasm/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookSession } from "@/common/book.js";
 import { t } from "@/common/i18n/index.js";
@@ -54,7 +50,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
 
   it("crash while opening", async () => {
     await openBook(defaultBookSession, bookPath, { backend: "wasm" });
-    vi.spyOn(SbkWasmOnTheFly, "open").mockRejectedValueOnce(new BookWasmCrashError("test"));
+    vi.spyOn(SbkWasmBook, "open").mockRejectedValueOnce(new BookWasmCrashError("test"));
     await expect(
       openBook(defaultBookSession, "src/tests/testdata/book/shogigui01.sbk", { backend: "wasm" }),
     ).rejects.toThrow(t.wasmBookCrashedOnOpen);
@@ -67,7 +63,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
     await openBook(defaultBookSession, bookPath, { backend: "wasm" });
     await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 1 });
     expect(isBookUnsaved(defaultBookSession)).toBe(true);
-    vi.spyOn(SbkWasmOnTheFly.prototype, "search").mockImplementation(() => {
+    vi.spyOn(SbkWasmBook.prototype, "search").mockImplementation(() => {
       throw new BookWasmCrashError("test");
     });
     const after = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
@@ -83,7 +79,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
 
   it("crash while searching (without unsaved changes)", async () => {
     await openBook(defaultBookSession, bookPath, { backend: "wasm" });
-    vi.spyOn(SbkWasmOnTheFly.prototype, "search").mockImplementation(() => {
+    vi.spyOn(SbkWasmBook.prototype, "search").mockImplementation(() => {
       throw new BookWasmCrashError("test");
     });
     await expect(searchBookEntry(defaultBookSession, initialSfen)).rejects.toThrow(
@@ -94,7 +90,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
   it("crash while saving", async () => {
     await openBook(defaultBookSession, bookPath, { backend: "wasm" });
     await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 1 });
-    vi.spyOn(SbkWasmOnTheFly.prototype, "store").mockRejectedValue(new BookWasmCrashError("test"));
+    vi.spyOn(SbkWasmBook.prototype, "store").mockRejectedValue(new BookWasmCrashError("test"));
     const outPath = path.join(tmpdir, "out.sbk");
     await expect(saveBook(defaultBookSession, outPath)).rejects.toThrow(
       t.wasmBookCrashedWhileSavingAndClosed +
@@ -107,7 +103,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
 
   it("other errors do not close the book", async () => {
     await openBook(defaultBookSession, bookPath, { backend: "wasm" });
-    vi.spyOn(SbkWasmOnTheFly.prototype, "search").mockImplementation(() => {
+    vi.spyOn(SbkWasmBook.prototype, "search").mockImplementation(() => {
       throw new Error("other error");
     });
     await expect(searchBookEntry(defaultBookSession, initialSfen)).rejects.toThrow("other error");
@@ -115,7 +111,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
   });
 
   it("traps are converted to BookWasmCrashError", async () => {
-    const book = await SbkWasmOnTheFly.open(bookPath);
+    const book = await SbkWasmBook.open(bookPath);
     const raw = (book as unknown as { raw: Record<string, unknown> }).raw;
     const original = raw.sbk_search;
     let calls = 0;
@@ -131,7 +127,7 @@ describe("background/book SBK (backend=wasm) crash", () => {
   });
 
   it("pointers in the upper half of memory are treated as unsigned", async () => {
-    const book = await SbkWasmOnTheFly.open(bookPath);
+    const book = await SbkWasmBook.open(bookPath);
     const internal = book as unknown as {
       raw: Record<string, unknown>;
       exports: Record<string, () => number>;

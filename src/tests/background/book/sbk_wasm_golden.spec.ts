@@ -1,6 +1,6 @@
 // [WebAssembly 版] SBK 形式の定跡を編集して保存した結果を、期待値ファイルと比較して固定する。
 // 期待値ファイルは、移行期間中に JavaScript 版 (On-the-fly モード) の出力と一致することを
-// sbk_onthefly_wasm.spec.ts で確かめた上で作成している。JavaScript 版を削除した後も残す。
+// sbk_wasm_equivalence.spec.ts で確かめた上で作成している。JavaScript 版を削除した後も残す。
 //
 // 意図して出力を変更した場合は、次のコマンドで期待値ファイルを更新する。
 //   UPDATE_GOLDEN=1 npx vitest run src/tests/background/book/sbk_wasm_golden.spec.ts

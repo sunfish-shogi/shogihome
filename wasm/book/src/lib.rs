@@ -12,12 +12,12 @@ pub mod proto;
 pub mod sbk;
 
 use codec::{decode_entry, encode_entry, Decoder, Encoder};
-use sbk::{SbkOnTheFly, SbkWriter};
+use sbk::{SbkBook, SbkWriter};
 use std::cell::RefCell;
 
 #[derive(Default)]
 struct State {
-    sbk: Option<SbkOnTheFly>,
+    sbk: Option<SbkBook>,
     writer: Option<SbkWriter>,
     result: Vec<u8>,
     error: String,
@@ -93,7 +93,7 @@ fn encode_opt_str(e: &mut Encoder, s: &Option<String>) {
     }
 }
 
-/// SBK ファイルを On-the-fly モードで開く。
+/// SBK ファイルを開く。
 /// ptr は book_alloc で確保した len バイトの領域で、所有権はこのモジュールに移る (解放しないこと)。
 /// 成功した場合は 0 を返し、結果に [作者, 説明, State の数 (u32)] を書き込む。失敗した場合は -1 を返す。
 ///
@@ -110,7 +110,7 @@ pub unsafe extern "C" fn sbk_open(ptr: *mut u8, len: u32) -> i32 {
     with_state(|s| {
         s.writer = None;
         s.sbk = None;
-        match SbkOnTheFly::open(data) {
+        match SbkBook::open(data) {
             Ok(book) => {
                 let mut e = Encoder { buf: Vec::new() };
                 encode_opt_str(&mut e, &book.author);
@@ -130,7 +130,7 @@ pub unsafe extern "C" fn sbk_open(ptr: *mut u8, len: u32) -> i32 {
 pub extern "C" fn sbk_create() {
     with_state(|s| {
         s.writer = None;
-        s.sbk = Some(SbkOnTheFly::empty());
+        s.sbk = Some(SbkBook::empty());
     })
 }
 

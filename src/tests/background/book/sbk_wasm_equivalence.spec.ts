@@ -13,13 +13,13 @@ import {
   storeSbkBook,
 } from "@/background/book/sbk.js";
 import { BookEntry, SbkBook } from "@/background/book/types.js";
-import { SbkWasmOnTheFly } from "@/background/book/wasm/sbk_onthefly.js";
+import { SbkWasmBook } from "@/background/book/wasm/sbk.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { clearBook, openBook, saveBook } from "@/background/book/index.js";
 import { BookBackend, defaultBookSession } from "@/common/book.js";
 import { editBook, snapshotBook } from "@/tests/mock/book_ops.js";
 
-const tmpdir = path.join(getTempPathForTesting(), "book/sbk-onthefly-wasm");
+const tmpdir = path.join(getTempPathForTesting(), "book/sbk-wasm-equivalence");
 
 async function collect(write: (output: PassThrough) => Promise<void>): Promise<string> {
   const pass = new PassThrough();
@@ -136,7 +136,7 @@ function randomPatches(seed: number, sfens: string[]): Map<string, BookEntry> {
 
 async function compare(filePath: string, patchSeed: number) {
   const js = await loadSbkBookOnTheFly(filePath);
-  const wasm = await SbkWasmOnTheFly.open(filePath);
+  const wasm = await SbkWasmBook.open(filePath);
   expect(wasm.author).toBe(js.sbkAuthor);
   expect(wasm.description).toBe(js.sbkDescription);
   expect(wasm.stateCount).toBe(js.sbkIndex?.rowCount);
@@ -171,7 +171,7 @@ async function compare(filePath: string, patchSeed: number) {
   }
 }
 
-describe("[transition] background/book/wasm/sbk_onthefly equals JavaScript version", () => {
+describe("[transition] background/book/wasm/sbk equals JavaScript version", () => {
   beforeAll(() => {
     fs.rmSync(tmpdir, { recursive: true, force: true });
     fs.mkdirSync(tmpdir, { recursive: true });
