@@ -103,6 +103,19 @@ function appendCommentLine(base: string, next: string): string {
   return base ? base + "\n" + next : next;
 }
 
+// 局面の行に続くコメント行・指し手の行をエントリーに追加する。
+// コメント行は、指し手より前であれば局面のコメント、後ろであれば直前の指し手のコメントとする。
+function appendLineToEntry(entry: BookEntry, line: CommentLine | MoveLine): void {
+  if (line.type === "move") {
+    entry.moves.push(line.move);
+  } else if (entry.moves.length === 0) {
+    entry.comment = appendCommentLine(entry.comment || "", line.comment);
+  } else {
+    const move = entry.moves[entry.moves.length - 1];
+    move.comment = appendCommentLine(move.comment || "", line.comment);
+  }
+}
+
 async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry) => Promise<void>) {
   const reader = readline.createInterface({ input, crlfDelay: Infinity });
   try {
@@ -119,14 +132,7 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
             throw new Error("Unsupported book header: " + line);
           }
           if (current) {
-            if (current[1].moves.length === 0) {
-              const bookEntry = current[1];
-              bookEntry.comment = appendCommentLine(bookEntry.comment || "", parsed.comment);
-            } else {
-              const moves = current[1].moves;
-              const move = moves[moves.length - 1];
-              move.comment = appendCommentLine(move.comment || "", parsed.comment);
-            }
+            appendLineToEntry(current[1], parsed);
           }
           break;
         case "position":
@@ -137,7 +143,7 @@ async function load(input: Readable, nextEntry: (sfen: string, entry: BookEntry)
           break;
         case "move":
           if (current) {
-            current[1].moves.push(parsed.move);
+            appendLineToEntry(current[1], parsed);
           } else {
             getAppLogger().warn("Move line without position line: line=%d", lineNo);
           }
@@ -452,17 +458,13 @@ export async function searchYaneuraOuBookMovesOnTheFly(
     return;
   }
 
-  let comment = "";
-  const moves: BookMove[] = [];
+  const entry: BookEntry = { type: "normal", comment: "", moves: [], minPly: ply };
   for (const line of await readEntryLines(file, size, offset)) {
     const parsed = parseLine(line);
-    if (parsed.type === "comment") {
-      comment = appendCommentLine(comment, parsed.comment);
-    } else if (parsed.type === "move") {
-      moves.push(parsed.move);
-    } else {
+    if (parsed.type === "position") {
       break;
     }
+    appendLineToEntry(entry, parsed);
   }
-  return { type: "normal", comment, moves, minPly: ply };
+  return entry;
 }
