@@ -1,4 +1,5 @@
 import fs, { ReadStream } from "node:fs";
+import events from "node:events";
 import {
   BookBackend,
   BookFormat,
@@ -346,7 +347,7 @@ async function openBookOnTheFly(
         file.createReadStream({ autoClose: false }),
       );
       if (!ordered) {
-        throw new Error("Book is not ordered by position"); // FIXME: i18n
+        throw new Error(t.cannotOpenUnorderedBookOnTheFly);
       }
       replaceBook(session, {
         ...common,
@@ -572,7 +573,17 @@ export async function saveBook(
             autoClose: false,
             start: 0,
           });
-          await mergeYaneuraOuBook(input, book, file);
+          try {
+            await mergeYaneuraOuBook(input, book, file);
+          } catch (e) {
+            // 書きかけのファイルを残さない
+            file.destroy();
+            if (!file.closed) {
+              await events.once(file, "close");
+            }
+            await fs.promises.rm(path, { force: true });
+            throw e;
+          }
         }
         break;
       case "apery":

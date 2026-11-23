@@ -898,6 +898,10 @@ export const zh_tw: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？",
   cannotOverwriteOnTheFlyBook: "以 On-the-fly 模式讀取中的定跡無法覆寫保存。",
+  cannotOpenUnorderedBookOnTheFly:
+    "定跡ファイルが局面順に整列されていないため、On-the-fly モードで開けません。On-the-fly 閾値をファイルの大きさより大きくすると開けます。", // TODO: Translate
+  cannotSaveUnorderedOnTheFlyBook:
+    "開いている定跡ファイルが局面順に整列されていないため、保存できません。On-the-fly 閾値をファイルの大きさより大きくしてから開き直してください。", // TODO: Translate
   bookFileTooLargeForWasm: (limit: string) =>
     `定跡ファイルが大きすぎるため開けません。新方式で開ける SBK ファイルは ${limit} までです。`, // TODO: Translate
   wasmBookCrashedOnOpen:
