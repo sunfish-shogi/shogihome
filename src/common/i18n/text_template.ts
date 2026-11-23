@@ -864,6 +864,8 @@ export type Texts = {
   bookMovesWereImported: string;
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
   cannotOverwriteOnTheFlyBook: string;
+  cannotOpenUnorderedBookOnTheFly: string;
+  cannotSaveUnorderedOnTheFlyBook: string;
   pleaseSpecifyOtherFileName: string;
   memoryShortageOnBookConversionMayLoseUnsavedData: string;
   cannotConvertAperyBookToOtherFormat: string;

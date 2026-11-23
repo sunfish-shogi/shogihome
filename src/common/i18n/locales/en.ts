@@ -900,6 +900,10 @@ export const en: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Any book moves are unsaved. Do you really want to discard them and close the app?",
   cannotOverwriteOnTheFlyBook: "On-the-fly books cannot be overwritten.",
+  cannotOpenUnorderedBookOnTheFly:
+    "The book file cannot be opened in on-the-fly mode because it is not sorted by position. Set the on-the-fly threshold larger than the file size to open it.",
+  cannotSaveUnorderedOnTheFlyBook:
+    "Cannot save because the opened book file is not sorted by position. Set the on-the-fly threshold larger than the file size and reopen the book.",
   pleaseSpecifyOtherFileName: "Please specify another file name.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Memory shortage during book data conversion may cause loss of unsaved data.",

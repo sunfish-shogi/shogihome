@@ -902,6 +902,10 @@ export const ja: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "保存されていない定跡があります。破棄してアプリを終了しますか？",
   cannotOverwriteOnTheFlyBook: "On-the-fly モードで読み込み中の定跡は上書き保存できません。",
+  cannotOpenUnorderedBookOnTheFly:
+    "定跡ファイルが局面順に整列されていないため、On-the-fly モードで開けません。On-the-fly 閾値をファイルの大きさより大きくすると開けます。",
+  cannotSaveUnorderedOnTheFlyBook:
+    "開いている定跡ファイルが局面順に整列されていないため、保存できません。On-the-fly 閾値をファイルの大きさより大きくしてから開き直してください。",
   pleaseSpecifyOtherFileName: "別のファイル名を指定してください。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。",
