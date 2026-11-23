@@ -23,6 +23,7 @@ import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book.js";
 import { createTestAperyBookFile } from "@/tests/mock/book.js";
 import { defaultBookSession, SbkMoveEvaluation } from "@/common/book";
+import { t } from "@/common/i18n/index.js";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
 
@@ -908,6 +909,50 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await expect(saveBook(defaultBookSession, path)).rejects.toThrow(
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
       );
+    });
+
+    it("unordered yaneuraou book: cannot open on-the-fly", async () => {
+      const inputPath = path.join(tmpdir, "unordered-head.db");
+      fs.writeFileSync(
+        inputPath,
+        [
+          "#YANEURAOU-DB2016 1.00",
+          "sfen 9/9/9/9/9/9/9/9/9 b 2P 1",
+          "7g7f none 0 0 1",
+          "sfen 9/9/9/9/9/9/9/9/9 b 1P 1",
+          "7g7f none 0 0 1",
+          "",
+        ].join("\n"),
+      );
+      await expect(
+        openBook(defaultBookSession, inputPath, { forceOnTheFly: true }),
+      ).rejects.toThrow(t.cannotOpenUnorderedBookOnTheFly);
+    });
+
+    it("unordered yaneuraou book: cannot save on-the-fly", async () => {
+      // 開く時の検査は先頭の 10000 局面だけなので、その後ろで整列が崩れている定跡を作る
+      const sfen = (n: string) => `9/9/9/9/9/9/9/9/9 b ${n}P 1`;
+      const lines = ["#YANEURAOU-DB2016 1.00"];
+      for (let i = 10000; i <= 20000; i++) {
+        lines.push(`sfen ${sfen(String(i))}`, "7g7f none 0 0 1");
+      }
+      lines.push(`sfen ${sfen("05000")}`, "7g7f none 0 0 1", "");
+      const inputPath = path.join(tmpdir, "unordered-tail.db");
+      fs.writeFileSync(inputPath, lines.join("\n"));
+      const mode = await openBook(defaultBookSession, inputPath, { forceOnTheFly: true });
+      expect(mode).toBe("on-the-fly");
+      await updateBookMove(defaultBookSession, sfen("10000"), { usi: "2g2f", count: 1 });
+
+      const outputPath = path.join(tmpdir, "unordered-tail-out.db");
+      await expect(saveBook(defaultBookSession, outputPath)).rejects.toThrow(
+        t.cannotSaveUnorderedOnTheFlyBook,
+      );
+      // 書きかけのファイルは残らない
+      expect(fs.existsSync(outputPath)).toBe(false);
+      // 定跡と編集内容は残る
+      expect(getBookInfo(defaultBookSession).unsaved).toBe(true);
+      const entry = await searchBookEntry(defaultBookSession, sfen("10000"));
+      expect(entry?.moves.map((m) => m.usi)).toEqual(["7g7f", "2g2f"]);
     });
   });
 

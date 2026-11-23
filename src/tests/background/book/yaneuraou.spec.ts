@@ -1,11 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { Readable } from "node:stream";
+import { PassThrough, Readable } from "node:stream";
 import {
   loadYaneuraOuBook,
+  mergeYaneuraOuBook,
   searchYaneuraOuBookMovesOnTheFly,
   validateBookPositionOrdering,
 } from "@/background/book/yaneuraou.js";
+import { t } from "@/common/i18n/index.js";
 import { BookEntry } from "@/background/book/types.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 
@@ -123,6 +125,45 @@ describe("background/book/yaneuraou", () => {
         "9f9e 8g7g 0 32 1\n",
       ]);
       expect(await validateBookPositionOrdering(input)).toBeFalsy();
+    });
+  });
+
+  describe("mergeYaneuraOuBook", () => {
+    const merge = async (lines: string[]) => {
+      const output = new PassThrough();
+      const chunks: Buffer[] = [];
+      output.on("data", (chunk: Buffer) => chunks.push(chunk));
+      await mergeYaneuraOuBook(
+        Readable.from([lines.join("\n") + "\n"]),
+        { format: "yane2016", entries: new Map() },
+        output,
+      );
+      return Buffer.concat(chunks).toString();
+    };
+
+    it("allows duplicated positions", async () => {
+      const output = await merge([
+        "#YANEURAOU-DB2016 1.00",
+        "sfen 9/9/9/9/9/9/9/9/9 b 1P 1",
+        "7g7f none 0 0 1",
+        "sfen 9/9/9/9/9/9/9/9/9 b 1P 12",
+        "2g2f none 0 0 1",
+        "sfen 9/9/9/9/9/9/9/9/9 b 2P 1",
+        "7g7f none 0 0 1",
+      ]);
+      expect(output).toContain("2g2f");
+    });
+
+    it("rejects unordered positions", async () => {
+      await expect(
+        merge([
+          "#YANEURAOU-DB2016 1.00",
+          "sfen 9/9/9/9/9/9/9/9/9 b 2P 1",
+          "7g7f none 0 0 1",
+          "sfen 9/9/9/9/9/9/9/9/9 b 1P 1",
+          "7g7f none 0 0 1",
+        ]),
+      ).rejects.toThrow(t.cannotSaveUnorderedOnTheFlyBook);
     });
   });
 

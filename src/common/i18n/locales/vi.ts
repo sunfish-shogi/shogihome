@@ -859,6 +859,10 @@ export const vi: Texts = {
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
     "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?",
   cannotOverwriteOnTheFlyBook: "Không thể ghi đè lên sách đang sử dụng chế độ On-the-fly.",
+  cannotOpenUnorderedBookOnTheFly:
+    "定跡ファイルが局面順に整列されていないため、On-the-fly モードで開けません。On-the-fly 閾値をファイルの大きさより大きくすると開けます。", // TODO: Translate
+  cannotSaveUnorderedOnTheFlyBook:
+    "開いている定跡ファイルが局面順に整列されていないため、保存できません。On-the-fly 閾値をファイルの大きさより大きくしてから開き直してください。", // TODO: Translate
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "定跡データの変換中にメモリが不足すると保存していないデータは失われる可能性があります。", // TODO: Translate

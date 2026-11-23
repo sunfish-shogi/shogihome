@@ -5,6 +5,7 @@ import { Readable, Writable } from "node:stream";
 import { YaneBook, BookEntry, mergeBookEntries } from "./types.js";
 import { getAppLogger } from "@/background/log.js";
 import { BookMove } from "@/common/book.js";
+import { t } from "@/common/i18n/index.js";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
 
@@ -230,6 +231,9 @@ export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Prom
   await end;
 }
 
+// 元の定跡ファイルが局面順に整列されていない場合のエラー
+export class UnorderedBookError extends Error {}
+
 export async function mergeYaneuraOuBook(
   input: Readable,
   bookPatch: YaneBook,
@@ -248,8 +252,15 @@ export async function mergeYaneuraOuBook(
   const patchKeys = Array.from(bookPatch.entries.keys()).sort();
   let patchIndex = 0;
   let lastPatchKey = "";
+  let prevSFEN: string | undefined;
   try {
     await load(input, async (sfen, entry) => {
+      // 整列されていないと正しくマージできない (開く時には先頭しか検査していない)
+      // 同じ局面が続く (重複している) 場合は許容する
+      if (prevSFEN !== undefined && sfen < prevSFEN) {
+        throw new UnorderedBookError(t.cannotSaveUnorderedOnTheFlyBook);
+      }
+      prevSFEN = sfen;
       for (; patchIndex < patchKeys.length; patchIndex++) {
         const patchKey = patchKeys[patchIndex];
         if (patchKey > sfen) {
@@ -272,7 +283,11 @@ export async function mergeYaneuraOuBook(
     }
     output.end();
   } catch (error) {
-    output.destroy(new Error(`Failed to merge YaneuraOu book: ${error}`));
+    output.destroy(
+      error instanceof UnorderedBookError
+        ? error
+        : new Error(`Failed to merge YaneuraOu book: ${error}`),
+    );
   }
   await end;
 }
