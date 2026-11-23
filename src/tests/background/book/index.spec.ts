@@ -101,10 +101,7 @@ describe("background/book", () => {
             expect(moves4).toHaveLength(3);
 
             // comments
-            expect(moves[0].comment).toBe(
-              // In on-the-fly mode, comment-only lines will be ignored.
-              pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
-            );
+            expect(moves[0].comment).toBe("multi line comment 1\nmulti line comment 2");
             expect(moves[1].comment).toBe("single line comment");
             expect(moves[2].comment).toBe("");
           });
