@@ -101,10 +101,7 @@ describe("background/book", () => {
             expect(moves4).toHaveLength(3);
 
             // comments
-            expect(moves[0].comment).toBe(
-              // In on-the-fly mode, comment-only lines will be ignored.
-              pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
-            );
+            expect(moves[0].comment).toBe("multi line comment 1\nmulti line comment 2");
             expect(moves[1].comment).toBe("single line comment");
             expect(moves[2].comment).toBe("");
           });
@@ -912,6 +909,18 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",
       );
     });
+
+    for (const mode of ["in-memory", "on-the-fly"]) {
+      it(`yaneuraou book: output cannot be opened (${mode})`, async () => {
+        const opened = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+          forceOnTheFly: mode === "on-the-fly",
+        });
+        expect(opened).toBe(mode);
+        // 書き込みを待ち続けずにエラーになる
+        const outputPath = path.join(tmpdir, "not-exists", "output.db");
+        await expect(saveBook(defaultBookSession, outputPath)).rejects.toThrow("ENOENT");
+      });
+    }
   });
 
   describe("exportBook", () => {
