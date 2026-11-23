@@ -415,10 +415,12 @@ async function binarySearch(
   return [-1, 0];
 }
 
-// data の from 以降で、局面の行 ("sfen " で始まる行) の開始位置を探す
-function findPositionLine(data: Buffer, from: number): number {
-  for (let i = from; i + SFENMarker.length <= data.length; i++) {
-    if ((i === 0 || data[i - 1] === LF || data[i - 1] === CR) && checkSFENMarker(i, data)) {
+// data の中で局面の行 ("sfen " で始まる行) の開始位置を探す
+// isLineHead は data の先頭が行頭であるかどうか
+function findPositionLine(data: Buffer, isLineHead: boolean): number {
+  for (let i = 0; i + SFENMarker.length <= data.length; i++) {
+    const lineHead = i === 0 ? isLineHead : data[i - 1] === LF || data[i - 1] === CR;
+    if (lineHead && checkSFENMarker(i, data)) {
       return i;
     }
   }
@@ -432,26 +434,38 @@ async function readEntryLines(
   offset: number,
 ): Promise<string[]> {
   const chunkSize = 8 * 1024;
-  let data = Buffer.alloc(0);
+  const chunks: Buffer[] = [];
+  let length = 0; // 読み込んだバイト数
+  let entryEnd = -1;
+  // チャンクの境界をまたぐ局面の行も見つけられるように、前のチャンクの末尾を含めて探す
+  let tail = Buffer.alloc(0);
   let position = offset;
-  let entryEnd: number;
-  let scanFrom = 0;
-  while (true) {
-    entryEnd = findPositionLine(data, scanFrom);
-    if (entryEnd >= 0 || position >= size) {
-      break;
-    }
-    const chunk = Buffer.alloc(Math.min(chunkSize, size - position));
-    const read = await file.read(chunk, 0, chunk.length, position);
+  while (position < size) {
+    const buffer = Buffer.alloc(Math.min(chunkSize, size - position));
+    const read = await file.read(buffer, 0, buffer.length, position);
     if (read.bytesRead === 0) {
       break;
     }
-    position += read.bytesRead;
-    // チャンクの境界をまたぐ局面の行も見つけられるように、少し手前から探し直す
-    scanFrom = Math.max(data.length - SFENMarker.length, 0);
-    data = Buffer.concat([data, chunk.subarray(0, read.bytesRead)]);
+    const chunk = buffer.subarray(0, read.bytesRead);
+    position += chunk.length;
+    const scan = Buffer.concat([tail, chunk]);
+    // 前のチャンクの末尾から始まる局面の行は前回見つかっているので、先頭が行頭になるのは最初だけ
+    const found = findPositionLine(scan, length === 0);
+    chunks.push(chunk);
+    if (found >= 0) {
+      entryEnd = length - tail.length + found;
+      length += chunk.length;
+      break;
+    }
+    length += chunk.length;
+    tail = scan.subarray(Math.max(scan.length - SFENMarker.length, 0));
   }
-  const text = data.toString("utf-8", 0, entryEnd >= 0 ? entryEnd : data.length);
+  // 連結は最後に 1 回だけ行う
+  const text = Buffer.concat(chunks, length).toString(
+    "utf-8",
+    0,
+    entryEnd >= 0 ? entryEnd : length,
+  );
   if (!text) {
     return [];
   }
