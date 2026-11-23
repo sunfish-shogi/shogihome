@@ -624,9 +624,6 @@
           ]"
         />
       </div>
-      <div class="form-group warning">
-        <div class="note">{{ t.bookBackendDescription }}</div>
-      </div>
     </div>
     <!-- USI プロトコル -->
     <div v-show="selectedTab === 'usi'" class="scroll settings">

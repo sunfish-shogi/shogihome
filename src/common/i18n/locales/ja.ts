@@ -679,8 +679,6 @@ export const ja: Texts = {
   export: "エクスポート",
   flippedBook: "反転も検索",
   bookBackend: "定跡の処理方式",
-  bookBackendDescription:
-    "新方式は定跡ファイルの読み込みや保存が高速です。問題が起きた場合は従来方式に切り替えてください。新方式では On-the-fly 閾値によらず常に On-the-fly モードで読み込みます。",
   bookBackendNew: "新方式 (高速)",
   bookBackendLegacy: "従来方式",
   addBookMoves: "定跡手追加",

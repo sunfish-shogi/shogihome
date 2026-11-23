@@ -686,8 +686,6 @@ export const zh_tw: Texts = {
   export: "匯出",
   flippedBook: "亦檢索先後逆局面",
   bookBackend: "定跡處理方式",
-  bookBackendDescription:
-    "新方式讀取及保存定跡檔案的速度較快。若發生問題，請切換為舊方式。新方式不論 On-the-fly 門檻為何，一律以 On-the-fly 模式讀取。",
   bookBackendNew: "新方式（快速）",
   bookBackendLegacy: "舊方式",
   addBookMoves: "增加定跡手",

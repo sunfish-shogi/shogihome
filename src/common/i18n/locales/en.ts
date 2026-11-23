@@ -679,8 +679,6 @@ export const en: Texts = {
   export: "Export",
   flippedBook: "Flipped Book",
   bookBackend: "Book Processing",
-  bookBackendDescription:
-    "The new method loads and saves book files faster. If you encounter a problem, switch to the previous method. The new method always loads books in on-the-fly mode regardless of the threshold.",
   bookBackendNew: "New (Faster)",
   bookBackendLegacy: "Previous",
   addBookMoves: "Add Book Moves",
