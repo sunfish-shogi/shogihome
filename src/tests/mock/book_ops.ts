@@ -101,3 +101,24 @@ export function sbkFields(snapshot: { sfen: string; entry: BookPositionEntry }[]
     sbkEvals: entry.sbkEvals?.length ? entry.sbkEvals : undefined,
   }));
 }
+
+/**
+ * やねうら王形式で保存できる項目だけを取り出す。
+ * (指し手の無い局面は保存されない。統計情報や SBK 固有の項目は保存されない。空文字は省略される)
+ */
+export function yaneFields(snapshot: { sfen: string; entry: BookPositionEntry }[]) {
+  return snapshot
+    .filter(({ entry }) => entry.moves.length > 0)
+    .map(({ sfen, entry }) => ({
+      sfen,
+      moves: entry.moves.map((m) => ({
+        usi: m.usi,
+        usi2: m.usi2 || undefined,
+        score: m.score,
+        depth: m.depth,
+        count: m.count,
+        comment: m.comment || undefined,
+      })),
+      comment: entry.comment || undefined,
+    }));
+}

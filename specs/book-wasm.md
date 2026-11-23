@@ -5,21 +5,27 @@
 
 ## 方針
 
-- WebAssembly 版は常に On-the-fly モードで動作する。in-memory モードは持たない。
+- SBK 形式の WebAssembly 版は常に On-the-fly モードで動作する。in-memory モードは持たない。
   - 元のファイルの内容と索引は WebAssembly 側で保持する。
-  - 編集内容 (in-memory のエントリー) は JavaScript 側の `Map` で保持し、保存時に WebAssembly 側へ渡す。
   - 小さいファイルでも On-the-fly モードで開くため、JavaScript 版の in-memory モードとは保存結果が異なる
     (State の ID を振り直さない)。どちらも ShogiGUI で読み込める正しい SBK である。
-- 形式ごとに WebAssembly 版を作る。WebAssembly 版がまだ無い形式は、設定によらず JavaScript 版で開く。
+- やねうら王形式の WebAssembly 版は、JavaScript 版と同じく On-the-fly 閾値で in-memory モードと
+  On-the-fly モードを切り替える (局面順に整列されていないファイルも in-memory モードでは開けるため)。
+  - On-the-fly モードでは、元のファイルをメモリに読み込まず、必要な部分を WebAssembly 側からその都度読む。
+  - in-memory モードは未実装で、閾値以下のファイルは設定によらず JavaScript 版で開く。
+- 編集内容 (in-memory のエントリー) は JavaScript 側の `Map` で保持し、保存時に WebAssembly 側へ渡す。
+- 形式ごとに WebAssembly 版を作る。WebAssembly 版がまだ無い形式・モードは、設定によらず JavaScript 版で開く。
 - 形式間の変換は、JavaScript 版と WebAssembly 版の間では連携しない。
-  WebAssembly 版で開いた定跡は、WebAssembly 版が実装済みの形式にのみ変換できる (現在は SBK のみ)。
+  WebAssembly 版で開いた定跡は、WebAssembly 版が実装済みの形式にのみ変換できる (現在は同じ形式への保存のみ)。
   それ以外の変換はエラーになる (移行期間中の制限)。
 - 開いた定跡の実装 (JavaScript 版 / WebAssembly 版) は開いた時点で決まり、閉じるまで変わらない。
 
 ## 移行の手順
 
-1. SBK 形式の WebAssembly 版と基盤 (ビルド・CI・ライセンス表示・ベンチマーク) ← 現在
+1. SBK 形式の WebAssembly 版と基盤 (ビルド・CI・ライセンス表示・ベンチマーク)
 2. やねうら王形式 → YBB 形式 → Apery 形式の WebAssembly 版。実装済みの形式の間から変換にも対応する。
+   - やねうら王形式の On-the-fly モード ← 現在
+   - SBK 形式とやねうら王形式の間の変換、やねうら王形式の in-memory モード
 3. 上書き保存 (現在は On-the-fly モードの JavaScript 版と同じく、開いているファイルへの上書き保存はできない)
 4. JavaScript 版・On-the-fly 閾値の設定・JavaScript 版専用のテストの削除
 
@@ -31,6 +37,7 @@
 設定画面の「定跡」タブにある「定跡の処理方式」で変更できる。
 
 - WebAssembly 版を選んでいる場合、SBK 形式の On-the-fly 閾値は使われない (設定画面では無効表示になる)。
+  やねうら王形式の On-the-fly 閾値は WebAssembly 版でも使い、JavaScript 版を削除した後も残す。
 - WebAssembly モジュールの初期化に失敗した場合は、ログを出力して JavaScript 版を使う。
 
 ## 構成
@@ -44,7 +51,8 @@ wasm/book/                         Rust のソース (依存クレート無し)
   src/packed.rs                      Packed SFEN (packed_sfen.ts と同じ規則)
   src/proto.rs                       SBK (Protocol Buffers) の読み書き
   src/entry.rs                       定跡のエントリーと統合処理 (mergeBookEntries)
-  src/sbk.rs                         SBK 形式の On-the-fly 処理
+  src/sbk.rs                         SBK 形式の処理
+  src/yane.rs                        やねうら王形式の On-the-fly 処理
   src/codec.rs                       JavaScript との受け渡し形式
   src/lib.rs                         エクスポートする関数
 
@@ -53,7 +61,9 @@ scripts/copy-book-wasm.mjs         book.wasm を Electron 版の出力先にコ�
 src/background/book/wasm/
   book.wasm                          ビルド成果物。生成物だが commit する
   codec.ts                           JavaScript との受け渡し形式
+  instance.ts                        インスタンスの生成・異常終了の検出など、形式ごとのラッパーの共通部分
   sbk.ts                             SBK 形式
+  yaneuraou.ts                       やねうら王形式 (On-the-fly モード)
 ```
 
 ## ビルド
@@ -113,9 +123,32 @@ JavaScript 版の On-the-fly モード (`src/background/book/sbk.ts` の `loadSb
 - 文字列に孤立したサロゲートが含まれる場合、受け渡しの際に U+FFFD に置き換えられる。
 - 開ける SBK ファイルの大きさは 1 GiB まで (後述)。
 
+## やねうら王形式
+
+JavaScript 版の On-the-fly モード (`src/background/book/yaneuraou.ts` の `validateBookPositionOrdering`・
+`searchYaneuraOuBookMovesOnTheFly`・`mergeYaneuraOuBook`) と同じ結果になるように移植している。
+数値の解析と書式 (`parseInt`・`toFixed(0)`)、文字列の比較 (UTF-16 のコード単位の順)、
+改行の扱い (`readline` と同じく LF・CRLF・CR) も JavaScript と同じ規則にしている。
+
+- 開く: 先頭の 1 万局面が整列されているかを検査する。ファイルの内容はメモリに読み込まない。
+- 検索: ファイル上で二分探索し、局面の行から次の局面の行までを読む。
+- 保存: 元のファイルを先頭から読みながら編集内容を統合して書き出す。
+  JavaScript 版と同じく、整列の検査はしない。
+- ファイルの読み込みは、WebAssembly 側から JavaScript の関数 `env.book_read` を呼び出して行う
+  (`fs.readSync` による同期的な読み込み)。読み込みに失敗した場合は、その原因のエラーを投げる。
+  ファイルは定跡を閉じる時に閉じる。
+
+既知の相違点:
+
+- JavaScript 版は、局面の行が無い指し手の行をログに出力するが、WebAssembly 版は出力しない (どちらも無視する)。
+- 不正な UTF-8 のバイト列が読み込みの単位の境界をまたぐ場合、U+FFFD への置き換え方が異なる場合がある。
+  正常なファイルでは発生しない。
+
+開けるファイルの大きさに上限は無い (内容をメモリに読み込まないため)。
+
 ## 開けるファイルの大きさと異常終了
 
-WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に加えて局面ごとに索引が必要になる
+以下は SBK 形式について。WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に加えて局面ごとに索引が必要になる
 (開く処理の途中では 1 局面あたり 70 バイト強)。限界まで攻めることはせず、現実的なファイル
 (1 局面あたり 50〜90 バイト程度) を余裕を持って開ける 1 GiB を上限とする。
 これを超えるファイルは、開く前に「大きすぎるため開けない」というエラーにする。
@@ -130,6 +163,7 @@ WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に�
 | 検索             | 定跡を閉じ (空の定跡に置き換え)、保存していない変更が失われたこと (変更があった場合)・読み込んでいた定跡ファイルは変更されていないことを伝える |
 | 保存             | 検索の場合に加えて、保存先のファイルが途中までしか書き込まれていない可能性があることを伝える                                                   |
 
+異常終了した場合の動作はやねうら王形式も同じ (元のファイルも閉じる)。
 定跡を閉じるため、以後の検索でエラーが続くことは無い。異常終了は `BookWasmCrashError` で表し、
 `src/background/book/index.ts` の `handleWasmCrash` で処理する。
 
@@ -137,13 +171,13 @@ WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に�
 
 JavaScript 版の廃止に備えて、テストを次の 4 種類に分けている。
 
-| 種類                       | ファイル                                                   | JavaScript 版を廃止するとき   |
-| -------------------------- | ---------------------------------------------------------- | ----------------------------- |
-| ① 共通の振る舞い           | `sbk_backends.spec.ts`                                     | `backends` から `"js"` を外す |
-| ② 期待出力の固定           | `sbk_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`) | そのまま残す                  |
-| ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)          | そのまま残す                  |
-| ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`                             | 削除する                      |
-| ④ JavaScript 版のみ        | `index.spec.ts` の `[js]` のテスト、`sbk.spec.ts` など     | 削除する                      |
+| 種類                       | ファイル                                                                                          | JavaScript 版を廃止するとき   |
+| -------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
+| ① 共通の振る舞い           | `sbk_backends.spec.ts`、`yane_backends.spec.ts`                                                   | `backends` から `"js"` を外す |
+| ② 期待出力の固定           | `sbk_wasm_golden.spec.ts`、`yane_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`)            | そのまま残す                  |
+| ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)、`yane_wasm.spec.ts` (ファイルの扱い・異常終了) | そのまま残す                  |
+| ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`、`yane_wasm_equivalence.spec.ts`                                   | 削除する                      |
+| ④ JavaScript 版のみ        | `index.spec.ts` の `[js]` のテスト、`sbk.spec.ts`・`yaneuraou.spec.ts` など                       | 削除する                      |
 
 ②の期待値ファイルは、③で JavaScript 版 (On-the-fly モード) の出力と一致することを確かめた入力と操作で作っている。
 意図して出力を変更した場合は `UPDATE_GOLDEN=1` を付けて実行すると更新できる。
@@ -159,8 +193,16 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 
 ## 関数
 
-インスタンスごとに 1 冊の定跡を保持する。`sbk.ts` は定跡ごとにインスタンスを作り、
+インスタンスごとに 1 冊の定跡を保持する。`sbk.ts`・`yaneuraou.ts` は定跡ごとにインスタンスを作り、
 参照されなくなると GC によってメモリが解放される。
+
+インポートする関数:
+
+| 関数                           | 説明                                                                                                        |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `env.book_read(pos, ptr, len)` | 元のファイルの pos から最大 len バイトを ptr に読み込み、バイト数を返す (失敗した場合は -1)。例外は投げない |
+
+エクスポートする関数:
 
 | 関数                                      | 説明                                                                           |
 | ----------------------------------------- | ------------------------------------------------------------------------------ |
@@ -172,6 +214,11 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 | `sbk_search(ptr, len)`                    | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)              |
 | `sbk_save_begin(ptr, len)`                | 編集内容を渡して書き出しを開始し、State の総数を返す                           |
 | `sbk_save_next(max)`                      | 最大 max 件の State を書き出し、件数を返す (0 になるまで繰り返す)              |
+| `yane_open(size)`                         | やねうら王形式を開く (1: 整列されている, 0: 整列されていない, -1: 失敗)        |
+| `yane_search(ptr, len)`                   | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)              |
+| `yane_save_begin(ptr, len)`               | 編集内容を渡して書き出しを開始する                                             |
+| `yane_save_next(max)`                     | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                 |
+| `yane_save_position()`                    | 読み終えた元のファイルのバイト数 (進捗の表示に使う)                            |
 
 ## 受け渡し形式
 
@@ -208,4 +255,4 @@ u32     指し手の数
   [str]   EngineName
 ```
 
-`sbk_save_begin` の入力は `[u32 エントリーの数, (str キー, エントリー) × エントリーの数]` (挿入順)。
+`sbk_save_begin`・`yane_save_begin` の入力は `[u32 エントリーの数, (str キー, エントリー) × エントリーの数]` (挿入順)。

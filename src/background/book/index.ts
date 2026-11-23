@@ -61,9 +61,11 @@ import {
   storeYbbBook,
   YbbOnTheFly,
 } from "./ybb.js";
-import { BookWasmCrashError, isBookWasmAvailable, SbkWasmBook } from "./wasm/sbk.js";
+import { BookWasmCrashError, isBookWasmAvailable } from "./wasm/instance.js";
+import { SbkWasmBook } from "./wasm/sbk.js";
+import { YaneWasmBook } from "./wasm/yaneuraou.js";
 
-type BookHandle = InMemoryBook | OnTheFlyBook | WasmSbkBook;
+type BookHandle = InMemoryBook | OnTheFlyBook | WasmBook;
 
 type InMemoryBook = Book & {
   type: "in-memory";
@@ -98,13 +100,30 @@ type WasmSbkBook = {
   sbkDescription?: string;
 };
 
-function isWasmBook(book: BookHandle): book is WasmSbkBook {
+// WebAssembly 版のやねうら王形式の定跡 (On-the-fly モード)。
+// 元のファイルはメモリに読み込まず WebAssembly 側から必要な部分を読む。編集内容 (entries) は JavaScript 側で保持する。
+type WasmYaneBook = {
+  type: "on-the-fly";
+  backend: "wasm";
+  format: "yane2016";
+  path: string;
+  saved: boolean;
+  entries: Map<string, BookEntry>;
+  yaneWasm: YaneWasmBook;
+};
+
+type WasmBook = WasmSbkBook | WasmYaneBook;
+
+function isWasmBook(book: BookHandle): book is WasmBook {
   return "backend" in book && book.backend === "wasm";
 }
 
 // WebAssembly 版を使うかどうか。WebAssembly モジュールを初期化できない場合は JavaScript 版を使う。
-function useWasm(format: BookFormat, backend?: BookBackend): boolean {
-  return format === "sbk" && backend !== "js" && isBookWasmAvailable();
+// SBK 形式は常に WebAssembly 版で開く。やねうら王形式は On-the-fly モードで開く場合のみ
+// WebAssembly 版で開く (in-memory モードは未実装)。
+function useWasm(format: BookFormat, backend?: BookBackend, onTheFly?: boolean): boolean {
+  const implemented = format === "sbk" || (format === "yane2016" && !!onTheFly);
+  return implemented && backend !== "js" && isBookWasmAvailable();
 }
 
 /**
@@ -112,13 +131,14 @@ function useWasm(format: BookFormat, backend?: BookBackend): boolean {
  * 異常終了したインスタンスは使えないため定跡を閉じ、何が失われたかを伝えるエラーを投げる。
  * それ以外のエラーはそのまま投げ直す。
  */
-function handleWasmCrash(book: WasmSbkBook, e: unknown, savePath?: string): never {
+function handleWasmCrash(book: WasmBook, e: unknown, savePath?: string): never {
   if (!(e instanceof BookWasmCrashError)) {
     throw e;
   }
+  closeWasmBook(book);
   for (const [session, b] of bookFiles) {
     if (b === book) {
-      bookFiles.set(session, emptyBook("sbk", "wasm"));
+      bookFiles.set(session, emptyBook(book.format, "wasm"));
     }
   }
   const sentences = [
@@ -147,7 +167,7 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
     }
     let base: BookEntry | undefined;
     try {
-      base = book.sbkWasm.search(sfen);
+      base = book.format === "sbk" ? book.sbkWasm.search(sfen) : book.yaneWasm.search(sfen);
     } catch (e) {
       handleWasmCrash(book, e);
     }
@@ -221,7 +241,7 @@ function storeEntry(book: BookHandle, sfen: string, entry: BookEntry): void {
 }
 
 function emptyBook(format: BookFormat = "yane2016", backend?: BookBackend): BookHandle {
-  if (useWasm(format, backend)) {
+  if (format === "sbk" && useWasm(format, backend)) {
     return {
       type: "on-the-fly",
       backend: "wasm",
@@ -395,6 +415,36 @@ async function openSbkBookWasm(session: number, path: string): Promise<void> {
   });
 }
 
+function openYaneBookWasm(session: number, path: string): void {
+  getAppLogger().info("Loading book with WebAssembly: path=%s", path);
+  let yaneWasm: YaneWasmBook;
+  try {
+    yaneWasm = YaneWasmBook.open(path);
+  } catch (e) {
+    if (e instanceof BookWasmCrashError) {
+      // 開いていた定跡はそのまま残る
+      throw new Error(t.wasmBookCrashedOnOpen, { cause: e });
+    }
+    throw e;
+  }
+  replaceBook(session, {
+    type: "on-the-fly",
+    backend: "wasm",
+    format: "yane2016",
+    path,
+    saved: true,
+    entries: new Map<string, BookEntry>(),
+    yaneWasm,
+  });
+}
+
+// WebAssembly 版の定跡が保持している元のファイルを閉じる
+function closeWasmBook(book: WasmBook): void {
+  if (book.format === "yane2016") {
+    book.yaneWasm.close();
+  }
+}
+
 async function openBookInMemory(session: number, path: string, size: number): Promise<void> {
   getAppLogger().info("Loading book in-memory: path=%s size=%d", path, size);
   let file: ReadStream | undefined;
@@ -442,8 +492,8 @@ export async function openBook(
   const size = stat.size;
   const format = getFormatByPath(path);
 
-  // WebAssembly 版は常に On-the-fly モードで開く
-  if (useWasm(format, options?.backend)) {
+  // SBK 形式の WebAssembly 版は常に On-the-fly モードで開く
+  if (format === "sbk" && useWasm(format, options?.backend)) {
     await openSbkBookWasm(session, path);
     return "on-the-fly";
   }
@@ -468,7 +518,11 @@ export async function openBook(
     options?.forceOnTheFly ||
     (onTheFlyThresholdMB !== undefined && size > onTheFlyThresholdMB * 1024 * 1024)
   ) {
-    await openBookOnTheFly(session, path, size, onProgress);
+    if (useWasm(format, options?.backend, true)) {
+      openYaneBookWasm(session, path);
+    } else {
+      await openBookOnTheFly(session, path, size, onProgress);
+    }
     return "on-the-fly";
   } else {
     await openBookInMemory(session, path, size);
@@ -526,12 +580,19 @@ export async function saveBook(
   }
 
   if (isWasmBook(book)) {
-    if (!path.endsWith(".sbk")) {
+    if (!path.endsWith(book.format === "sbk" ? ".sbk" : ".db")) {
       throw new Error("Invalid file extension: " + path);
     }
     const file = fs.createWriteStream(path);
+    // 書き出しを始める前に中断した場合も、書き込み先のエラー (開けなかった場合など) で
+    // 未処理のエラーにならないようにする (書き出し中のエラーは store が受け取って投げる)
+    file.on("error", () => {});
     try {
-      await book.sbkWasm.store(book.entries, file, onProgress);
+      if (book.format === "sbk") {
+        await book.sbkWasm.store(book.entries, file, onProgress);
+      } else {
+        await book.yaneWasm.store(book.entries, file, onProgress);
+      }
     } catch (e) {
       handleWasmCrash(book, e, path);
     } finally {
@@ -632,7 +693,7 @@ export async function exportBook(
 
   // WebAssembly 版は実装済みの形式の間でのみ変換できる (移行期間中の制限)
   if (isWasmBook(book)) {
-    throw new Error(`Not supported yet: converting SBK books to ${targetFormat}`);
+    throw new Error(`Not supported yet: converting ${book.format} books to ${targetFormat}`);
   }
 
   // Apery 形式は独自のハッシュ値がキーになっており局面を復元できない場合があるため
@@ -723,7 +784,9 @@ export function clearBook(session: number, format?: BookFormat, backend?: BookBa
   if (!book) {
     return;
   }
-  if (book.type === "on-the-fly" && book.format !== "sbk") {
+  if (isWasmBook(book)) {
+    closeWasmBook(book);
+  } else if (book.type === "on-the-fly" && book.format !== "sbk") {
     if ("file" in book) {
       book.file.close();
     }

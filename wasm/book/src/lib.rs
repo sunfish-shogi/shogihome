@@ -10,17 +10,49 @@ pub mod moves;
 pub mod packed;
 pub mod proto;
 pub mod sbk;
+pub mod yane;
 
 use codec::{decode_entry, encode_entry, Decoder, Encoder};
 use sbk::{SbkBook, SbkWriter};
+use yane::{Source, YaneMerger};
 use std::cell::RefCell;
 
 #[derive(Default)]
 struct State {
     sbk: Option<SbkBook>,
     writer: Option<SbkWriter>,
+    /// やねうら王形式の元のファイルの大きさ (開いている場合)
+    yane_size: Option<u64>,
+    yane_writer: Option<YaneMerger>,
     result: Vec<u8>,
     error: String,
+}
+
+/// JavaScript から読み込む元のファイル。
+/// 読み込みは JavaScript の関数 (env.book_read) で行う。
+struct HostFile;
+
+#[cfg(target_arch = "wasm32")]
+#[link(wasm_import_module = "env")]
+extern "C" {
+    /// pos から最大 len バイトを ptr に読み込み、読み込めたバイト数を返す。失敗した場合は -1 を返す。
+    fn book_read(pos: f64, ptr: *mut u8, len: u32) -> i32;
+}
+
+impl Source for HostFile {
+    #[cfg(target_arch = "wasm32")]
+    fn read_at(&mut self, pos: u64, buf: &mut [u8]) -> Result<usize, String> {
+        let n = unsafe { book_read(pos as f64, buf.as_mut_ptr(), buf.len() as u32) };
+        if n < 0 {
+            return Err("failed to read the book file".to_string());
+        }
+        Ok((n as usize).min(buf.len()))
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    fn read_at(&mut self, _pos: u64, _buf: &mut [u8]) -> Result<usize, String> {
+        Err("reading files is only supported on WebAssembly".to_string())
+    }
 }
 
 thread_local! {
@@ -81,6 +113,22 @@ pub extern "C" fn book_error_ptr() -> *const u8 {
 #[no_mangle]
 pub extern "C" fn book_error_len() -> u32 {
     with_state(|s| s.error.len() as u32)
+}
+
+/// [エントリーの数 (u32), (キー, エントリー) × エントリーの数] を読み込む
+fn decode_patches(data: &[u8]) -> Option<Vec<(String, entry::Entry)>> {
+    let mut d = Decoder::new(data);
+    let count = d.u32()?;
+    let mut patches = Vec::with_capacity((count as usize).min(1 << 20));
+    for _ in 0..count {
+        let key = d.str()?.to_string();
+        let entry = decode_entry(&mut d)?;
+        patches.push((key, entry));
+    }
+    if !d.is_end() {
+        return None;
+    }
+    Some(patches)
 }
 
 fn encode_opt_str(e: &mut Encoder, s: &Option<String>) {
@@ -179,23 +227,9 @@ pub unsafe extern "C" fn sbk_save_begin(ptr: *const u8, len: u32) -> i32 {
         let Some(book) = &s.sbk else {
             return fail(s, "book is not opened");
         };
-        let mut d = Decoder::new(data);
-        let Some(count) = d.u32() else {
+        let Some(patches) = decode_patches(data) else {
             return fail(s, "invalid patch data");
         };
-        let mut patches = Vec::with_capacity((count as usize).min(1 << 20));
-        for _ in 0..count {
-            let Some(key) = d.str().map(|k| k.to_string()) else {
-                return fail(s, "invalid patch data");
-            };
-            let Some(entry) = decode_entry(&mut d) else {
-                return fail(s, "invalid patch data");
-            };
-            patches.push((key, entry));
-        }
-        if !d.is_end() {
-            return fail(s, "invalid patch data");
-        }
         match book.begin_save(patches) {
             Ok(writer) => {
                 let total = writer.total(book);
@@ -233,4 +267,102 @@ pub extern "C" fn sbk_save_next(max_states: u32) -> i32 {
             Err(err) => fail(s, err),
         }
     })
+}
+
+/// やねうら王形式のファイルを開く (ファイルの内容は読み込まず、必要な部分を env.book_read で読む)。
+/// 先頭の局面が整列されている場合は 1、整列されていない場合は 0、失敗した場合は -1 を返す。
+#[no_mangle]
+pub extern "C" fn yane_open(size: f64) -> i32 {
+    with_state(|s| {
+        s.yane_writer = None;
+        s.yane_size = None;
+        match yane::validate_ordering(&mut HostFile) {
+            Ok(ordered) => {
+                s.yane_size = Some(size as u64);
+                ordered as i32
+            }
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルから局面のエントリーを検索する。キーは手数を 1 にした SFEN。
+/// 見つかった場合は 1 を返し、結果にエントリーを書き込む。見つからない場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_search(ptr: *const u8, len: u32) -> i32 {
+    let sfen = input(ptr, len);
+    with_state(|s| {
+        let Some(size) = s.yane_size else {
+            return fail(s, "book is not opened");
+        };
+        let Ok(sfen) = core::str::from_utf8(sfen) else {
+            return fail(s, "invalid UTF-8 key");
+        };
+        match yane::search(&mut HostFile, size, sfen) {
+            Ok(Some(entry)) => {
+                let mut e = Encoder {
+                    buf: std::mem::take(&mut s.result),
+                };
+                e.buf.clear();
+                encode_entry(&mut e, &entry);
+                s.result = e.buf;
+                1
+            }
+            Ok(None) => 0,
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルに in-memory のエントリーを統合して書き出す処理を開始する。
+/// 入力は sbk_save_begin と同じ形式。成功した場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_save_begin(ptr: *const u8, len: u32) -> i32 {
+    let data = input(ptr, len);
+    with_state(|s| {
+        s.yane_writer = None;
+        if s.yane_size.is_none() {
+            return fail(s, "book is not opened");
+        }
+        let Some(patches) = decode_patches(data) else {
+            return fail(s, "invalid patch data");
+        };
+        s.yane_writer = Some(YaneMerger::new(patches));
+        0
+    })
+}
+
+/// 続きを書き出し、結果に約 max_bytes バイト以上のバイト列を書き込む。
+/// 続きがある場合は 1、完了した場合は 0、失敗した場合は -1 を返す。
+#[no_mangle]
+pub extern "C" fn yane_save_next(max_bytes: u32) -> i32 {
+    with_state(|s| {
+        let Some(mut writer) = s.yane_writer.take() else {
+            return fail(s, "writer is not started");
+        };
+        let mut out = std::mem::take(&mut s.result);
+        out.clear();
+        let r = writer.write_next(&mut HostFile, max_bytes as usize, &mut out);
+        s.result = out;
+        match r {
+            Ok(done) => {
+                // 完了した後も yane_save_position で読み終えた位置を返せるように残す
+                s.yane_writer = Some(writer);
+                (!done) as i32
+            }
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 書き出し中に読み終えた元のファイルのバイト数 (進捗の表示に使う)
+#[no_mangle]
+pub extern "C" fn yane_save_position() -> f64 {
+    with_state(|s| s.yane_writer.as_ref().map_or(0.0, |w| w.consumed() as f64))
 }
