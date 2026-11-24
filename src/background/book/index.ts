@@ -1,3 +1,4 @@
+import { resolve as resolvePath } from "node:path";
 import fs, { ReadStream } from "node:fs";
 import {
   BookBackend,
@@ -127,6 +128,15 @@ function useWasm(format: BookFormat, backend?: BookBackend): boolean {
   return implemented && backend !== "js" && isBookWasmAvailable();
 }
 
+// 2 つのパスが同じファイルを指すかどうか
+function isSameFile(a: string, b: string): boolean {
+  try {
+    return fs.realpathSync(a) === fs.realpathSync(b);
+  } catch {
+    return resolvePath(a) === resolvePath(b);
+  }
+}
+
 /**
  * WebAssembly モジュールが異常終了した場合の処理。
  * 異常終了したインスタンスは使えないため定跡を閉じ、何が失われたかを伝えるエラーを投げる。
@@ -151,7 +161,8 @@ function handleWasmCrash(book: WasmBook, e: unknown, savePath?: string): never {
   if (savePath !== undefined) {
     sentences.push(t.savedBookFileMayBeIncomplete(savePath));
   }
-  if (book.path) {
+  // in-memory モードでは開いているファイルに上書きできるため、上書きに失敗した場合は伝えない
+  if (book.path && (savePath === undefined || !isSameFile(book.path, savePath))) {
     sentences.push(t.openedBookFileWasNotModified);
   }
   // 日本語の文は空白を挟まずに連結する

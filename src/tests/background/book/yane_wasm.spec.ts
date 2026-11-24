@@ -105,6 +105,21 @@ describe("background/book YaneuraOu (backend=wasm)", () => {
     expect(getBookInfo(defaultBookSession).path).toBeUndefined();
   });
 
+  it("crash while overwriting the opened file (in-memory)", async () => {
+    // in-memory モードでは開いているファイルに上書きできるため、ファイルが変更されていないとは伝えない
+    const filePath = path.join(tmpdir, "overwrite.db");
+    fs.copyFileSync(bookPath, filePath);
+    await openBook(defaultBookSession, filePath, { backend: "wasm" });
+    await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 1 });
+    vi.spyOn(YaneWasmBook.prototype, "store").mockRejectedValue(new BookWasmCrashError("test"));
+    await expect(saveBook(defaultBookSession, filePath)).rejects.toMatchObject({
+      message:
+        t.wasmBookCrashedWhileSavingAndClosed +
+        t.unsavedBookChangesWereLost +
+        t.savedBookFileMayBeIncomplete(filePath),
+    });
+  });
+
   it("traps are converted to BookWasmCrashError", () => {
     const book = YaneWasmBook.open(bookPath);
     try {
