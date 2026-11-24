@@ -685,6 +685,38 @@ impl SbkWriter {
             }
         }
 
+        // 新しい局面のうち、ルート局面や元の SBK の局面から指し手をたどって到達できないもの
+        // (新しい局面だけで閉じた循環) は、その中で最初の局面をルート局面として扱う。
+        // (JavaScript 版の On-the-fly モードは扱わないため、到達できなくなる)
+        let mut reached: HashSet<String> = HashSet::new();
+        let mut stack: Vec<usize> = Vec::new();
+        for (i, (sfen, _)) in patches.iter().enumerate() {
+            if root_sfens.has(sfen) || !new_sfens.has(sfen) {
+                reached.insert(sfen.clone());
+                stack.push(i);
+            }
+        }
+        let visit = |stack: &mut Vec<usize>, reached: &mut HashSet<String>| {
+            while let Some(i) = stack.pop() {
+                for next in next_sfens[i].iter().flatten() {
+                    if reached.insert(next.clone()) {
+                        if let Some(&j) = patch_index.get(next) {
+                            stack.push(j);
+                        }
+                    }
+                }
+            }
+        };
+        visit(&mut stack, &mut reached);
+        for (i, (sfen, _)) in patches.iter().enumerate() {
+            if !reached.contains(sfen) {
+                root_sfens.add(sfen.clone());
+                reached.insert(sfen.clone());
+                stack.push(i);
+                visit(&mut stack, &mut reached);
+            }
+        }
+
         // 新たにルートになる局面のうち元の SBK に存在する State の位置
         // 削除された指し手の遷移先は編集されていなくても Position を書き出す必要がある
         // (書き出さないと、他に遷移元が無い場合に到達できなくなる)
@@ -838,7 +870,10 @@ impl SbkWriter {
                     Some(&p) => (&self.patches[p].1, Some(&self.usi_to_next_id[p])),
                     None => (&empty, None),
                 };
-                entry_to_state(id, entry, sfen, map, self.root_sfens.has(sfen))?
+                // 先頭の State は、Position が無いと平手初期局面とみなされる (BookConv の実装に倣う読み込み) ため、
+                // 元のファイルが無い場合 (新規作成・変換) は必ず Position を書き出す。
+                // (JavaScript 版の On-the-fly モードは書き出さないため、平手初期局面以外では読み込めなくなる)
+                entry_to_state(id, entry, sfen, map, id == 0 || self.root_sfens.has(sfen))?
             };
             state_buf.buf.clear();
             encode_state(&mut state_buf, &state, &mut scratch);
@@ -848,5 +883,67 @@ impl SbkWriter {
         }
         *out = w.buf;
         Ok(count)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn write_all(book: &SbkBook, patches: Vec<(String, Entry)>) -> Vec<u8> {
+        let mut writer = book.begin_save(patches).unwrap();
+        let mut out = Vec::new();
+        while writer.write_next(book, 16, &mut out).unwrap() > 0 {}
+        out
+    }
+
+    fn entry(usi: &str) -> Entry {
+        Entry {
+            moves: vec![BookMove {
+                usi: usi.to_string(),
+                count: Some(1.0),
+                ..Default::default()
+            }],
+            ..Default::default()
+        }
+    }
+
+    #[test]
+    fn test_first_new_state_has_position() {
+        // 先頭に書き出される局面がルート局面ではない場合
+        let start = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+        let mut pos = Board::parse_sfen(start).unwrap();
+        let next = next_sfen(&mut pos, "8b7b").unwrap();
+        let patches = vec![(next.clone(), entry("2h3h")), (start.to_string(), entry("8b7b"))];
+        let output = write_all(&SbkBook::empty(), patches);
+        let entries = SbkBook::open(output).unwrap().all_entries().unwrap();
+        let keys: Vec<&str> = entries.iter().map(|(s, _)| s.as_str()).collect();
+        assert!(keys.contains(&start) && keys.contains(&next.as_str()), "{:?}", keys);
+        assert!(!keys.contains(&STANDARD_SFEN));
+    }
+
+    #[test]
+    fn test_new_loop_has_root() {
+        // 途中の局面から始まり、元の局面に戻る循環 (循環の外に局面が無い)
+        let start = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+        let mut pos = Board::parse_sfen(start).unwrap();
+        let usis = ["8b7b", "2h3h", "7b8b", "3h2h"];
+        let mut sfens = vec![start.to_string()];
+        for usi in &usis[..3] {
+            let mv = create_move(&pos, &parse_usi(usi).unwrap()).unwrap();
+            assert!(do_move(&mut pos, &mv));
+            sfens.push(pos.to_sfen());
+        }
+        assert_eq!(next_sfen(&mut pos, usis[3]).as_deref(), Some(start));
+        let patches: Vec<(String, Entry)> =
+            sfens.iter().zip(usis).map(|(s, u)| (s.clone(), entry(u))).collect();
+
+        let output = write_all(&SbkBook::empty(), patches);
+        let reloaded = SbkBook::open(output).unwrap();
+        let entries = reloaded.all_entries().unwrap();
+        for (sfen, usi) in sfens.iter().zip(usis) {
+            let found = entries.iter().find(|(s, _)| s == sfen);
+            assert_eq!(found.map(|(_, e)| e.moves[0].usi.as_str()), Some(usi), "{}", sfen);
+        }
     }
 }

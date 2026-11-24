@@ -2,6 +2,7 @@
 // JavaScript 版を削除する際にはこのファイルも削除する。
 
 import fs from "node:fs";
+import { Move, Position } from "tsshogi";
 import path from "node:path";
 import { PassThrough, Writable } from "node:stream";
 import { BookEntry, mergeBookEntries } from "@/background/book/types.js";
@@ -330,13 +331,50 @@ describe("[transition] background/book YaneuraOu: WebAssembly equals JavaScript"
     });
   }
 
+  // 途中の局面から始まり、元の局面に戻る循環だけからなる定跡 (循環の外に局面が無い)。
+  // 互いにつながらない 2 つの循環を含む (先頭の State 以外の循環にもルート局面が必要になる)
+  function writeLoopBook(): { filePath: string; moves: [string, string][] } {
+    const starts = [
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 1",
+    ];
+    const usis = ["8b7b", "2h3h", "7b8b", "3h2h"];
+    const lines: [string, string][] = [];
+    for (const start of starts) {
+      const pos = Position.newBySFEN(start) as Position;
+      for (const usi of usis) {
+        lines.push([pos.sfen, usi]);
+        pos.doMove(pos.createMoveByUSI(usi) as Move);
+      }
+      expect(pos.sfen).toBe(start);
+    }
+    lines.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+    const filePath = path.join(tmpdir, "loop.db");
+    fs.writeFileSync(
+      filePath,
+      [
+        "#YANEURAOU-DB2016 1.00",
+        ...lines.map(([sfen, usi]) => `sfen ${sfen}\n${usi} none none none 1`),
+        "",
+      ].join("\n"),
+    );
+    return { filePath, moves: lines };
+  }
+
   // やねうら王形式から SBK 形式への変換結果は、書き出し方が異なるためバイト列は一致しないが、
   // 読み込んだ内容 (State の ID を除く) は一致する
-  for (const mode of ["in-memory", "on-the-fly"]) {
-    it(`export yane2016 to sbk (${mode})`, async () => {
+  for (const [mode, input] of [
+    ["in-memory", "yaneuraou.db"],
+    ["on-the-fly", "yaneuraou.db"],
+    ["in-memory", "loop.db"],
+    ["on-the-fly", "loop.db"],
+  ]) {
+    it(`export yane2016 to sbk (${mode}): ${input}`, async () => {
+      const loop = input === "loop.db" ? writeLoopBook() : undefined;
+      const inputPath = loop?.filePath ?? `src/tests/testdata/book/${input}`;
       const outputs = await runBoth(
         (backend) =>
-          openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
+          openBook(defaultBookSession, inputPath, {
             forceOnTheFly: mode === "on-the-fly",
             backend,
           }),
@@ -356,7 +394,45 @@ describe("[transition] background/book YaneuraOu: WebAssembly equals JavaScript"
           }))
           .sort((a, b) => (a.sfen < b.sfen ? -1 : a.sfen > b.sfen ? 1 : 0));
       };
-      expect(await load(outputs.wasm)).toEqual(await load(outputs.js));
+      const wasm = await load(outputs.wasm);
+      expect(wasm).toEqual(await load(outputs.js));
+      // 循環の局面も失われない
+      for (const [sfen, usi] of loop?.moves ?? []) {
+        expect(wasm.find((e) => e.sfen === sfen)?.moves.map((m) => m.usi)).toContain(usi);
+      }
+    });
+  }
+
+  // 編集せずに変換する (循環が他の局面とつながらない) 場合も、循環の局面は失われない
+  for (const mode of ["in-memory", "on-the-fly"]) {
+    it(`export a loop to sbk without edits (${mode})`, async () => {
+      const loop = writeLoopBook();
+      const outputs = {} as Record<BookBackend, Map<string, BookEntry>>;
+      for (const backend of ["wasm", "js"] as BookBackend[]) {
+        await openBook(defaultBookSession, loop.filePath, {
+          forceOnTheFly: mode === "on-the-fly",
+          backend,
+        });
+        try {
+          const outPath = path.join(tmpdir, `loop-${backend}.sbk`);
+          await exportBook(defaultBookSession, outPath, "sbk");
+          outputs[backend] = (await loadSbkBook(outPath)).entries;
+        } finally {
+          clearBook(defaultBookSession);
+        }
+      }
+      for (const [sfen, usi] of loop.moves) {
+        expect(
+          outputs.wasm.get(sfen)?.moves.map((m) => m.usi),
+          sfen,
+        ).toEqual([usi]);
+        expect(
+          outputs.js.get(sfen)?.moves.map((m) => m.usi),
+          sfen,
+        ).toEqual([usi]);
+      }
+      expect(outputs.wasm.size).toBe(loop.moves.length);
+      expect(outputs.js.size).toBe(loop.moves.length);
     });
   }
 });
