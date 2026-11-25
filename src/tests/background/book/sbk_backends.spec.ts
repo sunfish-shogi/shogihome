@@ -3,6 +3,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { Move, Position } from "tsshogi";
 import {
   clearBook,
   closeBookSession,
@@ -186,6 +187,36 @@ describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
       expect(initial?.moves.map((m) => m.usi)).toEqual(["7g7f", "2g2f", "2h7h", "5g5f", "1g1f"]);
       const reloaded = await searchBookEntry(session, after76);
       expect(reloaded?.moves.map((m) => m.usi)).toEqual(child?.moves.map((m) => m.usi));
+    } finally {
+      closeBookSession(session);
+    }
+  });
+
+  // 元の定跡とつながらない局面から始まり、元の局面に戻る循環を追加して保存しても、循環の局面が失われない
+  it("add a loop and save", async () => {
+    await openBook(defaultBookSession, "src/tests/testdata/book/shogigui02.sbk", {
+      backend,
+      forceOnTheFly: true,
+    });
+    const start = "lnsgkgsnl/1r5b1/ppppppppp/9/9/8P/PPPPPPPP1/1B5R1/LNSGKGSNL w - 1";
+    const usis = ["8b7b", "2h3h", "7b8b", "3h2h"];
+    const pos = Position.newBySFEN(start) as Position;
+    const loop: [string, string][] = [];
+    for (const usi of usis) {
+      loop.push([pos.sfen, usi]);
+      await updateBookMove(defaultBookSession, pos.sfen, { usi, count: 1 });
+      pos.doMove(pos.createMoveByUSI(usi) as Move);
+    }
+    await saveBook(defaultBookSession, out("loop.sbk"));
+
+    const { session } = await openBookAsNewSession(out("loop.sbk"), { backend });
+    try {
+      for (const [sfen, usi] of loop) {
+        expect(
+          (await searchBookEntry(session, sfen))?.moves.map((m) => m.usi),
+          sfen,
+        ).toContain(usi);
+      }
     } finally {
       closeBookSession(session);
     }
