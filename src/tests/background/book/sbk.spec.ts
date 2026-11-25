@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
-import { InitialPositionSFEN } from "tsshogi";
+import { InitialPositionSFEN, Move, Position } from "tsshogi";
 import {
   loadSbkBook,
   loadSbkBookOnTheFly,
@@ -74,6 +74,47 @@ describe("background/book/sbk", () => {
         expect(outputHex).toBe(expectedHex);
       });
     }
+  });
+
+  describe("new loop via on-the-fly", () => {
+    it("keeps positions of a loop which is not connected to the original book", async () => {
+      const initial = InitialPositionSFEN.STANDARD;
+      const after76 = "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1";
+      const source: SbkBook = {
+        format: "sbk",
+        entries: new Map([
+          [initial, { type: "normal", moves: [{ usi: "7g7f", count: 1 }] }],
+          [after76, { type: "normal", moves: [{ usi: "3c3d", count: 1 }] }],
+        ]),
+      };
+      const tempDir = path.join(getTempPathForTesting(), "sbk-new-loop");
+      fs.mkdirSync(tempDir, { recursive: true });
+      const sourcePath = path.join(tempDir, "source.sbk");
+      fs.writeFileSync(sourcePath, await storeToBuffer(source));
+
+      // 元の定跡とつながらない局面から始まり、元の局面に戻る循環を追加する
+      const book = await loadSbkBookOnTheFly(sourcePath);
+      const start = "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 1";
+      const usis = ["8b7b", "2h3h", "7b8b", "3h2h"];
+      const pos = Position.newBySFEN(start) as Position;
+      const loop: [string, string][] = [];
+      for (const usi of usis) {
+        loop.push([pos.sfen, usi]);
+        book.entries.set(pos.sfen, { type: "normal", moves: [{ usi, count: 1 }] });
+        pos.doMove(pos.createMoveByUSI(usi) as Move);
+      }
+      expect(pos.sfen).toBe(start);
+      const output = await storeToBuffer(book);
+
+      const reloaded = await loadSbkBook(output);
+      for (const [sfen, usi] of loop) {
+        expect(
+          reloaded.entries.get(sfen)?.moves.map((m) => m.usi),
+          sfen,
+        ).toEqual([usi]);
+      }
+      expect(reloaded.entries.get(after76)?.moves.map((m) => m.usi)).toEqual(["3c3d"]);
+    });
   });
 
   describe("remove move via on-the-fly", () => {
