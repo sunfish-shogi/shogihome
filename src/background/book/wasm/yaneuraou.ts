@@ -8,10 +8,7 @@
 import fs from "node:fs";
 import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
-import { decodeEntry, Decoder } from "./codec.js";
 import { BookWasmInstance } from "./instance.js";
-
-const textEncoder = new TextEncoder();
 
 // in-memory モードで開けるファイルの大きさの上限 (On-the-fly 閾値の上限より大きい)
 const MAX_IN_MEMORY_FILE_SIZE = 1024 * 1024 * 1024;
@@ -19,8 +16,6 @@ const MAX_IN_MEMORY_FILE_SIZE = 1024 * 1024 * 1024;
 const READ_CHUNK_SIZE = 16 * 1024 * 1024;
 
 export class YaneWasmBook extends BookWasmInstance {
-  private fd?: number;
-  private readError?: unknown;
   private _mode: "in-memory" | "on-the-fly" = "in-memory";
   private _entryCount = 0;
 
@@ -31,9 +26,9 @@ export class YaneWasmBook extends BookWasmInstance {
   static open(path: string): YaneWasmBook {
     const book = new YaneWasmBook();
     book._mode = "on-the-fly";
-    book.fd = fs.openSync(path, "r");
+    const size = book.openFile(path);
     try {
-      const r = book.exports.yane_open(fs.fstatSync(book.fd).size);
+      const r = book.exports.yane_open(size);
       if (r < 0) {
         throw book.error();
       }
@@ -102,48 +97,9 @@ export class YaneWasmBook extends BookWasmInstance {
     return this._entryCount;
   }
 
-  /** 元のファイルを閉じる (On-the-fly モードのみ)。閉じた後は検索や書き出しはできない。 */
-  close(): void {
-    if (this.fd !== undefined) {
-      fs.closeSync(this.fd);
-      this.fd = undefined;
-    }
-  }
-
-  protected read(pos: number, ptr: number, len: number): number {
-    if (this.fd === undefined) {
-      throw new Error("The book file is closed.");
-    }
-    try {
-      return fs.readSync(this.fd, this.bytes(ptr, len), 0, len, pos);
-    } catch (e) {
-      this.readError = e;
-      throw e;
-    }
-  }
-
-  protected error(): Error {
-    // 読み込みに失敗した場合は、その原因を返す
-    const readError = this.readError;
-    this.readError = undefined;
-    if (readError instanceof Error) {
-      return readError;
-    }
-    return super.error();
-  }
-
   /** 元のファイルから局面を検索する */
   search(sfen: string): BookEntry | undefined {
-    const r = this.withInput(textEncoder.encode(sfen), (ptr, len) =>
-      this.exports.yane_search(ptr, len),
-    );
-    if (r < 0) {
-      throw this.error();
-    }
-    if (r === 0) {
-      return;
-    }
-    return decodeEntry(new Decoder(this.result()));
+    return this.searchWith(sfen, (ptr, len) => this.exports.yane_search(ptr, len));
   }
 
   /**
@@ -175,6 +131,20 @@ export class YaneWasmBook extends BookWasmInstance {
   ): Promise<void> {
     await this.writeSbk(
       (ptr, len) => this.exports.yane_export_sbk_begin(ptr, len),
+      entries,
+      output,
+      onProgress,
+    );
+  }
+
+  /** 全ての局面に in-memory のエントリーを統合して、YBB 形式で書き出す (storeYbbBook と同じ結果) */
+  async exportYbb(
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.writeYbb(
+      (ptr, len) => this.exports.yane_export_ybb_begin(ptr, len),
       entries,
       output,
       onProgress,

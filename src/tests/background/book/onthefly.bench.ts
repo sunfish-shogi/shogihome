@@ -131,6 +131,7 @@ describe("background/book on-the-fly", async () => {
     { format: "sbk", backend: "js" },
     { format: "sbk", backend: "wasm" },
     { format: "ybb", backend: "js" },
+    { format: "ybb", backend: "wasm" },
   ];
   for (const { format, backend, inMemory } of targets) {
     const bookPath = path.join(cacheDir, "book" + extensions[format]);
@@ -164,8 +165,8 @@ describe("background/book on-the-fly", async () => {
         fn: () => saveBook(defaultBookSession, path.join(tmpdir, "out" + extensions[format])),
       },
     ];
-    // Apery 形式は他の形式に変換できない。WebAssembly 版は SBK 形式とやねうら王形式の間のみ変換できる
-    if (format !== "apery" && (backend !== "wasm" || format === "yane2016" || format === "sbk")) {
+    // Apery 形式は他の形式に変換できない
+    if (format !== "apery") {
       cases.push({
         name: `export to ${exportFormat}`,
         setup: async () => void (await open()),

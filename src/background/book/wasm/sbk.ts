@@ -6,10 +6,8 @@ import fs from "node:fs";
 import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
 import { t } from "@/common/i18n/index.js";
-import { decodeEntry, Decoder } from "./codec.js";
+import { Decoder } from "./codec.js";
 import { BookWasmInstance } from "./instance.js";
-
-const textEncoder = new TextEncoder();
 
 // 開ける SBK ファイルの大きさの上限。
 // WebAssembly (wasm32) のメモリは 4 GiB までで、ファイルの内容に加えて局面ごとに索引 (開く処理の途中では
@@ -89,16 +87,7 @@ export class SbkWasmBook extends BookWasmInstance {
 
   /** 元のファイルから局面を検索する (searchSbkBookEntryOnTheFly に相当する) */
   search(sfen: string): BookEntry | undefined {
-    const r = this.withInput(textEncoder.encode(sfen), (ptr, len) =>
-      this.exports.sbk_search(ptr, len),
-    );
-    if (r < 0) {
-      throw this.error();
-    }
-    if (r === 0) {
-      return;
-    }
-    return decodeEntry(new Decoder(this.result()));
+    return this.searchWith(sfen, (ptr, len) => this.exports.sbk_search(ptr, len));
   }
 
   /**
@@ -129,6 +118,20 @@ export class SbkWasmBook extends BookWasmInstance {
   ): Promise<void> {
     await this.writeYane(
       (ptr, len) => this.exports.sbk_export_yane_begin(ptr, len),
+      entries,
+      output,
+      onProgress,
+    );
+  }
+
+  /** 全ての局面 (loadSbkBook と同じ) に in-memory のエントリーを統合して、YBB 形式で書き出す */
+  async exportYbb(
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.writeYbb(
+      (ptr, len) => this.exports.sbk_export_ybb_begin(ptr, len),
       entries,
       output,
       onProgress,

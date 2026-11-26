@@ -6,7 +6,7 @@ import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
 import { getAppLogger } from "@/background/log.js";
 import { getBookWasmPath } from "@/background/proc/env.js";
-import { encodeEntry, Encoder } from "./codec.js";
+import { decodeEntry, Decoder, encodeEntry, Encoder } from "./codec.js";
 
 export type BookWasmExports = {
   memory: WebAssembly.Memory;
@@ -29,7 +29,17 @@ export type BookWasmExports = {
   yane_save_next(maxBytes: number): number;
   yane_save_progress(): number;
   yane_export_sbk_begin(ptr: number, len: number): number;
+  yane_export_ybb_begin(ptr: number, len: number): number;
   sbk_export_yane_begin(ptr: number, len: number): number;
+  sbk_export_ybb_begin(ptr: number, len: number): number;
+  ybb_open(): number;
+  ybb_create(): void;
+  ybb_search(ptr: number, len: number): number;
+  ybb_save_begin(ptr: number, len: number): number;
+  ybb_save_next(maxBytes: number): number;
+  ybb_save_progress(): number;
+  ybb_export_yane_begin(ptr: number, len: number): number;
+  ybb_export_sbk_begin(ptr: number, len: number): number;
 };
 
 let compiledModule: WebAssembly.Module | undefined;
@@ -41,6 +51,7 @@ function getModule(): WebAssembly.Module {
   return compiledModule;
 }
 
+const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
 // アドレスを返す関数。wasm32 のアドレスは符号なし 32 bit だが、JavaScript には符号付きの i32 として
@@ -88,15 +99,37 @@ export abstract class BookWasmInstance {
     this.exports = this.guard();
   }
 
+  // WebAssembly 側から読む元のファイル (ファイルの内容をメモリに読み込まない形式のみ)
+  private fd?: number;
+  private readError?: unknown;
+
+  /** WebAssembly 側から読む元のファイルを開く */
+  protected openFile(path: string): number {
+    this.fd = fs.openSync(path, "r");
+    return fs.fstatSync(this.fd).size;
+  }
+
+  /** 元のファイルを閉じる (開いている場合)。閉じた後は検索や書き出しはできない。 */
+  close(): void {
+    if (this.fd !== undefined) {
+      fs.closeSync(this.fd);
+      this.fd = undefined;
+    }
+  }
+
   /**
    * 元のファイルの pos から最大 len バイトを WebAssembly のメモリの ptr に読み込み、読み込めたバイト数を返す。
-   * ファイルを WebAssembly 側から読む形式で実装する。
    */
-  protected read(pos: number, ptr: number, len: number): number {
-    void pos;
-    void ptr;
-    void len;
-    throw new Error("reading files is not supported");
+  private read(pos: number, ptr: number, len: number): number {
+    if (this.fd === undefined) {
+      throw new Error("The book file is closed.");
+    }
+    try {
+      return fs.readSync(this.fd, this.bytes(ptr, len), 0, len, pos);
+    } catch (e) {
+      this.readError = e;
+      throw e;
+    }
   }
 
   /**
@@ -142,10 +175,31 @@ export abstract class BookWasmInstance {
   }
 
   protected error(): Error {
+    // 元のファイルの読み込みに失敗した場合は、その原因を返す
+    const readError = this.readError;
+    this.readError = undefined;
+    if (readError instanceof Error) {
+      return readError;
+    }
     const message = textDecoder.decode(
       this.bytes(this.exports.book_error_ptr(), this.exports.book_error_len()),
     );
     return new Error(message);
+  }
+
+  /** fn (xxx_search) で局面を検索する */
+  protected searchWith(
+    sfen: string,
+    fn: (ptr: number, len: number) => number,
+  ): BookEntry | undefined {
+    const r = this.withInput(textEncoder.encode(sfen), fn);
+    if (r < 0) {
+      throw this.error();
+    }
+    if (r === 0) {
+      return;
+    }
+    return decodeEntry(new Decoder(this.result()));
   }
 
   private saving = false;
@@ -228,6 +282,32 @@ export abstract class BookWasmInstance {
         return status === 0;
       },
       () => this.exports.yane_save_progress(),
+      onProgress,
+    );
+  }
+
+  /** begin で書き出しを開始し、ybb_save_next で YBB 形式の続きを書き出す */
+  protected async writeYbb(
+    begin: (ptr: number, len: number) => number,
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.write(
+      output,
+      () => {
+        if (this.withInput(this.encodePatches(entries), begin) < 0) {
+          throw this.error();
+        }
+      },
+      () => {
+        const status = this.exports.ybb_save_next(SAVE_CHUNK_BYTES);
+        if (status < 0) {
+          throw this.error();
+        }
+        return status === 0;
+      },
+      () => this.exports.ybb_save_progress(),
       onProgress,
     );
   }

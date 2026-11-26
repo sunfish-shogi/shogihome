@@ -184,7 +184,8 @@ describe("background/book", () => {
 
     describe("yaneuraou.ybb", () => {
       const patterns = [
-        { options: { ybbOnTheFlyThresholdMB: 0.01 }, mode: "in-memory" },
+        // [JavaScript 版のみ] WebAssembly 版は常に On-the-fly モードで開く
+        { options: { ybbOnTheFlyThresholdMB: 0.01, backend: "js" as const }, mode: "in-memory" },
         { options: { ybbOnTheFlyThresholdMB: 0.0001 }, mode: "on-the-fly" },
       ];
       for (const pattern of patterns) {
@@ -1019,23 +1020,23 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     });
 
     // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
-    it("[wasm] sbk → ybb: not supported yet", async () => {
+    it("[wasm] sbk → apery: not supported yet", async () => {
       await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk", {
         backend: "wasm",
       });
-      const outPath = path.join(tmpdir, "export-sbk-wasm-to-ybb.ybb");
-      await expect(exportBook(defaultBookSession, outPath, "ybb")).rejects.toThrow(
+      const outPath = path.join(tmpdir, "export-sbk-wasm-to-apery.bin");
+      await expect(exportBook(defaultBookSession, outPath, "apery")).rejects.toThrow(
         "Not supported yet",
       );
     });
 
     // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
-    it("[wasm] yane2016 → ybb: not supported yet", async () => {
+    it("[wasm] yane2016 → apery: not supported yet", async () => {
       await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
         backend: "wasm",
       });
-      const outPath = path.join(tmpdir, "export-yane-wasm-to-ybb.ybb");
-      await expect(exportBook(defaultBookSession, outPath, "ybb")).rejects.toThrow(
+      const outPath = path.join(tmpdir, "export-yane-wasm-to-apery.bin");
+      await expect(exportBook(defaultBookSession, outPath, "apery")).rejects.toThrow(
         "Not supported yet",
       );
     });
@@ -1070,8 +1071,11 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(output).toBe(expected);
     });
 
-    it("yaneuraou.ybb (in-memory) → db", async () => {
-      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb");
+    // [JavaScript 版のみ] WebAssembly 版は常に On-the-fly モードで開く
+    it("[js] yaneuraou.ybb (in-memory) → db", async () => {
+      const mode = await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.ybb", {
+        backend: "js",
+      });
       expect(mode).toBe("in-memory");
       const outPath = path.join(tmpdir, "export-from-ybb.db");
       await exportBook(defaultBookSession, outPath, "yane2016");
