@@ -1,4 +1,4 @@
-// 定跡の On-the-fly モードのベンチマーク。
+// 定跡の On-the-fly モード (やねうら王形式は in-memory モードも) のベンチマーク。
 // 乱数で作った定跡を 4 形式で書き出し (一時ディレクトリにキャッシュする)、
 // 開く・検索・保存 (元ファイルとの統合)・他の形式への変換の時間を測る。
 //
@@ -122,20 +122,27 @@ describe("background/book on-the-fly", async () => {
   fs.mkdirSync(tmpdir, { recursive: true });
 
   // WebAssembly 版が実装済みの形式は両方の実装で測る
-  const targets: { format: BookFormat; backend: BookBackend }[] = [
+  const targets: { format: BookFormat; backend: BookBackend; inMemory?: boolean }[] = [
     { format: "yane2016", backend: "js" },
     { format: "yane2016", backend: "wasm" },
+    { format: "yane2016", backend: "js", inMemory: true },
+    { format: "yane2016", backend: "wasm", inMemory: true },
     { format: "apery", backend: "js" },
     { format: "sbk", backend: "js" },
     { format: "sbk", backend: "wasm" },
     { format: "ybb", backend: "js" },
   ];
-  for (const { format, backend } of targets) {
+  for (const { format, backend, inMemory } of targets) {
     const bookPath = path.join(cacheDir, "book" + extensions[format]);
     const size = (fs.statSync(bookPath).size / 1024 / 1024).toFixed(1);
-    const label = `${format}/${backend} (${positions} positions, ${size} MB)`;
+    const label = `${format}/${backend}${inMemory ? "/in-memory" : ""} (${positions} positions, ${size} MB)`;
     const exportFormat: BookFormat = format === "yane2016" ? "sbk" : "yane2016";
-    const open = () => openBook(defaultBookSession, bookPath, { forceOnTheFly: true, backend });
+    const open = () =>
+      openBook(
+        defaultBookSession,
+        bookPath,
+        inMemory ? { yaneOnTheFlyThresholdMB: 1024, backend } : { forceOnTheFly: true, backend },
+      );
 
     const cases: { name: string; setup?: () => Promise<void>; fn: () => Promise<void> }[] = [
       { name: "open", fn: async () => void (await open()) },
@@ -157,8 +164,8 @@ describe("background/book on-the-fly", async () => {
         fn: () => saveBook(defaultBookSession, path.join(tmpdir, "out" + extensions[format])),
       },
     ];
-    // Apery 形式は他の形式に変換できない。WebAssembly 版は形式間の変換に未対応
-    if (format !== "apery" && backend !== "wasm") {
+    // Apery 形式は他の形式に変換できない。WebAssembly 版は SBK 形式とやねうら王形式の間のみ変換できる
+    if (format !== "apery" && (backend !== "wasm" || format === "yane2016" || format === "sbk")) {
       cases.push({
         name: `export to ${exportFormat}`,
         setup: async () => void (await open()),

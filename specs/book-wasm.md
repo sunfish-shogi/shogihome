@@ -12,11 +12,11 @@
 - やねうら王形式の WebAssembly 版は、JavaScript 版と同じく On-the-fly 閾値で in-memory モードと
   On-the-fly モードを切り替える (局面順に整列されていないファイルも in-memory モードでは開けるため)。
   - On-the-fly モードでは、元のファイルをメモリに読み込まず、必要な部分を WebAssembly 側からその都度読む。
-  - in-memory モードは未実装で、閾値以下のファイルは設定によらず JavaScript 版で開く。
+  - in-memory モードでは、ファイル全体を WebAssembly のメモリに読み込む。
 - 編集内容 (in-memory のエントリー) は JavaScript 側の `Map` で保持し、保存時に WebAssembly 側へ渡す。
 - 形式ごとに WebAssembly 版を作る。WebAssembly 版がまだ無い形式・モードは、設定によらず JavaScript 版で開く。
 - 形式間の変換は、JavaScript 版と WebAssembly 版の間では連携しない。
-  WebAssembly 版で開いた定跡は、WebAssembly 版が実装済みの形式にのみ変換できる (現在は同じ形式への保存のみ)。
+  WebAssembly 版で開いた定跡は、WebAssembly 版が実装済みの形式にのみ変換できる (現在は SBK 形式とやねうら王形式の間)。
   それ以外の変換はエラーになる (移行期間中の制限)。
 - 開いた定跡の実装 (JavaScript 版 / WebAssembly 版) は開いた時点で決まり、閉じるまで変わらない。
 
@@ -24,8 +24,8 @@
 
 1. SBK 形式の WebAssembly 版と基盤 (ビルド・CI・ライセンス表示・ベンチマーク)
 2. やねうら王形式 → YBB 形式 → Apery 形式の WebAssembly 版。実装済みの形式の間から変換にも対応する。
-   - やねうら王形式の On-the-fly モード ← 現在
-   - SBK 形式とやねうら王形式の間の変換、やねうら王形式の in-memory モード
+   - やねうら王形式の On-the-fly モード
+   - やねうら王形式の in-memory モード、SBK 形式とやねうら王形式の間の変換 ← 現在
 3. 上書き保存 (現在は On-the-fly モードの JavaScript 版と同じく、開いているファイルへの上書き保存はできない)
 4. JavaScript 版・On-the-fly 閾値の設定・JavaScript 版専用のテストの削除
 
@@ -52,7 +52,7 @@ wasm/book/                         Rust のソース (依存クレート無し)
   src/proto.rs                       SBK (Protocol Buffers) の読み書き
   src/entry.rs                       定跡のエントリーと統合処理 (mergeBookEntries)
   src/sbk.rs                         SBK 形式の処理
-  src/yane.rs                        やねうら王形式の On-the-fly 処理
+  src/yane.rs                        やねうら王形式の処理
   src/codec.rs                       JavaScript との受け渡し形式
   src/lib.rs                         エクスポートする関数
 
@@ -63,7 +63,7 @@ src/background/book/wasm/
   codec.ts                           JavaScript との受け渡し形式
   instance.ts                        インスタンスの生成・異常終了の検出など、形式ごとのラッパーの共通部分
   sbk.ts                             SBK 形式
-  yaneuraou.ts                       やねうら王形式 (On-the-fly モード)
+  yaneuraou.ts                       やねうら王形式
 ```
 
 ## ビルド
@@ -122,13 +122,22 @@ JavaScript 版の On-the-fly モード (`src/background/book/sbk.ts` の `loadSb
   WebAssembly 版はその指し手を無視する。正常なファイルでは発生しない。
 - 文字列に孤立したサロゲートが含まれる場合、受け渡しの際に U+FFFD に置き換えられる。
 - 開ける SBK ファイルの大きさは 1 GiB まで (後述)。
+- 元のファイルが無い場合 (新規作成・変換)、先頭の State には必ず Position を書き出す。
+  読み込む時に Position が無い先頭の State は平手初期局面とみなされるため、平手初期局面以外の局面になる場合に必要になる。
+  (JavaScript 版の On-the-fly モードは元のファイルがある場合にのみ使われるため、この場合を扱わない)
+
+どちらの実装も、新しい局面だけで閉じた循環 (ルート局面や元の SBK の局面から指し手をたどって到達できない局面) は、
+その中で最初の局面をルート局面として Position を書き出す。
 
 ## やねうら王形式
 
-JavaScript 版の On-the-fly モード (`src/background/book/yaneuraou.ts` の `validateBookPositionOrdering`・
-`searchYaneuraOuBookMovesOnTheFly`・`mergeYaneuraOuBook`) と同じ結果になるように移植している。
+JavaScript 版 (`src/background/book/yaneuraou.ts`) と同じ結果になるように移植している。
 数値の解析と書式 (`parseInt`・`toFixed(0)`)、文字列の比較 (UTF-16 のコード単位の順)、
 改行の扱い (`readline` と同じく LF・CRLF・CR) も JavaScript と同じ規則にしている。
+
+### On-the-fly モード
+
+`validateBookPositionOrdering`・`searchYaneuraOuBookMovesOnTheFly`・`mergeYaneuraOuBook` に相当する。
 
 - 開く: 先頭の 1 万局面が整列されているかを検査する。ファイルの内容はメモリに読み込まない。
 - 検索: ファイル上で二分探索し、局面の行から次の局面の行までを読む。
@@ -138,13 +147,41 @@ JavaScript 版の On-the-fly モード (`src/background/book/yaneuraou.ts` の `
   (`fs.readSync` による同期的な読み込み)。読み込みに失敗した場合は、その原因のエラーを投げる。
   ファイルは定跡を閉じる時に閉じる。
 
-既知の相違点:
+開けるファイルの大きさに上限は無い (内容をメモリに読み込まないため)。
+
+### in-memory モード
+
+`loadYaneuraOuBook`・`storeYaneuraOuBook` に相当する。
+
+- 開く: ファイル全体を WebAssembly のメモリに読み込み、局面 (手数を 1 にした SFEN) の索引を作る。
+  局面順に整列されていないファイルも開ける。同じ局面が複数ある場合は手数の小さいもの
+  (同じ場合は先に現れたもの) を使う。ヘッダーが不正な場合は開く時にエラーになる。
+- 検索: 索引を二分探索し、その局面の行を解析する。
+- 編集: 編集する局面のエントリーを元のファイルから複製して `entries` に保持し、それを変更する
+  (`index.ts` の `retrieveEntry`)。JavaScript 版の in-memory モードはエントリーを直接変更するため、
+  棋譜の取り込み (指し手の並べ替えや評価値の選び方) を含めて同じ結果になる。
+- 保存: 全ての局面に編集内容を統合し、局面順に書き出す。元のファイルを読まないため、開いているファイルに上書きできる。
+  保存した後は保存先のファイルを開いているものとして扱う (JavaScript 版と同じ)。
+
+開けるファイルの大きさは 1 GiB まで (On-the-fly 閾値の上限 512 MB より大きいため、通常は問題にならない)。
+
+既知の相違点 (両方のモード):
 
 - JavaScript 版は、局面の行が無い指し手の行をログに出力するが、WebAssembly 版は出力しない (どちらも無視する)。
 - 不正な UTF-8 のバイト列が読み込みの単位の境界をまたぐ場合、U+FFFD への置き換え方が異なる場合がある。
   正常なファイルでは発生しない。
 
-開けるファイルの大きさに上限は無い (内容をメモリに読み込まないため)。
+## 形式間の変換
+
+WebAssembly 版で開いた定跡は、SBK 形式とやねうら王形式の間で変換できる。変換は元の定跡の
+WebAssembly のインスタンスの中で行う (JavaScript 側には全ての局面を持たない)。
+
+- SBK 形式 → やねうら王形式: 全ての局面 (`loadSbkBook` と同じく、ルート局面から指し手をたどった結果) に
+  編集内容を統合し、局面順に書き出す。JavaScript 版とバイト単位で同じ結果になる。
+- やねうら王形式 → SBK 形式: 全ての局面 (On-the-fly モードではファイル全体を読み込む) に編集内容を統合し、
+  空の SBK に追加した結果を書き出す (SBK 形式の保存と同じ書き出し方)。JavaScript 版は in-memory モードの
+  SBK 形式の書き出し方を使うため、State の ID や順序が異なる。どちらも読み込んだ内容は同じになる。
+- それ以外 (YBB 形式・Apery 形式) への変換はエラーになる (移行期間中の制限)。
 
 ## 開けるファイルの大きさと異常終了
 
@@ -157,11 +194,11 @@ JavaScript 版の On-the-fly モード (`src/background/book/yaneuraou.ts` の `
 異常終了したインスタンスは以後使わない。エラーの種類を細かく出し分けるのではなく、
 何が失われたかを利用者に伝えることを重視する。
 
-| 異常終了した場面 | 動作と利用者に伝える内容                                                                                                                       |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| 開く処理         | 開いていた定跡はそのまま残ることを伝える。JavaScript 版に切り替えると開ける場合があることも伝える                                              |
-| 検索             | 定跡を閉じ (空の定跡に置き換え)、保存していない変更が失われたこと (変更があった場合)・読み込んでいた定跡ファイルは変更されていないことを伝える |
-| 保存             | 検索の場合に加えて、保存先のファイルが途中までしか書き込まれていない可能性があることを伝える                                                   |
+| 異常終了した場面 | 動作と利用者に伝える内容                                                                                                                                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 開く処理         | 開いていた定跡はそのまま残ることを伝える。JavaScript 版に切り替えると開ける場合があることも伝える                                                                                                            |
+| 検索             | 定跡を閉じ (空の定跡に置き換え)、保存していない変更が失われたこと (変更があった場合)・読み込んでいた定跡ファイルは変更されていないことを伝える                                                               |
+| 保存             | 検索の場合に加えて、保存先のファイルが途中までしか書き込まれていない可能性があることを伝える。保存先が読み込んでいたファイルの場合 (in-memory モードの上書き保存) は、ファイルが変更されていないとは伝えない |
 
 異常終了した場合の動作はやねうら王形式も同じ (元のファイルも閉じる)。
 定跡を閉じるため、以後の検索でエラーが続くことは無い。異常終了は `BookWasmCrashError` で表し、
@@ -173,7 +210,7 @@ JavaScript 版の廃止に備えて、テストを次の 4 種類に分けてい
 
 | 種類                       | ファイル                                                                                          | JavaScript 版を廃止するとき   |
 | -------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------- |
-| ① 共通の振る舞い           | `sbk_backends.spec.ts`、`yane_backends.spec.ts`                                                   | `backends` から `"js"` を外す |
+| ① 共通の振る舞い           | `sbk_backends.spec.ts`、`yane_backends.spec.ts` (両方のモード)                                    | `backends` から `"js"` を外す |
 | ② 期待出力の固定           | `sbk_wasm_golden.spec.ts`、`yane_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`)            | そのまま残す                  |
 | ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)、`yane_wasm.spec.ts` (ファイルの扱い・異常終了) | そのまま残す                  |
 | ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`、`yane_wasm_equivalence.spec.ts`                                   | 削除する                      |
@@ -204,21 +241,25 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 
 エクスポートする関数:
 
-| 関数                                      | 説明                                                                           |
-| ----------------------------------------- | ------------------------------------------------------------------------------ |
-| `book_alloc(len)` / `book_free(ptr, len)` | 引数を書き込む領域の確保と解放                                                 |
-| `book_result_ptr()` / `book_result_len()` | 直前の呼び出しの結果                                                           |
-| `book_error_ptr()` / `book_error_len()`   | 直前に失敗した呼び出しのエラーメッセージ                                       |
-| `sbk_open(ptr, len)`                      | SBK を開く (領域の所有権は WebAssembly 側に移る)。結果は作者・説明・State の数 |
-| `sbk_create()`                            | 元のファイルが無い空の定跡を作る                                               |
-| `sbk_search(ptr, len)`                    | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)              |
-| `sbk_save_begin(ptr, len)`                | 編集内容を渡して書き出しを開始し、State の総数を返す                           |
-| `sbk_save_next(max)`                      | 最大 max 件の State を書き出し、件数を返す (0 になるまで繰り返す)              |
-| `yane_open(size)`                         | やねうら王形式を開く (1: 整列されている, 0: 整列されていない, -1: 失敗)        |
-| `yane_search(ptr, len)`                   | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)              |
-| `yane_save_begin(ptr, len)`               | 編集内容を渡して書き出しを開始する                                             |
-| `yane_save_next(max)`                     | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                 |
-| `yane_save_position()`                    | 読み終えた元のファイルのバイト数 (進捗の表示に使う)                            |
+| 関数                                      | 説明                                                                                          |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `book_alloc(len)` / `book_free(ptr, len)` | 引数を書き込む領域の確保と解放                                                                |
+| `book_result_ptr()` / `book_result_len()` | 直前の呼び出しの結果                                                                          |
+| `book_error_ptr()` / `book_error_len()`   | 直前に失敗した呼び出しのエラーメッセージ                                                      |
+| `sbk_open(ptr, len)`                      | SBK を開く (領域の所有権は WebAssembly 側に移る)。結果は作者・説明・State の数                |
+| `sbk_create()`                            | 元のファイルが無い空の定跡を作る                                                              |
+| `sbk_search(ptr, len)`                    | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
+| `sbk_save_begin(ptr, len)`                | 編集内容を渡して書き出しを開始し、State の総数を返す                                          |
+| `sbk_save_next(max)`                      | 最大 max 件の State を書き出し、件数を返す (0 になるまで繰り返す)                             |
+| `yane_open(size)`                         | やねうら王形式を On-the-fly モードで開く (1: 整列されている, 0: 整列されていない, -1: 失敗)   |
+| `yane_load(ptr, len)`                     | やねうら王形式を in-memory モードで開く (領域の所有権は WebAssembly 側に移る)。局面の数を返す |
+| `yane_create()`                           | 元のファイルが無い空のやねうら王形式の定跡を作る (in-memory モード)                           |
+| `yane_search(ptr, len)`                   | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
+| `yane_save_begin(ptr, len)`               | 編集内容を渡して書き出しを開始する                                                            |
+| `yane_save_next(max)`                     | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                                |
+| `yane_save_progress()`                    | 書き出しの進捗 (0〜1)                                                                         |
+| `yane_export_sbk_begin(ptr, len)`         | やねうら王形式から SBK 形式への変換を開始し、State の総数を返す (続きは `sbk_save_next`)      |
+| `sbk_export_yane_begin(ptr, len)`         | SBK 形式からやねうら王形式への変換を開始する (続きは `yane_save_next`)                        |
 
 ## 受け渡し形式
 
@@ -255,4 +296,4 @@ u32     指し手の数
   [str]   EngineName
 ```
 
-`sbk_save_begin`・`yane_save_begin` の入力は `[u32 エントリーの数, (str キー, エントリー) × エントリーの数]` (挿入順)。
+`sbk_save_begin`・`yane_save_begin`・`yane_export_sbk_begin`・`sbk_export_yane_begin` の入力は `[u32 エントリーの数, (str キー, エントリー) × エントリーの数]` (挿入順)。

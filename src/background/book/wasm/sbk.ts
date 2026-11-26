@@ -2,12 +2,11 @@
 // 元のファイルの内容と索引を WebAssembly のメモリ上に保持し、検索と書き出しを行う。
 // 編集内容 (in-memory のエントリー) は JavaScript 側で保持し、書き出す時に渡す。
 
-import events from "node:events";
 import fs from "node:fs";
 import { Writable } from "node:stream";
 import { BookEntry } from "@/background/book/types.js";
 import { t } from "@/common/i18n/index.js";
-import { decodeEntry, Decoder, encodeEntry, Encoder } from "./codec.js";
+import { decodeEntry, Decoder } from "./codec.js";
 import { BookWasmInstance } from "./instance.js";
 
 const textEncoder = new TextEncoder();
@@ -19,14 +18,11 @@ const textEncoder = new TextEncoder();
 export const MAX_SBK_FILE_SIZE = 1024 * 1024 * 1024;
 // ファイルを読み込む単位
 const READ_CHUNK_SIZE = 16 * 1024 * 1024;
-// 1 回の呼び出しで書き出す State の数
-const SAVE_CHUNK_STATES = 4096;
 
 export class SbkWasmBook extends BookWasmInstance {
   private _author?: string;
   private _description?: string;
   private _stateCount = 0;
-  private saving = false;
 
   /** 元のファイルが無い空の定跡を作る */
   static create(): SbkWasmBook {
@@ -114,67 +110,28 @@ export class SbkWasmBook extends BookWasmInstance {
     output: Writable,
     onProgress?: (progress: number) => void,
   ): Promise<void> {
-    // 書き出しの状態は WebAssembly 側に 1 つしか持てないため、同時に書き出すことはできない
-    if (this.saving) {
-      throw new Error("The book is already being saved.");
-    }
-    this.saving = true;
-    try {
-      await this.storeInternal(entries, output, onProgress);
-    } finally {
-      this.saving = false;
-    }
+    await this.writeSbk(
+      (ptr, len) => this.exports.sbk_save_begin(ptr, len),
+      entries,
+      output,
+      onProgress,
+    );
   }
 
-  private async storeInternal(
+  /**
+   * 全ての局面 (loadSbkBook と同じ) に in-memory のエントリーを統合して、やねうら王形式で書き出す。
+   * output は書き出し後に閉じられる。
+   */
+  async exportYane(
     entries: Map<string, BookEntry>,
     output: Writable,
     onProgress?: (progress: number) => void,
   ): Promise<void> {
-    // 書き込み先がエラーになった場合 (開けなかった場合など) も、最後に finished を待ってエラーを返す
-    const finished = events.once(output, "finish");
-    finished.catch(() => {});
-    const encoder = new Encoder();
-    encoder.u32(entries.size);
-    for (const [sfen, entry] of entries) {
-      encoder.str(sfen);
-      encodeEntry(encoder, entry);
-    }
-    const total = this.withInput(encoder.bytes, (ptr, len) =>
-      this.exports.sbk_save_begin(ptr, len),
+    await this.writeYane(
+      (ptr, len) => this.exports.sbk_export_yane_begin(ptr, len),
+      entries,
+      output,
+      onProgress,
     );
-    if (total < 0) {
-      throw this.error();
-    }
-    let processed = 0;
-    let progress = 0;
-    for (;;) {
-      const n = this.exports.sbk_save_next(SAVE_CHUNK_STATES);
-      if (n < 0) {
-        throw this.error();
-      }
-      // メモリ上の結果は次の呼び出しで上書きされるためコピーして渡す
-      const chunk = Buffer.from(this.result());
-      if (chunk.length > 0 && !output.write(chunk)) {
-        // 書き込み先がエラーになっている場合は drain が発生しないので待たない
-        if (output.errored) {
-          throw output.errored;
-        }
-        await events.once(output, "drain");
-      }
-      if (n === 0) {
-        break;
-      }
-      processed += n;
-      if (onProgress) {
-        const prev = progress;
-        progress = Math.floor((processed / total) * 1000) / 1000;
-        if (progress !== prev) {
-          onProgress(progress);
-        }
-      }
-    }
-    output.end();
-    await finished;
   }
 }

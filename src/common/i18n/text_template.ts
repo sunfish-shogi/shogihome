@@ -666,7 +666,6 @@ export type Texts = {
   export: string;
   flippedBook: string;
   bookBackend: string;
-  bookBackendDescription: string;
   bookBackendNew: string;
   bookBackendLegacy: string;
   addBookMoves: string;

@@ -718,6 +718,9 @@ async function storeSbkBookOnTheFly(
     // 新たにルートになる局面
     const rootSfens = new Set<string>();
 
+    // in-memory の局面 → 指し手の遷移先の局面
+    const nextSfensMap = new Map<string, string[]>();
+
     // 元の SBK の State の位置 (ファイル内オフセット) → in-memory のエントリーの SFEN
     // 書き出し時に全ての State を SFEN に変換せずに済むよう、変更のある局面だけを登録しておく
     const offsetToSfen = new Map<number, string>();
@@ -741,6 +744,7 @@ async function storeSbkBookOnTheFly(
       }
 
       // 遷移先の局面を列挙する
+      const nextSfens: string[] = [];
       for (const bookMove of entry.moves) {
         const move = pos.createMoveByUSI(bookMove.usi);
         if (!move) {
@@ -750,8 +754,10 @@ async function storeSbkBookOnTheFly(
           continue; // ShogiHome で生成した USI が非合法手なのはおかしいので例外を投げた方が良いかもしれない
         }
         inMemoryRef.add(pos.sfen);
+        nextSfens.push(pos.sfen);
         pos.undoMove(move);
       }
+      nextSfensMap.set(sfen, nextSfens);
 
       // 元の SBK を検索する
       const sbkEntry = await searchSbkBookEntryOnTheFly(sfen, book.rawData, book.sbkIndex);
@@ -799,6 +805,39 @@ async function storeSbkBookOnTheFly(
     for (const [sfen] of book.entries) {
       if (!inMemoryRef.has(sfen) && newSfens.has(sfen)) {
         rootSfens.add(sfen);
+      }
+    }
+
+    // 新しい局面のうち、ルート局面や元の SBK の局面から指し手をたどって到達できないもの
+    // (新しい局面だけで閉じた循環とその先) は、その中で最初の局面をルート局面として扱う。
+    // (ルート局面にしないと、読み込む時に到達できなくなる)
+    const reached = new Set<string>();
+    const stack: string[] = [];
+    const visit = () => {
+      for (let sfen = stack.pop(); sfen !== undefined; sfen = stack.pop()) {
+        for (const next of nextSfensMap.get(sfen) ?? []) {
+          if (!reached.has(next)) {
+            reached.add(next);
+            if (book.entries.has(next)) {
+              stack.push(next);
+            }
+          }
+        }
+      }
+    };
+    for (const [sfen] of book.entries) {
+      if (rootSfens.has(sfen) || !newSfens.has(sfen)) {
+        reached.add(sfen);
+        stack.push(sfen);
+      }
+    }
+    visit();
+    for (const [sfen] of book.entries) {
+      if (!reached.has(sfen)) {
+        rootSfens.add(sfen);
+        reached.add(sfen);
+        stack.push(sfen);
+        visit();
       }
     }
 
