@@ -253,7 +253,11 @@ impl AperyOnTheFly {
 
     /// searchAperyBookMovesOnTheFly
     pub fn search(&self, src: &mut dyn Source, sfen: &str) -> Result<Option<Entry>> {
-        let key = hash(sfen)?;
+        self.search_key(src, hash(sfen)?)
+    }
+
+    /// ハッシュ値で検索する
+    fn search_key(&self, src: &mut dyn Source, key: u64) -> Result<Option<Entry>> {
         let Some(mut offset) = self.binary_search(src, key)? else {
             return Ok(None);
         };
@@ -297,7 +301,11 @@ pub struct AperyMerger {
 
 impl AperyMerger {
     /// patches のキーはハッシュ値 (10 進数の文字列)
-    pub fn new(book: &AperyOnTheFly, patches: Vec<(String, Entry)>) -> Result<AperyMerger> {
+    pub fn new(
+        book: &AperyOnTheFly,
+        src: &mut dyn Source,
+        patches: Vec<(String, Entry)>,
+    ) -> Result<AperyMerger> {
         // JavaScript 版はストリームのチャンクが 16 バイトの倍数でない場合 (ファイルの末尾) にエラーになる
         if book.size % ENTRY_SIZE != 0 {
             return Err("Invalid Apery book format".to_string());
@@ -309,6 +317,26 @@ impl AperyMerger {
         }
         sorted.sort_by_key(|(key, _)| *key);
         validate(&sorted)?;
+        // 元のファイルの局面に統合するパッチは、統合後の値 (加算した回数など) も書き出す前に検査する
+        for (key, patch) in &sorted {
+            if !patch.patch {
+                continue;
+            }
+            let Some(mut base) = book.search_key(src, *key)? else {
+                continue;
+            };
+            // 書き出す時と同じく、同じ指し手は先のものを使う
+            let mut moves: Vec<BookMove> = Vec::with_capacity(base.moves.len());
+            for m in base.moves {
+                if !moves.iter().any(|x| x.usi == m.usi) {
+                    moves.push(m);
+                }
+            }
+            base.moves = moves;
+            if let Some(merged) = merge_entries(Some(base), Some(patch)) {
+                validate(&[(*key, merged)])?;
+            }
+        }
         Ok(AperyMerger {
             patches: sorted,
             patch_index: 0,
@@ -504,5 +532,34 @@ mod tests {
         }
         assert_eq!(from_apery_move(0x7f << 7), "null*1a");
         assert!(to_apery_move("0a1b").is_err());
+    }
+
+    #[test]
+    fn test_merge_validates_merged_counts() {
+        let mv = |usi: &str, count: f64| BookMove {
+            usi: usi.to_string(),
+            count: Some(count),
+            ..Default::default()
+        };
+        let key = hash(STANDARD_SFEN).unwrap();
+        // 同じ指し手が重複する場合は先のものが使われる
+        let mut file = Vec::new();
+        for m in [mv("7g7f", 0.0), mv("2g2f", 100.0), mv("2g2f", 0.0)] {
+            encode_entry(key, &m, &mut file).unwrap();
+        }
+        let book = AperyOnTheFly { size: file.len() as u64 };
+        let patch = |count: f64| {
+            vec![(
+                key.to_string(),
+                Entry {
+                    patch: true,
+                    moves: vec![mv("2g2f", count)],
+                    ..Default::default()
+                },
+            )]
+        };
+        let err = AperyMerger::new(&book, &mut file.as_slice(), patch(65436.0));
+        assert!(err.err().unwrap().contains("out of range"));
+        assert!(AperyMerger::new(&book, &mut file.as_slice(), patch(65435.0)).is_ok());
     }
 }

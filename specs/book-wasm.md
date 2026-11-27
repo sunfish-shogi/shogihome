@@ -208,7 +208,8 @@ JavaScript 版の On-the-fly モード (`src/background/book/apery.ts` の `sear
 - 検索: SFEN からハッシュ値を計算し、ファイル上で二分探索する。
 - 保存: 元のファイルを先頭から読みながら編集内容を統合して書き出す。編集内容のキーはハッシュ値で、
   受け渡しでは 10 進数の文字列にする。回数・評価値の書き込みの規則は JavaScript 版と同じ (範囲外の場合はエラー) だが、
-  YBB 形式と同じく書き出し始める前に全ての値を検査する。
+  YBB 形式と同じく書き出し始める前に全ての値を検査する (元のファイルの局面に統合する編集内容は、
+  元のファイルを検索して統合した後の値を検査する)。
 - ハッシュ値の乱数表は `apery_zobrist.ts` から `scripts/generate-apery-zobrist.mjs` で生成する
   (`npm run build:book-wasm:verify` で一致を検証する)。
 

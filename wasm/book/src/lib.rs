@@ -828,7 +828,7 @@ pub unsafe extern "C" fn apery_save_begin(ptr: *const u8, len: u32) -> i32 {
         let Some(book) = &s.apery else {
             return fail(s, "book is not opened");
         };
-        match AperyMerger::new(book, patches) {
+        match AperyMerger::new(book, &mut HostFile, patches) {
             Ok(writer) => {
                 s.apery_writer = Some(AperyWriter::Merge(writer));
                 0

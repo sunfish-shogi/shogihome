@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { PassThrough } from "node:stream";
 import {
   clearBook,
   exportBook,
@@ -13,6 +14,7 @@ import {
 } from "@/background/book/index.js";
 import { BookWasmCrashError } from "@/background/book/wasm/instance.js";
 import { AperyWasmBook } from "@/background/book/wasm/apery.js";
+import { hash } from "@/background/book/apery_zobrist.js";
 import { getTempPathForTesting } from "@/background/proc/env.js";
 import { defaultBookSession } from "@/common/book.js";
 import { t } from "@/common/i18n/index.js";
@@ -61,6 +63,28 @@ describe("background/book Apery (backend=wasm)", () => {
     await expect(saveBook(defaultBookSession, path.join(tmpdir, "out.bin"))).rejects.toThrow(
       "Invalid Apery book format",
     );
+  });
+
+  // 元のファイルの回数との合計が範囲外になる場合も、書き出し始める前にエラーにする
+  it("merged count is out of range", async () => {
+    const sfen = "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 4";
+    const book = AperyWasmBook.open(bookPath);
+    try {
+      expect(book.search(sfen)?.moves.find((m) => m.usi === "4c4d")?.count).toBe(69);
+      const output = new PassThrough();
+      let written = 0;
+      output.on("data", (chunk: Buffer) => (written += chunk.length));
+      const patches = new Map([
+        [hash(sfen), { type: "patch" as const, moves: [{ usi: "4c4d", count: 65535 - 68 }] }],
+      ]);
+      await expect(book.store(patches, output)).rejects.toThrow("out of range");
+      expect(written).toBe(0);
+      // 合計が範囲内なら書き出せる
+      patches.get(hash(sfen))!.moves[0].count = 65535 - 69;
+      await book.store(patches, new PassThrough().resume());
+    } finally {
+      book.close();
+    }
   });
 
   it("crash while searching", async () => {
