@@ -128,6 +128,7 @@ describe("background/book on-the-fly", async () => {
     { format: "yane2016", backend: "js", inMemory: true },
     { format: "yane2016", backend: "wasm", inMemory: true },
     { format: "apery", backend: "js" },
+    { format: "apery", backend: "wasm" },
     { format: "sbk", backend: "js" },
     { format: "sbk", backend: "wasm" },
     { format: "ybb", backend: "js" },

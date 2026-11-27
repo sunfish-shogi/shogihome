@@ -40,6 +40,15 @@ export type BookWasmExports = {
   ybb_save_progress(): number;
   ybb_export_yane_begin(ptr: number, len: number): number;
   ybb_export_sbk_begin(ptr: number, len: number): number;
+  ybb_export_apery_begin(ptr: number, len: number): number;
+  yane_export_apery_begin(ptr: number, len: number): number;
+  sbk_export_apery_begin(ptr: number, len: number): number;
+  apery_open(size: number): void;
+  apery_create(): void;
+  apery_search(ptr: number, len: number): number;
+  apery_save_begin(ptr: number, len: number): number;
+  apery_save_next(maxBytes: number): number;
+  apery_save_progress(): number;
 };
 
 let compiledModule: WebAssembly.Module | undefined;
@@ -219,12 +228,15 @@ export abstract class BookWasmInstance {
     }
   }
 
-  /** 編集内容を受け渡し形式にする ([エントリーの数, (キー, エントリー) × エントリーの数]) */
-  protected encodePatches(entries: Map<string, BookEntry>): Uint8Array {
+  /**
+   * 編集内容を受け渡し形式にする ([エントリーの数, (キー, エントリー) × エントリーの数])。
+   * キーは SFEN (Apery 形式の場合はハッシュ値を 10 進数の文字列にしたもの)。
+   */
+  protected encodePatches(entries: Map<string | bigint, BookEntry>): Uint8Array {
     const encoder = new Encoder();
     encoder.u32(entries.size);
-    for (const [sfen, entry] of entries) {
-      encoder.str(sfen);
+    for (const [key, entry] of entries) {
+      encoder.str(key.toString());
       encodeEntry(encoder, entry);
     }
     return encoder.bytes;
@@ -282,6 +294,32 @@ export abstract class BookWasmInstance {
         return status === 0;
       },
       () => this.exports.yane_save_progress(),
+      onProgress,
+    );
+  }
+
+  /** begin で書き出しを開始し、apery_save_next で Apery 形式の続きを書き出す */
+  protected async writeApery(
+    begin: (ptr: number, len: number) => number,
+    entries: Map<string | bigint, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.write(
+      output,
+      () => {
+        if (this.withInput(this.encodePatches(entries), begin) < 0) {
+          throw this.error();
+        }
+      },
+      () => {
+        const status = this.exports.apery_save_next(SAVE_CHUNK_BYTES);
+        if (status < 0) {
+          throw this.error();
+        }
+        return status === 0;
+      },
+      () => this.exports.apery_save_progress(),
       onProgress,
     );
   }

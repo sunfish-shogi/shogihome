@@ -148,3 +148,20 @@ export function ybbFields(snapshot: { sfen: string; entry: BookPositionEntry }[]
       })),
     }));
 }
+
+/**
+ * Apery 形式で保存できる項目だけを取り出す。
+ * (指し手の無い局面は保存されない。回数と評価値は省略すると 0 になる)
+ */
+export function aperyFields(snapshot: { sfen: string; entry: BookPositionEntry }[]) {
+  return snapshot
+    .filter(({ entry }) => entry.moves.length > 0)
+    .map(({ sfen, entry }) => ({
+      sfen,
+      moves: entry.moves.map((m) => ({
+        usi: m.usi,
+        count: Math.trunc(m.count || 0),
+        score: Math.trunc(m.score || 0),
+      })),
+    }));
+}

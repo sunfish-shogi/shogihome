@@ -5,7 +5,7 @@
 
 ## 方針
 
-- SBK 形式と YBB 形式の WebAssembly 版は常に On-the-fly モードで動作する。in-memory モードは持たない。
+- SBK 形式・YBB 形式・Apery 形式の WebAssembly 版は常に On-the-fly モードで動作する。in-memory モードは持たない。
   - 元のファイルの内容と索引は WebAssembly 側で保持する。
   - 小さいファイルでも On-the-fly モードで開くため、JavaScript 版の in-memory モードとは保存結果が異なる
     (State の ID を振り直さない)。どちらも ShogiGUI で読み込める正しい SBK である。
@@ -16,8 +16,8 @@
 - 編集内容 (in-memory のエントリー) は JavaScript 側の `Map` で保持し、保存時に WebAssembly 側へ渡す。
 - 形式ごとに WebAssembly 版を作る。WebAssembly 版がまだ無い形式・モードは、設定によらず JavaScript 版で開く。
 - 形式間の変換は、JavaScript 版と WebAssembly 版の間では連携しない。
-  WebAssembly 版で開いた定跡は、WebAssembly 版が実装済みの形式にのみ変換できる (現在は SBK 形式・やねうら王形式・YBB 形式の間)。
-  それ以外の変換はエラーになる (移行期間中の制限)。
+  WebAssembly 版で開いた定跡は、JavaScript 版と同じく SBK 形式・やねうら王形式・YBB 形式の間と、
+  それらから Apery 形式へ変換できる (Apery 形式から他の形式へは変換できない)。
 - 開いた定跡の実装 (JavaScript 版 / WebAssembly 版) は開いた時点で決まり、閉じるまで変わらない。
 
 ## 移行の手順
@@ -26,7 +26,8 @@
 2. やねうら王形式 → YBB 形式 → Apery 形式の WebAssembly 版。実装済みの形式の間から変換にも対応する。
    - やねうら王形式の On-the-fly モード
    - やねうら王形式の in-memory モード、SBK 形式とやねうら王形式の間の変換
-   - YBB 形式 (常に On-the-fly モード)、SBK 形式・やねうら王形式との間の変換 ← 現在
+   - YBB 形式 (常に On-the-fly モード)、SBK 形式・やねうら王形式との間の変換
+   - Apery 形式 (常に On-the-fly モード)、他の形式から Apery 形式への変換 ← 完了
 3. 上書き保存 (現在は On-the-fly モードの JavaScript 版と同じく、開いているファイルへの上書き保存はできない)
 4. JavaScript 版・On-the-fly 閾値の設定・JavaScript 版専用のテストの削除
 
@@ -37,7 +38,7 @@
 アプリ設定 `bookBackend` (`"wasm"` | `"js"`、既定値は `"wasm"`) で実装を選ぶ。
 設定画面の「定跡」タブにある「定跡の処理方式」で変更できる。
 
-- WebAssembly 版を選んでいる場合、SBK 形式と YBB 形式の On-the-fly 閾値は使われない (設定画面では無効表示になる)。
+- WebAssembly 版を選んでいる場合、SBK 形式・YBB 形式・Apery 形式の On-the-fly 閾値は使われない (設定画面では無効表示になる)。
   やねうら王形式の On-the-fly 閾値は WebAssembly 版でも使い、JavaScript 版を削除した後も残す。
 - WebAssembly モジュールの初期化に失敗した場合は、ログを出力して JavaScript 版を使う。
 
@@ -55,10 +56,13 @@ wasm/book/                         Rust のソース (依存クレート無し)
   src/sbk.rs                         SBK 形式の処理
   src/yane.rs                        やねうら王形式の処理
   src/ybb.rs                         YBB 形式の処理
+  src/apery.rs                       Apery 形式の処理 (局面のハッシュ値を含む)
+  src/apery_zobrist.rs               Apery 形式のハッシュ値の乱数表 (生成物。apery_zobrist.ts から生成する)
   src/codec.rs                       JavaScript との受け渡し形式
   src/lib.rs                         エクスポートする関数
 
 scripts/build-book-wasm.mjs        ビルドして book.wasm とライセンス表示を生成する
+scripts/generate-apery-zobrist.mjs apery_zobrist.ts から apery_zobrist.rs を生成する (build:book-wasm の中で実行)
 scripts/copy-book-wasm.mjs         book.wasm を Electron 版の出力先にコピーする (electron:compile の中で実行)
 src/background/book/wasm/
   book.wasm                          ビルド成果物。生成物だが commit する
@@ -67,6 +71,7 @@ src/background/book/wasm/
   sbk.ts                             SBK 形式
   yaneuraou.ts                       やねうら王形式
   ybb.ts                             YBB 形式
+  apery.ts                           Apery 形式
 ```
 
 ## ビルド
@@ -194,6 +199,24 @@ in-memory モードは持たない。
 
 開けるファイルの大きさに上限は無い (内容をメモリに読み込まないため)。
 
+## Apery 形式
+
+JavaScript 版の On-the-fly モード (`src/background/book/apery.ts` の `searchAperyBookMovesOnTheFly`・
+`mergeAperyBook`) と、局面のハッシュ値 (`apery_zobrist.ts` の `hash`) を移植している。
+
+- 開く: ファイルの内容は読まない (JavaScript 版と同じく、整列されているかは検査しない)。
+- 検索: SFEN からハッシュ値を計算し、ファイル上で二分探索する。
+- 保存: 元のファイルを先頭から読みながら編集内容を統合して書き出す。編集内容のキーはハッシュ値で、
+  受け渡しでは 10 進数の文字列にする。回数・評価値の書き込みの規則は JavaScript 版と同じ (範囲外の場合はエラー) だが、
+  YBB 形式と同じく書き出し始める前に全ての値を検査する。
+- ハッシュ値の乱数表は `apery_zobrist.ts` から `scripts/generate-apery-zobrist.mjs` で生成する
+  (`npm run build:book-wasm:verify` で一致を検証する)。
+
+既知の相違点:
+
+- JavaScript 版の保存は、ハッシュ値が 0 の局面を書き出さない (最後に書き出したパッチのキーを 0 で初期化しているため)。
+  WebAssembly 版は書き出す。実際の定跡でハッシュ値が 0 になることはまず無い。
+
 ## 形式間の変換
 
 WebAssembly 版で開いた定跡は、SBK 形式・やねうら王形式・YBB 形式の間で変換できる。変換は元の定跡の
@@ -210,7 +233,9 @@ WebAssembly のインスタンスの中で行う (JavaScript 側には全ての�
   SBK 形式の書き出し方を使うため、State の ID や順序が異なる。どちらも読み込んだ内容は同じになる。
 - YBB 形式 → やねうら王形式も JavaScript 版とバイト単位で同じ結果になる。YBB 形式 → SBK 形式は
   やねうら王形式 → SBK 形式と同じく、読み込んだ内容が同じになる。
-- Apery 形式への変換はエラーになる (移行期間中の制限)。
+- 他の形式 → Apery 形式: 全ての局面に編集内容を統合し、局面のハッシュ値をキーとして `storeAperyBook` と同じ方法で書き出す。
+  JavaScript 版とバイト単位で同じ結果になる。
+- Apery 形式 → 他の形式: JavaScript 版と同じく変換できない (局面を復元できないため)。
 
 ## 開けるファイルの大きさと異常終了
 
@@ -237,13 +262,13 @@ WebAssembly のインスタンスの中で行う (JavaScript 側には全ての�
 
 JavaScript 版の廃止に備えて、テストを次の 4 種類に分けている。
 
-| 種類                       | ファイル                                                                                                              | JavaScript 版を廃止するとき   |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| ① 共通の振る舞い           | `sbk_backends.spec.ts`、`yane_backends.spec.ts` (両方のモード)、`ybb_backends.spec.ts`                                | `backends` から `"js"` を外す |
-| ② 期待出力の固定           | `sbk_wasm_golden.spec.ts`、`yane_wasm_golden.spec.ts`、`ybb_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`)     | そのまま残す                  |
-| ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)、`yane_wasm.spec.ts`・`ybb_wasm.spec.ts` (ファイルの扱い・異常終了) | そのまま残す                  |
-| ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`、`yane_wasm_equivalence.spec.ts`、`ybb_wasm_equivalence.spec.ts`                       | 削除する                      |
-| ④ JavaScript 版のみ        | `index.spec.ts` の `[js]` のテスト、`sbk.spec.ts`・`yaneuraou.spec.ts`・`ybb.spec.ts` など                            | 削除する                      |
+| 種類                       | ファイル                                                                                                                                       | JavaScript 版を廃止するとき   |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| ① 共通の振る舞い           | `sbk_backends.spec.ts`、`yane_backends.spec.ts` (両方のモード)、`ybb_backends.spec.ts`、`apery_backends.spec.ts`                               | `backends` から `"js"` を外す |
+| ② 期待出力の固定           | `sbk_wasm_golden.spec.ts`、`yane_wasm_golden.spec.ts`、`ybb_wasm_golden.spec.ts`、`apery_wasm_golden.spec.ts` (期待値は `testdata/book/wasm/`) | そのまま残す                  |
+| ② WebAssembly 版固有の動作 | `sbk_wasm_crash.spec.ts` (大きさの上限・異常終了)、`yane_wasm.spec.ts`・`ybb_wasm.spec.ts`・`apery_wasm.spec.ts` (ファイルの扱い・異常終了)    | そのまま残す                  |
+| ③ 新旧の一致               | `sbk_wasm_equivalence.spec.ts`、`yane_wasm_equivalence.spec.ts`、`ybb_wasm_equivalence.spec.ts`、`apery_wasm_equivalence.spec.ts`              | 削除する                      |
+| ④ JavaScript 版のみ        | `index.spec.ts` の `[js]` のテスト、`sbk.spec.ts`・`yaneuraou.spec.ts`・`ybb.spec.ts` など                                                     | 削除する                      |
 
 ②の期待値ファイルは、③で JavaScript 版 (On-the-fly モード) の出力と一致することを確かめた入力と操作で作っている。
 意図して出力を変更した場合は `UPDATE_GOLDEN=1` を付けて実行すると更新できる。
@@ -259,7 +284,7 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 
 ## 関数
 
-インスタンスごとに 1 冊の定跡を保持する。`sbk.ts`・`yaneuraou.ts`・`ybb.ts` は定跡ごとにインスタンスを作り、
+インスタンスごとに 1 冊の定跡を保持する。`sbk.ts`・`yaneuraou.ts`・`ybb.ts`・`apery.ts` は定跡ごとにインスタンスを作り、
 参照されなくなると GC によってメモリが解放される。
 
 インポートする関数:
@@ -270,33 +295,37 @@ BOOK_BENCH_POSITIONS=200000 npx vitest bench --run --reporter=verbose src/tests/
 
 エクスポートする関数:
 
-| 関数                                                                | 説明                                                                                          |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `book_alloc(len)` / `book_free(ptr, len)`                           | 引数を書き込む領域の確保と解放                                                                |
-| `book_result_ptr()` / `book_result_len()`                           | 直前の呼び出しの結果                                                                          |
-| `book_error_ptr()` / `book_error_len()`                             | 直前に失敗した呼び出しのエラーメッセージ                                                      |
-| `sbk_open(ptr, len)`                                                | SBK を開く (領域の所有権は WebAssembly 側に移る)。結果は作者・説明・State の数                |
-| `sbk_create()`                                                      | 元のファイルが無い空の定跡を作る                                                              |
-| `sbk_search(ptr, len)`                                              | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
-| `sbk_save_begin(ptr, len)`                                          | 編集内容を渡して書き出しを開始し、State の総数を返す                                          |
-| `sbk_save_next(max)`                                                | 最大 max 件の State を書き出し、件数を返す (0 になるまで繰り返す)                             |
-| `yane_open(size)`                                                   | やねうら王形式を On-the-fly モードで開く (1: 整列されている, 0: 整列されていない, -1: 失敗)   |
-| `yane_load(ptr, len)`                                               | やねうら王形式を in-memory モードで開く (領域の所有権は WebAssembly 側に移る)。局面の数を返す |
-| `yane_create()`                                                     | 元のファイルが無い空のやねうら王形式の定跡を作る (in-memory モード)                           |
-| `yane_search(ptr, len)`                                             | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
-| `yane_save_begin(ptr, len)`                                         | 編集内容を渡して書き出しを開始する                                                            |
-| `yane_save_next(max)`                                               | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                                |
-| `yane_save_progress()`                                              | 書き出しの進捗 (0〜1)                                                                         |
-| `yane_export_sbk_begin(ptr, len)`                                   | やねうら王形式から SBK 形式への変換を開始し、State の総数を返す (続きは `sbk_save_next`)      |
-| `sbk_export_yane_begin(ptr, len)`                                   | SBK 形式からやねうら王形式への変換を開始する (続きは `yane_save_next`)                        |
-| `ybb_open()`                                                        | YBB 形式を開く (ヘッダーだけを読む)                                                           |
-| `ybb_create()`                                                      | 元のファイルが無い空の YBB 形式の定跡を作る                                                   |
-| `ybb_search(ptr, len)`                                              | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
-| `ybb_save_begin(ptr, len)`                                          | 編集内容を渡して書き出しを開始する                                                            |
-| `ybb_save_next(max)`                                                | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                                |
-| `ybb_save_progress()`                                               | 書き出しの進捗 (0〜1)                                                                         |
-| `ybb_export_yane_begin(ptr, len)`・`ybb_export_sbk_begin(ptr, len)` | YBB 形式から他の形式への変換を開始する (続きはそれぞれ `yane_save_next`・`sbk_save_next`)     |
-| `yane_export_ybb_begin(ptr, len)`・`sbk_export_ybb_begin(ptr, len)` | 他の形式から YBB 形式への変換を開始する (続きは `ybb_save_next`)                              |
+| 関数                                                                                                        | 説明                                                                                          |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `book_alloc(len)` / `book_free(ptr, len)`                                                                   | 引数を書き込む領域の確保と解放                                                                |
+| `book_result_ptr()` / `book_result_len()`                                                                   | 直前の呼び出しの結果                                                                          |
+| `book_error_ptr()` / `book_error_len()`                                                                     | 直前に失敗した呼び出しのエラーメッセージ                                                      |
+| `sbk_open(ptr, len)`                                                                                        | SBK を開く (領域の所有権は WebAssembly 側に移る)。結果は作者・説明・State の数                |
+| `sbk_create()`                                                                                              | 元のファイルが無い空の定跡を作る                                                              |
+| `sbk_search(ptr, len)`                                                                                      | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
+| `sbk_save_begin(ptr, len)`                                                                                  | 編集内容を渡して書き出しを開始し、State の総数を返す                                          |
+| `sbk_save_next(max)`                                                                                        | 最大 max 件の State を書き出し、件数を返す (0 になるまで繰り返す)                             |
+| `yane_open(size)`                                                                                           | やねうら王形式を On-the-fly モードで開く (1: 整列されている, 0: 整列されていない, -1: 失敗)   |
+| `yane_load(ptr, len)`                                                                                       | やねうら王形式を in-memory モードで開く (領域の所有権は WebAssembly 側に移る)。局面の数を返す |
+| `yane_create()`                                                                                             | 元のファイルが無い空のやねうら王形式の定跡を作る (in-memory モード)                           |
+| `yane_search(ptr, len)`                                                                                     | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
+| `yane_save_begin(ptr, len)`                                                                                 | 編集内容を渡して書き出しを開始する                                                            |
+| `yane_save_next(max)`                                                                                       | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                                |
+| `yane_save_progress()`                                                                                      | 書き出しの進捗 (0〜1)                                                                         |
+| `yane_export_sbk_begin(ptr, len)`                                                                           | やねうら王形式から SBK 形式への変換を開始し、State の総数を返す (続きは `sbk_save_next`)      |
+| `sbk_export_yane_begin(ptr, len)`                                                                           | SBK 形式からやねうら王形式への変換を開始する (続きは `yane_save_next`)                        |
+| `ybb_open()`                                                                                                | YBB 形式を開く (ヘッダーだけを読む)                                                           |
+| `ybb_create()`                                                                                              | 元のファイルが無い空の YBB 形式の定跡を作る                                                   |
+| `ybb_search(ptr, len)`                                                                                      | 元のファイルから局面を検索する (1: 見つかった, 0: 無い, -1: 失敗)                             |
+| `ybb_save_begin(ptr, len)`                                                                                  | 編集内容を渡して書き出しを開始する                                                            |
+| `ybb_save_next(max)`                                                                                        | 約 max バイト以上を書き出す (1: 続きがある, 0: 完了, -1: 失敗)                                |
+| `ybb_save_progress()`                                                                                       | 書き出しの進捗 (0〜1)                                                                         |
+| `ybb_export_yane_begin(ptr, len)`・`ybb_export_sbk_begin(ptr, len)`                                         | YBB 形式から他の形式への変換を開始する (続きはそれぞれ `yane_save_next`・`sbk_save_next`)     |
+| `yane_export_ybb_begin(ptr, len)`・`sbk_export_ybb_begin(ptr, len)`                                         | 他の形式から YBB 形式への変換を開始する (続きは `ybb_save_next`)                              |
+| `apery_open(size)`・`apery_create()`                                                                        | Apery 形式を開く (ファイルの内容は読まない)・空の定跡を作る                                   |
+| `apery_search(ptr, len)`                                                                                    | SFEN からハッシュ値を計算して元のファイルから検索する (1: 見つかった, 0: 無い, -1: 失敗)      |
+| `apery_save_begin(ptr, len)`・`apery_save_next(max)`・`apery_save_progress()`                               | 書き出し (YBB 形式と同じ形式)                                                                 |
+| `yane_export_apery_begin(ptr, len)`・`sbk_export_apery_begin(ptr, len)`・`ybb_export_apery_begin(ptr, len)` | 他の形式から Apery 形式への変換を開始する (続きは `apery_save_next`)                          |
 
 ## 受け渡し形式
 
