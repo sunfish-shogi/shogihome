@@ -778,6 +778,8 @@ struct Row {
     start: usize,
     end: usize,
     ply: f64,
+    /// ファイル内で最初に現れた順序 (JavaScript の Map の挿入順)
+    order: usize,
 }
 
 /// ファイル全体を読み込んだ定跡。局面順に整列されていないファイルも扱える。
@@ -833,7 +835,8 @@ impl YaneInMemory {
             };
             if let Some((key, ply)) = position {
                 if let Some((key, ply, start)) = current.take() {
-                    rows.push(Row { key, start, end: pos, ply });
+                    let order = rows.len();
+                    rows.push(Row { key, start, end: pos, ply, order });
                 }
                 current = Some((key, ply, next));
             }
@@ -841,11 +844,13 @@ impl YaneInMemory {
             pos = next;
         }
         if let Some((key, ply, start)) = current {
+            let order = rows.len();
             rows.push(Row {
                 key,
                 start,
                 end: data.len(),
                 ply,
+                order,
             });
         }
         // 同じ局面は手数の小さいもの (同じ場合は先に現れたもの) を使う
@@ -855,7 +860,9 @@ impl YaneInMemory {
             match unique.last_mut() {
                 Some(last) if last.key == row.key => {
                     if row.ply < last.ply {
-                        *last = row;
+                        // 順序は最初に現れたもの (JavaScript の Map の挿入順) のまま
+                        let order = last.order;
+                        *last = Row { order, ..row };
                     }
                 }
                 _ => unique.push(row),
@@ -885,6 +892,13 @@ impl YaneInMemory {
     /// 全ての局面のエントリー (局面順)
     pub fn entries(&self) -> Vec<(String, Entry)> {
         self.rows.iter().map(|row| (row.key.clone(), self.entry(row))).collect()
+    }
+
+    /// 全ての局面のエントリー (ファイル内で最初に現れた順。loadYaneuraOuBook の Map の順序)
+    pub fn entries_in_file_order(&self) -> Vec<(String, Entry)> {
+        let mut rows: Vec<&Row> = self.rows.iter().collect();
+        rows.sort_by_key(|row| row.order);
+        rows.into_iter().map(|row| (row.key.clone(), self.entry(row))).collect()
     }
 
     /// 局面を検索する

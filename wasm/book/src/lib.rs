@@ -10,11 +10,13 @@ pub mod moves;
 pub mod packed;
 pub mod proto;
 pub mod sbk;
+pub mod ybb;
 pub mod yane;
 
 use codec::{decode_entry, encode_entry, Decoder, Encoder};
 use sbk::{SbkBook, SbkWriter};
 use yane::{Source, YaneInMemory, YaneMerger, YaneStore};
+use ybb::{YbbMerger, YbbOnTheFly, YbbStore};
 use std::cell::RefCell;
 
 #[derive(Default)]
@@ -23,6 +25,8 @@ struct State {
     writer: Option<SbkWriter>,
     yane: Option<YaneBook>,
     yane_writer: Option<YaneWriter>,
+    ybb: Option<YbbOnTheFly>,
+    ybb_writer: Option<YbbWriter>,
     result: Vec<u8>,
     error: String,
 }
@@ -33,6 +37,11 @@ enum YaneBook {
     OnTheFly(u64),
     /// in-memory モード
     InMemory(YaneInMemory),
+}
+
+enum YbbWriter {
+    Merge(YbbMerger),
+    Store(YbbStore),
 }
 
 enum YaneWriter {
@@ -459,6 +468,86 @@ fn merge_patches(
     entries
 }
 
+/// やねうら王形式の全ての局面のエントリー (On-the-fly モードではファイル全体を読み込む)。
+/// file_order が true の場合はファイル内で最初に現れた順 (loadYaneuraOuBook の Map の順序)、false の場合は局面順。
+fn yane_entries(s: &State, file_order: bool) -> Result<Vec<(String, entry::Entry)>, String> {
+    let entries = |book: &YaneInMemory| {
+        if file_order {
+            book.entries_in_file_order()
+        } else {
+            book.entries()
+        }
+    };
+    match &s.yane {
+        None => Err("book is not opened".to_string()),
+        Some(YaneBook::InMemory(book)) => Ok(entries(book)),
+        Some(YaneBook::OnTheFly(size)) => {
+            let mut data = vec![0u8; *size as usize];
+            let mut pos = 0;
+            while pos < data.len() {
+                match HostFile.read_at(pos as u64, &mut data[pos..])? {
+                    0 => return Err("unexpected end of the book file".to_string()),
+                    n => pos += n,
+                }
+            }
+            Ok(entries(&YaneInMemory::load(data)?))
+        }
+    }
+}
+
+/// 全ての局面を空の SBK に追加して書き出す処理を開始し、State の総数を返す (続きは sbk_save_next)
+fn begin_sbk_export(s: &mut State, entries: Vec<(String, entry::Entry)>) -> i32 {
+    let sbk = SbkBook::empty();
+    match sbk.begin_save(entries) {
+        Ok(writer) => {
+            let total = writer.total(&sbk);
+            s.sbk = Some(sbk);
+            s.writer = Some(writer);
+            total as i32
+        }
+        Err(err) => fail(s, err),
+    }
+}
+
+/// 全ての局面をやねうら王形式で書き出す処理を開始する (続きは yane_save_next)
+fn begin_yane_export(s: &mut State, entries: Vec<(String, entry::Entry)>) -> i32 {
+    s.yane = Some(YaneBook::InMemory(YaneInMemory::empty()));
+    s.yane_writer = Some(YaneWriter::Store(YaneStore::new(entries)));
+    0
+}
+
+/// 全ての局面を YBB 形式で書き出す処理を開始する (続きは ybb_save_next)
+fn begin_ybb_export(s: &mut State, entries: Vec<(String, entry::Entry)>) -> i32 {
+    match YbbStore::new(entries) {
+        Ok(writer) => {
+            s.ybb_writer = Some(YbbWriter::Store(writer));
+            0
+        }
+        Err(err) => fail(s, err),
+    }
+}
+
+/// 変換を開始する。入力は sbk_save_begin と同じ形式の編集内容。
+/// entries で元の定跡の全ての局面を取得し、編集内容を統合して begin で書き出しを開始する。
+fn export(
+    data: &[u8],
+    entries: impl FnOnce(&State) -> Result<Vec<(String, entry::Entry)>, String>,
+    begin: impl FnOnce(&mut State, Vec<(String, entry::Entry)>) -> i32,
+) -> i32 {
+    with_state(|s| {
+        s.writer = None;
+        s.yane_writer = None;
+        s.ybb_writer = None;
+        let Some(patches) = decode_patches(data) else {
+            return fail(s, "invalid patch data");
+        };
+        match entries(s) {
+            Ok(base) => begin(s, merge_patches(base, patches)),
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
 /// やねうら王形式の定跡を SBK 形式に変換して書き出す処理を開始する。
 /// 全ての局面を読み込み (On-the-fly モードではファイル全体を読む)、編集内容を統合して、
 /// 空の SBK に追加した結果を書き出す。入力は sbk_save_begin と同じ形式。
@@ -468,43 +557,21 @@ fn merge_patches(
 /// ptr と len は book_alloc で確保した領域を指していること
 #[no_mangle]
 pub unsafe extern "C" fn yane_export_sbk_begin(ptr: *const u8, len: u32) -> i32 {
-    let data = input(ptr, len);
-    with_state(|s| {
-        s.writer = None;
-        let Some(patches) = decode_patches(data) else {
-            return fail(s, "invalid patch data");
-        };
-        let base = match &s.yane {
-            None => return fail(s, "book is not opened"),
-            Some(YaneBook::InMemory(book)) => book.entries(),
-            Some(YaneBook::OnTheFly(size)) => {
-                let mut data = vec![0u8; *size as usize];
-                let mut pos = 0;
-                while pos < data.len() {
-                    match HostFile.read_at(pos as u64, &mut data[pos..]) {
-                        Ok(0) => return fail(s, "unexpected end of the book file"),
-                        Ok(n) => pos += n,
-                        Err(err) => return fail(s, err),
-                    }
-                }
-                match YaneInMemory::load(data) {
-                    Ok(book) => book.entries(),
-                    Err(err) => return fail(s, err),
-                }
-            }
-        };
-        let entries = merge_patches(base, patches);
-        let sbk = SbkBook::empty();
-        match sbk.begin_save(entries) {
-            Ok(writer) => {
-                let total = writer.total(&sbk);
-                s.sbk = Some(sbk);
-                s.writer = Some(writer);
-                total as i32
-            }
-            Err(err) => fail(s, err),
-        }
-    })
+    export(input(ptr, len), |s| yane_entries(s, false), begin_sbk_export)
+}
+
+/// やねうら王形式の定跡を YBB 形式に変換して書き出す処理を開始する (storeYbbBook と同じ結果)。
+/// 続きは ybb_save_next で書き出す。成功した場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_export_ybb_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), |s| yane_entries(s, true), begin_ybb_export)
+}
+
+fn sbk_entries(s: &State) -> Result<Vec<(String, entry::Entry)>, String> {
+    s.sbk.as_ref().ok_or("book is not opened")?.all_entries()
 }
 
 /// SBK 形式の定跡をやねうら王形式に変換して書き出す処理を開始する。
@@ -516,22 +583,159 @@ pub unsafe extern "C" fn yane_export_sbk_begin(ptr: *const u8, len: u32) -> i32 
 /// ptr と len は book_alloc で確保した領域を指していること
 #[no_mangle]
 pub unsafe extern "C" fn sbk_export_yane_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), sbk_entries, begin_yane_export)
+}
+
+/// SBK 形式の定跡を YBB 形式に変換して書き出す処理を開始する (続きは ybb_save_next)。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn sbk_export_ybb_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), sbk_entries, begin_ybb_export)
+}
+
+// ---------------------------------------------------------------------------
+// YBB 形式
+
+fn ybb_entries(s: &State) -> Result<Vec<(String, entry::Entry)>, String> {
+    s.ybb.as_ref().ok_or("book is not opened")?.all_entries(&mut HostFile)
+}
+
+/// YBB 形式のファイルを開く (ファイルの内容は読み込まず、必要な部分を env.book_read で読む)。
+/// 成功した場合は 0、失敗した場合は -1 を返す。
+#[no_mangle]
+pub extern "C" fn ybb_open() -> i32 {
+    with_state(|s| {
+        s.ybb_writer = None;
+        s.ybb = None;
+        match YbbOnTheFly::open(&mut HostFile) {
+            Ok(book) => {
+                s.ybb = Some(book);
+                0
+            }
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルが無い空の YBB 形式の定跡を作る
+#[no_mangle]
+pub extern "C" fn ybb_create() {
+    with_state(|s| {
+        s.ybb_writer = None;
+        s.ybb = Some(YbbOnTheFly::empty());
+    })
+}
+
+/// 元のファイルから局面のエントリーを検索する。
+/// 見つかった場合は 1 を返し、結果にエントリーを書き込む。見つからない場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn ybb_search(ptr: *const u8, len: u32) -> i32 {
+    let sfen = input(ptr, len);
+    with_state(|s| {
+        let Ok(sfen) = core::str::from_utf8(sfen) else {
+            return fail(s, "invalid UTF-8 key");
+        };
+        let Some(book) = &s.ybb else {
+            return fail(s, "book is not opened");
+        };
+        match book.search(&mut HostFile, sfen) {
+            Ok(Some(entry)) => {
+                let mut e = Encoder {
+                    buf: std::mem::take(&mut s.result),
+                };
+                e.buf.clear();
+                encode_entry(&mut e, &entry);
+                s.result = e.buf;
+                1
+            }
+            Ok(None) => 0,
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルに編集内容を統合して書き出す処理を開始する (mergeYbbBook と同じ結果)。
+/// 入力は sbk_save_begin と同じ形式。成功した場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn ybb_save_begin(ptr: *const u8, len: u32) -> i32 {
     let data = input(ptr, len);
     with_state(|s| {
-        s.yane_writer = None;
+        s.ybb_writer = None;
         let Some(patches) = decode_patches(data) else {
             return fail(s, "invalid patch data");
         };
-        let Some(book) = &s.sbk else {
+        let Some(book) = &s.ybb else {
             return fail(s, "book is not opened");
         };
-        let base = match book.all_entries() {
-            Ok(entries) => entries,
-            Err(err) => return fail(s, err),
-        };
-        let entries = merge_patches(base, patches);
-        s.yane = Some(YaneBook::InMemory(YaneInMemory::empty()));
-        s.yane_writer = Some(YaneWriter::Store(YaneStore::new(entries)));
-        0
+        match YbbMerger::new(&mut HostFile, book, patches) {
+            Ok(writer) => {
+                s.ybb_writer = Some(YbbWriter::Merge(writer));
+                0
+            }
+            Err(err) => fail(s, err),
+        }
     })
+}
+
+/// 続きを書き出し、結果に約 max_bytes バイト以上のバイト列を書き込む。
+/// 続きがある場合は 1、完了した場合は 0、失敗した場合は -1 を返す。
+#[no_mangle]
+pub extern "C" fn ybb_save_next(max_bytes: u32) -> i32 {
+    with_state(|s| {
+        let mut out = std::mem::take(&mut s.result);
+        out.clear();
+        let r = match &mut s.ybb_writer {
+            Some(YbbWriter::Merge(writer)) => {
+                writer.write_next(&mut HostFile, max_bytes as usize, &mut out)
+            }
+            Some(YbbWriter::Store(writer)) => writer.write_next(max_bytes as usize, &mut out),
+            None => Err("writer is not started".to_string()),
+        };
+        s.result = out;
+        match r {
+            // 完了した後も ybb_save_progress で進捗を返せるように書き出しの状態は残す
+            Ok(done) => (!done) as i32,
+            Err(err) => {
+                s.ybb_writer = None;
+                fail(s, err)
+            }
+        }
+    })
+}
+
+/// 書き出しの進捗 (0〜1)
+#[no_mangle]
+pub extern "C" fn ybb_save_progress() -> f64 {
+    with_state(|s| match &s.ybb_writer {
+        Some(YbbWriter::Merge(writer)) => writer.progress(),
+        Some(YbbWriter::Store(writer)) => writer.progress(),
+        None => 0.0,
+    })
+}
+
+/// YBB 形式の定跡をやねうら王形式に変換して書き出す処理を開始する (続きは yane_save_next)。
+/// 全ての局面 (loadYbbBookFull と同じ) に編集内容を統合する。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn ybb_export_yane_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), ybb_entries, begin_yane_export)
+}
+
+/// YBB 形式の定跡を SBK 形式に変換して書き出す処理を開始し、State の総数を返す (続きは sbk_save_next)。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn ybb_export_sbk_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), ybb_entries, begin_sbk_export)
 }

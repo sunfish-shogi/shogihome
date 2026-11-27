@@ -65,6 +65,7 @@ import {
 import { BookWasmCrashError, isBookWasmAvailable } from "./wasm/instance.js";
 import { SbkWasmBook } from "./wasm/sbk.js";
 import { YaneWasmBook } from "./wasm/yaneuraou.js";
+import { YbbWasmBook } from "./wasm/ybb.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook | WasmBook;
 
@@ -116,7 +117,39 @@ type WasmYaneBook = {
   yaneWasm: YaneWasmBook;
 };
 
-type WasmBook = WasmSbkBook | WasmYaneBook;
+// WebAssembly 版の YBB 形式の定跡。常に On-the-fly モードで動作する。
+// 元のファイルはメモリに読み込まず WebAssembly 側から必要な部分を読む。編集内容 (entries) は JavaScript 側で保持する。
+type WasmYbbBook = {
+  type: "on-the-fly";
+  backend: "wasm";
+  format: "ybb";
+  path?: string; // 元のファイル (新規作成した定跡の場合は undefined)
+  saved: boolean;
+  entries: Map<string, BookEntry>;
+  ybbWasm: YbbWasmBook;
+};
+
+type WasmBook = WasmSbkBook | WasmYaneBook | WasmYbbBook;
+
+// 形式ごとのファイルの拡張子
+const bookFileExtensions: { [K in BookFormat]: string } = {
+  yane2016: ".db",
+  apery: ".bin",
+  sbk: ".sbk",
+  ybb: ".ybb",
+};
+
+// WebAssembly 版の定跡のインスタンス
+function wasmInstance(book: WasmBook): SbkWasmBook | YaneWasmBook | YbbWasmBook {
+  switch (book.format) {
+    case "sbk":
+      return book.sbkWasm;
+    case "yane2016":
+      return book.yaneWasm;
+    case "ybb":
+      return book.ybbWasm;
+  }
+}
 
 function isWasmBook(book: BookHandle): book is WasmBook {
   return "backend" in book && book.backend === "wasm";
@@ -124,7 +157,7 @@ function isWasmBook(book: BookHandle): book is WasmBook {
 
 // WebAssembly 版を使うかどうか。WebAssembly モジュールを初期化できない場合は JavaScript 版を使う。
 function useWasm(format: BookFormat, backend?: BookBackend): boolean {
-  const implemented = format === "sbk" || format === "yane2016";
+  const implemented = format === "sbk" || format === "yane2016" || format === "ybb";
   return implemented && backend !== "js" && isBookWasmAvailable();
 }
 
@@ -179,7 +212,7 @@ async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<Book
     }
     let base: BookEntry | undefined;
     try {
-      base = book.format === "sbk" ? book.sbkWasm.search(sfen) : book.yaneWasm.search(sfen);
+      base = wasmInstance(book).search(sfen);
     } catch (e) {
       handleWasmCrash(book, e);
     }
@@ -280,6 +313,16 @@ function emptyBook(format: BookFormat = "yane2016", backend?: BookBackend): Book
       saved: true,
       entries: new Map<string, BookEntry>(),
       yaneWasm: YaneWasmBook.create(),
+    };
+  }
+  if (format === "ybb" && useWasm(format, backend)) {
+    return {
+      type: "on-the-fly",
+      backend: "wasm",
+      format: "ybb",
+      saved: true,
+      entries: new Map<string, BookEntry>(),
+      ybbWasm: YbbWasmBook.create(),
     };
   }
   if (format === "sbk" && useWasm(format, backend)) {
@@ -499,9 +542,30 @@ async function openYaneBookWasm(
 
 // WebAssembly 版の定跡が保持している元のファイルを閉じる
 function closeWasmBook(book: WasmBook): void {
-  if (book.format === "yane2016") {
-    book.yaneWasm.close();
+  wasmInstance(book).close();
+}
+
+function openYbbBookWasm(session: number, path: string): void {
+  getAppLogger().info("Loading book with WebAssembly: path=%s", path);
+  let ybbWasm: YbbWasmBook;
+  try {
+    ybbWasm = YbbWasmBook.open(path);
+  } catch (e) {
+    if (e instanceof BookWasmCrashError) {
+      // 開いていた定跡はそのまま残る
+      throw new Error(t.wasmBookCrashedOnOpen, { cause: e });
+    }
+    throw e;
   }
+  replaceBook(session, {
+    type: "on-the-fly",
+    backend: "wasm",
+    format: "ybb",
+    path,
+    saved: true,
+    entries: new Map<string, BookEntry>(),
+    ybbWasm,
+  });
 }
 
 async function openBookInMemory(session: number, path: string, size: number): Promise<void> {
@@ -554,6 +618,11 @@ export async function openBook(
   // SBK 形式の WebAssembly 版は常に On-the-fly モードで開く
   if (format === "sbk" && useWasm(format, options?.backend)) {
     await openSbkBookWasm(session, path);
+    return "on-the-fly";
+  }
+  // YBB 形式の WebAssembly 版も常に On-the-fly モードで開く
+  if (format === "ybb" && useWasm(format, options?.backend)) {
+    openYbbBookWasm(session, path);
     return "on-the-fly";
   }
 
@@ -643,7 +712,7 @@ export async function saveBook(
   }
 
   if (isWasmBook(book)) {
-    if (!path.endsWith(book.format === "sbk" ? ".sbk" : ".db")) {
+    if (!path.endsWith(bookFileExtensions[book.format])) {
       throw new Error("Invalid file extension: " + path);
     }
     const file = fs.createWriteStream(path);
@@ -651,11 +720,7 @@ export async function saveBook(
     // 未処理のエラーにならないようにする (書き出し中のエラーは store が受け取って投げる)
     file.on("error", () => {});
     try {
-      if (book.format === "sbk") {
-        await book.sbkWasm.store(book.entries, file, onProgress);
-      } else {
-        await book.yaneWasm.store(book.entries, file, onProgress);
-      }
+      await wasmInstance(book).store(book.entries, file, onProgress);
     } catch (e) {
       handleWasmCrash(book, e, path);
     } finally {
@@ -740,21 +805,39 @@ async function exportWasmBook(
   targetFormat: BookFormat,
   onProgress?: (progress: number) => void,
 ): Promise<void> {
-  const supported =
-    (book.format === "yane2016" && targetFormat === "sbk") ||
-    (book.format === "sbk" && targetFormat === "yane2016");
-  if (!supported) {
+  // SBK 形式・やねうら王形式・YBB 形式の間で変換できる
+  let exportTo: ((output: fs.WriteStream) => Promise<void>) | undefined;
+  const entries = book.entries;
+  if (book.format === "sbk") {
+    const wasm = book.sbkWasm;
+    if (targetFormat === "yane2016") {
+      exportTo = (output) => wasm.exportYane(entries, output, onProgress);
+    } else if (targetFormat === "ybb") {
+      exportTo = (output) => wasm.exportYbb(entries, output, onProgress);
+    }
+  } else if (book.format === "yane2016") {
+    const wasm = book.yaneWasm;
+    if (targetFormat === "sbk") {
+      exportTo = (output) => wasm.exportSbk(entries, output, onProgress);
+    } else if (targetFormat === "ybb") {
+      exportTo = (output) => wasm.exportYbb(entries, output, onProgress);
+    }
+  } else {
+    const wasm = book.ybbWasm;
+    if (targetFormat === "sbk") {
+      exportTo = (output) => wasm.exportSbk(entries, output, onProgress);
+    } else if (targetFormat === "yane2016") {
+      exportTo = (output) => wasm.exportYane(entries, output, onProgress);
+    }
+  }
+  if (!exportTo) {
     throw new Error(`Not supported yet: converting ${book.format} books to ${targetFormat}`);
   }
   const file = fs.createWriteStream(path);
   // 書き出しを始める前に中断した場合も、書き込み先のエラーで未処理のエラーにならないようにする
   file.on("error", () => {});
   try {
-    if (book.format === "yane2016") {
-      await book.yaneWasm.exportSbk(book.entries, file, onProgress);
-    } else {
-      await book.sbkWasm.exportYane(book.entries, file, onProgress);
-    }
+    await exportTo(file);
   } catch (e) {
     handleWasmCrash(book, e, path);
   } finally {
@@ -768,13 +851,7 @@ export async function exportBook(
   targetFormat: BookFormat,
   onProgress?: (progress: number) => void,
 ): Promise<void> {
-  const extMap: { [K in BookFormat]: string } = {
-    yane2016: ".db",
-    apery: ".bin",
-    sbk: ".sbk",
-    ybb: ".ybb",
-  };
-  const expectedExt = extMap[targetFormat];
+  const expectedExt = bookFileExtensions[targetFormat];
   if (!path.endsWith(expectedExt)) {
     throw new Error("Invalid file extension: " + path);
   }

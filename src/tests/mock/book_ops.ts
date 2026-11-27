@@ -26,8 +26,15 @@ const records = [
   "position startpos moves 7g7f 8c8d 2g2f 8d8e 8h7g 3c3d 7i8h resign",
 ];
 
-/** 棋譜の取り込みと、指し手・コメントの追加/変更/削除/並べ替えを行う */
-export async function editBook(session: number, tmpdir: string): Promise<void> {
+/**
+ * 棋譜の取り込みと、指し手・コメントの追加/変更/削除/並べ替えを行う。
+ * positionComment が false の場合は局面のコメントを変更しない (YBB 形式は局面のコメントに対応しない)。
+ */
+export async function editBook(
+  session: number,
+  tmpdir: string,
+  { positionComment = true }: { positionComment?: boolean } = {},
+): Promise<void> {
   const sfenPath = path.join(tmpdir, "book-ops-records.sfen");
   fs.writeFileSync(sfenPath, records.join("\n") + "\n");
   await importBookMoves(session, {
@@ -38,8 +45,10 @@ export async function editBook(session: number, tmpdir: string): Promise<void> {
   });
   await updateBookMove(session, initialSfen, { usi: "5g5f", count: 1, comment: "中飛車" });
   await updateBookMove(session, after76, { usi: "8c8d", count: 10, score: 30, depth: 12 });
-  await updateBookPositionComment(session, after76, "角道を開ける");
-  await updateBookPositionComment(session, after7634, "");
+  if (positionComment) {
+    await updateBookPositionComment(session, after76, "角道を開ける");
+    await updateBookPositionComment(session, after7634, "");
+  }
   await updateBookMoveOrder(session, initialSfen, "5g5f", 0);
   await removeBookMove(session, after7634, "2g2f");
 }
@@ -120,5 +129,22 @@ export function yaneFields(snapshot: { sfen: string; entry: BookPositionEntry }[
         comment: m.comment || undefined,
       })),
       comment: entry.comment || undefined,
+    }));
+}
+
+/**
+ * YBB 形式で保存できる項目だけを取り出す。
+ * (指し手の無い局面は比較しない。評価値は省略すると 0 になり、探索深さは 0 の場合に省略される)
+ */
+export function ybbFields(snapshot: { sfen: string; entry: BookPositionEntry }[]) {
+  return snapshot
+    .filter(({ entry }) => entry.moves.length > 0)
+    .map(({ sfen, entry }) => ({
+      sfen,
+      moves: entry.moves.map((m) => ({
+        usi: m.usi,
+        score: Math.trunc(m.score ?? 0),
+        depth: m.depth ? Math.trunc(m.depth) : undefined,
+      })),
     }));
 }

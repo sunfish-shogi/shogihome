@@ -578,6 +578,7 @@
                 <input
                   v-model.number="update.ybbOnTheFlyThresholdMB"
                   type="number"
+                  :disabled="update.bookBackend === 'wasm'"
                   max="512"
                   min="0"
                 />
