@@ -1,5 +1,6 @@
 // [WebAssembly 版] On-the-fly モードで開いているファイルへの上書き保存が失敗した場合の動作。
 
+import events from "node:events";
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -117,6 +118,27 @@ describe.each(cases)("background/book overwrite (backend=wasm, format=$format)",
     vi.restoreAllMocks();
     await openBook(defaultBookSession, target, { forceOnTheFly: true, backend: "wasm" });
     expect(await usis()).toContain("9g9f");
+  });
+
+  // 書き出し中の一時ファイルは所有者だけが読み書きできる
+  it.skipIf(process.platform === "win32")("temporary file permissions", async () => {
+    fs.chmodSync(target, 0o644);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const prototype = c.wasm.prototype as any;
+    const store = prototype.store;
+    let tempMode: number | undefined;
+    vi.spyOn(prototype, "store").mockImplementation(async function (this: unknown, ...args) {
+      const output = args[1] as fs.WriteStream;
+      if (output.pending) {
+        await events.once(output, "ready");
+      }
+      tempMode = fs.statSync(output.path as string).mode & 0o777;
+      return store.apply(this, args);
+    });
+    await saveBook(defaultBookSession, target);
+    expect(tempMode).toBe(0o600);
+    // 保存後は元のファイルの権限になる
+    expect(fs.statSync(target).mode & 0o777).toBe(0o644);
   });
 
   // 権限を引き継ぐ。シンボリックリンクのフォルダーを通して開いた場合も、リンク先のファイルを置き換える。

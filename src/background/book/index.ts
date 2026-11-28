@@ -939,7 +939,8 @@ async function overwriteWasmBook(
   getAppLogger().info("Overwriting book: path=%s temp=%s", target, tempPath);
 
   // 一時ファイルに書き出す
-  const file = fs.createWriteStream(tempPath, { flags: "wx" });
+  // 書き出し中に他のユーザーから読めないように、所有者だけが読み書きできる権限で作る
+  const file = fs.createWriteStream(tempPath, { flags: "wx", mode: 0o600 });
   file.on("error", () => {});
   try {
     await storeWasmBook(book, file, onProgress);
@@ -950,7 +951,10 @@ async function overwriteWasmBook(
   }
   // 置き換える前に一時ファイルを閉じ、元のファイルの権限を引き継ぐ
   await new Promise((resolve) => file.close(resolve));
-  await fs.promises.chmod(tempPath, mode & 0o7777).catch(() => {});
+  // 権限を変更できないファイルシステムでは、所有者だけが読み書きできる権限のまま置き換える
+  await fs.promises.chmod(tempPath, mode & 0o7777).catch((e) => {
+    getAppLogger().warn("Failed to restore the permissions of the book file: %s", e);
+  });
 
   // 元のファイルを閉じて置き換える (Windows では開いているファイルを置き換えられないため先に閉じる)
   closeWasmBook(book);
