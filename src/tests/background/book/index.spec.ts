@@ -905,9 +905,12 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       expect(output).toBe(expected);
     });
 
-    it("forbidOverwrite", async () => {
+    it("[js] forbidOverwrite", async () => {
       const path = "src/tests/testdata/book/yaneuraou.db";
-      const mode = await openBook(defaultBookSession, path, { yaneOnTheFlyThresholdMB: 0.0001 });
+      const mode = await openBook(defaultBookSession, path, {
+        yaneOnTheFlyThresholdMB: 0.0001,
+        backend: "js",
+      });
       expect(mode).toBe("on-the-fly");
       await expect(saveBook(defaultBookSession, path)).rejects.toThrow(
         "On-the-fly モードで読み込み中の定跡は上書き保存できません。 別のファイル名を指定してください。",

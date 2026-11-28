@@ -913,6 +913,10 @@ export const en: Texts = {
   openedBookFileWasNotModified: "The book file that was opened has not been modified.",
   savedBookFileMayBeIncomplete: (path: string) =>
     `The destination file (${path}) may have been written only partially.`,
+  bookFileCouldNotBeReopenedAndClosed:
+    "The book file could not be reopened, so the book was closed.",
+  bookFileWasSavedButCouldNotBeReopenedAndClosed:
+    "The book file was saved, but it could not be reopened, so the book was closed.",
   pleaseSpecifyOtherFileName: "Please specify another file name.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Memory shortage during book data conversion may cause loss of unsaved data.",

@@ -222,14 +222,40 @@ describe.each(backends)("background/book SBK (backend=%s)", (backend) => {
     }
   });
 
-  it("cannot overwrite the opened file", async () => {
-    fs.copyFileSync("src/tests/testdata/book/shogigui01.sbk", out("overwrite.sbk"));
-    await openBook(defaultBookSession, out("overwrite.sbk"), { backend, forceOnTheFly: true });
+  it("overwrite the opened file", async () => {
+    const original = "src/tests/testdata/book/shogigui01.sbk";
+    const target = out("overwrite.sbk");
+    fs.copyFileSync(original, target);
+    await openBook(defaultBookSession, target, { backend, forceOnTheFly: true });
     await updateBookMove(defaultBookSession, initialSfen, { usi: "5g5f", count: 3 });
-    await expect(saveBook(defaultBookSession, out("overwrite.sbk"))).rejects.toThrow();
-    // ファイルは変更されていない
-    expect(fs.readFileSync(out("overwrite.sbk"))).toEqual(
-      fs.readFileSync("src/tests/testdata/book/shogigui01.sbk"),
-    );
+    if (backend === "js") {
+      // [js] JavaScript 版の On-the-fly モードでは開いているファイルに上書きできない
+      await expect(saveBook(defaultBookSession, target)).rejects.toThrow();
+      expect(fs.readFileSync(target)).toEqual(fs.readFileSync(original));
+      return;
+    }
+    // 別のファイルに保存した場合と同じ内容になる
+    await saveBook(defaultBookSession, out("overwrite-expected.sbk"));
+    await saveBook(defaultBookSession, target);
+    expect(getBookInfo(defaultBookSession).unsaved).toBe(false);
+    expect(fs.readFileSync(target)).toEqual(fs.readFileSync(out("overwrite-expected.sbk")));
+    // 一時ファイルは残らない
+    expect(
+      fs.readdirSync(path.join(tmpdir, backend)).filter((name) => name.endsWith(".tmp")),
+    ).toEqual([]);
+    // 保存したファイルを開き直して、続けて編集・上書き保存できる
+    expect(
+      (await searchBookEntry(defaultBookSession, initialSfen))?.moves.map((m) => m.usi),
+    ).toContain("5g5f");
+    await updateBookMove(defaultBookSession, initialSfen, { usi: "9g9f", count: 1 });
+    await saveBook(defaultBookSession, target);
+    const { session } = await openBookAsNewSession(target, { backend, forceOnTheFly: true });
+    try {
+      const usis = (await searchBookEntry(session, initialSfen))?.moves.map((m) => m.usi);
+      expect(usis).toContain("5g5f");
+      expect(usis).toContain("9g9f");
+    } finally {
+      closeBookSession(session);
+    }
   });
 });
