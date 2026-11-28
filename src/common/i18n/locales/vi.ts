@@ -424,7 +424,7 @@ export const vi: Texts = {
   currentPosition: "Thế cờ hiện tại",
   positionList: "Danh sách thế cờ",
   enableEngineTimeout: "Bật hết giờ phần mềm",
-  restartEngineOnCrash: "エンジンが異常終了したら自動で再起動", // TODO: Translate
+  restartEngineOnCrash: "エンジンが異常終了したら再起動", // TODO: Translate
   setDifferentTimeForGote: "Đặt thời gian khác cho Hậu",
   nextTurn: "Lượt đi",
   elapsedTime: "Thời gian dùng tổng cộng",

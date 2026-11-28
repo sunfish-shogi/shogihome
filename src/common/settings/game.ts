@@ -40,7 +40,7 @@ export type SingleGameSettings = {
   startPosition: SingleGameStartPositionType; // v1.21.0 から undefined を廃止
   startPositionSFEN: string;
   enableEngineTimeout: boolean;
-  // エンジンが異常終了した場合に自動で再起動する。 (specs/engine-crash-recovery.md)
+  // エンジンが異常終了した場合に再起動する。 (specs/engine-crash-recovery.md)
   restartEngineOnCrash: boolean;
   humanIsFront: boolean;
   enableComment: boolean;

@@ -419,7 +419,7 @@ export const zh_tw: Texts = {
   currentPosition: "現在局面",
   positionList: "局面列表",
   enableEngineTimeout: "開啟引擎時間限制",
-  restartEngineOnCrash: "エンジンが異常終了したら自動で再起動", // TODO: Translate
+  restartEngineOnCrash: "エンジンが異常終了したら再起動", // TODO: Translate
   setDifferentTimeForGote: "先後手時間不相同",
   nextTurn: "手番",
   elapsedTime: "消費時間",

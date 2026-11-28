@@ -410,7 +410,7 @@ export const ja: Texts = {
   currentPosition: "現在の局面",
   positionList: "局面集",
   enableEngineTimeout: "エンジンの時間切れあり",
-  restartEngineOnCrash: "エンジンが異常終了したら自動で再起動",
+  restartEngineOnCrash: "エンジンが異常終了したら再起動",
   setDifferentTimeForGote: "後手に異なる時間を設定",
   nextTurn: "次の手番",
   elapsedTime: "消費時間",

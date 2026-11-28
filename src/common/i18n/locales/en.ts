@@ -410,7 +410,7 @@ export const en: Texts = {
   currentPosition: "Current Position",
   positionList: "Position List",
   enableEngineTimeout: "Enable Engine Timeout",
-  restartEngineOnCrash: "Restart Engine Automatically on Crash",
+  restartEngineOnCrash: "Restart Engine on Crash",
   setDifferentTimeForGote: "Set different time for Gote",
   nextTurn: "Next Move",
   elapsedTime: "Elapsed Time",

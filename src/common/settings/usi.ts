@@ -716,6 +716,6 @@ export type USIEngineMetadata = {
 export type USIEngineLaunchOptions = {
   timeoutSeconds?: number;
   discardUSIInfo?: boolean;
-  // 対局中にエンジンが異常終了した場合に自動で再起動する。 (specs/engine-crash-recovery.md)
+  // 対局中にエンジンが異常終了した場合に再起動する。 (specs/engine-crash-recovery.md)
   restartOnCrash?: boolean;
 };
