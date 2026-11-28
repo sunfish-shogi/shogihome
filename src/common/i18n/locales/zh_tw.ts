@@ -906,6 +906,9 @@ export const zh_tw: Texts = {
   openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
   savedBookFileMayBeIncomplete: (path: string) =>
     `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
+  bookFileCouldNotBeReopenedAndClosed: "定跡ファイルを開き直せなかったため、定跡を閉じました。", // TODO: Translate
+  bookFileWasSavedButCouldNotBeReopenedAndClosed:
+    "定跡ファイルは保存しましたが、開き直せなかったため定跡を閉じました。", // TODO: Translate
   pleaseSpecifyOtherFileName: "請指定其他檔案名稱。",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "轉換定跡資料時若記憶體不足，未保存的資料可能會遺失。",

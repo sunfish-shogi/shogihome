@@ -87,12 +87,41 @@ describe.each(backends)("background/book YBB on-the-fly (backend=%s)", (backend)
     }
   });
 
-  it("cannot overwrite the opened file", async () => {
-    fs.copyFileSync(bookPath, out("overwrite.ybb"));
-    await open(defaultBookSession, out("overwrite.ybb"));
+  it("overwrite the opened file", async () => {
+    const original = "src/tests/testdata/book/yaneuraou.ybb";
+    const target = out("overwrite.ybb");
+    fs.copyFileSync(original, target);
+    await open(defaultBookSession, target);
     await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 3 });
-    await expect(saveBook(defaultBookSession, out("overwrite.ybb"))).rejects.toThrow();
-    expect(fs.readFileSync(out("overwrite.ybb"))).toEqual(fs.readFileSync(bookPath));
+    if (backend === "js") {
+      // [js] JavaScript 版の On-the-fly モードでは開いているファイルに上書きできない
+      await expect(saveBook(defaultBookSession, target)).rejects.toThrow();
+      expect(fs.readFileSync(target)).toEqual(fs.readFileSync(original));
+      return;
+    }
+    // 別のファイルに保存した場合と同じ内容になる
+    await saveBook(defaultBookSession, out("overwrite-expected.ybb"));
+    await saveBook(defaultBookSession, target);
+    expect(getBookInfo(defaultBookSession).unsaved).toBe(false);
+    expect(fs.readFileSync(target)).toEqual(fs.readFileSync(out("overwrite-expected.ybb")));
+    // 一時ファイルは残らない
+    expect(
+      fs.readdirSync(path.join(tmpdir, backend)).filter((name) => name.endsWith(".tmp")),
+    ).toEqual([]);
+    // 保存したファイルを開き直して、続けて編集・上書き保存できる
+    expect(
+      (await searchBookEntry(defaultBookSession, initialSfen))?.moves.map((m) => m.usi),
+    ).toContain("1g1f");
+    await updateBookMove(defaultBookSession, initialSfen, { usi: "9g9f", count: 1 });
+    await saveBook(defaultBookSession, target);
+    const { session } = await openBookAsNewSession(target, { forceOnTheFly: true, backend });
+    try {
+      const usis = (await searchBookEntry(session, initialSfen))?.moves.map((m) => m.usi);
+      expect(usis).toContain("1g1f");
+      expect(usis).toContain("9g9f");
+    } finally {
+      closeBookSession(session);
+    }
   });
 
   it("values out of range", async () => {

@@ -926,6 +926,9 @@ export const vi: Texts = {
   openedBookFileWasNotModified: "読み込んでいた定跡ファイルは変更されていません。", // TODO: Translate
   savedBookFileMayBeIncomplete: (path: string) =>
     `保存先のファイル (${path}) は途中までしか書き込まれていない可能性があります。`, // TODO: Translate
+  bookFileCouldNotBeReopenedAndClosed: "定跡ファイルを開き直せなかったため、定跡を閉じました。", // TODO: Translate
+  bookFileWasSavedButCouldNotBeReopenedAndClosed:
+    "定跡ファイルは保存しましたが、開き直せなかったため定跡を閉じました。", // TODO: Translate
   pleaseSpecifyOtherFileName: "Vui lòng chọn tên tệp khác.",
   memoryShortageOnBookConversionMayLoseUnsavedData:
     "Nếu thiếu bộ nhớ trong khi chuyển đổi dữ liệu định thức, dữ liệu chưa lưu có thể bị mất.",

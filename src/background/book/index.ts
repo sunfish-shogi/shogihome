@@ -1,5 +1,6 @@
-import { resolve as resolvePath } from "node:path";
+import { basename, dirname, join as joinPath, resolve as resolvePath } from "node:path";
 import fs, { ReadStream } from "node:fs";
+import { randomBytes } from "node:crypto";
 import {
   BookBackend,
   BookFormat,
@@ -192,32 +193,37 @@ function isSameFile(a: string, b: string): boolean {
  * 異常終了したインスタンスは使えないため定跡を閉じ、何が失われたかを伝えるエラーを投げる。
  * それ以外のエラーはそのまま投げ直す。
  */
-function handleWasmCrash(book: WasmBook, e: unknown, savePath?: string): never {
+function handleWasmCrash(
+  book: WasmBook,
+  e: unknown,
+  savePath?: string,
+  { overwrite = false }: { overwrite?: boolean } = {},
+): never {
   if (!(e instanceof BookWasmCrashError)) {
     throw e;
   }
   closeWasmBook(book);
-  for (const [session, b] of bookFiles) {
-    if (b === book) {
-      bookFiles.set(session, emptyBook(book.format, "wasm"));
-    }
-  }
+  discardWasmBook(book);
   const sentences = [
     savePath !== undefined ? t.wasmBookCrashedWhileSavingAndClosed : t.wasmBookCrashedAndClosed,
   ];
   if (!book.saved) {
     sentences.push(t.unsavedBookChangesWereLost);
   }
-  if (savePath !== undefined) {
+  // On-the-fly モードの上書き保存では一時ファイルに書き出して削除するため、保存先は変更されていない
+  if (savePath !== undefined && !overwrite) {
     sentences.push(t.savedBookFileMayBeIncomplete(savePath));
   }
   // in-memory モードでは開いているファイルに上書きできるため、上書きに失敗した場合は伝えない
-  if (book.path && (savePath === undefined || !isSameFile(book.path, savePath))) {
+  if (book.path && (savePath === undefined || overwrite || !isSameFile(book.path, savePath))) {
     sentences.push(t.openedBookFileWasNotModified);
   }
-  // 日本語の文は空白を挟まずに連結する
-  const message = sentences.reduce((a, b) => (/[。．]$/.test(a) ? a + b : `${a} ${b}`));
-  throw new Error(message, { cause: e });
+  throw new Error(joinSentences(sentences), { cause: e });
+}
+
+// 日本語の文は空白を挟まずに連結する
+function joinSentences(sentences: string[]): string {
+  return sentences.reduce((a, b) => (/[。．]$/.test(a) ? a + b : `${a} ${b}`));
 }
 
 // マージ済みのエントリーを取得する。
@@ -756,9 +762,9 @@ export async function saveBook(
   onProgress?: (progress: number) => void,
 ) {
   const book = getBook(session);
-  // on-the-fly の場合は上書きを禁止
+  // JavaScript 版の on-the-fly の場合は上書きを禁止
   // SBK の場合は on-the-fly でもメモリにロードしているので上書きも可能であるがルールを統一しておく
-  if (book.type === "on-the-fly" && book.path && (await exists(path))) {
+  if (!isWasmBook(book) && book.type === "on-the-fly" && book.path && (await exists(path))) {
     const inputRealPath = await fs.promises.realpath(book.path);
     const outputRealPath = await fs.promises.realpath(path);
     if (inputRealPath === outputRealPath) {
@@ -770,22 +776,22 @@ export async function saveBook(
     if (!path.endsWith(bookFileExtensions[book.format])) {
       throw new Error("Invalid file extension: " + path);
     }
+    // On-the-fly モードでは元のファイルを読みながら書き出すため、開いているファイルへは別の方法で上書きする
+    if (
+      book.type === "on-the-fly" &&
+      book.path &&
+      (await exists(path)) &&
+      isSameFile(book.path, path)
+    ) {
+      await overwriteWasmBook(book, book.path, onProgress);
+      return;
+    }
     const file = fs.createWriteStream(path);
     // 書き出しを始める前に中断した場合も、書き込み先のエラー (開けなかった場合など) で
     // 未処理のエラーにならないようにする (書き出し中のエラーは store が受け取って投げる)
     file.on("error", () => {});
     try {
-      if (book.format === "apery") {
-        await book.aperyWasm.store(book.entries, file, onProgress);
-      } else {
-        const wasm =
-          book.format === "sbk"
-            ? book.sbkWasm
-            : book.format === "yane2016"
-              ? book.yaneWasm
-              : book.ybbWasm;
-        await wasm.store(book.entries, file, onProgress);
-      }
+      await storeWasmBook(book, file, onProgress);
     } catch (e) {
       handleWasmCrash(book, e, path);
     } finally {
@@ -862,6 +868,125 @@ export async function saveBook(
   } finally {
     file.close();
   }
+}
+
+// WebAssembly 版の定跡に編集内容を統合して書き出す
+async function storeWasmBook(
+  book: WasmBook,
+  output: fs.WriteStream,
+  onProgress?: (progress: number) => void,
+): Promise<void> {
+  if (book.format === "apery") {
+    await book.aperyWasm.store(book.entries, output, onProgress);
+  } else {
+    const wasm =
+      book.format === "sbk"
+        ? book.sbkWasm
+        : book.format === "yane2016"
+          ? book.yaneWasm
+          : book.ybbWasm;
+    await wasm.store(book.entries, output, onProgress);
+  }
+}
+
+// WebAssembly 版の定跡の元のファイルを開き直し、インスタンスを置き換える。編集内容は変更しない。
+async function reopenWasmBook(book: WasmBook, path: string): Promise<void> {
+  switch (book.format) {
+    case "sbk":
+      book.sbkWasm = await SbkWasmBook.open(path);
+      book.sbkAuthor = book.sbkWasm.author;
+      book.sbkDescription = book.sbkWasm.description;
+      break;
+    case "yane2016":
+      book.yaneWasm = YaneWasmBook.open(path);
+      break;
+    case "ybb":
+      book.ybbWasm = YbbWasmBook.open(path);
+      break;
+    case "apery":
+      book.aperyWasm = AperyWasmBook.open(path);
+      break;
+  }
+}
+
+// 定跡を閉じて空の定跡に置き換える
+function discardWasmBook(book: WasmBook): void {
+  for (const [session, b] of bookFiles) {
+    if (b === book) {
+      bookFiles.set(session, emptyBook(book.format, "wasm"));
+    }
+  }
+}
+
+/**
+ * On-the-fly モードで開いているファイルに上書き保存する。
+ * 同じフォルダーの一時ファイルに書き出してから、元のファイルを閉じて一時ファイルで置き換え、開き直す。
+ * 書き出しや置き換えに失敗した場合、一時ファイルは削除し、元のファイルは変更しない。
+ */
+async function overwriteWasmBook(
+  book: WasmBook,
+  path: string,
+  onProgress?: (progress: number) => void,
+): Promise<void> {
+  // シンボリックリンクの場合はリンク先のファイルを置き換える
+  const target = await fs.promises.realpath(path);
+  const { mode } = await fs.promises.stat(target);
+  const tempPath = joinPath(
+    dirname(target),
+    `.${basename(target)}.${randomBytes(6).toString("hex")}.tmp`,
+  );
+  const removeTemp = () => fs.promises.rm(tempPath, { force: true }).catch(() => {});
+  getAppLogger().info("Overwriting book: path=%s temp=%s", target, tempPath);
+
+  // 一時ファイルに書き出す
+  // 書き出し中に他のユーザーから読めないように、所有者だけが読み書きできる権限で作る
+  const file = fs.createWriteStream(tempPath, { flags: "wx", mode: 0o600 });
+  file.on("error", () => {});
+  try {
+    await storeWasmBook(book, file, onProgress);
+  } catch (e) {
+    await new Promise((resolve) => file.close(resolve));
+    await removeTemp();
+    handleWasmCrash(book, e, path, { overwrite: true });
+  }
+  // 置き換える前に一時ファイルを閉じ、元のファイルの権限を引き継ぐ
+  await new Promise((resolve) => file.close(resolve));
+  // 権限を変更できないファイルシステムでは、所有者だけが読み書きできる権限のまま置き換える
+  await fs.promises.chmod(tempPath, mode & 0o7777).catch((e) => {
+    getAppLogger().warn("Failed to restore the permissions of the book file: %s", e);
+  });
+
+  // 元のファイルを閉じて置き換える (Windows では開いているファイルを置き換えられないため先に閉じる)
+  closeWasmBook(book);
+  try {
+    await fs.promises.rename(tempPath, target);
+  } catch (e) {
+    await removeTemp();
+    // 元のファイルは変更されていないので開き直す
+    try {
+      await reopenWasmBook(book, path);
+    } catch (reopenError) {
+      getAppLogger().error("Failed to replace the book file: %s", e);
+      discardWasmBook(book);
+      const sentences = [t.bookFileCouldNotBeReopenedAndClosed];
+      if (!book.saved) {
+        sentences.push(t.unsavedBookChangesWereLost);
+      }
+      sentences.push(t.openedBookFileWasNotModified);
+      throw new Error(joinSentences(sentences), { cause: reopenError });
+    }
+    throw e;
+  }
+
+  // 保存したファイルを開き直す。編集内容は保存したファイルに含まれる。
+  try {
+    await reopenWasmBook(book, path);
+  } catch (e) {
+    discardWasmBook(book);
+    throw new Error(t.bookFileWasSavedButCouldNotBeReopenedAndClosed, { cause: e });
+  }
+  book.entries.clear();
+  book.saved = true;
 }
 
 async function exportWasmBook(

@@ -110,21 +110,37 @@ describe.each(cases)(
       fs.copyFileSync("src/tests/testdata/book/yaneuraou.db", out("overwrite.db"));
       await open(defaultBookSession, out("overwrite.db"));
       await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 3 });
-      if (mode === "on-the-fly") {
-        // On-the-fly モードでは開いているファイルに上書きできない
+      if (backend === "js" && mode === "on-the-fly") {
+        // [js] JavaScript 版の On-the-fly モードでは開いているファイルに上書きできない
         await expect(saveBook(defaultBookSession, out("overwrite.db"))).rejects.toThrow();
         expect(fs.readFileSync(out("overwrite.db"))).toEqual(
           fs.readFileSync("src/tests/testdata/book/yaneuraou.db"),
         );
         return;
       }
+      // 別のファイルに保存した場合と同じ内容になる
+      await saveBook(defaultBookSession, out("overwrite-expected.db"));
+      if (mode === "in-memory") {
+        // in-memory モードでは保存先が開いているファイルになるため、開き直す
+        await open(defaultBookSession, out("overwrite.db"));
+        await updateBookMove(defaultBookSession, initialSfen, { usi: "1g1f", count: 3 });
+      }
       await saveBook(defaultBookSession, out("overwrite.db"));
       expect(getBookInfo(defaultBookSession).unsaved).toBe(false);
+      expect(fs.readFileSync(out("overwrite.db"))).toEqual(
+        fs.readFileSync(out("overwrite-expected.db")),
+      );
+      // 一時ファイルは残らない
+      expect(fs.readdirSync(dir).filter((name) => name.endsWith(".tmp"))).toEqual([]);
+      // 続けて編集・上書き保存できる
+      await updateBookMove(defaultBookSession, initialSfen, { usi: "9g9f", count: 1 });
+      await saveBook(defaultBookSession, out("overwrite.db"));
       const { session } = await openBookAsNewSession(out("overwrite.db"), options);
       try {
         const entry = await searchBookEntry(session, initialSfen);
         expect(entry?.moves.map((m) => m.usi)).toContain("1g1f");
-        expect(entry?.moves).toHaveLength(6);
+        expect(entry?.moves.map((m) => m.usi)).toContain("9g9f");
+        expect(entry?.moves).toHaveLength(7);
       } finally {
         closeBookSession(session);
       }

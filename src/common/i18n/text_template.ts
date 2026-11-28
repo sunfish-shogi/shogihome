@@ -874,6 +874,8 @@ export type Texts = {
   unsavedBookChangesWereLost: string;
   openedBookFileWasNotModified: string;
   savedBookFileMayBeIncomplete: (path: string) => string;
+  bookFileCouldNotBeReopenedAndClosed: string;
+  bookFileWasSavedButCouldNotBeReopenedAndClosed: string;
   pleaseSpecifyOtherFileName: string;
   memoryShortageOnBookConversionMayLoseUnsavedData: string;
   cannotConvertAperyBookToOtherFormat: string;
