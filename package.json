@@ -53,8 +53,8 @@
     "usi-csa-bridge:build": "webpack --config-name command:usi-csa-bridge && node scripts/distribute-command.mjs usi-csa-bridge",
     "usi-csa-bridge:install": "npm run usi-csa-bridge:build && npm install -g ./dist/command/usi-csa-bridge",
     "gen-proto": "node scripts/gen-proto.mjs",
-    "build:book-wasm": "node scripts/generate-apery-zobrist.mjs && node scripts/build-book-wasm.mjs",
-    "build:book-wasm:verify": "node scripts/generate-apery-zobrist.mjs --verify && node scripts/build-book-wasm.mjs --verify",
+    "build:book-wasm": "node scripts/build-book-wasm.mjs",
+    "build:book-wasm:verify": "node scripts/build-book-wasm.mjs --verify",
     "engine-index": "tsx scripts/engine-index.ts",
     "engine-index:verify": "tsx scripts/engine-index.ts verify"
   },

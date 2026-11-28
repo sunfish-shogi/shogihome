@@ -1,5 +1,5 @@
 //! Apery 形式のハッシュ値に使う乱数表。
-//! scripts/generate-apery-zobrist.mjs で src/background/book/apery_zobrist.ts から生成している。編集しないこと。
+//! JavaScript 版 (src/background/book/apery_zobrist.ts) と同じ値。Apery 形式の定跡と互換性を保つため変更しないこと。
 
 pub const PIECE_TABLE: [u64; 2511] = [
     0xc96d191cf6f6aea6,

@@ -57,12 +57,11 @@ wasm/book/                         Rust のソース (依存クレート無し)
   src/yane.rs                        やねうら王形式の処理
   src/ybb.rs                         YBB 形式の処理
   src/apery.rs                       Apery 形式の処理 (局面のハッシュ値を含む)
-  src/apery_zobrist.rs               Apery 形式のハッシュ値の乱数表 (生成物。apery_zobrist.ts から生成する)
+  src/apery_zobrist.rs               Apery 形式のハッシュ値の乱数表 (apery_zobrist.ts と同じ値)
   src/codec.rs                       JavaScript との受け渡し形式
   src/lib.rs                         エクスポートする関数
 
 scripts/build-book-wasm.mjs        ビルドして book.wasm とライセンス表示を生成する
-scripts/generate-apery-zobrist.mjs apery_zobrist.ts から apery_zobrist.rs を生成する (build:book-wasm の中で実行)
 scripts/copy-book-wasm.mjs         book.wasm を Electron 版の出力先にコピーする (electron:compile の中で実行)
 src/background/book/wasm/
   book.wasm                          ビルド成果物。生成物だが commit する
@@ -210,8 +209,9 @@ JavaScript 版の On-the-fly モード (`src/background/book/apery.ts` の `sear
   受け渡しでは 10 進数の文字列にする。回数・評価値の書き込みの規則は JavaScript 版と同じ (範囲外の場合はエラー) だが、
   YBB 形式と同じく書き出し始める前に全ての値を検査する (元のファイルの局面に統合する編集内容は、
   元のファイルを検索して統合した後の値を検査する)。
-- ハッシュ値の乱数表は `apery_zobrist.ts` から `scripts/generate-apery-zobrist.mjs` で生成する
-  (`npm run build:book-wasm:verify` で一致を検証する)。
+- ハッシュ値の乱数表は `apery_zobrist.ts` から一度だけ変換した (値は Apery 形式の定義で、変わることはない)。
+  両者の一致は、Rust 側のハッシュ値のテストと `apery_wasm_equivalence.spec.ts` (新旧の検索・変換結果の比較) で確かめる。
+  JavaScript 版を削除する際は、`index.ts` が使う `apery_zobrist.ts` の `hash` を WebAssembly 側の関数に置き換えて削除する。
 
 既知の相違点:
 
