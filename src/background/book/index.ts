@@ -66,6 +66,7 @@ import { BookWasmCrashError, isBookWasmAvailable } from "./wasm/instance.js";
 import { SbkWasmBook } from "./wasm/sbk.js";
 import { YaneWasmBook } from "./wasm/yaneuraou.js";
 import { YbbWasmBook } from "./wasm/ybb.js";
+import { AperyWasmBook } from "./wasm/apery.js";
 
 type BookHandle = InMemoryBook | OnTheFlyBook | WasmBook;
 
@@ -129,7 +130,20 @@ type WasmYbbBook = {
   ybbWasm: YbbWasmBook;
 };
 
-type WasmBook = WasmSbkBook | WasmYaneBook | WasmYbbBook;
+// WebAssembly 版の Apery 形式の定跡。常に On-the-fly モードで動作する。
+// 元のファイルはメモリに読み込まず WebAssembly 側から必要な部分を読む。
+// 編集内容 (entries) は JavaScript 側でハッシュ値をキーとして保持する。
+type WasmAperyBook = {
+  type: "on-the-fly";
+  backend: "wasm";
+  format: "apery";
+  path?: string; // 元のファイル (新規作成した定跡の場合は undefined)
+  saved: boolean;
+  entries: Map<bigint, BookEntry>;
+  aperyWasm: AperyWasmBook;
+};
+
+type WasmBook = WasmSbkBook | WasmYaneBook | WasmYbbBook | WasmAperyBook;
 
 // 形式ごとのファイルの拡張子
 const bookFileExtensions: { [K in BookFormat]: string } = {
@@ -140,8 +154,10 @@ const bookFileExtensions: { [K in BookFormat]: string } = {
 };
 
 // WebAssembly 版の定跡のインスタンス
-function wasmInstance(book: WasmBook): SbkWasmBook | YaneWasmBook | YbbWasmBook {
+function wasmInstance(book: WasmBook): SbkWasmBook | YaneWasmBook | YbbWasmBook | AperyWasmBook {
   switch (book.format) {
+    case "apery":
+      return book.aperyWasm;
     case "sbk":
       return book.sbkWasm;
     case "yane2016":
@@ -157,7 +173,8 @@ function isWasmBook(book: BookHandle): book is WasmBook {
 
 // WebAssembly 版を使うかどうか。WebAssembly モジュールを初期化できない場合は JavaScript 版を使う。
 function useWasm(format: BookFormat, backend?: BookBackend): boolean {
-  const implemented = format === "sbk" || format === "yane2016" || format === "ybb";
+  const implemented =
+    format === "sbk" || format === "yane2016" || format === "ybb" || format === "apery";
   return implemented && backend !== "js" && isBookWasmAvailable();
 }
 
@@ -206,7 +223,8 @@ function handleWasmCrash(book: WasmBook, e: unknown, savePath?: string): never {
 // マージ済みのエントリーを取得する。
 async function retrieveMergedEntry(book: BookHandle, sfen: string): Promise<BookEntry | undefined> {
   if (isWasmBook(book)) {
-    const entry = book.entries.get(sfen);
+    const entry =
+      book.format === "apery" ? book.entries.get(aperyHash(sfen)) : book.entries.get(sfen);
     if (entry?.type === "normal") {
       return entry;
     }
@@ -313,6 +331,16 @@ function emptyBook(format: BookFormat = "yane2016", backend?: BookBackend): Book
       saved: true,
       entries: new Map<string, BookEntry>(),
       yaneWasm: YaneWasmBook.create(),
+    };
+  }
+  if (format === "apery" && useWasm(format, backend)) {
+    return {
+      type: "on-the-fly",
+      backend: "wasm",
+      format: "apery",
+      saved: true,
+      entries: new Map<bigint, BookEntry>(),
+      aperyWasm: AperyWasmBook.create(),
     };
   }
   if (format === "ybb" && useWasm(format, backend)) {
@@ -545,6 +573,29 @@ function closeWasmBook(book: WasmBook): void {
   wasmInstance(book).close();
 }
 
+function openAperyBookWasm(session: number, path: string): void {
+  getAppLogger().info("Loading book with WebAssembly: path=%s", path);
+  let aperyWasm: AperyWasmBook;
+  try {
+    aperyWasm = AperyWasmBook.open(path);
+  } catch (e) {
+    if (e instanceof BookWasmCrashError) {
+      // 開いていた定跡はそのまま残る
+      throw new Error(t.wasmBookCrashedOnOpen, { cause: e });
+    }
+    throw e;
+  }
+  replaceBook(session, {
+    type: "on-the-fly",
+    backend: "wasm",
+    format: "apery",
+    path,
+    saved: true,
+    entries: new Map<bigint, BookEntry>(),
+    aperyWasm,
+  });
+}
+
 function openYbbBookWasm(session: number, path: string): void {
   getAppLogger().info("Loading book with WebAssembly: path=%s", path);
   let ybbWasm: YbbWasmBook;
@@ -620,9 +671,13 @@ export async function openBook(
     await openSbkBookWasm(session, path);
     return "on-the-fly";
   }
-  // YBB 形式の WebAssembly 版も常に On-the-fly モードで開く
+  // YBB 形式と Apery 形式の WebAssembly 版も常に On-the-fly モードで開く
   if (format === "ybb" && useWasm(format, options?.backend)) {
     openYbbBookWasm(session, path);
+    return "on-the-fly";
+  }
+  if (format === "apery" && useWasm(format, options?.backend)) {
+    openAperyBookWasm(session, path);
     return "on-the-fly";
   }
 
@@ -720,7 +775,17 @@ export async function saveBook(
     // 未処理のエラーにならないようにする (書き出し中のエラーは store が受け取って投げる)
     file.on("error", () => {});
     try {
-      await wasmInstance(book).store(book.entries, file, onProgress);
+      if (book.format === "apery") {
+        await book.aperyWasm.store(book.entries, file, onProgress);
+      } else {
+        const wasm =
+          book.format === "sbk"
+            ? book.sbkWasm
+            : book.format === "yane2016"
+              ? book.yaneWasm
+              : book.ybbWasm;
+        await wasm.store(book.entries, file, onProgress);
+      }
     } catch (e) {
       handleWasmCrash(book, e, path);
     } finally {
@@ -805,29 +870,35 @@ async function exportWasmBook(
   targetFormat: BookFormat,
   onProgress?: (progress: number) => void,
 ): Promise<void> {
-  // SBK 形式・やねうら王形式・YBB 形式の間で変換できる
+  // SBK 形式・やねうら王形式・YBB 形式の間と、それらから Apery 形式へ変換できる
+  // (Apery 形式からの変換は exportBook で除外している)
   let exportTo: ((output: fs.WriteStream) => Promise<void>) | undefined;
-  const entries = book.entries;
   if (book.format === "sbk") {
-    const wasm = book.sbkWasm;
+    const [wasm, entries] = [book.sbkWasm, book.entries];
     if (targetFormat === "yane2016") {
       exportTo = (output) => wasm.exportYane(entries, output, onProgress);
     } else if (targetFormat === "ybb") {
       exportTo = (output) => wasm.exportYbb(entries, output, onProgress);
+    } else if (targetFormat === "apery") {
+      exportTo = (output) => wasm.exportApery(entries, output, onProgress);
     }
   } else if (book.format === "yane2016") {
-    const wasm = book.yaneWasm;
+    const [wasm, entries] = [book.yaneWasm, book.entries];
     if (targetFormat === "sbk") {
       exportTo = (output) => wasm.exportSbk(entries, output, onProgress);
     } else if (targetFormat === "ybb") {
       exportTo = (output) => wasm.exportYbb(entries, output, onProgress);
+    } else if (targetFormat === "apery") {
+      exportTo = (output) => wasm.exportApery(entries, output, onProgress);
     }
-  } else {
-    const wasm = book.ybbWasm;
+  } else if (book.format === "ybb") {
+    const [wasm, entries] = [book.ybbWasm, book.entries];
     if (targetFormat === "sbk") {
       exportTo = (output) => wasm.exportSbk(entries, output, onProgress);
     } else if (targetFormat === "yane2016") {
       exportTo = (output) => wasm.exportYane(entries, output, onProgress);
+    } else if (targetFormat === "apery") {
+      exportTo = (output) => wasm.exportApery(entries, output, onProgress);
     }
   }
   if (!exportTo) {
@@ -863,17 +934,16 @@ export async function exportBook(
     return;
   }
 
-  // WebAssembly 版は実装済みの形式の間でのみ変換できる (移行期間中の制限)
-  if (isWasmBook(book)) {
-    await exportWasmBook(book, path, targetFormat, onProgress);
-    return;
-  }
-
   // Apery 形式は独自のハッシュ値がキーになっており局面を復元できない場合があるため
   // ShogiHome では他の形式への変換をサポートしない
   // NOTE: BookConv の場合は平手初期局面から到達可能な局面のみを変換対象としている
   if (book.format === "apery") {
     throw new Error(t.cannotConvertAperyBookToOtherFormat);
+  }
+
+  if (isWasmBook(book)) {
+    await exportWasmBook(book, path, targetFormat, onProgress);
+    return;
   }
 
   // インメモリに全てのデータを取り込む

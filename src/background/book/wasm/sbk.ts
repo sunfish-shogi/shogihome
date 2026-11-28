@@ -137,4 +137,18 @@ export class SbkWasmBook extends BookWasmInstance {
       onProgress,
     );
   }
+
+  /** 全ての局面に in-memory のエントリーを統合して、Apery 形式で書き出す (storeAperyBook と同じ結果) */
+  async exportApery(
+    entries: Map<string, BookEntry>,
+    output: Writable,
+    onProgress?: (progress: number) => void,
+  ): Promise<void> {
+    await this.writeApery(
+      (ptr, len) => this.exports.sbk_export_apery_begin(ptr, len),
+      entries,
+      output,
+      onProgress,
+    );
+  }
 }

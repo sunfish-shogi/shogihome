@@ -119,7 +119,8 @@ describe("background/book", () => {
 
     describe("apery.bin", () => {
       const patterns = [
-        { options: { aperyOnTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
+        // [JavaScript 版のみ] WebAssembly 版は常に On-the-fly モードで開く
+        { options: { aperyOnTheFlyThresholdMB: 0.001, backend: "js" as const }, mode: "in-memory" },
         { options: { aperyOnTheFlyThresholdMB: 0.00005 }, mode: "on-the-fly" },
       ];
       for (const pattern of patterns) {
@@ -1017,28 +1018,6 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       const mode2 = await openBook(defaultBookSession, outPath);
       expect(mode2).toBe("in-memory");
       expect((await searchBookMoves(defaultBookSession, sfen1)).length).toBeGreaterThan(0);
-    });
-
-    // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
-    it("[wasm] sbk → apery: not supported yet", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/shogigui01-copy.sbk", {
-        backend: "wasm",
-      });
-      const outPath = path.join(tmpdir, "export-sbk-wasm-to-apery.bin");
-      await expect(exportBook(defaultBookSession, outPath, "apery")).rejects.toThrow(
-        "Not supported yet",
-      );
-    });
-
-    // [WebAssembly 版] 他の形式への変換は未対応 (移行期間中の制限。対応したら削除する)
-    it("[wasm] yane2016 → apery: not supported yet", async () => {
-      await openBook(defaultBookSession, "src/tests/testdata/book/yaneuraou.db", {
-        backend: "wasm",
-      });
-      const outPath = path.join(tmpdir, "export-yane-wasm-to-apery.bin");
-      await expect(exportBook(defaultBookSession, outPath, "apery")).rejects.toThrow(
-        "Not supported yet",
-      );
     });
 
     it("apery → yane2016: throws", async () => {

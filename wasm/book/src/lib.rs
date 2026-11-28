@@ -3,6 +3,8 @@
 //! JavaScript からは src/background/book/wasm/ のラッパーを通して使う。
 //! インスタンスごとに 1 冊の定跡を保持する。関数の仕様は specs/book-wasm.md を参照。
 
+pub mod apery;
+pub mod apery_zobrist;
 pub mod board;
 pub mod codec;
 pub mod entry;
@@ -13,6 +15,7 @@ pub mod sbk;
 pub mod ybb;
 pub mod yane;
 
+use apery::{AperyMerger, AperyOnTheFly, AperyStore};
 use codec::{decode_entry, encode_entry, Decoder, Encoder};
 use sbk::{SbkBook, SbkWriter};
 use yane::{Source, YaneInMemory, YaneMerger, YaneStore};
@@ -27,6 +30,8 @@ struct State {
     yane_writer: Option<YaneWriter>,
     ybb: Option<YbbOnTheFly>,
     ybb_writer: Option<YbbWriter>,
+    apery: Option<AperyOnTheFly>,
+    apery_writer: Option<AperyWriter>,
     result: Vec<u8>,
     error: String,
 }
@@ -37,6 +42,11 @@ enum YaneBook {
     OnTheFly(u64),
     /// in-memory モード
     InMemory(YaneInMemory),
+}
+
+enum AperyWriter {
+    Merge(AperyMerger),
+    Store(AperyStore),
 }
 
 enum YbbWriter {
@@ -538,6 +548,7 @@ fn export(
         s.writer = None;
         s.yane_writer = None;
         s.ybb_writer = None;
+        s.apery_writer = None;
         let Some(patches) = decode_patches(data) else {
             return fail(s, "invalid patch data");
         };
@@ -738,4 +749,154 @@ pub unsafe extern "C" fn ybb_export_yane_begin(ptr: *const u8, len: u32) -> i32 
 #[no_mangle]
 pub unsafe extern "C" fn ybb_export_sbk_begin(ptr: *const u8, len: u32) -> i32 {
     export(input(ptr, len), ybb_entries, begin_sbk_export)
+}
+
+// ---------------------------------------------------------------------------
+// Apery 形式
+
+/// 全ての局面を Apery 形式で書き出す処理を開始する (続きは apery_save_next)
+fn begin_apery_export(s: &mut State, entries: Vec<(String, entry::Entry)>) -> i32 {
+    match AperyStore::new(entries) {
+        Ok(writer) => {
+            s.apery_writer = Some(AperyWriter::Store(writer));
+            0
+        }
+        Err(err) => fail(s, err),
+    }
+}
+
+/// Apery 形式のファイルを開く (ファイルの内容は読み込まず、必要な部分を env.book_read で読む)
+#[no_mangle]
+pub extern "C" fn apery_open(size: f64) {
+    with_state(|s| {
+        s.apery_writer = None;
+        s.apery = Some(AperyOnTheFly { size: size as u64 });
+    })
+}
+
+/// 元のファイルが無い空の Apery 形式の定跡を作る
+#[no_mangle]
+pub extern "C" fn apery_create() {
+    apery_open(0.0)
+}
+
+/// 元のファイルから局面のエントリーを検索する (キーは SFEN。ハッシュ値はこのモジュールで計算する)。
+/// 見つかった場合は 1 を返し、結果にエントリーを書き込む。見つからない場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn apery_search(ptr: *const u8, len: u32) -> i32 {
+    let sfen = input(ptr, len);
+    with_state(|s| {
+        let Ok(sfen) = core::str::from_utf8(sfen) else {
+            return fail(s, "invalid UTF-8 key");
+        };
+        let Some(book) = &s.apery else {
+            return fail(s, "book is not opened");
+        };
+        match book.search(&mut HostFile, sfen) {
+            Ok(Some(entry)) => {
+                let mut e = Encoder {
+                    buf: std::mem::take(&mut s.result),
+                };
+                e.buf.clear();
+                encode_entry(&mut e, &entry);
+                s.result = e.buf;
+                1
+            }
+            Ok(None) => 0,
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 元のファイルに編集内容を統合して書き出す処理を開始する (mergeAperyBook と同じ結果)。
+/// 入力は sbk_save_begin と同じ形式で、キーはハッシュ値 (10 進数の文字列)。
+/// 成功した場合は 0、失敗した場合は -1 を返す。
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn apery_save_begin(ptr: *const u8, len: u32) -> i32 {
+    let data = input(ptr, len);
+    with_state(|s| {
+        s.apery_writer = None;
+        let Some(patches) = decode_patches(data) else {
+            return fail(s, "invalid patch data");
+        };
+        let Some(book) = &s.apery else {
+            return fail(s, "book is not opened");
+        };
+        match AperyMerger::new(book, &mut HostFile, patches) {
+            Ok(writer) => {
+                s.apery_writer = Some(AperyWriter::Merge(writer));
+                0
+            }
+            Err(err) => fail(s, err),
+        }
+    })
+}
+
+/// 続きを書き出し、結果に約 max_bytes バイト以上のバイト列を書き込む。
+/// 続きがある場合は 1、完了した場合は 0、失敗した場合は -1 を返す。
+#[no_mangle]
+pub extern "C" fn apery_save_next(max_bytes: u32) -> i32 {
+    with_state(|s| {
+        let mut out = std::mem::take(&mut s.result);
+        out.clear();
+        let r = match &mut s.apery_writer {
+            Some(AperyWriter::Merge(writer)) => {
+                writer.write_next(&mut HostFile, max_bytes as usize, &mut out)
+            }
+            Some(AperyWriter::Store(writer)) => writer.write_next(max_bytes as usize, &mut out),
+            None => Err("writer is not started".to_string()),
+        };
+        s.result = out;
+        match r {
+            // 完了した後も apery_save_progress で進捗を返せるように書き出しの状態は残す
+            Ok(done) => (!done) as i32,
+            Err(err) => {
+                s.apery_writer = None;
+                fail(s, err)
+            }
+        }
+    })
+}
+
+/// 書き出しの進捗 (0〜1)
+#[no_mangle]
+pub extern "C" fn apery_save_progress() -> f64 {
+    with_state(|s| match &s.apery_writer {
+        Some(AperyWriter::Merge(writer)) => writer.progress(),
+        Some(AperyWriter::Store(writer)) => writer.progress(),
+        None => 0.0,
+    })
+}
+
+/// やねうら王形式の定跡を Apery 形式に変換して書き出す処理を開始する (続きは apery_save_next)
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn yane_export_apery_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), |s| yane_entries(s, true), begin_apery_export)
+}
+
+/// SBK 形式の定跡を Apery 形式に変換して書き出す処理を開始する (続きは apery_save_next)
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn sbk_export_apery_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), sbk_entries, begin_apery_export)
+}
+
+/// YBB 形式の定跡を Apery 形式に変換して書き出す処理を開始する (続きは apery_save_next)
+///
+/// # Safety
+/// ptr と len は book_alloc で確保した領域を指していること
+#[no_mangle]
+pub unsafe extern "C" fn ybb_export_apery_begin(ptr: *const u8, len: u32) -> i32 {
+    export(input(ptr, len), ybb_entries, begin_apery_export)
 }

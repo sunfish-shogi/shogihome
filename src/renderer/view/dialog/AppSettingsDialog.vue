@@ -591,6 +591,7 @@
                 <input
                   v-model.number="update.aperyBookOnTheFlyThresholdMB"
                   type="number"
+                  :disabled="update.bookBackend === 'wasm'"
                   max="512"
                   min="0"
                 />
