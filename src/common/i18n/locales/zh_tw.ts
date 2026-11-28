@@ -419,6 +419,7 @@ export const zh_tw: Texts = {
   currentPosition: "現在局面",
   positionList: "局面列表",
   enableEngineTimeout: "開啟引擎時間限制",
+  restartEngineOnCrash: "エンジンが異常終了したら再起動", // TODO: Translate
   setDifferentTimeForGote: "先後手時間不相同",
   nextTurn: "手番",
   elapsedTime: "消費時間",
@@ -949,6 +950,18 @@ export const zh_tw: Texts = {
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
     return `引擎在${seconds}秒内沒有回應。若引擎的啟動時間稍長，請在設定的「USI協定」分頁中調整引擎最長等待時間。`;
+  },
+  // TODO: Translate
+  engineCrashedAndRestarting(name) {
+    return `${name} が異常終了しました。再起動しています。`;
+  },
+  // TODO: Translate
+  engineRestarted(name, seconds) {
+    return `${name} を再起動しました。 (${seconds}秒)`;
+  },
+  // TODO: Translate
+  failedToRestartEngine(name) {
+    return `${name} の再起動に失敗しました。`;
   },
   stableVersionReleased(version: string) {
     return `安定版 ${version} 已經發布！`;

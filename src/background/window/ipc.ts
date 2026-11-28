@@ -153,6 +153,7 @@ import { createDesktopShortcut } from "@/background/file/shortcuts.js";
 import { escapeFileName } from "@/common/file/path.js";
 import { collectOSState, getMachineSpec } from "@/background/proc/state.js";
 import { loadUSIEngineMeta } from "@/background/usi/metadata.js";
+import { USIEngineRestartEvent } from "@/background/usi/restartable.js";
 import { Lazy } from "@/common/helpers/lazy.js";
 import { USIEngineStatsEntry } from "@/background/stats/types.js";
 import { updateUSIEngineStats } from "@/background/stats/persistence.js";
@@ -1355,6 +1356,19 @@ setUSIHandlers({
     });
   },
   sendPromptCommand: sendPromptCommand.bind(this, PromptTarget.USI),
+  onUSIEngineRestart(_: number, engineName: string, event: USIEngineRestartEvent): void {
+    switch (event.type) {
+      case "crashed":
+        sendNotification(t.engineCrashedAndRestarting(engineName));
+        break;
+      case "restarted":
+        sendNotification(t.engineRestarted(engineName, Math.round(event.elapsedMs / 100) / 10));
+        break;
+      case "failed":
+        sendError(new Error(`${t.failedToRestartEngine(engineName)}: ${event.error.message}`));
+        break;
+    }
+  },
 });
 
 setHandlers({

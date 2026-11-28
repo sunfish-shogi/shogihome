@@ -60,6 +60,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeUndefined();
@@ -86,6 +87,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
@@ -112,6 +114,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
@@ -138,6 +141,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
@@ -164,6 +168,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
@@ -190,6 +195,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
       searchCommentFormat: SearchCommentFormat.SHOGIHOME,
     });
     expect(result).toBeInstanceOf(Error);
@@ -218,6 +224,7 @@ describe("settings/csa", () => {
       repeat: 3,
       autoRelogin: false,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
     };
     const result = normalizeSecureCSAGameSettingsHistory(settings);
     expect(result).toStrictEqual(settings);
@@ -241,6 +248,7 @@ describe("settings/csa", () => {
         repeat: 1,
         autoRelogin: true,
         restartPlayerEveryGame: false,
+        restartEngineOnCrash: false,
         searchCommentFormat: SearchCommentFormat.SHOGIHOME,
       };
     };
@@ -308,6 +316,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
     };
     const secure = encryptCSAGameSettingsHistory(raw, (src) => {
       return (
@@ -397,6 +406,7 @@ describe("settings/csa", () => {
       repeat: 1,
       autoRelogin: true,
       restartPlayerEveryGame: false,
+      restartEngineOnCrash: false,
     };
     const insecure = {
       ...secure,

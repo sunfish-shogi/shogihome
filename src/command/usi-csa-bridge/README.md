@@ -117,6 +117,8 @@ repeat: 1
 autoRelogin: true
 # 1 局ごとにエンジンを再起動するかどうか
 restartPlayerEveryGame: false
+# 対局中にエンジンが異常終了した場合に再起動するかどうか (省略時は false)
+restartEngineOnCrash: false
 
 # 棋譜を保存するかどうか
 saveRecordFile: true

@@ -85,6 +85,7 @@ describe("settings/game", () => {
       startPositionListFile: "",
       startPositionListOrder: "sequential",
       enableEngineTimeout: true,
+      restartEngineOnCrash: false,
       humanIsFront: false,
       enableComment: false,
       enableAutoSave: false,

@@ -410,6 +410,7 @@ export const en: Texts = {
   currentPosition: "Current Position",
   positionList: "Position List",
   enableEngineTimeout: "Enable Engine Timeout",
+  restartEngineOnCrash: "Restart Engine on Crash",
   setDifferentTimeForGote: "Set different time for Gote",
   nextTurn: "Next Move",
   elapsedTime: "Elapsed Time",
@@ -959,6 +960,15 @@ export const en: Texts = {
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
     return `No response from the engine for ${seconds} seconds. Please extend the timeout in the "USI Protocol" tab of the app settings if your engine is slow.`;
+  },
+  engineCrashedAndRestarting(name) {
+    return `${name} crashed. Restarting the engine.`;
+  },
+  engineRestarted(name, seconds) {
+    return `${name} has been restarted. (${seconds}s)`;
+  },
+  failedToRestartEngine(name) {
+    return `Failed to restart ${name}.`;
   },
   stableVersionReleased(version: string) {
     return `Stable version ${version} released!`;

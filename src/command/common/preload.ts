@@ -30,7 +30,8 @@ import { GameResult } from "@/common/game/result.js";
 import { LogLevel, LogType } from "@/common/log.js";
 import { USIEngine, USIEngineLaunchOptions } from "@/common/settings/usi.js";
 import { Bridge } from "@/renderer/ipc/bridge.js";
-import { Language, setLanguage } from "@/common/i18n/index.js";
+import { Language, setLanguage, t } from "@/common/i18n/index.js";
+import { USIEngineRestartEvent } from "@/background/usi/restartable.js";
 import { BookFormat } from "@/common/book.js";
 
 const bridge: Bridge = {
@@ -519,6 +520,21 @@ export function preload(config: Config) {
     ...usi,
     onEngineProcessStats: () => {},
     sendPromptCommand: () => {},
+    onUSIEngineRestart: (_: number, engineName: string, event: USIEngineRestartEvent) => {
+      switch (event.type) {
+        case "crashed":
+          getAppLogger().warn(t.engineCrashedAndRestarting(engineName));
+          break;
+        case "restarted":
+          getAppLogger().info(
+            t.engineRestarted(engineName, Math.round(event.elapsedMs / 100) / 10),
+          );
+          break;
+        case "failed":
+          getAppLogger().error(`${t.failedToRestartEngine(engineName)}: ${event.error.message}`);
+          break;
+      }
+    },
   });
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const csa = require("@/renderer/game/csa.js");

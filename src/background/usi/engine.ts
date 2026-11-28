@@ -121,20 +121,20 @@ function parseInfoCommand(args: string): USIInfoCommand {
   return result;
 }
 
-type ErrorCallback = (e: Error) => void;
-type TimeoutCallback = () => void;
-type CloseCallback = () => void;
-type USIOKCallback = () => void;
-type ReadyCallback = (readyTimeMs: number) => void;
-type BestmoveCallback = (position: string, move: string, ponder?: string) => void;
-type GoEndCallback = (thinkingTimeMs: number) => void;
-type CheckmateCallback = (position: string, moves: string[]) => void;
-type CheckmateNotImplementedCallback = () => void;
-type CheckmateTimeoutCallback = (position: string) => void;
-type CheckmateEndCallback = (thinkingTimeMs: number) => void;
-type NoMateCallback = (position: string) => void;
-type InfoCallback = (position: string, info: USIInfoCommand) => void;
-type CommandCallback = (command: Command) => void;
+export type ErrorCallback = (e: Error) => void;
+export type TimeoutCallback = () => void;
+export type CloseCallback = () => void;
+export type USIOKCallback = () => void;
+export type ReadyCallback = (readyTimeMs: number) => void;
+export type BestmoveCallback = (position: string, move: string, ponder?: string) => void;
+export type GoEndCallback = (thinkingTimeMs: number) => void;
+export type CheckmateCallback = (position: string, moves: string[]) => void;
+export type CheckmateNotImplementedCallback = () => void;
+export type CheckmateTimeoutCallback = (position: string) => void;
+export type CheckmateEndCallback = (thinkingTimeMs: number) => void;
+export type NoMateCallback = (position: string) => void;
+export type InfoCallback = (position: string, info: USIInfoCommand) => void;
+export type CommandCallback = (command: Command) => void;
 
 type ReservedSetOptionCommand = {
   name: string;
@@ -181,6 +181,46 @@ export enum State {
   WaitingForCheckmate = "waitingForCheckmate",
   WillQuit = "willQuit",
   QuitCompleted = "quitCompleted",
+  // RestartableEngineProcess がプロセスを再起動している間の状態。EngineProcess 自体はこの状態にならない。
+  Restarting = "restarting",
+}
+
+/**
+ * src/background/usi/index.ts がセッションのプロセスに対して使う操作。
+ * EngineProcess と RestartableEngineProcess が実装する。
+ */
+export interface USIEngineProcess {
+  readonly state: State;
+  readonly currentPosition: string;
+  readonly pid: number | undefined;
+  readonly lastReceived: Command | undefined;
+  readonly lastSent: Command | undefined;
+  readonly commandHistory: CommandHistory;
+  on(event: "timeout", callback: TimeoutCallback): this;
+  on(event: "error", callback: ErrorCallback): this;
+  on(event: "close", callback: CloseCallback): this;
+  on(event: "usiok", callback: USIOKCallback): this;
+  on(event: "ready", callback: ReadyCallback): this;
+  on(event: "bestmove", callback: BestmoveCallback): this;
+  on(event: "goEnd", callback: GoEndCallback): this;
+  on(event: "checkmate", callback: CheckmateCallback): this;
+  on(event: "checkmateNotImplemented", callback: CheckmateNotImplementedCallback): this;
+  on(event: "checkmateTimeout", callback: CheckmateTimeoutCallback): this;
+  on(event: "checkmateEnd", callback: CheckmateEndCallback): this;
+  on(event: "noMate", callback: NoMateCallback): this;
+  on(event: "info", callback: InfoCallback): this;
+  on(event: "command", callback: CommandCallback): this;
+  launch(): void;
+  quit(): void;
+  ready(): Error | undefined;
+  setOption(name: string, value?: string | number): void;
+  go(position: string, timeState?: TimeState): void;
+  goPonder(position: string, timeState: TimeState): void;
+  goMate(position: string, maxSeconds?: number): void;
+  ponderHit(timeState: TimeState): void;
+  stop(): void;
+  gameover(gameResult: GameResult): void;
+  invoke(type: CommandType, command: string): void;
 }
 
 const DefaultTimeout = 10 * 1e3;
@@ -190,7 +230,7 @@ const USIHashOptionOrder = 1;
 const USIPonderOptionOrder = 2;
 const UserDefinedOptionOrderStart = 100;
 
-export class EngineProcess {
+export class EngineProcess implements USIEngineProcess {
   private process: EngineProcessHandle | null = null;
   private _name = "NO NAME";
   private _author = "";

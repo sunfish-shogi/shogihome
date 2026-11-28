@@ -44,6 +44,7 @@ const handlers = {
   onUSIPonderInfo: vi.fn(),
   onEngineProcessStats: vi.fn(),
   sendPromptCommand: vi.fn(),
+  onUSIEngineRestart: vi.fn(),
 };
 setHandlers(handlers);
 
@@ -432,5 +433,61 @@ describe("background/usi/index", () => {
     expect(collectSessionStates()[0].sessionID).toBe(sessionID);
     vi.runOnlyPendingTimers();
     expect(collectSessionStates()).toHaveLength(0);
+  });
+
+  it("restartOnCrash", async () => {
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10, restartOnCrash: true });
+    getChildProcessHandler("receive", 0)("usiok");
+    const sessionID = await setupPromise;
+    const readyPromise = ready(sessionID);
+    getChildProcessHandler("receive", 0)("readyok");
+    await readyPromise;
+    const timeStates = {
+      black: { timeMs: 30000, byoyomi: 10, increment: 0 },
+      white: { timeMs: 30000, byoyomi: 10, increment: 0 },
+    };
+    go(sessionID, "position startpos", timeStates);
+
+    // 異常終了してもセッションは閉じずに再起動する。
+    getChildProcessHandler("close", 0)(1, null);
+    expect(handlers.onUSIEngineRestart).lastCalledWith(sessionID, testUSIEngine.name, {
+      type: "crashed",
+    });
+    expect(handlers.onEngineProcessStats).not.toBeCalled();
+    expect(isActiveSessionExists()).toBeTruthy();
+    expect(collectSessionStates()[0].stateCode).toBe("restarting");
+
+    getChildProcessHandler("receive", 1)("usiok");
+    getChildProcessHandler("receive", 1)("readyok");
+    await Promise.resolve();
+    expect(handlers.onUSIEngineRestart).lastCalledWith(sessionID, testUSIEngine.name, {
+      type: "restarted",
+      elapsedMs: expect.any(Number),
+    });
+    expect(mockChildProcess.prototype.send).lastCalledWith(
+      expect.stringMatching(/^go btime \d+ wtime 30000 byoyomi 10000$/),
+    );
+    getChildProcessHandler("receive", 1)("bestmove 7g7f");
+    expect(handlers.onUSIBestMove).lastCalledWith(
+      sessionID,
+      "position startpos",
+      "7g7f",
+      undefined,
+    );
+
+    quit(sessionID);
+    getChildProcessHandler("close", 1)(0, null);
+    expect(handlers.onEngineProcessStats).toBeCalledTimes(1);
+    expect(isActiveSessionExists()).toBeFalsy();
+  });
+
+  it("noRestartWithoutOption", async () => {
+    const setupPromise = setupPlayer(testUSIEngine, { timeoutSeconds: 10 });
+    getChildProcessHandler("receive", 0)("usiok");
+    await setupPromise;
+    getChildProcessHandler("close", 0)(1, null);
+    expect(handlers.onUSIEngineRestart).not.toBeCalled();
+    expect(mockChildProcess).toBeCalledTimes(1);
+    expect(isActiveSessionExists()).toBeFalsy();
   });
 });

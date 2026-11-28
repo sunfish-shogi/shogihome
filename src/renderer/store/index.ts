@@ -723,12 +723,14 @@ class Store {
           const playerBuilder = defaultPlayerBuilder({
             timeoutSeconds: appSettings.engineTimeoutSeconds,
             discardUSIInfo: !settings.enableComment,
+            restartOnCrash: settings.restartEngineOnCrash,
           });
           this._appState = AppState.PARALLEL_GAME; // info コマンドの表示を抑制するために start より前に state を変更する。
           await this.parallelGameManager.start(settings, playerBuilder);
         } else {
           const playerBuilder = defaultPlayerBuilder({
             timeoutSeconds: appSettings.engineTimeoutSeconds,
+            restartOnCrash: settings.restartEngineOnCrash,
           });
           this._appState = AppState.GAME;
           await this.gameManager.startLinear(settings, playerBuilder);
@@ -787,6 +789,7 @@ class Store {
         const appSettings = useAppSettings();
         const builder = defaultPlayerBuilder({
           timeoutSeconds: appSettings.engineTimeoutSeconds,
+          restartOnCrash: settings.restartEngineOnCrash,
         });
         return this.csaGameManager.login(settings, builder);
       })

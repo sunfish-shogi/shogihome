@@ -400,6 +400,7 @@ export type Texts = {
   currentPosition: string;
   positionList: string;
   enableEngineTimeout: string;
+  restartEngineOnCrash: string;
   setDifferentTimeForGote: string;
   nextTurn: string;
   elapsedTime: string;
@@ -906,6 +907,9 @@ export type Texts = {
   unexpectedHTTPMethodPleaseReport(method: string): string;
   unexpectedRequestURLPleaseReport(url: string): string;
   noResponseFromEnginePleaseExtendTimeout(seconds: number): string;
+  engineCrashedAndRestarting(name: string): string;
+  engineRestarted(name: string, seconds: number): string;
+  failedToRestartEngine(name: string): string;
   stableVersionReleased(version: string): string;
   latestVersionReleased(version: string): string;
   doYouReallyWantToRemoveBookMove(move: string): string;

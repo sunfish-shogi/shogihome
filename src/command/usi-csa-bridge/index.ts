@@ -167,6 +167,7 @@ async function main() {
   const gameManager = new CSAGameManager(recordManager, blackClock, whiteClock);
   const playerBuilder = defaultPlayerBuilder({
     timeoutSeconds: engineTimeout(),
+    restartOnCrash: settings.restartEngineOnCrash,
   });
 
   gameManager

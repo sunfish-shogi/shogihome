@@ -44,6 +44,7 @@ export type CSAGameSettings = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  restartEngineOnCrash: boolean;
   searchCommentFormat: SearchCommentFormat;
 };
 
@@ -78,6 +79,7 @@ export function defaultCSAGameSettings(): CSAGameSettings {
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
+    restartEngineOnCrash: false,
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   };
 }
@@ -150,6 +152,7 @@ export type CSAGameSettingsHistory = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  restartEngineOnCrash: boolean;
 };
 
 export function defaultCSAGameSettingsHistory(opt?: {
@@ -168,6 +171,7 @@ export function defaultCSAGameSettingsHistory(opt?: {
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
+    restartEngineOnCrash: false,
   };
   return result;
 }
@@ -189,6 +193,7 @@ export function buildCSAGameSettingsByHistory(
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
+    restartEngineOnCrash: history.restartEngineOnCrash,
     searchCommentFormat: SearchCommentFormat.SHOGIHOME,
   };
 }
@@ -228,6 +233,7 @@ export function appendCSAGameSettingsHistory(
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
+    restartEngineOnCrash: settings.restartEngineOnCrash,
   };
 }
 
@@ -264,6 +270,7 @@ export type SecureCSAGameSettingsHistory = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  restartEngineOnCrash: boolean;
 };
 
 export function defaultSecureCSAGameSettingsHistory(opts?: {
@@ -282,6 +289,7 @@ export function defaultSecureCSAGameSettingsHistory(opts?: {
     repeat: 1,
     autoRelogin: true,
     restartPlayerEveryGame: false,
+    restartEngineOnCrash: false,
   };
 }
 
@@ -340,6 +348,7 @@ export function encryptCSAGameSettingsHistory(
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
+    restartEngineOnCrash: history.restartEngineOnCrash,
   };
 }
 
@@ -375,6 +384,7 @@ export function decryptCSAGameSettingsHistory(
     repeat: history.repeat,
     autoRelogin: history.autoRelogin,
     restartPlayerEveryGame: history.restartPlayerEveryGame,
+    restartEngineOnCrash: history.restartEngineOnCrash,
   };
 }
 
@@ -388,6 +398,7 @@ export type CSAGameSettingsForCLI = {
   repeat: number;
   autoRelogin: boolean;
   restartPlayerEveryGame: boolean;
+  restartEngineOnCrash?: boolean;
   searchCommentFormat?: SearchCommentFormat;
 };
 
@@ -408,6 +419,7 @@ export function exportCSAGameSettingsForCLI(
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
+    restartEngineOnCrash: settings.restartEngineOnCrash,
     searchCommentFormat: settings.searchCommentFormat,
   };
 }
@@ -434,6 +446,7 @@ export function importCSAGameSettingsForCLI(
     repeat: settings.repeat,
     autoRelogin: settings.autoRelogin,
     restartPlayerEveryGame: settings.restartPlayerEveryGame,
+    restartEngineOnCrash: settings.restartEngineOnCrash ?? false,
     searchCommentFormat: settings.searchCommentFormat || SearchCommentFormat.SHOGIHOME,
   };
 }

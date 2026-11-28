@@ -424,6 +424,7 @@ export const vi: Texts = {
   currentPosition: "Thế cờ hiện tại",
   positionList: "Danh sách thế cờ",
   enableEngineTimeout: "Bật hết giờ phần mềm",
+  restartEngineOnCrash: "エンジンが異常終了したら再起動", // TODO: Translate
   setDifferentTimeForGote: "Đặt thời gian khác cho Hậu",
   nextTurn: "Lượt đi",
   elapsedTime: "Thời gian dùng tổng cộng",
@@ -970,6 +971,18 @@ export const vi: Texts = {
   },
   noResponseFromEnginePleaseExtendTimeout(seconds) {
     return `Không có phản hồi từ phần mềm sau ${seconds} giây. Vui lòng kéo dài thời gian hết giờ trong thẻ "Định dạng USI" của cài đặt ứng dụng nếu phần mềm của bạn chậm.`;
+  },
+  // TODO: Translate
+  engineCrashedAndRestarting(name) {
+    return `${name} が異常終了しました。再起動しています。`;
+  },
+  // TODO: Translate
+  engineRestarted(name, seconds) {
+    return `${name} を再起動しました。 (${seconds}秒)`;
+  },
+  // TODO: Translate
+  failedToRestartEngine(name) {
+    return `${name} の再起動に失敗しました。`;
   },
   stableVersionReleased(version: string) {
     return `Phiên bản ổn định ${version} đã ra mắt!`;
